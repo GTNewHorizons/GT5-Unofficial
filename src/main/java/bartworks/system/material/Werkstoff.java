@@ -140,9 +140,9 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     /**
      * GT Materials Bridge Constructor
      *
-     * @param materials          a GT Materials
+     * @param materials          GT materials
      * @param generationFeatures the new Types you want to add
-     * @param type               - self explainatory
+     * @param type               - self-explanatory
      * @param mID                > 31_766 && <= 32_767
      */
     public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID) {
@@ -696,7 +696,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     /**
-     * Checks if the generation feature is enabled and if its not in the blacklist
+     * Checks if the generation feature is enabled and if it's not in the blacklist
      */
     public boolean hasItemType(OrePrefixes prefix) {
         // Proxy materials are only used to generate (re)bolted casings, so we don't want to generate sheetmetals for
@@ -803,7 +803,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             MetalCraftingSolidification,
             /// Adds solidification recipes for metal parts (see [#initPrefixLogic()] and [#SIMPLE_METALWORKING]).
             MetalSolidification,
-            /// Adds mixing recipe that creates this material from its contained parts.
+            /// Adds mixing recipes that create this material from its contained parts.
             Mixing,
             /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
             /// some reason.

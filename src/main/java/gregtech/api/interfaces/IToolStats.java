@@ -21,14 +21,14 @@ import org.jetbrains.annotations.Range;
 import gregtech.api.items.MetaGeneratedTool;
 
 /**
- * The Stats for GT Tools. Not including any Material Modifiers.
+ * The stats for GT tools. Not including any material modifiers.
  * <p/>
- * And this is supposed to not have any ItemStack Parameters as these are generic Stats.
+ * And this is supposed to not have any ItemStack parameters as these are generic stats.
  */
 public interface IToolStats {
 
     /**
-     * Called when aPlayer crafts this Tool
+     * Called when a player crafts this tool
      */
     void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer);
 
@@ -40,62 +40,63 @@ public interface IToolStats {
     /**
      * @implNote if you are only modifying drops, override
      *           {@link #convertBlockDrops(List, ItemStack, EntityPlayer, Block, int, int, int, int, int, boolean, BlockEvent.HarvestDropsEvent)}
-     * @param player   The player
+     * @param player   the player
      * @param x        Block pos
      * @param y        Block pos
      * @param z        Block pos
      * @param block    the block
      * @param metadata block metadata
      * @param tile     TileEntity of the block if exist
-     * @param event    the event, cancel it to prevent the block from being broken
+     * @param event    event, cancel it to prevent the block from being broken
      */
     default void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, int metadata,
         @Nullable TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {}
 
     /**
-     * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
+     * @return damage the tool receives when breaking a block. 100 is one damage point (or 100 EU).
      */
     int getToolDamagePerBlockBreak();
 
     /**
-     * @return Damage the Tool receives when converting the drops of a Block. 100 is one Damage Point (or 100 EU).
+     * @return damage the tool receives when converting the drops of a block. 100 is one damage point (or 100 EU).
      */
     int getToolDamagePerDropConversion();
 
     /**
-     * @return Damage the Tool receives when being used as Container Item. 100 is one use, however it is usually 8 times
+     * @return damage the tool receives when being used as a container item. 100 is one use, however, it is usually 8
+     *         times
      *         more than normal.
      */
     int getToolDamagePerContainerCraft();
 
     /**
-     * @return Damage the Tool receives when being used as Weapon, 200 is the normal Value, 100 for actual Weapons.
+     * @return damage the tool receives when being used as a weapon; 200 is the normal value, 100 for actual weapons.
      */
     int getToolDamagePerEntityAttack();
 
     /**
-     * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools
-     *         of this Type. Decreasing is also possible.
+     * @return Basic quality of the tool, 0 is normal. If increased, it will increase the general quality of all tools
+     *         of this type. Decreasing is also possible.
      */
     int getBaseQuality();
 
     /**
-     * @return The Damage Bonus for this Type of Tool against Mobs. 1.0F is normal punch.
+     * @return The damage bonus for this type of tool against mobs. 1.0F is a normal punch.
      */
     float getBaseDamage();
 
     /**
-     * @return This gets the Hurt Resistance time for Entities getting hit. (always does 1 as minimum)
+     * @return This gets the hurt resistance time for entities getting hit. (always does 1 as a minimum)
      */
     int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity);
 
     /**
-     * @return This is a multiplier for the Tool Speed. 1.0F = no special Speed.
+     * @return This is a multiplier for the tool speed. 1.0F = no special speed.
      */
     float getSpeedMultiplier();
 
     /**
-     * @return This is a multiplier for the Tool Speed. 1.0F = no special Durability.
+     * @return This is a multiplier for the tool speed. 1.0F = no special durability.
      */
     float getMaxDurabilityMultiplier();
 
@@ -114,17 +115,17 @@ public interface IToolStats {
     int[] getEnchantmentLevels(ItemStack aStack);
 
     /**
-     * @return If this Tool can be used for blocking Damage like a Sword.
+     * @return If this tool can be used for blocking damage like a sword.
      */
     boolean canBlock();
 
     /**
-     * @return If this Tool can be used as an RC Crowbar.
+     * @return If this tool can be used as an RC crowbar.
      */
     boolean isCrowbar();
 
     /**
-     * @return If this Tool can be used as an FR Grafter.
+     * @return If this tool can be used as an FR grafter.
      */
     boolean isGrafter();
 
@@ -133,63 +134,63 @@ public interface IToolStats {
     boolean isSaw();
 
     /**
-     * @return If this Tool can be used as an BC Wrench.
+     * @return If this tool can be used as a BC wrench.
      */
     boolean isWrench();
 
     /**
-     * @return if this Tool can be used as an PR screwdriver
+     * @return if this tool can be used as a PR screwdriver
      */
     default boolean isScrewdriver() {
         return false;
     }
 
     /**
-     * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
+     * @return If this Tool can be used as a weapon i.e., if that is the main purpose.
      */
     boolean isWeapon();
 
     /**
-     * @return If this Tool is a Ranged Weapon. Return false at isWeapon unless you have a Blade attached to your
-     *         Bow/Gun or something
+     * @return If this tool is a ranged weapon. Return false at isWeapon unless you have a blade attached to your
+     *         bow, gun, or something
      */
     boolean isRangedWeapon();
 
     /**
-     * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
+     * @return If this tool can be used as a weapon i.e., if that is the main purpose.
      */
     boolean isMiningTool();
 
     /**
-     * {@link Block#getHarvestTool(int)} can return the following Values for example. "axe", "pickaxe", "sword",
+     * {@link Block#getHarvestTool(int)} can return the following values, for example, "axe", "pickaxe", "sword",
      * "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop",
-     * "screwdriver", "sense", "scythe", "softmallet", "cutter", "plasmatorch"
+     * "screwdriver", "sense", "scythe", "softmallet", "cutter", and "plasmatorch".
      *
-     * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this
+     * @return If this is a minable Block. Tool quality checks (like diamond tier or something) are separate from this
      *         check.
      */
     boolean isMinableBlock(Block aBlock, int aMetaData);
 
     /**
-     * This lets you modify the Drop List, when this type of Tool has been used.
+     * This lets you modify the drop list when this type of tool has been used.
      *
-     * @return the Amount of modified Items, used to determine the extra durability cost
+     * @return the number of modified items used to determine the extra durability cost
      */
     int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
         int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
-     * @return Returns a broken Version of the Item.
+     * @return Returns a broken version of the item.
      */
     ItemStack getBrokenItem(ItemStack aStack);
 
     /**
-     * @return the Damage actually done to the Mob.
+     * @return the damage actually done to the mob.
      */
     float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
     /**
-     * @return the Damage actually done to the Mob.
+     * @return the damage actually done to the mob.
      */
     float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
@@ -222,7 +223,7 @@ public interface IToolStats {
     }
 
     /**
-     * @return the amount of the modes this tool has.
+     * @return the number of the modes this tool has.
      */
     @Range(from = 1, to = Byte.MAX_VALUE)
     default byte getMaxMode() {

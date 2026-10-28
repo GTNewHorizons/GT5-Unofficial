@@ -74,7 +74,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be DARK_GREEN
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be DARK_GREEN
      *
      * @param pPlayer
      * @param pMessage
@@ -84,7 +84,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be AQUA
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be AQUA
      *
      * @param pPlayer
      * @param pMessage
@@ -94,7 +94,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be DARK_PURPLE
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be DARK_PURPLE
      *
      * @param pPlayer
      * @param pMessage

@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTLoggers;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdatable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 
@@ -57,8 +57,8 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 final TileEntity tTileEntity = world.getTileEntity(posX, posY, posZ);
 
                 // See if the block itself needs an update
-                if (tTileEntity instanceof IMachineBlockUpdateable)
-                    ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
+                if (tTileEntity instanceof IMachineBlockUpdatable)
+                    ((IMachineBlockUpdatable) tTileEntity).onMachineBlockUpdate();
 
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to

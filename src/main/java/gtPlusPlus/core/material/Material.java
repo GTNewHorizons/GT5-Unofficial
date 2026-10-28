@@ -506,7 +506,7 @@ public class Material implements IOreMaterial {
             for (long l : this.smallestRatio) {
                 tempSmallestSize = (int) (tempSmallestSize + l);
             }
-            this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stacksizes
+            this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stack sizes
 
             // Makes a Fancy Chemical Tooltip
 
@@ -829,7 +829,7 @@ public class Material implements IOreMaterial {
         if (i != null) {
             return GTUtility.copyAmount(stacksize, i);
         } else {
-            // Try get a GT Material
+            // Try to get a GT Material
             Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
             if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
                 ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
@@ -838,7 +838,7 @@ public class Material implements IOreMaterial {
                     mComponentMap.put(unlocalizedName, g);
                     return Erg;
                 } else {
-                    // Try get a molten cell
+                    // Try to get a molten cell
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
                         if (Erg != null) {
@@ -1573,7 +1573,7 @@ public class Material implements IOreMaterial {
 
     @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
-        // This is really unreliable but it's also gt++ so there isn't a better solution
+        // This is really unreliable, but it's also gt++, so there isn't a better solution
         return getComponentByPrefix(prefix, 1) != null;
     }
 

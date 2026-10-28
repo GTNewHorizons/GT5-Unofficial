@@ -105,7 +105,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     }
 
     /**
-     * Populates static variables dependant on config settings
+     * Populates static variables dependent on config settings
      */
     private static void sharedConfigLoad() {
         sAllowMultipleEggs = MachineStats.machines.allowMultipleEggs;
@@ -416,7 +416,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        // Restrict input to disenchantable items or enchanted books
+        // Restrict input to disenchant-able items or enchanted books
         return (isDisenchantableItem(aStack) || isEnchantedBook(aStack));
     }
 

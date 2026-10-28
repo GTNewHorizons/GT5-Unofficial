@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * You are allowed to include this File in your Download, as i will not change it.
+ * You are allowed to include this File in your Download, as I will not change it.
  */
 public interface IDebuggableBlock {
 
     /**
      * Returns a Debug Message, for a generic DebugItem Blocks have to implement this interface NOT TileEntities!
      *
-     * @param aPlayer   the Player, who rightclicked with his Debug Item
+     * @param aPlayer   the Player who right-clicked with his Debug Item
      * @param aX        Block-Coordinate
      * @param aY        Block-Coordinate
      * @param aZ        Block-Coordinate

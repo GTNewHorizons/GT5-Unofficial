@@ -8,12 +8,12 @@ public interface IHasInventory extends ISidedInventory, IHasWorldObjectAndCoords
     default void markInventoryBeenModified() {}
 
     /**
-     * if the Inventory of this TileEntity got modified this tick
+     * if the Inventory of this TileEntity got modified in this tick
      */
     boolean hasInventoryBeenModified();
 
     /**
-     * if this is just a Holoslot
+     * if this is just a holo slot
      */
     boolean isValidSlot(int aIndex);
 

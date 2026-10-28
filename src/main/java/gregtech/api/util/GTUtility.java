@@ -646,13 +646,13 @@ public class GTUtility {
                 char code = message.charAt(end + 1);
 
                 if (code >= '0' && code <= '9' || code >= 'a' && code <= 'f') {
-                    // Colours, use as-is and erase the previous format
+                    // Colors, use as-is and erase the previous format
                     currentFormat = "" + FORMAT_ESCAPE + code;
                     out.append(FORMAT_ESCAPE)
                         .append(code);
                 } else if (code >= 'k' && code <= 'o') {
-                    // Styles, use as-is and append to the colour style (note: this may act up with repeated style
-                    // codes but it shouldn't break anything).
+                    // Styles, use as-is and append to the color style (note: this may act up with repeated style
+                    // codes, but it shouldn't break anything).
                     currentFormat = currentFormat + FORMAT_ESCAPE + code;
                     out.append(FORMAT_ESCAPE)
                         .append(code);
@@ -1190,9 +1190,9 @@ public class GTUtility {
     }
 
     /**
-     * Treat both null list, or both null item stack at same list position as equal.
+     * Treat both null list, or both null item stacks at same list position as equal.
      * <p>
-     * Since ItemStack doesn't override equals and hashCode, you cannot just use Objects.equals
+     * Since ItemStack doesn't override equals and hashCode, you cannot just use {@link Objects#equals(Object, Object)}
      */
     public static boolean areStackListsEqual(List<ItemStack> lhs, List<ItemStack> rhs, boolean ignoreStackSize,
         boolean ignoreNBT) {
@@ -2274,7 +2274,7 @@ public class GTUtility {
     }
 
     /**
-     * returns a copy of an ItemStack with its Stacksize being multiplied by aMultiplier
+     * returns a copy of an ItemStack with its stack size being multiplied by aMultiplier
      */
     public static ItemStack mul(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
@@ -2712,7 +2712,7 @@ public class GTUtility {
     }
 
     /*
-     * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack, if
+     * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack if
      * there's no creative or 111 stack.
      */
     public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
@@ -3043,7 +3043,7 @@ public class GTUtility {
             tOilsPosStr = tOilsPosStr.concat(
                 "            X: " + (Math.floorDiv(aX, 16 * 8) + 1) * 16 * 8
                     + " Z: "
-                    + (Math.floorDiv(aZ, 16 * 8) + 1) * 16 * 8); // +1 oilfied to find bottomright of [5]
+                    + (Math.floorDiv(aZ, 16 * 8) + 1) * 16 * 8); // +1 oilfield to find bottom right of [5]
             return tOilsPosStr;
         }
 
@@ -3324,7 +3324,7 @@ public class GTUtility {
         }
 
         Map<Object, Integer> recipeAsMap = new HashMap<>();
-        Map<Character, Object> ingridients = new HashMap<>();
+        Map<Character, Object> ingredients = new HashMap<>();
         Map<Character, Integer> amounts = new HashMap<>();
         boolean startFound = false;
         for (int i = 0, aRecipeLength = aRecipe.length; i < aRecipeLength; i++) {
@@ -3333,9 +3333,9 @@ public class GTUtility {
                 if (o instanceof String) {
                     for (Character c : ((String) o).toCharArray()) amounts.merge(c, 1, (a, b) -> ++a);
                 } else if (o instanceof Character) startFound = true;
-            } else if (!(o instanceof Character)) ingridients.put((Character) aRecipe[i - 1], o);
+            } else if (!(o instanceof Character)) ingredients.put((Character) aRecipe[i - 1], o);
         }
-        for (Map.Entry<Character, Object> characterObjectEntry : ingridients.entrySet()) {
+        for (Map.Entry<Character, Object> characterObjectEntry : ingredients.entrySet()) {
             for (Map.Entry<Character, Integer> characterIntegerEntry : amounts.entrySet()) {
                 if (characterObjectEntry.getKey() != characterIntegerEntry.getKey()) continue;
                 recipeAsMap.put(characterObjectEntry.getValue(), characterIntegerEntry.getValue());
@@ -3398,7 +3398,8 @@ public class GTUtility {
     }
 
     /**
-     * Add an itemstack to player inventory, or drop on ground if full. Can be called on client but it probably won't
+     * Add an item stack to a player inventory, or drop on ground if full. Can be called on the client-side, but it
+     * probably won't
      * work very well.
      */
     public static void addItemToPlayerInventory(EntityPlayer aPlayer, ItemStack aStack) {
@@ -3546,13 +3547,13 @@ public class GTUtility {
         return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
     }
 
-    /** @deprecated Use {@link Integer#signum(int)} instead.} */
+    /** @deprecated Use {@link Integer#signum(int)} instead. */
     @Deprecated
     public static int signum(int x) {
         return Integer.signum(x);
     }
 
-    /** @deprecated Use {@link Long#signum(long)} instead.} */
+    /** @deprecated Use {@link Long#signum(long)} instead. */
     @Deprecated
     public static long signum(long x) {
         return Long.signum(x);
@@ -3791,8 +3792,8 @@ public class GTUtility {
     }
 
     /**
-     * Convert a cell to fluid. If given itemstack does not contain any fluid, return null. Will correctly multiple
-     * output fluid amount if input stack size is greater than 1.
+     * Convert a cell to fluid. If given items tack does not contain any fluid, return null. Will correctly multiple
+     * output fluid amounts if the input stack size is greater than 1.
      */
     public static FluidStack convertCellToFluid(ItemStack itemStack) {
         if (itemStack == null) return null;

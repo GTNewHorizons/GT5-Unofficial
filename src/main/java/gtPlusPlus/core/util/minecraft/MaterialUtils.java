@@ -240,7 +240,7 @@ public class MaterialUtils {
         }
         final int HARD_LIMIT = 1000;
 
-        // Could be a Deque but i dont use the interface
+        // Could be a Deque, but I don't use the interface
         // enough to use it as default.
         LinkedList<Material> toCheck = new LinkedList<>();
 

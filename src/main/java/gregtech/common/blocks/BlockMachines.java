@@ -48,7 +48,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IDebuggableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.MetaBaseItem;
@@ -706,8 +706,8 @@ public class BlockMachines extends GTGenericBlock implements IDebuggableBlock, I
     @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IDebugableTileEntity) {
-            return ((IDebugableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
+        if (tTileEntity instanceof IDebuggableTileEntity) {
+            return ((IDebuggableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
         }
         return new ArrayList<>();
     }

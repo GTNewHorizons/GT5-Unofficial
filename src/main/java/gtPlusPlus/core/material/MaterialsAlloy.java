@@ -64,7 +64,7 @@ public final class MaterialsAlloy {
     public static final Material TANTALLOY_60 = new Material(
         "Tantalloy-60", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 213, 231, 237, 0 }, // Material Colour
+        new short[] { 213, 231, 237, 0 }, // Material Color
         3025, // Melting Point in C
         -1,
         -1,
@@ -77,7 +77,7 @@ public final class MaterialsAlloy {
     public static final Material TANTALLOY_61 = new Material(
         "Tantalloy-61", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 193, 211, 217, 0 }, // Material Colour
+        new short[] { 193, 211, 217, 0 }, // Material Color
         3030, // Melting Point in C
         -1,
         -1,
@@ -104,7 +104,7 @@ public final class MaterialsAlloy {
     public static final Material POTIN = new Material(
         "Potin", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 201, 151, 129, 0 }, // Material Colour
+        new short[] { 201, 151, 129, 0 }, // Material Color
         1300,
         -1,
         -1,
@@ -116,8 +116,8 @@ public final class MaterialsAlloy {
         new MaterialStack(MaterialsElements.getInstance().TIN, 20));
 
     /*
-     * public static final Material BEDROCKIUM = new Material( "Bedrockium", //Material Name new short[]{32, 32, 32, 0},
-     * //Material Colour 7735, //Melting Point in C 0, //Boiling Point in C 100, //Protons 100, //Neutrons false, //Uses
+     * public static final Material BEDROCKIUM = new Material("Bedrockium", //Material Name new short[]{32, 32, 32, 0},
+     * //Material Color 7735, //Melting Point in C 0, //Boiling Point in C 100, //Protons 100, //Neutrons false, //Uses
      * Blast furnace? //Material Stacks with Percentage of required elements. null);
      */
 
@@ -183,7 +183,7 @@ public final class MaterialsAlloy {
     public static final Material ZERON_100 = new Material(
         "Zeron-100", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 180, 180, 20, 0 }, // Material Colour
+        new short[] { 180, 180, 20, 0 }, // Material Color
         6100,
         9785,
         -1,
@@ -281,7 +281,7 @@ public final class MaterialsAlloy {
     public static final Material TALONITE = new Material(
         "Talonite", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         3454, // Melting Point in C
         5500,
         -1,
@@ -362,7 +362,7 @@ public final class MaterialsAlloy {
     public static final Material INCOLOY_020 = new Material(
         "Incoloy-020", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         3425, // Melting Point in C
         5420,
         -1,
@@ -377,7 +377,7 @@ public final class MaterialsAlloy {
     public static final Material INCOLOY_DS = new Material(
         "Incoloy-DS", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         3425, // Melting Point in C
         5420,
         -1,
@@ -392,7 +392,7 @@ public final class MaterialsAlloy {
     public static final Material INCOLOY_MA956 = new Material(
         "Incoloy-MA956", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         4425, // Melting Point in C
         6875,
         -1,
@@ -487,7 +487,7 @@ public final class MaterialsAlloy {
     public static final Material LEAGRISIUM = new Material(
         "Grisium", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 53, 93, 106, 0 }, // Material Colour
+        new short[] { 53, 93, 106, 0 }, // Material Color
         3850, // Melting Point in C
         5550, // Boiling Point in C
         96, // Protons
@@ -504,7 +504,7 @@ public final class MaterialsAlloy {
     public static final Material EGLIN_STEEL_BASE = new Material(
         "Eglin Steel Base Compound", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         -1, // Melting Point in C
         -1, // Boiling Point in C
         -1,
@@ -518,7 +518,7 @@ public final class MaterialsAlloy {
     public static final Material EGLIN_STEEL = new Material(
         "Eglin Steel", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 139, 69, 19, 0 }, // Material Colour
+        new short[] { 139, 69, 19, 0 }, // Material Color
         1048, // Melting Point in C
         1973, // Boiling Point in C
         -1,
@@ -605,7 +605,7 @@ public final class MaterialsAlloy {
     public static final Material TRINIUM_REINFORCED_STEEL = new Material(
         "Arceus Alloy 2B", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 205, 197, 23, 0 }, // Material Colour
+        new short[] { 205, 197, 23, 0 }, // Material Color
         7555, // Melting Point in C
         12350,
         -1,
@@ -625,7 +625,7 @@ public final class MaterialsAlloy {
     public static final Material KOBOLDITE = new Material(
         "Koboldite", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 80, 210, 255, 0 }, // Material Colour
+        new short[] { 80, 210, 255, 0 }, // Material Color
         -1, // Melting Point in C
         -1,
         -1,
@@ -660,7 +660,7 @@ public final class MaterialsAlloy {
     public static final Material LAFIUM = new Material(
         "Lafium Compound", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         6350, // Melting Point in C
         9865, // Boiling Point in C
         -1,
@@ -680,7 +680,7 @@ public final class MaterialsAlloy {
     public static final Material CINOBITE = new Material(
         "Cinobite A243", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         7350, // Melting Point in C
         12565, // Boiling Point in C
         -1,
@@ -700,7 +700,7 @@ public final class MaterialsAlloy {
     public static final Material PIKYONIUM = new Material(
         "Pikyonium 64B", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 52, 103, 186, 0 }, // Material Colour
+        new short[] { 52, 103, 186, 0 }, // Material Color
         6850, // Melting Point in C
         11765, // Boiling Point in C
         -1,
@@ -740,7 +740,7 @@ public final class MaterialsAlloy {
     public static final Material LAURENIUM = new Material(
         "Laurenium", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 244, 168, 255, 0 }, // Material Colour
+        new short[] { 244, 168, 255, 0 }, // Material Color
         6825, // Melting Point in C
         11355, // Boiling Point in C
         -1,
@@ -757,7 +757,7 @@ public final class MaterialsAlloy {
     public static final Material BOTMIUM = new Material(
         "Botmium", // Material Name
         MaterialState.SOLID, // State
-        new short[] { 80, 160, 80, 0 }, // Material Colour
+        new short[] { 80, 160, 80, 0 }, // Material Color
         8220, // Melting Point in C
         10540, // Boiling Point in C
         -1,
@@ -773,7 +773,7 @@ public final class MaterialsAlloy {
     public static final Material TITANSTEEL = new Material(
         "Titansteel", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         8250, // Melting Point in C
         11765, // Boiling Point in C
         -1,
@@ -824,7 +824,7 @@ public final class MaterialsAlloy {
     public static final Material BABBIT_ALLOY = new Material(
         "Babbit Alloy", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         268, // Melting Point in C
         589,
         -1,
@@ -839,7 +839,7 @@ public final class MaterialsAlloy {
     public static final Material INDALLOY_140 = new Material(
         "Indalloy 140", // Material Name
         MaterialState.SOLID, // State
-        null, // Material Colour
+        null, // Material Color
         5200, // Melting Point in C
         6500,
         -1,

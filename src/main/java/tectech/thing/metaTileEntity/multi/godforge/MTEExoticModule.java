@@ -355,7 +355,7 @@ public class MTEExoticModule extends MTEBaseModule {
         for (ItemStack itemStack : items) {
             int[] oreIDs = OreDictionary.getOreIDs(itemStack);
 
-            // Retry until it finds a falid vluid
+            // Retry until it finds a valid fluid
             for (int oreID : oreIDs) {
                 String oreDict = OreDictionary.getOreName(oreID);
                 // substring 4 because dust is 4 characters long and there is no other possible oreDict

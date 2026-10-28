@@ -1134,7 +1134,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
-    /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
+    /** @deprecated This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) */
     @Deprecated
     public static Collection<Materials> VALUES = new LinkedHashSet<>();
 
@@ -1749,7 +1749,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      */
     public static Materials[] values() {
@@ -1809,7 +1809,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      *
      * @deprecated Use {@link Materials#getName()} instead, but realistically you should never even need the name.

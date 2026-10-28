@@ -206,8 +206,8 @@ public class OverclockCalculator {
     }
 
     /**
-     * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like a EU/t
-     * Discount
+     * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like an EU/t
+     * discount
      */
     @Nonnull
     public OverclockCalculator setHeatDiscountMultiplier(double heatDiscountExponent) {
@@ -216,8 +216,8 @@ public class OverclockCalculator {
     }
 
     /**
-     * Sets the amount that the eut would be multiplied by per overclock. Do not set as 1(ONE) if the duration decrease
-     * is also 1(ONE)!
+     * Sets the amount that the eut would be multiplied by per overclock. Do not set as 1 (ONE) if the duration decrease
+     * is also 1 (ONE)!
      */
     @Nonnull
     public OverclockCalculator setEUtIncreasePerOC(double eutIncreasePerOC) {
@@ -271,7 +271,7 @@ public class OverclockCalculator {
         return this;
     }
 
-    /** Set a supplier for calculating custom duration for when its needed under one tick */
+    /** Set a supplier for calculating custom duration for when it's needed under one tick */
     @Nonnull
     public OverclockCalculator setDurationUnderOneTickSupplier(Supplier<Double> supplier) {
         this.durationUnderOneTickSupplier = supplier;

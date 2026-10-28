@@ -485,7 +485,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     }
 
     /**
-     * Sets the unlocalized name of this item to the string passed as the parameter"
+     * Sets the unlocalized name of this item to the string passed as the parameter
      */
     @Override
     public Item setUnlocalizedName(final String p_77655_1_) {
@@ -534,7 +534,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aID         The id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param aEnglish    The Default Localized Name of the created Item
      * @param aToolTip    The Default ToolTip of the created Item, you can also insert null for having no ToolTip
      * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
@@ -654,10 +654,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             initNBT(container);
         }
         if (ItemStackNBT.getBoolean(container, "mInit")) {
-            final String fluidname = ItemStackNBT.getString(container, "mFluid");
+            final String fluidName = ItemStackNBT.getString(container, "mFluid");
             final int amount = ItemStackNBT.getInteger(container, "mFluidAmount");
-            if (fluidname != null && amount > 0) {
-                return FluidRegistry.getFluidStack(fluidname, amount);
+            if (fluidName != null && amount > 0) {
+                return FluidRegistry.getFluidStack(fluidName, amount);
             } else {
                 return null;
             }
@@ -887,7 +887,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null || aMetaTileEntity instanceof MTEHatchMultiInput) {
-            // blacklist multiinput hatch as it's too complex
+            // blacklist multi-input hatch as it's too complex
             return null;
         }
         if (aMetaTileEntity instanceof MTEBasicTank) {

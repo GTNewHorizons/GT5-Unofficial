@@ -6,12 +6,12 @@ package gregtech.api.interfaces.tileentity;
 public interface IIC2Enet {
 
     /**
-     * Should this tile/block join the ic2 enet
+     * Should this tile/block join the ic2 e-net?
      */
     boolean shouldJoinIc2Enet();
 
     /**
-     * Update the ic2 enet
+     * Update the ic2 e-net
      */
     void doEnetUpdate();
 }

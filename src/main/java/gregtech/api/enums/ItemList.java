@@ -3061,7 +3061,7 @@ public enum ItemList implements IItemContainer {
     SlicedCircuit_BiowareProcessor,
 
     Wrap_EngravedCrystalChips,
-    Wrap_EngravedLapotrionChips,
+    Wrap_EngravedLapotronChips,
     Wrap_CoatedCircuitBoards,
     Wrap_CircuitBoards,
     Wrap_PhenolicCircuitBoards,

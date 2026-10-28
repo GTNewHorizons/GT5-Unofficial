@@ -366,7 +366,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 euVar -= diff;
             }
         }
-        explodeMultiblock(); // If no energy is left, we would've already exploded. Thus no check is needed here
+        explodeMultiblock(); // If no energy is left, we would've already exploded. Thus, no check is needed here
         return false;
     }
 

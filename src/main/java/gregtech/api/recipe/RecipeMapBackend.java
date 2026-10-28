@@ -61,7 +61,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 /**
  * Responsible for recipe addition / search for recipemap.
  * <p>
- * In order to bind custom backend to recipemap, use {@link RecipeMapBuilder#of(String, BackendCreator)}.
+ * To bind custom backend to recipemap, use {@link RecipeMapBuilder#of(String, BackendCreator)}.
  */
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
@@ -416,7 +416,8 @@ public class RecipeMapBackend {
      *                            Alternatively overriding {@link #filterFindRecipe} will also work.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
      * @param notUnified          If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount for the
+     * @param dontCheckStackSizes If this is set to true, this method won't check the item count and fluid amount for
+     *                            the
      *                            matched recipe.
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.

@@ -677,12 +677,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // endregion crop visuals rendering
 
     /**
-     * Calculates the total amount of seeds in the EIG
+     * Calculates the total number of seeds in the EIG
      *
      * @return The number of seeds in the EIG.
      */
     public int getTotalSeedCount() {
-        // null check is to prevent a occasional weird NPE from MUI
+        // null check is to prevent an occasional weird NPE from MUI
         return this.buckets.parallelStream()
             .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
     }

@@ -2304,7 +2304,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(BARNARDA, DIVIDED, 3, 2);
         if (GalaxySpace.isModLoaded()) {
             tMutation.requireResource(GameRegistry.findBlock(GalaxySpace.ID, "barnardaEgrunt"), 0);
-            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(81, "Barnard E")); // "Barnard E Dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(81, "Barnard E")); // Barnard E Dim
         }
     }),
     BARNARDAF(GTBranchDefinition.PLANET, "BarnardaF", false, new Color(0x0D5A0D), new Color(0x1e0b49), beeSpecies -> {
@@ -2316,7 +2316,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(BARNARDA, NEUTRONIUM, 3, 2);
         if (GalaxySpace.isModLoaded()) {
             tMutation.requireResource(GameRegistry.findBlock(GalaxySpace.ID, "barnardaFgrunt"), 0);
-            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(82, "Barnard F")); // "Barnard F Dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(82, "Barnard F")); // Barnard F Dim
         }
     }),
     VEGA(GTBranchDefinition.PLANET, "Vega", false, new Color(0x1A2036), new Color(0xB5C0DE), beeSpecies -> {

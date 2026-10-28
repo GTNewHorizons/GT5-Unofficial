@@ -55,7 +55,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IDamageableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -80,7 +80,7 @@ import mrtjp.projectred.api.IScrewdriver;
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
-    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
+    implements IDamageableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -210,8 +210,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID                     The Id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven
-     *                                ID's are empty electric Items)
+     * @param aID                     The id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven
+     *                                ids are empty electric Items)
      * @param aEnglish                The Default Localized Name of the created Item
      * @param aToolTip                The Default ToolTip of the created Item, you can also insert null for having no
      *                                ToolTip

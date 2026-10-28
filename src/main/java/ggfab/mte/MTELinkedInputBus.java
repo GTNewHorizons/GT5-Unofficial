@@ -75,7 +75,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         final ItemStack own = super.getMachineCraftingIcon();
         if (own != null) return own.copy();
         if (mRealInventory == null) return null;
-        // A bus outside of a structure has no icon of its own, so it borrows the one of a bus that stands in a
+        // A bus outside a structure has no icon of its own, so it borrows the one of a bus that stands in a
         // multiblock on the same channel. Interfaces then name it after the multiblock the channel feeds.
         MTELinkedInputBus source = null;
         for (MTELinkedInputBus bus : mRealInventory.busses) {

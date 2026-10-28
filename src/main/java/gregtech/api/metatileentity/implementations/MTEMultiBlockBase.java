@@ -439,7 +439,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 else getBaseMetaTileEntity().disableWorking();
             }
         }
-        // Item NBT (e.g. from setItemNBT) may lack this key, keep the configured default then
+        // Item NBT (e.g., from setItemNBT) may lack this key, keep the configured default then
         if (aNBT.hasKey(BATCH_MODE_NBT_KEY)) batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
@@ -1334,7 +1334,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Performs additional check for {@link #processingLogic} after all the calculations are done. As many as checks
-     * should be done inside of custom {@link ProcessingLogic}, which you can specify with
+     * should be done inside custom {@link ProcessingLogic}, which you can specify with
      * {@link #createProcessingLogic()}, because when this method is called, inputs might have been already consumed.
      * However, certain checks cannot be done like that; Checking energy overflow should be suppressed for machines
      * using long-power, for example.
@@ -1401,7 +1401,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
+     * Gets the pollution this Device outputs to a Muffler per tick (10,000 = one Pollution Block)
      *
      * @param aStack what is in controller
      */
@@ -1732,7 +1732,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .getStoredEU(),
                 aEU);
             tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(tDrain, false);// basicly copied from
+                .decreaseStoredEnergyUnits(tDrain, false);// basically copied from
                                                           // ExoticEnergyInputHelper, makes
                                                           // machine
                                                           // use all hatches for power
@@ -2067,7 +2067,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Anything that is usually separated off in {@link #getStoredInputs()} (like crafting input bus/buffer) is also
+     * Anything usually separated off in {@link #getStoredInputs()} (like crafting input bus/buffer) is also
      * included here.
      */
     public ArrayList<ItemStack> getAllStoredInputs() {

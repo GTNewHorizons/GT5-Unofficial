@@ -335,7 +335,7 @@ public final class MaterialMisc {
     public static final Material DICHLOROACETIC_ACID = new Material(
         "Dichloroacetic Acid",
         MaterialState.PURE_LIQUID, // State
-        new short[] { 190, 160, 60 }, // Material Colour
+        new short[] { 190, 160, 60 }, // Material Color
         13, // Melting Point in C
         194, // Boiling Point in C
         -1, // Protons

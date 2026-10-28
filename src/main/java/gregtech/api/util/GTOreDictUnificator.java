@@ -311,7 +311,7 @@ public class GTOreDictUnificator {
 
     public static List<ItemStack> getNonUnifiedStacks(Object obj) {
         if (sUnificationTable.isEmpty() && !sItemStack2DataMap.isEmpty()) {
-            // use something akin to double check lock. this synchronization overhead is causing lag whenever my
+            // use something akin to double-check lock. this synchronization overhead is causing lag whenever my
             // 5900x tries to do NEI lookup
             synchronized (sUnificationTable) {
                 if (sUnificationTable.isEmpty() && !sItemStack2DataMap.isEmpty()) {

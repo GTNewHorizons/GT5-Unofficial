@@ -321,7 +321,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         if (hunger > 0) GTUtility.sendChatToPlayer(player, "Healed " + formatNumber(hunger) + " hunger.");
 
-        if (saturation > 0) GTUtility.sendChatToPlayer(player, "Satured Hunger by " + formatNumber(saturation) + ".");
+        if (saturation > 0) GTUtility.sendChatToPlayer(player, "Saturated Hunger by " + formatNumber(saturation) + ".");
 
         if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
             player,

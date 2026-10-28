@@ -106,7 +106,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final int HEAVY_MODE_EU_MULTIPLIER = 16;
 
     public boolean tier2Fluid = false;
-    public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
+    public double mode = 1.0; // I think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public double speed = BASE_SPEED;
     public double euMultiplier = 1.0D;
@@ -863,7 +863,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 }
 
-// struct for packaging data for structure piece so i don't have to do String manipulation
+// struct for packaging data for structure piece, so I don't have to do String manipulation
 enum StructureData {
 
     tier1(1, "t1"),

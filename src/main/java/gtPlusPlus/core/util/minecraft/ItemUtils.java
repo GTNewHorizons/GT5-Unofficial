@@ -161,26 +161,26 @@ public class ItemUtils {
         final String unlocalizedName = StringUtils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
         final String aChemForm = material.chemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
+        final boolean isChemFormValid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
         if (!onlyLargeDust) {
             output = new Item[] {
                 new BaseItemDustUnique(
                     "itemDust" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Dust"),
                 new BaseItemDustUnique(
                     "itemDustSmall" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Small"),
                 new BaseItemDustUnique(
                     "itemDustTiny" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Tiny") };
         } else {

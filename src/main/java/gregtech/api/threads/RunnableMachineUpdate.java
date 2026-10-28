@@ -13,7 +13,7 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdatable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
@@ -111,8 +111,8 @@ public class RunnableMachineUpdate implements Runnable {
                     .isMachineBlock(world.getBlock(posX, posY, posZ), world.getBlockMetadata(posX, posY, posZ));
 
                 // See if the block itself needs an update
-                if (tTileEntity instanceof IMachineBlockUpdateable)
-                    ((IMachineBlockUpdateable) tTileEntity).onMachineBlockUpdate();
+                if (tTileEntity instanceof IMachineBlockUpdatable)
+                    ((IMachineBlockUpdatable) tTileEntity).onMachineBlockUpdate();
 
                 // Skip propagation through pipes\cables\etc, but save some BaseMetaPipeEntity data for later
                 if (Gregtech.features.speedupMachineUpdateThread) {
@@ -127,11 +127,11 @@ public class RunnableMachineUpdate implements Runnable {
 
                 // Now see if we should add the nearby blocks to the queue:
                 // 1) If we haven't visited the initial set
-                // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
+                // 2) If the tile says we should recursively update (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
                 if (checked < initialQueueSize
-                    || (tTileEntity instanceof IMachineBlockUpdateable
-                        && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
+                    || (tTileEntity instanceof IMachineBlockUpdatable
+                        && ((IMachineBlockUpdatable) tTileEntity).isMachineBlockUpdateRecursive())
                     || isMachineBlock) {
                     checked++;
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {

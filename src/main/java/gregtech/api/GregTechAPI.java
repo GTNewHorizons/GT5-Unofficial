@@ -29,10 +29,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IDamageableItem;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdatable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
@@ -284,7 +284,7 @@ public class GregTechAPI {
     /**
      * Adds a Multi-Machine Block, like my Machine Casings for example. You should call @causeMachineUpdate
      * in @Block.breakBlock and in {@link Block#onBlockAdded} of your registered Block. You don't need to register
-     * TileEntities which implement {@link IMachineBlockUpdateable}
+     * TileEntities which implement {@link IMachineBlockUpdatable}
      *
      * @param aBlock the Block
      * @param aMeta  the Metadata of the Blocks as Bitmask! -1 or ~0 for all Meta-values
@@ -455,7 +455,8 @@ public class GregTechAPI {
     public static boolean registerTool(ItemStack aTool, Collection<GTItemStack> aToolList) {
         if (aTool == null || GTUtility.isStackInList(aTool, sToolList)
             || (!aTool.getItem()
-                .isDamageable() && !GTModHandler.isElectricItem(aTool) && !(aTool.getItem() instanceof IDamagableItem)))
+                .isDamageable() && !GTModHandler.isElectricItem(aTool)
+                && !(aTool.getItem() instanceof IDamageableItem)))
             return false;
         aToolList.add(new GTItemStack(GTUtility.copyAmount(1, aTool)));
         sToolList.add(new GTItemStack(GTUtility.copyAmount(1, aTool)));

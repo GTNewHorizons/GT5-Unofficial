@@ -63,7 +63,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
                 } else if (this.fluid.isFluidEqual(resource)) {
                     if (doFill) {
                         // infinite capacity = it can be filled with an infinite amount of the fluid.
-                        // it's still going to advertize it has max int capacity tho,
+                        // it's still going to advertise it has max int capacity tho,
                         // but the capacity will effectively be infinite.
                         FluidEvent.fireEvent(
                             new FluidEvent.FluidFillingEvent(

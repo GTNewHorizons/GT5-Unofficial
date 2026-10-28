@@ -366,7 +366,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RRR", "RhR", 'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
 
-        GT_FML_LOGGER.debug("GTMod: Adding Wool and Color releated Recipes.");
+        GT_FML_LOGGER.debug("GTMod: Adding Wool and Color related Recipes.");
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Blocks.wool, 1, 1),
             bits_no_remove_buffered,
@@ -746,7 +746,7 @@ public class CraftingRecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L)),
             GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L))) {
-            GT_FML_LOGGER.debug("GTMod: Changed Forestrys Bronze Recipe");
+            GT_FML_LOGGER.debug("GTMod: Changed Forestry's Bronze Recipe");
         }
         tStack = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L);
 

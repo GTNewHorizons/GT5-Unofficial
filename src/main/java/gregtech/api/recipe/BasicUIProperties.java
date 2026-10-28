@@ -80,22 +80,26 @@ public final class BasicUIProperties {
     }
 
     /**
-     * How many item inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * How many item inputs does this recipemap usually have at most? It does not actually restrict the number of items
+     * used
      * in the recipe.
      */
     public final int maxItemInputs;
     /**
-     * How many item outputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * How many item outputs does this recipemap usually have at most? It does not actually restrict the number of items
+     * used
      * in the recipe.
      */
     public final int maxItemOutputs;
     /**
-     * How many fluid inputs does this recipemap usually has at most. It does not actually restrict number of items used
+     * How many fluid inputs does this recipemap usually have at most? It does not actually restrict the number of items
+     * used
      * in the recipe.
      */
     public final int maxFluidInputs;
     /**
-     * How many fluid outputs does this recipemap usually has at most. It does not actually restrict number of items
+     * How many fluid outputs does this recipemap usually have at most? It does not actually restrict the number of
+     * items
      * used in the recipe.
      */
     public final int maxFluidOutputs;

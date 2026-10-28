@@ -150,7 +150,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                return new ItemStack(ModItems.itemStandarParticleBase, amount, meta);
+                return new ItemStack(ModItems.itemStandardParticleBase, amount, meta);
             }
         }
         return null;

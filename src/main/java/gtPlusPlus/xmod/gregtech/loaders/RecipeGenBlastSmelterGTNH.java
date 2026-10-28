@@ -63,7 +63,7 @@ public class RecipeGenBlastSmelterGTNH {
         for (GTRecipe x : RecipeMaps.fluidExtractionRecipes.getAllRecipes()) {
             ItemStack validInput = null;
             FluidStack validOutput = null;
-            // If there aren't both non empty inputs and outputs, we skip
+            // If there aren't both non-empty inputs and outputs, we skip
             if (ArrayUtils.isEmpty(x.mInputs) || ArrayUtils.isEmpty(x.mFluidOutputs)) {
                 continue;
             }
@@ -91,7 +91,7 @@ public class RecipeGenBlastSmelterGTNH {
         for (GTRecipe x : RecipeMaps.vacuumFreezerRecipes.getAllRecipes()) {
             ItemStack validInput = null;
             ItemStack validOutput = null;
-            // If we the input is an ingot and it and the output are valid, map it to cache.
+            // If we have the input is an ingot and it and the output are valid, map it to cache.
             if (ArrayUtils.isNotEmpty(x.mInputs) && x.mInputs[0] != null) {
                 validInput = x.mInputs[0];
             }
@@ -107,7 +107,7 @@ public class RecipeGenBlastSmelterGTNH {
             .stream()
             .filter(r -> r.mOutputs.length == 0 && r.mFluidOutputs.length == 1)
             .toArray(GTRecipe[]::new);
-        // Okay, so now lets Iterate existing EBF recipes.
+        // Okay, so now let's Iterate existing EBF recipes.
         for (GTRecipe x : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
             ItemStack[] inputs, outputs;
             FluidStack[] inputsF;
@@ -128,7 +128,7 @@ public class RecipeGenBlastSmelterGTNH {
 
             FluidStack mMoltenStack = null;
             int mMoltenCount = 0;
-            // If We have a valid Output, let's try use our cached data to get it's molten form.
+            // If We have a valid Output, let's try to use our cached data to get it's molten form.
             if (x.mOutputs != null && x.mOutputs.length > 0 && x.mOutputs[0] != null) {
                 mMoltenCount = x.mOutputs[0].stackSize;
                 FluidStack tempFluid = getFluidFromIngot(x.mOutputs[0]);
@@ -146,7 +146,7 @@ public class RecipeGenBlastSmelterGTNH {
                 continue;
             }
 
-            // Boolean to decide whether or not to create a new circuit later
+            // Boolean to decide whether to create a new circuit later
             boolean circuitFound = false;
 
             // Build correct input stack

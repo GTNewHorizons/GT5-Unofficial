@@ -39,7 +39,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        // weary amoutn of syncers
+        // weary amount of syncers
         LongSyncValue avgOut = syncManager.findSyncHandler("avgEuOut", LongSyncValue.class);
         LongSyncValue avgIn = syncManager.findSyncHandler("avgin", LongSyncValue.class);
         BigIntSyncValue capacity = syncManager.findSyncHandler("capacity", BigIntSyncValue.class);

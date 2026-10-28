@@ -208,7 +208,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public int currentDroneMask = 0;
     public boolean wasFilterPasted = false;
     /**
-     * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
+     * The last computed list of possible recipes. Can be reused if distance etc. doesn't change and used to display
+     * stats
      * to the user
      */
     protected WeightedAsteroidList prevRecipes = null;

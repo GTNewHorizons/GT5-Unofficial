@@ -153,7 +153,7 @@ public class IceCreamMachineRecipes implements Runnable {
             .hidden()
             .addTo(iceCreamMachineRecipes);
 
-        // Redirect it tothe visible "Random Ice Cream" fake recipe
+        // Redirect it to the visible "Random Ice Cream" fake recipe
         List<ItemStack> associations = CCNEIRepresentation.NEI_RECIPE_ASSOCIATIONS
             .computeIfAbsent(flavor.get(1), k -> new ArrayList<>());
         associations.add(ItemList.Ice_Cream_Random.get(1));

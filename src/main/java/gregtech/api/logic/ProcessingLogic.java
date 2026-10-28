@@ -379,7 +379,7 @@ public class ProcessingLogic {
     }
 
     /**
-     * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
+     * Executes the recipe check: Find a recipe from recipemap, Calculate parallel, overclock, and outputs.
      */
     @Nonnull
     public CheckRecipeResult process() {

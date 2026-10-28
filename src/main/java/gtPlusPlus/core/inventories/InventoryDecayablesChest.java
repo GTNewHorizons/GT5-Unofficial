@@ -11,7 +11,7 @@ public class InventoryDecayablesChest implements IInventory {
     /** Defining your inventory size this way is handy */
     public static final int INV_SIZE = 15;
 
-    /** Inventory's size must be same as number of slots you add to the Container class */
+    /** Inventory's size must be the same as the number of slots you add to the Container class */
     private ItemStack[] inventory = new ItemStack[INV_SIZE];
 
     public void readFromNBT(final NBTTagCompound nbt) {

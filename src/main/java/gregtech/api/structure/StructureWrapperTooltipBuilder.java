@@ -387,11 +387,11 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
             IntArrayList hintNumbers = new IntArrayList(new IntArraySet(hatches.get(hatch)));
             hintNumbers.sort(null);
 
-            // finally add the hatch
+            // finally, add the hatch
             addHatch(hatch.left(), hatch.right(), hintNumbers.toIntArray());
         }
 
-        // add the supoort multi amp and laser hatch info line if it should be added
+        // add the support multi amp and laser hatch info line if it should be added
         if (printMultiampSupport && hasExoticHatches) {
             addSupportAny();
         }

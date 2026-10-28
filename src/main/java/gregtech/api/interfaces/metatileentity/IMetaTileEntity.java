@@ -36,7 +36,7 @@ import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdatable;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import io.netty.buffer.ByteBuf;
@@ -47,7 +47,7 @@ import io.netty.buffer.ByteBuf;
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
-public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
+public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdatable,
     IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider, IGuiHolder<PosGuiData> {
 
     /**
@@ -297,7 +297,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         float aY, float aZ);
 
     /**
-     * a Player leftclicks the Machine Sneaky leftclicks are getting passed to this unlike with the rightclicks.
+     * a Player left-clicks the machine, and sneaking left-clicks are getting passed to this method, unlike with the
+     * right-clicks.
      */
     void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer);
 
@@ -457,7 +458,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param facing        is the direction the Block is facing
      * @param colorIndex    The Minecraft Color the Block is having
      * @param active        if the Machine is currently active (use this instead of calling
-     *                      {@code mBaseMetaTileEntity.mActive)}. Note: In case of Pipes this means if this Side is
+     *                      {@code mBaseMetaTileEntity.mActive)}). Note: In the case of pipes this means if this Side is
      *                      connected to something or not.
      * @param redstoneLevel if the Machine is currently outputting a RedstoneSignal (use this instead of calling
      *                      {@code mBaseMetaTileEntity.mRedstone} !!!)
@@ -466,7 +467,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         int colorIndex, boolean active, boolean redstoneLevel);
 
     /**
-     * Register Icons here. This gets called when the Icons get initialized by the Base Block Best is you put your Icons
+     * Register Icons here. This gets called when the Icons get initialized by the Base Block. Best is you put your
+     * Icons
      * in a static Array for quick and easy access without relying on the MetaTileList.
      *
      * @param aBlockIconRegister The Block Icon Register

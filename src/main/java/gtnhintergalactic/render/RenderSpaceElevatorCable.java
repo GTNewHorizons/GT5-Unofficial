@@ -244,8 +244,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * Render a block in an inventory slot
      *
      * @param block    Block that should be rendered
-     * @param metadata Meta data of the block
-     * @param modelId  ID of the blocks model
+     * @param metadata Metadata of the block
+     * @param modelId  ID of the block's model
      * @param renderer Used renderer
      */
     @Override

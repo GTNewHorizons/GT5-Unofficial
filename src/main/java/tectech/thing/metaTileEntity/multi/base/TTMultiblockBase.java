@@ -121,7 +121,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
-    // just add new static ones in your class and and override getTexture
+    // just add new static ones in your class and override getTexture
     protected static IIconContainer ScreenOFF;
     protected static IIconContainer ScreenON;
 
@@ -150,7 +150,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // region Control variables
 
-    // should explode on dismatle?, set it in constructor, if true machine will explode if invalidated structure while
+    // should explode on dismantle?, set it in constructor, if true machine will explode if invalidated structure while
     // active
     protected boolean eDismantleBoom = false;
 
@@ -253,10 +253,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * <p>
      * can get/set Parameters here also
      *
-     * @deprecated Use {@link #createProcessingLogic()} ()} or {@link #checkProcessing_EM()}
+     * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing_EM()}
      *
      * @param itemStack item in the controller
-     * @return is recipe is valid
+     * @return when recipe is valid
      */
     @Deprecated
     public boolean checkRecipe_EM(ItemStack itemStack) {
@@ -273,7 +273,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     /**
-     * Put EM stuff from outputEM into EM output hatches here or do other stuff - it is basically on recipe succeded
+     * Put EM stuff from outputEM into EM output hatches here or do other stuff - it is basically as the recipe
+     * succeeded
      * <p>
      * based on "machine state" do output, this must move to outputEM to EM output hatches and can also modify output
      * items/fluids/EM, remaining EM is NOT overflowed. (Well it can be overflowed if machine didn't finished,
@@ -429,8 +430,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected void parametersInstantiation_EM() {}
 
     /**
-     * It is automatically called OFTEN update status of parameters in guis (and "machine state" if u wish) Called
-     * before check recipe, before outputting, and every second the machine is complete
+     * It is automatically called OFTEN; updates the status of parameters in guis (and "machine state" if you wish).
+     * Called before checking a recipe, before outputting, and every second the machine is complete
      * <p>
      * good place to update parameter statuses, default implementation handles it well
      *
@@ -526,10 +527,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     /**
      * Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk) BUT NEEDED WHEN - machine
-     * blocks are not touching each other or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
+     * blocks are not touching each other, or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
      */
     protected boolean cyclicUpdate_EM() {
-        return mUpdate <= -1000; // set to false to disable cyclic update
+        return mUpdate <= -1000; // set to false for disabling cyclic updates
         // default is once per 50s; mUpdate is decremented every tick
     }
 
@@ -545,7 +546,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     /**
      * triggered if machine is not allowed to work after completing a recipe, override to make it not shutdown for
-     * instance (like turbines). bu just replacing it with blank - active transformer is doing it
+     * instance (like turbines). but just replacing it with blank - active transformer is doing it
      * <p>
      * CALLED DIRECTLY when soft hammered to offline state - usually should stop the machine unless some other mechanics
      * should do it
@@ -741,7 +742,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     /**
-     * After recipe check failed helper method so i don't have to set that params to nothing at all times
+     * After recipe check failed helper method so I don't have to set that params to nothing at all times
      */
     protected void afterRecipeCheckFailed() {
 
@@ -782,7 +783,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * internal check recipe
      */
     @Override
-    public final boolean checkRecipe(ItemStack itemStack) { // do recipe checks, based on "machine content and state"
+    public final boolean checkRecipe(ItemStack itemStack) { // do recipe check, based on "machine content and state"
         hatchesStatusUpdate_EM();
         startRecipeProcessing();
         boolean result = checkRecipe_EM(itemStack); // if had no - set default params
@@ -1461,7 +1462,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         while (tempEUt < tempTier) {
             tempEUt <<= 2;
             time >>= 1;
-            EU = time == 0 ? EU >> 1 : EU << 2; // U know, if the time is less than 1 tick make the machine use less
+            EU = time == 0 ? EU >> 1 : EU << 2; // You know if the time is less than 1 tick make the machine use less
                                                 // power
         }
         if (EU > Integer.MAX_VALUE || EU < Integer.MIN_VALUE) {

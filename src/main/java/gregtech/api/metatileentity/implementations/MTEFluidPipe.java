@@ -444,7 +444,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         // Now distribute
         for (final MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
-            // Distribue fluids based on percentage available space at destination
+            // Distribute fluids based on percentage available space at destination
             if (availableCapacity > tAmount)
                 tEntry.right = (int) Math.floor(tEntry.right * tAmount / availableCapacity);
 

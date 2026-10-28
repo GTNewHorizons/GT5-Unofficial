@@ -1,6 +1,6 @@
 /*
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java. Based on example code by Stefan Gustavson
- * (stegu@itn.liu.se). Optimisations by Peter Eastman (peastman@drizzle.stanford.edu). Better rank ordering method by
+ * (stegu@itn.liu.se). Optimizations by Peter Eastman (peastman@drizzle.stanford.edu). Better rank ordering method by
  * Stefan Gustavson in 2012. This could be speeded up even further, but it's useful as it is. Version 2012-03-09 This
  * code was placed in the public domain by its original author, Stefan Gustavson. You may use it as you see fit, but
  * attribution is appreciated.
@@ -302,12 +302,12 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
         j1 = ranky >= 3 ? 1 : 0;
         k1 = rankz >= 3 ? 1 : 0;
         l1 = rankw >= 3 ? 1 : 0;
-        // Rank 2 denotes the second largest coordinate.
+        // Rank 2 denotes the second-largest coordinate.
         i2 = rankx >= 2 ? 1 : 0;
         j2 = ranky >= 2 ? 1 : 0;
         k2 = rankz >= 2 ? 1 : 0;
         l2 = rankw >= 2 ? 1 : 0;
-        // Rank 1 denotes the second smallest coordinate.
+        // Rank 1 denotes the second-smallest coordinate.
         i3 = rankx >= 1 ? 1 : 0;
         j3 = ranky >= 1 ? 1 : 0;
         k3 = rankz >= 1 ? 1 : 0;

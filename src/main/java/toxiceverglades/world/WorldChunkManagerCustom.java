@@ -37,7 +37,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
 
     public WorldChunkManagerCustom(long seed, WorldType worldType) {
         this();
-        // i changed this to my GenLayerDarkWorld
+        // I changed this to my GenLayerDarkWorld
         GenLayer[] agenlayer = GenLayerEverglades.makeTheWorld(seed, worldType);
 
         agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayer);

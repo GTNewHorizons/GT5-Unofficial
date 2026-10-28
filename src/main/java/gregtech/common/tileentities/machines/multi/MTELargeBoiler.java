@@ -99,7 +99,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         }
     };
     private boolean firstRun = true;
-    private int mSuperEfficencyIncrease = 0;
+    private int mSuperEfficiencyIncrease = 0;
     private int integratedCircuitConfig = 0; // Steam output is reduced by 1000L per config
     private int excessWater = 0; // Eliminate rounding errors for water
     private int excessFuel = 0; // Eliminate rounding errors for fuels that burn half items
@@ -266,7 +266,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             this.integratedCircuitConfig = 0;
         }
 
-        this.mSuperEfficencyIncrease = 0;
+        this.mSuperEfficiencyIncrease = 0;
         if (!isSuperheated()) {
             for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
@@ -278,7 +278,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.mSuperEfficiencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -295,7 +295,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
                             this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+                            this.mSuperEfficiencyIncrease = 20;
                         }
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -321,7 +321,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.mSuperEfficiencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -347,7 +347,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             updateSlots();
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
-                                this.mSuperEfficencyIncrease = 20;
+                                this.mSuperEfficiencyIncrease = 20;
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -375,8 +375,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
-            if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
-                mEfficiency = Math.clamp(mEfficiency + mSuperEfficencyIncrease, 0, maxEff);
+            if (this.mSuperEfficiencyIncrease > 0 && mEfficiency < maxEff) {
+                mEfficiency = Math.clamp(mEfficiency + mSuperEfficiencyIncrease, 0, maxEff);
             }
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {

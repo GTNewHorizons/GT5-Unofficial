@@ -12,7 +12,7 @@ public class GTSidedTextureRender extends GTTextureBase implements IColorModulat
     /**
      * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
      * <p/>
-     * Just set this variable to another different Array instead. Otherwise some colored things will get Problems.
+     * Just set this variable to another different Array instead. Otherwise, some colored things will get Problems.
      */
     private final short[] mRGBa;
 

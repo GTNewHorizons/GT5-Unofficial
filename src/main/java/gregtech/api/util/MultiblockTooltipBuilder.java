@@ -43,7 +43,7 @@ import gregtech.api.util.tooltip.TooltipTier;
  * beginStructureBlock<br>
  * addController<br>
  * addCasing<br>
- * addOtherStructurePart, for secondary structure block info (pipes, coils, etc)<br>
+ * addOtherStructurePart, for secondary structure block info (pipes, coils, etc.)<br>
  * addEnergyHatch/addDynamoHatch<br>
  * addMaintenanceHatch<br>
  * addMufflerHatch<br>
@@ -129,7 +129,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
+     * Add a line telling you what the machine type is. Usually, this will be the name of an SB version.<br>
      * Machine Type: machine
      *
      * @param machine Name of the machine type
@@ -231,9 +231,9 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a line of information about Speed bonus.
+     * Add a line of information about the Speed bonus.
      *
-     * @param speed Speed as defined in ProcessingLogic (ie. 1F / 3.5F = 350% Speed)
+     * @param speed Speed as defined in ProcessingLogic (i.e., 1F / 3.5F = 350% Speed)
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStaticSpeedInfo(float speed) {
@@ -852,7 +852,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Energy Hatch: info
      *
-     * @param count Number of hatches (ie. 1+)
+     * @param count Number of hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -875,7 +875,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Dynamo Hatch: info
      *
-     * @param count Number of hatches (ie. 1)
+     * @param count Number of hatches (i.e., 1)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -898,7 +898,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Maintenance Hatch: info
      *
-     * @param count Number of hatches (ie. 1)
+     * @param count Number of hatches (i.e., 1)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -921,7 +921,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Muffler Hatch: info
      *
-     * @param count Number of buses (ie. 1)
+     * @param count Number of buses (i.e., 1)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -944,7 +944,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Steam Input Bus: info
      *
-     * @param count Number of buses (ie. 1+)
+     * @param count Number of buses (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -967,7 +967,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus: info
      *
-     * @param count Number of buses (ie. 1+)
+     * @param count Number of buses (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -990,7 +990,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Input Hatch: info
      *
-     * @param count Number of hatches (ie. 1+)
+     * @param count Number of hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1013,7 +1013,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus/Hatch: info
      *
-     * @param count Number of buses/hatches (ie. 1+)
+     * @param count Number of buses/hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1036,7 +1036,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Steam Hatch: info
      *
-     * @param count Number of hatches (ie. 1+)
+     * @param count Number of hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1059,7 +1059,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Steam Output Bus: info
      *
-     * @param count Number of buses (ie. 1+)
+     * @param count Number of buses (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1082,7 +1082,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Output Bus: info
      *
-     * @param count Number of buses (ie. 1+)
+     * @param count Number of buses (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1105,7 +1105,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Output Hatch: info
      *
-     * @param count Number of hatches (ie. 1+)
+     * @param count Number of hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1128,7 +1128,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count Output Bus/Hatch: info
      *
-     * @param count Number of buses/hatches (ie. 1+)
+     * @param count Number of buses/hatches (i.e., 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
      * @return Instance this method was called on.
@@ -1151,7 +1151,7 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * (indent)count name: info
      *
-     * @param count Number of hatches (ie. 1+)
+     * @param count Number of hatches (i.e., 1+)
      * @param name  Name of hatch
      * @param info  Location description
      * @param dots  Hint block(s)

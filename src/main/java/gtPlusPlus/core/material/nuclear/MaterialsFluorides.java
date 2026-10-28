@@ -139,7 +139,7 @@ public class MaterialsFluorides {
         new MaterialStack(MaterialsElements.getInstance().LITHIUM7, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1));
 
-    // LFTR sub components
+    // LFTR subcomponents
 
     // (NH4)HF2
     public static final Material AMMONIUM_BIFLUORIDE = new Material(

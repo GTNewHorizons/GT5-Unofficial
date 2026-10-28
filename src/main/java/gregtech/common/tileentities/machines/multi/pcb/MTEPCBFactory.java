@@ -363,7 +363,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     /**
-     * return wether the structure is tier 1, 2 or neither
+     * return wether the structure is tier 1, 2, or neither
      *
      * @return 0 = neither tier 1 or 2, 1 = tier 1, 2 = tier 2
      */

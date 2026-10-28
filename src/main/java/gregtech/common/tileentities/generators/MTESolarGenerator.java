@@ -91,7 +91,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
         return false;
     }
 
-    // No logic for charge vs decharge because generator should not be chargeable
+    // No logic for charge vs. decharge, because generators should not be chargeable
     @Override
     public int rechargerSlotCount() {
         return 4;

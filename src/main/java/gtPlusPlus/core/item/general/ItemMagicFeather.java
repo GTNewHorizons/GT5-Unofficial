@@ -121,7 +121,7 @@ public class ItemMagicFeather extends CoreItem {
         }
         if (!mayFly) {
             // force the player on the ground then remove ability to fly
-            // this prevent crashing the the ground and dying
+            // this prevent crashing the ground and dying
             // when you accidentally get out of the beacon range
             player.capabilities.isFlying = false;
             if (player.onGround && player.fallDistance < 1F) {

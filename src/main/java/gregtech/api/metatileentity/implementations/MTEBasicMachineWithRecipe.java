@@ -366,7 +366,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
                     // lv-iv;
                     // circuit
-                    // asseblers
+                    // assemblers
                     // lv -
                     // uv;
                     // assemblers

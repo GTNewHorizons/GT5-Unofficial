@@ -467,7 +467,7 @@ public class MTEPump extends MTEBasicMachine {
                         } else {
                             // We somehow have a valid fluid, but the head of the pump isn't below the pump. Perhaps
                             // someone broke some pipes
-                            // -- Clear the queue and we should try to move down until we can find a valid fluid
+                            // -- Clear the queue, and we should try to move down until we can find a valid fluid
                             this.clearQueue(false);
                         }
                     } else if (debugBlockPump) {
@@ -477,9 +477,9 @@ public class MTEPump extends MTEBasicMachine {
                     mMaxProgresstime = 0;
 
                     if (!mRetractDone && ((aTick % 5) == 0) && canOutput(MINING_PIPE_ONE)) {
-                        // try retract if all of these conditions are met
+                        // try to retract if all of these conditions are met
                         // 1. not retracted yet
-                        // 2. once per 5 tick
+                        // 2. once per 5 ticks
                         // 3. can hold retracted pipe in inventory
                         int tHeadY = getYOfPumpHead();
                         if (tHeadY < this.getBaseMetaTileEntity()

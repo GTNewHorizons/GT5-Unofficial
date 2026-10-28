@@ -21,7 +21,7 @@ public interface IUpgradableMachine extends IMachineProgress {
      * Accepts Steam-Converter Upgrades
      */
     @Deprecated
-    @ApiStatus.ScheduledForRemoval
+    @ApiStatus.ScheduledForRemoval(inVersion = ">2.9")
     default boolean isSteamEngineUpgradable() {
         return false;
     }
@@ -37,21 +37,21 @@ public interface IUpgradableMachine extends IMachineProgress {
      * Adds MJ-Converter Upgrade
      */
     @Deprecated
-    @ApiStatus.ScheduledForRemoval
+    @ApiStatus.ScheduledForRemoval(inVersion = ">2.9")
     default boolean addSteamEngineUpgrade() {
         return false;
     }
 
     /**
-     * Does this Machine have an Muffler
+     * Does this Machine have a Muffler?
      */
     boolean isMuffled();
 
     /**
-     * Does this Machine have a Steam-Converter
+     * Does this Machine have a Steam-Converter?
      */
     @Deprecated
-    @ApiStatus.ScheduledForRemoval
+    @ApiStatus.ScheduledForRemoval(inVersion = ">2.9")
     default boolean hasSteamEngineUpgrade() {
         return false;
     }

@@ -2925,7 +2925,7 @@ public class Textures {
         }
 
         /**
-         * Registers a Item {@link IIconContainer} for a {@link TextureSet}
+         * Registers an Item {@link IIconContainer} for a {@link TextureSet}
          *
          * @param domain  The resource domain
          * @param setName The colon-free name of the TextureSet

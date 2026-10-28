@@ -64,7 +64,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc.)
      */
     @Override
     public boolean renderAsNormalBlock() {

@@ -349,7 +349,7 @@ public class RecipeGenOre extends RecipeGenBase {
                     }
                 }
 
-                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // I don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
@@ -422,7 +422,7 @@ public class RecipeGenOre extends RecipeGenBase {
                     }
                 }
 
-                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // I don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);

@@ -27,7 +27,7 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends Cover implements Invertable {
+public class CoverEUMeter extends Cover implements Invertible {
 
     private EnergyType type;
     private long maxThreshold;

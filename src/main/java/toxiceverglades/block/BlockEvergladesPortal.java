@@ -126,7 +126,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
 
     /**
      * @return If this block doesn't render as an ordinary block, it will return False (examples: signs, buttons,
-     *         stairs, etc)
+     *         stairs, etc.)
      */
     @Override
     public boolean renderAsNormalBlock() {

@@ -29,7 +29,7 @@ public class TeleporterDimensionMod extends Teleporter {
      */
     private final Long2ObjectOpenHashMap<Teleporter.PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>();
     /**
-     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
+     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players' initial
      * location.
      */
     private final LongList destinationCoordinateKeys = new LongArrayList();

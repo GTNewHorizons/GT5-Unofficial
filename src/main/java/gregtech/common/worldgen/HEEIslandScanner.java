@@ -82,7 +82,7 @@ public class HEEIslandScanner {
         for (int z = 0; z < 32; z++) {
             for (int x = 0; x < 32; x++) {
                 // x/z are centred, but the seed isn't, so we offset the seed coords by the radius of the island.
-                // This isn't perfect since islands can generate off-centre but it works well enough
+                // This isn't perfect since islands can generate off-center, but it works well enough
                 int seedX = x + info.chunkX - ISLAND_RADIUS;
                 int seedZ = z + info.chunkZ - ISLAND_RADIUS;
 

@@ -1503,7 +1503,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         if (index < SLOT_CIRCUIT) {
-            // if its a pattern slot, only accept patterns
+            // if it's a pattern slot, only accept patterns
             return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
                 && super.isItemValidForSlot(index, itemStack);
         }

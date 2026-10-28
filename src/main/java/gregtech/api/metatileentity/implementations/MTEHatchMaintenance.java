@@ -364,7 +364,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer, IInventory aToolboxInventory) {
         if (aStack == null || aPlayer == null) return;
 
-        // Allow IC2 Toolbox with tools to function for maint issues.
+        // Allow IC2 Toolbox with tools to function for maintenance issues.
         if (aStack.getItem() instanceof ItemToolbox && aPlayer instanceof EntityPlayer) {
             applyToolbox(aStack, (EntityPlayer) aPlayer);
             return;

@@ -38,7 +38,7 @@ public class ProfilingStorage {
 
             while (ll.size() > 50) ll.removeFirst();
         } catch (Exception e) {
-            // Just do nothing. profiling is for debug purposes only anyways...
+            // Just do nothing. profiling is for debug purposes only anyway...
         }
     }
 

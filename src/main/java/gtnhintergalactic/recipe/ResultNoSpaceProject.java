@@ -17,7 +17,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
  */
 public class ResultNoSpaceProject implements CheckRecipeResult {
 
-    /** Max length to read from network buffer */
+    /** Max length to read from the network buffer */
     private static final int MAX_STRING_LENGTH = 256;
 
     /** Project that is needed to run the recipe */
@@ -26,7 +26,7 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
     private String neededLocation;
 
     /**
-     * Create new instance of this error
+     * Create a new instance of this error
      *
      * @param neededProject  Project that is needed to run the recipe
      * @param neededLocation Location of the project that is needed to run the recipe
@@ -45,7 +45,7 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
     }
 
     /**
-     * @return True if this is a sucess code, else false
+     * @return True if this is a success code, else false
      */
     @Override
     public boolean wasSuccessful() {
@@ -110,7 +110,7 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
      * Check if this error equals another
      *
      * @param o Object to be compared
-     * @return True if the object are equal, else false
+     * @return True if the objects are equal, else false
      */
     @Override
     public boolean equals(Object o) {

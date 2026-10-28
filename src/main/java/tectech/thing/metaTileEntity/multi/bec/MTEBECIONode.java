@@ -568,7 +568,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.subtickCounter -= fullTicks * divisor;
 
-        // If we don't use nextProgress we're wasting the ticks acrued from subtickCounter, but there's no good way to
+        // If we don't use nextProgress, we're wasting the ticks accrued from subtickCounter, but there's no good way to
         // prevent that. It just means the process will be slower by a tick or two if it gets paused.
         int nextProgress = this.mProgresstime + fullTicks;
 

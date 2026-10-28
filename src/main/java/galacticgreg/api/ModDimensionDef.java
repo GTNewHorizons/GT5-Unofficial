@@ -201,7 +201,7 @@ public class ModDimensionDef {
     }
 
     /**
-     * Set whether this DimensionDefinition defines an void-dimension that shall spawn asteroids instead of ores in
+     * Set whether this DimensionDefinition defines a void-dimension that shall spawn asteroids instead of ores in
      * stone
      *
      * @param pType The dimensiontype to be used
@@ -303,8 +303,8 @@ public class ModDimensionDef {
 
     /**
      * Adds a new material for asteroid generation. These will spawn randomly in asteroids if enabled. You can basically
-     * add every block you can imagine. Be warned though, if you use Liquids (Water / Lava / ..), it can affect
-     * performance if the liquid is flowing down to the void. So make sure you define "AsteroidCore" as position
+     * add every block you can imagine. Be warned though, if you use Liquids (Water / Lava / ...), it can affect
+     * performance if the liquid is flowing down to the void. So make sure you define "AsteroidCore" as a position
      *
      * @param pBlock Block-Meta Combination that shall be used
      */

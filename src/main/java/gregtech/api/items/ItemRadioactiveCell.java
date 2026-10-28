@@ -19,12 +19,12 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
     protected int cellCount;
     protected int maxDmg;
 
-    public ItemRadioactiveCell(String aUnlocalized, String aEnglish, int aCellcount) {
-        super(aUnlocalized, aEnglish, null);
+    public ItemRadioactiveCell(String langKey, String english, int cellCount) {
+        super(langKey, english, null);
         this.setMaxStackSize(64);
         this.setMaxDamage(100);
         setNoRepair();
-        this.cellCount = Math.max(1, aCellcount);
+        this.cellCount = Math.max(1, cellCount);
     }
 
     public static int getDurabilityOfStack(ItemStack aStack) {

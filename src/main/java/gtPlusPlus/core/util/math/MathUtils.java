@@ -12,11 +12,11 @@ public class MathUtils {
     private static final Random rand = GTPPCore.RANDOM;
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
-     * Integer.MAX_VALUE - 1.
+     * Returns a pseudo-random number between min and max, inclusive. The difference between min and max can be at most
+     * {@link Integer.MAX_VALUE} - 1.
      *
-     * @param min Minimim value
-     * @param max Maximim value. Must be greater than min.
+     * @param min minimum value
+     * @param max maximum value. Must be greater than min.
      * @return Integer between min and max, inclusive.
      * @see java.util.Random#nextInt(int)
      */
@@ -27,11 +27,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
-     * Long.MAX_VALUE - 1.
+     * Returns a pseudo-random number between min and max, inclusive. The difference between min and max can be at most
+     * {@link Long.MAX_VALUE} - 1.
      *
-     * @param min Minimim value
-     * @param max Maximim value. Must be greater than min.
+     * @param min minimum value
+     * @param max maximum value. Must be greater than min.
      * @return Long between min and max, inclusive.
      * @see java.util.Random#nextLong(long)
      */
@@ -52,11 +52,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
-     * Double.MAX_VALUE - 1.
+     * Returns a pseudo-random number between min and max, inclusive. The difference between min and max can be at most
+     * {@link Double.MAX_VALUE} - 1.
      *
-     * @param min Minimim value
-     * @param max Maximim value. Must be greater than min.
+     * @param min minimum value
+     * @param max maximum value. Must be greater than min.
      * @return Double between min and max, inclusive.
      * @see java.util.Random#nextDouble(double)
      */
@@ -77,11 +77,11 @@ public class MathUtils {
     }
 
     /**
-     * Returns a psuedo-random number between min and max, inclusive. The difference between min and max can be at most
-     * Float.MAX_VALUE - 1.
+     * Returns a pseudo-random number between min and max, inclusive. The difference between min and max can be at most
+     * {@link Float.MAX_VALUE} - 1.
      *
-     * @param min Minimim value
-     * @param max Maximim value. Must be greater than min.
+     * @param min minimum value
+     * @param max maximum value. Must be greater than min.
      * @return Float between min and max, inclusive.
      * @see java.util.Random#nextFloat(float)
      */
@@ -102,10 +102,10 @@ public class MathUtils {
     }
 
     /**
-     * Returns a percentage. The returned number is the % of X in Y. Supports Doubles.
+     * Returns a percentage. The returned number is the % of X in Y. Supports doubles.
      *
-     * @param current Current value.
-     * @param max     Maximim value. Must be greater than min.
+     * @param current current value.
+     * @param max     maximum value. Must be greater than min.
      * @return double between min and max, inclusive.
      */
     public static double findPercentage(final double current, final double max) {
@@ -115,7 +115,7 @@ public class MathUtils {
     // Smooth Rounding Function
 
     /**
-     * Returns a double. The returned number is d rounded to the nearest d.01. Supports Doubles.
+     * Returns a double. The returned number is d rounded to the nearest d.01. Supports doubles.
      *
      * @return double Rounded value.
      */
@@ -126,7 +126,7 @@ public class MathUtils {
     // Smooth Rounding Function (Nearest 5)
 
     /**
-     * Returns a double. The returned number is d rounded to the nearest d.5. Supports Doubles.
+     * Returns a double. The returned number is d rounded to the nearest d.5. Supports doubles.
      *
      * @return double Rounded value.
      */
@@ -137,7 +137,7 @@ public class MathUtils {
     // Smooth Rounding Function
 
     /**
-     * Returns a integer. The returned number is d rounded to the nearest flat integer. Supports Doubles as input.
+     * Returns an integer. The returned number is d rounded to the nearest flat integer. Supports doubles.
      *
      * @return integer Rounded value.
      */
@@ -148,7 +148,7 @@ public class MathUtils {
     // Smooth Rounding Function
 
     /**
-     * Returns a long. The returned number is d rounded to the nearest flat long. Supports Doubles as input.
+     * Returns a long. The returned number is d rounded to the nearest flat long. Supports doubles.
      *
      * @return long Rounded value.
      */
@@ -160,7 +160,7 @@ public class MathUtils {
      * Returns a boolean. The returned boolean is based on the odd/eveness of the input. Supports ints.
      *
      * @param x Value A.
-     * @return boolean Whether or not it divides evenly.
+     * @return boolean. Whether it divides evenly.
      */
     public static boolean isNumberEven(final long x) {
         return x % 2 == 0;
@@ -169,8 +169,8 @@ public class MathUtils {
     /**
      * Returns an int. The returned number is the value on i + 273.15F. Supports ints.
      *
-     * @param i Temp in Celcius.
-     * @return int The celcius temp returned as Kelvin, rounded to the readest whole.
+     * @param i Temp in Celsius.
+     * @return int The Celsius temp returned as Kelvin, rounded to the readest whole.
      */
     public static float celsiusToKelvin(final int i) {
         final double f = i + 273.15F;
@@ -196,7 +196,7 @@ public class MathUtils {
     public static long gcd(long a, long b) {
         while (b > 0) {
             final long temp = b;
-            b = a % b; // % is remainder
+            b = a % b; // % is the remainder
             a = temp;
         }
         return a;
@@ -274,7 +274,7 @@ public class MathUtils {
      * @param aInput - The number to balance
      * @param aMin   - The minimum bounds
      * @param aMax   - The maximum bounds
-     * @return - An Integer which will be between the bounds, or a boundary value.
+     * @return - An Integer that will be between the bounds or a boundary value.
      * @deprecated {@link Math#clamp(long, int, int)}
      */
     @Deprecated

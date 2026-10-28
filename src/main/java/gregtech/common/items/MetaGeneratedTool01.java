@@ -175,7 +175,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             addTool(
                 WRENCH.ID,
                 "Wrench",
-                "Hold Leftclick to dismantle Machines",
+                "Hold Left-click to dismantle Machines",
                 new ToolWrench(),
                 ToolDictNames.craftingToolWrench,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),

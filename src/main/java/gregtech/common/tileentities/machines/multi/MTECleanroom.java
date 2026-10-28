@@ -264,7 +264,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     /**
      * Determines the type of the block at a specified offset from the controller. Only types specified by allowedMask
-     * are checked, for efficiency. If a block is not one of the allowed types, CleanroomBlockType.INVALID is returned.
+     * are checked, for efficiency. If a block is not one of the allowed types, {@link CleanroomBlockType.INVALID} is returned.
      */
     private CleanroomBlockType getBlockType(IGregTechTileEntity aBaseMetaTileEntity, int dx, int dy, int dz,
         int allowedMask) {
