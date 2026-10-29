@@ -108,8 +108,7 @@ public class GregtechCustomHatches {
 
         // Multiblock Air Intake Hatch
         GregtechItemList.Hatch_Air_Intake.set(
-            new MTEHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake", "Air Intake Hatch", 5)
-                .getStackForm(1L));
+            new MTEHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake", "Air Intake Hatch", 5).getStackForm(1L));
         GregtechItemList.Hatch_Air_Intake_Extreme.set(
             new MTEHatchAirIntakeExtreme(
                 Hatch_Air_Intake_Extreme.ID,

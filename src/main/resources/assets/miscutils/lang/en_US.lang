@@ -3901,11 +3901,11 @@ gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow (Plasma energy value p
 gtpp.tooltip.tool.attack_damage=Attack Damage:
 gtpp.tooltip.tool.mining_speed=Mining Speed:
 
-gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
-gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
-gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %s m away.
-gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %s m.
-gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %s m away and another 1A within %s m.
+gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a §fScrewdriver§7
+gtpp.tooltip.wireless_charger.1=Use a §fScrewdriver§7 to change mode
+gtpp.tooltip.wireless_charger.2=§6Local§7: Can supply §b2A§7 to each player within §a%sm§7
+gtpp.tooltip.wireless_charger.3=§6Long-Range§7: Can supply §b1A§7 of power to each player up to §a%sm§7 away
+gtpp.tooltip.wireless_charger.4=§6Mixed§7: Can supply §b1A§7 up to §a%sm§7 away and another §b1A§7 within §a%sm§7
 
 #gtpp info data
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
@@ -4217,7 +4217,7 @@ gt.blockmachines.pollutioncleaner.07.tier.single.name=Advanced Air Recycler
 gt.blockmachines.pollutioncleaner.08.tier.single.name=Precision Air Recycler
 gt.blockmachines.pollutioncleaner.09.tier.single.name=Atmospheric Cleaner
 gt.blockmachines.pollutioncleaner.10.tier.single.name=Biosphere Cleanser
-gt.blockmachines.pollutioncleaner.desc=Making sure you don't live in Gwalior - Uses 2A\nRequires a turbine rotor and an Air Filter [T1/T2] to run.\nThe turbine rotor must be manually inserted/replaced\nCan be configured with a soldering iron to change modes\nLow Efficiency: Removes half pollution, Turbine takes 50% dmg\nHigh Efficiency: Removes full pollution, Turbine takes 100% dmg\nTurbine Rotor will not break in LE mode\nInsert an equal tier Conveyor Module to enable automation
+gt.blockmachines.pollutioncleaner.desc=Making sure you don't live in Gwalior - uses §b2A§7\nRequires a §fTurbine Rotor§7 and a §fT1/T2 Air Filter§7\nInsert and replace §fTurbine Rotors§7 manually\nUse a §fSoldering Iron§7 to change mode\n§6Low Efficiency§7: halves pollution, Turbine takes §a50%§7 damage\n§6High Efficiency§7: removes all pollution, Turbine takes §a100%§7 damage\n§eTurbine Rotors do not break in Low Efficiency mode§7\nInsert an equal-tier §fConveyor Module§7 to enable automation
 gt.blockmachines.pollutioncleaner.chunks.desc=Making sure you don't live in Gwalior - Uses 2A\nWill attempt to remove 1/4 pollution from 8 surrounding chunks\nIf these chunks are not loaded, they will be ignored\nRequires a turbine rotor and an Air Filter [T1/T2] to run.\nThe turbine rotor must be manually inserted/replaced\nCan be configured with a soldering iron to change modes\nLow Efficiency: Removes half pollution, Turbine takes 50% dmg\nHigh Efficiency: Removes full pollution, Turbine takes 100% dmg\nTurbine Rotor will not break in LE mode\nInsert an equal tier Conveyor Module to enable automation
 
 gt.blockmachines.advancedgenerator.geothermalfuel.tier.01.name=Basic Geothermal Engine
@@ -4239,7 +4239,7 @@ gt.blockmachines.hatch.pyrotheum.input.tier.00.name=Pyrotheum Heating Hatch
 gt.blockmachines.hatch.steam.input.debug.name=Debug Steam Hatch
 gt.blockmachines.hatch.steam.input.tier.00.name=Steam Hatch
 gt.blockmachines.chisel.desc=Chisels things, Gregtech style\nWhat you want to chisel goes in slot 1\nWhat you want to get goes in the special slot (bottom right)\nIf special slot is empty, first chisel result is used
-ggt.blockmachines.basicgenerator.semifluid.desc=Generates Power from Semifluid Fuel\nFuel Efficiency: §a%2$s%%§7\§5%1$s§7 Pollution per second
+gt.blockmachines.basicgenerator.semifluid.desc=Generates Power from Semifluid Fuel\n§5%1$s§7 Pollution per second\nFuel Efficiency: §a%2$s%%§7
 gt.blockmachines.advancedgenerator.geothermalfuel.desc=Generates Power from Pahoehoe or Normal Lava\n§5%1$s§7 Pollution per second\nFuel Efficiency: §a%2$s%%§7
 gt.blockmachines.advancedgenerator.rocketfuel.desc=Generates Power from Rocket Fuel\n§5%2$s§7-§5%3$s§7 Pollution per second\nFuel Efficiency: §a%1$s%%§7
 gt.blockmachines.advancedgenerator.reactorprocessingunit.desc=Generates Power from Nuclear Salts
