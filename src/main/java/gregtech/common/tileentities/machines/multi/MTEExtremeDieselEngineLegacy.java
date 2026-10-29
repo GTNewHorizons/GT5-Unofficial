@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -126,8 +127,8 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
     }
 
     @Override
-    protected Materials getBooster() {
-        return Materials.LiquidOxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.LiquidOxygen.getFluid(amount);
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
@@ -49,16 +50,14 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleInformation;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -71,6 +70,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
     private boolean isTalkModeActive = false;
+    private final List<ModuleInformation> moduleInfo = new ArrayList<>();
 
     private static final String TALK_MODE_COMMAND = "'talk'";
     private static final String EXIT_MODE_COMMAND = "'exit'";
@@ -104,8 +104,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> moduleList = syncManager
-            .findSyncHandler("modulesList", GenericListSyncHandler.class);
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = syncManager
+            .findSyncHandler("moduleInfo", GenericListSyncHandler.class);
 
         DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((_, _) -> {
             ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
@@ -114,10 +114,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             Object2IntMap<ModuleTypes> moduleAmountMap = new Object2IntOpenHashMap<>();
             List<Pair<ModuleTypes, Integer>> moduleDisplayList;
 
-            for (MTENanochipAssemblyModuleBase<?> module : moduleList.getValue()) {
-                if (module == null) continue;
-                moduleAmountMap
-                    .put(module.getModuleType(), moduleAmountMap.getOrDefault(module.getModuleType(), 0) + 1);
+            for (ModuleInformation info : moduleInfo) {
+                moduleAmountMap.put(info.getType(), moduleAmountMap.getOrDefault(info.getType(), 0) + 1);
             }
 
             moduleDisplayList = moduleAmountMap.object2IntEntrySet()
@@ -136,7 +134,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             return listWidget;
         })
             .allowC2S();
-        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
+        moduleInfoSync.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
                 .syncHandler(moduleListHolder))
@@ -461,6 +459,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             });
     }
 
+    private static final String AUTHOR_NOT_A_PENGUIN = EnumChatFormatting.WHITE + "Not"
+        + EnumChatFormatting.AQUA
+        + "APenguin";
+
     private ModularPanel openContributorsPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
             .size(getBasePanelWidth(), getBasePanelHeight() + 20)
@@ -487,14 +489,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.projectlead",
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1)));
+                createContributorEntry(AUTHOR_NOT_A_PENGUIN, -1)));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.programming",
                 createContributorEntry("JurreJelle", Color.INDIGO.brighterSafe(2)),
                 createContributorEntry("FourIsTheNumber", Color.PURPLE.brighterSafe(1)),
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1),
+                createContributorEntry(AUTHOR_NOT_A_PENGUIN, -1),
                 createContributorEntry("TheEpicGamer274", 0xFF2BCAD9),
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),
@@ -612,8 +614,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .child(new SegmentedBarWidget(100, 1, () -> {
                 int matrix = 0;
                 int nonMatrix = 0;
-                for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
-                    ModuleTypes type = module.getModuleType();
+                for (ModuleInformation info : moduleInfo) {
+                    ModuleTypes type = info.getType();
                     if (type == ModuleTypes.Splitter) continue;
                     if (type == ModuleTypes.AssemblyMatrix) matrix++;
                     else nonMatrix++;
@@ -682,18 +684,22 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .child(
                 new SliderWidget().bounds(1, 99)
                     .scrollValues(1, 2, 5, -1)
-                    .value(new DoubleValue.Dynamic(portionSync::getIntValue, val -> portionSync.setIntValue((int) val)))
+                    // spotless:off
+                    .value(new DoubleValue.Dynamic(
+                        portionSync::getIntValue,
+                        val -> syncManager.callSyncedAction("setPowerPortion", buf -> buf.writeInt((int) val))))
+                    // spotless:on
                     .sliderSize(2, 14)
                     .size(102, 14)
                     .tooltipDynamic(t -> {
                         boolean moduleRunning = false;
                         int matrix = 0;
                         int nonMatrix = 0;
-                        for (MTENanochipAssemblyModuleBase<?> module : multiblock.getModules()) {
-                            ModuleTypes type = module.getModuleType();
-                            if (type == ModuleTypes.Splitter) continue;
-                            if (module.mMaxProgresstime > 0) moduleRunning = true;
+                        for (ModuleInformation info : moduleInfo) {
+                            if (info.isRunning()) moduleRunning = true;
 
+                            ModuleTypes type = info.getType();
+                            if (type == ModuleTypes.Splitter) continue;
                             if (type == ModuleTypes.AssemblyMatrix) matrix++;
                             else nonMatrix++;
                         }
@@ -873,23 +879,35 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
         syncManager.syncValue("currentBlock", new IntSyncValue(multiblock::getCurrentBlockSize));
 
-        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> linkedModules = new GenericListSyncHandler.Builder<MTENanochipAssemblyModuleBase<?>>()
-            .getter(multiblock::getModules)
-            .setter(multiblock::setModules)
-            .adapter(new MTENanochipAssemblyModuleBaseAdapter())
-            .build();
-
-        syncManager.syncValue("modulesList", linkedModules);
-
-        syncManager.syncValue(
-            "matrixPowerPortion",
-            new IntSyncValue(multiblock::getMatrixPowerPortion, multiblock::setMatrixPowerPortion).allowC2S());
+        syncManager.syncValue("matrixPowerPortion", new IntSyncValue(multiblock::getMatrixPowerPortion));
         syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
         syncManager.syncValue("allModuleToggle", new BooleanSyncValue(multiblock::getAllModuleToggle));
+
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = GenericListSyncHandler.<ModuleInformation>builder()
+            .getter(() -> {
+                List<ModuleInformation> list = new ArrayList<>();
+                for (var module : multiblock.getModules()) {
+                    list.add(module.getModuleInfo());
+                }
+                return list;
+            })
+            .setter(val -> {
+                this.moduleInfo.clear();
+                this.moduleInfo.addAll(val);
+            })
+            .adapter(
+                ByteBufAdapters.makeAdapter(ModuleInformation::readFromBuffer, ModuleInformation::writeToBuffer, null))
+            .build();
+        syncManager.syncValue("moduleInfo", moduleInfoSync);
 
         syncManager.registerSyncedAction("toggleModules", Side.SERVER, buf -> {
             boolean to = buf.readBoolean();
             multiblock.toggleAllModules(to);
+        });
+
+        syncManager.registerSyncedAction("setPowerPortion", Side.SERVER, buf -> {
+            int to = buf.readInt();
+            multiblock.setMatrixPowerPortion(to);
         });
     }
 

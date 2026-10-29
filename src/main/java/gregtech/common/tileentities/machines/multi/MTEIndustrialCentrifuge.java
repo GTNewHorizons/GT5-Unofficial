@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.VOID;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -24,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -81,8 +81,19 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int BASE_PARALLEL_PER_TIER = 4;
     private static final double SPEED = 2.0D;
     private static final double EXTRA_SPEED = 1.0D;
-    private static final double MAX_SPEED = SPEED + EXTRA_SPEED;
     private static final double EU_EFFICIENCY = 0.9D;
+
+    private static final double MOMENTUM_MAX = 100D;
+
+    private static final int TICKS_FOR_MOMENTUM_DECAY = 5;
+    private static final int MOMENTUM_DECAY_AMOUNT = 2;
+    private static final float MOMENTUM_DECAY_PER_SEC = ((float) SECONDS / TICKS_FOR_MOMENTUM_DECAY)
+        * MOMENTUM_DECAY_AMOUNT;
+
+    private static final int TICKS_FOR_MOMENTUM_GAIN = 10;
+    private static final int MOMENTUM_GAIN_AMOUNT = 1;
+    private static final float MOMENTUM_GAIN_PER_SEC = ((float) SECONDS / TICKS_FOR_MOMENTUM_GAIN)
+        * MOMENTUM_GAIN_AMOUNT;
 
     private int momentum = 0;
     private int runningTickCounter = 0;
@@ -178,15 +189,18 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
-            .addMarkdown(new ResourceLocation("gregtech", "industrial-centrifuge"),
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-centrifuge"),
                 ImmutableMap.<String, Object>builder()
-                    .put("min_parallels", formatNumber(BASE_PARALLEL_PER_TIER))
-                    .put("max_parallels", formatNumber((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)))
-                    .put("min_speed", formatNumber(SPEED * 100))
-                    .put("max_speed", formatNumber((SPEED + EXTRA_SPEED) * 100))
-                    .put("eu_eff", formatNumber(EU_EFFICIENCY * 100))
+                    .put("base_parallels", (int) getParallelsPerTier(0))
+                    .put("max_parallels", (int) getParallelsPerTier((int) MOMENTUM_MAX))
+                    .put("min_speed", (1.0D / getSpeedWithMomentum(0)) * 100)
+                    .put("max_speed", (1.0D / getSpeedWithMomentum((int) MOMENTUM_MAX)) * 100)
+                    .put("eu_eff", EU_EFFICIENCY * 100)
+                    .put("momentum_max", MOMENTUM_MAX)
+                    .put("momentum_gain", MOMENTUM_GAIN_PER_SEC)
+                    .put("momentum_decay", MOMENTUM_DECAY_PER_SEC)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
@@ -199,9 +213,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -211,7 +223,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // ensures heavy mode recipes can not run
+                // ensures heavy mode recipes cannot run
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
@@ -221,14 +233,21 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private Double getSpeedWithMomentum() {
-        return 1.0D / (SPEED + EXTRA_SPEED * momentum / 100D);
+    private double getSpeedWithMomentum() {
+        return getSpeedWithMomentum(momentum);
+    }
+
+    private static double getSpeedWithMomentum(int momentum) {
+        return 1.0D / (SPEED + EXTRA_SPEED * momentum / MOMENTUM_MAX);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)
-            * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) (getParallelsPerTier(momentum) * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public static double getParallelsPerTier(int momentum) {
+        return BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / MOMENTUM_MAX;
     }
 
     private int casingAmount;
@@ -309,9 +328,9 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     public boolean onRunningTick(ItemStack stack) {
         runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && momentum < 100) {
+        if (runningTickCounter % TICKS_FOR_MOMENTUM_GAIN == 0 && momentum < MOMENTUM_MAX) {
             runningTickCounter = 0;
-            momentum++;
+            momentum += MOMENTUM_GAIN_AMOUNT;
         }
         return super.onRunningTick(stack);
     }
@@ -321,8 +340,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         super.onPostTick(baseMetaTileEntity, tick);
         if (!baseMetaTileEntity.isServerSide()) return;
         if (mMaxProgresstime == 0 && momentum > 0) {
-            if (tick % 5 == 0) {
-                momentum = Math.max(momentum - 2, 0);
+            if (tick % TICKS_FOR_MOMENTUM_DECAY == 0) {
+                momentum = Math.max(momentum - MOMENTUM_DECAY_AMOUNT, 0);
             }
         }
     }

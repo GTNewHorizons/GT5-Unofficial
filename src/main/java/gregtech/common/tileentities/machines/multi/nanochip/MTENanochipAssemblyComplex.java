@@ -781,14 +781,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return modules;
     }
 
-    public void setModules(List<MTENanochipAssemblyModuleBase<?>> incomingList) {
-        this.modules.clear();
-        this.modules.addAll(incomingList);
-    }
-
     public void setMatrixPowerPortion(int portion) {
-        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
-            matrixPowerPortion = portion;
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+                matrixPowerPortion = portion;
+            }
         }
     }
 
@@ -997,6 +994,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_NANOCHIP;
+    }
+
+    @Override
+    protected float getSoundRadiusMultiplier() {
+        return 6f;
     }
 
     @SideOnly(Side.CLIENT)

@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -102,8 +100,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     "eu_usage", formatNumber(TierEU.RECIPE_HV),
                     "water_rate", formatNumber(161),
                     "steam_rate", formatNumber(25600),
-                    "coolant_rate", formatNumber(192),
-                    "unit", getFluidUnit()))
+                    "coolant_rate", formatNumber(192)))
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
@@ -114,12 +111,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputHatch("1+", anyBottomCasing, 1)
             .addOutputBus("0+", anyBottomCasing, 1)
             .addOutputHatch("1+", anyBottomCasing, 1)
-            .toolTipFinisher(
-                EnumChatFormatting.GREEN + "bartimaeusnek"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "BartWorks");
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
