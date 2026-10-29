@@ -4,7 +4,6 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
-import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
 
 public class PosteaTransformers implements Runnable {
