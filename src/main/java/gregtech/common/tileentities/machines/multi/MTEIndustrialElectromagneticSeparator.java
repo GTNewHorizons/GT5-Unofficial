@@ -93,12 +93,9 @@ public class MTEIndustrialElectromagneticSeparator
         public static String buildMagnetTooltip(MagnetTiers m) {
             String tooltip = StatCollector.translateToLocalFormatted(
                 "gt.magnet.tooltip.base",
-                EnumChatFormatting.LIGHT_PURPLE,
+                m.maxParallel,
                 Math.round((1F / m.speedBoost * 100) - 100),
-                EnumChatFormatting.DARK_PURPLE,
-                Math.round(m.euModifier * 100),
-                EnumChatFormatting.AQUA,
-                m.maxParallel);
+                Math.round(m.euModifier * 100));
 
             if (m.supportsExotic) {
                 tooltip = tooltip + "\\n"

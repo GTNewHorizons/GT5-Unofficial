@@ -6411,8 +6411,8 @@ gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone 
 ## Special items
 gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
-gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n%sSpeed: +%d%%\n%sEU Usage: %d%%\n%sParallel: %d
-gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n%sLimit to one energy hatch if using Multi-Amp
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n§6%d§7 Parallels\n§a+%d%%§7 Speed\n§b%d%%§7 EU Usage
+gt.magnet.tooltip.exotic=Can use §aMulti-Amp Hatches§7, but only one
 gt.sawblade.tooltip.base=Used in Industrial Cutting Factory\nAllows a §dCutting Factory§7 to use %s\n§6%d §7Parallels per §fVoltage §7Tier\n§a%d%% §7Speed\n§b%d%% §7EU usage
 gt.sawblade.tooltip.hatch_tier_limit=Energy Hatches up to %s§7
 gt.sawblade.tooltip.hatch_tier_unlimited=Energy Hatches of any tier
