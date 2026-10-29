@@ -10288,7 +10288,7 @@ GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
 # BEC Diode Structure Hints
 GT5U.tooltip.bec-diode.controller-pos=Front center, 6th layer
 GT5U.tooltip.bec-diode.hatch-pos=Any electromagnetically-isolated casing
-GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right casing (output)
+GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing and center right casing
 
 # BEC Assembler Structure Hints
 GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
