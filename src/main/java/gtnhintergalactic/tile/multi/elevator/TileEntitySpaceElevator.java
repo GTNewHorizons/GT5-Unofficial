@@ -680,6 +680,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
                                 projectModule.connect(this);
+                                if (!projectModule.mMachine) continue;
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
