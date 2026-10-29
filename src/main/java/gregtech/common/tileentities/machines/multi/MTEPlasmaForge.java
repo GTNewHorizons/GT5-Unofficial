@@ -16,7 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
@@ -552,7 +552,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         .addElement(
             'C',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))))
+                .use(activeBlocks(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))))
         .addElement(
             'b',
             ofChain(
@@ -954,8 +954,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    protected void tryActivateCoilLease() {
-        super.tryActivateCoilLease();
+    protected void tryActivateBlockLease() {
+        super.tryActivateBlockLease();
         if (isConvergenceActive() && !bridges.isEmpty() && bridgeLease == null) {
             bridgeLease = GTCoilTracker.activate(this, CoilLeaseType.BRIDGE, bridges);
         }
@@ -1108,8 +1108,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    protected void deactivateCoilLease() {
-        super.deactivateCoilLease();
+    protected void deactivateBlockLease() {
+        super.deactivateBlockLease();
         deactivateBridgeLease();
     }
 
