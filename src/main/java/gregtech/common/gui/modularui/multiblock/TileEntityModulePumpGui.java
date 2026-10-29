@@ -74,7 +74,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             .child(createSpacePumpUtilityButton(parent, syncManager));
     }
 
-    private IWidget createSpacePumpUtilityButton(ModularPanel parent, PanelSyncManager syncManager) {
+    private ButtonWidget<?> createSpacePumpUtilityButton(ModularPanel parent, PanelSyncManager syncManager) {
         IPanelHandler spacePumpUtilityPanel = panelMap.get("spacePumpUtility");
 
         return new ButtonWidget<>().addTooltipLine(IKey.lang("tt.spacepump.utilitypanelButtonTooltip"))
