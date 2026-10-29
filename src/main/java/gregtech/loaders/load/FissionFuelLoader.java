@@ -217,7 +217,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
                     ItemList.IC2_Uranium_238.get(4),
                     Materials.Iron.getDust(1))
                 .duration(25 * SECONDS)
@@ -226,7 +226,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 2L),
                     ItemList.IC2_Uranium_238.get(8),
                     Materials.Iron.getDust(3))
                 .duration(25 * SECONDS)
@@ -235,7 +235,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 4L),
                     ItemList.IC2_Uranium_238.get(16),
                     Materials.Iron.getDust(6))
                 .duration(25 * SECONDS)
@@ -287,7 +287,9 @@ public class FissionFuelLoader implements Runnable {
 
             // MOX
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
+                .itemInputs(
+                    ItemList.IC2_Uranium_238.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 3L))
                 .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(1_000))
                 .duration(20 * SECONDS)
@@ -326,8 +328,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
-                    ItemList.IC2_Plutonium.get(3),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 3L),
                     Materials.Iron.getDust(1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -335,8 +337,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
-                    ItemList.IC2_Plutonium.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 6L),
                     Materials.Iron.getDust(3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -344,8 +346,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
-                    ItemList.IC2_Plutonium.get(12),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 12L),
                     Materials.Iron.getDust(6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
