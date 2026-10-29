@@ -173,6 +173,9 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     getIndexQueue().removeFirst();
                 }
                 getIndexQueue().add(mapping);
+                if (queueButtons != null) {
+                    queueButtons.forEach(b -> b.tooltip().markDirty());
+                }
                 return true;
             });
     }
