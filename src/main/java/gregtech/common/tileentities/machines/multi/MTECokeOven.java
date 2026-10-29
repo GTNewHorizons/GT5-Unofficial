@@ -318,6 +318,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
+        baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
     }
 
     @Override
@@ -340,8 +341,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
             }
         }
-
-        baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
     }
 
     private void checkRecipeProgress(IGregTechTileEntity baseMetaTileEntity) {
