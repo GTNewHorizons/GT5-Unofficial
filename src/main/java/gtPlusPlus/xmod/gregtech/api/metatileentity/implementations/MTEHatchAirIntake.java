@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,12 +34,18 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
     }
 
     @Override
-    public String[] getCustomTooltip() {
+    public synchronized String[] getDescription() {
+        long perSecond = (long) getAmountOfFluidToGenerate() * 20L / getMaxTickTime();
         return GTSplit.splitLocalizedFormattedWithSuffix(
-            "gt.blockmachines.input_hatch_generator.airintake.desc",
-            GTPPCore.GT_Tooltip.get(),
-            getAmountOfFluidToGenerate(),
-            getMaxTickTime());
+            "gt.blockmachines.hatch.air.intake.desc",
+            new String[0],
+            formatNumber(getCapacity()) + getFluidUnit(),
+            formatNumber(perSecond) + " " + getFluidUnit() + "/s");
+    }
+
+    @Override
+    public String[] getCustomTooltip() {
+        return new String[0];
     }
 
     @Override

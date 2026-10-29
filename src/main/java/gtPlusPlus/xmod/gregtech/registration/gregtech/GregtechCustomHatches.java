@@ -108,18 +108,18 @@ public class GregtechCustomHatches {
 
         // Multiblock Air Intake Hatch
         GregtechItemList.Hatch_Air_Intake.set(
-            new MTEHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake.tier.00", "Air Intake Hatch", 5)
+            new MTEHatchAirIntake(Hatch_Air_Intake.ID, "hatch.air.intake", "Air Intake Hatch", 5)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Air_Intake_Extreme.set(
             new MTEHatchAirIntakeExtreme(
                 Hatch_Air_Intake_Extreme.ID,
-                "hatch.air.intake.tier.01",
+                "hatch.air.intake.extreme",
                 "Extreme Air Intake Hatch",
                 7).getStackForm(1L));
         GregtechItemList.Hatch_Air_Intake_Atmospheric.set(
             new MTEHatchAirIntakeAtmosphere(
                 Hatch_Air_Intake_Atmospheric.ID,
-                "hatch.air.intake.tier.02",
+                "hatch.air.intake.atmospheric",
                 "Atmospheric Intake Hatch",
                 9).getStackForm(1L));
 
