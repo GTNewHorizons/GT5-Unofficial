@@ -50,7 +50,7 @@ public class GalacticGreg {
     public static GalacticGregConfig GalacticConfig = null;
 
     /**
-     * Preload phase. Read config values and set various features.. n stuff...
+     * Preload phase. Read config values and set various features. And stuff...
      *
      * @param aEvent
      */
@@ -71,8 +71,8 @@ public class GalacticGreg {
     public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<>();
 
     /**
-     * Postload phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase Once
-     * GalacticGregRegistry.InitRegistry() is called, no changes are accepted. (Well you can with reflection, but on a
+     * PostLoad phase. Mods can add their custom definition to our api in their own PreLoad or Init-phase Once
+     * GalacticGregRegistry.InitRegistry() is called, no changes are accepted. (Well, you can with reflection, but in a
      * "normal" way it's not possible)
      *
      * @param aEvent

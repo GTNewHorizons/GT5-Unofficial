@@ -447,8 +447,8 @@ public class EyeOfHarmonyRecipe {
         final ArrayList<MaterialStack> composites = material.getComposites();
         if (amJ.size() < 2) {
             allFailed = true;
-            if (!composites.isEmpty() && composites.get(0) != null) {
-                bonusA = composites.get(0)
+            if (!composites.isEmpty() && composites.getFirst() != null) {
+                bonusA = composites.getFirst()
                     .getStackMaterial();
             } else {
                 bonusA = material;

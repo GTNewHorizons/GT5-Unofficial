@@ -145,7 +145,7 @@ public class Pollution {
 
         for (int chunksProcessed = 0; chunksProcessed < operationsPerTick; chunksProcessed++) {
             if (pollutionList.isEmpty()) break; // no more stuff to do
-            ChunkCoordIntPair actualPos = pollutionList.remove(pollutionList.size() - 1); // faster
+            ChunkCoordIntPair actualPos = pollutionList.removeLast(); // faster
             // get pollution
             ChunkData currentData = STORAGE.get(world, actualPos);
             int tPollution = currentData.getAmount();
@@ -172,7 +172,7 @@ public class Pollution {
                 }
 
                 // Create Pollution effects
-                // Smog filter TODO
+                // Todo: Smog filter
                 if (tPollution > GTMod.proxy.mPollutionSmogLimit) {
                     AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(
                         actualPos.chunkXPos << 4,
@@ -185,27 +185,28 @@ public class Pollution {
                     for (EntityLivingBase tEnt : tEntitys) {
                         if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                             continue;
-                        if (!(HazardProtection.isWearingFullGasHazmat(tEnt))) {
-                            switch (XSTR_INSTANCE.nextInt(3)) {
-                                case 1:
-                                    tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.weakness.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
-                                case 2:
-                                    tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.moveSlowdown.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
-                                default:
-                                    tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.digSlowdown.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
-                            }
+                        if (HazardProtection.isWearingFullGasHazmat(tEnt)) {
+                            continue;
+                        }
+                        switch (XSTR_INSTANCE.nextInt(3)) {
+                            case 1:
+                                tEnt.addPotionEffect(
+                                    new PotionEffect(
+                                        Potion.weakness.id,
+                                        Math.min(tPollution / 1000, 1000),
+                                        tPollution / 400000));
+                            case 2:
+                                tEnt.addPotionEffect(
+                                    new PotionEffect(
+                                        Potion.moveSlowdown.id,
+                                        Math.min(tPollution / 1000, 1000),
+                                        tPollution / 400000));
+                            default:
+                                tEnt.addPotionEffect(
+                                    new PotionEffect(
+                                        Potion.digSlowdown.id,
+                                        Math.min(tPollution / 1000, 1000),
+                                        tPollution / 400000));
                         }
                     }
 
@@ -214,29 +215,24 @@ public class Pollution {
                         for (EntityLivingBase tEnt : tEntitys) {
                             if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                                 continue;
-                            if (!HazardProtection.isWearingFullGasHazmat(tEnt)) {
-                                switch (XSTR_INSTANCE.nextInt(4)) {
-                                    case 1:
-                                        tEnt.addPotionEffect(
-                                            new PotionEffect(
-                                                Potion.confusion.id,
-                                                Math.min(tPollution / 2000, 1000),
-                                                1));
-                                    case 2:
-                                        tEnt.addPotionEffect(
-                                            new PotionEffect(
-                                                Potion.poison.id,
-                                                Math.min(tPollution / 4000, 1000),
-                                                tPollution / 500000));
-                                    case 3:
-                                        tEnt.addPotionEffect(
-                                            new PotionEffect(
-                                                Potion.blindness.id,
-                                                Math.min(tPollution / 2000, 1000),
-                                                1));
-                                    default:
-                                        tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
-                                }
+                            if (HazardProtection.isWearingFullGasHazmat(tEnt)) {
+                                continue;
+                            }
+                            switch (XSTR_INSTANCE.nextInt(4)) {
+                                case 1:
+                                    tEnt.addPotionEffect(
+                                        new PotionEffect(Potion.confusion.id, Math.min(tPollution / 2000, 1000), 1));
+                                case 2:
+                                    tEnt.addPotionEffect(
+                                        new PotionEffect(
+                                            Potion.poison.id,
+                                            Math.min(tPollution / 4000, 1000),
+                                            tPollution / 500000));
+                                case 3:
+                                    tEnt.addPotionEffect(
+                                        new PotionEffect(Potion.blindness.id, Math.min(tPollution / 2000, 1000), 1));
+                                default:
+                                    tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
                             }
                         }
 
@@ -368,7 +364,7 @@ public class Pollution {
     }
 
     /**
-     * Add some pollution to given chunk. Can pass in negative to remove pollution. Will clamp the final pollution
+     * Add some pollution to the given chunk. Can pass in negative to remove pollution. Will clamp the final pollution
      * number to 0 if it would be changed into negative.
      *
      * @param w          world to modify. do nothing if it's a client world

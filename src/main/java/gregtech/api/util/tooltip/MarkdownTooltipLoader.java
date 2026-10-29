@@ -275,7 +275,7 @@ public class MarkdownTooltipLoader {
         return ret == null ? commands.getOrDefault(name, null) : ret;
     }
 
-    /// Loads a markdown document at `assets/[mod id]/lang/[language id]/tooltip/[path].md`. On the client, resource
+    /// Loads a Markdown document at `assets/[mod id]/lang/[language id]/tooltip/[path].md`. On the client, resource
     /// packs are scanned. On the server, the file is loaded directly from the current jar.
     public List<String> loadStandardPath(ResourceLocation markdown, Map<String, Object> vars) {
         return this.loadStandardPath(markdown, vars, null);
@@ -929,7 +929,7 @@ public class MarkdownTooltipLoader {
                     paramList.add(paramBuffer.toString());
                 }
 
-                String key = paramList.remove(0)
+                String key = paramList.removeFirst()
                     .toString();
 
                 loc = new Localized(key, paramList.toArray(new Object[0]));

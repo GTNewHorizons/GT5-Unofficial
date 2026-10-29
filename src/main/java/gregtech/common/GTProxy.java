@@ -206,7 +206,7 @@ public class GTProxy implements IFuelHandler {
     public int mPollutionSourRainLimit = 2000000;
     public int mPollutionOnExplosion = 100000;
     public int mPollutionCokeOvenPerSecond = 10;
-    public int mPollutionPrimitveBlastFurnacePerSecond = 200;
+    public int mPollutionPrimitiveBlastFurnacePerSecond = 200;
     public int mPollutionEBFPerSecond = 400;
     public int mPollutionCharcoalPitPerSecond = 100;
     public int mPollutionLargeCombustionEnginePerSecond = 480;
@@ -354,7 +354,7 @@ public class GTProxy implements IFuelHandler {
     // Locking
     public final ReentrantLock TICK_LOCK = new ReentrantLock();
 
-    private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, GTClientPreference> mClientPreferences = new ConcurrentHashMap<>();
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
     private static Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
@@ -425,7 +425,7 @@ public class GTProxy implements IFuelHandler {
     public GTProxy() {
         // This is a hack to remain backward
         // compatible after renaming the proxy
-        // for mods still refering the old name
+        // for mods still referring the old name
         // noinspection deprecation
         GTMod.gregtechproxy = this;
 
@@ -739,7 +739,7 @@ public class GTProxy implements IFuelHandler {
         GT_FML_LOGGER.debug("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
 
-        // This needs to happen late enough that all of the fluids we need have been registered.
+        // This needs to happen late enough that all the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
 
@@ -832,8 +832,10 @@ public class GTProxy implements IFuelHandler {
                     new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial) });
             }
         }
-        // Cover GUI needs to know text color which can be configured with resource packs. In theory it's not needed on
-        // server, but it's just convenient to be able to write GUI code without side check. This will be reworked with
+        // Cover GUI needs to know text color which can be configured with resource packs. In theory, it's unnecessary
+        // on
+        // the server, but it's just convenient to be able to write GUI code without side check. This will be reworked
+        // with
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
@@ -1319,11 +1321,11 @@ public class GTProxy implements IFuelHandler {
     }
 
     public GTClientPreference getClientPreference(UUID aPlayerID) {
-        return mClientPrefernces.get(aPlayerID);
+        return mClientPreferences.get(aPlayerID);
     }
 
     public void setClientPreference(UUID aPlayerID, GTClientPreference aPreference) {
-        mClientPrefernces.put(aPlayerID, aPreference);
+        mClientPreferences.put(aPlayerID, aPreference);
     }
 
     @Override
@@ -1658,7 +1660,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.remove(UUID);
-            UUID_BY_NAME.remove(UUID);
+            UUID_BY_NAME.remove(player.getCommandSenderName());
         }
     }
 
@@ -1714,16 +1716,16 @@ public class GTProxy implements IFuelHandler {
      * This method allows fast lookup of player UUID from their name. It should only ever be called from the
      * ServerThread and while the Server is running.
      *
-     * @param playername - the name of the player as returned by getCommandSenderName()
+     * @param playerName - the name of the player as returned by getCommandSenderName()
      */
-    public UUID getPlayersUUID(String playername) {
+    public UUID getPlayersUUID(String playerName) {
         if (!FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) {
             throw new RuntimeException("Tried to retrieve a player UUID from outside of the server thread!");
         }
         if (UUID_BY_NAME != null) {
-            return UUID_BY_NAME.get(playername);
+            return UUID_BY_NAME.get(playerName);
         } else {
             throw new NullPointerException("UUID_BY_NAME is null because the server is not running!");
         }

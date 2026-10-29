@@ -118,11 +118,10 @@ public class CommandHandler extends CommandBase {
         }
         ICommand cmd = childCommands.get(args[0]);
         if (!cmd.canCommandSenderUseCommand(sender)) {
-            ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation(
-                "commands.generic.permission");
-            chatcomponenttranslation2.getChatStyle()
+            ChatComponentTranslation cct = new ChatComponentTranslation("commands.generic.permission");
+            cct.getChatStyle()
                 .setColor(EnumChatFormatting.RED);
-            sender.addChatMessage(chatcomponenttranslation2);
+            sender.addChatMessage(cct);
         } else cmd.processCommand(
             sender,
             args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : GTValues.emptyStringArray);

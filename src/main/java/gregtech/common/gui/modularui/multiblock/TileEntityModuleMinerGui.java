@@ -995,8 +995,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     syncHandler))
             .collect(toList());
 
-        drones.add(
-            0,
+        drones.addFirst(
             createNoDroneButton(distanceParameterSyncer, droneFilterSyncer, selectedAsteroidSyncer, syncHandler));
 
         return drones;

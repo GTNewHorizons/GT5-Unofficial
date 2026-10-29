@@ -176,7 +176,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public String getAlternativeModeText() {
-        // Hysteresis based ePowerPass Config
+        // Hysteresis-based ePowerPass Config
         long energyMax = getStoredEnergy()[1];
         long energyStored = getStoredEnergy()[0];
         float energyFrac = (float) energyStored / energyMax;

@@ -114,7 +114,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                         break;
                     }
 
-                    Chunk c = chunks.remove(chunks.size() - 1);
+                    Chunk c = chunks.removeLast();
 
                     switch (data) {
                         case MODE_BIG_ORES, MODE_ALL_ORES -> {

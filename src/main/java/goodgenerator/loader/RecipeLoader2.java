@@ -783,7 +783,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     OreDictionary.getOres("fuelCoke")
-                        .get(0))
+                        .getFirst())
                 .itemOutputs(Materials.Ash.getDust(1))
                 .outputChances(10)
                 .fluidOutputs(FluidRegistry.getFluidStack("fluid.coaltar", 250))
@@ -952,7 +952,7 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalBathRecipes);
 
-        // dust to fluid extraction, which isn't autogenned in Bartworks
+        // dust to fluid extraction, which isn't auto-generated in Bartworks
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.lithiumChloride.get(OrePrefixes.dust, 1))
             .fluidOutputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))

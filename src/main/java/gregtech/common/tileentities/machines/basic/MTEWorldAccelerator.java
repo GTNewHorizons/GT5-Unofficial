@@ -43,7 +43,7 @@ import io.netty.buffer.ByteBuf;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
-    // simple name is rather expensive to compute and it's not cached
+    // The simple name is rather expensive to compute, and it's not cached.
     // see https://stackoverflow.com/q/17369304
     private static final ClassValue<String> simpleNameCache = new ClassValue<>() {
 

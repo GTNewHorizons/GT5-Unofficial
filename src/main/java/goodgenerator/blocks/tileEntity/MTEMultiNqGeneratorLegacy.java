@@ -301,7 +301,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     public void addAutoEnergy(long outputPower) {
         if (!this.eDynamoMulti.isEmpty()) {
-            MTEHatchDynamoMulti tHatch = this.eDynamoMulti.get(0);
+            MTEHatchDynamoMulti tHatch = this.eDynamoMulti.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
                 tHatch.setEUVar(
                     Math.min(
@@ -313,7 +313,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             }
         }
         if (!this.mDynamoHatches.isEmpty()) {
-            MTEHatchDynamo tHatch = this.mDynamoHatches.get(0);
+            MTEHatchDynamo tHatch = this.mDynamoHatches.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= outputPower) {
                 tHatch.setEUVar(
                     Math.min(

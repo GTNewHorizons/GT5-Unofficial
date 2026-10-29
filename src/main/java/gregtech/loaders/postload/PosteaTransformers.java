@@ -78,7 +78,7 @@ public class PosteaTransformers implements Runnable {
                 return null;
             }
 
-            // Now we know for sure that the tileentity is a frame box
+            // Now we know for sure that the tile entity is a frame box
             // If this frame has a cover on it, we need to keep it, but we still need to make sure the block
             // is the new frame block. We can make sure to keep the TE using a pass-through transformer.
             // This works because between the old and new frame systems, the TileEntity used for covered frames

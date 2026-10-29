@@ -286,7 +286,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 }
             }
 
-            // Check Inputs allign
+            // Check Inputs align
             int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
             if (itemConsumptions == null || itemConsumptions.length == 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -305,7 +305,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 GT_FML_LOGGER.info("All Items accepted");
             }
 
-            // Check Fluid Inputs allign
+            // Check Fluid Inputs align
             if (tRecipe.mFluidInputs.length > 0) {
                 currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
                     mInputHatches,

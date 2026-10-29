@@ -110,7 +110,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.METALLUM, 3L),
                 new TC_AspectStack(TCAspects.POTENTIA, 3L)));
 
-        /**
+        /*
          * Power Gems
          */
         GregtechItemList.Battery_Gem_1.set(
@@ -282,7 +282,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
             this.addItem(
                 Laser_Lens_WoodsGlass.ID,
                 "Wood's Glass Lens",
-                "Allows UV & IF to pass through, blocks visible light spectrums"));
+                "Allows UV & IF to pass through, blocks visible light spectrum"));
 
         GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_LV,
             GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,

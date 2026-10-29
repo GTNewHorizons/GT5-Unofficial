@@ -85,7 +85,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         super(aID, aName, aNameRegional, 4, null, 1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(this) {};
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<>(this) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
@@ -384,7 +384,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public IMEInventory<IAEFluidStack> getNetworkInvtory() throws GridAccessException {
+    public IMEInventory<IAEFluidStack> getNetworkInventory() throws GridAccessException {
         return getProxy().getStorage()
             .getFluidInventory();
     }

@@ -84,18 +84,18 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID           The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
-     * @param aEnglish      The Default Localized Name of the created Item
-     * @param aToolTip      The Default ToolTip of the created Item, you can also insert null for having no ToolTip
-     * @param aFoodBehavior The Food Value of this Item. Can be null aswell. Just a convenience thing.
-     * @param aRandomData   The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @param aID           The id of the assigned item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aEnglish      The default localized name of the created item
+     * @param aToolTip      The default ToolTip of the created item, you can also insert null for having no ToolTip
+     * @param aFoodBehavior The food value of this item. Can be null aswell. Just a convenience thing.
+     * @param aRandomData   The OreDict names you want to give the item. Also used for TC Aspects and some other things.
      * @return An ItemStack containing the newly created Item.
      */
     /**
-     * Adds a Custom Item that formats its name from a localization key, so that a family of Items spells its name once
+     * Adds a Custom Item that formats its name from a localization key so that a family of Items spells its name once
      * instead of once per member. The Item registers no name of its own.
      *
-     * @param aID       The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aID       The id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param aNameKey  The localization key of the name
      * @param aNameArgs The arguments the key is formatted with
      * @return An ItemStack containing the newly created Item.

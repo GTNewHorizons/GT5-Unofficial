@@ -415,7 +415,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
+        final byte cappedStrength = (byte) Math.clamp(strength, 0, 15);
         if (side == ForgeDirection.UNKNOWN) return;
 
         final int ordinalSide = side.ordinal();
@@ -722,7 +722,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
                 + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                 + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                + tooltip.get(0));
+                + tooltip.getFirst());
         builder.addAll(cover.getAdditionalTooltip());
         builder.addAll(
             IntStream.range(1, tooltip.size())

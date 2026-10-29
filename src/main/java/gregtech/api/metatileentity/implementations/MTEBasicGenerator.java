@@ -247,22 +247,22 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
      * @return if the stack is a solid fuel
      */
     public boolean solidFuelOverride(ItemStack stack) {
-        // this could be used for a coal generator for example aswell...
+        // this could be used for a coal generator, for example as well...
         ItemData association = GTOreDictUnificator.getAssociation(stack);
-        // if it is a gregtech Item, make sure its not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
+        // if it is a gregtech Item, make sure it's not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
         if (association != null) {
             return !OrePrefixes.CELL_TYPES.contains(association.mPrefix)
                 && !GTUtility.areStacksEqual(ItemList.VOLUMETRIC_FLASK.get(1L), stack, true);
         } else {
-            return stack != null && // when the stack is null its not a solid
-                stack.getItem() != null && // when the item in the stack is null its not a solid
-                !(stack.getItem() instanceof IFluidContainerItem) && // when the item is a fluid container its not a
+            return stack != null && // when the stack is null, it's not a solid
+                stack.getItem() != null && // when the item in the stack is null, it's not a solid
+                !(stack.getItem() instanceof IFluidContainerItem) && // when the item is a fluid container, it's not a
                                                                      // solid...
-                !(stack.getItem() instanceof IFluidHandler) && // when the item is a fluid handler its not a
+                !(stack.getItem() instanceof IFluidHandler) && // when the item is a fluid handler, it's not a
                                                                // solid...
                 !stack.getItem()
                     .getUnlocalizedName()
-                    .contains("bucket"); // since we cant really check for
+                    .contains("bucket"); // since we can't really check for
                                          // buckets...
         }
     }

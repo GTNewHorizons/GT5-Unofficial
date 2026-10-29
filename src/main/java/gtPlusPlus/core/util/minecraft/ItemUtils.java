@@ -30,7 +30,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
@@ -56,7 +55,7 @@ public class ItemUtils {
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0)
+            final ItemStack returnValue = oreDictList.getFirst()
                 .copy();
             returnValue.stackSize = amount;
             return returnValue;
@@ -162,26 +161,26 @@ public class ItemUtils {
         final String unlocalizedName = StringUtils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
         final String aChemForm = material.chemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
+        final boolean isChemFormValid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
         if (!onlyLargeDust) {
             output = new Item[] {
                 new BaseItemDustUnique(
                     "itemDust" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Dust"),
                 new BaseItemDustUnique(
                     "itemDustSmall" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Small"),
                 new BaseItemDustUnique(
                     "itemDustTiny" + unlocalizedName,
                     materialName,
-                    isChemFormvalid ? aChemForm : "",
+                    isChemFormValid ? aChemForm : "",
                     Colour,
                     "Tiny") };
         } else {
@@ -312,7 +311,7 @@ public class ItemUtils {
         final int cap = aStack.stackSize;
         if (cap >= 1 && cap >= aAmount) {
             ItemStack aDepStack = aStack.copy();
-            aDepStack.stackSize = (MathUtils.balance((aDepStack.stackSize - 1), 0, 64));
+            aDepStack.stackSize = (Math.clamp((aDepStack.stackSize - 1), 0, 64));
             if (aDepStack.stackSize > 0) {
                 return aDepStack;
             }

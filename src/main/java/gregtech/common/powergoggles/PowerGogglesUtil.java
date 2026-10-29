@@ -68,14 +68,11 @@ public class PowerGogglesUtil {
     }
 
     public static String format(BigInteger EU) {
-        switch (PowerGogglesConfigHandler.formatIndex) {
-            case 1:
-                return toCustom(EU);
-            case 2:
-                return toCustom(EU, true, 3);
-            default:
-                return toCustom(EU, false, 1);
-        }
+        return switch (PowerGogglesConfigHandler.formatIndex) {
+            case 1 -> toCustom(EU);
+            case 2 -> toCustom(EU, true, 3);
+            default -> toCustom(EU, false, 1);
+        };
     }
 
     private static String toCustom(BigInteger EU) {

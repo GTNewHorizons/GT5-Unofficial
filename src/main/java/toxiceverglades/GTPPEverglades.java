@@ -140,8 +140,8 @@ public class GTPPEverglades {
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {
-        if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIMID)) {
-            DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
+        if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIM_ID)) {
+            DimensionEverglades.DIM_ID = DimensionManager.getNextFreeDimId();
         }
         DarkWorldContentLoader.run();
     }

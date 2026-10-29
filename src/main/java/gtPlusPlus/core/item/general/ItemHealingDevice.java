@@ -238,20 +238,21 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         return BaubleType.AMULET;
     }
 
-    @Override // TODO
+    // TODO: implement (un-)equip logic that was planned 10 years ago, if anyone even remembers the plan.
+    @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
-        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g))
+        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer player))
             return;
         // Try Charge First
 
         // Inv Slots
-        for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
+        for (final ItemStack aInvStack : player.inventory.mainInventory) {
             if (aInvStack == baubleStack) {
                 continue;
             }
@@ -297,7 +298,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         int hunger = 0;
         float saturation = 0;
-        FoodStats aFood = g.getFoodStats();
+        FoodStats aFood = player.getFoodStats();
         if (aFood != null) {
             // Hunger Check
             hunger = 20 - aFood.getFoodLevel();
@@ -314,17 +315,16 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         if (!getShowMessages(baubleStack)) return;
 
         if (hp > 0 || hunger > 0 || saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+            GTUtility.sendChatToPlayer(player, "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
-        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
+        if (hp > 0) GTUtility.sendChatToPlayer(player, "Healed " + formatNumber(hp) + " hp.");
 
-        if (hunger > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
+        if (hunger > 0) GTUtility.sendChatToPlayer(player, "Healed " + formatNumber(hunger) + " hunger.");
 
-        if (saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
+        if (saturation > 0) GTUtility.sendChatToPlayer(player, "Saturated Hunger by " + formatNumber(saturation) + ".");
 
         if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
-            (EntityPlayer) arg1,
+            player,
             "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack)) + " seconds left.");
 
     }

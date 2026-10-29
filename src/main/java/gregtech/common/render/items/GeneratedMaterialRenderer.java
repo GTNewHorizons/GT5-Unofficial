@@ -33,7 +33,7 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     }
 
     /**
-     * Handle special fluid display rendering. Return false if does not need such kind of handling. Note: annotations
+     * Handle special fluid display rendering. Return false if it does not need such kind of handling. Note: annotations
      * should not be rendered here. Only render the fluid texture. Parameters are values passed from
      * {@link IItemRenderer#renderItem(ItemRenderType, ItemStack, Object...)} verbatim. Do not modify the argument.
      * <p>

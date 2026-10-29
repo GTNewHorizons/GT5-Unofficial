@@ -113,7 +113,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
     private void renderCore(ShaderHandle shader, double x, double y, double z, float timer, float r, float g, float b) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
-        float chaosScale = Math.min(Math.max(chaos, 0.05f), 1);
+        float chaosScale = Math.clamp(chaos, 0.05f, 1);
 
         GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), r, g, b, 1f);
         modelMatrix.clear();

@@ -90,7 +90,7 @@ public class MTEToxicResidueSensor extends MTEHatch {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         thresholdType = ThresholdType.values()[Math
-            .max(Math.min(aNBT.getInteger("thresholdType"), ThresholdType.values().length - 1), 0)];
+            .clamp(aNBT.getInteger("thresholdType"), 0, ThresholdType.values().length - 1)];
         isOn = aNBT.getBoolean("isOn");
         super.loadNBTData(aNBT);
     }

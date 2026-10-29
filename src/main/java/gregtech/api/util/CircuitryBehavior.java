@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -10,17 +11,18 @@ import gregtech.api.interfaces.IRedstoneCircuitBlock;
 /**
  * Redstone Circuit Control Code
  * <p/>
- * This should make everything possible what a Redstone Computer or BuildCraft Gate could do. It is intended to use this
+ * This should make everything possible, what a Redstone Computer or BuildCraft Gate could do. It is intended to use
+ * this
  * similar to BC-Gates (for acquiring Data) and RP Logic Gates. You could write an extremely specified and complex Logic
- * Gate, which works only for you Setup, like with ComputerCraft, but you would have to write an extra Mod to add that,
- * as it doesn't work Ingame.
+ * Gate, which works only for your setup, like with ComputerCraft, but you would have to write an extra Mod to add that,
+ * as it doesn't work in-game.
  * <p/>
- * One can make use of the fact, that ItemStacks can be stored as Integer, so that you can scan Inventories for specific
- * Items using that. Luckily the Buttons in the GUI enable Copy/Paste of ItemID+MetaData to Integer, including the
- * WildCard Damage Value when you use rightclick to place it. You just need to use @GT_Utility.stackToInt(ItemStack
- * aStack) to get it.
+ * One can make use of the fact that ItemStacks can be stored as Integer, so that you can scan Inventories for specific
+ * Items using that. Luckily, the Buttons in the GUI enable Copy/Paste of ItemID+MetaData to Integer, including the
+ * WildCard Damage Value when you use rightclick to place it. You need to use {@link GTUtility#stackToInt(ItemStack)} to
+ * get it.
  * <p/>
- * All Functions run usually in a seperate try/catch Block, so that failed Logic won't crash the TileEntity.
+ * All Functions usually run in a separate try/catch Block, so that failed Logic won't crash the TileEntity.
  */
 public abstract class CircuitryBehavior {
 

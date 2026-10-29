@@ -19,7 +19,7 @@ public class TextureUpdateRequester {
         blocks.add(Pair.of(block, meta));
     }
 
-    // Using capturing (direct) tessellator just to make sure we dont render anything out
+    // Using capturing (direct) tessellator just to make sure we don't render anything out
     public void requestUpdate() {
         GL11.glPushMatrix();
         final DirectTessellator tess = DirectTessellator.startCapturing();

@@ -169,7 +169,8 @@ public class CellLoader implements IWerkstoffRunnable {
                             cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
                                 : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
-                        .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                        .fluidOutputs(
+                            flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.getFirst() })
                         .duration(
                             (int) Math.max(
                                 1L,
@@ -196,7 +197,8 @@ public class CellLoader implements IWerkstoffRunnable {
                             cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
                                 : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
-                        .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                        .fluidOutputs(
+                            flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.getFirst() })
                         .duration(
                             (int) Math.max(
                                 1L,

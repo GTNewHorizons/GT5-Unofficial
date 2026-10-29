@@ -243,7 +243,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 lEUt = -craftingEUt;
                 mMaxProgresstime = (int) craftingProgressTime;
                 mOutputItems = outputs.toArray(new ItemStack[0]);
-                addCraftingFX(outputs.get(0));
+                addCraftingFX(outputs.getFirst());
             }
             mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
             mEfficiencyIncrease = 10000;

@@ -28,7 +28,7 @@ public class MissingMappingsHandler {
     // spotless:off
 
     private static final Remapper REMAPPER = new Remapper()
-        // Block remappings
+        // Block re-mappings
         .remapBlock("dreamcraft:gt.blockcasingsNH", GregTechAPI.sBlockCasingsNH)
         .remapBlock("miscutils:oreCryolite", CRYOLITE.getOreBlock(1))
         .remapBlock("miscutils:oreFluorite", FLUORITE.getOreBlock(1))
@@ -39,7 +39,7 @@ public class MissingMappingsHandler {
         .remapBlock("GalaxySpace:dysonswarmparts", GregTechAPI.sBlockCasingsDyson)
         .remapBlock("GalaxySpace:machineframes", GregTechAPI.sBlockCasingsSiphon)
 
-        // Item remappings
+        // Item re-mappings
         .remapItem("miscutils:Ammonium", AMMONIUM.getCell(1).getItem())
         .remapItem("miscutils:BerylliumHydroxide",BERYLLIUM_HYDROXIDE.getCell(1).getItem())
         .remapItem("miscutils:Bromine", MaterialsElements.getInstance().BROMINE.getCell(1).getItem())
@@ -173,12 +173,12 @@ public class MissingMappingsHandler {
             }
 
             if (mapping.type == GameRegistry.Type.BLOCK) {
-                Block block = REMAPPER.blockRemappings.get(mapping.name);
+                Block block = REMAPPER.blockMappings.get(mapping.name);
                 if (block != null) {
                     mapping.remap(block);
                 }
             } else if (mapping.type == GameRegistry.Type.ITEM) {
-                Item item = REMAPPER.itemRemappings.get(mapping.name);
+                Item item = REMAPPER.itemMappings.get(mapping.name);
                 if (item != null) {
                     mapping.remap(item);
                 }
@@ -188,17 +188,17 @@ public class MissingMappingsHandler {
 
     private static class Remapper {
 
-        private final Map<String, Item> itemRemappings = new HashMap<>();
-        private final Map<String, Block> blockRemappings = new HashMap<>();
+        private final Map<String, Item> itemMappings = new HashMap<>();
+        private final Map<String, Block> blockMappings = new HashMap<>();
         private final List<String> ignoreMappings = new ArrayList<>();
 
         public Remapper remapBlock(String oldName, Block newBlock) {
-            blockRemappings.put(oldName, newBlock);
+            blockMappings.put(oldName, newBlock);
             return remapItem(oldName, Item.getItemFromBlock(newBlock));
         }
 
         public Remapper remapItem(String oldName, Item newItem) {
-            itemRemappings.put(oldName, newItem);
+            itemMappings.put(oldName, newItem);
             return this;
         }
 

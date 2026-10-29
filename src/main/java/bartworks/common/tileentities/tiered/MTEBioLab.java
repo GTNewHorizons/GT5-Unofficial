@@ -345,8 +345,8 @@ public class MTEBioLab extends MTEBasicMachine {
         }
 
         boolean hasItems = true;
-        for (int inputSlotIndice : inputSlotIndices) {
-            if (inputSlotIndice == -1) {
+        for (int inputSlotIndex : inputSlotIndices) {
+            if (inputSlotIndex == -1) {
                 hasItems = false;
                 break;
             }
@@ -393,7 +393,7 @@ public class MTEBioLab extends MTEBasicMachine {
             (stack -> BioCulture.getBioCulture(
                 stack.getTagCompound()
                     .getString("Name"))
-                .getdDNA()),
+                .getDNA()),
             outputSupplierDNA);
     }
 

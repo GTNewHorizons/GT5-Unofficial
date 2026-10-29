@@ -153,9 +153,9 @@ public class VoidMinerUtility {
         private void mergeDropMaps(DropMap dropMap) {
             if (dropMap == null || dropMap.internalMap == null || dropMap.internalMap.isEmpty()) return;
 
-            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.entrySet()) {
+            for (Map.Entry<GTUtility.ItemId, Float> entry : dropMap.internalMap.object2FloatEntrySet()) {
                 // We cant be sure that the extraDropMap entries are intentional duplicates of this DropMap
-                this.internalMap.merge(entry.getKey(), entry.getValue(), Float::sum);
+                this.internalMap.mergeFloat(entry.getKey(), entry.getValue(), Float::sum);
                 totalWeight += entry.getValue();
             }
         }

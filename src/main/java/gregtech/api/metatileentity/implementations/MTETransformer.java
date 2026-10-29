@@ -186,7 +186,7 @@ public class MTETransformer extends MTETieredMachineBlock {
                 final TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                 if (tTileEntity instanceof IEnergyProvider energyProvider
                     && energyProvider.extractEnergy(side.getOpposite(), 1, true) == 1) {
-                    long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(
+                    long tEU = energyProvider.extractEnergy(
                         side.getOpposite(),
                         GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU),
                         false);
@@ -194,7 +194,7 @@ public class MTETransformer extends MTETieredMachineBlock {
                     aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
                 } else if (tTileEntity instanceof IEnergyStorage energyStorage
                     && energyStorage.extractEnergy(1, true) == 1) {
-                        long tEU = ((IEnergyStorage) tTileEntity)
+                        long tEU = energyStorage
                             .extractEnergy(GTUtility.safeInt(maxEUInput() * 100L / GregTechAPI.mRFtoEU), false);
                         tEU = tEU * GregTechAPI.mRFtoEU / 100;
                         aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);

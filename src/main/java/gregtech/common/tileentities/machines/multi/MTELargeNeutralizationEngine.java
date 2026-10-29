@@ -186,7 +186,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private static int normalizeIntoRange(int random) {
-        return Math.max(Math.min(random, 1500), 500);
+        return Math.clamp(random, 500, 1500);
     }
 
     private int getDistanceFromGoal() {

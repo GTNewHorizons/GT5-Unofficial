@@ -92,90 +92,49 @@ public class BlockGTCasingsBA0 extends BlockCasingsAbstract {
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM0[0];
-                    default:
-                        return tM0[1];
-                }
-            case 1:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM1[0];
-                    default:
-                        return tM1[1];
-                }
-            case 2:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM2[0];
-                    default:
-                        return tM2[1];
-                }
-            case 3:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM3[0];
-                    default:
-                        return tM3[1];
-                }
-            case 4:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM4[0];
-                    default:
-                        return tM4[1];
-                }
-            case 5:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM5[0];
-                    default:
-                        return tM5[1];
-                }
-            case 6:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM6[0];
-                    default:
-                        return tM6[1];
-                }
-            case 7:
-                return tM7;
-            case 8:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM8[0];
-                    default:
-                        return tM8[1];
-                }
-            case 9:
-                switch (ordinalSide) {
-                    case 0:
-                    case 1:
-                        return tM9[0];
-                    default:
-                        return tM9[1];
-                }
-            case 10:
-                return EOH_INNER;
-            case 11:
-                return EOH_OUTER;
-            case 12:
-                return EOH_INFINITE;
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-        }
+        return switch (aMeta) {
+            case 0 -> switch (ordinalSide) {
+                    case 0, 1 -> tM0[0];
+                    default -> tM0[1];
+                };
+            case 1 -> switch (ordinalSide) {
+                    case 0, 1 -> tM1[0];
+                    default -> tM1[1];
+                };
+            case 2 -> switch (ordinalSide) {
+                    case 0, 1 -> tM2[0];
+                    default -> tM2[1];
+                };
+            case 3 -> switch (ordinalSide) {
+                    case 0, 1 -> tM3[0];
+                    default -> tM3[1];
+                };
+            case 4 -> switch (ordinalSide) {
+                    case 0, 1 -> tM4[0];
+                    default -> tM4[1];
+                };
+            case 5 -> switch (ordinalSide) {
+                    case 0, 1 -> tM5[0];
+                    default -> tM5[1];
+                };
+            case 6 -> switch (ordinalSide) {
+                    case 0, 1 -> tM6[0];
+                    default -> tM6[1];
+                };
+            case 7 -> tM7;
+            case 8 -> switch (ordinalSide) {
+                    case 0, 1 -> tM8[0];
+                    default -> tM8[1];
+                };
+            case 9 -> switch (ordinalSide) {
+                    case 0, 1 -> tM9[0];
+                    default -> tM9[1];
+                };
+            case 10 -> EOH_INNER;
+            case 11 -> EOH_OUTER;
+            case 12 -> EOH_INFINITE;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override

@@ -3,6 +3,7 @@ package gregtech.crossmod.ae2;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
@@ -49,7 +50,7 @@ public class ChatComponentNonConsumedItemsSuffix
     @Override
     public String getUnformattedTextForChat() {
         String joined = items.stream()
-            .filter(stack -> stack != null)
+            .filter(Objects::nonNull)
             .map(CommonBaseMetaTileEntity::getShortItemDisplayName)
             .collect(Collectors.joining(", "));
         if (joined.isEmpty()) return "";

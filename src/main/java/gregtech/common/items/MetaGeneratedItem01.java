@@ -528,14 +528,14 @@ import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverEUMeter;
 import gregtech.common.covers.CoverEnergyWireless;
 import gregtech.common.covers.CoverEnergyWirelessDebug;
+import gregtech.common.covers.CoverFluidFilter;
 import gregtech.common.covers.CoverFluidLimiter;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverFluidStorageMonitor;
-import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.covers.CoverLiquidMeter;
-import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverNeedMaintenance;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverRedstoneReceiverExternal;
@@ -4185,7 +4185,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 .glow()
                 .build());
 
-        final ITexture playerDectectorCoverTexture = TextureFactory.of(
+        final ITexture playerDetectorCoverTexture = TextureFactory.of(
             TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
             TextureFactory.builder()
                 .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
@@ -4340,7 +4340,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.FluidFilter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-            context -> new CoverFluidfilter(context, TextureFactory.of(OVERLAY_SHUTTER)));
+            context -> new CoverFluidFilter(context, TextureFactory.of(OVERLAY_SHUTTER)));
 
         CoverRegistry.registerCover(
             ItemList.ItemFilter_Export.get(1L),
@@ -4482,8 +4482,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         CoverRegistry.registerCover(
             ItemList.Cover_PlayerDetector.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
-            context -> new CoverPlayerDetector(context, playerDectectorCoverTexture));
+            TextureFactory.of(MACHINE_CASINGS[2][0], playerDetectorCoverTexture),
+            context -> new CoverPlayerDetector(context, playerDetectorCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_FluidStorageMonitor.get(1L),
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
@@ -4609,7 +4609,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.Cover_NeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
-            context -> new CoverNeedMaintainance(context, TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+            context -> new CoverNeedMaintenance(context, TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
 
         for (int i = 0; i < 14; i++) {
             int tier = i + 1;

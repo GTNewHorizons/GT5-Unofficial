@@ -36,7 +36,7 @@ public final class NEIRecipeProperties {
     }
 
     /**
-     * Whether to register dedicated NEI recipe page for the recipemap.
+     * Whether to register a dedicated NEI recipe page for the recipemap.
      */
     public final boolean registerNEI;
     @Nullable

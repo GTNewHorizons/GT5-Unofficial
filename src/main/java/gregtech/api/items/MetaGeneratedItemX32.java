@@ -107,7 +107,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
     /**
-     * @param aMetaData a Index from [0 - 31999]
+     * @param aMetaData an index from [0 - 31999]
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */

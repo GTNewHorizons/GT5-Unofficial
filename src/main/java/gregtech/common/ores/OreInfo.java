@@ -48,7 +48,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
     public IStoneType stoneType;
     public boolean isSmall;
     public ImmutableBlockMeta sourceBlock;
-    /** Natural ores can be mined by machines and can be fortuned. Ores placed by the player aren't natural. */
+    /** Natural ores can be mined by machines and can be fortune-mined. Ores placed by the player aren't natural. */
     public boolean isNatural;
 
     static final ObjectPooler<OreInfo<?>> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);

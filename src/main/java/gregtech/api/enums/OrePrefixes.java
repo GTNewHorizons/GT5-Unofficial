@@ -45,10 +45,10 @@ public class OrePrefixes {
 
     private static List<OrePrefixes> VALUES_LIST = new ArrayList<>();
 
-    private static final int ORE_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOreStackSize, 1, 64);
-    private static final int PLANK_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxPlankStackSize, 16, 64);
-    private static final int LOG_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxLogStackSize, 16, 64);
-    private static final int OTHER_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOtherBlocksStackSize, 16, 64);
+    private static final int ORE_STACK_SIZE = Math.clamp(Gregtech.features.maxOreStackSize, 1, 64);
+    private static final int PLANK_STACK_SIZE = Math.clamp(Gregtech.features.maxPlankStackSize, 16, 64);
+    private static final int LOG_STACK_SIZE = Math.clamp(Gregtech.features.maxLogStackSize, 16, 64);
+    private static final int OTHER_STACK_SIZE = Math.clamp(Gregtech.features.maxOtherBlocksStackSize, 16, 64);
 
     private static final int DUST = 1;
     private static final int METAL = 2;

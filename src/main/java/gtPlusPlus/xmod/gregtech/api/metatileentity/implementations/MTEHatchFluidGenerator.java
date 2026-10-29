@@ -97,8 +97,8 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             }
         }
         // Generate BEFORE super's detectInventoryChange(): the self-fill marks the tank dirty within this same tick
-        // and the dirty flag is cleared at the end of it, so generating afterwards would never push a recipe check
-        // and a multi idling on the generated fluid (e.g. air) would never wake up.
+        // and the dirty flag is cleared at the end of it, so generating afterward would never push a recipe check
+        // and a multi idling on the generated fluid (e.g., air) would never wake up.
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 

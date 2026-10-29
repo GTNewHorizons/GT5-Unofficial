@@ -41,14 +41,14 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.IDebuggableBlock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IDebuggableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.MetaBaseItem;
@@ -67,7 +67,7 @@ import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.ModIDs.CHISEL_API)
-public class BlockMachines extends GTGenericBlock implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class BlockMachines extends GTGenericBlock implements IDebuggableBlock, ITileEntityProvider, IFacade {
 
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
     private boolean renderAsNormalBlock;
@@ -706,8 +706,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IDebugableTileEntity) {
-            return ((IDebugableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
+        if (tTileEntity instanceof IDebuggableTileEntity) {
+            return ((IDebuggableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
         }
         return new ArrayList<>();
     }

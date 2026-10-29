@@ -83,7 +83,7 @@ public class GTPPPropolis extends Item {
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .itemOutputs(aOutput)
-                .outputChances(Math.min(Math.max(10000 - (aProp.mMaterial.tier * 625), 100), 10000))
+                .outputChances(Math.clamp(10000 - (aProp.mMaterial.tier * 625L), 100, 10000))
                 .duration(aProp.mMaterial.tier * 15 * SECONDS)
                 .eut(aProp.mMaterial.voltageMultiplier)
                 .addTo(extractorRecipes);

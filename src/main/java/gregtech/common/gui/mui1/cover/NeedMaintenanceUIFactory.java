@@ -13,14 +13,14 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
+public class NeedMaintenanceUIFactory extends CoverLegacyDataUIFactory {
 
     private static final int startX = 10;
     private static final int startY = 25;
     private static final int spaceX = 18;
     private static final int spaceY = 18;
 
-    public NeedMaintainanceUIFactory(CoverUIBuildContext buildContext) {
+    public NeedMaintenanceUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
     }
 

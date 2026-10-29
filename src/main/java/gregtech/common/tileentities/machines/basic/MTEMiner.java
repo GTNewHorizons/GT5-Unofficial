@@ -290,7 +290,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 Block oreBlock;
                 boolean isOre;
                 do {
-                    ChunkPosition oreBlockPos = oreBlockPositions.remove(0);
+                    ChunkPosition oreBlockPos = oreBlockPositions.removeFirst();
                     oreBlock = aBaseMetaTileEntity
                         .getBlockOffset(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
                     x = aBaseMetaTileEntity.getXCoord() + oreBlockPos.chunkPosX;

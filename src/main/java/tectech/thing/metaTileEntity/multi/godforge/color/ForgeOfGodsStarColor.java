@@ -186,7 +186,7 @@ public class ForgeOfGodsStarColor {
     /** @return a picture representation of this star color. */
     public IDrawable getDrawable() {
         if (drawable == null) {
-            StarColorSetting setting = settings.get(0);
+            StarColorSetting setting = settings.getFirst();
             drawable = new Rectangle().color(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
         }
         return drawable;

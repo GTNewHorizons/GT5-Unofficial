@@ -396,7 +396,7 @@ public class MTEPurificationUnitBaryonicPerfection
                         endRecipeProcessing();
                         return;
                     }
-                    // Now add the catalysts to the list, one by one since there may be multiples and we want to
+                    // Now add the catalysts to the list, one by one since there may be multiples, and we want to
                     // keep them as single entries in the list
                     for (int i = 0; i < stack.stackSize; ++i) {
                         ItemStack singleStack = new ItemStack(stack.getItem(), 1, stack.getItemDamage());

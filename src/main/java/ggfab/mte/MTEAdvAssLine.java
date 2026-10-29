@@ -475,8 +475,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     /**
-     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not loaded.
-     * also supports setting a stop reason
+     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if the world is not loaded.
+     * Also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
@@ -715,7 +715,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     // this is only called when all slices have finished their work
-    // and the first slice cannot find a input/fluid cannot be found
+    // and the first slice cannot find an input/fluid cannot be found,
     // so we are safe to assume the old recipe no longer works
     @Override
     public @Nonnull CheckRecipeResult checkProcessing() {
@@ -851,7 +851,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
         if (currentRecipe == null || !slices[0].start() || currentRecipeParallel <= 0) {
             clearCurrentRecipe();
-            // something very very wrong...
+            // something is very, very wrong...
             return CheckRecipeResultRegistry.INTERNAL_ERROR;
         }
 

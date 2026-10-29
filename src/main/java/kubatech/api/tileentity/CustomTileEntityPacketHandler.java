@@ -24,5 +24,5 @@ import kubatech.network.CustomTileEntityPacket;
 
 public interface CustomTileEntityPacketHandler {
 
-    void HandleCustomPacket(CustomTileEntityPacket customdata);
+    void handleCustomPacket(CustomTileEntityPacket customData);
 }

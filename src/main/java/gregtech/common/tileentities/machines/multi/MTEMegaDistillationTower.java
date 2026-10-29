@@ -13,8 +13,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER;
-import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_DISTILLATION_TOWER;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_DISTILLING;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
@@ -491,8 +491,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<>(this)
-            .withMachineModeIcons(OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER, OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
+            OVERLAY_BUTTON_MACHINE_MODE_DISTILLATION_TOWER,
+            OVERLAY_BUTTON_MACHINE_MODE_DISTILLING);
     }
 
     @Override

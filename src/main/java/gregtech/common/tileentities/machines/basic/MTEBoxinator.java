@@ -255,7 +255,7 @@ public class MTEBoxinator extends MTEBasicMachine {
                 .caching(false)
                 .items(GTUtility.copyAmount(64, aStack), tInput1)
                 .voltage(GTValues.V[mTier])
-                .notUnificated(true)
+                .notUnified(true)
                 .find() != null) {
                 return true;
             }

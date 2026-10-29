@@ -21,16 +21,16 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.common.covers.CoverFluidfilter;
+import gregtech.common.covers.CoverFluidFilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
-public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
+public class CoverFluidFilterGui extends CoverBaseGui<CoverFluidFilter> {
 
-    public CoverFluidfilterGui(CoverFluidfilter cover) {
+    public CoverFluidFilterGui(CoverFluidFilter cover) {
         super(cover);
     }
 

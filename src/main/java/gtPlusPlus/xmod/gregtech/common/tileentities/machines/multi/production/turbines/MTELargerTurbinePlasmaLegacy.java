@@ -108,7 +108,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
 
             // At this point all turbines are equivalent in all hatches, use the stats of the first turbine for
             // calculations
-            ItemStack turbineItem = mTurbineRotorHatches.get(0)
+            ItemStack turbineItem = mTurbineRotorHatches.getFirst()
                 .getTurbine();
             TurbineStatCalculator turbine = new TurbineStatCalculator(
                 (MetaGeneratedTool) turbineItem.getItem(),
@@ -128,7 +128,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    ItemStack aStack = getFullTurbineAssemblies().get(0)
+                    ItemStack aStack = getFullTurbineAssemblies().getFirst()
                         .getTurbine();
                     aTotalBaseEff += turbine.getPlasmaEfficiency() * 10000;
                     aTotalOptimalFlow += turbine.getOptimalPlasmaFlow();
@@ -164,7 +164,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
             // EU/t = EU/t * MIN(1, ( ( (FuelValue / 200) ^ 2 ) / EUPerTurbine))
             int fuelValue = 0;
             if (!tFluids.isEmpty()) {
-                fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
+                fuelValue = getFuelValue(new FluidStack(tFluids.getFirst(), 0));
             }
             float magicValue = (fuelValue * 0.005f) * (fuelValue * 0.005f);
             float efficiencyLoss = Math.min(1.0f, magicValue / euPerTurbine);
@@ -209,7 +209,8 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
 
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
+            FluidStack firstFuelType = new FluidStack(aFluids.getFirst(), 0); // Identify a SINGLE type of fluid to
+                                                                              // process.
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             if (fuelValue <= 0) {

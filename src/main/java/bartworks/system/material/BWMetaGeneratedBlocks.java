@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -117,7 +116,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
+        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesn't allow for nanoseconds.
         // This will just waste a few cpu cycles to allow the TE to be set
         BWUtil.shortSleep(0);
     }
@@ -150,7 +149,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return ((ITileEntityProvider) this).createNewTileEntity(world, metadata);
+        return this.createNewTileEntity(world, metadata);
     }
 
     @Override

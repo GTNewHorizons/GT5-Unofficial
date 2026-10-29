@@ -224,7 +224,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
-                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
+                // Didn't reach, but couldn't place in test spot anyway, try for another orevein
                 return NO_OVERLAP_AIR_BLOCK;
             }
         }
@@ -246,7 +246,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
-                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
+                // Didn't reach, but couldn't place in test spot anyway, try for another orevein
                 return NO_OVERLAP_AIR_BLOCK;
             }
         }
@@ -361,7 +361,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         double dx = chunkX / 16 - seedX / 16;
         double dz = chunkZ / 16 - seedZ / 16;
 
-        // Adjust the density down the more chunks we are away from the oreseed. The 5 chunks surrounding the seed
+        // Adjust the density down the more chunks we are away from the ore seed. The 5 chunks surrounding the seed
         // should always be max density due to truncation of Math.sqrt().
         int localDensity = Math.max(1, this.mDensity / (int) Math.sqrt(2 + dx * dx + dz * dz));
 

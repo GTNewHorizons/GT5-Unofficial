@@ -40,7 +40,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
 /**
- * A base class for singleblock MUI2 guis. Has configurable corner panels and makes building ui's easier.
+ * A base class for singleblocks using MUI2 guis. Has configurable corner panels and makes building uis easier.
  * The main overriding is done in
  * {@link #createContentSection(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
  *

@@ -267,19 +267,20 @@ public class GTValues {
      */
     public static IGT_NetworkHandler NW;
     /**
-     * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
-     * cheap
+     * Control the number of attempts to find a valid ore vein. Generally this maximum limit isn't hit, selecting a vein
+     * is
+     * inexpensive
      */
     public static int oreveinAttempts;
     /**
-     * Control number of attempts to place a valid ore vein.
+     * Control the number of attempts to place a valid ore vein.
      * <p>
-     * If a vein wasn't placed due to height restrictions, completely in the water, etc, another attempt is tried.
+     * If a vein wasn't placed due to height restrictions, completely in the water, etc., another attempt is tried.
      * </p>
      */
     public static int oreveinMaxPlacementAttempts;
     /**
-     * Whether to place small ores as placer ores for an orevein
+     * Whether to place small ores as placer ores for an ore vein
      */
     public static boolean oreveinPlacerOres;
     /**
@@ -352,7 +353,7 @@ public class GTValues {
     /**
      * This will set the blacklist for the world accelerator in TE mode.
      */
-    public static String[] blacklistedTileEntiyClassNamesForWA = new String[] {
+    public static String[] blacklistedTileEntityClassNamesForWA = new String[] {
         "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
         "advsolar.common.tiles.TileEntityUltimateSolarPanel", "advsolar.common.tiles.TileEntitySolarPanel",
         "advsolar.common.tiles.TileEntityQuantumSolarPanel", "advsolar.common.tiles.TileEntityHybridSolarPanel",
@@ -447,9 +448,9 @@ public class GTValues {
     public static final Iterator[] EMPTY_ITERATOR_ARRAY = new Iterator[0];
 
     /**
-     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be run. If the
      * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
-     * ran.
+     * run.
      */
     public static boolean DEVENV = Launch.blackboard == null
         || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");

@@ -8,9 +8,9 @@ import net.minecraft.server.MinecraftServer;
 public class AveragePerTickCounter {
 
     /**
-     * Averages a value over a certain amount of ticks
+     * Averages a value over a certain number of ticks
      *
-     * @param period amount of ticks to average (20 for 1 second)
+     * @param period number of ticks to average (20 for 1 second)
      *
      */
     public AveragePerTickCounter(int period) throws InvalidParameterException {
@@ -36,8 +36,8 @@ public class AveragePerTickCounter {
 
         final int currTick = getWorldTimeInTicks();
 
-        /// sums up values added in the same tick
-        /// for example a cable had an amp running through it multiple times in the same tick
+        // sums up values added in the same tick.
+        // for example, a cable had an amp running through it multiple times in the same tick
         if (currTick == timestamps[currIndex]) {
             values[currIndex] += value;
         } else if (currTick > timestamps[currIndex]) {

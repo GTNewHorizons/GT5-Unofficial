@@ -97,7 +97,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
+     * Updates the block bounds based on its current state. Args: world, x, y, z
      */
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -116,8 +116,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * Is this block (a) opaque and (B) a full 1m cube? This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     * Is this block (a) opaque and (B) a full 1m cube? This determines whether to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc. to this block.
      */
     @Override
     public boolean isOpaqueCube() {
@@ -125,7 +125,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+     * @return If this block doesn't render as an ordinary block, it will return False (examples: signs, buttons,
+     *         stairs, etc.)
      */
     @Override
     public boolean renderAsNormalBlock() {
@@ -266,14 +267,14 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
-            } else if (thePlayer.dimension != DimensionEverglades.DIMID) {
+            } else if (thePlayer.dimension != DimensionEverglades.DIM_ID) {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()
                     .transferPlayerToDimension(
                         thePlayer,
-                        DimensionEverglades.DIMID,
+                        DimensionEverglades.DIM_ID,
                         new TeleporterDimensionMod(
-                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIMID)));
+                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIM_ID)));
             } else {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()
@@ -342,7 +343,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     }
 
     /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+     * only called by clickMiddleMouseButton, and passed to inventory.setCurrentItem (along with isCreative)
      */
     @SideOnly(Side.CLIENT)
     public int idPicked(World par1World, int par2, int par3, int par4) {

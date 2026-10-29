@@ -14,13 +14,13 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.GTValues;
 
 /**
- * You are allowed to include this File in your Download, as i will not change it.
+ * You are allowed to include this File in your Download, as I will not change it.
  */
 public interface IGregTechDeviceInformation {
 
     /**
-     * Is this even a TileEntity which allows GregTech Sensor Kits? I need things like this Function for
-     * MetaTileEntities, you MUST check this!!! Do not assume that it's a Information returning Device, when it just
+     * Is this even a TileEntity that allows GregTech Sensor Kits? I need things like this Function for
+     * MetaTileEntities, you MUST check this!!! Do not assume that it's an Information-returning Device when it just
      * implements this Interface.
      */
     default boolean isGivingInformation() {

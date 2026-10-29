@@ -228,7 +228,7 @@ public class WerkstoffLoader {
         "Yttrium Oxide",
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
-            .enforceUnification(), // No autoadd here to gate this material
+            .enforceUnification(), // No auto-add here to gate this material
         // by hand
         6,
         TextureSet.SET_DULL,
@@ -1845,7 +1845,7 @@ public class WerkstoffLoader {
     }
 
     private static void addBridgeSubTags() {
-        // add specific GT materials subtags to various werkstoff bridgematerials
+        // add specific GT materials subtags to various werkstoff bridge-materials
 
         SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
     }
@@ -2031,7 +2031,7 @@ public class WerkstoffLoader {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
-            if (!mOreByProducts.isEmpty()) continue; // Not to add if there're already oreByProducts.
+            if (!mOreByProducts.isEmpty()) continue; // Not to add if there are already oreByProducts.
 
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {

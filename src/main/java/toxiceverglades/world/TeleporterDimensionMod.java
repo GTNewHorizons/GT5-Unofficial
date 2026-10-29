@@ -29,7 +29,7 @@ public class TeleporterDimensionMod extends Teleporter {
      */
     private final Long2ObjectOpenHashMap<Teleporter.PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>();
     /**
-     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
+     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players' initial
      * location.
      */
     private final LongList destinationCoordinateKeys = new LongArrayList();
@@ -431,7 +431,7 @@ public class TeleporterDimensionMod extends Teleporter {
     }
 
     /**
-     * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
+     * Called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
      * WorldServer.getTotalWorldTime() value.
      */
     @Override
@@ -441,12 +441,12 @@ public class TeleporterDimensionMod extends Teleporter {
             long j = par1 - 600L;
 
             while (iterator.hasNext()) {
-                long olong = iterator.nextLong();
-                Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(olong);
+                long next = iterator.nextLong();
+                Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(next);
 
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
-                    this.destinationCoordinateCache.remove(olong);
+                    this.destinationCoordinateCache.remove(next);
                 }
             }
         }

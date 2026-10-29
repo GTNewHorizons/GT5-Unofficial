@@ -48,7 +48,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void sendPlayerExeption(String s) {
+    public void sendPlayerException(String s) {
         Minecraft.getMinecraft().thePlayer.sendChatMessage("DetravScannerMod: " + s);
     }
 }

@@ -46,7 +46,7 @@ public class BeamCrafterRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Hydrogen.getGas(2000L))
-            .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24))
+            .itemOutputs(new ItemStack(ModItems.itemStandardParticleBase, 1, 24))
             // unknown particle
             .metadata(
                 BEAMCRAFTER_METADATA,
@@ -63,7 +63,7 @@ public class BeamCrafterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(new FluidStack(GTPPFluids.LiquidHydrogen, 1000))
-            .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 64, 24))
+            .itemOutputs(new ItemStack(ModItems.itemStandardParticleBase, 64, 24))
             // unknown particle better recipe
             .metadata(
                 BEAMCRAFTER_METADATA,
@@ -80,7 +80,7 @@ public class BeamCrafterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Duranium.getMolten(40L))
-            .itemInputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24))
+            .itemInputs(new ItemStack(ModItems.itemStandardParticleBase, 1, 24))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1)) // q anomaly
             .metadata(
                 BEAMCRAFTER_METADATA,

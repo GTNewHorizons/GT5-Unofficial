@@ -77,9 +77,7 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         ChunkCoordinates target = aCard.getTarget();
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if (((tTileEntity instanceof IGregTechDeviceInformation))
-            && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
-            IGregTechDeviceInformation info = (IGregTechDeviceInformation) tTileEntity;
+        if (((tTileEntity instanceof IGregTechDeviceInformation info)) && (info.isGivingInformation())) {
             List<String> tInfoList = new ArrayList<>(Arrays.asList(info.getInfoData()));
             info.getExtraInfoData(tInfoList);
             String[] tInfoData = tInfoList.toArray(new String[0]);

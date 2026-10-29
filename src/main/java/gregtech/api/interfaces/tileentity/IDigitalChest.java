@@ -3,13 +3,13 @@ package gregtech.api.interfaces.tileentity;
 import net.minecraft.item.ItemStack;
 
 /**
- * You are allowed to include this File in your Download, as i will not change it.
+ * You are allowed to include this File in your Download, as I will not change it.
  */
 public interface IDigitalChest extends IHasWorldObjectAndCoords {
 
     /**
      * Is this even a TileEntity of a Digital Chest? I need things like this Function for MetaTileEntities, you MUST
-     * check this!!! Do not assume that it's a Digital Chest or similar Device, when it just implements this Interface.
+     * check this!!! Do not assume that it's a Digital Chest or similar device when it just implements this Interface.
      */
     boolean isDigitalChest();
 

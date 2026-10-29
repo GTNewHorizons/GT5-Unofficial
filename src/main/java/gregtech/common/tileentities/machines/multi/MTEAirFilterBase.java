@@ -502,12 +502,12 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 200L == 0L) {
             // refresh casing on state change
-            int Xpos = aBaseMetaTileEntity.getXCoord() + aBaseMetaTileEntity.getBackFacing().offsetX;
-            int Ypos = aBaseMetaTileEntity.getYCoord() + 3;
-            int Zpos = aBaseMetaTileEntity.getZCoord() + aBaseMetaTileEntity.getBackFacing().offsetZ;
+            int xPos = aBaseMetaTileEntity.getXCoord() + aBaseMetaTileEntity.getBackFacing().offsetX;
+            int yPos = aBaseMetaTileEntity.getYCoord() + 3;
+            int zPos = aBaseMetaTileEntity.getZCoord() + aBaseMetaTileEntity.getBackFacing().offsetZ;
             try {
                 aBaseMetaTileEntity.getWorld()
-                    .markBlockRangeForRenderUpdate(Xpos - 1, Ypos, Zpos - 1, Xpos + 1, Ypos, Zpos + 1);
+                    .markBlockRangeForRenderUpdate(xPos - 1, yPos, zPos - 1, xPos + 1, yPos, zPos + 1);
             } catch (Exception ignored) {}
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

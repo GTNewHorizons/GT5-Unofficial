@@ -411,9 +411,9 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_WASHPLANT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_SIMPLEWASHER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_CHEMBATH);
     }
 
     @SideOnly(Side.CLIENT)
@@ -425,8 +425,8 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_WASHPLANT,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_SIMPLEWASHER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_CHEMBATH);
     }
 }

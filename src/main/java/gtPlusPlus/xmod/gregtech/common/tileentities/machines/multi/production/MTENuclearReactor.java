@@ -343,7 +343,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     public boolean turnCasingActive(final boolean status) {
-        // TODO
         if (this.mDynamoHatches != null) {
             for (final MTEHatchDynamo hatch : this.mDynamoHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
@@ -455,50 +454,50 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     @Override
     public void explodeMultiblock() {
         this.mInventory[1] = null;
-        long explodevalue;
+        long explodeValue;
         for (final MetaTileEntity tTileEntity : this.mInputBusses) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mOutputBusses) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mInputHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mOutputHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mDynamoHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mMufflerHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mEnergyHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
         for (final MetaTileEntity tTileEntity : this.mMaintenanceHatches) {
-            explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+            explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
             tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(explodevalue);
+                .doExplosion(explodeValue);
         }
-        explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+        explodeValue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
         this.getBaseMetaTileEntity()
-            .doExplosion(explodevalue);
+            .doExplosion(explodeValue);
     }
 
     @Override

@@ -91,15 +91,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Y = 6;
     private static final int OFFSET_Z = 1;
 
-    private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
+    private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_MACERATOR, // mac wash
         // thermal
         // mac
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_BATH, // mac chem mac centri
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL, // mac chem thermal mac
-        GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE, // forge forge simplewash
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_WASHER, // mac wash mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_CENTRIFUGE, // mac mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_SIFTER, // mac wash sift
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_BATH, // mac chem mac centri
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_THERMAL, // mac chem thermal mac
+        GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_IOF_FORGE, // forge forge simplewash
     };
 
     private static final IStructureDefinition<MTEIntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
@@ -278,7 +278,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         final int baseParallel = GTUtility
-            .safeInt(Math.min(Math.min((long) maxParallelFromPower, parallelFromFluids), parallelFromItems));
+            .safeInt(Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems));
         if (baseParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }

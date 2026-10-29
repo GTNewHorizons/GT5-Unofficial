@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
 public enum Dyes implements IColorModulationContainer {
@@ -46,27 +45,27 @@ public enum Dyes implements IColorModulationContainer {
     /** Constructs the configured cable insulation color. */
     private static int cableInsulation() {
         final Client.ColorModulation.CableInsulation insulation = Client.colorModulation.cableInsulation;
-        final int r = GTUtility.clamp(insulation.red, 0, 255);
-        final int g = GTUtility.clamp(insulation.green, 0, 255);
-        final int b = GTUtility.clamp(insulation.blue, 0, 255);
+        final int r = Math.clamp(insulation.red, 0, 255);
+        final int g = Math.clamp(insulation.green, 0, 255);
+        final int b = Math.clamp(insulation.blue, 0, 255);
         return (r << 16) | (g << 8) | b;
     }
 
     /** Constructs the configured machine metal color. */
     private static int machineMetal() {
         final Client.ColorModulation.MachineMetal metal = Client.colorModulation.machineMetal;
-        final int r = GTUtility.clamp(metal.red, 0, 255);
-        final int g = GTUtility.clamp(metal.green, 0, 255);
-        final int b = GTUtility.clamp(metal.blue, 0, 255);
+        final int r = Math.clamp(metal.red, 0, 255);
+        final int g = Math.clamp(metal.green, 0, 255);
+        final int b = Math.clamp(metal.blue, 0, 255);
         return (r << 16) | (g << 8) | b;
     }
 
     /** Constructs the configured gui metal color. */
     private static int guiMetal() {
         final Client.ColorModulation.GuiMetal metal = Client.colorModulation.guiMetal;
-        final int r = GTUtility.clamp(metal.red, 0, 255);
-        final int g = GTUtility.clamp(metal.green, 0, 255);
-        final int b = GTUtility.clamp(metal.blue, 0, 255);
+        final int r = Math.clamp(metal.red, 0, 255);
+        final int g = Math.clamp(metal.green, 0, 255);
+        final int b = Math.clamp(metal.blue, 0, 255);
         return (r << 16) | (g << 8) | b;
     }
 

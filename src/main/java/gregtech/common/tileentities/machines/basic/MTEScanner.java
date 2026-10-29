@@ -116,7 +116,7 @@ public class MTEScanner extends MTEBasicMachine {
         return new MTEScanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private IGTScannerHandler mLastSuccesfulHandler = null;
+    private IGTScannerHandler mLastSuccessfulHandler = null;
 
     @Override
     public int checkRecipe() {
@@ -143,7 +143,7 @@ public class MTEScanner extends MTEBasicMachine {
 
         // check handlers
         GTScannerResult result = RecipeMaps.scannerHandlers
-            .findRecipeWithCache(this.mLastSuccesfulHandler, this, input, specialSlot, fluid);
+            .findRecipeWithCache(this.mLastSuccessfulHandler, this, input, specialSlot, fluid);
         // abort if no recipe found
         if (result == null) {
             return DID_NOT_FIND_RECIPE;
