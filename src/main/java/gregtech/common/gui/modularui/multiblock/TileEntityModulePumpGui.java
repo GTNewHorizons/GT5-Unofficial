@@ -55,8 +55,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
     private static List<Map.Entry<Pair<Integer, Integer>, FluidStack>> SORTED_PUMPING_RECIPES = null;
 
-        return pumpInfo.children(super.createTerminalTextWidget(syncManager, parent).getChildren());
-    }
 
     @Override
     protected void initPanelMap(ModularPanel parent, PanelSyncManager syncManager) {
