@@ -36,9 +36,9 @@ public class FissionFuelLoader implements Runnable {
     @Override
     public void run() {
         // Remove IC2 recipes
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_238.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235_Small.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Uran238", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Uran235", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("smallUran235", 1L));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium_Small.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
