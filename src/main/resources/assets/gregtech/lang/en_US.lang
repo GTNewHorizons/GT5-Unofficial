@@ -2301,6 +2301,11 @@ gt.mbtt.structure.mega_oil_cracker_output_hatch=Any side casing opposite the hyd
 gt.mbtt.structure.requires_in_controller=Requires %s in Controller
 gt.mbtt.structure.adds_to_tier=(Adds to T%s)
 gt.mbtt.structure.new_structure=(New Structure)
+gt.mbtt.structure.front_center_5th_layer=Front center, 5th layer
+gt.mbtt.structure.any_turbine_casing=Any turbine casing
+gt.mbtt.structure.any_back_turbine_casing=Any back turbine casing
+gt.mbtt.structure.back_center_turbine_casing=Back center turbine casing
+gt.mbtt.structure.area_3x3_in_front_of_controller=3x3 area in front of controller
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2436,6 +2441,9 @@ gt.mbtt.machine_type.research_completer=Research Completer
 gt.mbtt.machine_type.solar_factory=Solar Factory
 gt.mbtt.machine_type.tree_farm=Tree Farm, TGS
 gt.mbtt.machine_type.thermal_centrifuge=Thermal Centrifuge, LTR
+gt.mbtt.machine_type.steam_turbine=Steam Turbine, %s
+gt.mbtt.machine_type.gas_turbine=Gas Turbine, %s
+gt.mbtt.machine_type.plasma_turbine=Plasma Turbine, %s
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
