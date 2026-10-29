@@ -74,7 +74,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
                 { "       ", "       ", " C   C ", "F FFF F", "D D D D", "GCGGGCG" },
                 { " E   E ", " A   A ", " A   A ", "FAF FAF", "DADDDAD", "GGGGGGG" } })
         .addElement('A', Casings.SteelPipeCasing.asElement())
-        .addElement('B', Casings.SteelFireboxCasing.asElement())
+        .addElement('B', activeBlocks(Casings.SteelFireboxCasing.asElement()))
         .addElement(
             'C',
             GTStructureChannels.HEATING_COIL

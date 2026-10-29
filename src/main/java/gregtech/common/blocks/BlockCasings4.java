@@ -1,10 +1,18 @@
 package gregtech.common.blocks;
 
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
+import gregtech.api.interfaces.IBlockWithClientMeta;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.ActiveSideOverlayTextures;
+import gregtech.common.data.GTCoilTracker;
+import gregtech.common.render.GTRendererBlock;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -12,7 +20,13 @@ import gregtech.api.enums.Textures;
  * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
  * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
-public class BlockCasings4 extends BlockCasingsAbstract {
+public class BlockCasings4 extends BlockCasingsAbstract
+    implements IBlockWithActiveOffset, IBlockWithClientMeta, IBlockWithTextures {
+
+    private final ActiveSideOverlayTextures textures = new ActiveSideOverlayTextures(
+        this,
+        metadata -> metadata == 3,
+        Textures.BlockIcons.MACHINE_CASING_FIREBOX_BLOOM);
 
     public BlockCasings4() {
         super(ItemCasings.class, "gt.blockcasings4", MaterialCasings.INSTANCE, 16);
@@ -46,12 +60,12 @@ public class BlockCasings4 extends BlockCasingsAbstract {
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return aMeta + 48;
+        return Math.floorMod(aMeta, ACTIVE_OFFSET) + 48;
     }
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
+        return switch (Math.floorMod(aMeta, ACTIVE_OFFSET)) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
@@ -78,6 +92,38 @@ public class BlockCasings4 extends BlockCasingsAbstract {
             case 15 -> Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
+    }
+
+    @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if (textures.hasOverlay(metadata) && GTCoilTracker.isCoilActive(world, x, y, z)) metadata += ACTIVE_OFFSET;
+        return metadata;
+    }
+
+    @Override
+    public int getDamageValue(World world, int x, int y, int z) {
+        return super.getDamageValue(world, x, y, z) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return super.damageDropped(metadata) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public ITexture[][] getTextures(int metadata) {
+        return textures.getTextures(metadata);
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
     }
 
 }
