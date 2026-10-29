@@ -399,11 +399,9 @@ gt.blockmachines.debug.tt.certain.name=Uncertainty Resolution
 gt.blockmachines.debugstructurewriter.name=Debug Structure Writer
 
 gt.blockmachines.electricboiler.1.tier.single.name=Advanced Boiler [LV]
-gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces 750L of Steam per second\nProduces 35 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.2.tier.single.name=Advanced Boiler [MV]
-gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces 1500L of Steam per second\nProduces 50 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.3.tier.single.name=Advanced Boiler [HV]
-gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces 2250L of Steam per second\nProduces 65 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
+gt.blockmachines.electricboiler.tier.single.tooltip=Produces §f%s/s§7 of §fSteam§7\n§5%s§7 Pollution per second\nConsumes fuel only when temperature is below §c100C§7\nFuels with burn time above §d500 ticks§7 grant bonus heat\nDoes not explode without water
 
 gt.blockmachines.electrodedetectorhatch.name=Electrode Detector Hatch
 gt.blockmachines.electrodedetectorhatch.tooltip=Can be installed in Electric Arc Furnace.\nOutputs Redstone Signal according to the damage of electrode used in the machine.\nRight click to open the GUI and setting.
