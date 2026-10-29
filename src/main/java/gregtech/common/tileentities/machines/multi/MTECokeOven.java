@@ -321,6 +321,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
     }
 
+
     @Override
     public void onClientSoundStateChanged() {
         doActivitySound(SoundResource.GTCEU_LOOP_FURNACE);
