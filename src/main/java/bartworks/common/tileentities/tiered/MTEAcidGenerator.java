@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.tiered;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -27,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -63,6 +63,20 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEAcidGenerator(this.mName, this.mTier, this.efficiency, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    protected String[] getTooltipLines() {
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.basicgenerator.acidgenerator.tooltip",
+            GTValues.V[mTier],
+            getCapacity());
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
     }
 
     @Override
@@ -145,26 +159,5 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     public boolean isOutputFacing(ForgeDirection side) {
         return side == this.getBaseMetaTileEntity()
             .getFrontFacing();
-    }
-
-    @Override
-    public String getLocalName() {
-        if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"),
-            StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "
-                + EnumChatFormatting.YELLOW
-                + GTValues.V[this.mTier],
-            StatCollector.translateToLocal("tooltip.rotor.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + this.getEfficiency(),
-            StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
-                + EnumChatFormatting.YELLOW
-                + this.maxAmperesOut() };
     }
 }

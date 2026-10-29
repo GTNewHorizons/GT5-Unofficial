@@ -193,8 +193,7 @@ tooltip.tile.radhatch.2.empty=Material: Empty
 tooltip.tile.radhatch.3.fmt=Sievert: %s
 tooltip.tile.radhatch.4.fmt=Mass: %s
 tooltip.tile.radhatch.5.fmt=Time (in t/s/m/h) to decay (1kg): %st/%ss/%sm/%sh
-tooltip.tile.acidgen.0.name=An Acid Generator
-tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
+gt.blockmachines.basicgenerator.acidgenerator.tooltip=An Acid Generator\nGenerates Power from Acid
 
 tooltip.bw.structure.glass=Glass
 tooltip.bw.structure.radio_hatch=Radio Hatch

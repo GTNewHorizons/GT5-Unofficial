@@ -10326,7 +10326,7 @@ gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
 
 # Basic Generators - Shared
-gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: %s%%
+gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: §a%s%%§7
 
 # Basic Generators - Combustion
 gt.blockmachines.basicgenerator.diesel.tier.01.name=Basic Combustion Generator
