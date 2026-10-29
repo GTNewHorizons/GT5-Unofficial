@@ -774,7 +774,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
-            .addDelayedRenderer(this, x + 0.5f + dir.offsetX * 17, y + 0.5f, z + 0.5f + dir.offsetZ * 17);
+            .addDelayedRenderer(
+                this,
+                x + 0.5f + dir.offsetX * 17,
+                y + 0.5f + dir.offsetY * 17,
+                z + 0.5f + dir.offsetZ * 17);
     }
 
     @Override
@@ -827,7 +831,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 32, y - 8, z - 32, x + 32, y + 8, z + 32);
+        return AxisAlignedBB.getBoundingBox(x - 32, y - 32, z - 32, x + 32, y + 32, z + 32);
     }
 
     @Override
