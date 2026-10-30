@@ -337,8 +337,6 @@ bw.bioname.binni_growth_medium=Binni Growth Medium
 bw.bioname.binni_bacteria=Binni Bacteria
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen Bacteria a Spatio
 bw.bioname.null=Debug
-
-# DNA and plasmid aliases from CoreMod
 bw.bioname.ovumbac=Ova Evolutionis
 bw.bioname.stemcellbac=Derivantur Cellula Evolutionis
 bw.bioname.biocellbac=Cellula Biologicum Evolutione
