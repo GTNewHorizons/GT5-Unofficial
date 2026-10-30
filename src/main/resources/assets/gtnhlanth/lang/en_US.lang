@@ -136,6 +136,7 @@ beamline.nei.energy_range=Energy: %s-%s eV
 beamline.energy.eV.fmt=Energy: §4%s§r eV
 beamline.energy.keV.fmt=Energy: §4%s§r keV
 beamline.nei.focus=Focus: %s
+beamline.nei.minimum_focus=Focus: >=%s
 beamline.focus.fmt=Focus: §9%s§r
 beamline.nei.amount=Amount: %s
 beamline.amount.fmt=Amount: §d%s§r
@@ -235,4 +236,3 @@ item.photomask.soc.name=Mask (SoC)
 item.photomask.ssoc.name=Mask (Simple SoC)
 item.photomask.uhpic.name=Mask (Ultra High Power IC)
 item.photomask.ulpic.name=Mask (Ultra Low Power IC)
-beamline.nei.minimum_focus=Focus: >=%s
