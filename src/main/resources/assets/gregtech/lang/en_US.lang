@@ -4846,7 +4846,6 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 GT5U.nei.heat_capacity=Heat: %s K
 GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
-GT5U.nei.duration_separator=/
 GT5U.nei.start_eu=Start: %s EU (Mk-%s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Density: %s EU/%s

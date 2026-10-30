@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
@@ -38,6 +37,6 @@ public class FakeCuttingSpecialInfo {
             .stream()
             .map(baseDuration -> (baseDuration * overclockFactor) / SECONDS)
             .map(NumberFormatUtil::formatNumber)
-            .collect(Collectors.joining(StatCollector.translateToLocal("GT5U.nei.duration_separator")));
+            .collect(Collectors.joining("/"));
     }
 }
