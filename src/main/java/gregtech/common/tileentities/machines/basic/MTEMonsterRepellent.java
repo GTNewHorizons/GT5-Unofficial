@@ -25,6 +25,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -41,11 +42,10 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocalFormatted(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.mobrep.tooltip",
-            (getRepellentRange(this.mTier, false)),
-            (getRepellentRange(this.mTier, true)),
-            (this.getEUToConsume())) };
+            getRepellentRange(this.mTier, false),
+            getRepellentRange(this.mTier, true));
     }
 
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,

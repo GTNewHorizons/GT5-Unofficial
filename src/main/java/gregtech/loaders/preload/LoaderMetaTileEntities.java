@@ -8464,212 +8464,212 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerBatteryBuffer1x1() {
         ItemList.Battery_Buffer_1by1_ULV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ULV.ID, "batterybuffer.01.tier.00", "", 0, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ULV.ID, "batterybuffer.01.tier.00", "", 0, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LV.ID, "batterybuffer.01.tier.01", "", 1, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LV.ID, "batterybuffer.01.tier.01", "", 1, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_MV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MV.ID, "batterybuffer.01.tier.02", "", 2, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MV.ID, "batterybuffer.01.tier.02", "", 2, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_HV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_HV.ID, "batterybuffer.01.tier.03", "", 3, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_HV.ID, "batterybuffer.01.tier.03", "", 3, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_EV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_EV.ID, "batterybuffer.01.tier.04", "", 4, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_EV.ID, "batterybuffer.01.tier.04", "", 4, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_IV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_IV.ID, "batterybuffer.01.tier.05", "", 5, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_IV.ID, "batterybuffer.01.tier.05", "", 5, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LuV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LuV.ID, "batterybuffer.01.tier.06", "", 6, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_LuV.ID, "batterybuffer.01.tier.06", "", 6, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_ZPM.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ZPM.ID, "batterybuffer.01.tier.07", "", 7, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_ZPM.ID, "batterybuffer.01.tier.07", "", 7, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UV.ID, "batterybuffer.01.tier.08", "", 8, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UV.ID, "batterybuffer.01.tier.08", "", 8, null, 1)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UHV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UHV.ID, "batterybuffer.01.tier.09", "", 9, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UHV.ID, "batterybuffer.01.tier.09", "", 9, null, 1)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UEV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UEV.ID, "batterybuffer.01.tier.10", "", 10, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UEV.ID, "batterybuffer.01.tier.10", "", 10, null, 1)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UIV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UIV.ID, "batterybuffer.01.tier.11", "", 11, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UIV.ID, "batterybuffer.01.tier.11", "", 11, null, 1)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UMV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UMV.ID, "batterybuffer.01.tier.12", "", 12, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UMV.ID, "batterybuffer.01.tier.12", "", 12, null, 1)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UXV.ID, "batterybuffer.01.tier.13", "", 13, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_UXV.ID, "batterybuffer.01.tier.13", "", 13, null, 1)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_MAXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MAX.ID, "batterybuffer.01.tier.14", "", 14, "", 1)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_1_BY_1_MAX.ID, "batterybuffer.01.tier.14", "", 14, null, 1)
                 .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer2x2() {
         ItemList.Battery_Buffer_2by2_ULV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ULV.ID, "batterybuffer.04.tier.00", "", 0, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ULV.ID, "batterybuffer.04.tier.00", "", 0, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LV.ID, "batterybuffer.04.tier.01", "", 1, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LV.ID, "batterybuffer.04.tier.01", "", 1, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_MV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MV.ID, "batterybuffer.04.tier.02", "", 2, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MV.ID, "batterybuffer.04.tier.02", "", 2, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_HV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_HV.ID, "batterybuffer.04.tier.03", "", 3, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_HV.ID, "batterybuffer.04.tier.03", "", 3, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_EV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_EV.ID, "batterybuffer.04.tier.04", "", 4, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_EV.ID, "batterybuffer.04.tier.04", "", 4, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_IV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_IV.ID, "batterybuffer.04.tier.05", "", 5, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_IV.ID, "batterybuffer.04.tier.05", "", 5, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LuV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LuV.ID, "batterybuffer.04.tier.06", "", 6, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_LuV.ID, "batterybuffer.04.tier.06", "", 6, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_ZPM.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ZPM.ID, "batterybuffer.04.tier.07", "", 7, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_ZPM.ID, "batterybuffer.04.tier.07", "", 7, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UV.ID, "batterybuffer.04.tier.08", "", 8, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UV.ID, "batterybuffer.04.tier.08", "", 8, null, 4)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UHV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UHV.ID, "batterybuffer.04.tier.09", "", 9, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UHV.ID, "batterybuffer.04.tier.09", "", 9, null, 4)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UEV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UEV.ID, "batterybuffer.04.tier.10", "", 10, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UEV.ID, "batterybuffer.04.tier.10", "", 10, null, 4)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UIV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UIV.ID, "batterybuffer.04.tier.11", "", 11, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UIV.ID, "batterybuffer.04.tier.11", "", 11, null, 4)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UMV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UMV.ID, "batterybuffer.04.tier.12", "", 12, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UMV.ID, "batterybuffer.04.tier.12", "", 12, null, 4)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UXV.ID, "batterybuffer.04.tier.13", "", 13, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_UXV.ID, "batterybuffer.04.tier.13", "", 13, null, 4)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_MAXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MAX.ID, "batterybuffer.04.tier.14", "", 14, "", 4)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_2_BY_2_MAX.ID, "batterybuffer.04.tier.14", "", 14, null, 4)
                 .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer3x3() {
         ItemList.Battery_Buffer_3by3_ULV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ULV.ID, "batterybuffer.09.tier.00", "", 0, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ULV.ID, "batterybuffer.09.tier.00", "", 0, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LV.ID, "batterybuffer.09.tier.01", "", 1, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LV.ID, "batterybuffer.09.tier.01", "", 1, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_MV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MV.ID, "batterybuffer.09.tier.02", "", 2, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MV.ID, "batterybuffer.09.tier.02", "", 2, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_HV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_HV.ID, "batterybuffer.09.tier.03", "", 3, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_HV.ID, "batterybuffer.09.tier.03", "", 3, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_EV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_EV.ID, "batterybuffer.09.tier.04", "", 4, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_EV.ID, "batterybuffer.09.tier.04", "", 4, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_IV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_IV.ID, "batterybuffer.09.tier.05", "", 5, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_IV.ID, "batterybuffer.09.tier.05", "", 5, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LuV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LuV.ID, "batterybuffer.09.tier.06", "", 6, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_LuV.ID, "batterybuffer.09.tier.06", "", 6, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_ZPM.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ZPM.ID, "batterybuffer.09.tier.07", "", 7, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_ZPM.ID, "batterybuffer.09.tier.07", "", 7, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UV.ID, "batterybuffer.09.tier.08", "", 8, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UV.ID, "batterybuffer.09.tier.08", "", 8, null, 9)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UHV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UHV.ID, "batterybuffer.09.tier.09", "", 9, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UHV.ID, "batterybuffer.09.tier.09", "", 9, null, 9)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UEV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UEV.ID, "batterybuffer.09.tier.10", "", 10, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UEV.ID, "batterybuffer.09.tier.10", "", 10, null, 9)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UIV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UIV.ID, "batterybuffer.09.tier.11", "", 11, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UIV.ID, "batterybuffer.09.tier.11", "", 11, null, 9)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UMV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UMV.ID, "batterybuffer.09.tier.12", "", 12, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UMV.ID, "batterybuffer.09.tier.12", "", 12, null, 9)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UXV.ID, "batterybuffer.09.tier.13", "", 13, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_UXV.ID, "batterybuffer.09.tier.13", "", 13, null, 9)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_MAXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MAX.ID, "batterybuffer.09.tier.14", "", 14, "", 9)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_3_BY_3_MAX.ID, "batterybuffer.09.tier.14", "", 14, null, 9)
                 .getStackForm(1L));
     }
 
     private static void registerBatteryBuffer4x4() {
         ItemList.Battery_Buffer_4by4_ULV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ULV.ID, "batterybuffer.16.tier.00", "", 0, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ULV.ID, "batterybuffer.16.tier.00", "", 0, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LV.ID, "batterybuffer.16.tier.01", "", 1, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LV.ID, "batterybuffer.16.tier.01", "", 1, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_MV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MV.ID, "batterybuffer.16.tier.02", "", 2, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MV.ID, "batterybuffer.16.tier.02", "", 2, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_HV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_HV.ID, "batterybuffer.16.tier.03", "", 3, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_HV.ID, "batterybuffer.16.tier.03", "", 3, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_EV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_EV.ID, "batterybuffer.16.tier.04", "", 4, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_EV.ID, "batterybuffer.16.tier.04", "", 4, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_IV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_IV.ID, "batterybuffer.16.tier.05", "", 5, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_IV.ID, "batterybuffer.16.tier.05", "", 5, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LuV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LuV.ID, "batterybuffer.16.tier.06", "", 6, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_LuV.ID, "batterybuffer.16.tier.06", "", 6, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_ZPM.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ZPM.ID, "batterybuffer.16.tier.07", "", 7, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_ZPM.ID, "batterybuffer.16.tier.07", "", 7, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UV.ID, "batterybuffer.16.tier.08", "", 8, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UV.ID, "batterybuffer.16.tier.08", "", 8, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UHV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UHV.ID, "batterybuffer.16.tier.09", "", 9, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UHV.ID, "batterybuffer.16.tier.09", "", 9, null, 16)
                 .getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UEV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UEV.ID, "batterybuffer.16.tier.10", "", 10, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UEV.ID, "batterybuffer.16.tier.10", "", 10, null, 16)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UIV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UIV.ID, "batterybuffer.16.tier.11", "", 11, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UIV.ID, "batterybuffer.16.tier.11", "", 11, null, 16)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UMV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UMV.ID, "batterybuffer.16.tier.12", "", 12, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UMV.ID, "batterybuffer.16.tier.12", "", 12, null, 16)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UXV.ID, "batterybuffer.16.tier.13", "", 13, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_UXV.ID, "batterybuffer.16.tier.13", "", 13, null, 16)
                 .getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_MAXV.set(
-            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MAX.ID, "batterybuffer.16.tier.14", "", 14, "", 16)
+            new MTEBasicBatteryBuffer(BATTERY_BUFFER_4_BY_4_MAX.ID, "batterybuffer.16.tier.14", "", 14, null, 16)
                 .getStackForm(1L));
     }
 

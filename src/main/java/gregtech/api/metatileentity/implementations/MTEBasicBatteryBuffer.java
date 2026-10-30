@@ -71,8 +71,9 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     public String[] getDescription() {
         String[] desc = new String[mDescriptionArray.length + 1];
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = StatCollector
-            .translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length);
+        desc[mDescriptionArray.length] = StatCollector.translateToLocalFormatted(
+            mInventory.length == 1 ? "gt.blockmachines.slot_count.desc.singular" : "gt.blockmachines.slot_count.desc",
+            mInventory.length);
         return desc;
     }
 

@@ -4,7 +4,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
@@ -16,12 +15,6 @@ public class MTEHatchAirIntakeAtmosphere extends MTEHatchAirIntake {
     public MTEHatchAirIntakeAtmosphere(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-    }
-
-    @Override
-    public String[] getCustomTooltip() {
-        return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_hatch_generator.atmosphere.desc", getMaxTickTime());
     }
 
     @Override

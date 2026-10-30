@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolar extends MTEBoiler {
 
-    public static final String LPS_FMT = "%s L/s";
+    public static final String LPS_FMT = "%s %s/s";
     protected int calcificationTicks = MachineStats.bronzeSolarBoiler.calcificationTicks;
     protected int cooldownTicks = MachineStats.bronzeSolarBoiler.cooldownTicks;
     protected int maxOutputPerSecond = MachineStats.bronzeSolarBoiler.maxOutputPerSecond;
@@ -59,7 +60,9 @@ public class MTEBoilerSolar extends MTEBoiler {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.boiler.solar.desc",
             formatNumber(getMaxOutputPerSecond()),
-            formatNumber(getMinOutputPerSecond()));
+            getFluidUnit(),
+            formatNumber(getMinOutputPerSecond()),
+            getFluidUnit());
     }
 
     public int getMinOutputPerSecond() {
@@ -239,6 +242,7 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
+        final String unit = getFluidUnit();
         return new String[] { IGregTechDeviceInformation.encode(
             "GT5U.infodata.boiler_solar.heat",
             String.format(
@@ -250,15 +254,18 @@ public class MTEBoilerSolar extends MTEBoiler {
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    formatNumber(getMinOutputPerSecond())),
+                    formatNumber(getMinOutputPerSecond()),
+                    unit),
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    formatNumber(getMaxOutputPerSecond()))),
+                    formatNumber(getMaxOutputPerSecond()),
+                    unit)),
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
-                    formatNumber(getProductionPerSecond()))) };
+                    formatNumber(getProductionPerSecond()),
+                    unit)) };
     }
 
     public int getHeatCapacityPercent() {
@@ -292,7 +299,8 @@ public class MTEBoilerSolar extends MTEBoiler {
             GOLD + StatCollector.translateToLocalFormatted(
                 "GT5U.waila.boiler_solar.output",
                 tag.getInteger("calcificationOutput"),
-                tag.getInteger("maxCalcificationOutput")));
+                tag.getInteger("maxCalcificationOutput"),
+                getFluidUnit()));
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }

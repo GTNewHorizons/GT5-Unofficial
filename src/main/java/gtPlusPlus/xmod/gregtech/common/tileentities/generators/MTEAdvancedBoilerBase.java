@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -18,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -29,11 +32,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     private final int tier;
 
     public MTEAdvancedBoilerBase(int aID, String aNameRegional, int tier) {
-        super(
-            aID,
-            "electricboiler." + tier + ".tier.single",
-            aNameRegional,
-            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+        super(aID, "electricboiler." + tier + ".tier.single", aNameRegional, "");
         this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
@@ -47,11 +46,10 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Produces " + getPollution() + " pollution/sec",
-            "Consumes fuel only when temperature is less than 100C",
-            "Fuel with burn time greater than 500 is more efficient.",
-            "Doesn't explode if there's no water",
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.electricboiler.tier.single.tooltip",
+                formatFluid(steamPerSecond),
+                getPollution()),
             GTPPCore.GT_Tooltip.get());
     }
 

@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
-import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createFoundryFlavorText;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleBaseText;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleLimitText;
@@ -38,6 +39,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.chassis3.flavor"));
             }
             case 4 -> {
+                tooltip.add(createTierLine(13));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
                 tooltip.add(
@@ -57,13 +59,10 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5",
                         TooltipHelper.SPEED_COLOR));
-                tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6"));
-                tooltip.add(createTierLine(13));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.universalcollapser.flavor"));
             }
             case 5 -> {
+                tooltip.add(createTierLine(12));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
                 tooltip.add(
@@ -73,17 +72,10 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.efficientoc.tooltip2",
                         TooltipHelper.SPEED_COLOR));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip3"));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
-
-                tooltip.add(createTierLine(12));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.efficientoc.flavor"));
             }
             case 6 -> {
+                tooltip.add(createTierLine(10));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
@@ -97,13 +89,10 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.powerefficient.tooltip3",
                         TooltipHelper.EFF_COLOR));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.powerefficient.tooltip4"));
-                tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.powerefficient.flavor"));
             }
             case 7 -> {
+                tooltip.add(createTierLine(11));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
@@ -142,26 +131,25 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11"));
-                tooltip.add(createTierLine(11));
                 tooltip.add(
                     createFoundryFlavorText("gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor"));
             }
             case 8 -> {
+                tooltip.add(createTierLine(10));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.parallel.tooltip1",
                         TooltipTier.VOLTAGE.getValue()));
-                tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip2"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.parallel.tooltip3",
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip2",
                         TooltipTier.VOLTAGE.getValue()));
-                tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
-                tooltip.add(createTierLine(10));
+                tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip3"));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.parallel.flavor"));
             }
             case 9 -> {
+                tooltip.add(createTierLine(11));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
                 tooltip
@@ -169,21 +157,27 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
-                        coolingStrOrder("100", "50"),
-                        coolingStrOrder("Super Coolant", "Spacetime"),
-                        coolingStrOrder("1", "2")));
+                        "100",
+                        "50",
+                        getFluidUnit() + "/s",
+                        StatCollector.translateToLocal(
+                            "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant"),
+                        StatCollector
+                            .translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime")));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
-                tooltip
-                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip5",
+                        formatNumber(25) + " " + getFluidUnit() + "/s"));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
-                tooltip.add(createTierLine(11));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.hypercooler.flavor"));
             }
             case 10 -> {
+                tooltip.add(createTierLine(10));
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
@@ -193,10 +187,6 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
                         TooltipHelper.SPEED_COLOR));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
-                tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor"));
             }
         }

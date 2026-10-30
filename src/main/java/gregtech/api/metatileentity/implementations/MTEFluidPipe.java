@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -935,21 +936,25 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public String[] getDescription() {
-        List<String> descriptions = new ArrayList<>();
-        descriptions.add(
+        return buildPipeTooltipLines().toArray(new String[0]);
+    }
+
+    private List<String> buildPipeTooltipLines() {
+        List<String> lines = new ArrayList<>();
+        lines.add(
             StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
-        descriptions.add(
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
+        lines.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
         if (!mGasProof) {
-            descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
+            lines.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
         if (mPipeAmount != 1) {
-            descriptions.add(
+            lines.add(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.pipe_amount.desc", mPipeAmount));
         }
-        return descriptions.toArray(new String[0]);
+        return lines;
     }
 
     @Override
@@ -985,38 +990,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-
-        // Basic pipe stats
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(mCapacity * 20L)
-                + " L/s");
-
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(mHeatResistance)
-                + "K");
-
-        // Gas handling info
-        if (mGasProof) {
-            currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
-                    + EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.yes"));
-        } else {
-            currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
-                    + EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.no"));
-        }
-
-        // Multi-pipe info
-        if (mPipeAmount > 1) {
-            currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
-        }
+        currenttip.addAll(buildPipeTooltipLines());
+        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,

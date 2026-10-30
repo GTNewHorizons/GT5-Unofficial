@@ -258,7 +258,8 @@ gt.voltage.tier=-tier
 
 # Tooltip for Block Machines
 gt.blockmachines.slot_count.desc=%s Slots
-gt.blockmachines.recipe_output_limit.desc=Only produce the first §e%s§7 item output of each recipe
+gt.blockmachines.slot_count.desc.singular=%s Slot
+gt.blockmachines.recipe_output_limit.desc=Only outputs the first §e%s§7 item in the recipe
 gt.blockmachines.recipe_output_limit_plural.desc=Produce the first §e%s§7 item outputs of each recipe
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
@@ -272,14 +273,12 @@ gt.blockmachines.long_distance_fluid_pipeline.desc=Sends fluids over long distan
 gt.blockmachines.long_distance_pipeline.desc=Only one Input and Output are allowed per pipeline\nOnly Input and Output have to be chunkloaded\nTransfer rate is solely limited by input rate\nMinimum distance: %s blocks
 gt.blockmachines.dynamo_hatch.desc=Generating electric Energy from Multiblocks\nPuts out up to 1 Amp
 gt.blockmachines.dynamo_hatch_buffer.desc=Dynamo with internal storage and additional Amp capacity\nDoes not accept more than %sEU/t as input
-gt.blockmachines.energy_hatch.desc=Energy Injector for Multiblocks\nAccepts up to 2 Amps
-gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
+gt.blockmachines.energy_hatch.desc=Energy Input for Multiblocks\nAccepts up to %1$s
+gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to §92^(2^31)§7 EU\n§7Does not connect to wires. This block withdraws EU from the network
 gt.blockmachines.energy_hatch_debug.desc=§7Buffers EU internally\n§7Configure Amps and Voltage in the UI\n§o/gt global_energy_set Develo-... begone!
 gt.blockmachines.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %s L
 gt.blockmachines.input_hatch_multislot.desc=Fluid Input for Multiblocks\nCapacity: %s L\nCan hold %s types of fluid.
 gt.blockmachines.input_hatch_generator.desc=Fluid Input for Multiblocks\nCapacity: %s L\nHatch Tier: %s
-gt.blockmachines.input_hatch_generator.airintake.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates %s of Air every %s ticks
-gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCompletely fills up every %s ticks
 gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
 gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
 gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling\nand adjust the slot refresh timer.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
@@ -310,15 +309,18 @@ gt.blockmachines.output_bus_me.desc=Item Output for Multiblocks\nStores directly
 gt.blockmachines.output_bus_steam.desc=Item Output for Steam Multiblocks\nDoes not automatically export items\nCapacity: 4 stacks\nDoes not work with non-steam multiblocks
 gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be configured to work
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
-gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
-gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
-gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s L/sec§7
-gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
+gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause... things)\n§5%s%%§7 Pollution Reduction\n§cDO NOT OBSTRUCT THE OUTPUT!§7
+gt.blockmachines.boiler.solar.desc=§8§oSteam Power by the Sun§r\nProduces §f%s %s/s§7 of §fSteam§7\nCalcifies over time, reducing §fSteam§7 output to §f%s %s/s§7\nBreak and replace to descale
+gt.blockmachines.fluidpipe.capacity.desc=Fluid Capacity: §9%s/s§7
+gt.blockmachines.fluidpipe.heat.desc=Heat Limit: §c%sK§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
-gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/%s sec
-gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/sec
-gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/%s ticks
+gt.blockmachines.itempipe.capacity.persecond.singular=Item Capacity: %s Stack/s
+gt.blockmachines.itempipe.capacity.second.singular=Item Capacity: %s Stack/s
+gt.blockmachines.itempipe.capacity.tick.singular=Item Capacity: %s Stack/t
+gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/s
+gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/s
+gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/t
 gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
@@ -356,7 +358,7 @@ gt.blockmachines.super.chest.name=Super Chest %s
 gt.blockmachines.super.tank.name=Super Tank %s
 gt.blockmachines.hatch.pattern_provider.name=Crafting Pattern Provider (%s)
 gt.blockmachines.rockbreaker.name=Cryogenic Magma Solidifier R-%s
-gt.blockmachines.locker.desc=Stores and recharges Armor\nClick with Screwdriver to change Style
+gt.blockmachines.locker.desc=Stores and recharges Armor\nClick with §fScrewdriver§7 to change Style
 gt.blockmachines.hatch.multi.input.name=Quadruple Input Hatch (%s)
 gt.blockmachines.antimatterhatch.name=Antimatter Hatch
 
@@ -396,11 +398,9 @@ gt.blockmachines.debug.tt.certain.name=Uncertainty Resolution
 gt.blockmachines.debugstructurewriter.name=Debug Structure Writer
 
 gt.blockmachines.electricboiler.1.tier.single.name=Advanced Boiler [LV]
-gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces 750L of Steam per second\nProduces 35 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.2.tier.single.name=Advanced Boiler [MV]
-gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces 1500L of Steam per second\nProduces 50 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
 gt.blockmachines.electricboiler.3.tier.single.name=Advanced Boiler [HV]
-gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces 2250L of Steam per second\nProduces 65 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
+gt.blockmachines.electricboiler.tier.single.tooltip=Produces §f%s/s§7 of §fSteam§7\n§5%s§7 Pollution per second\nConsumes fuel only when temperature is below §c100C§7\nFuels with burn time above §d500 ticks§7 grant bonus heat\nDoes not explode without water
 
 gt.blockmachines.electrodedetectorhatch.name=Electrode Detector Hatch
 gt.blockmachines.electrodedetectorhatch.tooltip=Can be installed in Electric Arc Furnace.\nOutputs Redstone Signal according to the damage of electrode used in the machine.\nRight click to open the GUI and setting.
@@ -421,8 +421,8 @@ gt.blockmachines.gt.icecreammachine.name=Ice Cream Machine
 gt.blockmachines.hatch.advancedbeamlineoutput.name=Filtered Beam Output Hatch
 gt.blockmachines.hatch.air.intake.tier.00.name=Air Intake Hatch
 gt.blockmachines.hatch.air.intake.tier.01.name=Extreme Air Intake Hatch
-gt.blockmachines.hatch.air.intake.tier.01.tooltip=Fluid Input for Multiblocks\nCapacity: 256,000 L\nHatch Tier: §bZPM§r\n§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates 40000 of Air every 20 ticks
 gt.blockmachines.hatch.air.intake.tier.02.name=Atmospheric Intake Hatch
+gt.blockmachines.hatch.air.intake.desc=Fluid Input for Multiblocks, Draws in the surrounding Air\nCapacity: %1$s\nIntakes §f%2$s§7 of §fAir§7\n§cDO NOT OBSTRUCT THE INPUT!
 gt.blockmachines.hatch.beamlineinput.name=Beam Input Hatch
 gt.blockmachines.hatch.beamlineoutput.name=Beam Output Hatch
 gt.blockmachines.hatch.blackholeutility.name=Black Hole Utility Hatch
@@ -593,7 +593,7 @@ gt.blockmachines.automation.regulator.name=%1$s Regulator
 gt.blockmachines.automation.itemdistributor.name=%1$s Item Distributor
 gt.blockmachines.batterycharger.name=%1$s Battery Charger
 gt.blockmachines.batteryturbocharger.name=%1$s Turbo Charger
-gt.blockmachines.batterycharger.desc=Each battery gives 8A in/4A out (min 4A/2A)
+gt.blockmachines.batterycharger.desc=Each battery gives %1$s8A§7 in/%1$s4A§7 out (min %1$s4A§7/%1$s2A§7)
 gt.blockmachines.batteryturbocharger.desc=64A in /16A out, 120A/item, Disable to force Charge
 gt.blockmachines.automation.filter.desc=Filters up to 9 different Items\nUse Screwdriver to regulate output stack size
 gt.blockmachines.automation.typefilter.desc=Filters 1 Item Type\nUse Screwdriver to regulate output stack size
@@ -1018,7 +1018,7 @@ gt.blockmachines.basicmachine.microtransmitter.05.name=IV Microwave Energy Trans
 gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Microwave Energy Transmitter
 gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Microwave Energy Transmitter
 gt.blockmachines.basicmachine.microtransmitter.08.name=UV Microwave Energy Transmitter
-gt.blockmachines.basicmachine.microtransmitter.tooltip=Transmits Energy Wirelessly\nRequires Redstone Signal to be Activated\n0.004EU Loss per 100 Blocks\nWhen Doing Inter-dimensional Transmission\nUses Nitrogen Plasma and Requires a Dragon Egg Around\nAlso Multiplies Loss by 100x 
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Transmits energy wirelessly\nRequires a redstone signal to activate\nEU Loss is §b0.004 EU§7 per §a100 Blocks§7\nWhen transmitting across dimensions\nRequires §9Nitrogen Plasma§7 and a nearby §6Dragon Egg§7\nEU Loss is multiplied by §4100x§7
 gt.blockmachines.basicmachine.microwave.tier.01.name=Basic Microwave
 gt.blockmachines.basicmachine.microwave.tier.02.name=Advanced Microwave
 gt.blockmachines.basicmachine.microwave.tier.03.name=Advanced Microwave II
@@ -1034,7 +1034,7 @@ gt.blockmachines.basicmachine.microwave.tier.12.name=Epic UFO Engine IV
 gt.blockmachines.basicmachine.miner.tier.01.name=Basic Miner
 gt.blockmachines.basicmachine.miner.tier.02.name=Good Miner
 gt.blockmachines.basicmachine.miner.tier.03.name=Advanced Miner
-gt.blockmachines.basicmachine.miner.tooltip=Digging ore instead of you\nUse Screwdriver to regulate work area\nUse Soft Mallet to disable and retract the pipe\n§e%s§7 EU/t, §f%s§7 sec per block, no stuttering\nMaximum work area: §f%sx%s\nSmall ore fortune bonus of §f%s
+gt.blockmachines.basicmachine.miner.tooltip=Digging ore instead of you\nMaximum work area: §a%sx%s§7\nSmall ore fortune bonus of §a%s§7\n§e%s§7 §fEU/t§7, §d%ss§7 per block, no stuttering\nUse §fScrewdriver§7 to regulate work area\nUse §fSoft Mallet§7 to disable and retract the pipe
 gt.blockmachines.basicmachine.mixer.tier.01.name=Basic Mixer
 gt.blockmachines.basicmachine.mixer.tier.02.name=Advanced Mixer
 gt.blockmachines.basicmachine.mixer.tier.03.name=Advanced Mixer II
@@ -1055,7 +1055,7 @@ gt.blockmachines.basicmachine.mobrep.tier.05.name=Advanced Monster Repellator IV
 gt.blockmachines.basicmachine.mobrep.tier.06.name=Elite Monster Repellator
 gt.blockmachines.basicmachine.mobrep.tier.07.name=Elite Monster Repellator II
 gt.blockmachines.basicmachine.mobrep.tier.08.name=Ultimate Monster Banisher
-gt.blockmachines.basicmachine.mobrep.tooltip=Repels nasty Creatures. Radius: %s unpowered / %s powered. Costs %s EU/t
+gt.blockmachines.basicmachine.mobrep.tooltip=Repels nasty Creatures\nRadius: §a%s§7 unpowered, §a%s§7 powered
 gt.blockmachines.basicmachine.orewasher.tier.01.name=Basic Ore Washing Plant
 gt.blockmachines.basicmachine.orewasher.tier.02.name=Advanced Ore Washing Plant
 gt.blockmachines.basicmachine.orewasher.tier.03.name=Advanced Ore Washing Plant II
@@ -4574,7 +4574,7 @@ GT5U.item.cable.multi.success=Found %d cables, connected %d cables and %d blocks
 
 GT5U.item.tank.locked_to=Content locked to §e%s
 
-GT5U.item.pipe.capacity=Capacity
+GT5U.item.pipe.capacity=Fluid Capacity: %s
 GT5U.item.pipe.heat_resistance=Heat Resistance
 GT5U.item.pipe.gas_proof=Gas Proof
 GT5U.item.pipe.gas_proof.yes=Yes
@@ -6408,8 +6408,8 @@ gt.item.cover.wireless_activity_detector.tooltip=Transfers Activity as Redstone 
 ## Special items
 gt.item.display.its_free.name=ITS FREE
 gt.item.display.its_free.tooltip=(or at least almost free)
-gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n%sSpeed: +%d%%\n%sEU Usage: %d%%\n%sParallel: %d
-gt.magnet.tooltip.exotic=%s%sCan Use Multi-Amp Hatches\n%sLimit to one energy hatch if using Multi-Amp
+gt.magnet.tooltip.base=Used in Magnetic Flux Exhibitor\n§6%d§7 Parallels\n§a+%d%%§7 Speed\n§b%d%%§7 EU Usage
+gt.magnet.tooltip.exotic=Can use §aMulti-Amp Hatches§7, but only one
 gt.sawblade.tooltip.base=Used in Industrial Cutting Factory\nAllows a §dCutting Factory§7 to use %s\n§6%d §7Parallels per §fVoltage §7Tier\n§a%d%% §7Speed\n§b%d%% §7EU usage
 gt.sawblade.tooltip.hatch_tier_limit=Energy Hatches up to %s§7
 gt.sawblade.tooltip.hatch_tier_unlimited=Energy Hatches of any tier
@@ -7066,7 +7066,7 @@ GT5U.waila.transformer.step_down=Step Down
 GT5U.waila.transformer.step_up=Step Up
 GT5U.waila.transformer.input=Input:§r %s(%dA)
 GT5U.waila.transformer.output=Output:§r %s(%dA)
-GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
+GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %s/%s %s/s
 GT5U.waila.large_boiler.steam_output=Steam Output: §a%s§r %s/t
 GT5U.waila.large_boiler.superheated_steam_output=Superheated Steam Output: §a%s§r %s/t
 GT5U.waila.large_boiler.energy_output=Energy Output: §a%s§r %s/t
@@ -7522,66 +7522,60 @@ gt.blockmachines.magical.maintenance.desc.1=Consumes §b25 §7Primal Vis of each
 gt.blockmachines.magical.maintenance.desc.2=§eAer§7, §aTerra§7, §cIgnis§7, §9Aqua§7, §fOrdo§7, §8Perditio
 
 # Exo-Foundry
+gt.blockmachines.multimachine.foundry.tier=%s §7Tier
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
 gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
-gt.blockmachines.multimachine.foundry.tier=- Tier: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
 
 gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s4x
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §615
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Additionally allows for §1§nUIV+§7 Recipes to be processed
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6=   paired with the §bHypercooler§7 module
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- §a400%%§7 Speed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- §b400%%§7 EU Usage
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- §6-15 §7Hatch Space
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Allows §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- §a200%%§7 Speed and §b200%%§7 EU Usage when paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.4
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s40%%§7 speed
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aProto-Volt Stabilizer§7 module
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- §d+0.4 §7Overclock Factor, providing §a+40%%§7 Speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- §d+0.1 §7Overclock Factor when paired with the §aProto-Volt Stabilizer§7 module
 
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Sentient Overclocker§7 module
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- §b90%%§7 EU Usage
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- §b0.8x §7EU Cost per §fModule§7 (multiplicative)
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- §b0.5x §7EU Cost when paired with the §3Sentient Overclocker§7 module
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows §1§nUIV+§7 Recipes to be processed
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants extra effects when paired with at least 2 other §dHeliocast Reinforcement§7 modules
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy which is rolled independently per value
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§7 Modules present (inclusive)
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Increases Base Speed by %s100%% * Entropy
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Subtracts %s15%% * Entropy§7 from Initial EU Cost
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Adds %s8 * Entropy§7 Parallels per %sVoltage§7 Tier
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Increases Overclock Factor by §d0.05 * Entropy
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Increases Maximum Overclocks by Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy, rolled independently per value
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement Modules§7 present (inclusive)
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=§f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §a100%% * Entropy§7 Speed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=- §b-15%% * Entropy§7 EU Cost
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=- §6+8 * Entropy§7 Parallels per §fVoltage§7 Tier
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §d+0.05 * Entropy§7 Overclock Factor
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=§f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=- Increases §5Maximum Overclocks§7 by Entropy
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
-gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7Tier
-gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §68 §7Parallels per %s §7Tier when
-gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- §612 §7Parallels per %s §7Tier
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- §6+8 §7Parallels per %s §7Tier when paired with the §cStreamlined Casting §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- §6+36 §7Hatch Space
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid§7 for §dExtra Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains §3%s§7/§5%s§7 %s of §3%s§7/§5%s§7 to gain §31§7/§52§7 §dMaximum Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bCooling Fluid§7 when the §6Foundry§7 is active
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- Requires an Input Hatch on any Cryogenic Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity§7 at §a%s§7 to gain §a3§7 Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser§7 module
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant=Super Coolant
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime=Spacetime
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s80%% when
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- §a150%%§7 Speed
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- §a+80%%§7 Speed when paired with the §eSuperdense Casting Basin §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
@@ -10329,13 +10323,13 @@ gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
 
 # Basic Generators - Shared
-gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: %s%%
+gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: §a%s%%§7
 
 # Basic Generators - Combustion
 gt.blockmachines.basicgenerator.diesel.tier.01.name=Basic Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tier.02.name=Advanced Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tier.03.name=Turbo Combustion Generator
-gt.blockmachines.basicgenerator.diesel.tooltip=Requires liquid Fuel\nCauses %d Pollution per second
+gt.blockmachines.basicgenerator.diesel.tooltip=Generates Power from Liquid Fuel\n§5%d§7 Pollution per second
 
 # Basic Generators - Gas Turbine
 gt.blockmachines.basicgenerator.gasturbine.tier.01.name=Basic Gas Turbine
@@ -10343,25 +10337,25 @@ gt.blockmachines.basicgenerator.gasturbine.tier.02.name=Advanced Gas Turbine
 gt.blockmachines.basicgenerator.gasturbine.tier.03.name=Turbo Gas Turbine
 gt.blockmachines.basicgenerator.gasturbine.tier.04.name=Turbo Gas Turbine II
 gt.blockmachines.basicgenerator.gasturbine.tier.05.name=Turbo Gas Turbine III
-gt.blockmachines.basicgenerator.gasturbine.tooltip=Requires flammable Gases\nCauses %d Pollution per second
+gt.blockmachines.basicgenerator.gasturbine.tooltip=Generates Power from Flammable Gases\n§5%d§7 Pollution per second
 
 # Basic Generators - Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Basic Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Advanced Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Turbo Steam Turbine
-gt.blockmachines.basicgenerator.steamturbine.tooltip=Converts Steam into EU\nBase rate: 2L of Steam -> 1 EU\nFuel Efficiency: %s%%\nConsumes up to %sL of Steam per second
+gt.blockmachines.basicgenerator.steamturbine.tooltip=Generates Power from Steam\nBase rate: §f2%s§7 of §fSteam§7 -> §e1 EU§7\nConsumes up to §f%s %s/s§7 of §fSteam§7\nFuel Efficiency: §a%s%%§7
 
 # Basic Generators - Naquadah Reactor
 gt.blockmachines.basicgenerator.naquadah.tier.04.name=Naquadah Reactor Mk-I
-gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Requires Enriched Naquadah Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Generates Power from Naquadah Bolts
 gt.blockmachines.basicgenerator.naquadah.tier.05.name=Naquadah Reactor Mk-II
-gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Requires Enriched Naquadah Rods
+gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Generates Power from Naquadah Rods
 gt.blockmachines.basicgenerator.naquadah.tier.06.name=Naquadah Reactor Mk-III
-gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Requires Enriched Naquadah Long Rods
+gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Generates Power from Naquadah Long Rods
 gt.blockmachines.basicgenerator.naquadah.tier.07.name=Naquadah Reactor Mk-IV
-gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Requires Naquadria Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Generates Power from Naquadria Bolts
 gt.blockmachines.basicgenerator.naquadah.tier.08.name=Naquadah Reactor Mk-V
-gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Requires Naquadria Rods
+gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Generates Power from Naquadria Rods
 
 # Basic Generators - Plasma Generator
 gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Plasma Generator Mk-I
@@ -10369,7 +10363,7 @@ gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Plasma Generator Mk
 gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Plasma Generator Mk-III
 gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Plasma Generator Mk-IV
 gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Ultimate Pocket Sun
-gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Plasma into energy
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Generates Power from Plasma
 
 # Basic Generators - Magic Energy Converter
 gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Novice Magic Energy Converter
@@ -10382,9 +10376,9 @@ gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Novice Magic En
 gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Adept Magic Energy Absorber
 gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Master Magic Energy Absorber
 gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Grandmaster Magic Energy Absorber
-gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nFeasts on §d§nmagic§7§n close to it:\n- %s\n- %sEU per §dEnder Crystal§7 in range\n§r \n§nLookup range (Use Screwdriver to change):\nDefault: §a%s\nMax: §a%s\n§r \n§nFuels on §d§nenchantments§7§n input:\n- Item: %sEU per §denchant§7 weight × level / max\n- Book: 10000EU per §denchant§7 weight × level / max\n§r \nEfficiency: §a%s%%
-gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=A §7 §dDragon Egg§7 atop
-gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=An §e§nEXCLUSIVE§r§7 §dDragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=Feasts on nearby §dMagic§7:\n- %s\n- §e%s EU§7 per §5Ender Crystal§7\n\nLookup Range§7, use a §fScrewdriver§7 to change\nDefault: §a%s\nMax: §a%s\n\nFuels on §dEnchantments§7:\n- Item: §e%s EU§7 per §dEnchant Weight * Level§7\n- Book: §e10,000 EU§7 per §dEnchant Weight * Level§7\n\nEfficiency: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=A §6Dragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=An §eEXCLUSIVE§7 §6Dragon Egg§7 atop
 gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t from an §dEnergised Node§7\n- %sEU per §dEssentia§7 Aspect-Value from containers in range
 
 # Basic Generators - Solar Panel
@@ -10397,13 +10391,13 @@ gt.blockmachines.basicgenerator.solarpanel.05.name=Advanced Solar Panel IV
 gt.blockmachines.basicgenerator.solarpanel.06.name=Elite Solar Panel
 gt.blockmachines.basicgenerator.solarpanel.07.name=Elite Solar Panel II
 gt.blockmachines.basicgenerator.solarpanel.08.name=Ultimate Solar Panel
-gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates EU From Solar Power\nDoes not generate power when raining\nCleans itself automatically\nDoes not explode in rain!
+gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates Power from the Sun\nDoes not generate power when raining\nCleans itself automatically\nDoes not explode in rain!
 
 # Basic Generators - Lightning Rod
 gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
 gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
 gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
-gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates Power from Lightning
 
 # NEI Aliases
 gt.alias.debug=Debug
