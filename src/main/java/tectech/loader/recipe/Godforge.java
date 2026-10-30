@@ -263,37 +263,6 @@ public class Godforge implements Runnable {
                 }
             }
 
-            // Multi-step
-            ItemStack[] solids_t1_xstep = { MaterialsElements.getInstance().NEPTUNIUM.getDust(1),
-                MaterialsElements.getInstance().FERMIUM.getDust(1) };
-
-            FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
-
-            FluidStack[] solid_plasmas_t1_xstep = {
-                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 1 * INGOTS),
-                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1 * INGOTS) };
-
-            for (int i = 0; i < solids_t1_xstep.length; i++) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(solids_t1_xstep[i])
-                    .fluidOutputs(solid_plasmas_t1_xstep[i])
-                    .duration(14 * SECONDS)
-                    .eut(TierEU.RECIPE_UXV)
-                    .metadata(FOG_PLASMA_MULTISTEP, true)
-                    .metadata(FOG_PLASMA_TIER, 1)
-                    .addTo(godforgePlasmaRecipes);
-
-                if (molten_t1_xstep[i] != null) {
-                    GTValues.RA.stdBuilder()
-                        .fluidInputs(molten_t1_xstep[i])
-                        .fluidOutputs(solid_plasmas_t1_xstep[i])
-                        .duration(14 * SECONDS)
-                        .eut(TierEU.RECIPE_UXV)
-                        .metadata(FOG_PLASMA_MULTISTEP, true)
-                        .metadata(FOG_PLASMA_TIER, 1)
-                        .addTo(godforgePlasmaRecipes);
-                }
-            }
         }
         // Exotic Plasmas
         {
@@ -340,14 +309,17 @@ public class Godforge implements Runnable {
             // Multi-step
             ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
                 Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1),
-                Materials.SixPhasedCopper.getDust(1) };
+                Materials.SixPhasedCopper.getDust(1), MaterialsElements.getInstance().NEPTUNIUM.getDust(1),
+                MaterialsElements.getInstance().FERMIUM.getDust(1) };
 
             FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
 
             FluidStack[] solid_plasmas_t2_xstep = {
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
                 Materials.Tritanium.getPlasma(1 * INGOTS), Materials.Flerovium.getPlasma(1 * INGOTS),
-                Materials.Neutronium.getPlasma(1 * INGOTS), Materials.SixPhasedCopper.getPlasma(1 * INGOTS) };
+                Materials.Neutronium.getPlasma(1 * INGOTS), Materials.SixPhasedCopper.getPlasma(1 * INGOTS),
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t2_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
