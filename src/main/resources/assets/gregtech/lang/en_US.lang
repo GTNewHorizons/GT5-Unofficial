@@ -4846,8 +4846,7 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 GT5U.nei.heat_capacity=Heat: %s K
 GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
-GT5U.nei.display.overclocked_tier=(OC) %s
-GT5U.nei.duration_alternatives=%s/%s
+GT5U.nei.duration_separator=/
 GT5U.nei.start_eu=Start: %s EU (Mk-%s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Density: %s EU/%s
@@ -6962,6 +6961,7 @@ GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
 GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
+GT5U.nei.display.overclocked_tier=%s %s
 GT5U.nei.display.average=Average: %s EU/t %s
 GT5U.nei.display.windmill=Windmill
 GT5U.nei.display.require_heavy_mode=Requires Heavy Mode

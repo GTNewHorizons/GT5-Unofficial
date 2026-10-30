@@ -53,9 +53,8 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
-        String multistepKey = recipeInfo.recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false)
-            ? "tt.nei.plasma.multistep.yes"
-            : "tt.nei.plasma.multistep.no";
+        String multistepKey = recipeInfo.recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) ? "GT5U.infodata.yes"
+            : "GT5U.infodata.no";
         String requiredUpgradeKey = switch (recipeInfo.recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0)) {
             case 1 -> "tt.nei.plasma.fusion_tier.advanced";
             case 2 -> "tt.nei.plasma.fusion_tier.exotic";
@@ -78,8 +77,14 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
                 StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20d)));
         }
 
-        recipeInfo.drawText(StatCollector.translateToLocal(multistepKey));
-        recipeInfo.drawText(StatCollector.translateToLocal(requiredUpgradeKey));
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.FOG.plasmamultistep",
+                StatCollector.translateToLocal(multistepKey)));
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.FOG.plasmarecipetier",
+                StatCollector.translateToLocal(requiredUpgradeKey)));
 
     }
 
