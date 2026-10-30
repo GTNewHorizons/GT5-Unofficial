@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -26,9 +25,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -757,45 +757,46 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
-        final ArrayList<String> tList = new ArrayList<>();
+    public ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aLogLevel) {
+        final ArrayList<IChatComponent> tList = new ArrayList<>();
         if (aLogLevel > 2) {
             tList.add(
-                StatCollector.translateToLocalFormatted(
+                new ChatComponentTranslation(
                     "GT5U.scanner.debug.meta_id",
-                    mID,
-                    canAccessData() ? StatCollector.translateToLocal("GT5U.multiblock.scanner.valid")
-                        : StatCollector.translateToLocal("GT5U.multiblock.scanner.invalid"))
-                    + (mMetaTileEntity == null
-                        ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                        : ""));
+                    GTUtility.styledComp(String.valueOf(mID), EnumChatFormatting.AQUA),
+                    canAccessData() ? new ChatComponentTranslation("GT5U.multiblock.scanner.valid")
+                        : new ChatComponentTranslation("GT5U.multiblock.scanner.invalid")).appendText(" ")
+                            .appendSibling(
+                                mMetaTileEntity == null
+                                    ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
+                                    : new ChatComponentText(" ")));
         }
         if (aLogLevel > 1 && mMetaTileEntity != null) {
             addProfilingInformation(tList);
             tList.add(
-                StatCollector.translateToLocal(
+                new ChatComponentTranslation(
                     mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                         : "GT5U.scanner.debug.not_accessible"));
             tList.add(
-                StatCollector.translateToLocalFormatted(
+                new ChatComponentTranslation(
                     "GT5U.scanner.debug.sound_requests",
-                    formatNumber(mMetaTileEntity.mSoundRequests),
-                    formatNumber(mTickTimer - mLastCheckTick)));
+                    GTUtility.styledComp(mMetaTileEntity.mSoundRequests, EnumChatFormatting.GOLD),
+                    GTUtility.styledComp(mTickTimer - mLastCheckTick, EnumChatFormatting.GOLD)));
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
         }
         if (aLogLevel > 0) {
             tList.add(
-                StatCollector.translateToLocal(
+                new ChatComponentTranslation(
                     mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
             tList.add(
-                StatCollector.translateToLocal(
+                new ChatComponentTranslation(
                     isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
                         : "GT5U.scanner.debug.machine_not_allowed_to_work"));
-            if (!mHasEnoughEnergy) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.needs_power"));
+            if (!mHasEnoughEnergy) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
-        return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
+        if (joinedIc2Enet) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
+        return mMetaTileEntity.getSpecialDebugInfoChat(this, aPlayer, aLogLevel, tList);
     }
 
     @Override
