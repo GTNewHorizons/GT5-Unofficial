@@ -675,19 +675,27 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
                 // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
-                    if (!mProjectModuleHatches.isEmpty()) {
-                        long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
-                        for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
-                            if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect(this);
-                                long tAvailableEnergy = getEUVar();
-                                if (tAvailableEnergy > 0) {
-                                    setEUVar(
-                                        Math.max(
-                                            0,
-                                            tAvailableEnergy
-                                                - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
-                                }
+                    List<TileEntityModuleBase> chargeableModules = new ArrayList<>();
+                    for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
+                        if (projectModule.getNeededMotorTier() > motorTier) {
+                            continue;
+                        }
+                        // Unformed modules still need to be connected so they can run their own structure check
+                        projectModule.connect(this);
+                        if (projectModule.mMachine) {
+                            chargeableModules.add(projectModule);
+                        }
+                    }
+                    if (!chargeableModules.isEmpty()) {
+                        long tEnergy = getEUVar() / chargeableModules.size() * MODULE_CHARGE_INTERVAL;
+                        for (TileEntityModuleBase projectModule : chargeableModules) {
+                            long tAvailableEnergy = getEUVar();
+                            if (tAvailableEnergy > 0) {
+                                setEUVar(
+                                    Math.max(
+                                        0,
+                                        tAvailableEnergy
+                                            - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
                             }
                         }
                     }
