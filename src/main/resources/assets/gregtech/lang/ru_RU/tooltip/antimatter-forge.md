@@ -2,7 +2,7 @@
 Преобразует протоматерию в антиматерию
 Используйте отвёртку, чтобы отключить рендеринг
 Пассивно расходует {var:base_consumption} + ({dark_aqua:Антиматерия} * 1000)^(1.5 - {green:{bold:{underline:М}}}) EU/t
-Потребление снижается на 0.5% каждый тик, когда он пуст
+Потребление снижается на 1% каждый тик, когда он пуст
 Активно использует ({dark_aqua:Антиматерия} * {var:active_base_mult})^(1.5 - {dark_purple:{bold:{underline:Г}}}) EU за цикл для производства антиматерии
 {gray:{hr}}
 Циклы каждую секунду
@@ -28,5 +28,5 @@
 1. {fluid:molten.shirabon} = {gold:0.05}
 2. {fluid:molten.magnetohydrodynamicallyconstrainedstarmatter} = {gold:0.10}
 {aqua:{bold:{underline:А}}}{aqua:ктивационная стабилизация} (Использует {dark_aqua:Антиматерию}^(1/3) Л жидкости за цикл)
-1. {fluid:naquadah based liquid fuel mk-v (depleted)} = {aqua:0.05}
-2. {fluid:naquadah based liquid fuel mk-vi (depleted)} = {aqua:0.10}
+1. {fluid:naquadah based liquid fuel mkv (depleted)} = {aqua:0.05}
+2. {fluid:naquadah based liquid fuel mkvi (depleted)} = {aqua:0.10}

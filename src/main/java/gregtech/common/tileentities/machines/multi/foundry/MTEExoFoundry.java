@@ -139,6 +139,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     public final FoundryData foundryData = new FoundryData();
 
+    public static final int MIN_TIER_WHERE_MODULES_NEEDED = VoltageIndex.UIV;
     private static final int MAX_MACHINE_TIER = 3;
     public static final int MIN_CASINGS = 462; // 462 is the total casings (489) - 1 casing for ehatch - 1 casing for
                                                // output
@@ -476,7 +477,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_solidifier"))
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addMarkdown(new ResourceLocation("gregtech", "exo-foundry"), ImmutableMap.of(
-                "uiv", GTUtility.getColoredTierNameForTooltip(VoltageIndex.UIV),
+                "min_tier_where_modules_needed", MIN_TIER_WHERE_MODULES_NEEDED,
                 "tiers", MAX_MACHINE_TIER,
                 "slots", IntStream.rangeClosed(1, MAX_MACHINE_TIER).mapToObj(t -> String.valueOf(getModuleSlots(t))).collect(Collectors.joining("/")),
                 "options", FoundryModule.values().length - 1))
@@ -715,7 +716,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
                 additionalOverclocks += foundryData.extraOverclocks;
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !foundryData.UIVRecipesEnabled) {
+                if (GTUtility.getTier(recipe.mEUt) >= MIN_TIER_WHERE_MODULES_NEEDED
+                    && !foundryData.moduleOnlyRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
