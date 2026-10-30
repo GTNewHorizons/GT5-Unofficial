@@ -3,11 +3,14 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -17,6 +20,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
 
     private boolean isUsingDenseSteam;
@@ -52,27 +56,22 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, XLST-SC")
-            .addInfo("Same throughput as 16 LST-SC with only 12 turbines")
-            .addInfo("Generates power from regular or dense Supercritical (SC) Steam based on the turbine and fitting")
-            .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
-            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.steam_turbine", "XLST-SC"))
+            .addMarkdown(new ResourceLocation("gregtech", "xl-sc-steam-turbine"))
             .addSupportAny()
             .beginStructureBlock(9, 9, 29, true)
-            .addController("Front center, 5th layer")
-            .addCasing(minCasingAmount() + "-440", "Reinforced SC Turbine Casing", false)
-            .addCasing("100", "Black Plutonium Item Pipe Casing", false)
-            .addCasing("36", "Any Tiered Glass", false)
-            .addCasing("34", "Naquadah Frame Box", false)
-            .addCasing("20", "MV Solenoid Superconductor Coil", false)
-            .addCasing("16", "Turbine Shaft", false)
-            .addDynamoHatch("1+", "Any turbine casing", 1)
-            .addMaintenanceHatch("1", "Any turbine casing", 1)
-            .addInputBus("0+", "Any turbine casing", 1)
-            .addInputHatch("1+", "Any turbine casing", 1)
-            .addOutputHatch("1+", "Any turbine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_5th_layer"))
+            .addCasing(minCasingAmount() + "-440", getCasing().getLocalizedName(), false)
+            .addCasing("100", getRotorCasing().getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
+            .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
