@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -86,6 +85,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Stainless Steel Frame Box", false)
@@ -98,7 +98,6 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addOutputHatch("0+", "Any back turbine casing", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

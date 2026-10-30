@@ -49,6 +49,7 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
             .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
             .addInfo("You need to wait for it to reach 300% to output full power")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)

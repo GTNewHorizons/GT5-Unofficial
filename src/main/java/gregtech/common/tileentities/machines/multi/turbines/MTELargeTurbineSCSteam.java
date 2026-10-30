@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.turbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -144,6 +143,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
+            .addSupport4A()
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "PBI Frame Box", false)
@@ -155,7 +155,6 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addOutputHatch("0+", "Any back turbine casing", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
     }
 }
