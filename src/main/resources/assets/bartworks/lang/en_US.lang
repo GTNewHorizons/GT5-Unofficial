@@ -82,7 +82,7 @@ item.BWstove.name=Simple Heated Stove
 gt.blockmachines.creativeScanner.desc.1=Finishes Scanning instantly. Does not require power.
 
 itemGroup.BioTab=BartWorks BioEngineering
-filled.item.petriDish.name=Petri Dish with a Culture
+filled.item.petriDish.name=Petri Dish with a Culture (%s)
 item.petriDish.name=Sterilized Petri Dish
 item.DNASampleFlask.name=DNA Sample Flask
 item.PlasmidCell.name=Plasmid Sample Flask
