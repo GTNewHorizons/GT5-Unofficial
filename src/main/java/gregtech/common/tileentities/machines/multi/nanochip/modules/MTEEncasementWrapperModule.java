@@ -6,14 +6,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,6 +25,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MTEEncasementWrapperModule> {
 
     protected static final int ENCASEMENT_WRAPPER_OFFSET_X = 3;
@@ -99,14 +101,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.module.encasement_wrapper.action",
-                    TOOLTIP_CCs,
-                    TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.encasement_wrapper.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-encasement-wrapper"))
             .beginStructureBlock(7, 9, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
@@ -116,7 +111,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             // Nanochip Reinforcement Casing
             .addCasing("32", translateToLocal("gt.blockcasings12.2.name"), false)
             // Quantium Frame Box
-            .addCasing("32", "Quantium Frame Box", false)
+            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Quantium), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",

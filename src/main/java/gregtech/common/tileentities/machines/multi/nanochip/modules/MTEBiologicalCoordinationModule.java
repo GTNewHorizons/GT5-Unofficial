@@ -6,19 +6,21 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_CO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_COORDINATION_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,11 +34,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBase<MTEBiologicalCoordinationModule> {
 
     protected static final int BIO_OFFSET_X = 3;
     protected static final int BIO_OFFSET_Y = 5;
     protected static final int BIO_OFFSET_Z = 0;
+    private static final int WETWARE_CATALYST_DIVISOR = 2;
     protected static final String[][] BIO_STRING = new String[][] {
         { "       ", " AAAAA ", "  C C  ", "  C C  ", "  C C  ", "   ~   " },
         { "  CCC  ", "AABBBAA", " ABDBA ", " ABDBA ", " ABDBA ", "       " },
@@ -119,14 +123,9 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.biological_coordinator.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.1"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.2"))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.2")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-biological-coordinator"),
+                ImmutableMap.of("wetware_reduction", 100 - 100 / WETWARE_CATALYST_DIVISOR))
             .beginStructureBlock(7, 8, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
@@ -134,7 +133,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             // Nanochip Reinforcement Casing
             .addCasing("36", translateToLocal("gt.blockcasings12.2.name"), false)
             // Tritanium Frame Box
-            .addCasing("36", "Tritanium Frame Box", false)
+            .addCasing("36", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tritanium), false)
             // Nanochip Complex Glass
             .addCasing("20", translateToLocal("gt.blockglass1.8.name"), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
@@ -180,7 +179,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         for (int i = 0; i < fluidInputs.length; i++) {
             FluidStack stack = fluidInputs[i];
             if (stack == null) continue;
-            if (baseMulti.wetwareT3Active) fluidInputs[i].amount /= 2;
+            if (baseMulti.wetwareT3Active) fluidInputs[i].amount /= WETWARE_CATALYST_DIVISOR;
             if (baseMulti.bioT3Active) fluidInputs[i] = null;
         }
         transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));

@@ -7,8 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PART_PROCESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -26,6 +27,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPartProcessorModule> {
 
     protected static final int PART_OFFSET_X = 3;
@@ -98,10 +100,7 @@ public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPar
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.part_processor.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.part_processor.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-part-processor"))
             .beginStructureBlock(7, 6, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -109,7 +108,7 @@ public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPar
             // Nanochip Mesh Interface Casing
             .addCasing("20", translateToLocal("gt.blockcasings12.1.name"), false)
             // Radox Polymer Frame Box
-            .addCasing("17", "Radox Polymer Frame Box", false)
+            .addCasing("17", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.RadoxPolymer), false)
             // Nanochip Complex Glass
             .addCasing("8", translateToLocal("gt.blockglass1.8.name"), false)
             // UEV Machine Casing
