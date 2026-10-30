@@ -8080,9 +8080,9 @@ GT5U.infodata.naquadah_refinery.coil_tier=Тир катушки: %s
 GT5U.infodata.large_neutralization_engine=Большой нейтрализационный двигатель
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей: %s%d%s
-GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагревательной катушки к скорости: +%s%.0f%s %%
-GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%.0f%s %%
-GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множитель EU/t: %s%.0f%s %%
+GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагревательной катушки к скорости: +%s%s%s %%
+GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%s%s %%
+GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множитель EU/t: %s%s%s %%
 
 GT5U.infodata.oil_drill.title=§9Помпа для Нефти/Жидкости§r
 GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
