@@ -320,7 +320,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
     }
 
-
     @Override
     public void onClientSoundStateChanged() {
         doActivitySound(SoundResource.GTCEU_LOOP_FURNACE);
