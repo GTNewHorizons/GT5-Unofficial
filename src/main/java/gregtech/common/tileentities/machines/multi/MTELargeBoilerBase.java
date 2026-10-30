@@ -383,19 +383,20 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         else burnDecrease = 2;
         fluidBurnTime = Math.max(fluidBurnTime - burnDecrease, 0);
         solidBurnTime = Math.max(solidBurnTime - burnDecrease, 0);
+        if (fluidBurnTime == 0) integratedCircuitConfigFluid = 0;
+        if (solidBurnTime == 0) integratedCircuitConfigSolid = 0;
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
+        setupCircuit(isFluid);
         rawBurnTime = runtimeBoost(rawBurnTime);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
         int adjustedTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
         if (isFluid) {
             this.fluidBurnTime = this.maxFluidBurnTime = adjustedTime;
-            setupCircuit(true);
         } else {
             this.solidBurnTime = this.maxSolidBurnTime = adjustedTime;
-            setupCircuit(false);
         }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 1;
