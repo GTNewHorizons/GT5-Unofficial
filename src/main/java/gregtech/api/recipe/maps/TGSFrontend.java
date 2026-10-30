@@ -1,7 +1,6 @@
 package gregtech.api.recipe.maps;
 
 import java.awt.Rectangle;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -113,10 +112,8 @@ public class TGSFrontend extends RecipeMapFrontend {
                     currentTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal(tooltipInputKeys[mode]));
                     if (toolMultiplier > 0) {
                         currentTip.add(
-                            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.nei.tgs.tooltip.multiplier")
-                                + " "
-                                + toolMultiplier
-                                + "x");
+                            EnumChatFormatting.YELLOW + StatCollector
+                                .translateToLocalFormatted("gt.nei.tgs.tooltip.output_multiplier", toolMultiplier));
                     }
                     return currentTip;
                 }
@@ -144,10 +141,7 @@ public class TGSFrontend extends RecipeMapFrontend {
 
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
-            return Arrays.asList(
-                StatCollector.translateToLocal("gt.nei.tgs.info-1"),
-                StatCollector.translateToLocal("gt.nei.tgs.info-2"),
-                StatCollector.translateToLocal("gt.nei.tgs.info-3"));
+            return List.of(StatCollector.translateToLocal("gt.nei.tgs.output_boost"));
         }
     }
 }

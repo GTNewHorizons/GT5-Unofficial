@@ -2879,6 +2879,7 @@ gt.nei.lftr.total=Total: %s EU
 gt.nei.milling.not_consumed=Does not always get consumed in the process
 gt.nei.chemical_plant.not_consumed=Does not always get consumed in the process
 gt.nei.chemical_plant.higher_tier_casing=Higher tier Pipe Casings allow this item to last longer
+gt.nei.chemplant.casing_tier=Tier: %s - %s
 gt.nei.chemplant.tier.1=Bronze
 gt.nei.chemplant.tier.2=Steel
 gt.nei.chemplant.tier.3=Aluminium
@@ -2904,10 +2905,8 @@ gt.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
 gt.nei.tgs.tooltip.needsShears=Requires Shears to harvest
 gt.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
 gt.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
-gt.nei.tgs.tooltip.multiplier=Output multiplier:
-gt.nei.tgs.info-1=Output is further boosted
-gt.nei.tgs.info-2=by machine energy tier
-gt.nei.tgs.info-3=and tool type
+gt.nei.tgs.tooltip.output_multiplier=Output multiplier: %sx
+gt.nei.tgs.output_boost=Output is further boosted\nby machine energy tier\nand tool type
 gt.nei.ap.tier=Algae Pond Tier: %s
 
 GT5U.recipes.recipe_by.original=Original Recipe by: %s
@@ -4864,6 +4863,8 @@ GT5U.nei.large_boiler.titanium_boiler.ban=Titanium Boiler: Not allowed
 GT5U.nei.large_boiler.tungstensteel_boiler=Tungstenst. Boiler: %s
 GT5U.nei.large_boiler.tungstensteel_boiler.ban=Tungstenst. Boiler: Not allowed
 GT5U.nei.large_boiler.solid=Not all solid fuels are listed.\nAny burnable item with a burn\ntime of at least %d / %d\nwill burn in a Large Bronze\n/ Steel Boiler, respectively.
+GT5U.nei.thermal_boiler.steam_output=Steam output shown\nat maximum efficiency.
+GT5U.nei.thermal_boiler.without_filter=Without a Lava Filter,\nonly Obsidian is produced.
 GT5U.nei.nuclear.model.mox=MOX Model
 GT5U.nei.nuclear.model.uranium=Uranium Model
 GT5U.nei.nuclear.neutron_pulse=Neutron Pulse: %d
@@ -4882,6 +4883,8 @@ GT5U.nei.purified_water.grade_4.0=+%s pH/stack
 GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
 GT5U.nei.cauldron.anystack=Works with any stack size
+GT5U.nei.sparge_tower.remainder=The amount returned is the remainder after all other outputs.
+GT5U.nei.sparge_tower.maximum_output=Maximum Output: %s
 GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
 GT5U.nei.hover_to_see=Hover to see stack trace
 
@@ -6957,6 +6960,7 @@ GT5U.nei.display.usage.steam=Usage: %s L/s of Steam
 GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
+GT5U.nei.display.overclocked_tier=%s %s
 GT5U.nei.display.average=Average: %s EU/t %s
 GT5U.nei.display.windmill=Windmill
 GT5U.nei.display.require_heavy_mode=Requires Heavy Mode
@@ -10302,7 +10306,8 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.max-nanite=Max Nanite Tier:
+GT5U.nanite.tier_description=%s (Tier %s)
+GT5U.nei.bec.max_nanite_tier=Max Nanite Tier:\n%s
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 

@@ -1790,8 +1790,8 @@ public final class RecipeMaps {
             float amount_B = metadata.amount_B;
 
             return Arrays.asList(
-                StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
-                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B));
+                StatCollector.translateToLocalFormatted("beamcrafting.nei.amount_A", formatNumber(amount_A)),
+                StatCollector.translateToLocalFormatted("beamcrafting.nei.amount_B", formatNumber(amount_B)));
         }))
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
@@ -2121,8 +2121,8 @@ public final class RecipeMaps {
         .neiSpecialInfoFormatter(recipeInfo -> {
             int tier = recipeInfo.recipe.mSpecialValue + 1;
             String materialName = StatCollector.translateToLocal("gt.nei.chemplant.tier." + tier);
-            return Collections
-                .singletonList(StatCollector.translateToLocalFormatted("GT5U.nei.tier", tier + " - " + materialName));
+            return Collections.singletonList(
+                StatCollector.translateToLocalFormatted("gt.nei.chemplant.casing_tier", tier, materialName));
         })
         .frontend(ChemicalPlantFrontend::new)
         .build();

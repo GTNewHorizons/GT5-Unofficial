@@ -62,17 +62,14 @@ public class LanthanidesRecipeMaps {
 
             return Arrays.asList(
 
-                // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
-                StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(metadata.focus),
-                StatCollector.translateToLocal("beamline.rate") + ": " + formatNumber(metadata.rate),
-                " ",
-                StatCollector.translateToLocal("beamline.materialenergy") + ": "
-                    + formatNumber(metadata.maxEnergy)
-                    + " keV",
-                StatCollector.translateToLocal("beamline.particleenergy") + ": "
-                    + formatNumber(particle.maxSourceEnergy())
-                    + " keV",
-                StatCollector.translateToLocal("beamline.energyratio") + ": " + formatNumber(metadata.energyRatio)
+                StatCollector.translateToLocalFormatted("beamline.nei.focus", formatNumber(metadata.focus)),
+                StatCollector.translateToLocalFormatted("beamline.nei.rate", formatNumber(metadata.rate)),
+                StatCollector
+                    .translateToLocalFormatted("beamline.nei.material_energy", formatNumber(metadata.maxEnergy)),
+                StatCollector.translateToLocalFormatted(
+                    "beamline.nei.particle_energy",
+                    formatNumber(particle.maxSourceEnergy())),
+                StatCollector.translateToLocalFormatted("beamline.nei.energy_ratio", formatNumber(metadata.energyRatio))
 
         );
         })
@@ -97,14 +94,12 @@ public class LanthanidesRecipeMaps {
 
             return Arrays.asList(
 
-                // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
-                StatCollector.translateToLocal("beamline.energy") + ": "
-                    + formatNumber(metadata.minEnergy * 1000)
-                    + "-"
-                    + formatNumber(metadata.maxEnergy * 1000)
-                    + " eV", // Note the eV unit
-                StatCollector.translateToLocal("beamline.focus") + ": >=" + formatNumber(metadata.minFocus),
-                StatCollector.translateToLocal("beamline.amount") + ": " + formatNumber(metadata.amount)
+                StatCollector.translateToLocalFormatted(
+                    "beamline.nei.energy_range",
+                    formatNumber(metadata.minEnergy * 1000),
+                    formatNumber(metadata.maxEnergy * 1000)),
+                StatCollector.translateToLocalFormatted("beamline.nei.minimum_focus", formatNumber(metadata.minFocus)),
+                StatCollector.translateToLocalFormatted("beamline.nei.amount", formatNumber(metadata.amount))
 
         );
         }))
