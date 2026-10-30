@@ -15,6 +15,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.ArmorState;
 
 public class SpeedBoostBehavior implements IArmorBehavior {
@@ -99,8 +100,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
             speed *= 0.25F;
         }
 
-        boolean isJumping = ArmorActionManager.getKeybind("VANILLA_JUMP")
-            .isKeyDown(player);
+        boolean isJumping = ArmorHelper.isJumpInput(player);
         boolean isMoving = player.moveForward != 0 || player.moveStrafing != 0
             || (player.capabilities.isFlying && (player.isSneaking() || isJumping));
 
@@ -132,8 +132,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
                 boolean isGuiOpen = context.getPlayer().worldObj.isRemote
                     && (net.minecraft.client.Minecraft.getMinecraft().currentScreen != null);
 
-                if (ArmorActionManager.getKeybind("VANILLA_JUMP")
-                    .isKeyDown(player) && !isGuiOpen) {
+                if (ArmorHelper.isJumpInput(player) && !isGuiOpen) {
                     player.moveEntity(0, verticalSpeed, 0);
                 }
             }
