@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraft.world.World;
+
 /**
  * You are allowed to include this File in your Download, as i will not change it. Simple Interface for Machines, which
  * need my Machine Blocks for MultiBlockStructures.
@@ -21,4 +23,6 @@ public interface IMachineBlockUpdateable {
     default boolean isMachineBlockUpdateRecursive() {
         return true;
     }
+
+    default void addMachineCoord(World world, int x, int y, int z) {}
 }

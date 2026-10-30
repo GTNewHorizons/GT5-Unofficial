@@ -529,8 +529,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * blocks are not touching each other or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
      */
     protected boolean cyclicUpdate_EM() {
-        return mUpdate <= -1000; // set to false to disable cyclic update
-        // default is once per 50s; mUpdate is decremented every tick
+        return false; // set to mUpdate <= -1000 to enable cyclic update (every 50s)
     }
 
     /**
@@ -917,6 +916,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             mTotalRunTime++;
             if (mEfficiency < 0) {
                 mEfficiency = 0;
+            }
+
+            if (mUpdated) {
+                if (mUpdate <= 0) mUpdate = 50;
+                mUpdated = false;
             }
 
             if (--mUpdate == 0 || --mStartUpCheck == 0
