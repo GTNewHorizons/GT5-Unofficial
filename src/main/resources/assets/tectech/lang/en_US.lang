@@ -1081,15 +1081,7 @@ gt.blockmachines.machine.tt.datareader.desc.0=Reads Data Sticks and Orbs
 gt.blockmachines.machine.tt.datareader.desc.1=Power it up and
 gt.blockmachines.machine.tt.datareader.desc.2=Put the data storage in
 
-gt.blockmachines.machine.tt.buck.05.name=Insane Buck Converter
-gt.blockmachines.machine.tt.buck.06.name=Ludicrous Buck Converter
-gt.blockmachines.machine.tt.buck.07.name=ZPM Voltage Buck Converter
-gt.blockmachines.machine.tt.buck.08.name=Ultimate Power Buck Converter
-gt.blockmachines.machine.tt.buck.09.name=Highly Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.10.name=Extremely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.11.name=Insanely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.12.name=Mega Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.13.name=Extended Mega Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.name=%1$s Buck Converter
 gt.blockmachines.machine.tt.buck.desc.0=Electronic voltage regulator
 gt.blockmachines.machine.tt.buck.desc.1=Adjustable step down transformer
 gt.blockmachines.machine.tt.buck.desc.2=Switching power supply...
