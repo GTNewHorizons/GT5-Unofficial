@@ -505,7 +505,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
 
         if (this.requiredTier == null) {
             state = NodeState.InternalError;
@@ -652,6 +651,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     return;
                 }
             }
+        } else {
+            RecipeStep nextStep = getCurrentStep();
+            if (nextStep == null) {
+                state = NodeState.InternalError;
+                return;
+            }
+            setRequiredTier(nextStep.nanite);
         }
     }
 
