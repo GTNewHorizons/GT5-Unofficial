@@ -452,6 +452,8 @@ public class MTEPump extends MTEBasicMachine {
                                 }
                             }
                             if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
+                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
+                                this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
                                 while ((!this.mPumpList.isEmpty())) {
                                     ChunkPosition pos = this.mPumpList.pollLast();
                                     if (consumeFluid(pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ)) {
@@ -459,9 +461,6 @@ public class MTEPump extends MTEBasicMachine {
                                         break;
                                     }
                                 }
-                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
-                                this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
-
                                 mMaxProgresstime = mPumpTimer;
                                 mProgresstime = 0;
                             }
@@ -767,7 +766,7 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean consumeFluid(int aX, int aY, int aZ) {
         // Try to consume a fluid at a location
-        // Returns true if something was consumed, otherwise false
+        // Returns true if a block was consumed, otherwise false
         if (!GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), aX, aY, aZ, true)) return false;
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
@@ -779,12 +778,15 @@ public class MTEPump extends MTEBasicMachine {
             boolean isWaterOrLava = ((this.mPrimaryPumpedBlock == Blocks.water
                 || this.mPrimaryPumpedBlock == Blocks.lava));
 
-            if (isWaterOrLava && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0) {
-                // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
-                // below
+            boolean isFlowingFluid = isWaterOrLava ? getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0
+                : !((IFluidBlock) aBlock).canDrain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ);
+
+            if (isFlowingFluid) {
+                // Flowing blocks take 1/4 of the time and energy of source blocks.
                 if (debugBlockPump) {
-                    GT_FML_LOGGER.debug("PUMP: Water/Lava - Not a source block");
+                    GT_FML_LOGGER.debug("PUMP: Not a source block");
                 }
+                this.mPumpTimer = Math.max(1, (160 >> this.mTier) / 4);
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
@@ -815,7 +817,8 @@ public class MTEPump extends MTEBasicMachine {
                         return false;
                     }
 
-            getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.getEuUsagePerAction(), true);
+            getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(this.getEuUsagePerAction() / (isFlowingFluid ? 4 : 1), true);
             getBaseMetaTileEntity().getWorld()
                 .setBlock(aX, aY, aZ, Blocks.air, 0, 2);
             return true;
