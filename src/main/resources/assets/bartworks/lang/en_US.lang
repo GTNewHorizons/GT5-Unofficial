@@ -83,6 +83,8 @@ gt.blockmachines.creativeScanner.desc.1=Finishes Scanning instantly. Does not re
 
 itemGroup.BioTab=BartWorks BioEngineering
 filled.item.petriDish.name=Petri Dish with a Culture (%s)
+filled.item.DNASampleFlask.name=DNA Sample Flask (%s)
+filled.item.PlasmidCell.name=Plasmid Sample Flask (%s)
 item.petriDish.name=Sterilized Petri Dish
 item.DNASampleFlask.name=DNA Sample Flask
 item.PlasmidCell.name=Plasmid Sample Flask
