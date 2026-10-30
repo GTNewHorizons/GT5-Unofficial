@@ -133,7 +133,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.common.config.MachineStats;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
@@ -246,7 +246,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * {@link GTStructureUtility#activeBlocks(IStructureElement)} to add them automatically.
      */
     public final LongArrayList activeBlocks = new LongArrayList();
-    private GTCoilTracker.MultiCoilLease activeBlockLease = null;
+    private GTActiveBlockTracker.ActiveBlockLease activeBlockLease = null;
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
@@ -681,7 +681,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     // method to hook into for non-coil coilLeases.
     protected void tryActivateBlockLease() {
         if (!activeBlocks.isEmpty() && activeBlockLease == null) {
-            activeBlockLease = GTCoilTracker.activate(this, activeBlocks);
+            activeBlockLease = GTActiveBlockTracker.activate(this, activeBlocks);
         }
     }
 
@@ -2977,7 +2977,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected void deactivateBlockLease() {
         if (activeBlockLease != null) {
-            GTCoilTracker.deactivate(activeBlockLease);
+            GTActiveBlockTracker.deactivate(activeBlockLease);
             activeBlockLease = null;
         }
     }

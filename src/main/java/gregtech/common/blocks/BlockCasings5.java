@@ -43,7 +43,7 @@ import gregtech.api.net.ClientMetaTrackerRegistry;
 import gregtech.api.net.GTCoilTrackerAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -100,7 +100,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
     public int getClientMeta(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
 
-        if (GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+        if (GTActiveBlockTracker.isBlockActive(world, x, y, z)) meta += ACTIVE_OFFSET;
 
         return meta;
     }

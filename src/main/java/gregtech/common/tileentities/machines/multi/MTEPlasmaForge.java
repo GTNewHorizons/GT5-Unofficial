@@ -54,7 +54,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -75,6 +74,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.ActiveBlockLeaseType;
+import gregtech.api.structure.ActiveBlockLeaseTypeRegistry;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -85,7 +86,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.gui.modularui.multiblock.MTEPlasmaForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -957,7 +958,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected void tryActivateBlockLease() {
         super.tryActivateBlockLease();
         if (isConvergenceActive() && !bridges.isEmpty() && bridgeLease == null) {
-            bridgeLease = GTCoilTracker.activate(this, CoilLeaseType.BRIDGE, bridges);
+            bridgeLease = GTActiveBlockTracker.activate(this, CONVERGENCE_BRIDGE_LEASE, bridges);
         }
     }
 
@@ -1091,8 +1092,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
     }
 
+    public static final ActiveBlockLeaseType CONVERGENCE_BRIDGE_LEASE = ActiveBlockLeaseTypeRegistry
+        .register("convergence_bridge");
+
     public LongArrayList bridges = new LongArrayList();
-    private GTCoilTracker.MultiCoilLease bridgeLease = null;
+    private GTActiveBlockTracker.ActiveBlockLease bridgeLease = null;
 
     public static IStructureElement<MTEPlasmaForge> activeBridge(IStructureElement<MTEPlasmaForge> element) {
         return new GTStructureUtility.ProxyStructureElement<>(element) {
@@ -1115,7 +1119,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     public void deactivateBridgeLease() {
         if (bridgeLease != null) {
-            GTCoilTracker.deactivate(bridgeLease, CoilLeaseType.BRIDGE);
+            GTActiveBlockTracker.deactivate(bridgeLease);
             bridgeLease = null;
         }
     }

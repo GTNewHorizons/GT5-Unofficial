@@ -11,7 +11,7 @@ import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.ActiveSideOverlayTextures;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.render.GTRendererBlock;
 
 /**
@@ -97,7 +97,8 @@ public class BlockCasings4 extends BlockCasingsAbstract
     @Override
     public int getClientMeta(World world, int x, int y, int z) {
         int metadata = world.getBlockMetadata(x, y, z);
-        if (textures.hasOverlay(metadata) && GTCoilTracker.isCoilActive(world, x, y, z)) metadata += ACTIVE_OFFSET;
+        if (textures.hasOverlay(metadata) && GTActiveBlockTracker.isBlockActive(world, x, y, z))
+            metadata += ACTIVE_OFFSET;
         return metadata;
     }
 

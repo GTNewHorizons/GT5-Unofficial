@@ -1,12 +1,22 @@
 package gregtech.api.enums;
 
+import gregtech.api.structure.ActiveBlockLeaseType;
+import gregtech.api.structure.ActiveBlockLeaseTypeRegistry;
+import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
+
 /**
- * Determines what Type the coil lease is. Useful if a multi wants active components to conditionally turn off/on.
- * see {@link gregtech.common.tileentities.machines.multi.MTEPlasmaForge#tryActivateBlockLease tryActivateBlockLease}
+ * @deprecated Register an {@link ActiveBlockLeaseType} through {@link ActiveBlockLeaseTypeRegistry} instead.
  */
+@Deprecated
 public enum CoilLeaseType {
 
     COIL,
     BRIDGE;
 
+    public ActiveBlockLeaseType toLeaseType() {
+        return switch (this) {
+            case COIL -> ActiveBlockLeaseTypeRegistry.DEFAULT;
+            case BRIDGE -> MTEPlasmaForge.CONVERGENCE_BRIDGE_LEASE;
+        };
+    }
 }
