@@ -10,7 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
@@ -143,7 +143,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         .build();
 
     private static IStructureElement<MTEMegaAlloyBlastSmelter> getCoilElement() {
-        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = activeCoils(
+        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = activeBlocks(
             ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel));
         IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 14);
         return GTStructureChannels.HEATING_COIL.use(

@@ -120,6 +120,7 @@ import gregtech.api.util.FluidEjectionHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -132,7 +133,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.common.config.MachineStats;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
@@ -241,11 +242,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean doPeriodicChecks = false;
 
     /**
-     * The list of coils in this multi's structure. Use
-     * {@link gregtech.api.util.GTStructureUtility#activeCoils(IStructureElement)} to add them automatically.
+     * Structure blocks whose texture follows this multi's running state, such as heating coils and fireboxes. Use
+     * {@link GTStructureUtility#activeBlocks(IStructureElement)} to add them automatically.
      */
-    public LongArrayList mCoils = new LongArrayList();
-    private GTCoilTracker.MultiCoilLease coilLease = null;
+    public final LongArrayList activeBlocks = new LongArrayList();
+    private GTActiveBlockTracker.ActiveBlockLease activeBlockLease = null;
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
@@ -559,8 +560,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mPyrotheumHatches.clear();
         doPeriodicChecks = false;
 
-        mCoils.clear();
-        deactivateCoilLease();
+        activeBlocks.clear();
+        deactivateBlockLease();
         debugEnergyPresent = false;
     }
 
@@ -665,24 +666,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
+            updateBlockLease();
+        }
+    }
 
-            boolean isActive = mMaxProgresstime > 0;
-
-            if (!mMachine || !isActive) {
-                deactivateCoilLease();
-            }
-
-            if (mMachine && isActive) {
-                tryActivateCoilLease();
-            }
+    protected void updateBlockLease() {
+        if (mMachine && mMaxProgresstime > 0) {
+            tryActivateBlockLease();
+        } else {
+            deactivateBlockLease();
         }
     }
 
     // method to hook into for non-coil coilLeases.
-    protected void tryActivateCoilLease() {
-        if (!mCoils.isEmpty() && coilLease == null) {
-            coilLease = GTCoilTracker.activate(this, mCoils);
+    protected void tryActivateBlockLease() {
+        if (!activeBlocks.isEmpty() && activeBlockLease == null) {
+            activeBlockLease = GTActiveBlockTracker.activate(this, activeBlocks);
         }
+    }
+
+    /** @deprecated Use {@link #tryActivateBlockLease()}. */
+    @Deprecated
+    protected void tryActivateCoilLease() {
+        tryActivateBlockLease();
     }
 
     @Override
@@ -2969,11 +2975,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         clearHatches();
     }
 
-    protected void deactivateCoilLease() {
-        if (coilLease != null) {
-            GTCoilTracker.deactivate(coilLease);
-            coilLease = null;
+    protected void deactivateBlockLease() {
+        if (activeBlockLease != null) {
+            GTActiveBlockTracker.deactivate(activeBlockLease);
+            activeBlockLease = null;
         }
+    }
+
+    /** @deprecated Use {@link #deactivateBlockLease()}. */
+    @Deprecated
+    protected void deactivateCoilLease() {
+        deactivateBlockLease();
     }
 
     public List<MTEHatch> getExoticEnergyHatches() {

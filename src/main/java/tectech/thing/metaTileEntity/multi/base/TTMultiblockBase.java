@@ -1063,6 +1063,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflersIfChanged(active);
+            updateBlockLease();
         }
     }
 

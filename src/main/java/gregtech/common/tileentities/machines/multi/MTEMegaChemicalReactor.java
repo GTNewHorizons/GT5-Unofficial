@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_CHEMICAL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
@@ -91,7 +91,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         .addElement('B', Casings.PTFEPipeCasing.asElement())
         .addElement(
             'C',
-            ofChain(Casings.FusionCoilBlock.asElement(), activeCoils(Casings.EternalCoilBlock.asElement())))
+            ofChain(Casings.FusionCoilBlock.asElement(), activeBlocks(Casings.EternalCoilBlock.asElement())))
         .addElement('D', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 

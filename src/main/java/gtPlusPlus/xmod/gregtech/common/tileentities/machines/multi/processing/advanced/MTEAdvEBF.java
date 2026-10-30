@@ -13,7 +13,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.HatchElement.PyrotheumHatch;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -165,7 +165,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                 .addElement(
                     'H',
                     GTStructureChannels.HEATING_COIL
-                        .use(activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel))))
+                        .use(activeBlocks(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel))))
                 .build();
         }
         return STRUCTURE_DEFINITION;

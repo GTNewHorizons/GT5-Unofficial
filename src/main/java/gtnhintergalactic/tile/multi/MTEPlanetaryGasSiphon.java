@@ -8,7 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -174,7 +174,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         .addElement(
             'A',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEPlanetaryGasSiphon::setCoilLevel, MTEPlanetaryGasSiphon::getCoilLevel))))
+                .use(activeBlocks(ofCoil(MTEPlanetaryGasSiphon::setCoilLevel, MTEPlanetaryGasSiphon::getCoilLevel))))
         .build();
 
     public MTEPlanetaryGasSiphon(int id, String name, String regionalName) {

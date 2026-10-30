@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -92,9 +93,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             .casingIndex(t.getFireboxTextureIndex())
                             .hint(1)
                             .buildAndChain(
-                                onElementPass(
-                                    MTELargeBoiler::onFireboxAdded,
-                                    ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))))
+                                activeBlocks(
+                                    onElementPass(
+                                        MTELargeBoiler::onFireboxAdded,
+                                        ofBlock(t.getFireboxBlock(), t.getFireboxMeta()))))))
                 .build();
         }
     };
