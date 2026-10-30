@@ -1096,6 +1096,9 @@ gt.blockmachines.machine.tt.tesla.02.name=Advanced Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.03.name=Epyc Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.04.name=Ultimate Power Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.05.name=Insane Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.small.name=Small %s
+gt.blockmachines.machine.tt.tesla.large.name=Large %s
+gt.blockmachines.machine.tt.tesla.huge.name=Huge %s
 gt.blockmachines.machine.tt.tesla.desc.0=Your Tesla I/O machine of choice
 gt.blockmachines.machine.tt.tesla.desc.1=Lightning stoves for the rich
 
@@ -1699,12 +1702,6 @@ tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
 
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Project Godforge
-
 tt.chat.debug.generator=Laser mode: %s
 
 GT5U.gui.config.general.debug=Debug
@@ -1869,6 +1866,16 @@ tt.spaceminer.calculator.asteroidChance= %s
 tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
 tt.spaceminer.filter.noValidInputs=No valid inputs!
 tt.spaceminer.filter.addOre=Click to add this ore to the filter
+# Space Pump
+tt.spacepump.batchslider=Modifies the current batch recipe time (in s)
+tt.spacepump.rate=Pumps %s/s
+tt.spacepump.ratemax=Up to %s/s per recipe
+tt.spacepump.pendingqueue=Confirm or modify selected recipes:
+tt.spacepump.planettier=Tier %d:
+tt.spacepump.utilityapply=&aApply&r & &4overwrite&r existing recipes\n&eEmpty slots will unset running recipes!
+tt.spacepump.utilityremove=Click to remove selected fluid
+tt.spacepump.utilityselected=Selected: &c%s
+tt.spacepump.utilitypanelButtonTooltip=Open Space Pump Quick Picker\n - &6Click&r any &3fluid&r to add it to list (&aallows multiple&r)\n - &6Click&r on the preview slots at the bottom to free the slot\n - &6Click&r on the &2Apply&r button to change the &3pumps&r config
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass

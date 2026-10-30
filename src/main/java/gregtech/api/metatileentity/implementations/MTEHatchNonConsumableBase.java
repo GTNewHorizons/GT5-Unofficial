@@ -43,7 +43,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     private int itemCount = 0;
     private boolean isOutputSlotLocked = true;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
-    private boolean changed = false;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
@@ -65,10 +64,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemStack(ItemStack stack) {
-        if (itemStack != stack) {
-            changed = true;
-        }
-
         itemStack = stack;
     }
 
@@ -79,10 +74,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemCount(int amount) {
-        if (itemCount != amount) {
-            changed = true;
-        }
-
         itemCount = amount;
     }
 
@@ -189,11 +180,17 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.injectItems(input, mode, src);
     }
 
     @Override
     public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.extractItems(request, mode, src);
     }
 
@@ -249,8 +246,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) {
                 getBaseMetaTileEntity().markDirty();
-                notifyWatchers();
             }
+            detectInventoryChange();
         }
     }
 
@@ -288,15 +285,14 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("itemCount", getItemCount());
-        if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        if (getItemStack() != null) aNBT.setTag("itemStack", GTUtility.saveItem(getItemStack()));
         aNBT.setBoolean("outputLocked", isOutputSlotLocked);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
-        if (aNBT.hasKey("itemStack"))
-            setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("itemStack")));
+        if (aNBT.getTag("itemStack") instanceof NBTTagCompound compound) setItemStack(GTUtility.loadItem(compound));
         if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 

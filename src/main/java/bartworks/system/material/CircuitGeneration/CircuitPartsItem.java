@@ -257,6 +257,24 @@ public class CircuitPartsItem extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         final int id = stack.getItemDamage();
+        if (isImprint(id)) {
+            CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id);
+            if (imprint != null && imprint.circuit.hasBeenSet()) {
+                return StatCollector.translateToLocalFormatted(
+                    "item.CircuitParts.Imprint.tagged.name",
+                    imprint.circuit.get(1)
+                        .getDisplayName());
+            }
+        }
+        if (isSliced(id)) {
+            CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id - CIRCUIT_SLICED_OFFSET);
+            if (imprint != null && imprint.circuit.hasBeenSet()) {
+                return StatCollector.translateToLocalFormatted(
+                    "item.CircuitParts.Sliced.tagged.name",
+                    imprint.circuit.get(1)
+                        .getDisplayName());
+            }
+        }
         if (isWrap(id)) {
             CircuitWraps wrap = CircuitWraps.getByID(id);
             if (wrap != null && wrap.itemSingle.hasBeenSet()) {

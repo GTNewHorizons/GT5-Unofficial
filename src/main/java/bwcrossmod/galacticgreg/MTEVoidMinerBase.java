@@ -14,7 +14,6 @@
 package bwcrossmod.galacticgreg;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -180,7 +179,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(GTValues.VP[this.getMinTier()]))
                     .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
-                    .put("unit", getFluidUnit())
                     .put("neon_boost", NEON_BOOST)
                     .put("krypton_boost", KRYPTON_BOOST)
                     .put("xenon_boost", XENON_BOOST)
@@ -303,15 +301,24 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
-
         if (canVoidMine) {
-            final ItemStack output = this.nextOre();
-            output.stackSize = multiplier * batchMultiplier;
+            ItemStack[] outputs = new ItemStack[batchMultiplier];
 
-            boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+            for (int i = 0; i < batchMultiplier; i++) {
+                outputs[i] = this.nextOre();
+            }
 
-            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist != matchesFilter)) {
-                this.addOutputPartial(output);
+            for (ItemStack output : outputs) {
+                if (output != null) {
+                    output.stackSize = multiplier;
+
+                    boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+
+                    if ((isSelectedEmpty() && inputOres.isEmpty())
+                        || (this.blacklist ? !matchesFilter : matchesFilter)) {
+                        this.addOutputPartial(output);
+                    }
+                }
             }
         }
 
