@@ -114,11 +114,7 @@ public class LoaderGTItemData implements Runnable {
             .addItemData(new ItemStack(Blocks.stained_hardened_clay, 1, 32767), new ItemData(Materials.Clay, 3628800L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.brick_block, 1, 32767), new ItemData(Materials.Brick, 3628800L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_238.get(1), new ItemData(Materials.Uranium, 3628800L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_235.get(1), new ItemData(Materials.Uranium235, 3628800L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Plutonium.get(1), new ItemData(Materials.Plutonium, 3628800L));
-        GTOreDictUnificator
-            .addItemData(ItemList.IC2_Uranium_235_Small.get(1), new ItemData(Materials.Uranium235, 403200L));
         GTOreDictUnificator
             .addItemData(ItemList.IC2_Plutonium_Small.get(1), new ItemData(Materials.Plutonium, 403200L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1L), new ItemData(Materials.Iron, 1814400L));
