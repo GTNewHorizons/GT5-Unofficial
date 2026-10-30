@@ -74,13 +74,10 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
-        String author = GTPPCore.GT_Tooltip.get();
-        tooltip.remove(author);
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.tooltip.electric.tier.s",
                 GTUtility.getColoredTierNameFromTier((byte) tier)));
-        tooltip.add(author);
     }
 
     @Override
