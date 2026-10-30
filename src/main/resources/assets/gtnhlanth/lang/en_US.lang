@@ -161,6 +161,7 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
+particle.name.fmt=%s (%s)
 particle.photon=Photon
 particle.zboson=Z Boson
 particle.wboson=W Boson
