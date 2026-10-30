@@ -338,6 +338,15 @@ bw.bioname.binni_bacteria=Binni Bacteria
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen Bacteria a Spatio
 bw.bioname.null=Debug
 
+# DNA and plasmid aliases from CoreMod
+bw.bioname.ovumbac=Ova Evolutionis
+bw.bioname.stemcellbac=Derivantur Cellula Evolutionis
+bw.bioname.biocellbac=Cellula Biologicum Evolutione
+bw.bioname.binnigrowthmedium=Binni Growth Medium
+bw.bioname.binnibacteria=Binni Bacteria
+bw.bioname.bacterialsludgebac=Corynebacterium Sludge Marsensis
+bw.bioname.mutagen=Mutagen Bacteria a Spatio
+
 # Multiblocks
 gt.blockmachines.bw.biovat.name=Bacterial Vat
 gt.blockmachines.bw.manualtrafo.name=Manual Transformer
