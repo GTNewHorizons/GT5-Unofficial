@@ -82,7 +82,9 @@ item.BWstove.name=Simple Heated Stove
 gt.blockmachines.creativeScanner.desc.1=Finishes Scanning instantly. Does not require power.
 
 itemGroup.BioTab=BartWorks BioEngineering
-filled.item.petriDish.name=Petri Dish with a Culture
+filled.item.petriDish.name=Petri Dish with a Culture (%s)
+filled.item.DNASampleFlask.name=DNA Sample Flask (%s)
+filled.item.PlasmidCell.name=Plasmid Sample Flask (%s)
 item.petriDish.name=Sterilized Petri Dish
 item.DNASampleFlask.name=DNA Sample Flask
 item.PlasmidCell.name=Plasmid Sample Flask
@@ -320,7 +322,7 @@ bw.bioname.saccharomyces_cerevisiae=Common Yeast
 bw.bioname.saccharomyces_cerevisiae_var_bayanus=Wine Yeast
 bw.bioname.saccharomyces_cerevisiae_var_cerevisiae=Beer Yeast
 bw.bioname.escherichia_cadaver=Rotten Flesh Bacteria
-bw.bioname.beta-lactamase=beta-Lactamase
+bw.bioname.beta-lactamase=Beta-Lactamase
 bw.bioname.escherichia_koli=eColi Bacteria
 bw.bioname.pseudomonas_veronii=Anaerobic Oil Bacteria
 bw.bioname.saccharomyces_escherichia=General Purpose Fermenting Bacteria
@@ -335,6 +337,13 @@ bw.bioname.binni_growth_medium=Binni Growth Medium
 bw.bioname.binni_bacteria=Binni Bacteria
 bw.bioname.mutagen_bacteria_a_spatio=Mutagen Bacteria a Spatio
 bw.bioname.null=Debug
+bw.bioname.ovumbac=Ova Evolutionis
+bw.bioname.stemcellbac=Derivantur Cellula Evolutionis
+bw.bioname.biocellbac=Cellula Biologicum Evolutione
+bw.bioname.binnigrowthmedium=Binni Growth Medium
+bw.bioname.binnibacteria=Binni Bacteria
+bw.bioname.bacterialsludgebac=Corynebacterium Sludge Marsensis
+bw.bioname.mutagen=Mutagen Bacteria a Spatio
 
 # Multiblocks
 gt.blockmachines.bw.biovat.name=Bacterial Vat

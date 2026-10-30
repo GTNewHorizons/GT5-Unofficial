@@ -143,6 +143,28 @@ public class ItemLabParts extends SimpleSubItemClass {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack itemStack) {
+        if (itemStack.getTagCompound() != null) {
+            String name = itemStack.getTagCompound()
+                .getString("Name");
+            if (itemStack.getItemDamage() == PETRI_DISH) {
+                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME
+                    .getOrDefault(name, BioCultureEnum.NullBioCulture).bioCulture;
+                return StatCollector
+                    .translateToLocalFormatted("filled.item.petriDish.name", culture.getLocalisedName());
+            }
+            if (itemStack.getItemDamage() == DNA_FLASK || itemStack.getItemDamage() == PLASMID_CELL) {
+                BioData data = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData)
+                    .getBioData();
+                String languageKey = itemStack.getItemDamage() == DNA_FLASK ? "filled.item.DNASampleFlask.name"
+                    : "filled.item.PlasmidCell.name";
+                return StatCollector.translateToLocalFormatted(languageKey, data.getLocalisedName());
+            }
+        }
+        return super.getItemStackDisplayName(itemStack);
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack itemStack) {
         if (itemStack.getItemDamage() == 0 && itemStack.getTagCompound() != null)
             return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
