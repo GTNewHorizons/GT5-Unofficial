@@ -8704,9 +8704,9 @@ GT5U.infodata.turbine.dmg=Turbine Damage: %s %%
 GT5U.infodata.turbine.pollution=Pollution reduced to: %s %%
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
-GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
-GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
-GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
+GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%s%s %%
+GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%s%s %%
+GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%s%s %%
 
 GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
 GT5U.infodata.engine.large_neutralization_title=§9Large Neutralization Engine§r
