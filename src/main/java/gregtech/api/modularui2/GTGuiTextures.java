@@ -163,6 +163,15 @@ public final class GTGuiTextures {
         .adaptable(1)
         .build();
 
+    public static final UITexture BACKGROUND_DRONE_CAMERA = UITexture.builder()
+        .location(GregTech.ID, "gui/background/drone_camera")
+        .imageSize(256, 256)
+        .adaptable(100, 16, 100, 26)
+        .nonOpaque()
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_DRONE_CAMERA)
+        .build();
+
     public static final UITexture BACKGROUND_TESLA_TOWER_CHART = UITexture.builder()
         .location(MODID, "gui/tesla_tower_chart_background")
         .nonOpaque()
@@ -1043,6 +1052,23 @@ public final class GTGuiTextures {
         .location(GTPlusPlus.ID, "gui/overlay_slot/turbine")
         .fullImage()
         .canApplyTheme()
+        .build();
+
+    public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_drone")
+        .canApplyTheme()
+        .fullImage()
+        .build();
+    public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_queen")
+        .canApplyTheme()
+        .fullImage()
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_SLOT_APIARY_UPGRADE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/slot_upgrade")
+        .canApplyTheme()
+        .fullImage()
         .build();
 
     public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()

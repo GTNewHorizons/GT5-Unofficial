@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -240,7 +239,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Replace maintenance hatch on other multi with drone downlink module")
             .addInfo("Provides maintenance, power control, monitoring, and more")
             .addSeparator()
-            .addInfo("Operation range is determined by drone tier:")
+            .addInfo("Operation range is determined by Drone Tier:")
             .addInfo("T1-128, T2-512, T3-4096, T4-4096(Auto)/Infinite(Key)")
             .addInfo("T4 drone allows cross-dimension connection!")
             .addInfo(EnumChatFormatting.RED + "To enable cross-dimension,")
@@ -250,7 +249,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Place drones in input bus; only one needed to operate")
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
-            .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
+            .addInfo("Chance is determined by Drone Tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front bottom center")
             .addCasing("61", "Steel Pipe Casing", false)
@@ -259,8 +258,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasing("28", "Iron Frame Box", false)
             .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
             .addInputBus("1+", "Any machine casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
-            .toolTipFinisher(AuthorSilverMoon);
+            .toolTipFinisher();
         return tt;
     }
 

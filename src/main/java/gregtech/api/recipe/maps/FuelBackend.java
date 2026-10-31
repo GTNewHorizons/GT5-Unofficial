@@ -1,7 +1,9 @@
 package gregtech.api.recipe.maps;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -22,6 +24,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public class FuelBackend extends RecipeMapBackend {
 
     private final Map<String, GTRecipe> recipesByFluidInput = new HashMap<>();
+    private final List<GTRecipe> hiddenDuplicateFuels = new ArrayList<>();
 
     public FuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
@@ -55,6 +58,7 @@ public class FuelBackend extends RecipeMapBackend {
     public void clearRecipes() {
         super.clearRecipes();
         recipesByFluidInput.clear();
+        hiddenDuplicateFuels.clear();
     }
 
     @Override
@@ -65,6 +69,10 @@ public class FuelBackend extends RecipeMapBackend {
 
     private void rebuildFluidInputIndex() {
         recipesByFluidInput.clear();
+        for (GTRecipe recipe : hiddenDuplicateFuels) {
+            recipe.mHidden = false;
+        }
+        hiddenDuplicateFuels.clear();
         for (GTRecipe recipe : getAllRecipes()) {
             addFuelToFluidInputIndex(recipe);
         }
@@ -76,7 +84,7 @@ public class FuelBackend extends RecipeMapBackend {
             FluidStack fluidStack = GTUtility.getFluidForFilledItem(recipe.mInputs[0], true);
             if (fluidStack != null) {
                 fluidStack.amount = 0;
-                recipesByFluidInput.put(
+                indexFuel(
                     fluidStack.getFluid()
                         .getName(),
                     recipe);
@@ -85,11 +93,20 @@ public class FuelBackend extends RecipeMapBackend {
             && recipe.mFluidInputs != null
             && GTUtility.getNonnullElementCount(recipe.mFluidInputs) >= 1
             && recipe.mFluidInputs[0] != null) {
-                recipesByFluidInput.put(
+                indexFuel(
                     recipe.mFluidInputs[0].getFluid()
                         .getName(),
                     recipe);
             }
+    }
+
+    // Prevents duplicate fuels from being added
+    private void indexFuel(String fluidName, GTRecipe recipe) {
+        GTRecipe previous = recipesByFluidInput.put(fluidName, recipe);
+        if (previous != null && previous != recipe && !previous.mHidden && !recipe.mHidden) {
+            previous.mHidden = true;
+            hiddenDuplicateFuels.add(previous);
+        }
     }
 
     @Nullable
