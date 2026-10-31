@@ -155,6 +155,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         float aX, float aY, float aZ, ItemStack aTool);
 
     /**
+     * Called on the server when a player uses a plunger, including while sneaking. Return true to consume the
+     * interaction before the plunger's default behavior. Implementations handle their own tool damage.
+     */
+    default boolean onPlungerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        return false;
+    }
+
+    /**
      * Called right before this Machine explodes
      */
     void onExplosion();
