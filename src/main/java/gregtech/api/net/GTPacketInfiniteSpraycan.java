@@ -173,12 +173,20 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
             @Override
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
                 final EntityPlayerMP player, final int newColor) {
-                if (newColor != -1) {
-                    behavior.setColor(itemStack, (byte) newColor);
+                if (newColor != -1 && behavior.setSelection(itemStack, newColor)) {
                     playSound(player, SoundResource.GT_SPRAYCAN_SHAKE);
                     return true;
                 }
                 return false;
+            }
+        },
+        TOGGLE_FAVORITE {
+
+            @Override
+            boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
+                final EntityPlayerMP player, final int newColor) {
+                behavior.toggleFavorite(itemStack, newColor);
+                return true;
             }
         },
         TOGGLE_SHAKE_LOCK {

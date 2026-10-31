@@ -4726,6 +4726,17 @@ gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
+gt.behaviour.paintspray.infinite.gui.hex=Hex:
+gt.behaviour.paintspray.infinite.gui.picker.tooltip=Open the color picker
+gt.behaviour.paintspray.infinite.gui.apply=Apply
+gt.behaviour.paintspray.infinite.gui.apply.tooltip=Use this exact color. GT pipes show it; everything else gets the nearest dye.
+gt.behaviour.paintspray.infinite.gui.save=Save
+gt.behaviour.paintspray.infinite.gui.save.tooltip=Add the typed color (or the current color, if the field is empty) to favorites
+gt.behaviour.paintspray.infinite.gui.favorites=Favorites:
+gt.behaviour.paintspray.infinite.gui.favorite_hint=Right-click to add to or remove from favorites
+gt.behaviour.paintspray.infinite.gui.favorite_use=Left-click to use, right-click to remove
+gt.behaviour.paintspray.infinite.gui.custom=%s (connects as %s)
+gt.behaviour.paintspray.infinite.gui.connects_as=Connects as: %s
 
 gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
 gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
