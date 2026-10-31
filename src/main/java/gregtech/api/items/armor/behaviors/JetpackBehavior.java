@@ -10,6 +10,7 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
@@ -58,10 +59,8 @@ public class JetpackBehavior implements IArmorBehavior {
 
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
-        boolean ascend = ArmorActionManager.getKeybind("VANILLA_JUMP")
-            .isKeyDown(player);
-        boolean descend = ArmorActionManager.getKeybind("VANILLA_SNEAK")
-            .isKeyDown(player);
+        boolean ascend = ArmorHelper.isJumpInput(player);
+        boolean descend = ArmorHelper.isSneakInput(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
         boolean isGuiOpen = context.getPlayer().worldObj.isRemote
             && (net.minecraft.client.Minecraft.getMinecraft().currentScreen != null);
@@ -98,14 +97,12 @@ public class JetpackBehavior implements IArmorBehavior {
                 float currentSideways = speedSideways * finalMulti;
 
                 if (!isGuiOpen) {
-                    if (ArmorActionManager.getKeybind("VANILLA_FORWARD")
-                        .isKeyDown(player)) player.moveFlying(0, currentForward, currentForward);
-                    if (ArmorActionManager.getKeybind("VANILLA_BACKWARD")
-                        .isKeyDown(player)) player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
-                    if (ArmorActionManager.getKeybind("VANILLA_LEFT")
-                        .isKeyDown(player)) player.moveFlying(currentSideways, 0, currentSideways);
-                    if (ArmorActionManager.getKeybind("VANILLA_RIGHT")
-                        .isKeyDown(player)) player.moveFlying(-currentSideways, 0, currentSideways);
+                    float forward = ArmorHelper.getForwardInput(player);
+                    float strafe = ArmorHelper.getStrafeInput(player);
+                    if (forward > 0) player.moveFlying(0, currentForward, currentForward);
+                    if (forward < 0) player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
+                    if (strafe > 0) player.moveFlying(currentSideways, 0, currentSideways);
+                    if (strafe < 0) player.moveFlying(-currentSideways, 0, currentSideways);
                 }
 
                 if (!player.getEntityWorld().isRemote) {
