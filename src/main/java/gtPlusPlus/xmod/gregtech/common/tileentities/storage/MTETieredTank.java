@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -69,6 +68,10 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
     public String[] getDescription() {
         List<String> description = new ArrayList<>(Arrays.asList(this.mDescriptionArray));
 
+        description.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.electric.tier.s",
+                GTUtility.getColoredTierNameFromTier(mTier)));
         description.add(StatCollector.translateToLocal("gtpp.tiered_tank.desc.portable"));
 
         if (this.mFluid != null) {
@@ -105,14 +108,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tiered_tank.tooltip.contains",
-                        EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tiered_tank.tooltip.contains", tContents.getLocalizedName()));
 
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tiered_tank.tooltip.amount",
-                        EnumChatFormatting.GREEN + formatNumber(tContents.amount) + EnumChatFormatting.GRAY));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tiered_tank.tooltip.amount", formatNumber(tContents.amount)));
             }
         }
     }

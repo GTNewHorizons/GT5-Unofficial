@@ -2,13 +2,13 @@ package gregtech.common.render.items;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -18,7 +18,6 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.Universiu
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.common.config.Client;
 
@@ -30,12 +29,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         Item item = aStack.getItem();
         if (item == null || !Client.render.renderUniversiumFancy) return false;
 
-        magicRenderMethod(
-            type,
-            ItemList.Emitter_UEV.get(1), // hack to make it render correctly
-            item.getIconFromDamage(aStack.getItemDamage()),
-            true,
-            data);
+        magicRenderMethod(type, item.getIconFromDamage(aStack.getItemDamage()), true, data);
         return true;
     }
 
@@ -64,7 +58,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             if (tIcon != null) {
-                magicRenderMethod(type, aStack, tIcon, false, data);
+                magicRenderMethod(type, tIcon, false, data);
             }
 
             GL11.glDisable(GL11.GL_LIGHTING);
@@ -79,8 +73,7 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         }
     }
 
-    private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
-        Object... data) {
+    private void magicRenderMethod(ItemRenderType type, IIcon tIcon, boolean fluidDisplay, Object... data) {
 
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -98,11 +91,9 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
             if (fluidDisplay) {
-                // this somehow makes shader render correctly
-                ResourceLocation resourcelocation = mc.getTextureManager()
-                    .getResourceLocation(aStack.getItemSpriteNumber());
+                // the shader takes alpha from the fluid icon, so its atlas must be bound
                 mc.getTextureManager()
-                    .bindTexture(resourcelocation);
+                    .bindTexture(TextureMap.locationBlocksTexture);
             } else {
                 ItemRenderUtil.renderItem(type, tIcon);
             }

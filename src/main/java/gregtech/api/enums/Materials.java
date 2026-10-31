@@ -1227,6 +1227,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
     private boolean hasGlowingOre = false;
+    private String aliasKey = "";
+    private boolean hasAlias = false;
 
     protected Materials(
         // spotless:off
@@ -1274,7 +1276,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
         LinkedHashSet<SubTag> subTags,
-        boolean hasGlowingOre
+        boolean hasGlowingOre,
+        String aliasKey
         // spotless:on
     ) {
 
@@ -1413,6 +1416,11 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mAspects.addAll(aspects);
         }
         this.hasGlowingOre = hasGlowingOre;
+
+        if (!aliasKey.isEmpty()) {
+            this.aliasKey = aliasKey;
+            this.hasAlias = true;
+        }
     }
 
     private static void setOreByproducts() {
@@ -2309,5 +2317,13 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public boolean hasGlowingOre() {
         return hasGlowingOre;
+    }
+
+    public boolean hasAlias() {
+        return this.hasAlias;
+    }
+
+    public String getAliasKey() {
+        return this.aliasKey;
     }
 }

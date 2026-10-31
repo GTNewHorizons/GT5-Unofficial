@@ -40,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -167,7 +166,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
-            .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -236,8 +235,9 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
-                return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
+                return super.createOverclockCalculator(recipe).setMachineHeat(
+                    mTierCasing > recipetier ? OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD * (mTierCasing - recipetier)
+                        : 1)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);

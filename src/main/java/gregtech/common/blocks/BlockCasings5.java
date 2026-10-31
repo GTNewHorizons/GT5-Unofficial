@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -273,10 +272,7 @@ public class BlockCasings5 extends BlockCasingsAbstract
         int metadata = stack.getItemDamage();
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.coilheattooltip",
-                EnumChatFormatting.RED + formatNumber(coilLevel.getHeat()) + EnumChatFormatting.GRAY));
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.coilheattooltip", formatNumber(coilLevel.getHeat())));
     }
 
     @Override

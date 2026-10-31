@@ -65,6 +65,7 @@ GT5U.gui.text.recipe_result.gtnhlanth.wrongparticle=Incorrect Particle!
 GT5U.gui.text.recipe_result.gtnhlanth.toolowenergy=Below Required Energy!
 GT5U.gui.text.recipe_result.gtnhlanth.toohighenergy=Above Required Energy!
 GT5U.gui.text.shutdown_reason.gtnhlanth.noparticle=Particle absent (rate is 0)!
+GT5U.gui.text.shutdown_reason.gtnhlanth.boostinterrupt=Not enough booster fluid supplied!
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -127,8 +128,8 @@ item.masked_mask_substrate.name=Processed Mask Substrate
 beamline.info=Machine Information
 beamline.info.hdr=§lMachine Information: §r
 
-beamline.in_pre=Multiblock Beamline Input
-beamline.in_pre.hdr=§lMultiblock Beamline Input: §r
+beamline.in_pre=Multiblock Beam Line Input
+beamline.in_pre.hdr=§lMultiblock Beam Line Input: §r
 beamline.particle=Particle
 beamline.particle.fmt=Particle: §6%s (%s)§r
 beamline.energy=Energy
@@ -147,8 +148,8 @@ beamline.temperature.fmt=Temperature: §4%s§r K
 beamline.coolusage=Coolant Usage
 beamline.coolusage.fmt=Coolant Usage: §b%s§r kL/s
 
-beamline.out_pre=Multiblock Beamline Output
-beamline.out_pre.hdr=§lMultiblock Beamline Output: §r
+beamline.out_pre=Multiblock Beam Line Output
+beamline.out_pre.hdr=§lMultiblock Beam Line Output: §r
 
 gt.blockmachines.beamline_pipe.name=Beam Pipe
 
@@ -160,6 +161,7 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
+particle.name.fmt=%s (%s)
 particle.photon=Photon
 particle.zboson=Z Boson
 particle.wboson=W Boson
@@ -211,7 +213,7 @@ item.photomask.csoc.name=Mask (Crystal SoC)
 item.photomask.elc.name=Mask (Engraved Lapotron Chip)
 item.photomask.fpic.name=Mask (FPIC)
 item.photomask.hpic.name=Mask (High Power IC)
-item.photomask.ilc.name=Mask (Integrated Logic Circuit)
+item.photomask.ilc.name=Mask (Logic IC)
 item.photomask.lcc.name=Mask (Living Crystal Chip)
 item.photomask.lpic.name=Mask (Low Power IC)
 item.photomask.nand.name=Mask (NAND)

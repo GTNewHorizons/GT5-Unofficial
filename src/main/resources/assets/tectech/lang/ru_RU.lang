@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Взрывается, но не так сильно...
 
 gt.spacetime_compression_field_generator.name=Генератор поля пространственно-временного сжатия
 gt.time_acceleration_field_generator.name=Генератор поля замедления времени
+gt.stabilisation_field_generator.name=Генератор поля стабилизации
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -1623,12 +1624,6 @@ tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Анти
 tt.keyword.Weird=*
 
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Проект Godforge
-
 tt.chat.debug.generator=Режим лазера: %s
 
 GT5U.gui.config.general.debug=Отладка
@@ -1681,7 +1676,7 @@ tt.spaceminer.calculator.asteroidChance=%s шанс для:
 tt.eoh.fancy_names.crude=Грубый
 tt.eoh.fancy_names.primitive=Примитивный
 tt.eoh.fancy_names.stable=Стабильный
-tt.eoh.fancy_names.Advanced=Продвинутый
+tt.eoh.fancy_names.advanced=Продвинутый
 tt.eoh.fancy_names.superb=Превосходный
 tt.eoh.fancy_names.exotic=Экзотический
 tt.eoh.fancy_names.perfect=Идеальный
@@ -1710,11 +1705,14 @@ tt.godforge.casings.8.Tooltip.0=Переносит и сохраняет огр�
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
 
-tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
-tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
-tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
+tt.eoh.stability.tooltip=§b§lУвеличивает устойчивость поля пространства-времени.
+tt.eoh.time_dilation.standard.tooltip=§b§lЗамедление времени в коробке.
+tt.eoh.time_dilation.error.tooltip=§c§lОшибка, сообщите команде GTNH
 tt.eoh.spacetime.standard.tooltip.0=Поддерживает внутренний пространственно-временной объем до %d km³.
 tt.eoh.spacetime.standard.tooltip.1=§b§lВозможность запуска рецептов вплоть до %d тира
+tt.eoh.spacetime.name=%s генератор поля пространственно-временного сжатия
+tt.eoh.stabilisation.name=%s генератор поля стабилизации
+tt.eoh.time_dilation.name=%s генератор поля замедления времени
 
 # Info data
 

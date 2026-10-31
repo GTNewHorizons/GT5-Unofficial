@@ -26,7 +26,7 @@ public final class CommonButtons {
      * Returns a muffle button with the provided syncHandler
      * For unsynced sync handlers. Use {@link #createMuffleButton(String)} with a key for synced handlers
      *
-     * @param syncValue - sync handler, can not be synced to manager or will crash
+     * @param syncValue - sync handler, cannot be synced to manager or will crash
      * @return a muffle button with the attached sync value
      */
     public static ToggleButton createMuffleButton(BooleanSyncValue syncValue) {
