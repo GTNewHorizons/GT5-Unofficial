@@ -721,6 +721,9 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private static final Uniform RING_COLOR = FUSION.uniform("u_Color");
 
+    private Color color = new Color(132, 255, 255);
+    private float hdrMultiplier = 12 / 255f;
+
     public static void reloadRender() {
         renderInitialized = false;
         releaseRender();
@@ -795,13 +798,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     }
 
     private void renderRing(boolean bloom) {
-        Color c = new Color(132, 255, 255);
-        float HDR_Multiplier = 12 / 255f;
         if (bloom) {
             renderStandardRing(
-                c.getRed() * HDR_Multiplier,
-                c.getGreen() * HDR_Multiplier,
-                c.getBlue() * HDR_Multiplier);
+                color.getRed() * hdrMultiplier,
+                color.getGreen() * hdrMultiplier,
+                color.getBlue() * hdrMultiplier);
         } else {
             renderStandardRing(0, 0, 0);
         }
