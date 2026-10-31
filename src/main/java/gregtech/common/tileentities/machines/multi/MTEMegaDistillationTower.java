@@ -275,6 +275,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             height++;
         }
 
+        if (!this.isTopLayerFound) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
+            return;
+        }
+
         if (!missingLayers.isEmpty()) {
             errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
         }
