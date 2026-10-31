@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -20,6 +19,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableMap;
@@ -32,6 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -52,6 +53,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -66,6 +68,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final double SPEED_INCREASE_TIER = 1.0D;
     private static final double SPEED_BASIC = 1.0D;
     private static final int GLASS_TIER_FOR_MULTI_AMP = VoltageIndex.UIV;
+    private static final int EU_EFFICIENCY = 100;
 
     private int glassTier = -1;
 
@@ -180,34 +183,32 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Mixer, IMM")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.industrial_mixer"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-mixer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
-                    .put("eu_eff", 100)
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_MULTI_AMP))
+                    .put("speed_increase", SPEED_INCREASE_TIER * 100)
+                    .put("eu_eff", EU_EFFICIENCY)
+                    .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("5-45", "Mixer Casing", false)
-            .addCasing("30", "Any Tiered Glass", false)
-            .addCasing("24", "Tungsten Sheetmetal", false)
-            .addCasing("10", "Item Pipe Casing", true)
-            .addCasing("5", "Titanium Turbine Casing", false)
-            .addEnergyHatch("1+", "Any mixer casing", 1)
-            .addMaintenanceHatch("1", "Any mixer casing", 1)
-            .addMufflerHatch("1", "Any mixer casing", 1)
-            .addInputAny("1+", "Any mixer casing", 1)
-            .addOutputAny("1+", "Any mixer casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("5-45", Casings.MixerCasing.getLocalizedName(), false)
+            .addCasing("30", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("10", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("5", Casings.TitaniumTurbineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
