@@ -674,6 +674,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (tTileEntity instanceof BaseMetaTileEntity) {
             return ((BaseMetaTileEntity) tTileEntity).getLightValue();
         }
+        if (tTileEntity instanceof BaseMetaPipeEntity pipe) {
+            return pipe.getLightValue();
+        }
         return 0;
     }
 

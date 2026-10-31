@@ -971,6 +971,11 @@ public class GTProxy implements IFuelHandler {
     public void reloadNEICache() {}
 
     /**
+     * Client side. Starts drawing heat or frost effects on this fluid pipe, until it's back to normal.
+     */
+    public void trackThermalPipe(IGregTechTileEntity pipe) {}
+
+    /**
      * Logging in to server or {@link #reloadNEICache} being called increases the count.
      */
     public int getNEIReloadCount() {
