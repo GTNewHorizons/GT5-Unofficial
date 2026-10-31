@@ -831,7 +831,9 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 32, y - 32, z - 32, x + 32, y + 32, z + 32);
+        ForgeDirection dir = getDirection();
+        int cx = x + dir.offsetX * 17, cy = y + dir.offsetY * 17, cz = z + dir.offsetZ * 17;
+        return AxisAlignedBB.getBoundingBox(cx - 23, cy - 23, cz - 23, cx + 24, cy + 24, cz + 24);
     }
 
     @Override
