@@ -63,8 +63,12 @@ public final class GTRecipeLookupBuilder {
         return new LookupBuildState(new Object2IntOpenHashMap<>(), new HashMap<>());
     }
 
-    public static void addToLookup(GTRecipeLookup lookup, LookupBuildState state, GTRecipe recipe) {
-        Objects.requireNonNull(lookup, "lookup");
+    /**
+     * Works out the lookup ingredients of the recipe now, so they see the current unification, but leaves adding them
+     * to the lookup to {@link #addQueuedToLookup}. Maps are rebuilt from scratch before they are searched, so most
+     * queued recipes never need to be added one by one.
+     */
+    public static void queueForLookup(LookupBuildState state, GTRecipe recipe) {
         Objects.requireNonNull(state, "state");
         Objects.requireNonNull(recipe, "recipe");
         if (recipe.mFakeRecipe) {
@@ -75,8 +79,21 @@ public final class GTRecipeLookupBuilder {
         if (ingredients.isEmpty()) {
             return;
         }
-        incrementFrequencies(state.frequencies, ingredients);
-        lookup.add(recipe, poolAndSort(ingredients, state.frequencies, state.pool));
+        state.queued.add(new RecipeEntry(recipe, ingredients));
+    }
+
+    /**
+     * Adds the recipes queued by {@link #queueForLookup} to the lookup, in the order they were queued.
+     */
+    public static void addQueuedToLookup(GTRecipeLookup lookup, LookupBuildState state) {
+        if (state.queued.isEmpty()) {
+            return;
+        }
+        for (RecipeEntry entry : state.queued) {
+            incrementFrequencies(state.frequencies, entry.ingredients);
+            lookup.add(entry.recipe, poolAndSort(entry.ingredients, state.frequencies, state.pool));
+        }
+        state.queued.clear();
     }
 
     private Object2IntMap<GTRecipeLookupIngredient> computeFrequencies() {
@@ -330,6 +347,7 @@ public final class GTRecipeLookupBuilder {
 
         private final Object2IntMap<GTRecipeLookupIngredient> frequencies;
         private final Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool;
+        private final List<RecipeEntry> queued = new ArrayList<>();
 
         private LookupBuildState(Object2IntMap<GTRecipeLookupIngredient> frequencies,
             Map<GTRecipeLookupIngredient, GTRecipeLookupIngredient> pool) {

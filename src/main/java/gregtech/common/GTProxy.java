@@ -127,6 +127,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
+import gregtech.api.util.CraftingRecipeFilter;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
@@ -1175,6 +1176,7 @@ public class GTProxy implements IFuelHandler {
 
     @SubscribeEvent
     public void registerOre(OreDictionary.OreRegisterEvent event) {
+        CraftingRecipeFilter.onOreRegistered();
         OreDictRegistrationHandler.registerOre(event);
     }
 
