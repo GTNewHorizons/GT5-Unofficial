@@ -1548,20 +1548,10 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "PCP", "BBB", "PPP", 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'P',
                 OrePrefixes.plank.get(Materials.Wood), 'B', OrePrefixes.battery.get(Materials.LV) });
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("mfeUnit", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CEC", "EME", "CEC", 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'E',
-                OrePrefixes.battery.get(Materials.IV), 'M', GTModHandler.getIC2Item("machine", 1L) });
-        GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("lvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "POP", "PCP", 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'O',
                 GTModHandler.getIC2Item("coil", 1L), 'P', OrePrefixes.plank.get(Materials.Wood) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("mvTransformer", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CMC", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'M',
-                GTModHandler.getIC2Item("machine", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("hvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1579,18 +1569,6 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "BBB", "PPP", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'P',
                 OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.battery.get(Materials.HV) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("teleporter", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GFG", "CMC", "GDG", 'C', OrePrefixes.cableGt01.get(Materials.Platinum), 'G',
-                OrePrefixes.circuit.get(Materials.HV), 'D', OrePrefixes.gem.get(Materials.Diamond), 'M',
-                GTModHandler.getIC2Item("machine", 1L), 'F', GTModHandler.getIC2Item("frequencyTransmitter", 1L) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("energyOMat", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "RBR", "CMC", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
-                OrePrefixes.dust.get(Materials.Redstone), 'B', OrePrefixes.battery.get(Materials.LV), 'M',
-                GTModHandler.getIC2Item("machine", 1L) });
 
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("boatElectric", 1L),
