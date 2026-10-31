@@ -721,8 +721,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private static final Uniform RING_COLOR = FUSION.uniform("u_Color");
 
-    private Color color = new Color(132, 255, 255);
-    private float hdrMultiplier = 12 / 255f;
+    private final Color color = new Color(132, 255, 255);
+    private final float hdrMultiplier = 12 / 255f;
 
     public static void reloadRender() {
         renderInitialized = false;
