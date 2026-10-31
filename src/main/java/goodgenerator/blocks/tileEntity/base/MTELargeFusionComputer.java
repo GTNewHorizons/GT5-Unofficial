@@ -309,7 +309,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        shouldRender = aNBT.getBoolean("shouldRender");
+        shouldRender = !aNBT.getBoolean("shouldRender") || aNBT.getBoolean("shouldRender");
         // Migration code
         if (lEUt > 0) {
             lEUt = -lEUt;
