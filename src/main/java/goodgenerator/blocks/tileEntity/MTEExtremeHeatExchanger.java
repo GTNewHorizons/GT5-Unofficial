@@ -1,12 +1,12 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -227,14 +226,14 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.heat_exchanger_ehe"))
-            .addMarkdown(new ResourceLocation("gregtech", "extreme-heat-exchanger"), ImmutableMap.of("unit", getFluidUnit()))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-heat-exchanger"))
             .beginStructureBlock(5, 6, 11, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("25-120", StatCollector.translateToLocal("gt.blockcasings4.0.name"), false)
             .addCasing("72", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
             .addCasing("60", StatCollector.translateToLocal("gt.blockcasings2.15.name"), false)
             .addCasing("48", StatCollector.translateToLocal("pressureResistantWalls.name"), false)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2, 5)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2, 5)
             .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing_or_any_bottom_casing"), 1, 3)
             .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing_or_any_top_casing"), 2, 4)
             .addStructureInfo("")
@@ -397,7 +396,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     private enum EHEHatches implements IHatchElement<MTEExtremeHeatExchanger> {
 
-        HotInputHatch(MTEExtremeHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
+        HotInputHatch("GT5U.MBTT.InputHatch", MTEExtremeHeatExchanger::addHotFluidInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -405,7 +405,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 return 1;
             }
         },
-        ColdOutputHatch(MTEExtremeHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
+        ColdOutputHatch("GT5U.MBTT.OutputHatch", MTEExtremeHeatExchanger::addColdFluidOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -414,10 +415,13 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEExtremeHeatExchanger> adder;
 
-        EHEHatches(IGTHatchAdder<MTEExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        EHEHatches(String name, IGTHatchAdder<MTEExtremeHeatExchanger> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -430,6 +434,16 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

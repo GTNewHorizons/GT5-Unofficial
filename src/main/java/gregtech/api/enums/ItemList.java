@@ -232,7 +232,7 @@ public enum ItemList implements IItemContainer {
     Bottle_Vodka,
     Bottle_Leninade,
     Bottle_Mineral_Water,
-    Bottle_Salty_Water,
+    Bottle_Salt_Water,
     Bottle_Reed_Water,
     Bottle_Rum,
     Bottle_Pirate_Brew,
@@ -1519,6 +1519,7 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Opener,
     Black_Hole_Closer,
     Black_Hole_Stabilizer,
+    Supermassive_Black_Hole_Opener,
 
     Machine_Multi_IndustrialBrewery,
 
@@ -1541,7 +1542,7 @@ public enum ItemList implements IItemContainer {
     Hatch_VacuumConveyor_Output,
     VacuumConveyorPipe,
     NanoChipModule_AssemblyMatrix,
-    NanoChipModule_SMDProcessor,
+    NanoChipModule_PartProcessor,
     NanoChipModule_BoardProcessor,
     NanoChipModule_EtchingArray,
     NanoChipModule_CuttingChamber,
@@ -2251,6 +2252,8 @@ public enum ItemList implements IItemContainer {
     CasingIchorium,
     CasingMixer,
     FormingCore,
+    TensionResistantMachineCasing,
+    ExtruderMachineCasing,
     CasingHearth,
     CasingFridge,
     CasingNaquadahReinforcedDistillation,
@@ -3129,7 +3132,18 @@ public enum ItemList implements IItemContainer {
     FirewallProjectionNanochipCasing,
     ComplexNanochipGlass,
     Gravitational_Lens,
-    Planck_Manifold,
+
+    CalabiYauManifold,
+    RawManifoldBud,
+    BlossomingManifoldBud,
+
+    PulsatingWDMStrands,
+    UnboundWDMStrands,
+    MacrocosmicStrands,
+    IsolatedBDMStrands,
+
+    LostQuantumCircuitRack,
+    RealizedQuantumCircuitRack,
 
     CultureNullBioCulture,
     CultureSaccharomycesCerevisiae,
@@ -3309,7 +3323,7 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Foolish,
     Ice_Cream_LawnbaseSpecial,
     Ice_Cream_LunarLander,
-    Ice_Cream_NaquadaNutSwirl,
+    Ice_Cream_NaquadahNutSwirl,
     Ice_Cream_NaquadriaPlasmaParfait,
     Ice_Cream_NetherStarNutCrunch,
     Ice_Cream_NutsAndBolts,

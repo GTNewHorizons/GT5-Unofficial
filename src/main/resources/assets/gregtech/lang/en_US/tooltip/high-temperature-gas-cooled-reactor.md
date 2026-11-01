@@ -1,13 +1,15 @@
-Uses up to {red:{var:fuel_percent}}% of fuel per operation
-{red:10}% of this value is flat, {red:90}% follows the formula y=1-(1-x)^3 (x is % fill level)
-Maintenance problems decrease the efficiency of cooling by {red:20}% for each issue
-Uses {red:{var:power}} EU/t, increasing by up to {red:{var:power_penalty}} times when lacking Helium Gas
-Helium gas increases effectiveness of heat exchangers linearly up to {red:100}% at max capacity
-The Reactor loses {red:{var:helium_lost}}% helium per operation
-It requires at least {red:{var:min_helium}}% helium to start operation
-One Operation takes longer based on reactor fill level
-Between {red:{var:min_time}}s and {red:{var:max_time}}s
-Providing coolant/water/both speeds up recipe by
-{red:{var:coolant_speedup}}%/{red:{var:water_speedup}}%/{red:{var:total_speedup}}% total recipe time/second
-The amount of necessary fluid for maximum bonus speed scales with TRISO Balls
-{red:{var:coolant_per_ball}} coolant/tick/ball and {red:{var:water_per_ball}} distilled water/tick/ball
+Uses up to {color_amount:{var:fuel_percent}%} of {color_name:Fuel} per operation
+Requires at least {color_amount:{var:min_helium}%} {color_key:Helium} to start operation
+{color_key:Helium} increases heat exchanger effectiveness linearly up to {color_amount:100%} at max capacity
+The reactor loses {color_amount:{var:helium_lost}%} of its stored {color_key:Helium} per operation
+Uses {color_eu_usage:{var:power} {EU/t}}, increasing by up to {color_amount:{var:power_penalty}x} when lacking {color_key:Helium}
+{hr}
+Operation time scales with reactor fill level
+Between {color_amount:{var:min_time}s} and {color_amount:{var:max_time}s}
+{color_amount:10%} of this value is flat, {color_amount:90%} follows the formula {aqua:y = 1 - (1 - x)^3} ({white:x} is % fill level)
+Maintenance problems decrease efficiency by {color_amount:20%} for each issue
+{hr}
+Supplying {color_key:Coolant}, {color_key:Water}, or both speeds up the recipe by
+{color_amount:{var:coolant_speedup}%} / {color_amount:{var:water_speedup}%} / {color_amount:{var:total_speedup}%} total recipe time per second
+The amount of fluid needed for max bonus scales with {color_key:TRISO Balls}
+{color_amount:{var:coolant_per_ball}} {color_key:Coolant}/tick/ball and {color_amount:{var:water_per_ball}} {color_key:Distilled Water}/tick/ball
