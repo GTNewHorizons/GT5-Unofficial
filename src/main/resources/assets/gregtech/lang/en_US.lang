@@ -6886,6 +6886,10 @@ gt.item.quark_catalyst.unaligned.tooltip=Needs to be realigned before use
 ## Optical CPU
 gt.item.optical_cpu_containment_housing.name=Optical CPU Containment Housing
 gt.item.optical_cpu_containment_housing.tooltip=CPU Housing
+gt.item.raw_dense_optical_cpu_containment_housing.name=Raw Dense Optical CPU Containment Housing
+gt.item.raw_dense_optical_cpu_containment_housing.tooltip=CPU Housing
+gt.item.superdense_optical_cpu_containment_housing.name=Superdense Optical CPU Containment Housing
+gt.item.superdense_optical_cpu_containment_housing.tooltip=CPU Housing
 gt.item.optically_perfected_cpu.name=Optically Perfected CPU
 gt.item.optically_perfected_cpu.tooltip=Perfected CPU!
 gt.item.optically_compatible_memory.name=Optically Compatible Memory
