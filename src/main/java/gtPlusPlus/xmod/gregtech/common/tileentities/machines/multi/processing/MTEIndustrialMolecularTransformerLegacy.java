@@ -7,7 +7,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -108,7 +108,7 @@ public class MTEIndustrialMolecularTransformerLegacy extends GTPPMultiBlockBase<
                 .addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
                 .addElement('e', ofBlock(getCasingBlock2(), 0))
                 .addElement('f', ofBlock(getCasingBlock2(), 4))
-                .addElement('c', activeCoils(ofBlock(getCoilBlock(), 3)))
+                .addElement('c', activeBlocks(ofBlock(getCoilBlock(), 3)))
                 .addElement('t', ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
                 .addElement(
                     'h',

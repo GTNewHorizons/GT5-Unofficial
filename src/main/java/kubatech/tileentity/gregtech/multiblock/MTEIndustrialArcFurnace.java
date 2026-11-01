@@ -17,7 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -221,7 +221,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, Casings.SolidSteelMachineCasing.asElement())))
         .addElement('B', Casings.SteelPipeCasing.asElement())
-        .addElement('C', GTStructureChannels.HEATING_COIL.use(activeCoils(ofCoil((te, level) -> {
+        .addElement('C', GTStructureChannels.HEATING_COIL.use(activeBlocks(ofCoil((te, level) -> {
             te.coilTier = level;
             return true;
         }, te -> te.coilTier))))

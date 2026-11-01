@@ -19,7 +19,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.data.GTCoilTracker;
+import gregtech.common.data.GTActiveBlockTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
 
@@ -195,7 +195,7 @@ public class BlockCasings1 extends BlockCasingsAbstract
     @Override
     public int getClientMeta(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        if ((meta == 14) && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+        if ((meta == 14) && GTActiveBlockTracker.isBlockActive(world, x, y, z)) meta += ACTIVE_OFFSET;
         return meta;
     }
 

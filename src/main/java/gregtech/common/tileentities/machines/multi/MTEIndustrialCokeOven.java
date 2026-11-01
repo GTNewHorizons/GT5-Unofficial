@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -182,8 +182,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addElement('A', Casings.SteelPipeCasing.asElement())
             .addElement(
                 'B',
-                GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL.use(
+                    activeBlocks(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
             .addElement('C', ofFrame(Materials.Steel))
             .addElement('E', GTStructureChannels.COKE_OVEN_CASING.use(ofBlocksTiered((block, meta) -> {
                 if (block == ModBlocks.blockCasingsMisc && meta == 2) return 0;

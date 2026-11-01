@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.steam;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -191,12 +192,13 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
                         t -> t.tierPipeCasing))
                 .addElement(
                     'D',
-                    ofBlocksTiered(
-                        MTESteamCentrifuge::getTierFireBoxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireBoxCasing = m,
-                        t -> t.tierFireBoxCasing))
+                    activeBlocks(
+                        ofBlocksTiered(
+                            MTESteamCentrifuge::getTierFireBoxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireBoxCasing = m,
+                            t -> t.tierFireBoxCasing)))
                 .addElement(
                     'A',
                     ofChain(

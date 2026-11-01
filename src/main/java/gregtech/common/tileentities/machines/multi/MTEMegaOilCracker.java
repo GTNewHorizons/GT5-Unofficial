@@ -12,7 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRAC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
@@ -123,7 +123,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         .addElement(
             'E', // coils
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
+                .use(activeBlocks(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
         .addElement('F', ofSheetMetal(Materials.Naquadah))
         .addElement(
             'M',

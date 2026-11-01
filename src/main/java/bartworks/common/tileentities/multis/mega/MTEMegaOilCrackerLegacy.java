@@ -94,8 +94,8 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
                         "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
         .addElement(
             'c',
-            GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMegaOilCrackerLegacy::setCoilLevel, MTEMegaOilCrackerLegacy::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL.use(
+                activeBlocks(ofCoil(MTEMegaOilCrackerLegacy::setCoilLevel, MTEMegaOilCrackerLegacy::getCoilLevel))))
 
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
