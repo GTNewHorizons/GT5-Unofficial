@@ -308,7 +308,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth())
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
-            .child(createRecipeHeldByFusesWidget(syncManager))
+            .child(createRecipeHeldByCapacitorsWidget(syncManager))
             .child(createStructureErrorWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
@@ -349,14 +349,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         .getDisplayString()));
     }
 
-    protected IWidget createRecipeHeldByFusesWidget(PanelSyncManager syncManager) {
-        BooleanSyncValue recipeHeldByFusesSyncer = syncManager
-            .findSyncHandler("recipeHeldByFuses", BooleanSyncValue.class);
-        return IKey.lang("GT5U.gui.text.recipe_held_by_fuses")
+    protected IWidget createRecipeHeldByCapacitorsWidget(PanelSyncManager syncManager) {
+        BooleanSyncValue recipeHeldByCapacitorsSyncer = syncManager
+            .findSyncHandler("recipeHeldByCapacitors", BooleanSyncValue.class);
+        return IKey.lang("GT5U.gui.text.recipe_held_by_capacitors")
             .asWidget()
             .fullWidth()
             .marginBottom(2)
-            .setEnabledIf(widget -> recipeHeldByFusesSyncer.getBoolValue());
+            .setEnabledIf(widget -> recipeHeldByCapacitorsSyncer.getBoolValue());
     }
 
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
@@ -1185,7 +1185,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue(
             "machineActive",
             new BooleanSyncValue(baseMetaTileEntity::isActive, baseMetaTileEntity::setActive));
-        syncManager.syncValue("recipeHeldByFuses", new BooleanSyncValue(multiblock::isRecipeHeldByFuses));
+        syncManager.syncValue("recipeHeldByCapacitors", new BooleanSyncValue(multiblock::isRecipeHeldByCapacitors));
 
         syncManager
             .syncValue("wrench", new BooleanSyncValue(() -> multiblock.mWrench, val -> multiblock.mWrench = val));

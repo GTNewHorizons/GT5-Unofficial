@@ -5,6 +5,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
+import static gregtech.api.enums.Textures.ItemIcons.MASK_BACKUP_CAPACITOR;
+import static gregtech.api.enums.Textures.ItemIcons.MASK_ENERGY_HATCH_FUSE;
 import static gregtech.api.enums.Textures.ItemIcons.MASK_VOLTAGE_COIL;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.Tier.HV;
@@ -28,6 +30,8 @@ import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
+import static gregtech.common.items.IDMetaItem03.Backup_Capacitor_Depleted;
+import static gregtech.common.items.IDMetaItem03.Backup_Capacitor_ULV;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Blossoming_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
@@ -184,6 +188,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
+import static gregtech.common.items.IDMetaItem03.Energy_Hatch_Fuse_Broken;
 import static gregtech.common.items.IDMetaItem03.Energy_Hatch_Fuse_ULV;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -338,7 +343,6 @@ import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
-import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.render.items.UniversiumMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -2025,6 +2029,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
 
         registerMetaMaterials();
         registerEnergyHatchFuses();
+        registerBackupCapacitors();
 
         registerAllTieredTooltips();
         initOrePrefixes();
@@ -2137,12 +2142,38 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.energy_hatch_fuse.name",
                     new Object[] { GTValues.VN[tier] },
                     "gt.item.energy_hatch_fuse.tooltip",
-                    new Object[] { GTValues.VN[tier] }));
+                    new Object[] { GTValues.VN[tier] },
+                    "fuse",
+                    "fuse" + GTValues.VN[tier]));
             registerTieredTooltip(ItemList.ENERGY_HATCH_FUSES[tier].get(1), GTTooltipHandler.Tier.values()[tier]);
         }
-        ItemList.Energy_Hatch_Fuse_UHV.setRender(new CosmicNeutroniumMetaItemRenderer());
-        ItemList.Energy_Hatch_Fuse_UEV.setRender(new InfinityMetaItemRenderer());
-        ItemList.Energy_Hatch_Fuse_UIV.setRender(new TranscendentalMetaItemRenderer());
+        ItemList.Energy_Hatch_Fuse_UXV.setRender(new UniversiumMetaItemRenderer(MASK_ENERGY_HATCH_FUSE));
+        ItemList.Energy_Hatch_Fuse_Broken.set(
+            addItemWithLocalizationKeys(
+                Energy_Hatch_Fuse_Broken.ID,
+                "gt.item.energy_hatch_fuse.broken.name",
+                "gt.item.energy_hatch_fuse.broken.tooltip"));
+    }
+
+    private void registerBackupCapacitors() {
+        for (int tier = 0; tier < ItemList.BACKUP_CAPACITORS.length; tier++) {
+            ItemList.BACKUP_CAPACITORS[tier].set(
+                addItemWithLocalizationKeysAndArgs(
+                    Backup_Capacitor_ULV.ID + tier,
+                    "gt.item.backup_capacitor.name",
+                    new Object[] { GTValues.VN[tier] },
+                    "gt.item.backup_capacitor.tooltip",
+                    new Object[] { GTValues.VN[tier] },
+                    "backupCapacitor",
+                    "backupCapacitor" + GTValues.VN[tier]));
+            registerTieredTooltip(ItemList.BACKUP_CAPACITORS[tier].get(1), GTTooltipHandler.Tier.values()[tier]);
+        }
+        ItemList.Backup_Capacitor_UXV.setRender(new UniversiumMetaItemRenderer(MASK_BACKUP_CAPACITOR));
+        ItemList.Backup_Capacitor_Depleted.set(
+            addItemWithLocalizationKeys(
+                Backup_Capacitor_Depleted.ID,
+                "gt.item.backup_capacitor.depleted.name",
+                "gt.item.backup_capacitor.depleted.tooltip"));
     }
 
     private void registerAllTieredTooltips() {

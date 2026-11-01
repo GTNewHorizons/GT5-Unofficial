@@ -362,6 +362,11 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture OVERLAY_SLOT_BACKUP_CAPACITOR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/backup_capacitor")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/canister")
         .fullImage()
