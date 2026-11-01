@@ -40,7 +40,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -176,23 +178,29 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-        int aLogLevel, ArrayList<String> aList) {
+    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
+        EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
                 Arrays.asList(
-                    "Is Pipeline Output",
-                    "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                    new ChatComponentTranslation("GT5U.scanner.debug.long_distance_pipeline.output"),
+                    new ChatComponentTranslation(
+                        "GT5U.scanner.debug.long_distance_pipeline.input_at",
+                        coords.posX,
+                        coords.posY,
+                        coords.posZ)));
         } else {
             aList.addAll(
                 Arrays.asList(
-                    checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
-                    "Pipeline Output should be around: X: " + mTargetPos.posX
-                        + " Y: "
-                        + mTargetPos.posY
-                        + " Z: "
-                        + mTargetPos.posZ));
+                    new ChatComponentTranslation(
+                        checkTarget() ? "GT5U.scanner.debug.long_distance_pipeline.connected"
+                            : "GT5U.scanner.debug.long_distance_pipeline.not_connected"),
+                    new ChatComponentTranslation(
+                        "GT5U.scanner.debug.long_distance_pipeline.output_at",
+                        mTargetPos.posX,
+                        mTargetPos.posY,
+                        mTargetPos.posZ)));
         }
 
         return aList;

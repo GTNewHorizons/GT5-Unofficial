@@ -306,10 +306,10 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (block instanceof IDebugableBlock debugableBlock) {
-                final List<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
+                final List<IChatComponent> temp = debugableBlock.getDebugInfoChat(player, x, y, z, 3);
                 if (temp != null && !temp.isEmpty()) {
                     list.add(addTitleComp("title_debug_info"));
-                    for (String s : temp) list.add(new ChatComponentText(s));
+                    list.addAll(temp);
                     euAmount += 500;
                 }
             }
@@ -323,11 +323,18 @@ public class ScannerHelper {
     private static void addMachineInfoComp(List<IChatComponent> list, TileEntity tileEntity) {
         try {
             if (tileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
-                final String[] data = info.getInfoData();
-                if (data == null || data.length == 0) return;
+                List<IChatComponent> chats = new ArrayList<>();
 
+                final String[] data = info.getInfoData();
+                if (data != null) {
+                    for (String s : data) chats.add(IGregTechDeviceInformation.toComponent(s));
+                }
+                List<IChatComponent> chatData = info.getChatInfoData();
+                if (chatData != null) {
+                    chats.addAll(chatData);
+                }
                 list.add(addTitleComp("title_machine_info"));
-                for (String s : data) list.add(IGregTechDeviceInformation.toComponent(s));
+                list.addAll(chats);
             }
         } catch (Exception e) {
             list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));

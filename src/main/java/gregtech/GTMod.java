@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
+import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -77,6 +78,7 @@ import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
 import gregtech.api.util.AssemblyLineServer;
+import gregtech.api.util.ChatComponentBlockName;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -348,6 +350,7 @@ public class GTMod {
         GTPreLoad.adjustScrap();
 
         AE2Compat.onPreInit();
+        ChatComponentCustomRegistry.register(ChatComponentBlockName::new);
 
         GTPreLoad.runMineTweakerCompat();
 
