@@ -180,6 +180,41 @@ public class NetheriteRecipes {
                 .addTo(vacuumFreezerRecipes);
         }
 
+        // Dim Prismarine
+        {
+            GTValues.RA.stdBuilder() // Compression
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                .fluidInputs(Materials.PrismaticAcid.getFluid(4000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(16))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
+
+            ItemStack dragonstoneLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dragonstone, 1);
+            dragonstoneLens.stackSize = 0;
+
+            GTValues.RA.stdBuilder() // Engraving
+                .itemInputs(ItemList.Dim_Prismarine.get(16), dragonstoneLens)
+                .fluidInputs(Materials.Strontium.getMolten(144))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(laserEngraverRecipes);
+
+            if (Forestry.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Engraving with Comb
+                    .itemInputs(
+                        ItemList.Dim_Prismarine.get(16),
+                        dragonstoneLens,
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16))
+                    .fluidInputs(Materials.Strontium.getMolten(144))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 32))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UV)
+                    .addTo(laserEngraverRecipes);
+            }
+        }
+
         // Naquarite
         {
             GTValues.RA.stdBuilder()

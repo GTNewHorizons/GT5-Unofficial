@@ -2734,6 +2734,7 @@ public enum ItemList implements IItemContainer {
     Alumina_Support_Ring,
     Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
+    Dim_Prismarine,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,

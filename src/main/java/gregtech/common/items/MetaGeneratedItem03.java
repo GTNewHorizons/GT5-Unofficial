@@ -183,6 +183,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.Dim_Prismarine;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -1809,6 +1810,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Prismarine_Precipitate.ID,
                 "gt.item.prismarine_precipitate.name",
                 "gt.item.prismarine_precipitate.tooltip"));
+        ItemList.Dim_Prismarine.set(
+            addItemWithLocalizationKeys(
+                Dim_Prismarine.ID,
+                "gt.item.dim_prismarine.name",
+                "gt.item.dim_prismarine.tooltip"));
         ItemList.Prismatic_Crystal.set(
             addItemWithLocalizationKeys(
                 Prismatic_Crystal.ID,
