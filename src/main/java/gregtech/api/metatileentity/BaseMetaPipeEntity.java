@@ -16,9 +16,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -314,31 +315,31 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
-        final ArrayList<String> tList = new ArrayList<>();
+    public ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aLogLevel) {
+        final ArrayList<IChatComponent> tList = new ArrayList<>();
         if (aLogLevel > 3) {
             tList.add(
-                "Meta-ID: " + EnumChatFormatting.BLUE
-                    + mID
-                    + EnumChatFormatting.RESET
-                    + (hasValidMetaTileEntity() ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
-                    + (mMetaTileEntity == null
-                        ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                        : " "));
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.meta_id.v2",
+                    GTUtility.styledComp(new ChatComponentText(String.valueOf(mID)), EnumChatFormatting.BLUE),
+                    new ChatComponentTranslation(
+                        hasValidMetaTileEntity() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"),
+                    (mMetaTileEntity == null
+                        ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
+                        : new ChatComponentText(""))));
         }
         if (aLogLevel > 1) {
             addProfilingInformation(tList);
             if (mMetaTileEntity != null) {
                 tList.add(
-                    StatCollector.translateToLocal(
+                    new ChatComponentTranslation(
                         mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                             : "GT5U.scanner.debug.not_accessible"));
             }
         }
-        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
+        if (joinedIc2Enet) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
 
-        return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList)
+        return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfoChat(this, aPlayer, aLogLevel, tList)
             : new ArrayList<>();
     }
 

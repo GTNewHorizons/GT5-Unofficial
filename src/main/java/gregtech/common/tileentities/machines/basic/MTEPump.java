@@ -14,7 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
@@ -25,6 +28,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentBlockName;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -839,27 +843,31 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-        int aLogLevel, ArrayList<String> aList) {
+    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
+        EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         aList.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + (radiusConfig * 2 + 1)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
-                "Primary pumping fluid:   "
-                    + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
-                "Secondary pumping fluid: "
-                    + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None"),
-                "Pumps below: " + mPumpCountBelow,
-                "Queue size: " + mPumpList.size(),
-                "Pump head at Y: " + getYOfPumpHead(),
-                "Pump timer: " + mPumpTimer,
-                "Meta Entity Timer: " + getBaseMetaTileEntity().getTimer()));
+                new ChatComponentTranslation("GT5U.machines.pump")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)),
+                new ChatComponentTranslation(
+                    "GT5U.machines.workarea.s",
+                    GTUtility.styledComp(radiusConfig * 2 + 1, EnumChatFormatting.GREEN),
+                    new ChatComponentTranslation("GT5U.machines.blocks")),
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.primary",
+                    (this.mPrimaryPumpedBlock != null ? new ChatComponentBlockName(this.mPrimaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.secondary",
+                    (this.mSecondaryPumpedBlock != null ? new ChatComponentBlockName(this.mSecondaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.pumps", mPumpCountBelow),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.queue_size", mPumpList.size()),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.head", getYOfPumpHead()),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.timer", mPumpTimer),
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.entity_timer",
+                    getBaseMetaTileEntity().getTimer())));
         return aList;
     }
 
