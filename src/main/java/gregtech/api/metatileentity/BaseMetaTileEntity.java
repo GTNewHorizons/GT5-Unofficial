@@ -335,7 +335,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
                     handleUpdateDataChangeServer();
-                    handleSidedRedstoneChangeServer();
 
                     if (mLightValue != oldLightValue) {
                         updateLightValue();

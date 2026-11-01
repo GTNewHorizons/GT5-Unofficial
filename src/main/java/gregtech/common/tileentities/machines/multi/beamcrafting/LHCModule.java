@@ -30,7 +30,8 @@ public enum LHCModule {
         Particle.OMEGA,
         Particle.ETA,
         Particle.JPSI,
-        Particle.UPSILON)),
+        Particle.UPSILON,
+        Particle.PION)),
     Strong(ImmutableList.of(
         Particle.PROTON,
         Particle.NEUTRON,
@@ -38,7 +39,9 @@ public enum LHCModule {
         Particle.OMEGA,
         Particle.ETA,
         Particle.JPSI,
-        Particle.UPSILON)),
+        Particle.UPSILON,
+        Particle.PION,
+        Particle.GLUEBALL)),
     Grav(ImmutableList.of(Particle.HIGGS, Particle.GRAVITON)),
     AllParticles(ImmutableList.of(
         Particle.PHOTON,
