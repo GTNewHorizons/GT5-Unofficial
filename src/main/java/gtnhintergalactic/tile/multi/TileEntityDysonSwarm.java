@@ -47,6 +47,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
@@ -55,8 +56,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
@@ -371,38 +370,28 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        ItemStack heldItem = aPlayer.getHeldItem();
+    public boolean onPlungerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        int maxReduction = (int) Math.min(
+            Math.min(moduleCount, 64),
+            MetaGeneratedTool.getToolMaxDamage(aTool) - MetaGeneratedTool.getToolDamage(aTool));
+        if (maxReduction <= 0) return true;
 
-        // Check if the player is holding a plunger
-        if (heldItem == null || heldItem.getItem() != MetaGeneratedTool01.INSTANCE
-            || heldItem.getItemDamage() != IDMetaTool01.PLUNGER.ID) {
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
+        aPlayer.inventory.addItemStackToInventory(modules);
+        int extracted = maxReduction - modules.stackSize;
+
+        // Sneaking ejects only the remainder of this stack, and only a successful spawn consumes those modules.
+        if (modules.stackSize > 0 && aPlayer.isSneaking()
+            && aPlayer.worldObj.spawnEntityInWorld(
+                new EntityItem(aPlayer.worldObj, aPlayer.posX, aPlayer.posY + 0.5, aPlayer.posZ, modules))) {
+            extracted = maxReduction;
         }
 
-        // Setup
-        int prevCount = this.moduleCount;
-        int maxReduction = (int) Math.min(
-            this.moduleCount,
-            MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
-        ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
-
-        // Fill player inventory
-        aPlayer.inventory.addItemStackToInventory(modules);
-
-        // If the player's inventory is full and some modules are still left and the player is sneaking, spawn them in
-        // front of the controller
-        if (modules.stackSize > 0 && aPlayer.isSneaking()) {
-            aPlayer.worldObj.spawnEntityInWorld(
-                new EntityItem(aPlayer.worldObj, aPlayer.posX, aPlayer.posY + 0.5, aPlayer.posZ, modules));
-
-            // Set moduleCount based on the number of ejected modules and damage the plunger
-            this.moduleCount = 0;
-            MetaGeneratedTool01.INSTANCE.doDamage(heldItem, maxReduction);
-        } else {
-            this.moduleCount = prevCount - maxReduction + modules.stackSize;
-            MetaGeneratedTool01.INSTANCE.doDamage(heldItem, maxReduction - modules.stackSize);
+        if (extracted > 0) {
+            moduleCount -= extracted;
+            ((MetaGeneratedTool) aTool.getItem()).doDamage(aTool, extracted);
+            getBaseMetaTileEntity().markDirty();
         }
 
         return true;

@@ -3,5 +3,5 @@ Outputs {color_amount:{var:euPerModule}*}{blue:{bold:D}} {EU/t} per module up to
 Each hour, {gold:{bold:I}}{green: * (2 * {var:destroyModuleChance}) / (exp(-{var:destroyModuleA} * (}{gold:{bold:I}}{green: - 1)) + exp({var:destroyModuleB} * }{aqua:{bold:C}}{green:))} of modules are destroyed.
 {aqua:{bold:C}omputation/s}, {gold:{bold:I}nitial module amount}, {blue:{bold:D}imension-dependent factor} (check quest for values)
 Requires {color_amount:{var:coolantConsumption}{L}/h} of {aqua:{var:coolantName}}.
-Right-click with a {color_name:Plunger} to extract as many Modules to your inventory as possible.
+Right-click with a {color_name:Plunger} to extract up to {color_amount:64} Modules at a time into your inventory.
 Sneaking will dump the rest on the ground.

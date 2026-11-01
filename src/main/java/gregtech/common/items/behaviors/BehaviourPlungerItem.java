@@ -36,6 +36,10 @@ public class BehaviourPlungerItem extends BehaviourNone {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aTileEntity instanceof IGregTechTileEntity gtTE) {
             IMetaTileEntity tMetaTileEntity = gtTE.getMetaTileEntity();
+            if (tMetaTileEntity != null && gtTE.isUseableByPlayer(aPlayer)
+                && tMetaTileEntity.onPlungerRightClick(side, aPlayer, hitX, hitY, hitZ, aStack)) {
+                return true;
+            }
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
                 for (IMetaTileEntityItemPipe tTileEntity : GTUtility
                     .sortMapByValuesAcending(
