@@ -25,7 +25,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -56,6 +58,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -325,6 +328,32 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World aWorld, int aX, int aY, int aZ, Vec3 startVec, Vec3 endVec) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()
+            && gtTE.getMetaTileEntity() instanceof MetaPipeEntity pipe) {
+            final List<AxisAlignedBB> boxes = pipe.getRayTraceBoxes(aX, aY, aZ);
+            if (boxes != null) {
+                // Raytrace each part of the pipe on its own, so clicks can pass between them. This can't go through
+                // super.collisionRayTrace, since that resets the block bounds via setBlockBoundsBasedOnState.
+                MovingObjectPosition closestHit = null;
+                double closestDistance = Double.MAX_VALUE;
+                for (AxisAlignedBB box : boxes) {
+                    final MovingObjectPosition hit = box.calculateIntercept(startVec, endVec);
+                    if (hit == null) continue;
+                    final double distance = hit.hitVec.squareDistanceTo(startVec);
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestHit = new MovingObjectPosition(aX, aY, aZ, hit.sideHit, hit.hitVec);
+                    }
+                }
+                return closestHit;
+            }
+        }
+        return super.collisionRayTrace(aWorld, aX, aY, aZ, startVec, endVec);
     }
 
     @Override // THIS
