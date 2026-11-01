@@ -3,6 +3,7 @@ package gregtech.loaders.postload.chains;
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
@@ -178,6 +179,38 @@ public class NetheriteRecipes {
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(vacuumFreezerRecipes);
+        }
+
+        // Dim Prismarine
+        {
+            GTValues.RA.stdBuilder() // Compression
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                .fluidInputs(Materials.PrismaticAcid.getFluid(4000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(16))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
+
+            GTValues.RA.stdBuilder() // Engraving
+                .itemInputs(ItemList.Dim_Prismarine.get(16), getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0))
+                .fluidInputs(Materials.Strontium.getMolten(144))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(laserEngraverRecipes);
+
+            if (Forestry.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Engraving with Comb
+                    .itemInputs(
+                        ItemList.Dim_Prismarine.get(16),
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16),
+                        getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0))
+                    .fluidInputs(Materials.Strontium.getMolten(144))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 32))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UV)
+                    .addTo(laserEngraverRecipes);
+            }
         }
 
         // Naquarite
