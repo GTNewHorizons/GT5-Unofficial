@@ -41,7 +41,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
-import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
@@ -970,16 +969,6 @@ class RecipeMapBackendLookupTest {
                 .contains("conflictingMatches="));
     }
 
-    private static GTRecipeLookup recipeLookup(RecipeMapBackend backend) {
-        try {
-            Field field = RecipeMapBackend.class.getDeclaredField("recipeLookup");
-            field.setAccessible(true);
-            return (GTRecipeLookup) field.get(backend);
-        } catch (ReflectiveOperationException e) {
-            throw new AssertionError(e);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     private static <T> Constructor<T> constructorFor(Class<T> type) {
         try {
@@ -1116,7 +1105,7 @@ class RecipeMapBackendLookupTest {
                 return Stream.empty();
             }
 
-            Iterator<GTRecipe> iterator = recipeLookup(this).iterator(ingredients);
+            Iterator<GTRecipe> iterator = recipeLookup().iterator(ingredients);
             return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
         }
     }
