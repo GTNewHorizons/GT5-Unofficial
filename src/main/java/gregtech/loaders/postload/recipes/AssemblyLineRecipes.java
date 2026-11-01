@@ -714,10 +714,11 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Input_Bus_LuV.get(1),
                     ItemList.Electric_Piston_LuV.get(2),
-                    ItemList.Quantum_Chest_LV.get(1),
+                    ItemList.Quantum_Chest_LV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1),
+                    ItemList.Field_Generator_IV.get(2))
                 .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
@@ -730,10 +731,11 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Input_Bus_LuV.get(1),
                     ItemList.Electric_Piston_LuV.get(2),
-                    ItemList.Quantum_Chest_LV.get(1),
+                    ItemList.Quantum_Chest_LV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1),
+                    ItemList.Field_Generator_IV.get(2))
                 .itemOutputs(ItemList.CompressedInputBusLuV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
@@ -747,9 +749,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Input_Bus_ZPM.get(1),
                     ItemList.Electric_Piston_ZPM.get(2),
-                    ItemList.Quantum_Chest_MV.get(1),
+                    ItemList.Quantum_Chest_MV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1))
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1),
+                    ItemList.Field_Generator_LuV.get(4))
                 .itemOutputs(ItemList.CompressedInputBusZPM.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -763,9 +766,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Input_Bus_UV.get(1),
                     ItemList.Electric_Piston_UV.get(2),
-                    ItemList.Quantum_Chest_MV.get(1),
+                    ItemList.Quantum_Chest_MV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1))
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1),
+                    ItemList.Field_Generator_ZPM.get(4))
                 .itemOutputs(ItemList.CompressedInputBusUV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UV)
@@ -780,10 +784,11 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Output_Bus_LuV.get(1),
                     ItemList.Electric_Piston_LuV.get(2),
-                    ItemList.Quantum_Chest_LV.get(1),
+                    ItemList.Quantum_Chest_LV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1),
+                    ItemList.Field_Generator_IV.get(2))
                 .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(128 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
@@ -796,10 +801,11 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Output_Bus_LuV.get(1),
                     ItemList.Electric_Piston_LuV.get(2),
-                    ItemList.Quantum_Chest_LV.get(1),
+                    ItemList.Quantum_Chest_LV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
                     GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1))
+                        .get(OrePrefixes.plateSuperdense, WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial(), 1),
+                    ItemList.Field_Generator_IV.get(2))
                 .itemOutputs(ItemList.CompressedOutputBusLuV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .eut((int) TierEU.RECIPE_LuV)
@@ -813,9 +819,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Output_Bus_ZPM.get(1),
                     ItemList.Electric_Piston_ZPM.get(2),
-                    ItemList.Quantum_Chest_MV.get(1),
+                    ItemList.Quantum_Chest_MV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1))
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1),
+                    ItemList.Field_Generator_LuV.get(4))
                 .itemOutputs(ItemList.CompressedOutputBusZPM.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(32 * INGOTS))
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -829,9 +836,10 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hatch_Output_Bus_UV.get(1),
                     ItemList.Electric_Piston_UV.get(2),
-                    ItemList.Quantum_Chest_MV.get(1),
+                    ItemList.Quantum_Chest_MV.get(4),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1))
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1),
+                    ItemList.Field_Generator_ZPM.get(4))
                 .itemOutputs(ItemList.CompressedOutputBusUV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UV)
