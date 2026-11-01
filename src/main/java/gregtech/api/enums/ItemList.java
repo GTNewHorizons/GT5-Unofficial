@@ -89,8 +89,6 @@ public enum ItemList implements IItemContainer {
     IC2_Uranium_238,
     IC2_Uranium_235,
     IC2_Uranium_235_Small,
-    IC2_Plutonium,
-    IC2_Plutonium_Small,
     IC2_Uranium_Fuel,
     IC2_MOX_Fuel,
     IC2_Food_Can_Empty,
@@ -1519,6 +1517,7 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Opener,
     Black_Hole_Closer,
     Black_Hole_Stabilizer,
+    Supermassive_Black_Hole_Opener,
 
     Machine_Multi_IndustrialBrewery,
 
