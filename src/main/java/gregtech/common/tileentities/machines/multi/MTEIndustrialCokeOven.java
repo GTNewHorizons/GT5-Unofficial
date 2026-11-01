@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.powInt;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,6 +32,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -40,6 +43,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -53,7 +57,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -61,6 +64,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCokeOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -69,7 +73,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     private int casingAmount;
     private HeatingCoilLevel coilLevel;
     private static final int MAX_LENGTH = 16;
-    private static final float EU_MODIFIER = 0.98f;
+    private static final double EU_MODIFIER = 0.98D;
     private static final int PARALLELS_T1 = 16;
     private static final int PARALLELS_T2 = 32;
     private static final int SLICE_PARALLELS_T1 = 8;
@@ -101,54 +105,45 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coke Oven, ICO")
-            .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo(
-                TooltipHelper.parallelText(PARALLELS_T1) + " base and +"
-                    + TooltipHelper.parallelText(SLICE_PARALLELS_T1)
-                    + " Parallels per extra slice with Heat Resistant Casing")
-            .addInfo(
-                TooltipHelper.parallelText(PARALLELS_T2) + " base and +"
-                    + TooltipHelper.parallelText(SLICE_PARALLELS_T2)
-                    + " Parallels per extra slice with Heat Proof Casing")
-            .addInfo(
-                EnumChatFormatting.AQUA + "-2% "
-                    + EnumChatFormatting.GRAY
-                    + "EU Usage per "
-                    + EnumChatFormatting.WHITE
-                    + "Heating Coil"
-                    + EnumChatFormatting.GRAY
-                    + " Tier (multiplicatively)")
-            .addInfo("Max 15 additional slices, eternal coils unlock unlimited slices")
-            .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
-            .addMultiAmpHatchInfo()
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.industrial_coke_oven"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-coke-oven"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_para_t1", PARALLELS_T1)
+                    .put("slice_para_t1", SLICE_PARALLELS_T1)
+                    .put("base_para_t2", PARALLELS_T2)
+                    .put("slice_para_t2", SLICE_PARALLELS_T2)
+                    .put("eu_reduction", Math.round((1 - EU_MODIFIER) * 100))
+                    .put("max_slices", MAX_LENGTH - 1)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)
-            .addController("Front left center, 2nd layer")
-            .addEnergyHatch("1+", "Any structural casing on base structure", 1)
-            .addMaintenanceHatch("1", "Any structural casing on base structure", 1)
-            .addMufflerHatch("1", "Any structural casing on base structure", 1)
-            .addInputAny("1+", "Any structural casing on base structure", 1)
-            .addOutputAny("1+", "Any structural casing on base structure", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_center_2nd_layer"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("35-48", "Structural Coke Oven Casing", false)
-            .addCasing("10", "Steel Frame Box", false)
-            .addCasing("8", "Heating Coil", true)
-            .addCasing("8", "Heat Resistant/Proof Coke Oven Casing", true)
+            .addCasing("35-48", Casings.StructuralCokeOvenCasing.getLocalizedName(), false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.heat_resistant_proof_coke_oven_casing"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("19", "Structural Coke Oven Casing", false)
-            .addCasing("10", "Steel Frame Box", false)
-            .addCasing("8", "Heating Coil", true)
-            .addCasing("5", "Heat Resistant/Proof Coke Oven Casing", true)
-            .addCasing("3", "Steel Pipe Casing", false)
+            .addCasing("19", Casings.StructuralCokeOvenCasing.getLocalizedName(), false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("5", StatCollector.translateToLocal("gt.mbtt.structure.heat_resistant_proof_coke_oven_casing"), true)
+            .addCasing("3", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.COKE_OVEN_CASING)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -169,6 +164,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", "  FF" },
                     { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
                     { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" } })
+            .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 1, 16)
             .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)
@@ -189,17 +185,15 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                 GTStructureChannels.HEATING_COIL
                     .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
             .addElement('C', ofFrame(Materials.Steel))
-            .addElement(
-                'E',
-                GTStructureChannels.COKE_OVEN_CASING.use(
-                    ofBlocksTiered(
-                        (block, meta) -> block == ModBlocks.blockCasingsMisc ? (meta == 2 ? 0 : meta == 3 ? 1 : null)
-                            : null,
-                        ImmutableList
-                            .of(Pair.of(ModBlocks.blockCasingsMisc, 2), Pair.of(ModBlocks.blockCasingsMisc, 3)),
-                        -1,
-                        (t, tier1) -> t.tier = tier1,
-                        t -> t.tier)))
+            .addElement('E', GTStructureChannels.COKE_OVEN_CASING.use(ofBlocksTiered((block, meta) -> {
+                if (block == ModBlocks.blockCasingsMisc && meta == 2) return 0;
+                if (block == ModBlocks.blockCasingsMisc && meta == 3) return 1;
+                return null;
+            },
+                ImmutableList.of(Pair.of(ModBlocks.blockCasingsMisc, 2), Pair.of(ModBlocks.blockCasingsMisc, 3)),
+                -1,
+                (t, tier1) -> t.tier = tier1,
+                t -> t.tier)))
             .addElement('F', onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement()))
             .build();
     }
@@ -208,9 +202,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int extraSlices;
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            extraSlices = stackSize.stackSize;
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValue(stackSize);
         } else {
-            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 1, MAX_LENGTH);
         }
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN);
         for (int i = 1; i < extraSlices; i++) {
@@ -229,9 +223,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         int extraSlices;
 
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            extraSlices = stackSize.stackSize;
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValue(stackSize);
         } else {
-            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 1, MAX_LENGTH);
         }
         int built = 0, temp;
 
@@ -363,7 +357,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public double getEuModifier() {
-        return Math.pow(EU_MODIFIER, getCoilTier());
+        return powInt(EU_MODIFIER, getCoilTier());
     }
 
     @Override
@@ -383,8 +377,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         return this.coilLevel;
     }
 
-    public float euModifier(int coilTier) {
-        return (float) Math.pow(EU_MODIFIER, coilTier);
+    public double euModifier(int coilTier) {
+        return powInt(EU_MODIFIER, coilTier);
     }
 
     @Override

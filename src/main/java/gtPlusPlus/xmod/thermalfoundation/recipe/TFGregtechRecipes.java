@@ -39,7 +39,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 4L))
-            .fluidInputs(Materials.LiquidNitrogen.getGas(100L))
+            .fluidInputs(Materials.LiquidNitrogen.getFluid(100L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);

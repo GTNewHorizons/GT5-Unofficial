@@ -2,10 +2,12 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateName
 public class MTEAdvancedBoilerLV extends MTEAdvancedBoilerBase {
 
     public MTEAdvancedBoilerLV(int aID, String aNameRegional, int aBoilerTier) {

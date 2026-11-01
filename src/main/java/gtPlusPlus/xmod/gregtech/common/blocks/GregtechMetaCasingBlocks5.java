@@ -14,7 +14,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGrinderMultiblock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract {
@@ -22,7 +21,6 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
     // Free Indexes within TAE: 91, 92, 94, 100, 101, 102, 103, 104, 114, 116, 117, 118, 119, 120, 121, 124, 125, 126,
     // 127
     // 19 Free Indexes
-    private static final TexturesGrinderMultiblock mGrinderOverlayHandler = new TexturesGrinderMultiblock();
 
     public GregtechMetaCasingBlocks5() {
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.5", MaterialCasings.INSTANCE);
@@ -90,13 +88,6 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
             };
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-        final int ordinalSide) {
-        return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide);
     }
 
     @SideOnly(Side.CLIENT)
