@@ -1054,6 +1054,23 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_drone")
+        .canApplyTheme()
+        .fullImage()
+        .build();
+    public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_queen")
+        .canApplyTheme()
+        .fullImage()
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_SLOT_APIARY_UPGRADE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/slot_upgrade")
+        .canApplyTheme()
+        .fullImage()
+        .build();
+
     public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
         .fullImage()
