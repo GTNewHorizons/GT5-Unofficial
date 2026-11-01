@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -17,32 +18,39 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.google.common.collect.ImmutableMap;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
-public class MTECharcoalPit extends MTETooltipMultiBlockBase {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingTextureProvider {
 
     private boolean running = false;
 
-    private static final Block EtFuturumDirtPath = GameRegistry.findBlock("etfuturum", "grass_path");
+    private static final Block EtFuturumDirtPath = GameRegistry.findBlock(Mods.EtFuturumRequiem.ID, "grass_path");
 
     public MTECharcoalPit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -212,6 +220,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        return aTick % 20 == 0;
+    }
+
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.proxy.mPollutionCharcoalPitPerSecond;
     }
@@ -224,41 +237,53 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Charcoal Pile Igniter, CPI")
-            .addInfo("Converts Logs into Brittle Charcoal blocks")
-            .addInfo("Automatically starts when formed")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.charcoal_pile_igniter"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "charcoal-pit"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
-            .addController("Top layer, directly touching a wood log")
-            .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
-            .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
-            .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
-            .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
-            .addStructureInfo("No air between logs allowed.")
-            .addStructureInfo(
-                "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_controller"))
+            .addCasing("1-605", StatCollector.translateToLocal("gt.mbtt.structure.any_log"), false)
+            .addCasing("4-431", StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_dirt"), false)
+            .addCasing("1-121", StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_bricks"), false)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_footer_1"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_footer_2"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == ForgeDirection.UP) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][10],
-                TextureFactory.of(OVERLAY_CHARCOAL_PIT_ACTIVE), TextureFactory.builder()
-                    .addIcon(OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW)
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_CHARCOAL_PIT) };
-        }
-        return new ITexture[] { casingTexturePages[0][10] };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            ForgeDirection.UP,
+            aActive,
+            OVERLAY_CHARCOAL_PIT,
+            OVERLAY_CHARCOAL_PIT_GLOW,
+            OVERLAY_CHARCOAL_PIT_ACTIVE,
+            OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][10];
     }
 
     @Override
     public boolean polluteEnvironment(int aPollutionLevel) {
         // Do nothing and don't choke on pollution. This is fine because we add
         // all the pollution at once when the recipe starts
+        return true;
+    }
+
+    @Override
+    public boolean needsClientTick() {
         return true;
     }
 

@@ -25,8 +25,8 @@ public class GhostMoldSyncHandler extends PhantomItemSlotSH {
             ItemStack current = hatch.inventoryHandler.getStackInSlot(MTEHatchSolidifier.moldSlot);
             return current != null ? hatch.findMatchingMoldIndex(current) : -1;
         }, index -> {
-            if (index >= 0 && index < MTEHatchSolidifier.solidifierMolds.length) {
-                hatch.setMold(MTEHatchSolidifier.solidifierMolds[index]);
+            if (index >= 0 && index < MTEHatchSolidifier.solidifierMolds.size()) {
+                hatch.setMold(MTEHatchSolidifier.solidifierMolds.get(index));
             } else {
                 hatch.setMold(null);
             }
@@ -72,8 +72,8 @@ public class GhostMoldSyncHandler extends PhantomItemSlotSH {
 
     private int getNextMoldConfig(int delta) {
         int newIndex = getSelectedIndex() + delta;
-        if (newIndex < -1) newIndex = MTEHatchSolidifier.solidifierMolds.length - 1;
-        if (newIndex >= MTEHatchSolidifier.solidifierMolds.length) newIndex = -1;
+        if (newIndex < -1) newIndex = MTEHatchSolidifier.solidifierMolds.size() - 1;
+        if (newIndex >= MTEHatchSolidifier.solidifierMolds.size()) newIndex = -1;
         return newIndex;
     }
 

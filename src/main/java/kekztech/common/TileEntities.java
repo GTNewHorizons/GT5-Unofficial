@@ -44,13 +44,13 @@ public class TileEntities {
             MetaTileEntityIDs.sofc2.ID,
             "multimachine.fuelcellmk2",
             "Solid-Oxide Fuel Cell Mk II");
-        tfft = new MTETankTFFT(MetaTileEntityIDs.tfft.ID, "multimachine.tfft", "T.F.F.T");
+        tfft = new MTETankTFFT(MetaTileEntityIDs.tfft.ID, "multimachine.tfft", "TFFT");
         lsc = new MTELapotronicSuperCapacitor(
             MetaTileEntityIDs.lsc.ID,
             "multimachine.supercapacitor",
             "Lapotronic Supercapacitor");
 
         // Singleblocks
-        tfftHatch = new MTEHatchTFFT(MetaTileEntityIDs.tfftHatch.ID, "machine.tffthatch", "T.F.F.T Multi I/O Hatch");
+        tfftHatch = new MTEHatchTFFT(MetaTileEntityIDs.tfftHatch.ID, "machine.tffthatch", "TFFT Multi I/O Hatch");
     }
 }

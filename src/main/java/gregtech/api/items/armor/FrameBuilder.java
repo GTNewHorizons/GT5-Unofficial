@@ -11,7 +11,7 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
 
     private short[] color = { 255, 255, 255, 255 };
 
-    private int protection;
+    private float protection;
     private EnumRarity rarity = EnumRarity.common;
 
     public FrameBuilder setSlotCounts(int protectionSlots, int movementSlots, int utilitySlots, int prismaticSlots) {
@@ -29,7 +29,7 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
         return this;
     }
 
-    public FrameBuilder setProtection(int protection) {
+    public FrameBuilder setProtection(float protection) {
         onMutated();
         this.protection = protection;
         return this;
@@ -61,7 +61,7 @@ public class FrameBuilder extends ArmorPartBuilder<FrameBuilder> {
         return color;
     }
 
-    public int getProtection() {
+    public float getProtection() {
         return protection;
     }
 

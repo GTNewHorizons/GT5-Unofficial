@@ -8,6 +8,8 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,9 +20,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -35,6 +37,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTECoolantTower> multiDefinition = null;
@@ -108,26 +111,23 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coolant Tower")
-            .addInfo("Turn Steam back to Distilled Water")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coolant_tower"))
+            .addMarkdown(new ResourceLocation("gregtech", "coolant-tower"))
             .beginStructureBlock(11, 13, 11, true)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoExactly("Light Concrete", 277, false)
-            .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
-            .addInputHatch("Any Light Concrete of the second layer", 1)
-            .addOutputHatch("Any Light Concrete of the second layer", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("252-277", StatCollector.translateToLocal("gt.blockconcretes.8.name"), false)
+            .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenCarbide), false)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 5, 11, 0);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("CoolantTower.hint", 3);
     }
 
     @Override

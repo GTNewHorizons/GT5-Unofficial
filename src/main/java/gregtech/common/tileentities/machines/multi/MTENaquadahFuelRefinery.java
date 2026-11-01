@@ -18,7 +18,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,25 +33,28 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTENaquadahFuelRefinery extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private IStructureDefinition<MTENaquadahFuelRefinery> multiDefinition = null;
     private int tier = -1;
@@ -159,12 +162,13 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
                 .addElement('C', Casings.FieldRestrictionGlass.asElement())
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        fieldCoilTierConverter(),
-                        getAllFieldCoilTiers(),
-                        -1,
-                        MTENaquadahFuelRefinery::setCoilTier,
-                        MTENaquadahFuelRefinery::getCoilTier))
+                    GTStructureChannels.FIELD_RESTRICTION_COIL.use(
+                        ofBlocksTiered(
+                            fieldCoilTierConverter(),
+                            getAllFieldCoilTiers(),
+                            -1,
+                            MTENaquadahFuelRefinery::setCoilTier,
+                            MTENaquadahFuelRefinery::getCoilTier)))
                 .addElement('D', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('E', Casings.EuropiumReinforcedRadiationProofMachineCasing.asElement())
                 .addElement('F', Casings.RadiantProofSteelFrameBox.asElement())
@@ -203,27 +207,25 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Naquadah Fuel Refinery, NFR")
-            .addInfo("Produces naquadah fuels")
-            .addInfo(
-                "Gains " + TooltipHelper.parallelText(4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil Tier")
-            .addInfo("Needs field restriction coils to control the fatal radiation")
-            .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
-            .addTecTechHatchInfo()
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_fuel_refinery"))
+            .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
+            .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
             .addUnlimitedTierSkips()
-            .beginStructureBlock(5, 27, 27, false)
-            .addController("Front center")
-            .addCasingInfoMin("Naquadah Fuel Refinery Casing", MIN_CASINGS, false)
-            .addCasingInfoExactly("Field Restriction Coil", 72, true)
-            .addCasingInfoExactly("Field Restriction Glass", 192, false)
-            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
-            .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addInputBus("Any Naquadah Fuel Refinery Casing", 1)
-            .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addEnergyHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addDynamoHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addStructureAuthors("GregTech Odyssey")
+            .addSupportAny()
+            .beginStructureBlock(27, 27, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_14th_layer"))
+            .addCasing("470-483", Casings.NaquadahFuelRefineryCasing.getLocalizedName(), false)
+            .addCasing("192", Casings.FieldRestrictionGlass.getLocalizedName(), false)
+            .addCasing("124", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addCasing("72", StatCollector.translateToLocal("GT5U.MBTT.Tiers.FieldRestrictionCoil"), true)
+            .addCasing("64", Casings.RadiantProofSteelFrameBox.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
+            .addSubChannel(GTStructureChannels.FIELD_RESTRICTION_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -241,19 +243,14 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("NaquadahFuelRefinery.hint", 8);
-    }
-
-    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
         casingAmount = 0;
         checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors);
         checkCasingMin(errors, casingAmount, MIN_CASINGS);
         checkHasAnyEnergy(errors);
-        checkHasInputHatch(errors);
         checkHasInputBus(errors);
+        checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
 
@@ -304,7 +301,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     public String[] getInfoData() {
         String[] infoData = new String[super.getInfoData().length + 1];
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
+        infoData[super.getInfoData().length] = IGregTechDeviceInformation
+            .encode("GT5U.infodata.naquadah_refinery.coil_tier", this.tier);
         return infoData;
     }
 
@@ -319,30 +317,22 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE,
+            Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW,
+            Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE,
+            Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(179);
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
@@ -89,11 +90,20 @@ public class BehaviourSoftMallet extends BehaviourNone {
         }
         if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
             || (aBlock == Blocks.furnace)
-            || (aBlock == Blocks.lit_furnace)
-            || (aBlock == Blocks.chest)
-            || (aBlock == Blocks.trapped_chest)) {
+            || (aBlock == Blocks.lit_furnace)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
-                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta - 1) % 4 + 2, 3);
+                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, getRotatedMetaVanillaUpright(aMeta), 3);
+                GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
+            }
+            return true;
+        }
+        if ((aBlock == Blocks.chest) || (aBlock == Blocks.trapped_chest)) {
+            int newMeta = getRotatedMetaVanillaUpright(aMeta);
+            while (newMeta != aMeta && !GTUtil.setVanillaChestDirection(aWorld, aX, aY, aZ, newMeta, aBlock, true)) {
+                newMeta = getRotatedMetaVanillaUpright(newMeta);
+            }
+            if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
+                GTUtil.setVanillaChestDirection(aWorld, aX, aY, aZ, newMeta, aBlock, false);
                 GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, hitX, hitY, hitZ);
             }
             return true;
@@ -106,6 +116,10 @@ public class BehaviourSoftMallet extends BehaviourNone {
             return true;
         }
         return false;
+    }
+
+    private static int getRotatedMetaVanillaUpright(int aMeta) {
+        return (aMeta - 1) % 4 + 2;
     }
 
     @Override

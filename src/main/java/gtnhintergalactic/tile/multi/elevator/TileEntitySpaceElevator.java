@@ -1,11 +1,7 @@
 package gtnhintergalactic.tile.multi.elevator;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
-import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.RED;
-import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,7 +45,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -65,12 +61,12 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
@@ -89,6 +85,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurvivalConstructable, INEIPreviewModifier {
     // region Structure and textures variables
 
@@ -286,7 +283,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         // Hatches are allowed in the module base slots, but the elevator ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(TileEntitySpaceElevator tileEntity) {
@@ -294,14 +291,17 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TileEntitySpaceElevator> adder;
 
         @SafeVarargs
-        ElevatorHatchElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
+        ElevatorHatchElement(String name, IGTHatchAdder<TileEntitySpaceElevator> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -312,6 +312,16 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -665,19 +675,27 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
                 // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
-                    if (!mProjectModuleHatches.isEmpty()) {
-                        long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
-                        for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
-                            if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect(this);
-                                long tAvailableEnergy = getEUVar();
-                                if (tAvailableEnergy > 0) {
-                                    setEUVar(
-                                        Math.max(
-                                            0,
-                                            tAvailableEnergy
-                                                - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
-                                }
+                    List<TileEntityModuleBase> chargeableModules = new ArrayList<>();
+                    for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
+                        if (projectModule.getNeededMotorTier() > motorTier) {
+                            continue;
+                        }
+                        // Unformed modules still need to be connected so they can run their own structure check
+                        projectModule.connect(this);
+                        if (projectModule.mMachine) {
+                            chargeableModules.add(projectModule);
+                        }
+                    }
+                    if (!chargeableModules.isEmpty()) {
+                        long tEnergy = getEUVar() / chargeableModules.size() * MODULE_CHARGE_INTERVAL;
+                        for (TileEntityModuleBase projectModule : chargeableModules) {
+                            long tAvailableEnergy = getEUVar();
+                            if (tAvailableEnergy > 0) {
+                                setEUVar(
+                                    Math.max(
+                                        0,
+                                        tAvailableEnergy
+                                            - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
                             }
                         }
                     }
@@ -733,36 +751,37 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name"));
-        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.elevatorLoreText));
-        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(35, 43, 35, false)
-            .addController("Front center of the middle structure piece")
-            .addOtherStructurePart(
-                GTUtility.translate("ig.elevator.structure.ProjectModule"),
-                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber2"),
-                2)
-            .addCasingInfoExactly(GTUtility.translate("tile.DysonSwarmFloor.name"), 800, false)
-            .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.1.name"), 620, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.2.name"), 360, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.cable.name"), 1, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
-            .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-            .addOtherStructurePart(
-                GTUtility.translate("ig.elevator.structure.DataInputHatch"),
-                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
-                1)
-            .addSubChannelUsage(GTStructureChannels.SE_MOTOR)
-            .toolTipFinisher(GTAuthors.Authorminecraft7771);
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name"));
+        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
+        // spotless:off
+        tt.addMarkdown(new ResourceLocation("gregtech", "space-elevator"))
+            .addSupportAny()
+            .beginVariableStructureBlock(35, 47, 48, 48, 35, 47, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_of_central_column_4th_layer"))
+            .addCasing("620", StatCollector.translateToLocal("gt.blockcasings.ig.1.name"), false)
+            .addCasing("88", StatCollector.translateToLocal("ig.elevator.structure.Motor"), true)
+            .addCasing("56", StatCollector.translateToLocal("ig.elevator.structure.FrameNeutronium"), false)
+            .addCasing("1", StatCollector.translateToLocal("gt.blockcasings.ig.cable.name"), false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("800", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
+            .addCasing("593-783", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addCasing("360", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
+            .addMiscHatch("0-12", StatCollector.translateToLocal("gt.blockmachines.module.name"), StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"), 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Extended"))
+            .addCasing("1232", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
+            .addCasing("593-903", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addCasing("548", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
+            .addMiscHatch("0-24", StatCollector.translateToLocal("gt.blockmachines.module.name"), StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"), 2)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SwitchToExtended"))
+            .addSubChannel(GTStructureChannels.SE_MOTOR)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -797,9 +816,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
+        return new String[] { "ig.infodata.hdr.operational_data",
+            getRepairStatus() == getIdealStatus() ? "ig.infodata.maintenance.ok" : "ig.infodata.maintenance.problems",
             "---------------------------------------------" };
     }
 
@@ -845,7 +863,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
@@ -961,7 +980,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                                 ElevatorUtil.getPlanetaryTravelTier(motorTier),
                                 GuiCelestialSelection.MapMode.TELEPORTATION);
                         } catch (final Exception e) {
-                            e.printStackTrace();
+                            GTNHIntergalactic.LOG.error(e);
                         }
                     }
                 }
@@ -976,7 +995,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             })
             .setPos(174, doesBindPlayerInventory() ? 132 : 156)
             .setSize(16, 16)
-            .addTooltip(GTUtility.translate("ig.button.travel"))
+            .addTooltip(StatCollector.translateToLocal("ig.button.travel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 

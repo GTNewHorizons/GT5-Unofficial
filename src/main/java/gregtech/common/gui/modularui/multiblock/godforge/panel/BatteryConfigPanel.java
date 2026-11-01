@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock.godforge.panel;
 
+import java.math.BigInteger;
+import java.util.regex.Pattern;
+
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -15,6 +18,11 @@ public class BatteryConfigPanel {
 
     private static final int SIZE_W = 78;
     private static final int SIZE_H = 52;
+    private static final BigInteger MIN_BATTERY_CHARGE = BigInteger.ONE;
+    private static final BigInteger MAX_BATTERY_CHARGE = BigInteger.valueOf(Long.MAX_VALUE);
+    private static final String MIN_BATTERY_CHARGE_TEXT = MIN_BATTERY_CHARGE.toString();
+    private static final String MAX_BATTERY_CHARGE_TEXT = MAX_BATTERY_CHARGE.toString();
+    private static final Pattern WHOLE_NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.BATTERY_CONFIG);
@@ -38,7 +46,9 @@ public class BatteryConfigPanel {
         // Textbox
         panel.child(
             new TextFieldWidget().formatAsInteger(true)
-                .numbersInt(1, Integer.MAX_VALUE)
+                .setPattern(WHOLE_NUMBER_PATTERN)
+                .setValidator(BatteryConfigPanel::validateBatteryChargeText)
+                .setMaxLength(MAX_BATTERY_CHARGE_TEXT.length())
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.MAX_BATTERY_CHARGE.create(hypervisor))
                 .setTooltipOverride(true)
@@ -49,5 +59,18 @@ public class BatteryConfigPanel {
                 .marginBottom(9));
 
         return panel;
+    }
+
+    static String validateBatteryChargeText(String text) {
+        if (text == null || text.isEmpty()) return MIN_BATTERY_CHARGE_TEXT;
+
+        try {
+            BigInteger batteryCharge = new BigInteger(text);
+            if (batteryCharge.compareTo(MIN_BATTERY_CHARGE) < 0) return MIN_BATTERY_CHARGE_TEXT;
+            if (batteryCharge.compareTo(MAX_BATTERY_CHARGE) > 0) return MAX_BATTERY_CHARGE_TEXT;
+            return batteryCharge.toString();
+        } catch (NumberFormatException ignored) {
+            return MIN_BATTERY_CHARGE_TEXT;
+        }
     }
 }

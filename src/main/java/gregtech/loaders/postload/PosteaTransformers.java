@@ -14,15 +14,14 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
-import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -39,18 +38,46 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemTransformers();
+        registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
     }
 
+    private void registerIC2ItemTransformers() {
+        // These are used to convert ic2 items to their new counterparts.
+        // I.e. Uranium235, Uranium238, Plutonium, ect.
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutonium",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutoniumsmall",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+            true);
+
+    }
+
     private void registerIC2BlocksTransformer() {
         // These are used to convert ic2 blocks to their new counterparts.
         // I.e. Reinforced glass, iron fences, etc.
 
-        ItemStackReplacementManager.addSimpleReplacement("IC2:blockFenceIron", ItemList.FenceIron.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMachine", 0, ItemList.Casing_LV.getBlock(), 1);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 0, GregTechAPI.sBlockMetal2, 7);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 1, GregTechAPI.sBlockMetal7, 7);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 2, GregTechAPI.sBlockMetal2, 0);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 3, GregTechAPI.sBlockMetal7, 14);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 4, GregTechAPI.sBlockMetal4, 2);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 5, GregTechAPI.sBlockMetal6, 13);
     }
 
     private void registerFrameboxTransformers() {
@@ -98,7 +125,7 @@ public class PosteaTransformers implements Runnable {
             if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return false;
             }
-            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
+            Item frameItem = Item.getItemFromBlock(GregTechAPI.sBlockFrames);
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
@@ -109,14 +136,10 @@ public class PosteaTransformers implements Runnable {
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.BioRecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.T3RecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -279,5 +302,20 @@ public class PosteaTransformers implements Runnable {
             }
             return false;
         });
+    }
+
+    private static void registerBartworksLabPartTransformer() {
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
+            // ensure it has the extra tag
+            if (nbt.hasKey("tag")) {
+                var tag = nbt.getCompoundTag("tag");
+                // skip special NEI recipe item for BioLab Clonal Cellular Synthesis
+                if (tag.hasKey("NEI")) return false;
+                tag.func_150296_c()
+                    .removeIf(key -> !key.equals("Name"));
+            }
+            return true;
+        });
+
     }
 }

@@ -1,12 +1,12 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +15,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,11 +33,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -48,7 +51,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -56,6 +58,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurvivalConstructable {
 
     protected IStructureDefinition<MTEExtremeHeatExchanger> multiDefinition = null;
@@ -139,6 +142,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
@@ -151,6 +155,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mCooledFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -219,61 +224,22 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc5"))
-            .addSeparator()
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ExtremeHeatExchanger.lava",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma2"))
-            .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle2"))
-            .addController("Front bottom center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 25, 120, false)
-            .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)
-            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid, front center Casing",
-                3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water, any bottom layer Casing",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "Cold fluid, back center Casing",
-                4)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SH Steam/SC Steam, any top layer Casing",
-                2)
-            .addMaintenanceHatch("Any Casing", 1, 2, 5)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.heat_exchanger_ehe"))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-heat-exchanger"))
+            .beginStructureBlock(5, 6, 11, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("25-120", StatCollector.translateToLocal("gt.blockcasings4.0.name"), false)
+            .addCasing("72", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
+            .addCasing("60", StatCollector.translateToLocal("gt.blockcasings2.15.name"), false)
+            .addCasing("48", StatCollector.translateToLocal("pressureResistantWalls.name"), false)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2, 5)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing_or_any_bottom_casing"), 1, 3)
+            .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing_or_any_top_casing"), 2, 4)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -345,11 +311,13 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 } else {
                     steamToOutput = waterAmount * 160;
                 }
-                addOutputPartial(new FluidStack(tReadySteam, steamToOutput));
+                addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
-                GTLog.writeExplosionLog(this, "had no more distilled water!");
-                mHotFluidHatch.getBaseMetaTileEntity()
-                    .doExplosion(V[8]);
+                IGregTechTileEntity hotFluidHatchBMTE = mHotFluidHatch.getBaseMetaTileEntity();
+                if (hotFluidHatchBMTE != null) {
+                    GTLog.writeExplosionLog(this, "had no more distilled water!");
+                    hotFluidHatchBMTE.doExplosion(V[8]);
+                }
                 return false;
             }
         }
@@ -370,11 +338,6 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("ExtremeHeatExchanger.hint", 6);
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEExtremeHeatExchanger(mName);
     }
@@ -383,37 +346,20 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + formatNumber(this.mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                + EnumChatFormatting.GREEN
-                + formatNumber(tThreshold)
-                + EnumChatFormatting.RESET
-                + " L/s",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.xhe.steam_output",
+                (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW) + formatNumber(this.mEUt)
+                    + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode("gg.infodata.xhe.threshold", formatNumber(tThreshold)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -450,7 +396,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     private enum EHEHatches implements IHatchElement<MTEExtremeHeatExchanger> {
 
-        HotInputHatch(MTEExtremeHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
+        HotInputHatch("GT5U.MBTT.InputHatch", MTEExtremeHeatExchanger::addHotFluidInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -458,7 +405,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 return 1;
             }
         },
-        ColdOutputHatch(MTEExtremeHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
+        ColdOutputHatch("GT5U.MBTT.OutputHatch", MTEExtremeHeatExchanger::addColdFluidOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -467,10 +415,13 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEExtremeHeatExchanger> adder;
 
-        EHEHatches(IGTHatchAdder<MTEExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        EHEHatches(String name, IGTHatchAdder<MTEExtremeHeatExchanger> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -483,6 +434,16 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

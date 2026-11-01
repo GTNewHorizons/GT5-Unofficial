@@ -45,7 +45,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 if (material.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         block.getStackForm(2, meta),
-                        GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+                        GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
+                            | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                         new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(material) });
                 }
 
@@ -1432,7 +1433,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     idList[idIndex],
                     internalNameItemPipe + "_Huge",
                     "gt.oreprefix.huge_material_item_pipe",
-                    1.00F,
+                    0.875F,
                     material,
                     invSlotsForHugePipe,
                     32768 / invSlotsForHugePipe,

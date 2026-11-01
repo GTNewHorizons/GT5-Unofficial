@@ -6,7 +6,7 @@ import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 
 /**
  * Set of textures that is commonly used for GUI but can vary depending on "style" of machines, e.g. bronze steam or
@@ -37,7 +37,7 @@ public class GUITextureSet {
         .setTitleTab(GTUITextures.TAB_TITLE, GTUITextures.TAB_TITLE_DARK, GTUITextures.TAB_TITLE_ANGULAR)
         .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
 
-    public static final Function<SteamVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet()
+    public static final Function<TieredVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet()
         .setMainBackground(GTUITextures.BACKGROUND_STEAM.get(steamVariant))
         .setItemSlot(GTUITextures.SLOT_ITEM_STEAM.get(steamVariant))
         .setFluidSlot(GTUITextures.SLOT_FLUID_STEAM.get(steamVariant))

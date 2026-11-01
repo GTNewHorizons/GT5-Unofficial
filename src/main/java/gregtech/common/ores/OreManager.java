@@ -3,8 +3,6 @@ package gregtech.common.ores;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -88,17 +86,40 @@ public final class OreManager {
 
     public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
         IOreMaterial material, boolean small) {
-        if (y < 0 || y >= world.getActualHeight()) return false;
+        ImmutableBlockMeta oreBlock = getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small);
 
-        IStoneType existingStone = StoneType.findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+        if (oreBlock == null) return false;
 
-        if (existingStone != null && !existingStone.canGenerateInWorld(world)) return false;
+        world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
+
+        return true;
+    }
+
+    public static boolean canSetOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        return getOreBlockForWorldGen(world, x, y, z, defaultStone, material, small) != null;
+    }
+
+    public static boolean canSetOreForWorldGenOrAlreadySet(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        if (canSetOreForWorldGen(world, x, y, z, defaultStone, material, small)) return true;
+
+        try (OreInfo<IOreMaterial> info = getOreInfo(world, x, y, z)) {
+            return info != null && info.isNatural && info.isSmall == small && info.material == material;
+        }
+    }
+
+    private static ImmutableBlockMeta getOreBlockForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        IOreMaterial material, boolean small) {
+        if (y < 0 || y >= world.getActualHeight()) return null;
+
+        IStoneType existingStone = StoneType.findStoneType(world, x, y, z);
 
         if (existingStone == null) {
             if (defaultStone != null) {
                 existingStone = defaultStone;
             } else {
-                return false;
+                return null;
             }
         }
 
@@ -116,41 +137,11 @@ public final class OreManager {
                 ImmutableBlockMeta oreBlock = oreAdapter.getBlock(info);
 
                 if (oreBlock != null) {
-                    world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
-
-                    return true;
+                    return oreBlock;
                 }
             }
 
-            return false;
-        }
-    }
-
-    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType,
-        IOreMaterial material, boolean small) {
-        if (y < 0 || y >= world.getActualHeight()) return false;
-
-        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
-            info.material = material;
-            info.stoneType = stoneType;
-            info.isSmall = small;
-            info.isNatural = true;
-
-            int size = ORE_ADAPTERS.size();
-
-            for (int i = 0; i < size; i++) {
-                IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
-
-                ImmutableBlockMeta oreBlock = oreAdapter.getBlock(info);
-
-                if (oreBlock != null) {
-                    world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 2);
-
-                    return true;
-                }
-            }
-
-            return false;
+            return null;
         }
     }
 
@@ -163,7 +154,10 @@ public final class OreManager {
 
             info.stoneType = newStoneType;
 
-            ImmutableBlockMeta oreBlock = getAdapter(info).getBlock(info);
+            IOreAdapter<?> adapter = getAdapter(info);
+            if (adapter == null) return false;
+
+            ImmutableBlockMeta oreBlock = adapter.getBlock(info);
 
             if (oreBlock == null) return false;
 

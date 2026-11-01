@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.MouseData;
@@ -24,7 +25,6 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.singleblock.base.MTESpecialFilterBaseGui;
 import gregtech.common.tileentities.automation.MTERecipeFilter;
@@ -37,7 +37,8 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
 
     @Override
     protected List<String> getEmptyFilterSlotTooltip(ModularPanel panel, PanelSyncManager syncManager) {
-        return Collections.singletonList(GTUtility.translate("GT5U.recipe_filter.empty_representation_slot.tooltip"));
+        return Collections
+            .singletonList(StatCollector.translateToLocal("GT5U.recipe_filter.empty_representation_slot.tooltip"));
     }
 
     @Override
@@ -50,9 +51,9 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
         if (!recipeMapName.isEmpty()) {
 
             tooltip.add(
-                GTUtility.translate("GT5U.MBTT.MachineType") + ": "
+                StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.translate(recipeMapName)
+                    + StatCollector.translateToLocal(recipeMapName)
                     + EnumChatFormatting.RESET);
             int recipeSize = RecipeMap.ALL_RECIPE_MAPS.get(recipeMapName)
                 .getAllRecipes()
@@ -60,7 +61,7 @@ public class MTERecipeFilterGui extends MTESpecialFilterBaseGui<MTERecipeFilter>
             if (recipeSize > 0) {
                 tooltip.add("Filter size: §e" + recipeSize + "§r");
             }
-            tooltip.add(GTUtility.translate("GT5U.recipe_filter.representation_slot.tooltip"));
+            tooltip.add(StatCollector.translateToLocal("GT5U.recipe_filter.representation_slot.tooltip"));
         }
 
         return tooltip;

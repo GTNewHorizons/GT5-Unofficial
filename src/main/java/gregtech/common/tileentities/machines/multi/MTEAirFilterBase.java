@@ -33,12 +33,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -47,13 +49,16 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -71,15 +76,18 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     // Formerly configurable values
     public static final int POLLUTION_THRESHOLD = 10000;
+    public static final int PROGRESS_TIME = 200;
     public static final float BOOST_PER_FILTER = 2.0f;
     public static final float GLOBAL_MULTIPLIER = 30.0f;
     public static final float SCALING_FACTOR = 2.5f;
     public static final int USES_PER_FILTER = 30;
+    public static final float MAINTENANCE_PENALTY_PERCENT = 10.0f;
 
     private static final Random RANDOM = new XSTR();
 
@@ -147,9 +155,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
@@ -171,53 +179,52 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public String getCasingString() {
         return switch (getCasingMeta()) {
-            case 0 -> "Air Filter Turbine Casing";
-            case 3 -> "Advanced Air Filter Turbine Casing";
-            case 5 -> "Super Air Filter Turbine Casing";
+            case 0 -> Casings.AirFilterTurbineCasing.getLocalizedName();
+            case 3 -> Casings.AdvancedAirFilterTurbineCasing.getLocalizedName();
+            case 5 -> Casings.SuperAirFilterTurbineCasing.getLocalizedName();
             default -> "fill a ticket on github if you read this";
         };
     }
 
     public String getPipeString() {
         return switch (getPipeMeta()) {
-            case 1 -> "Air Filter Vent Casing";
-            case 4 -> "Advanced Air Filter Vent Casing";
-            case 6 -> "Super Air Filter Vent Casing";
+            case 1 -> Casings.AirFilterVentCasing.getLocalizedName();
+            case 4 -> Casings.AdvancedAirFilterVentCasing.getLocalizedName();
+            case 6 -> Casings.SuperAirFilterVentCasing.getLocalizedName();
             default -> "fill a ticket on github if you read this";
         };
+    }
+
+    private int getChunkSize() {
+        return 2 * multiTier + 1;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Air Filter, EAF")
-            .addInfo("Needs a Turbine in the controller")
-            .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
-            .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
-            .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + GLOBAL_MULTIPLIER
-                    + " * multiTierBonus * turbineEff * FLOOR("
-                    + SCALING_FACTOR
-                    + "^mufflerTier)")
-            .addInfo("every second")
-            .addInfo("- multiTierBonus for this controller is " + getBonusByTier())
-            .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
-            .addInfo("- Effective muffler tier is limited by energy input tier")
-            .addInfo("- Uses " + getEUt() + " EU/t while working")
-            .addSeparator()
-            .addInfo("Insert Absorption Filter in an input bus")
-            .addInfo("  to double pollution cleaning amount (30 uses per item)")
-            .addInfo("Each maintenance issue reduces cleaning amount by 10%")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "air-filter"),
+                ImmutableMap.<String, Object>builder()
+                    .put("chunk_size", getChunkSize())
+                    .put("global_multiplier", GLOBAL_MULTIPLIER)
+                    .put("scaling_factor", SCALING_FACTOR)
+                    .put("tier_bonus", getBonusByTier())
+                    .put("eu_usage", getEUt())
+                    .put("filter_lifespan", USES_PER_FILTER * PROGRESS_TIME / 20)
+                    .put("boost_per_filter", BOOST_PER_FILTER)
+                    .put("maint_penalty", MAINTENANCE_PENALTY_PERCENT)
+                    .build())
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom center")
-            .addOtherStructurePart(getCasingString(), "Top and bottom layers")
-            .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-            .addMufflerHatch("Sides of the middle two layers", 2)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addInputBus("Any bottom layer Casing (optional)", 1)
-            .addOutputBus("Any bottom layer Casing (optional)", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("9-22", getCasingString(), false)
+            .addCasing("8", getPipeString(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMufflerHatch("1-8", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
@@ -299,7 +306,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         // check pollution for next cycle:
         hasPollution = getTotalPollution() >= POLLUTION_THRESHOLD;
-        mMaxProgresstime = 200;
+        mMaxProgresstime = PROGRESS_TIME;
         mEUt = (int) -getEUt();
         if (!hasPollution) {
             return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -475,7 +482,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
-            size = 2 * multiTier + 1;
+            size = getChunkSize();
         }
         super.onPreTick(aBaseMetaTileEntity, aTick);
     }
@@ -589,7 +596,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             }
         } else { // change radius on sneak
             if (size == 1) {
-                size = 2 * multiTier + 1;
+                size = getChunkSize();
             } else {
                 size -= 2; // always get odd number
             }
@@ -602,37 +609,39 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Long.toString(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.probably_uses",
                 // negative EU triggers special EU consumption behavior. however it does not produce power.
                 EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.max_energy_income_tier",
                 EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.problems_efficiency",
                 EnumChatFormatting.RED + Integer.toString(getIdealStatus() - getRepairStatus())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %"),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.air_filter.pollution_reduction",
                 EnumChatFormatting.GREEN
                     + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining),
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+            IGregTechDeviceInformation.encode("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
+            IGregTechDeviceInformation.encode("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.recipesDone.fmt",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 
     @Override

@@ -13,7 +13,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,6 +35,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
@@ -246,20 +246,13 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = StatCollector.translateToLocalFormatted(
+        info[4] = IGregTechDeviceInformation.encode(
             "gg.scanner.info.generator.generates",
             EnumChatFormatting.RED + formatNumber(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET);
-        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + (this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + trueEff
-            + EnumChatFormatting.RESET
-            + " %";
+        info[6] = IGregTechDeviceInformation.encode(
+            "gg.infodata.generator.problems_efficiency",
+            this.getIdealStatus() - this.getRepairStatus(),
+            trueEff);
         return info;
     }
 
@@ -406,7 +399,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)

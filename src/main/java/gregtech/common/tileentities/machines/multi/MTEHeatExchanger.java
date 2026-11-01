@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -23,12 +22,13 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -36,12 +36,14 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -53,11 +55,11 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -92,6 +94,10 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                     onElementPass(MTEHeatExchanger::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
         .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
+    private static final int BASE_SH_THRESHOLD = 4000; // L per second, scaled by the coolant
+    private static final int SH_THRESHOLD_REDUCTION_PER_CONFIG = 150; // L per second per circuitry level (1-25)
+    private static final float BASE_STEAM_MULTIPLIER = 20f; // scaled by the coolant
+    private static final int MIN_CIRCUIT_CONFIG = 1; // circuit level without penalty or threshold reduction
 
     private MTEHatchInput mInputHotFluidHatch;
     private MTEHatchOutput mOutputColdFluidHatch;
@@ -120,41 +126,40 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc5"))
-            .addSeparator()
-            .addInfo(
-                GTUtility.translate("gt.multiblock.HeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit()))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.HeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                GTUtility.translate(
-                    "gt.multiblock.HeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle1"))
-            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle2"))
+        final ImmutableMap.Builder<String, Object> vars = ImmutableMap.builder();
+        vars.put("explode_seconds", dryHeatMaximum / 20)
+            .put("threshold_reduction", 100.0 * SH_THRESHOLD_REDUCTION_PER_CONFIG / BASE_SH_THRESHOLD)
+            .put("steam_penalty", 100.0 * penalty_per_config)
+            .put("min_circuit", MIN_CIRCUIT_CONFIG);
+        putCoolantVars(vars, "lava", "lava");
+        putCoolantVars(vars, "coolant", "ic2hotcoolant");
+        putCoolantVars(vars, "salt", "molten.solarsalthot");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.large_heat_exchanger"))
+            .addMarkdown(new ResourceLocation("gregtech", "heat-exchanger"), vars.build())
             .beginStructureBlock(3, 4, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
-            .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Hot Fluid, bottom center Casing", 2)
-            .addInputHatch("Distilled Water, any Casing", 1)
-            .addOutputHatch("Cold Fluid, top center Casing", 3)
-            .addOutputHatch("Steam/SH Steam, any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("20-28", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.heat_exchanger_input_hatch"), 1, 2)
+            .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.heat_exchanger_output_hatch"), 1, 3)
             .toolTipFinisher();
+        // spotless:on
         return tt;
+    }
+
+    /** Puts the SH threshold, max input and max SH steam output of a coolant into the tooltip vars. */
+    private static void putCoolantVars(ImmutableMap.Builder<String, Object> vars, String prefix, String hotFluid) {
+        // Same math as checkProcessing() and onRunningTick() at full efficiency without a circuit
+        LHECoolantRegistry.LHECoolantInfo coolant = LHECoolantRegistry.getCoolant(hotFluid);
+        int threshold = (int) (BASE_SH_THRESHOLD * coolant.superheatedThreshold);
+        int maxInput = threshold * 2;
+        vars.put(prefix + "_threshold", formatNumber(threshold))
+            .put(prefix + "_max_input", formatNumber(maxInput))
+            .put(
+                prefix + "_max_output",
+                formatNumber((int) (maxInput * BASE_STEAM_MULTIPLIER * coolant.steamMultiplier)));
     }
 
     @Override
@@ -212,20 +217,20 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
         int fluidAmountToConsume = hotFluid.amount; // how much fluid is in hatch
 
-        superheated_threshold = 4000; // default: must have 4000L per second to generate superheated steam
+        superheated_threshold = BASE_SH_THRESHOLD; // default: must have 4000L per second to generate superheated steam
         float efficiency = 1f; // default: operate at 100% efficiency with no integrated circuitry
-        int shs_reduction_per_config = 150; // reduce threshold 150L/s per circuitry level (1-25)
-        float steam_output_multiplier = 20f; // default: multiply output by 4 * 10 (boosted x5)
+        int shs_reduction_per_config = SH_THRESHOLD_REDUCTION_PER_CONFIG; // reduce threshold 150L/s per circuitry level
+        float steam_output_multiplier = BASE_STEAM_MULTIPLIER; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
-            if (circuit_config >= 1 && circuit_config <= 25) {
+            if (circuit_config >= MIN_CIRCUIT_CONFIG && circuit_config <= 25) {
                 // If so, apply the penalty and reduce the threshold.
-                penalty = (circuit_config - 1) * penalty_per_config;
-                superheated_threshold -= shs_reduction_per_config * (circuit_config - 1);
+                penalty = (circuit_config - MIN_CIRCUIT_CONFIG) * penalty_per_config;
+                superheated_threshold -= shs_reduction_per_config * (circuit_config - MIN_CIRCUIT_CONFIG);
             }
         }
 
@@ -285,11 +290,11 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
-                        // superheated
-                        // steam
+                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
+                                                                                                     // superheated
+                                                                                                     // steam
                     } else {
-                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
+                        addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                     dryHeatCounter = 0;
                 } else {
@@ -333,6 +338,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mOutputColdFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -345,6 +351,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
             mInputHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
@@ -361,44 +368,21 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.steam")
-                + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + formatNumber(superheated ? -2L * mEUt : -mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-                + superheated
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.threshold")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(superheated_threshold)
-                + EnumChatFormatting.RESET,
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.lhe.steam",
+                (superheated ? "§c" : "§e") + formatNumber(superheated ? -2L * mEUt : -mEUt) + "§r"),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.lhe.superheated", (superheated ? "§c" : "§9") + superheated + "§r"),
+            IGregTechDeviceInformation.encode("GT5U.infodata.lhe.threshold", formatNumber(superheated_threshold)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

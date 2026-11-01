@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.List;
@@ -51,6 +52,8 @@ public class BlockReinforced extends GTGenericBlock {
         }
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        // Meta 2, 3, 10 are also Machine Casings
+        GregTechAPI.registerMachineBlock(this, B[2] | B[3] | B[10]);
         ItemList.Block_BronzePlate.set(
             new ItemStack(
                 this.setHardness(60.0f)
@@ -129,8 +132,15 @@ public class BlockReinforced extends GTGenericBlock {
                     .setResistance(5000.0f),
                 1,
                 12));
+        ItemList.Block_ReinforcedConcrete.set(
+            new ItemStack(
+                this.setHardness(40.0F)
+                    .setResistance(120.0F),
+                1,
+                13));
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Items.coal, 1, 1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.Block_BrittleCharcoal.get(1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Block_Powderbarrel.get(1L),
@@ -176,7 +186,7 @@ public class BlockReinforced extends GTGenericBlock {
     public String getHarvestTool(int meta) {
         return switch (meta) {
             case 4, 5, 6, 7 -> "axe";
-            case 2 -> "wrench";
+            case 2, 3, 10 -> "wrench";
             default -> "pickaxe";
         };
     }
@@ -184,10 +194,10 @@ public class BlockReinforced extends GTGenericBlock {
     @Override
     public int getHarvestLevel(int meta) {
         return switch (meta) {
-            case 4, 5, 6, 7 -> 1;
-            case 2 -> 2;
-            case 1, 3, 9 -> 5;
-            case 10, 11 -> 7;
+            case 4, 5, 6, 7, 13 -> 1;
+            case 2, 3, 10 -> 2;
+            case 1, 9 -> 5;
+            case 11, 12 -> 7;
             default -> 4;
         };
     }
@@ -206,6 +216,7 @@ public class BlockReinforced extends GTGenericBlock {
             case 10 -> Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
             case 11 -> Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
             case 12 -> Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+            case 13 -> Textures.BlockIcons.BLOCK_REINFORCED_CONCRETE.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
     }
@@ -222,13 +233,13 @@ public class BlockReinforced extends GTGenericBlock {
         return switch (meta) {
             case 0 -> 60.0F;
             case 1 -> 400.0F;
-            case 2 -> 5.0F;
-            case 3 -> 250.0F;
+            case 2, 3, 10 -> Blocks.iron_block.getBlockHardness(world, x, y, z);
             case 4, 5, 6, 7 -> 0.5F;
             case 8 -> 150.0F;
             case 9 -> 200.0F;
-            case 10 -> 500.0F;
             case 11 -> 750.0F;
+            case 12 -> 1500.0F;
+            case 13 -> 40.0F;
             default -> Blocks.iron_block.getBlockHardness(world, x, y, z);
         };
     }
@@ -251,6 +262,8 @@ public class BlockReinforced extends GTGenericBlock {
             case 9 -> 300.0F;
             case 10 -> 1000.0F;
             case 11 -> 2500.0F;
+            case 12 -> 5000.0F;
+            case 13 -> 120.0F;
             default -> super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
         };
     }
@@ -325,8 +338,18 @@ public class BlockReinforced extends GTGenericBlock {
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
+        if (GregTechAPI.isMachineBlock(this, world.getBlockMetadata(x, y, z))) {
+            GregTechAPI.causeMachineUpdate(world, x, y, z);
+        }
         if (world.isBlockIndirectlyGettingPowered(x, y, z) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, null, x, y, z);
+        }
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (GregTechAPI.isMachineBlock(this, meta)) {
+            GregTechAPI.causeMachineUpdate(world, x, y, z);
         }
     }
 

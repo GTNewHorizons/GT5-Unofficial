@@ -21,7 +21,8 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -46,9 +47,9 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -102,30 +103,31 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(
-                TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_chemical_reactor"))
             .addStaticParallelInfo(PARALLELS)
-            .addPerfectOCInfo()
-            .addSeparator()
-            .addTecTechHatchInfo()
-            .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
+            .addMarkdown(new ResourceLocation("gregtech", "mega-chemical-reactor"))
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(5, 5, 9, false)
-            .addController("Front center")
-            .addCasingInfoRange("Chemically Inert Machine Casing", 0, 79, false)
-            .addCasingInfoExactly("Fusion Coil Block", 7, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addEnergyHatch("Hint block ", 1)
-            .addMaintenanceHatch("Hint block ", 1)
-            .addInputHatch("Hint block ", 1)
-            .addInputBus("Hint block ", 1)
-            .addOutputBus("Hint block ", 1)
-            .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("0-79", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("64", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("28", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing(
+                "7",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    Casings.FusionCoilBlock.getLocalizedName(),
+                    Casings.EternalCoilBlock.getLocalizedName()),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -205,10 +207,10 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
-        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
@@ -223,11 +225,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
                 return;
             }
         }
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
     }
 
     @Override

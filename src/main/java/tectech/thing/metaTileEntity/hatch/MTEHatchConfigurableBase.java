@@ -36,56 +36,30 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     @Override
     public abstract String getCopiedDataIdentifier(EntityPlayer player);
 
-    /// When true, this hatch's config will be synced to the client via description packets. []
-    public boolean needsConfigSync() {
-        return false;
-    }
-
-    /// Syncs this hatch's config at some point in the near future.
-    public void requestConfigSync() {
-        if (getBaseMetaTileEntity() != null) {
-            getBaseMetaTileEntity().issueTileUpdate();
-        }
-    }
-
     public void setOutput(boolean active) {
+        setOutput(active ? 15 : 0);
+    }
+
+    public void setOutput(int power) {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (igte == null || igte.isDead()) return;
 
+        ForgeDirection front = igte.getFrontFacing();
+
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            if (dir != front) {
+                igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            }
         }
 
-        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (active ? 15 : 0));
-        igte.setActive(active);
+        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (power));
+        igte.setActive(power > 0);
     }
 
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
-    }
-
-    @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
-
-        if (needsConfigSync()) {
-            NBTTagCompound config = new NBTTagCompound();
-            saveConfig(config);
-            tag.setTag("config", config);
-        }
-
-        return tag;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-
-        if (needsConfigSync()) {
-            loadConfig(data.getCompoundTag("config"));
-        }
     }
 
     @Override

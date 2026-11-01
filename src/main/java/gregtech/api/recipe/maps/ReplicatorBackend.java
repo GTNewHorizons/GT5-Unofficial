@@ -89,7 +89,8 @@ public class ReplicatorBackend extends RecipeMapBackend {
         if (foundMaterial == null) {
             return null;
         }
-        return recipesByMaterial.getOrDefault(foundMaterial, null);
+        GTRecipe recipeFound = recipesByMaterial.getOrDefault(foundMaterial, null);
+        return recipeFound.maxParallelCalculatedByInputs(1, fluids, items) < 1 ? null : recipeFound;
     }
 
     @Nullable

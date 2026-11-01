@@ -1,4 +1,3 @@
-
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
@@ -18,6 +17,7 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -35,16 +36,20 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -54,17 +59,19 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 5;
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
+    private static final int TOP_CASING_AMOUNT = 28;
+    private static ITexture casingTexture;
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -114,34 +121,39 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Flotation Cell, FCR")
-            .addInfo("Process that milled ore!")
-            .addInfo("You can only ever process one type of material per controller")
-            .addPerfectOCInfo()
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.flotation_cell"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "froth-flotation-cell"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
-            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
-            .addCasingInfoExactly("Staballoy Frame Box", 20, false)
-            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
-            .addInputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
-            .toolTipFinisher(GTAuthors.AuthorNoc.get());
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.STABALLOY), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.INCONEL_690), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_HUM;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.flotationCellRecipes;
+        return RecipeMaps.flotationCellRecipes;
     }
 
     @Override
@@ -152,28 +164,25 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDFrothFlotationCell)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDFrothFlotationCell,
+            TexturesGtBlock.oMCDFrothFlotationCellGlow,
+            TexturesGtBlock.oMCDFrothFlotationCellActive,
+            TexturesGtBlock.oMCDFrothFlotationCellActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        // FlotationCellCasings.textureId points at Cyclotron Coil, so build the texture from the block itself
+        if (casingTexture == null) {
+            casingTexture = TextureFactory
+                .of(Casings.FlotationCellCasings.getBlock(), Casings.FlotationCellCasings.getBlockMeta());
         }
-        return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture() };
+        return casingTexture;
     }
 
     @Override
@@ -211,12 +220,12 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 'W');
             return;
         }
-        checkCasingMin(errors, casingAmount, 90);
+        checkCasingMin(errors, casingAmount + TOP_CASING_AMOUNT, 110);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputHatch(errors);
-        checkHasInputHatch(errors);
         checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -329,11 +338,6 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

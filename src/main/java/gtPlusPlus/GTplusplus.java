@@ -24,10 +24,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
@@ -41,7 +41,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = "miscutils",
+    modid = Mods.ModIDs.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -76,7 +76,7 @@ public class GTplusplus {
 
     public static final Logger logger = LogManager.getLogger("GT++");
 
-    @Mod.Instance("miscutils")
+    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
@@ -148,20 +148,19 @@ public class GTplusplus {
         SemiFluidFuelHandler.generateFuels();
 
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, RecipeMaps.centrifugeNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, RecipeMaps.electrolyzerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells
-            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
+            .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, RecipeMaps.mixerNonCellRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.chemicalDehydratorRecipes,
-            GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
+            RecipeMaps.chemicalDehydratorRecipes,
+            RecipeMaps.chemicalDehydratorNonCellRecipes);
+        RecipeGenMultisUsingFluidInsteadOfCells
+            .generateRecipesNotUsingCells(RecipeMaps.coldTrapRecipes, RecipeMaps.nuclearSaltProcessingPlantRecipes);
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.coldTrapRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-            GTPPRecipeMaps.reactorProcessingUnitRecipes,
-            GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
+            RecipeMaps.reactorProcessingUnitRecipes,
+            RecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
 
     private static void setupMaterialBlacklist() {

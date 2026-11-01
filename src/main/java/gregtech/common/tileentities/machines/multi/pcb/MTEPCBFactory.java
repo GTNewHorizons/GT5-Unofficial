@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -50,6 +49,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
@@ -336,8 +337,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ, errors)) return;
         }
         if (newTier == 3) checkCasingMin(errors, casingAmount, 256); // 292 - 36
-        checkOneMaintenanceHatch(errors);
+
         checkExoticAndNormalEnergyHatches(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
@@ -728,7 +730,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + (mCoolingTower == null ? ""
                     : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
                 + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
-            /* 8 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+            /* 8 */ StatCollector
+                .translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -767,112 +770,44 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "perfect overclocks")
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addInfo("Configure Trace Size in UI")
-            .addTecTechHatchInfo()
-            .beginStructureBlock(30, 38, 13, false)
+            .addSupportAny()
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(
-                EnumChatFormatting.GOLD + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch",
-                1)
-            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Nanite Containment Bus: "
-                    + EnumChatFormatting.GOLD
-                    + "0"
-                    + EnumChatFormatting.GRAY
-                    + "+")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Coolant Hatch (Input Hatch): "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Bottom Center of the Cooling Tower")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Base Multi (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithographic Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + " (Adds to Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "158"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.BLUE + ":")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "292"
-                    + EnumChatFormatting.GRAY
-                    + " Radiation Proof Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Bio Chamber:")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "19"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "39"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
+            .addEnergyHatch("1-2", "Any lower back casing", 1)
+            .addMaintenanceHatch("1", "Any lower back casing", 1)
+            .addInputBus("1+", "Any lower back casing", 1)
+            .addInputHatch("1+", "Any lower back casing", 1)
+            .addOutputBus("1+", "Any lower back casing", 1)
             .addStructureInfo("")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorBlueWeabo);
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T1 Recipes")
+            .addCasing("67-72", "Basic Photolithographic Framework Casing", false)
+            .addCasing("40", "Damascus Steel Frame Box", false)
+            .addCasing("25", "Plascrete Block", false)
+            .addCasing("25", "Any Tiered Glass", false)
+            .addCasing("12", "Grate Machine Casing", false)
+            .addCasing("9", "Vibrant Alloy Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 2 " + EnumChatFormatting.BLUE + "(Adds to T1)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T2 Recipes and Parallels with Silver Nanites")
+            .addCasing("158", "Reinforced Photolithographic Framework Casing", false)
+            .addCasing("34", "Duranium Frame Box", false)
+            .addMiscHatch("0-1", "Nanite Containment Bus", "Any lower back casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 3 " + EnumChatFormatting.BLUE + "(New Structure)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T3 Recipes and Parallels with Gold Nanites")
+            .addCasing("256-292", "Radiation Proof Photolithographic Framework Casing", false)
+            .addCasing("76", "Radiant Naquadah Alloy Casing", false)
+            .addMiscHatch("0-1", "Nanite Containment Bus", "Any photolithographic casing", 1)
+            .addEnergyHatch("1-2", "Any photolithographic casing", 1)
+            .addMaintenanceHatch("1", "Any photolithographic casing", 1)
+            .addInputBus("1+", "Any photolithographic casing", 1)
+            .addInputHatch("1+", "Any photolithographic casing", 1)
+            .addOutputBus("1+", "Any photolithographic casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -968,6 +903,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity == null) return false;
             if (aMetaTileEntity instanceof MTEHatchInput) {
+                addIfSmartInput(aMetaTileEntity);
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
                 compatMode.coolantHatch = (MTEHatchInput) aMetaTileEntity;
@@ -977,8 +913,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
@@ -986,6 +923,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            addIfSmartInput(naniteBus);
             naniteBus.updateTexture(baseCasingIndex);
             this.naniteBuses.add(naniteBus);
             return true;
@@ -1041,7 +979,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
-        NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+        NaniteBus("GT5U.MBTT.NaniteContainmentBus", MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
 
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
@@ -1049,11 +987,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPCBFactory> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPCBFactory> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPCBFactory> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1067,17 +1008,26 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.hasKey("mBioChamber")) {
             NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.pcb.linked_to_bio_chamber_at",
                     bioChamber.getInteger("x"),
@@ -1086,7 +1036,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
         if (tag.hasKey("mCoolingTower")) {
             NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.pcb.linked_to_colling_tower_at",
                     coolingTower.getInteger("x"),
@@ -1096,14 +1046,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);
             if (compat.isSet) {
-                currenttip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
+                list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
             }
         }
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         if (mBioChamber != null) {
             NBTTagCompound bioChamber = new NBTTagCompound();
@@ -1122,7 +1071,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (compatMode.isSet) {
             compatMode.saveNBTData(tag);
         }
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override

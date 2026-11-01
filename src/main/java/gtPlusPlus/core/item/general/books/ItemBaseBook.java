@@ -19,7 +19,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.util.Utils;
@@ -58,7 +57,7 @@ public class ItemBaseBook extends ItemWritableBook {
         BookHandler.BookTemplate book = BookHandler.mBookMap.get(tItem.getItemDamage());
         if (book != null) {
             String titleKey = book.mTitle();
-            String title = StatCollector.canTranslate(titleKey) ? GTUtility.translate(titleKey) : titleKey;
+            String title = StatCollector.canTranslate(titleKey) ? StatCollector.translateToLocal(titleKey) : titleKey;
             return EnumChatFormatting.ITALIC + title;
         }
         return "GT++ Storybook";

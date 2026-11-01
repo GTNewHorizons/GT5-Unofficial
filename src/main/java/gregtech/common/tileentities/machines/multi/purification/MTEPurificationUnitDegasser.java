@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -27,11 +26,13 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -39,13 +40,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -58,6 +63,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPurificationUnitDegasser>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -276,206 +282,45 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "At the start of the operation, the " + EnumChatFormatting.WHITE
-                    + "Degasser Control Hatch"
-                    + EnumChatFormatting.GRAY
-                    + " will output a redstone signal")
-            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal")
-            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15")
-            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + "Bit 1: "
-                    + EnumChatFormatting.BLUE
-                    + EnumChatFormatting.BOLD
-                    + "Ozone Sparging by Inert Gas")
-            .addInfo(
-                "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
-                    + "inert gas"
-                    + EnumChatFormatting.GRAY
-                    + " into the machine")
-            .addInfo(
-                "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
-                    + "2-3"
-                    + EnumChatFormatting.GRAY
-                    + " as a 2-bit number")
-            .addInfo(
-                EnumChatFormatting.GRAY + "0: "
-                    + EnumChatFormatting.RED
-                    + "10000L "
-                    + EnumChatFormatting.WHITE
-                    + "Helium"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + "1: "
-                    + EnumChatFormatting.RED
-                    + "7500L "
-                    + EnumChatFormatting.WHITE
-                    + "Neon"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + "2: "
-                    + EnumChatFormatting.RED
-                    + "5000L "
-                    + EnumChatFormatting.WHITE
-                    + "Krypton"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + "3: "
-                    + EnumChatFormatting.RED
-                    + "2500L "
-                    + EnumChatFormatting.WHITE
-                    + "Xenon")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + "Bit 2: "
-                    + EnumChatFormatting.BLUE
-                    + EnumChatFormatting.BOLD
-                    + "Superconductive Deionization")
-            .addInfo(
-                "If this bit is on, you must insert " + EnumChatFormatting.RED
-                    + "1440L "
-                    + EnumChatFormatting.WHITE
-                    + "Molten Superconductor Base.")
-            .addInfo("Using higher tier superconductor provides bonus output")
-            .addInfo(
-                "Output multiplier: " + EnumChatFormatting.DARK_GREEN
-                    + "UV"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.WHITE
-                    + "1x"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + EnumChatFormatting.DARK_RED
-                    + "UHV"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "UEV"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.WHITE
-                    + "1.5x"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + EnumChatFormatting.DARK_BLUE
-                    + EnumChatFormatting.BOLD
-                    + "UIV"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.WHITE
-                    + "1.75x"
-                    + EnumChatFormatting.GRAY
-                    + " / "
-                    + EnumChatFormatting.RED
-                    + EnumChatFormatting.BOLD
-                    + "UMV"
-                    + EnumChatFormatting.GRAY
-                    + ": "
-                    + EnumChatFormatting.WHITE
-                    + "2x")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + "Bit 3: "
-                    + EnumChatFormatting.BLUE
-                    + EnumChatFormatting.BOLD
-                    + "Gravitationally-Generated Differential Vacuum Extraction")
-            .addInfo(
-                "If this bit is on, you must insert " + EnumChatFormatting.RED
-                    + "4608L "
-                    + EnumChatFormatting.WHITE
-                    + "Molten Neutronium")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + "Bit 4: "
-                    + EnumChatFormatting.BLUE
-                    + EnumChatFormatting.BOLD
-                    + "Seldonian Settlement Process")
-            .addInfo(
-                "If this bit is on," + EnumChatFormatting.RED
-                    + " DISREGARD "
-                    + EnumChatFormatting.GRAY
-                    + "all other bits and do not insert anything")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + "No bits: "
-                    + EnumChatFormatting.BLUE
-                    + EnumChatFormatting.BOLD
-                    + "Machine Overload")
-            .addInfo("In rare cases, the machine may overload and output no control signal at all")
-            .addInfo(
-                "To prevent machine damage, insert " + EnumChatFormatting.RED
-                    + "10000L "
-                    + EnumChatFormatting.WHITE
-                    + "Super Coolant.")
-            .addSeparator()
-            .addInfo("The recipe can only succeed if the entire signal is decoded correctly")
-            .addInfo("Inserting any fluid not requested by the signal will always void the recipe")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The penultimate stage of water purification, step seven, is an irregular series of complex")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "processes designed to remove any residual materials left by the decontaminants from the previous")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "steps such as any energetic ions, acids, clarifiers, or gasses. Depending on what the Degasser")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "detects in the water, it will request various materials to complete the processes listed above.")
-            .beginStructureBlock(17, 25, 17, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoRangeColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                803,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Omni-Purpose Infinity Fused Glass",
-                EnumChatFormatting.GRAY,
-                622,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                124,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addOtherStructurePart(
+        FluidStack[] gases = INERT_GASES.get();
+        SuperconductorMaterial[] superconductors = SUPERCONDUCTOR_MATERIALS.get();
+        ImmutableMap.Builder<String, Object> vars = ImmutableMap.<String, Object>builder()
+            .put("tier", getWaterTier())
+            .put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"))
+            .put("gas0", gases[0].getLocalizedName())
+            .put("gas0_amount", gases[0].amount)
+            .put("gas1", gases[1].getLocalizedName())
+            .put("gas1_amount", gases[1].amount)
+            .put("gas2", gases[2].getLocalizedName())
+            .put("gas2_amount", gases[2].amount)
+            .put("gas3", gases[3].getLocalizedName())
+            .put("gas3_amount", gases[3].amount)
+            .put("supercon_amount", SUPERCON_FLUID_AMOUNT)
+            .put("catalyst", CATALYST_FLUID.getLocalizedName())
+            .put("catalyst_amount", CATALYST_FLUID.amount)
+            .put("coolant", COOLANT_FLUID.getLocalizedName())
+            .put("coolant_amount", COOLANT_FLUID.amount);
+        // SUPERCONDUCTOR_MATERIALS lists the UV to UMV superconductors in tier order
+        for (int i = 0; i < superconductors.length; i++) {
+            vars.put("tier" + i, VoltageIndex.UV + i)
+                .put("mult" + i, superconductors[i].multiplier);
+        }
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), vars.build())
+            .beginStructureBlock(17, 25, 17, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing(MIN_CASING + "-800", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
+            .addCasing("622", Casings.OmniPurposeInfinityFusedGlass.getLocalizedName(), false)
+            .addCasing("124", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bedrockium), false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
                 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -764,16 +609,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.control_signal",
                 EnumChatFormatting.YELLOW + controlSignal.toString()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.output_multiplier",
                 "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_degasser.fluid_inserted",
                     "" + EnumChatFormatting.YELLOW + stack.amount,
                     stack.getLocalizedName()));
@@ -799,25 +644,23 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitDegasser> {
 
-        ControlHatch(MTEPurificationUnitDegasser::addControlHatchToMachineList, MTEHatchDegasifierControl.class) {
+        ControlHatch("GT5U.MBTT.ControlHatch", MTEPurificationUnitDegasser::addControlHatchToMachineList,
+            MTEHatchDegasifierControl.class) {
 
             @Override
             public long count(MTEPurificationUnitDegasser mte) {
                 return mte.controlHatch == null ? 0 : 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.ControlHatch");
-            }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitDegasser> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitDegasser> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitDegasser> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -830,6 +673,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         @Override
         public IGTHatchAdder<? super MTEPurificationUnitDegasser> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

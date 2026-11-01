@@ -76,8 +76,6 @@ tooltip.rotor.1.name=耐久:
 tooltip.rotor.2.name=效率:
 tooltip.cp.0.name=内部是否有编程电路?
 
-tooltip.bw.0.name=Added by
-tooltip.bw.1.name=由bartimaeusnek添加
 tooltip.bw.yes.name=是
 tooltip.bw.no.name=否
 tooltip.bw.tier.name=等级:
@@ -92,10 +90,10 @@ tooltip.labparts.1.name=一个空的DNA烧瓶.
 tooltip.labparts.2.name=一个空的质粒单元.
 tooltip.labparts.3.name=生物工程专用洗涤粉
 tooltip.labparts.4.name=电泳分离DNA的粉末.
-tooltip.labparts.5.name=培养皿内含有:
+tooltip.labparts.5.name=培养皿内含有: %s
 tooltip.labparts.6.name=这是一种很弱的培养菌,不能在细菌培养皿中繁殖!
-tooltip.labparts.7.name=一个DNA烧瓶,内含:
-tooltip.labparts.8.name=一个质粒单元,内含:
+tooltip.labparts.7.name=一个DNA烧瓶,内含: %s
+tooltip.labparts.8.name=一个质粒单元,内含: %s
 
 tooltip.tile.waterpump.0.name=在有燃料时,产出
 tooltip.tile.waterpump.1.name=L/s水.
@@ -162,3 +160,29 @@ itemGroup.bw.MetaItems.0=BartWorks电路更新物品
 BW.infoData.BioVat.expectedProduction=预期产量: §a%s §r%%
 BW.infoData.BioVat.production=产量
 #This zh_CN.lang is translated by huajijam for bartworks (19/7/19)
+
+# bio name
+bw.bioname.barnadafis_arboriatoris=巴纳德乔木生菌
+bw.bioname.tcetieis_fucus_serratus=鲸鱼座T星E藻
+bw.bioname.corynebacterium_sludge_marsensis=火星泥棒状杆菌
+bw.bioname.xenoxene_xenoxsis=异氙菌
+bw.bioname.ova_evolutionis=演化卵细胞
+bw.bioname.derivantur_cellula_evolutionis=演化衍生细胞
+bw.bioname.cellula_biologicum_evolutione=演化生物细胞
+bw.bioname.binni_growth_medium=培养基宾尼菌
+bw.bioname.binni_bacteria=宾尼菌
+bw.bioname.mutagen_bacteria_a_spatio=太空诱变菌
+
+# Multiblocks
+gt.blockmachines.bw.biovat.name=细菌培养缸
+gt.blockmachines.bw.manualtrafo.name=可调变压器
+gt.blockmachines.bw.windmill.name=风车
+gt.blockmachines.circuitassemblyline.name=电路装配线
+gt.blockmachines.dehp.name=深地热泵
+gt.blockmachines.lesu.name=LESU
+gt.blockmachines.megablastfurnace.name=巨型工业高炉
+gt.blockmachines.megachemicalreactor.name=巨型化学反应釜
+gt.blockmachines.megadistillationtower.name=巨型蒸馏塔
+gt.blockmachines.megaoilcracker.name=巨型石油裂化机
+gt.blockmachines.megavacuumfreezer.name=巨型真空冷冻机
+gt.blockmachines.thtr.name=钍高温反应堆

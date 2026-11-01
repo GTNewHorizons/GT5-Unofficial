@@ -14,7 +14,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -48,7 +48,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -179,7 +178,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
                     + EnumChatFormatting.YELLOW
                     + "without outputting energy")
             .addInfo("The efficiency is up to 150%")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
@@ -210,7 +209,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
         result = processFuel(tFluids, RecipeMaps.gasTurbineFuels, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT, 1);
         if (result.wasSuccessful()) return result;
 
-        result = processFuel(tFluids, GTPPRecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
+        result = processFuel(tFluids, RecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
         if (result.wasSuccessful()) return result;
 
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -262,20 +261,13 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = StatCollector.translateToLocalFormatted(
+        info[4] = IGregTechDeviceInformation.encode(
             "gg.scanner.info.generator.generates",
             EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000) + EnumChatFormatting.RESET);
-        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + formatNumber(this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(tEff / 100D)
-            + EnumChatFormatting.RESET
-            + " %";
+        info[6] = IGregTechDeviceInformation.encode(
+            "gg.infodata.generator.problems_efficiency",
+            formatNumber(this.getIdealStatus() - this.getRepairStatus()),
+            formatNumber(tEff / 100D));
         return info;
     }
 
@@ -392,7 +384,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(GTPPRecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+        return Arrays.asList(RecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
     }
 
     @Override

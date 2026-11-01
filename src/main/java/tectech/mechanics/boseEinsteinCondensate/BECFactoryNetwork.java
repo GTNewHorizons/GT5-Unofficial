@@ -24,14 +24,12 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         NotableBECFactoryElement.class,
         new BECRouteInfo(0));
 
-    private boolean networkChanged = false;
-
     @Override
     public void addElement(BECFactoryElement element) {
         super.addElement(element);
 
         routeTracker.onElementAdded(element);
-        networkChanged = true;
+        routeTracker.invalidateRoutes();
     }
 
     @Override
@@ -39,26 +37,18 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         super.removeElement(element);
 
         routeTracker.onElementRemoved(element);
-        networkChanged = true;
+        routeTracker.invalidateRoutes();
     }
 
     @Override
     public void onElementUpdated(BECFactoryElement element, boolean topologyChanged) {
         if (topologyChanged) {
-            networkChanged = true;
+            routeTracker.invalidateRoutes();
         }
     }
 
     public void invalidateRoutes() {
-        networkChanged = true;
-    }
-
-    void onPostTick() {
-        if (networkChanged) {
-            networkChanged = false;
-
-            routeTracker.updateEdges();
-        }
+        routeTracker.invalidateRoutes();
     }
 
     /// Drains condensate from the network and decrements the sizes in the request stacks as condensate is extracted.
@@ -104,6 +94,8 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
             if (remaining == 1) {
                 split = input.getStackSize();
+            } else if (totalCapacity <= 0) {
+                split = GTUtility.ceil((double) input.getStackSize() / remaining);
             } else {
                 double weight = inv.getCondensateCapacity() / totalCapacity;
                 totalCapacity -= inv.getCondensateCapacity();

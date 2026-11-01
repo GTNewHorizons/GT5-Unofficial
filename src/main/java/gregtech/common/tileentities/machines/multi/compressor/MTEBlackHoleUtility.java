@@ -1,8 +1,10 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -10,7 +12,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -19,7 +23,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEBlackHoleUtilityGui;
 
-public class MTEBlackHoleUtility extends MTEHatch {
+public class MTEBlackHoleUtility extends MTEHatch implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "blackHoleUtility";
 
     private boolean isOn = false;
 
@@ -69,8 +75,39 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        openGui(aPlayer);
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.loaded"));
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        dataStick.setStackDisplayName("Black Hole Utility Hatch Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.saved"));
     }
 
     // 1 -> static
@@ -97,34 +134,60 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = aNBT.getInteger("mode");
-        pulseTimer = aNBT.getInteger("pulseTimer");
+        isOn = aNBT.getBoolean("isOn");
+        if (mode == 2) {
+            // pulse off to avoid skipped pulses during restart
+            isOn = false;
+        }
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode);
-        aNBT.setInteger("pulseTimer", pulseTimer);
+        aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
     }
 
-    /**
-     * Updates redstone update based on black hole status
-     */
-    public void updateRedstoneOutput(boolean machineOn) {
-        isOn = machineOn;
-        if (mode == 2) pulseTimer = 5;
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("mode", getMode());
+        return tag;
     }
 
-    // Redstone pulse will be 5 ticks (0.25s)
-    int pulseTimer = 5;
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setMode(nbt.getBoolean("mode"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    public void cycleStart() {
+        isOn = true;
+    }
+
+    public void cycleMiddle() {
+        if (mode == 2) {
+            isOn = false;
+        }
+    }
+
+    public void blackHoleClosed() {
+        isOn = false;
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (mode == 2) {
-            if (pulseTimer > 0) {
-                pulseTimer--;
-            } else isOn = false;
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            return;
         }
         if (isOn) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {

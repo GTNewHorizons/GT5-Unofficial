@@ -26,6 +26,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 
@@ -170,7 +171,7 @@ public class ItemMagicFeather extends CoreItem {
                     return;
                 }
             } catch (Exception t) {
-                t.printStackTrace();
+                GTplusplus.logger.error(t);
             }
 
             if (hasItem) {

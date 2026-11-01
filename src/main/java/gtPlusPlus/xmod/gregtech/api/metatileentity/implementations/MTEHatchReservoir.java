@@ -4,8 +4,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -72,10 +70,5 @@ public class MTEHatchReservoir extends MTEHatchFluidGenerator {
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Water) };
-    }
-
-    @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == FluidRegistry.WATER);
     }
 }

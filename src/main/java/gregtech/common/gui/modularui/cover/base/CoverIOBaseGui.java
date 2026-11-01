@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover.base;
 
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -17,7 +18,7 @@ import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
 
@@ -40,9 +41,9 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getIOMode,
             cover::setIOMode).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
+        IWidget exportImportButtons = new EnumSeriesBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
-            .build();
+            .build(GuiAxis.X);
         IWidget exportImportLabel = IKey.lang("gt.interact.desc.Pump.ExpImp")
             .asWidget();
 
@@ -51,12 +52,13 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getMachineProcessingCondition,
             cover::setMachineProcessingCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        IWidget conditionButtons = new EnumRowBuilder<>(MachineProcessingCondition.class).value(conditionModeSyncValue)
+        IWidget conditionButtons = new EnumSeriesBuilder<>(MachineProcessingCondition.class)
+            .value(conditionModeSyncValue)
             .overlay(
                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                 GTGuiTextures.OVERLAY_BUTTON_USE_PROCESSING_STATE,
                 GTGuiTextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-            .build();
+            .build(GuiAxis.X);
         IWidget conditionLabel = IKey.lang("gt.interact.desc.conveyor.Conditional")
             .asWidget();
 
@@ -65,7 +67,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
             cover::getBlockMode,
             cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
-        IWidget blockingButtons = new EnumRowBuilder<>(BlockMode.class).value(blockModeSyncValue)
+        IWidget blockingButtons = new EnumSeriesBuilder<>(BlockMode.class).value(blockModeSyncValue)
             .overlay(
                 new DynamicDrawable(
                     () -> ioModeSyncValue.getValue() == TransferMode.EXPORT ? GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT
@@ -82,7 +84,7 @@ public class CoverIOBaseGui extends CoverBaseGui<CoverIOBase> {
                     () -> ioModeSyncValue.getValue() == TransferMode.EXPORT
                         ? StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockIn")
                         : StatCollector.translateToLocal("gt.interact.desc.conveyor.BlockOut")))
-            .build();
+            .build(GuiAxis.X);
 
         String inputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.InputBlock");
         String outputBlockText = StatCollector.translateToLocal("gt.interact.desc.conveyor.OutputBlock");

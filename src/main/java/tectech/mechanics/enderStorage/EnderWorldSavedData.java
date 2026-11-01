@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import tectech.Reference;
+import tectech.TecTech;
 
 public class EnderWorldSavedData extends WorldSavedData {
 
@@ -31,8 +32,12 @@ public class EnderWorldSavedData extends WorldSavedData {
     private static final String ENDER_LIQUID_TANK_LINK = DATA_NAME + "_EnderLiquidTankLink";
     private static final String ENDER_LIQUID_TAG_VERSION = DATA_NAME + "_Version";
 
-    private Map<EnderLinkTag, EnderFluidContainer> EnderLiquidTagLink = new HashMap<>();
-    private Map<EnderLinkTank, EnderLinkTag> EnderLiquidTankLink = new HashMap<>();
+    private Map<EnderLinkTag, EnderFluidContainer> enderLiquidTagLink = new HashMap<>();
+    /**
+     * Channels of covers saved before the channel moved into the cover itself. Entries are handed over to their cover
+     * on its first tick and dropped; the rest is kept so that covers in unloaded chunks can still claim theirs later.
+     */
+    private Map<EnderLinkTank, EnderLinkTag> enderLiquidTankLink = new HashMap<>();
 
     public EnderWorldSavedData() {
         super(DATA_NAME);
@@ -53,45 +58,45 @@ public class EnderWorldSavedData extends WorldSavedData {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TAG_LINK);
 
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
-                        EnderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) objectStream.readObject();
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is)) {
+                        enderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TAG_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error("ENDER_LIQUID_TAG_LINK LOAD FAILED");
+                    TecTech.LOGGER.error(e);
                 }
 
                 try {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TANK_LINK);
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
-                        EnderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) objectStream.readObject();
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is)) {
+                        enderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TANK_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error("ENDER_LIQUID_TANK_LINK LOAD FAILED");
+                    TecTech.LOGGER.error(e);
                 }
                 break;
             }
             case 1: {
                 List<NBTTagCompound> tags = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TAG_LINK)).tagList;
 
-                EnderLiquidTagLink = new HashMap<>();
+                enderLiquidTagLink = new HashMap<>();
 
                 for (NBTTagCompound tagLink : tags) {
                     EnderLinkTag tag = EnderLinkTag.load((NBTTagCompound) tagLink.getTag("k"));
                     EnderFluidContainer container = EnderFluidContainer.load((NBTTagCompound) tagLink.getTag("v"));
-                    EnderLiquidTagLink.put(tag, container);
+                    enderLiquidTagLink.put(tag, container);
                 }
 
                 List<NBTTagCompound> tanks = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TANK_LINK)).tagList;
 
-                EnderLiquidTankLink = new HashMap<>();
+                enderLiquidTankLink = new HashMap<>();
 
                 for (NBTTagCompound tankLink : tanks) {
                     EnderLinkTank tank = EnderLinkTank.load((NBTTagCompound) tankLink.getTag("k"));
                     EnderLinkTag tag = EnderLinkTag.load((NBTTagCompound) tankLink.getTag("v"));
-                    EnderLiquidTankLink.put(tank, tag);
+                    enderLiquidTankLink.put(tank, tag);
                 }
 
                 break;
@@ -107,7 +112,7 @@ public class EnderWorldSavedData extends WorldSavedData {
 
         NBTTagList tanks = new NBTTagList();
 
-        EnderLiquidTankLink.forEach((tank, tag) -> {
+        enderLiquidTankLink.forEach((tank, tag) -> {
             if (tank.shouldSave()) {
                 usedTags.add(tag);
                 NBTTagCompound entry = new NBTTagCompound();
@@ -120,8 +125,9 @@ public class EnderWorldSavedData extends WorldSavedData {
         nbtTagCompound.setTag(ENDER_LIQUID_TANK_LINK, tanks);
         NBTTagList tags = new NBTTagList();
 
-        EnderLiquidTagLink.forEach((tag, container) -> {
-            if (usedTags.contains(tag)) {
+        enderLiquidTagLink.forEach((tag, container) -> {
+            // channels are owned by the covers now, so a channel is kept as long as it holds something
+            if (usedTags.contains(tag) || !container.isEmpty()) {
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setTag("k", tag.save());
                 entry.setTag("v", container.save());
@@ -146,12 +152,12 @@ public class EnderWorldSavedData extends WorldSavedData {
 
     private static Map<EnderLinkTag, EnderFluidContainer> getEnderLiquidLink() {
         loadInstance();
-        return INSTANCE.EnderLiquidTagLink;
+        return INSTANCE.enderLiquidTagLink;
     }
 
     private static Map<EnderLinkTank, EnderLinkTag> getEnderLiquidTankLink() {
         loadInstance();
-        return INSTANCE.EnderLiquidTankLink;
+        return INSTANCE.enderLiquidTankLink;
     }
 
     public static EnderFluidContainer getEnderFluidContainer(EnderLinkTag tag) {
@@ -161,40 +167,19 @@ public class EnderWorldSavedData extends WorldSavedData {
         return getEnderLiquidLink().get(tag);
     }
 
-    public static EnderLinkTag getEnderLinkTag(IFluidHandler handler) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-        EnderLinkTag tag = getEnderLiquidTankLink().get(tank);
+    /**
+     * Returns the channel that was bound to this tank's position before channels moved into the cover, and forgets it.
+     *
+     * @return The channel, or null if there is none left for this position.
+     */
+    public static EnderLinkTag takeLegacyLink(IFluidHandler handler) {
+        Map<EnderLinkTank, EnderLinkTag> links = getEnderLiquidTankLink();
 
-        if (tag != null && Objects.equals(tag.getFrequency(), "")) {
-            tag = null;
-        }
+        if (links.isEmpty()) return null;
 
-        return tag;
-    }
+        EnderLinkTag tag = links.remove(new EnderLinkTank(handler));
 
-    public static void bindEnderLinkTag(IFluidHandler handler, EnderLinkTag tag) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-
-        if (!tag.equals(getEnderLiquidTankLink().get(tank))) {
-            unbindTank(handler);
-
-            getEnderLiquidTankLink().remove(tank);
-            getEnderLiquidTankLink().put(tank, tag);
-        }
-    }
-
-    public static void unbindTank(IFluidHandler handler) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-        EnderLinkTag oldTag = getEnderLiquidTankLink().remove(tank);
-
-        if (oldTag != null) {
-            boolean isReferenced = getEnderLiquidTankLink().values()
-                .contains(oldTag);
-
-            if (!isReferenced) {
-                getEnderLiquidLink().remove(oldTag);
-            }
-        }
+        return tag == null || Objects.equals(tag.getFrequency(), "") ? null : tag;
     }
 
     @SubscribeEvent

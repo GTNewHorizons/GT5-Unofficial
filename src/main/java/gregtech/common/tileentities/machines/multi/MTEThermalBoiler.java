@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -18,7 +19,8 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -26,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -35,27 +38,30 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalBoiler>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 2;
@@ -100,7 +106,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.thermalBoilerRecipes;
+        return RecipeMaps.thermalBoilerRecipes;
     }
 
     @Override
@@ -250,54 +256,45 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger")
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.heat_exchanger"))
+            // dryHeatMaximum counts recipe runs, each recipe takes 1 second
+            .addMarkdown(new ResourceLocation("gregtech", "thermal-boiler"), ImmutableMap.of("explode_seconds", formatNumber(dryHeatMaximum)))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Thermal Containment Casing", 20, false)
-            .addCasingInfoMin("Thermal Processing Casing", 10, false)
-            .addCasingInfoMin("Robust Tungstensteel Casing", 10, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 6, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Maraging Steel 350 Frame Box", 16, false)
-            .addInputHatch("Any Thermal Processing or Robust Tungstensteel Casing", 2)
-            .addOutputHatch("Any Thermal Processing or Robust Tungstensteel Casing", 2)
-            .addInputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
-            .addOutputBus("Any Thermal Processing or Robust Tungstensteel Casing", 2)
-            .addMaintenanceHatch("Any Thermal Containment Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "ArsinXArscosX")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("20-25", Casings.ThermalContainmentCasing.getLocalizedName(), false)
+            .addCasing("10-17", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("10-17", Casings.ThermalProcessingCasing.getLocalizedName(), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.MARAGING350), false)
+            .addCasing("6", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_middle_casing"), 2)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.ThermalContainmentCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAThermalBoilerActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAThermalBoilerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.ThermalContainmentCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAThermalBoiler)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAThermalBoilerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.ThermalContainmentCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAThermalBoiler,
+            TexturesGtBlock.oMCAThermalBoilerGlow,
+            TexturesGtBlock.oMCAThermalBoilerActive,
+            TexturesGtBlock.oMCAThermalBoilerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.ThermalContainmentCasing.getCasingTexture();
     }
 
     @Override
@@ -323,7 +320,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                             InputBus.withCount(t -> t.mInputBusses.size()),
                             OutputBus.withCount(t -> t.mOutputBusses.size()))
                         .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                        .hint(2)
+                        .hint(1)
                         .buildAndChain(
                             onElementPass(
                                 x -> ++x.casingAmountRobust,
@@ -337,7 +334,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                             InputBus.withCount(t -> t.mInputBusses.size()),
                             OutputBus.withCount(t -> t.mOutputBusses.size()))
                         .casingIndex(Casings.ThermalProcessingCasing.textureId)
-                        .hint(2)
+                        .hint(1)
                         .buildAndChain(
                             onElementPass(
                                 x -> ++x.casingAmountThermalProcessing,
@@ -346,7 +343,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                     'F',
                     buildHatchAdder(MTEThermalBoiler.class).atLeast(Maintenance)
                         .casingIndex(Casings.ThermalContainmentCasing.textureId)
-                        .hint(1)
+                        .hint(2)
                         .buildAndChain(
                             onElementPass(
                                 x -> ++x.casingAmountThermalContainment,
@@ -386,22 +383,17 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
         checkCasingMin(errors, casingAmountRobust, 10);
         checkCasingMin(errors, casingAmountThermalProcessing, 10);
         checkCasingMin(errors, casingAmountThermalContainment, 20);
-        checkHatch(errors);
-    }
-
-    public void checkHatch(List<StructureError> errors) {
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
 
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
+    public void checkHatch(List<StructureError> errors) {
+
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 

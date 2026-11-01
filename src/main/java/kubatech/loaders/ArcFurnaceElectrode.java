@@ -1,9 +1,9 @@
 package kubatech.loaders;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
@@ -22,14 +22,14 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 public enum ArcFurnaceElectrode {
 
     // Empty event handler to generate tooltip text, special effect handled as electrode parameter
-    GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 100, 1, 0, e -> {}),
-    TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 300, 1.2d, 3),
-    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 200, 0.8d, 5),
-    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 500, 1.1d, 2),
-    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 160, 1d, 4d, 700, 1.2d, 3),
+    GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 200, 1, 0, e -> {}),
+    TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 500, 1.2d, 3),
+    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 1),
+    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 0.75d, 0.5d),
+    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 0.5d, 0.5d),
     // Empty event handler to generate tooltip text, special effect handled as electrode parameter
-    GrapheneElectrode(5, Materials.Graphene, 2.5d, 4, 2d, 4d, 350, 1, 0, e -> {}),
-    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 400, 0.8d, 2d, event -> {
+    GrapheneElectrode(5, Materials.Graphene, 2.5d, 16, 2d, 4d, 900, 1, 0, e -> {}),
+    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 1d, 6d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
             if (!postRecipe.result.wasSuccessful()) return;
             int performedOC = postRecipe.calculator.getPerformedOverclocks();
@@ -37,55 +37,42 @@ public enum ArcFurnaceElectrode {
                 postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
         }
     }),
-    NetheriteElectrode(7, Materials.Netherite, 2.2d, 32, 1.5d, 4d, 600, 1.3d, 10d, event -> {
+    NetheriteElectrode(7, Materials.Netherite, 2.2d, 64, 1.5d, 4d, 1500, 1.25d, 2d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
             startShutdown.duration = 1;
         }
         if (event instanceof ArcFurnaceProcessingEvent.EventStartIgnition startIgnition) {
-            if (event.arcFurnace.getTotalRunTime() - event.arcFurnace.getLastWorkingTick() < 20 * 4) {
+            long lastCompletedStartupTick = event.arcFurnace.getLastCompletedStartupTick();
+            if (lastCompletedStartupTick >= 0
+                && event.arcFurnace.getTotalRunTime() - lastCompletedStartupTick < 20 * 4) {
                 startIgnition.duration = 1;
                 startIgnition.eut = 1;
             }
         }
     }),
-    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 600, 1.7d, 4d),
-    InfinityElectrode(9, Materials.Infinity, 4.2d, 0, 1d, 4d, 800, 1d, 1d, event -> {
+    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 1200, 1.1d, 2d),
+    InfinityElectrode(9, Materials.Infinity, 4.2d, 1, 1d, 4d, 2000, 1d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
             configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
             parallelHelperEvent.parallelHelper.setAvailableEUt(Long.MAX_VALUE);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
             configureOC.overclockCalculator.setAmperage(1L);
             configureOC.overclockCalculator.setEUt(Long.MAX_VALUE);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck afterRecipe) {
-            if (!afterRecipe.processingPhase || !afterRecipe.result.wasSuccessful()) return;
-            int actualParallel = Math.max(1, afterRecipe.helper.getCurrentParallel());
-            int targetParallel = getInfinityTargetParallel(afterRecipe.arcFurnace.getEffectState());
-            if (actualParallel < targetParallel) afterRecipe.eut = (afterRecipe.eut / actualParallel) * targetParallel;
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             NBTTagCompound state = completed.arcFurnace.getEffectState();
             int next = getInfinityTargetParallel(state);
             next = next > Integer.MAX_VALUE / 2 ? Integer.MAX_VALUE : next * 2;
             state.setInteger("infinityTargetParallel", next);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
             reset.arcFurnace.getEffectState()
                 .setInteger("infinityTargetParallel", 1);
         }
     }),
-    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 1000, 1.5d, 3.5d),
+    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
 
-    // nanite eletrodes
-    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 64, 2d, 4d, 350, 2d, 5d, event -> {
+    // nanite electrodes
+    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
@@ -93,26 +80,22 @@ public enum ArcFurnaceElectrode {
             }
         }
     }),
-    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 500, 2d, .5d, event -> {
+    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 1.5d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))
-                && completed.arcFurnace.getRandomNumber(100) < 90) {
-                completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
             }
         }
     }),
-    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 1000, 2d, 0d, event -> {
+    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 1d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
             }
         }
-    }),
+    });
 
-    ;
-
-    private static final Map<Integer, ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
-    private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
+    private static final Int2ObjectOpenHashMap<ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
 
     public final int id;
     public final IOreMaterial associatedMaterial;
@@ -121,14 +104,14 @@ public enum ArcFurnaceElectrode {
     public final double OCSpeedFactor;
     public final double OCPowerFactor;
     public final int durability;
-    public final double amperagePerParallel;
-    public final double startupSurge;
+    public final double euModifier;
+    public final double startupPenalty;
     public final Consumer<ArcFurnaceProcessingEvent> specialEffect;
 
     private ItemStack electrodeItem;
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge) {
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
         this(
             id,
             associatedMaterial,
@@ -137,13 +120,13 @@ public enum ArcFurnaceElectrode {
             OCSpeedFactor,
             OCPowerFactor,
             durability,
-            amperagePerParallel,
-            startupSurge,
+            euModifier,
+            startupPenalty,
             null);
     }
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
         Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;
         this.associatedMaterial = associatedMaterial;
@@ -152,8 +135,8 @@ public enum ArcFurnaceElectrode {
         this.OCSpeedFactor = OCSpeedFactor;
         this.OCPowerFactor = OCPowerFactor;
         this.durability = durability;
-        this.amperagePerParallel = amperagePerParallel;
-        this.startupSurge = startupSurge;
+        this.euModifier = euModifier;
+        this.startupPenalty = startupPenalty;
         this.specialEffect = specialEffect;
     }
 
@@ -182,36 +165,44 @@ public enum ArcFurnaceElectrode {
     }
 
     public void addInformation(List<String> tooltip, int durability) {
+        double durRatio = this.durability > 0 ? (double) durability / this.durability : 0;
+        EnumChatFormatting durColor = durRatio >= 1.0 ? EnumChatFormatting.BLUE
+            : durRatio >= 0.5 ? EnumChatFormatting.GREEN
+                : durRatio >= 0.25 ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED;
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                getModifierFormatted(durability, 100, 500, 700) + EnumChatFormatting.RESET + EnumChatFormatting.GRAY,
-                getModifierFormatted(this.durability, 100, 500, 700)));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.speed",
-                getModifierFormatted((int) (this.speedModifier * 100), false, 50d, 100d, 200d, "", "%")));
+                EnumChatFormatting.BLUE + Integer.toString(this.durability) + EnumChatFormatting.GRAY,
+                durColor + Integer.toString(durability)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
-                this.parallelLimit == 0
-                    ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit_none")
-                    : getModifierFormatted(this.parallelLimit, 4, 64, 128)));
+                EnumChatFormatting.GOLD + Integer.toString(this.parallelLimit)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.oc",
-                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "") + EnumChatFormatting.GRAY
-                    + "/"
-                    + getModifierFormatted(this.OCPowerFactor, false, 2d, 4d, 6d, "", ""),
-                ""));
+                "item.arc_furnace_electrode.tip.speed",
+                EnumChatFormatting.GREEN + Integer.toString((int) (this.speedModifier * 100)) + "%"));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.amperage_per_parallel",
-                getModifierFormatted(this.amperagePerParallel, true, 0.6d, 1d, 1.25d, "", "A")));
+                "item.arc_furnace_electrode.tip.eu_usage",
+                EnumChatFormatting.AQUA + formatNumber(this.euModifier) + "x"));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
+                "item.arc_furnace_electrode.tip.overclock",
+                EnumChatFormatting.LIGHT_PURPLE + formatNumber(this.OCSpeedFactor),
+                formatNumber(this.OCPowerFactor)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.startup_penalty",
+                EnumChatFormatting.RED + formatNumber(this.startupPenalty + 1d) + "x"));
+        long startupAmperage = Math.max(
+            1L,
+            (long) Math
+                .ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupPenalty + 1d) * this.euModifier));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.startup_amperage",
+                EnumChatFormatting.WHITE + formatNumber(startupAmperage)));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
@@ -221,55 +212,11 @@ public enum ArcFurnaceElectrode {
     }
 
     private static int getInfinityTargetParallel(NBTTagCompound state) {
-        int parallel = Math.max(1, state.getInteger(INFINITY_TARGET_PARALLEL_KEY));
-        state.setInteger(INFINITY_TARGET_PARALLEL_KEY, parallel);
+        int parallel = state.getInteger("infinityTargetParallel");
+        if (parallel < 1) {
+            parallel = 1;
+            state.setInteger("infinityTargetParallel", parallel);
+        }
         return parallel;
     }
-
-    private static String getModifierFormatted(int value, int lo_threshold, int mid_threshold, int hi_threshold) {
-        EnumChatFormatting color;
-        if (value <= lo_threshold) {
-            color = EnumChatFormatting.DARK_RED; // "bad" stat
-        } else if (value < mid_threshold) {
-            color = EnumChatFormatting.RED; // "below average" stat
-        } else if (value == mid_threshold) {
-            color = EnumChatFormatting.GOLD; // "average" stat
-        } else if (value <= hi_threshold) {
-            color = EnumChatFormatting.GREEN; // "above average" stat
-        } else {
-            color = EnumChatFormatting.AQUA; // "great" stat
-        }
-        return color.toString() + value;
-    }
-
-    private static String getModifierFormatted(double value, boolean undesireable, double lo_threshold,
-        double mid_threshold, double hi_threshold, String prefix, String suffix) {
-        EnumChatFormatting color;
-        double discriminant = value;
-        if (undesireable) {
-            if (value == 0) discriminant = Double.POSITIVE_INFINITY;
-            else discriminant = 1.0d / value;
-        }
-        if (discriminant <= lo_threshold) {
-            color = EnumChatFormatting.DARK_RED; // "bad" stat
-        } else if (discriminant < mid_threshold) {
-            color = EnumChatFormatting.RED; // "below average" stat
-        } else if (discriminant == mid_threshold) {
-            color = EnumChatFormatting.GOLD; // "average" stat
-        } else if (discriminant <= hi_threshold) {
-            color = EnumChatFormatting.GREEN; // "above average" stat
-        } else {
-            color = EnumChatFormatting.AQUA; // "great" stat
-        }
-        String formatted = color.toString();
-
-        formatted += prefix;
-
-        // trim trailing zeroes if no decimal-precision is needed
-        if (value == (int) value) {
-            return formatted + (int) value + suffix;
-        }
-        return formatted + value + suffix;
-    }
-
 }

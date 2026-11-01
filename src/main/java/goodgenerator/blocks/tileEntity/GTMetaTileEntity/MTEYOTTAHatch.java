@@ -39,6 +39,7 @@ import appeng.util.item.AEFluidStack;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.StackUtils;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -51,7 +52,8 @@ import gregtech.api.util.GTUtility;
 public class MTEYOTTAHatch extends MTEHatch
     implements IGridProxyable, ICellContainer, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/YOTTAHatch");
+    private static final IIconContainer textureFont = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
@@ -107,7 +109,7 @@ public class MTEYOTTAHatch extends MTEHatch
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
         this.isSticky = aNBT.getBoolean("mAESticky");
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
     }
 
     @Override
@@ -180,9 +182,6 @@ public class MTEYOTTAHatch extends MTEHatch
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
 
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
         return this.gridProxy;
     }
@@ -514,10 +513,11 @@ public class MTEYOTTAHatch extends MTEHatch
 
     @Override
     public boolean canAccept(IAEFluidStack input) {
-        if (this.host == null) return false;
+        if (this.host == null || input == null) return false;
         FluidStack rInput = input.getFluidStack();
-        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
-            || host.mFluid.isFluidEqual(rInput);
+        if (rInput == null) return false;
+        return (this.host.mLockedFluid == null || this.host.mLockedFluid.isFluidEqual(rInput))
+            && (this.host.mFluid == null || this.host.mFluid.isFluidEqual(rInput));
     }
 
     @Override

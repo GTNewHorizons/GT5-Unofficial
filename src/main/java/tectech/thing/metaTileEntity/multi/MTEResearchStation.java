@@ -31,6 +31,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -84,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  * Updated by C0bra5 on 11.01.2026.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -102,15 +105,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public int ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
     private long packetLossDecayFrom = 0;
 
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + GTUtility.translate("tt.keyphrase.Hint_Details") + ":",
-        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
-        // Computer casing
-        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
-        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or
-                                                                                 // Advanced
-        // Computer Casing
-    };
     // endregion
 
     // region structure
@@ -141,12 +135,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
-        .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 2))
+        .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 3))
         .addElement(
             'F',
             buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch, Maintenance)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .hint(3)
+                .hint(2)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
 
         .build();
@@ -160,6 +154,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
         }
@@ -168,7 +163,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.ObjectHolder");
+
+        private final String name;
+
+        HolderHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -184,6 +185,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         public long count(MTEResearchStation t) {
             return t.eHolders.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
     @Override
@@ -193,9 +204,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         eHolders.clear();
 
         if (!checkPiece("main", 1, 3, 4, errors)) return;
-        checkHasAnyEnergy(errors);
-        checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
 
         if (iGregTechTileEntity.isActive()) {
             lockHolders();
@@ -207,6 +215,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             errors.add(StructureErrors.missingHatch(holder_Hatch.get(1)));
         }
         checkHasDataInput(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -225,10 +236,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
     // endregion structure
 
     // region ctor and definitions
@@ -249,38 +256,25 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // Machine Type: Research Station, Scanner
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.research.type"))
-            // Used to scan Data Sticks for Assembling Line Recipes
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.1"))
-            // Needs to be fed with computation to work
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.2"))
-            // Does not consume the item until the Data Stick is written
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.3"))
-            // Use screwdriver to change mode
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.5"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.6"))
-            .addTecTechHatchInfo()
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
+            .addMarkdown(new ResourceLocation("gregtech", "research-station"))
+            .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
-            .addController("Front center on the frontside of the main body")
-            // Object Holder: Center of the front pillar
-            .addOtherStructurePart(
-                GTUtility.translate("gt.blockmachines.hatch.holder.tier.09.name"),
-                GTUtility.translate("tt.keyword.Structure.CenterPillar"),
-                2)
-            // Optical Connector: Any Computer Casing on the backside of the main body
-            .addOtherStructurePart(
-                GTUtility.translate("tt.keyword.Structure.DataConnector"),
-                GTUtility.translate("tt.keyword.Structure.AnyComputerCasingBackMain"),
-                1)
-            // Energy Hatch: Any Computer Casing on the backside of the main body
-            .addEnergyHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
-            // Maintenance Hatch: Any Computer Casing on the backside of the main body
-            .addMaintenanceHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
-            .addOutputBus(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
-            .addInputHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("52-59", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
+            .addCasing("21-23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
+            .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"), 3)
+            .addMiscHatch("1+", StatCollector.translateToLocal("tt.keyword.Structure.DataInput"), StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.tooltip.research-station.footer"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -725,18 +719,18 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
         String connectionStatus;
         if (this.mMaxProgresstime <= 0) {
-            connectionStatus = GTUtility.translate("tt.infodata.multi.connection_health.inactive");
+            connectionStatus = StatCollector.translateToLocal("tt.infodata.multi.connection_health.inactive");
         } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_FULL_WINDOW) {
             connectionStatus = EnumChatFormatting.GREEN
-                + GTUtility.translate("tt.infodata.multi.connection_health.established")
+                + StatCollector.translateToLocal("tt.infodata.multi.connection_health.established")
                 + EnumChatFormatting.RESET;
         } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
             connectionStatus = EnumChatFormatting.YELLOW
-                + GTUtility.translate("tt.infodata.multi.connection_health.waiting")
+                + StatCollector.translateToLocal("tt.infodata.multi.connection_health.waiting")
                 + EnumChatFormatting.RESET;
         } else {
             connectionStatus = EnumChatFormatting.RED
-                + GTUtility.translate("tt.infodata.multi.connection_health.decoherence")
+                + StatCollector.translateToLocal("tt.infodata.multi.connection_health.decoherence")
                 + EnumChatFormatting.RESET;
         }
 
@@ -814,7 +808,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     // region waila
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
@@ -825,13 +819,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(GTUtility.translate(getMachineModeKey(tag.getInteger("machineMode"))));
-        currentTip.add(
-            GTUtility.translate(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
+        list.add(
+            StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",
                 tag.getInteger("computation"),
                 tag.getInteger("computationRequired")));

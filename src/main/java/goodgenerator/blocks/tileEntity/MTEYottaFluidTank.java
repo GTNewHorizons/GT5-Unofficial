@@ -1,8 +1,11 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
@@ -17,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -44,13 +48,15 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -71,14 +77,17 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEYottaFluidTank> multiDefinition = null;
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();
@@ -289,7 +298,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return;
         }
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
-        checkHasInputHatch(errors);
+
+        if (this.mYottaHatch.isEmpty()) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
             errors.add(StructureErrors.glassTierNotEnough(maxCell + 3));
@@ -308,7 +322,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                 .addShape(
                     YOTTANK_BOTTOM,
                     transpose(
-                        new String[][] { { "MM~MM", "MCCCM", "MCCCM", "MCCCM", "MMMMM" },
+                        new String[][] { { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
                             { "     ", " OOO ", " OOO ", " OOO ", "     " } }))
                 .addShape(YOTTANK_MID, transpose(new String[][] { { "GGGGG", "GRRRG", "GRRRG", "GRRRG", "GGGGG" } }))
                 .addShape(
@@ -322,22 +336,16 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
                     'I',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.InputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(InputHatch)
                         .casingIndex(1537)
                         .hint(1)
-                        .buildAndChain(Loaders.yottaFluidTankCasing, 0))
-                .addElement(
-                    'M',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
-                        .casingIndex(1537)
-                        .hint(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'O',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.OutputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(OutputHatch)
                         .adder(MTEYottaFluidTank::addOutput)
                         .casingIndex(1537)
-                        .hint(1)
+                        .hint(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .build();
         }
@@ -382,31 +390,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     public String[] getInfoData() {
         final ArrayList<String> info = new ArrayList<>();
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.fluid", getFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.cap", formatNumber(getCap())));
         info.add(
-            translateToLocal("scanner.info.YOTTank.1") + " "
-                + translateToLocal(
-                    EnumChatFormatting.YELLOW + formatNumber(getFluidName() + EnumChatFormatting.RESET)));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.0") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getCap()) + EnumChatFormatting.RESET + " L"));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.2") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getStored())
-                        + EnumChatFormatting.RESET
-                        + " L"
-                        + " ("
-                        + EnumChatFormatting.GREEN
-                        + getPercent()
-                        + "%"
-                        + EnumChatFormatting.RESET
-                        + ")"));
+            IGregTechDeviceInformation.encode("gg.infodata.yottank.stored", formatNumber(getStored()), getPercent()));
         info.add(getTimeTo());
-        info.add(
-            StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getLockedFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.locked", getLockedFluidName()));
         final String[] a = new String[info.size()];
         return info.toArray(a);
     }
@@ -456,21 +445,30 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity")
-            .addInfo("The max fluid cell tier is limited by the glass tier")
-            .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
-            .addInfo("The max height of the cell blocks is 15")
-            .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
-            .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
-            .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint block number 1", 1)
-            .addOutputHatch("Hint block number 1 (optional)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_tank"))
+            .addMarkdown(new ResourceLocation("gregtech", "yottank"))
+            .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addMiscHatch("0-1", StatCollector.translateToLocal("gt.mbtt.structure.yot_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing_replaces_other_hatches"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("25-57", StatCollector.translateToLocal("yottaFluidTankCasing.name"), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers"))
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -640,11 +638,6 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("YOTTank.hint", 8);
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEYottaFluidTank(this.mName);
     }
@@ -694,8 +687,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
         screenElements
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
+                            + numberFormat.format(mStorage)
+                            + " "
+                            + getFluidUnit())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -713,7 +710,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
                             + EnumChatFormatting.RESET
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + " ("
                             + EnumChatFormatting.GREEN
                             + getPercent()

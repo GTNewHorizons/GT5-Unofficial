@@ -15,40 +15,46 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.system.material.WerkstoffLoader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialForgeHammer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 7;
     private static final int OFFSET_Z = 1;
+    private static final int PARALLEL_PER_TIER = 6;
 
     private Byte solenoidLevel = null;
     private int casingAmount;
@@ -70,26 +76,28 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Forge Hammer")
-            .addInfo(TooltipHelper.parallelText("Voltage Tier * Solenoid Tier * 6") + " Parallels")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.forge_hammer"))
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-forge-hammer"),
+                ImmutableMap.of("parallel", PARALLEL_PER_TIER))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Forge Casing", 10, false)
-            .addCasingInfoExactly("Refined Graphite Block", 2, false)
-            .addCasingInfoExactly("Rebolted Black Steel Casing", 20, false)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 3, true)
-            .addInputBus("Any Forge Casing", 1)
-            .addOutputBus("Any Forge Casing", 1)
-            .addInputHatch("Any Forge Casing", 1)
-            .addOutputHatch("Any Forge Casing", 1)
-            .addEnergyHatch("Any Forge Casing", 1)
-            .addMaintenanceHatch("Any Forge Casing", 1)
-            .addMufflerHatch("Any Forge Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("10-29", Casings.ForgeCasing.getLocalizedName(), false)
+            .addCasing("20", new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, 32100).getDisplayName(), false)
+            .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Solenoid"), true)
+            .addCasing("2", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
         return tt;
     }
@@ -153,42 +161,36 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 10);
-        checkHasMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasEnergyHatch(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstone) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.ForgeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialForgeHammerActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialForgeHammerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.ForgeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialForgeHammer)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialForgeHammerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.ForgeCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialForgeHammer,
+            TexturesGtBlock.oMCAIndustrialForgeHammerGlow,
+            TexturesGtBlock.oMCAIndustrialForgeHammerActive,
+            TexturesGtBlock.oMCAIndustrialForgeHammerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.ForgeCasing.getCasingTexture();
     }
 
     @Override
@@ -198,13 +200,14 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1 / 2F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (6 * (solenoidLevel == null ? 1 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (PARALLEL_PER_TIER * (solenoidLevel == null ? 1 : solenoidLevel)
+            * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -222,11 +225,6 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

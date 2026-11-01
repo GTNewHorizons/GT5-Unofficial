@@ -33,6 +33,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -63,7 +64,7 @@ public class MTESteamTurbine extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicgenerator.steamturbine.tooltip",
             String.valueOf(600 / getEfficiency()),
             String.valueOf(

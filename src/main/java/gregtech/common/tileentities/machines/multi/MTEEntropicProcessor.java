@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,8 +18,11 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -30,6 +32,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -40,18 +43,21 @@ import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
-import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
-    implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor> {
+    implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor>, ICasingTextureProvider {
+
+    private static final int BASE_PARALLELS = 8;
+    private static final int CONSTRUCT_PARALLELS = 32;
 
     protected final StructureWrapper<MTEEntropicProcessor> structure;
     protected final StructureWrapperInstanceInfo<MTEEntropicProcessor> structureInstanceInfo;
@@ -182,38 +188,29 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
         base.issueTileUpdate();
         structureInstanceInfo.onPostCheck(this);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        StructureWrapperTooltipBuilder<MTEEntropicProcessor> tt = new StructureWrapperTooltipBuilder<>(structure);
-
-        tt.addMachineType("Entropic Processor")
-            .addInfo("Processes substances by increasing or decreasing their entropy")
-            .addSeparator()
-            .addInfo("Has " + TooltipHelper.parallelText(8) + " parallels by default")
-            .addInfo(
-                "Using Advanced Alchemical Constructs increases the machine's parallels to "
-                    + TooltipHelper.parallelText(32))
-            .addSeparator()
-            .addInfo("Mixes fluids or solids with a magical catalyst")
-            .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
-            .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)");
-
-        tt.beginStructureBlock(true);
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CASING);
-        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
-
-        tt.toolTipFinisher();
-
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.entropic_processor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "entropic-processor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_parallels", BASE_PARALLELS)
+                    .put("advanced_parallels", CONSTRUCT_PARALLELS)
+                    .build())
+            .beginStructureBlock(7, 5, 7, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
+            .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -272,7 +269,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
     @Override
     public int getMaxParallelRecipes() {
-        return getConstructTier() == 1 ? 32 : 8;
+        return getConstructTier() == 1 ? CONSTRUCT_PARALLELS : BASE_PARALLELS;
     }
 
     @Override
@@ -282,7 +279,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMachineHeat((getCasingTier() + 1) * 1800)
+                return super.createOverclockCalculator(recipe)
+                    .setMachineHeat((getCasingTier() + 1) * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
@@ -307,57 +305,43 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        tag.setInteger("casingTier", getCasingTier());
-
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(getCasingTier());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        structureInstanceInfo.setCasingTier(ICasingGroup.ofCasing(AlchemicalCasing), data.getInteger("casingTier"));
-
-        getBaseMetaTileEntity().issueTextureUpdate();
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        structureInstanceInfo.setCasingTier(ICasingGroup.ofCasing(AlchemicalCasing), buffer.readInt());
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity igte, ForgeDirection side, ForgeDirection facing, int colorIndex,
-        boolean active, boolean redstoneLevel) {
-        List<ITexture> textures = new ArrayList<>();
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            Textures.BlockIcons.VOID,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            Textures.BlockIcons.VOID);
+    }
 
-        switch (getCasingTier()) {
-            case 0 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_THAUMIUM)
-                    .build());
-            case 1 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_VOID)
-                    .build());
-            case 2 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_ICHORIUM)
-                    .build());
-        }
-
-        if (side == facing) {
-            if (active) {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                        .extFacing()
-                        .build());
-            } else {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                        .extFacing()
-                        .build());
-            }
-        }
-
-        return textures.toArray(new ITexture[0]);
+    @Override
+    public ITexture getCasingTexture() {
+        return switch (getCasingTier()) {
+            case 1 -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_VOID)
+                .build();
+            case 2 -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_ICHORIUM)
+                .build();
+            default -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_THAUMIUM)
+                .build();
+        };
     }
 }

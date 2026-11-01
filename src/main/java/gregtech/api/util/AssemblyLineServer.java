@@ -27,7 +27,7 @@ public class AssemblyLineServer {
             try {
                 String s = entry.getValue()
                     .getString()
-                    .replaceAll("%", "");
+                    .replace("%", "");
 
                 if (entry.getKey()
                     .contains("metaitem") && s.contains("material")) internal2.put(entry.getKey(), s);

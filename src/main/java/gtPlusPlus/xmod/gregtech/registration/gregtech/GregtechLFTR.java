@@ -8,8 +8,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
 import gregtech.api.enums.SoundResource;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTESpargeTower;
@@ -32,7 +32,7 @@ public class GregtechLFTR {
                 .setName("rpu.tier.01", "Reactor Processing Unit I")
                 .setTier(5)
                 .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.reactorProcessingUnitRecipes)
+                .setRecipes(RecipeMaps.reactorProcessingUnitRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
                 .setOverlays("REACTOR_PROCESSING_UNIT")
@@ -44,7 +44,7 @@ public class GregtechLFTR {
                 .setName("rpu.tier.02", "Reactor Processing Unit II")
                 .setTier(7)
                 .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.reactorProcessingUnitRecipes)
+                .setRecipes(RecipeMaps.reactorProcessingUnitRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
                 .setOverlays("REACTOR_PROCESSING_UNIT")
@@ -58,7 +58,7 @@ public class GregtechLFTR {
                 .setTier(5)
                 .setDescription(
                     new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.coldTrapRecipes)
+                .setRecipes(RecipeMaps.coldTrapRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
                 .setOverlays("COLD_TRAP")
@@ -71,7 +71,7 @@ public class GregtechLFTR {
                 .setTier(7)
                 .setDescription(
                     new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
-                .setRecipes(GTPPRecipeMaps.coldTrapRecipes)
+                .setRecipes(RecipeMaps.coldTrapRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
                 .setOverlays("COLD_TRAP")

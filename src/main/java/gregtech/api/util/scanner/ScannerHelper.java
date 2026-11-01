@@ -1,11 +1,11 @@
 package gregtech.api.util.scanner;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
 import static gregtech.api.util.GTUtility.getTier;
-import static gregtech.api.util.GTUtility.translate;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +29,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
@@ -41,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLog;
 import gregtech.common.pollution.Pollution;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.reactor.IReactor;
@@ -52,11 +55,11 @@ public class ScannerHelper {
 
     // region Translate
     private static String trans(String name) {
-        return translate("GT5U.scanner." + name);
+        return StatCollector.translateToLocal("GT5U.scanner." + name);
     }
 
     private static String trans(String name, Object... param) {
-        return translate("GT5U.scanner." + name, param);
+        return StatCollector.translateToLocalFormatted("GT5U.scanner." + name, param);
     }
 
     private static IChatComponent transComp(String name) {
@@ -194,7 +197,7 @@ public class ScannerHelper {
     // endregion
 
     // region Text
-    private static IChatComponent addTitleComp(String name) {
+    public static IChatComponent addTitleComp(String name) {
         String dashes = "-".repeat(15);
         // Set AQUA style explicitly on the translation sibling so it inherits the title color.
         // Without this, the §r reset in the root text would leave the sibling unstyled (white).
@@ -217,10 +220,15 @@ public class ScannerHelper {
         list.add(
             transComp("base_info_1", goldComp(formatNumber(x)), goldComp(formatNumber(y)), goldComp(formatNumber(z))));
         try {
-            IChatComponent nameComp = ((tileEntity instanceof IInventory inv)
-                ? new ChatComponentTranslation(inv.getInventoryName())
-                : new ChatComponentTranslation(block.getUnlocalizedName() + ".name"))
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+            String nameKey = null;
+            if (tileEntity instanceof IInventory inv) {
+                nameKey = inv.getInventoryName();
+            }
+            if (StringUtils.isEmpty(nameKey)) {
+                nameKey = block.getUnlocalizedName() + ".name";
+            }
+            IChatComponent nameComp = new ChatComponentTranslation(nameKey)
+                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
             int meta = world.getBlockMetadata(x, y, z);
             float hardness = block.getBlockHardness(world, x, y, z);
             float explosionResist = block
@@ -242,7 +250,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_base_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -266,7 +274,7 @@ public class ScannerHelper {
         } catch (Exception e) {
             list.add(
                 transComp("error_fluid_handler_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -288,7 +296,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_reactor_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -307,7 +315,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_debug_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -323,7 +331,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -335,11 +343,11 @@ public class ScannerHelper {
                 if (resultList.isEmpty()) return;
 
                 list.add(addTitleComp("title_custom_info"));
-                for (String s : resultList) list.add(new ChatComponentText(s));
+                for (String s : resultList) list.add(IGregTechDeviceInformation.toComponent(s));
             }
         } catch (Exception e) {
             list.add(transComp("error_custom_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -356,7 +364,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_side_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -378,7 +386,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_wrench_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -406,7 +414,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_ic2_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -425,7 +433,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_cover_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -451,7 +459,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_energy_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -471,7 +479,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_leaves_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -490,10 +498,7 @@ public class ScannerHelper {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
                 list.add(
-                    transComp(
-                        "chunk_info_3",
-                        new ChatComponentTranslation(fluid.getUnlocalizedName()),
-                        goldComp(formatNumber(fluid.amount))));
+                    transComp("chunk_info_3", new ChatComponentFluidName(fluid), goldComp(formatNumber(fluid.amount))));
             } else {
                 list.add(transComp("chunk_info_4"));
             }

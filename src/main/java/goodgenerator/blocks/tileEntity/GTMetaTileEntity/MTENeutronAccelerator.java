@@ -4,30 +4,24 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTENeutronAccelerator extends MTEHatch {
 
     public MTENeutronAccelerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Uses Energy to Accelerate the Neutrons!",
-                "Max consumption: " + EnumChatFormatting.YELLOW
-                    + formatNumber(getMaxEUConsume(aTier))
-                    + EnumChatFormatting.WHITE
-                    + " EU/t",
-                "Every EU gets converted into 10-20 eV Neutron Kinetic Energy." });
+        super(aID, aName, aNameRegional, aTier, 0, GTValues.emptyStringArray);
     }
 
     public MTENeutronAccelerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -40,6 +34,18 @@ public class MTENeutronAccelerator extends MTEHatch {
 
     private static int getMaxEUConsume(int mTier) {
         return (int) (V[mTier] * 8 / 10);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.neutron_accelerator.name", GTValues.VN[mTier]);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.neutron_accelerator.desc", formatNumber(getMaxEUConsume()));
     }
 
     @Override

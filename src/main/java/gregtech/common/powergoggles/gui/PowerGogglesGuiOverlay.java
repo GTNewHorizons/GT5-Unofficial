@@ -3,6 +3,7 @@ package gregtech.common.powergoggles.gui;
 import java.math.BigInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
@@ -39,6 +40,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class PowerGogglesGuiOverlay {
 
+    private static final Pattern NON_NEGATIVE_INTEGER_PATTERN = Pattern.compile("[0-9]*");
     private static String[] settings = { "GT5U.power_goggles_config.settings_general",
         "GT5U.power_goggles_config.settings_color" };
     private static int settingsPage = 0;
@@ -250,7 +252,8 @@ public class PowerGogglesGuiOverlay {
             .child(
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
-                    .setFormatAsInteger(true)
+                    .formatAsInteger(true)
+                    .setPattern(NON_NEGATIVE_INTEGER_PATTERN)
                     .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
                     .value(new StringValue.Dynamic(() -> manualGraphMinInput, val -> {
                         manualGraphMinInput = val == null ? "" : val.trim();
@@ -278,7 +281,8 @@ public class PowerGogglesGuiOverlay {
             .child(
                 new TextFieldWidget().size(110, 18)
                     .setTextAlignment(Alignment.Center)
-                    .setFormatAsInteger(true)
+                    .formatAsInteger(true)
+                    .setPattern(NON_NEGATIVE_INTEGER_PATTERN)
                     .background(MANUAL_SCALE_TEXT_FIELD_BACKGROUND)
                     .value(new StringValue.Dynamic(() -> manualGraphMaxInput, val -> {
                         manualGraphMaxInput = val == null ? "" : val.trim();

@@ -28,11 +28,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -41,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.configs.Configuration;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -58,10 +63,10 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -81,6 +86,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int LAYER_OFFSET_BASE = 9;
     private static final int LAYER_OFFSET_INCREMENT = 6;
     private static final int FINAL_LAYER_OFFSET = 12;
+    private static final int[][] TOP_ROOF_CASINGS = { { 4, 6, 4 }, { 6, 6, 2 }, { 8, 6, 4 }, { 6, 6, 6 } };
 
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_TOP = "top";
@@ -102,9 +108,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFBFF","   AFHCHFAFBDBF","   E  H  EFFBFF","    E F E  FFF ","     EAE       ","               "},
                 {"               ","     GGG D     ","    G   G      ","   G  H  G  B  ","   G HCH G BDB ","   G  H  G  B  ","    G   G      ","     GGG       ","               "},
                 {"               ","     EAE D     "," F  E   E    F "," F E  H  E  BF "," FFA HCH A BDB "," F E  H  E  BF "," F  E   E    F ","     EAE       ","               "},
-                {"               ","     EAE DDD   "," F  E   E    F ","H  E  H  E  B B","HHHHHHCH A BDBB","H  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"               ","     GGG   D   "," F  G   G    F ","HHHHHHH  G  BBB","3CCCCCCH G BDD2","HHHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
-                {"               ","     EAE   D   "," F  E   E    F ","H  E     E  B B","HHHHHHH  A BDBB","H  E     E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     EAE DDD   "," F  E   E    F ","7  E  H  E  B B","7HHHHHCH A BDBB","7  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     GGG   D   "," F  G   G    F ","7HHHHHH  G  BBB","3CCCCCCH G BDD2","7HHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
+                {"               ","     EAE   D   "," F  E   E    F ","7  E     E  B B","7HHHHHH  A BDBB","7  E     E  B B"," F  E   E    F ","     EAE       ","               "},
                 {"     GGG   G   ","    GEAEG GDG  "," F GE   EGEGEF "," FGE     EGEBE "," FAA     AGBDB "," FGE     EGEBE "," F GE   EG   F ","    GEAEG      ","     GGG       "},
                 {"  EEG111GE111  "," EEEE   EEEDEE ","EEEE     EEEEEE","1EE       EEBE1","111       1BDB1","1EE       EEBE1","EEEE     EE1EEE"," EEEE   EEE1EE ","  EEG111GE111  "},
                 {" GEEG111GEGGGE "," E         D E ","EE           EE","G             G","G           D G","G             G","EE           EE"," E           E "," GEEG111GEGGGE "},
@@ -137,6 +143,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 }))
             // spotless:on
             // base structure blocks / elements
+            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 1, 5)
             .addElement(
                 'A',
                 onElementPass(
@@ -171,6 +178,12 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(3)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
+            .addElement(
+                '7',
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
+                    .casingIndex(Casings.BronzePlatedBricks.textureId)
+                    .hint(3)
+                    .buildAndChain(Casings.StrongBronzeMachineCasing.asElement()))
             // middle slice hatches
             .addElement(
                 '4',
@@ -182,14 +195,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 '5',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(topLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(5)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             // top slice hatch
             .addElement(
                 '6',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(6)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             .build();
     }
@@ -227,12 +240,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 break; // needed to break out of the loop in the case the structure isn't max height.
             }
 
+            boolean reportTopErrors = this.height == 5 || hasRoofCasings(baseMTE);
             if (checkPiece(
                 STRUCTURE_PIECE_TOP,
                 HORIZONTAL_OFFSET,
                 FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height)),
                 DEPTH_OFFSET,
-                null)) {
+                reportTopErrors ? errors : null)) {
                 this.isTopLayerFound = true;
                 int topHatchIndex = (this.height) * 2;
                 if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
@@ -240,6 +254,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                         .isEmpty()) {
                     missingLayers.add(height + 1);
                 }
+            } else if (reportTopErrors) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
+                return;
             }
             if (!checkPiece(
                 STRUCTURE_PIECE_LAYER,
@@ -269,16 +286,35 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         }
 
         checkCasingMin(errors, casingAmount, 150);
-        checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
+    }
 
+    private boolean hasRoofCasings(IGregTechTileEntity baseMTE) {
+        World world = baseMTE.getWorld();
+        int topOffset = FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + LAYER_OFFSET_INCREMENT * this.height;
+        int matchingCasings = 0;
+        int[] worldOffset = new int[3];
+        for (int[] casing : TOP_ROOF_CASINGS) {
+            getExtendedFacing().getWorldOffset(
+                new int[] { casing[0] - HORIZONTAL_OFFSET, casing[1] - topOffset, casing[2] - DEPTH_OFFSET },
+                worldOffset);
+            int x = baseMTE.getXCoord() + worldOffset[0];
+            int y = baseMTE.getYCoord() + worldOffset[1];
+            int z = baseMTE.getZCoord() + worldOffset[2];
+            if (Casings.CleanStainlessSteelMachineCasing
+                .matches(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) {
+                matchingCasings++;
+            }
+        }
+        return matchingCasings >= 2;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
-        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 1, 5);
+        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 1, 5);
         for (int currentLayer = 1; currentLayer <= totalHeight; currentLayer++) {
             buildPiece(
                 STRUCTURE_PIECE_LAYER,
@@ -315,7 +351,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             true);
         if (built >= 0) return built;
 
-        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 1, 5);
+        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 1, 5);
 
         for (int currentLayer = 1; currentLayer <= totalHeight; currentLayer++) {
             built = this.survivalBuildPiece(
@@ -361,21 +397,25 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     protected int getCurrentLayerBottomOutputHatchCount() {
         int currentLayer = (height * 2) - 2;
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
 
     protected int getCurrentLayerTopOutputHatchCount() {
         int currentLayer = (height * 2) - 1;
-        return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
 
     protected int getFinalLayerOutputHatchCount() {
         int currentLayer = height * 2; // in a max dt (height 5), this is index 10. so height*2
-        return outputHatchesPerLayer.size() < currentLayer + 1 || height <= 0 ? 0
+        return currentLayer >= outputHatchesPerLayer.size() || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
     }
@@ -386,6 +426,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -396,6 +437,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 1;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -406,6 +448,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = height * 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -422,11 +465,33 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        List<FluidStack> mergedFluids = new ArrayList<>();
+        int index = 0;
         boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack stack = outputFluids[i].copy();
-            addOutputPartial(stack, outputHatchesPerLayer.get(i));
-            if (stack.amount > 0) succeed = false;
+
+        for (FluidStack stack : outputFluids) {
+            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
+                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
+                mergedFluids.add(stack);
+                continue;
+            }
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+                break;
+            }
+            if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
+            mergedFluids.clear();
+            mergedFluids.add(stack);
+            index++;
+        }
+        if (!mergedFluids.isEmpty()) {
+            if (index >= outputHatchesPerLayer.size()) {
+                succeed = false;
+            } else if (!addFluidOutputs(mergedFluids.toArray(new FluidStack[0]), outputHatchesPerLayer.get(index))) {
+                succeed = false;
+            }
         }
         return succeed;
     }
@@ -496,11 +561,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private static final float DISTILLERY_SPEED = 1.5f;
-    private static final float DISTILLERY_EU_EFFICIENCY = 0.5f;
+    private static final double DISTILLERY_SPEED = 2.0D;
+    private static final double DISTILLERY_EU_EFFICIENCY = 0.5D;
 
-    private static final float TOWER_SPEED = 1.2f;
-    private static final float TOWER_EU_EFFICIENCY = 0.9f;
+    private static final double TOWER_SPEED = 1.5D;
+    private static final double TOWER_EU_EFFICIENCY = 0.9D;
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
@@ -509,11 +574,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         logic.setUnlimitedTierSkips();
         if (this.machineMode == MACHINEMODE_DISTILLERY) {
             // make it compete with dangote somewhat. it will still be less eu efficient. numbers can be tweaked
-            logic.setSpeedBonus(DISTILLERY_SPEED);
+            logic.setSpeedBonus(1.0D / DISTILLERY_SPEED);
             logic.setEuModifier(DISTILLERY_EU_EFFICIENCY);
         } else {
             // same here, still worse than dangote but with laser
-            logic.setSpeedBonus(TOWER_SPEED);
+            logic.setSpeedBonus(1.0D / TOWER_SPEED);
             logic.setEuModifier(TOWER_EU_EFFICIENCY);
         }
     }
@@ -534,69 +599,58 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT, MDT")
-            .addInfo("Stats dictated by tower mode, change mode in GUI or with a screwdriver")
-            .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
-            .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
-            .addSeparator()
-            .addInfo("Distillery Mode")
-            .addInfo(
-                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
-                    + " Parallels")
-            .addStaticSpeedInfo(DISTILLERY_SPEED)
-            .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
-            .addInfo("Fluids output to the first hatch only")
-            .addSeparator()
-            .addInfo("Distillation Tower Mode")
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addStaticSpeedInfo(TOWER_SPEED)
-            .addStaticEuEffInfo(TOWER_EU_EFFICIENCY)
-            .addInfo("Fluids output to their corresponding layer only")
-            .addSeparator()
-            .addTecTechHatchInfo()
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_distillation_tower"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-distillation-tower"),
+                ImmutableMap.<String, Object>builder()
+                    .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
+                    .put("distillery_speed", (int) (DISTILLERY_SPEED * 100))
+                    .put("distillery_eu_eff", (int) (DISTILLERY_EU_EFFICIENCY * 100))
+                    .put("tower_speed", (int) (TOWER_SPEED * 100))
+                    .put("tower_eu_eff", (int) (TOWER_EU_EFFICIENCY * 100))
+                    .build())
+            .addSupportAny()
             .addUnlimitedTierSkips()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("gt.mbtt.flavor.mega_distillation_tower"))
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
-            .addController("Front off-center, 3rd Layer")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 100, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 99, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 84, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 215, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 44, false)
-            .addCasingInfoExactly("Solid Steel Machine Casing", 41, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Additional Middle Slices:")
-            .addCasingInfoExactly("Naquadah Reinforced Distillation Machine Casing", 16, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 32, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 48, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 27, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 16, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 57, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
-            .addInputBus("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addEnergyHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addMaintenanceHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right", 2)
-            .addInputHatch("Bottom Slice, Bronze Pipe Casing, 8th layer, furthest left", 3)
-            .addOutputHatch("Middle Slices & Top Slice, Bronze Pipe Casing, furthest right", 4, 5, 6)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addMaintenanceHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.bronze_pipe_casing_on_base"), 3)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.steel_pipe_casing_on_base"), 2)
+            .addOutputHatch("3-11", StatCollector.translateToLocal("gt.mbtt.structure.two_per_middle_layer_one_on_top"), 4)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("361", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("215", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
+            .addCasing("179", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("150-165", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("99", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("80", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("43-44", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("41", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("48", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("57", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
+            .addCasing("32", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("27", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("16", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("14", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

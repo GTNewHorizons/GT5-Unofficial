@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -27,7 +27,7 @@ public class UIHelper {
     public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
         ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
         IDrawable itemSlotBackground, IDrawable fluidSlotBackground, BasicUIProperties uiProperties, int itemInputCount,
-        int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant, Pos2d offset) {
+        int itemOutputCount, int fluidInputCount, int fluidOutputCount, TieredVariant tieredVariant, Pos2d offset) {
         List<Pos2d> itemInputPositions = uiProperties.itemInputPositionsGetter.apply(itemInputCount)
             .stream()
             .map(p -> p.add(offset))
@@ -35,7 +35,7 @@ public class UIHelper {
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
                 i,
-                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, i, false, steamVariant),
+                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, i, false, tieredVariant),
                 itemInputPositions.get(i));
         }
 
@@ -46,13 +46,13 @@ public class UIHelper {
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
                 i,
-                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, true, i, false, steamVariant),
+                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, true, i, false, tieredVariant),
                 itemOutputPositions.get(i));
         }
 
         forEachSpecialSlot.accept(
             0,
-            getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, 0, true, steamVariant),
+            getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, 0, true, tieredVariant),
             uiProperties.specialItemPositionGetter.get()
                 .add(offset));
 
@@ -63,7 +63,7 @@ public class UIHelper {
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
                 i,
-                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, false, i, false, steamVariant),
+                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, false, i, false, tieredVariant),
                 fluidInputPositions.get(i));
         }
 
@@ -74,7 +74,7 @@ public class UIHelper {
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
                 i,
-                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, true, i, false, steamVariant),
+                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, true, i, false, tieredVariant),
                 fluidOutputPositions.get(i));
         }
     }
@@ -166,8 +166,8 @@ public class UIHelper {
     }
 
     private static IDrawable[] getBackgroundsForSlot(IDrawable base, BasicUIProperties uiProperties, boolean isFluid,
-        boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
-        IDrawable overlay = getOverlay(uiProperties, isFluid, isOutput, index, isSpecial, steamVariant);
+        boolean isOutput, int index, boolean isSpecial, TieredVariant tieredVariant) {
+        IDrawable overlay = getOverlay(uiProperties, isFluid, isOutput, index, isSpecial, tieredVariant);
         if (overlay != null) {
             return new IDrawable[] { base, overlay };
         } else {
@@ -177,14 +177,14 @@ public class UIHelper {
 
     @Nullable
     private static IDrawable getOverlay(BasicUIProperties uiProperties, boolean isFluid, boolean isOutput, int index,
-        boolean isSpecial, SteamVariant steamVariant) {
+        boolean isSpecial, TieredVariant tieredVariant) {
         if (isSpecial && !uiProperties.useSpecialSlot) {
             return null;
         }
-        if (steamVariant != SteamVariant.NONE) {
+        if (tieredVariant != TieredVariant.STANDARD) {
             SteamTexture steamTexture = uiProperties.getOverlayForSlotSteam(index, isFluid, isOutput, isSpecial);
             if (steamTexture != null) {
-                return steamTexture.get(steamVariant);
+                return steamTexture.get(tieredVariant);
             } else {
                 return null;
             }

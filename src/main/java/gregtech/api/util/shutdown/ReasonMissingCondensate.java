@@ -1,9 +1,8 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTUtility.translate;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +32,8 @@ public class ReasonMissingCondensate implements ShutDownReason {
     @NotNull
     @Override
     public String getDisplayString() {
-        return translate("GT5U.gui.text.no_condensate", stack.getDisplayName(), stack.getStackSize());
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.no_condensate", stack.getDisplayName(), stack.getStackSize());
     }
 
     @Override

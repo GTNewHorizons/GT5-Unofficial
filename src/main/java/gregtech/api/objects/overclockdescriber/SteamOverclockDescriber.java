@@ -6,7 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
@@ -16,20 +16,20 @@ import gregtech.nei.RecipeDisplayInfo;
 @MethodsReturnNonnullByDefault
 public class SteamOverclockDescriber extends OverclockDescriber {
 
-    private final SteamVariant steamVariant;
+    private final TieredVariant tieredVariant;
     private final int euPerTickMultiplier;
     private final int durationMultiplier;
 
-    public SteamOverclockDescriber(SteamVariant steamVariant, int euPerTickMultiplier, int durationMultiplier) {
+    public SteamOverclockDescriber(TieredVariant tieredVariant, int euPerTickMultiplier, int durationMultiplier) {
         super((byte) 1); // recipe tier is always LV
-        this.steamVariant = steamVariant;
+        this.tieredVariant = tieredVariant;
         this.euPerTickMultiplier = euPerTickMultiplier;
         this.durationMultiplier = durationMultiplier;
     }
 
     @Override
     public String getTierString() {
-        return StatCollector.translateToLocal("GT5U.nei.display.steam_variant." + steamVariant.toString());
+        return StatCollector.translateToLocal("GT5U.nei.display.steam_variant." + tieredVariant.toString());
     }
 
     @Override

@@ -1,5 +1,7 @@
 package gregtech.crossmod.navigator;
 
+import java.util.Locale;
+
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.navigator.api.model.locations.IWaypointAndLocationProvider;
 import com.gtnewhorizons.navigator.api.model.waypoints.Waypoint;
@@ -12,13 +14,17 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
 
     private boolean activeAsWaypoint = false;
 
-    public final String mteName;
+    public String mteName;
     public boolean highlighted = true;
 
     public PowerfailLocationWrapper(GTPowerfailTracker.Powerfail powerfail) {
+        update(powerfail);
+    }
+
+    public void update(GTPowerfailTracker.Powerfail powerfail) {
         this.powerfail = powerfail;
         this.mteName = powerfail.getMTEName()
-            .toLowerCase();
+            .toLowerCase(Locale.ROOT);
     }
 
     @Override
@@ -46,6 +52,7 @@ public class PowerfailLocationWrapper implements IWaypointAndLocationProvider {
     @Override
     public void onWaypointUpdated(Waypoint waypoint) {
         activeAsWaypoint = waypoint.dimensionId == powerfail.dim && waypoint.blockX == powerfail.x
+            && waypoint.blockY == powerfail.y
             && waypoint.blockZ == powerfail.z;
     }
 

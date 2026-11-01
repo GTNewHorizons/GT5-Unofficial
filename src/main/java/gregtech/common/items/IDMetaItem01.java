@@ -180,6 +180,7 @@ public enum IDMetaItem01 {
     Black_Hole_Opener(418),
     Black_Hole_Closer(419),
     Black_Hole_Stabilizer(420),
+    Supermassive_Black_Hole_Opener(421),
     StableAdhesive(427),
     SuperconductorComposite(428),
     NaquadriaSupersolid(429),
@@ -446,11 +447,14 @@ public enum IDMetaItem01 {
     Cover_SolarPanel_LuV(757),
     Cover_SolarPanel_ZPM(758),
     Cover_SolarPanel_UV(759),
+    Cover_AdvancedWirelessController(760),
     Tool_Cheat(761),
     Tool_Scanner(762),
     NC_SensorKit(763),
     Duct_Tape(764),
     McGuffium_239(765);
+
+    // Maximum Item ID is 765, if you want to add items, choose from the IDs not yet occupied.
 
     public final int ID;
 

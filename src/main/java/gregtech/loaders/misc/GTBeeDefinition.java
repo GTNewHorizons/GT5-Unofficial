@@ -88,7 +88,7 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -2059,7 +2059,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(JUPITER, LEDOX, 25, 2);
         if (NewHorizonsCoreMod.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Quantinum"), 0);
-        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteriods")); // Asteriods Dim
+        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteroids")); // Asteroids Dim
     }),
     ENCELADUS(GTBranchDefinition.PLANET, "Enceladus", true, new Color(0xD2A472), new Color(0x193fa0), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SATURN), 0.25f);
@@ -2279,7 +2279,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(MAKEMAKE, THORIUM, 3, 2);
         if (GalaxySpace.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(GalaxySpace.ID, "barnardaEgrunt"), 0);
-        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(33, "Kuiper Belt")); // Kuiper Belt Dim
+        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(81, "Barnard E")); // Barnard E Dim
     }),
     BARNARDAC(GTBranchDefinition.PLANET, "BarnardaC", false, new Color(0x0D5A0D), new Color(0x473f0a), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.BARNARDA), 0.25f);
@@ -2822,7 +2822,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeEffect allele = (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: " + s);
+            GTLoggers.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: {}", s);
             allele = GTAlleleEffect.FORESTRY_BASE_EFFECT;
         }
         return allele;
@@ -2838,7 +2838,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleFlowers allele = (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: " + s);
+            GTLoggers.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: {}", s);
         }
         return allele;
     }
@@ -2853,7 +2853,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee species: " + s);
+            GTLoggers.GT_FML_LOGGER.warn("Attempted to get unknown bee species: {}", s);
             ret = NAQUADRIA.species;
         }
 

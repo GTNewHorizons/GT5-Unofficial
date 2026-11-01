@@ -9,14 +9,18 @@ import net.minecraft.network.PacketBuffer;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericMapSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
@@ -28,6 +32,10 @@ import gtnhlanth.common.beamline.Particle;
 public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchAdvancedOutputBeamline> {
 
     private static final int BUTTONS_PER_ROW = 7;
+    // list sync is separate, so that the dynamic widget don't need to refresh if the list is unchanged.
+    // Also avoids potential map reordering.
+    private GenericListSyncHandler<Particle> listSyncHandler;
+    private GenericMapSyncHandler<Particle, Boolean> mapSyncHandler;
 
     public MTEHatchAdvancedOutputBeamlineGui(MTEHatchAdvancedOutputBeamline base) {
         super(base);
@@ -36,8 +44,11 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
     @Override
     public void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = new GenericMapSyncHandler.Builder<Particle, Boolean>()
-            .getter(machine::getParticleMap)
+        listSyncHandler = new GenericListSyncHandler.Builder<Particle>().getter(machine::getParticleList)
+            .adapter(new ParticleAdapter())
+            .build();
+        syncManager.syncValue("inputList", listSyncHandler);
+        mapSyncHandler = new GenericMapSyncHandler.Builder<Particle, Boolean>().getter(machine::getParticleMap)
             .setter(machine::setAcceptedInputMap)
             .valueAdapter(ByteBufAdapters.BOOL)
             .keyAdapter(new ParticleAdapter())
@@ -48,10 +59,6 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        @SuppressWarnings("unchecked")
-        GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = syncManager
-            .findSyncHandler("inputMap", GenericMapSyncHandler.class);
-
         return super.createContentSection(panel, syncManager).child(
             Flow.column()
                 .coverChildren()
@@ -60,26 +67,31 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
                 .child(
                     IKey.lang("GT5U.gui.text.BeamlineHatch.blacklist")
                         .asWidget())
-                .child(createBlacklistWidget(mapSyncHandler))
+                .child(createBlacklistWidget())
                 .setEnabledIf(
-                    widget -> !machine.getParticleMap()
+                    widget -> !listSyncHandler.getValue()
                         .isEmpty()))
             .child(
                 IKey.lang("GT5U.gui.text.BeamlineHatch.emptylist")
                     .asWidget()
                     .setEnabledIf(
-                        widget -> machine.getParticleMap()
+                        widget -> listSyncHandler.getValue()
                             .isEmpty()));
     }
 
-    protected Grid createBlacklistWidget(GenericMapSyncHandler<Particle, Boolean> map) {
-        return new Grid().coverChildren()
-            .gridOfWidthElements(
-                BUTTONS_PER_ROW,
-                machine.getParticleMap()
-                    .keySet(),
-                ($x, $y, $i, particle) -> createButtonForParticle(map, particle))
-            .minElementMargin(1);
+    protected IWidget createBlacklistWidget() {
+        DynamicSyncHandler blacklistSyncer = new DynamicSyncHandler()
+            .widgetProvider(
+                (syncManager, packet) -> new Grid()
+                    .gridOfWidthElements(
+                        BUTTONS_PER_ROW,
+                        listSyncHandler.getValue(),
+                        ($x, $y, $i, particle) -> createButtonForParticle(particle))
+                    .coverChildren())
+            .allowC2S();
+        listSyncHandler.setChangeListener(() -> blacklistSyncer.notifyUpdate(packet -> {}));
+        return new DynamicSyncedWidget<>().syncHandler(blacklistSyncer)
+            .coverChildren();
     }
 
     private Map<Particle, Boolean> copyWith(Map<Particle, Boolean> syncedMap, Particle particle, Boolean bool) {
@@ -88,14 +100,13 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
         return returnMap;
     }
 
-    protected ToggleButton createButtonForParticle(GenericMapSyncHandler<Particle, Boolean> mapSyncHandler,
-        Particle particle) {
+    protected ToggleButton createButtonForParticle(Particle particle) {
         return new ToggleButton().invertSelected(true)
             .overlay(particle.getTexture())
             .value(
                 new BoolValue.Dynamic(
                     () -> mapSyncHandler.getValue()
-                        .get(particle),
+                        .getOrDefault(particle, false),
                     bool -> mapSyncHandler.setValue(copyWith(mapSyncHandler.getValue(), particle, bool))))
             .addTooltipLine(particle.getLocalisedName());
     }

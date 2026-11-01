@@ -163,7 +163,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
     protected ButtonWidget<?> createChunkRadiusButton(PanelSyncManager syncManager) {
         IntSyncValue chunkRadiusSyncer = new IntSyncValue(
             multiblock::getChunkRadiusConfig,
-            multiblock::setChunkRadiusConfig);
+            multiblock::setChunkRadiusConfig).allowC2S();
         syncManager.syncValue("oreChunkRadius", chunkRadiusSyncer);
 
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
@@ -171,6 +171,7 @@ public class MTEOreDrillingPlantBaseGui extends MTEDrillerBaseGui<MTEOreDrilling
                 return false;
             }
             multiblock.adjustChunkRadius(mouseButton == 0);
+            chunkRadiusSyncer.notifyUpdate();
             return true;
         })
             .overlay(new DynamicDrawable(() -> getLockedOverlay(GTGuiTextures.OVERLAY_BUTTON_WORK_AREA)))

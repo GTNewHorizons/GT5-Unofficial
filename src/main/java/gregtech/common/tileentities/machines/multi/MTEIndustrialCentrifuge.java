@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -12,18 +13,26 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW5;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.VOID;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -31,29 +40,36 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final String MOMENTUM_NBT = "momentum";
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
@@ -62,20 +78,36 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 1;
 
-    private static final int PARALLEL_PER_TIER = 6;
-    private static final float SPEED = 2.25f;
-    private static final float EU_EFFICIENCY = 0.9f;
+    private static final int BASE_PARALLEL_PER_TIER = 4;
+    private static final double SPEED = 2.0D;
+    private static final double EXTRA_SPEED = 1.0D;
+    private static final double EU_EFFICIENCY = 0.9D;
 
-    public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    private static final double MOMENTUM_MAX = 100D;
+
+    private static final int TICKS_FOR_MOMENTUM_DECAY = 5;
+    private static final int MOMENTUM_DECAY_AMOUNT = 2;
+    private static final float MOMENTUM_DECAY_PER_SEC = ((float) SECONDS / TICKS_FOR_MOMENTUM_DECAY)
+        * MOMENTUM_DECAY_AMOUNT;
+
+    private static final int TICKS_FOR_MOMENTUM_GAIN = 10;
+    private static final int MOMENTUM_GAIN_AMOUNT = 1;
+    private static final float MOMENTUM_GAIN_PER_SEC = ((float) SECONDS / TICKS_FOR_MOMENTUM_GAIN)
+        * MOMENTUM_GAIN_AMOUNT;
+
+    private int momentum = 0;
+    private int runningTickCounter = 0;
+
+    public MTEIndustrialCentrifuge(final int id, final String name, final String nameRegional) {
+        super(id, name, nameRegional);
     }
 
-    public MTEIndustrialCentrifuge(final String aName) {
-        super(aName);
+    public MTEIndustrialCentrifuge(final String name) {
+        super(name);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity tileEntity) {
         return new MTEIndustrialCentrifuge(this.mName);
     }
 
@@ -136,41 +168,51 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(LARGETURBINE_NEW_ACTIVE5)
-                .extFacing()
-                .build() };
-            return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(LARGETURBINE_NEW5)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity mte, ForgeDirection side, ForgeDirection facing, int colorIndex,
+        boolean active, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            LARGETURBINE_NEW5,
+            VOID,
+            LARGETURBINE_NEW_ACTIVE5,
+            VOID);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.CentrifugeCasing.getCasingTexture();
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
-            .addInfo("Disable animations with a screwdriver")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_parallels", (int) getParallelsPerTier(0))
+                    .put("max_parallels", (int) getParallelsPerTier((int) MOMENTUM_MAX))
+                    .put("min_speed", (1.0D / getSpeedWithMomentum(0)) * 100)
+                    .put("max_speed", (1.0D / getSpeedWithMomentum((int) MOMENTUM_MAX)) * 100)
+                    .put("eu_eff", EU_EFFICIENCY * 100)
+                    .put("momentum_max", MOMENTUM_MAX)
+                    .put("momentum_gain", MOMENTUM_GAIN_PER_SEC)
+                    .put("momentum_decay", MOMENTUM_DECAY_PER_SEC)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center")
-            .addCasingInfoMin("Centrifuge Casing", 6, false)
-            .addCasingInfoExactly("Large Sieve Grate", 18, false)
-            .addCasingInfoExactly("Eglin Steel Frame Box", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("6-32", Casings.CentrifugeCasing.getLocalizedName(), false)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.EGLIN_STEEL), false)
+            .addCasing("18", Casings.LargeSieveGrate.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -181,25 +223,42 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // ensures heavy mode recipes can not run
+                // ensures heavy mode recipes cannot run
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
             }
         }.setEuModifier(EU_EFFICIENCY)
-            .setSpeedBonus(1F / SPEED)
+            .setSpeedBonusSupplier(this::getSpeedWithMomentum)
             .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    private double getSpeedWithMomentum() {
+        return getSpeedWithMomentum(momentum);
+    }
+
+    private static double getSpeedWithMomentum(int momentum) {
+        return 1.0D / (SPEED + EXTRA_SPEED * momentum / MOMENTUM_MAX);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) (getParallelsPerTier(momentum) * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public static double getParallelsPerTier(int momentum) {
+        return BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / MOMENTUM_MAX;
     }
 
     private int casingAmount;
 
     private void onCasingAdded() {
         casingAmount++;
+    }
+
+    @Override
+    public void getExtraInfoData(List<String> info) {
+        info.add(IGregTechDeviceInformation.encode("GT5U.Centrifuge.momentum", formatNumber(momentum)));
     }
 
     @Override
@@ -229,9 +288,9 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         checkCasingMin(errors, casingAmount, 6);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasMufflerHatch(errors);
     }
 
     private void updateTurbineOverlay() {
@@ -255,6 +314,39 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        nbt.setInteger(MOMENTUM_NBT, momentum);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        if (nbt.hasKey(MOMENTUM_NBT)) momentum = nbt.getInteger(MOMENTUM_NBT);
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack stack) {
+        runningTickCounter++;
+        if (runningTickCounter % TICKS_FOR_MOMENTUM_GAIN == 0 && momentum < MOMENTUM_MAX) {
+            runningTickCounter = 0;
+            momentum += MOMENTUM_GAIN_AMOUNT;
+        }
+        return super.onRunningTick(stack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+        if (!baseMetaTileEntity.isServerSide()) return;
+        if (mMaxProgresstime == 0 && momentum > 0) {
+            if (tick % TICKS_FOR_MOMENTUM_DECAY == 0) {
+                momentum = Math.max(momentum - MOMENTUM_DECAY_AMOUNT, 0);
+            }
+        }
+    }
+
+    @Override
     public void onTextureUpdate() {
         updateTurbineOverlay();
     }
@@ -273,13 +365,13 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
+    public int getPollutionPerSecond(final ItemStack stack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialCentrifuge;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.centrifugeNonCellRecipes;
+        return RecipeMaps.centrifugeNonCellRecipes;
     }
 
     @Override
@@ -298,7 +390,16 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setInteger("momentum", momentum);
+    }
+
+    @Override
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.Centrifuge.momentum", formatNumber(tag.getInteger("momentum"))));
     }
 }

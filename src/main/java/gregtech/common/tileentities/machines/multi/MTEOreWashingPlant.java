@@ -23,7 +23,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,6 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -58,10 +60,10 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -110,22 +112,21 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Washer, Simple Washer, OWP")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_washing_plant"))
             .addBulkMachineInfo(4, 5f, 1f)
-            .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
+            .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casing", 70, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Steel Frame Box", 15, false)
-            .addInputBus("Any Wash Plant Casing", 1)
-            .addOutputBus("Any Wash Plant Casing", 1)
-            .addInputHatch("Any Wash Plant Casing", 1)
-            .addEnergyHatch("Any Wash Plant Casing", 1)
-            .addMaintenanceHatch("Any Wash Plant Casing", 1)
-            .addMufflerHatch("Any Wash Plant Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("70-85", Casings.WashPlantCasing.getLocalizedName(), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("7", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -171,12 +172,13 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             return;
         }
         checkCasingMin(errors, casingAmount, 70);
-        checkHasMufflerHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputBus(errors);
-        checkHasInputBus(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -208,20 +210,14 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        switch (machineMode) {
-            case MACHINEMODE_OREWASH -> {
-                return RecipeMaps.oreWasherRecipes;
-            }
-            default -> {
-                return GTPPRecipeMaps.simpleWasherRecipes;
-            }
-        }
+        if (machineMode == MACHINEMODE_OREWASH) return RecipeMaps.oreWasherRecipes;
+        return RecipeMaps.simpleWasherRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.oreWasherRecipes, GTPPRecipeMaps.simpleWasherRecipes);
+        return Arrays.asList(RecipeMaps.oreWasherRecipes, RecipeMaps.simpleWasherRecipes);
     }
 
     @Override
@@ -232,7 +228,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
+            .setSpeedBonus(1.0D / 5.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -277,19 +273,13 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

@@ -1,6 +1,7 @@
 package kubatech.tileentity.gregtech.multiblock.eigbuckets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.mitchej123.hodgepodge.mixins.interfaces.INetherSeed;
 
@@ -114,15 +116,14 @@ public class EIGSeedBucket extends EIGBucket {
         if (!(item instanceof IPlantable)) return;
 
         // Order is important due to ItemNetherSeed being a child of both INetherSeed and ItemSeeds
-        if (item instanceof INetherSeed netherSeed) {
-            block = netherSeed.hodgepodge$getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeeds itemSeeds) {
-            block = itemSeeds.getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeedFood itemSeedFood) {
-            block = itemSeedFood.getPlant(fakeWorld, 0, 0, 0);
-        } else {
-            // We can't plant it, we can't handle it, get out.
-            return;
+        switch (item) {
+            case INetherSeed netherSeed -> block = netherSeed.hodgepodge$getPlant(fakeWorld, 0, 0, 0);
+            case ItemSeeds itemSeeds -> block = itemSeeds.getPlant(fakeWorld, 0, 0, 0);
+            case ItemSeedFood itemSeedFood -> block = itemSeedFood.getPlant(fakeWorld, 0, 0, 0);
+            default -> {
+                // We can't plant it, we can't handle it, get out.
+                return;
+            }
         }
 
         // Natura crops have an optimal harvest stage of 8.
@@ -164,7 +165,10 @@ public class EIGSeedBucket extends EIGBucket {
         seedSafe.stackSize = 1;
         // first check if we dropped an item identical to our seed item.
         int inputSeedDropCountAfterRemoval = (int) Math.round(drops.getItemAmount(seedSafe)) - seedsToConsume;
-        if (inputSeedDropCountAfterRemoval > 0) {
+        // true seeds should be removed entirely, potatos/carrots should only be reduced.
+        boolean isTrueSeed = Arrays.stream(OreDictionary.getOreIDs(seedSafe))
+            .anyMatch(id -> id == OreDictionary.getOreID("listAllseed"));
+        if (inputSeedDropCountAfterRemoval > 0 && !isTrueSeed) {
             drops.setItemAmount(seedSafe, inputSeedDropCountAfterRemoval);
         } else {
             drops.removeItem(seedSafe);

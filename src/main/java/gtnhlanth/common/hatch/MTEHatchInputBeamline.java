@@ -5,16 +5,19 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
+import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
-public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
+public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector implements ISmartInputHatch {
 
     private boolean delay = true;
 
@@ -22,9 +25,12 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
     private static final String sideIconPath = "iconsets/OVERLAY_BI_SIDES";
     private static final String connIconPath = "iconsets/BI_CONN";
 
-    private static final IIconContainer activeIcon = Textures.BlockIcons.custom(activeIconPath);
-    private static final IIconContainer sideIcon = Textures.BlockIcons.custom(sideIconPath);
-    private static final IIconContainer connIcon = Textures.BlockIcons.custom(connIconPath);
+    private static final IIconContainer activeIcon = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, activeIconPath);
+    private static final IIconContainer sideIcon = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, sideIconPath);
+    private static final IIconContainer connIcon = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, connIconPath);
 
     public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");
@@ -86,6 +92,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
     }
 
     public void setContents(BeamLinePacket in) {
+        BeamInformation old = this.dataPacket == null ? null : this.dataPacket.getContent();
         if (in == null) {
             this.dataPacket = null;
         } else {
@@ -97,6 +104,18 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
                 this.dataPacket = null;
             }
         }
+        // The upstream connector re-pushes the beam every tick, so only notify when the beam actually changes -
+        // otherwise an idle target chamber would re-check every tick. The beam lives outside mInventory, so this is
+        // the only signal the controller gets.
+        BeamInformation now = this.dataPacket == null ? null : this.dataPacket.getContent();
+        if (!beamsEqual(old, now)) {
+            notifyWatchers();
+        }
+    }
+
+    private static boolean beamsEqual(BeamInformation a, BeamInformation b) {
+        if (a == null || b == null) return a == b;
+        return a.isEqual(b);
     }
 
     @Override

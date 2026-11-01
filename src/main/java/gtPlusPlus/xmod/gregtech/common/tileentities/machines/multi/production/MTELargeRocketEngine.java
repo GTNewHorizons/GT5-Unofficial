@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
@@ -20,6 +20,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -31,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -39,22 +42,22 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngine> implements ISurvivalConstructable {
 
     protected int freeFuelTicks = 0;
@@ -66,6 +69,18 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public static final String mCasingName = "Turbodyne Casing";
     public static final String mGearboxName = "Inconel Reinforced Casing";
+
+    private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
+    private static final int MIN_FUEL_INPUT_PER_SECOND = 6;
+    private static final int AIR_PERCENT = 1;
+    private static final int SOFT_CAP_1 = 49_000;
+    private static final int SOFT_CAP_2 = 94_000;
+    private static final int BOOST_MULTIPLIER = 3;
+    private static final int WARMUP_MIN_SECONDS = 60;
+    private static final int WARMUP_MAX_SECONDS = 180;
+    private static final int POLLUTION_PER_EUT = 1500;
+    private static final int POLLUTION_EUT_UNIT = 16384;
+    private static final double COOLANT_BOOST_PERCENT = 0.3;
 
     private static Fluid sAirFluid = null;
     private static FluidStack sAirFluidStack = null;
@@ -100,35 +115,39 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Generating Power from Rocket Fuels")
-            .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
-            .addInfo("Produces as much energy as you put fuel in, with optional boosting")
-            .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
-            .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
-            .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
-            .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
-            .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
-            .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
-            .addInfo("Fuel efficiency starts at ~160%, falls more slowly at higher EU/t if boosted")
-            .addInfo("If producing more than 30k EU/t, fuel efficiency will be lower:")
-            .addInfo("(These thresholds are 3x higher when boosted, boosted values displayed second)")
-            .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
-            .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
-            .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
-            .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
-            .addTecTechHatchInfo()
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-rocket-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("cap1", formatNumber(SOFT_CAP_1))
+                    .put("cap2", formatNumber(SOFT_CAP_2))
+                    .put("min_fuel", formatNumber(MIN_FUEL_INPUT_PER_SECOND))
+                    .put("lubricant_amount", formatNumber(LUBRICANT_CONSUMPTION_PER_HOUR))
+                    .put("lubricant", mLubricantName)
+                    .put("boost", formatNumber(BOOST_MULTIPLIER))
+                    .put("air_percent", formatNumber(AIR_PERCENT))
+                    .put("coolant_percent", formatNumber(COOLANT_BOOST_PERCENT))
+                    .put("coolant", mCoolantName)
+                    .put("cap1_boosted", formatNumber(SOFT_CAP_1 * BOOST_MULTIPLIER))
+                    .put("cap2_boosted", formatNumber(SOFT_CAP_2 * BOOST_MULTIPLIER))
+                    .put("warmup_min", formatNumber(WARMUP_MIN_SECONDS))
+                    .put("warmup_max", formatNumber(WARMUP_MAX_SECONDS))
+                    .put("pollution", formatNumber(POLLUTION_PER_EUT))
+                    .put("pollution_unit", formatNumber(POLLUTION_EUT_UNIT))
+                    .build())
+            .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
-            .addController("Front center")
-            .addCasingInfoMin(mCasingName, 64, false)
-            .addCasingInfoMin(mGearboxName, 8, false)
-            .addStructureHint("item.GTPP.air_intake_hatch.name", 1)
-            .addInputBus("Side center line", 1)
-            .addInputHatch("Side center line", 1)
-            .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
-            .addDynamoHatch("Top center line", 2)
-            .addMufflerHatch("Back center", 3)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("62-76", Casings.TurbodyneCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.AirIntakeHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 3)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_or_bottom_center_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -148,7 +167,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement(
                     'S',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(AirIntake, 8, InputHatch, 1, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -156,7 +175,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement(
                     'T',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(AirIntake, 1, Dynamo.or(TTDynamo), 1, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
                         .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -184,15 +203,13 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
         if (!checkPiece(this.mName, 1, 1, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 64 - 48);
+        checkCasingMin(errors, mCasing, 16);
         if (mAirIntakes.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
-        checkHatch(errors);
+        checkHasAnyDynamo(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-        if (mAllDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
-        }
     }
 
     @Override
@@ -254,7 +271,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.rocketFuels;
+        return RecipeMaps.rocketFuels;
     }
 
     @Override
@@ -511,7 +528,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public String getMachineType() {
-        return "Rocket Engine";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.rocket_engine");
     }
 
     @Override

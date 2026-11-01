@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -25,6 +25,7 @@ import gregtech.api.factory.RoutedNode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureInstance;
@@ -44,7 +45,8 @@ import tectech.mechanics.boseEinsteinCondensate.NotableBECFactoryElement;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 
 public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TSelf>> extends TTMultiblockBase
-    implements ISurvivalConstructable, BECFactoryElement, NotableBECFactoryElement, IStructureProvider<TSelf> {
+    implements ISurvivalConstructable, BECFactoryElement, NotableBECFactoryElement, IStructureProvider<TSelf>,
+    ICasingTextureProvider {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -56,7 +58,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     protected final StructureWrapperInstanceInfo<TSelf> structureInstanceInfo;
 
     public MTEBECMultiblockBase(int id, String name) {
-        super(id, name, GTUtility.translate("gt.blockmachines." + name + ".name"));
+        super(id, name, StatCollector.translateToLocal("gt.blockmachines." + name + ".name"));
 
         structure = new StructureWrapper<>(this);
         structureInstanceInfo = null;
@@ -73,6 +75,18 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
     @Override
     public boolean shouldCheckMaintenance() {
+        return false;
+    }
+
+    // disables hoverable widget in GUI
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    // bec multiblocks do not support this by default, not that they need to be.
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 
@@ -95,7 +109,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return textures.toArray(new ITexture[0]);
     }
 
-    protected ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return MolecularCasing.getCasingTexture();
     }
 
@@ -130,8 +145,12 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void clearHatches() {
         super.clearHatches();
 
+        structureInstanceInfo.clearHatches();
+
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
 
+        // BEC hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(mBECHatches);
         mBECHatches.forEach(h -> h.removeController(this));
         mBECHatches.clear();
     }
@@ -151,11 +170,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     @Override
     @SuppressWarnings("unchecked")
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!structure.checkStructure((TSelf) this, errors)) return;
+        if (!structure.checkStructure((TSelf) this, errors)) {
+            if (connectsToNetwork()) BECFactoryGrid.INSTANCE.updateElement(this);
+            return;
+        }
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
-        if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
+        if (!new HashSet<>(mPreviousBECHatches).equals(new HashSet<>(mBECHatches))) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -225,11 +247,15 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return ConnectionType.NONE;
     }
 
+    protected boolean connectsToNetwork() {
+        return true;
+    }
+
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -238,14 +264,34 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void onRemoval() {
         super.onRemoval();
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
     }
 
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer() && connectsToNetwork()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        if (connectsToNetwork()) {
+            data.add("BEC Network: " + (network == null ? "None" : network.id));
+        }
+
+        return data.toArray(new String[0]);
+    }
+
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
 
-        Hatch(MTEHatchBEC.class) {
+        Hatch("GT5U.MBTT.CondensateHatch", MTEHatchBEC.class) {
 
             @Override
             public long count(MTEBECMultiblockBase<?> t) {
@@ -253,11 +299,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
             }
         };
 
+        private final String name;
+
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        BECHatches(Class<? extends IMetaTileEntity>... mteClasses) {
+        BECHatches(String name, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.name = name;
         }
 
         @Override
@@ -267,9 +316,12 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
         @Override
         public String getDisplayName() {
-            return switch (this) {
-                case Hatch -> GTUtility.translate("gt.blockmachines.hatch.bec.name");
-            };
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -279,7 +331,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
                 if (imte instanceof MTEHatchBEC hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     self.mBECHatches.add(hatch);
                     hatch.addController(self);
                     return true;

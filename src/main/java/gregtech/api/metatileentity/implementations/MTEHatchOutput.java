@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
@@ -9,6 +10,7 @@ import java.lang.ref.WeakReference;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -32,27 +34,47 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputHatchType;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2, IOutputHatch {
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchOutput extends MTEHatch
+    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch, IDataCopyable {
+
+    private static final String DATA_STICK_DATA_TYPE = "outputHatchConfig";
+    protected static final String MODE_NBT_KEY = "mMode";
+    private static final String LOCKED_FLUID_NBT_KEY = "lockedFluidName";
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
     protected byte mMode = 0;
+    /**
+     * Until this tick, auto-output is skipped as long as the stored amount still equals {@link #failedPushAmount}. Set
+     * after an attempt that moved nothing, see {@code MachineStats.machines.outputHatchPushFailCooldown}.
+     */
+    private long pushBackoffUntil = 0;
+    /** Stored amount at the last auto-output attempt that moved nothing; -1 when not backing off. */
+    private int failedPushAmount = -1;
 
     public MTEHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 4, (String) null);
@@ -78,6 +100,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     public void setMode(byte mode) {
         this.mMode = mode;
         lockFluid(isFluidLocked());
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -109,26 +137,115 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return new MTEHatchOutput(mName, mTier, mDescriptionArray, mTextures);
     }
 
+    public boolean acceptsConfigCopy() {
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        setDataStickName(dataStick);
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.saved"));
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        openGui(aPlayer);
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_hatch.loaded"));
         return true;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setByte(MODE_NBT_KEY, mMode);
+        if (lockedFluid != null) {
+            nbt.setString(LOCKED_FLUID_NBT_KEY, lockedFluid.getName());
+        }
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        final Fluid copiedFluid = nbt.hasKey(LOCKED_FLUID_NBT_KEY)
+            ? FluidRegistry.getFluid(nbt.getString(LOCKED_FLUID_NBT_KEY))
+            : null;
+        setLockedFluid(copiedFluid);
+        setMode(nbt.getByte(MODE_NBT_KEY));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
+    }
+
+    protected void setDataStickName(ItemStack dataStick) {
+        dataStick.setStackDisplayName("Output Hatch Configuration");
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && mFluid != null) {
-            IFluidHandler tTileEntity = aBaseMetaTileEntity
-                .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTileEntity != null) {
-                GTUtility.moveFluid(
-                    aBaseMetaTileEntity,
-                    tTileEntity,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    Math.max(1, mFluid.amount),
-                    null);
-            }
+        if (aBaseMetaTileEntity.isServerSide()) {
+            tryAutoPush(aBaseMetaTileEntity, aTick);
+        }
+        // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL. This
+        // must run AFTER the auto-eject above: that eject marks the tank dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
+    }
+
+    private void tryAutoPush(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!aBaseMetaTileEntity.isAllowedToWork() || mFluid == null) return;
+        if (aTick < pushBackoffUntil && mFluid.amount == failedPushAmount) return;
+
+        int amountBefore = mFluid.amount;
+        IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+        if (tTileEntity != null) {
+            GTUtility.moveFluid(
+                aBaseMetaTileEntity,
+                tTileEntity,
+                aBaseMetaTileEntity.getFrontFacing(),
+                Math.max(1, mFluid.amount),
+                null);
+        }
+
+        int cooldown = MachineStats.machines.outputHatchPushFailCooldown;
+        if (cooldown > 0 && mFluid != null && mFluid.amount == amountBefore) {
+            pushBackoffUntil = aTick + cooldown;
+            failedPushAmount = amountBefore;
+        } else {
+            pushBackoffUntil = 0;
+            failedPushAmount = -1;
         }
     }
 
@@ -325,6 +442,26 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return true;
     }
 
+    @OCMethod
+    public FluidStack getFilter() {
+        return lockedFluid == null ? null : new FluidStack(lockedFluid, 1);
+    }
+
+    @OCMethod
+    public boolean setFilter(FluidStack aStack) {
+        if (aStack == null || aStack.getFluid() == null) {
+            setLockedFluid(null);
+            lockFluid(false);
+            return true;
+        }
+
+        if (!acceptsFluidLock(aStack.getFluid())) return false;
+
+        setLockedFluid(aStack.getFluid());
+        lockFluid(true);
+        return true;
+    }
+
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
         return mMode == 0 && getFluidAmount() == 0;
@@ -366,30 +503,23 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.hatch.output")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+        return new String[] { "GT5U.infodata.hatch.output",
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output.fluid",
-                EnumChatFormatting.GOLD
-                    + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
-                        : mFluid.getLocalizedName())
-                    + EnumChatFormatting.RESET),
-            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
-                + " L"
+                mFluid == null ? IGregTechDeviceInformation.translatable("GT5U.infodata.hatch.output.fluid.none")
+                    : IGregTechDeviceInformation.translatable(mFluid.getUnlocalizedName())),
+            EnumChatFormatting.GREEN + formatFluid(mFluid == null ? 0 : mFluid.amount)
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getCapacity())
-                + " L"
+                + formatFluid(getCapacity())
                 + EnumChatFormatting.RESET,
-            (!isFluidLocked() || lockedFluid == null)
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.locked_to.none")
-                : (StatCollector.translateToLocalFormatted(
+            (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
+                : IGregTechDeviceInformation.encode(
                     "GT5U.infodata.hatch.output.fluid.locked_to",
-                    StatCollector.translateToLocal(
+                    IGregTechDeviceInformation.translatable(
                         FluidRegistry.getFluidStack(lockedFluid.getName(), 1)
-                            .getUnlocalizedName()))) };
+                            .getUnlocalizedName())) };
     }
 
     @Override
@@ -457,7 +587,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
             int amount = Math.min(availableSpace, stack.amount);
             if (amount <= 0) return false;
@@ -474,7 +605,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
+        public void complete(GTUtility.FluidId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
         }
 

@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
@@ -14,7 +13,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+import static gtPlusPlus.core.fluids.GTPPFluids.Formaldehyde;
 import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
+import static gtPlusPlus.core.util.minecraft.FluidUtils.getFilledCellFromFluidName;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.Locale;
@@ -27,7 +28,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -3791,10 +3791,8 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GTValues.RA.stdBuilder()
-            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar
-                         // is prohibited now,
-                // and i don't feel like reworking GT++ cell registration for now
-                GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
+            .itemInputs(
+                getFilledCellFromFluidName(Formaldehyde, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pentaerythritol, 21),
@@ -3927,6 +3925,14 @@ public class ChemicalRecipes implements Runnable {
                 .fluidInputs(Materials.Thorium.getPlasma(18))
                 .duration(18 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.INDIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Indium, 4))
+                .fluidInputs(Materials.UUMatter.getFluid(293))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);
         }
     }
@@ -4313,7 +4319,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Acetone.getCells(1), Materials.Phenol.getCells(2))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2), Materials.Empty.getCells(1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -4322,7 +4328,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2))
             .fluidInputs(Materials.Phenol.getFluid(2_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -4331,7 +4337,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Phenol.getCells(2), Materials.HydrochloricAcid.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Acetone.getFluid(1_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -5313,7 +5319,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Acetone.getFluid(1_000),
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5326,7 +5332,10 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000),
                 Materials.Epichlorohydrin.getFluid(2_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000), Materials.SaltWater.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Epoxid.getMolten(1_000),
+                Materials.SaltWater.getFluid(2_000),
+                Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);

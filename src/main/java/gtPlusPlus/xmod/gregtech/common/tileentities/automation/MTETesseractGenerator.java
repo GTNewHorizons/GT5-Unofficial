@@ -129,7 +129,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
         this.mFrequency = aNBT.getInteger("mFrequency");
         try {
             this.mOwner = UUID.fromString(aNBT.getString("mOnwer"));
-        } catch (IllegalArgumentException i) {
+        } catch (IllegalArgumentException ignored) {
 
         }
     }
@@ -177,7 +177,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 1;
 
                         break;
@@ -185,7 +185,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 1;
                     default:
                         // Utils.LOG_WARNING("Did not click the correct place.");
@@ -220,28 +220,28 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 64;
                     }
                     case 1 -> {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 64;
                     }
                     case 2 -> {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 512;
                     }
                     case 3 -> {
                         try {
                             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Exception t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 512;
                     }
                 }
@@ -748,7 +748,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
         try {
             GTPPCore.sTesseractGeneratorOwnershipMap.get(mOwner)
                 .remove(this.mFrequency);
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
         super.onRemoval();
     }
 

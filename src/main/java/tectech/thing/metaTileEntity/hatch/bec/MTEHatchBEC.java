@@ -45,7 +45,7 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("Network: " + (network == null ? "None" : network.id));
+        data.add("BEC Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -95,6 +95,15 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     @Override
     public void onRemoval() {
         super.onRemoval();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
 
         if (GTUtility.isServer()) {
             BECFactoryGrid.INSTANCE.removeElement(this);

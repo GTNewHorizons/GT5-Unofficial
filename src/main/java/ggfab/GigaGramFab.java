@@ -34,10 +34,11 @@ import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 
 @Mod(
-    modid = GGConstants.MODID,
+    modid = Mods.ModIDs.G_G_FAB,
     version = GGConstants.VERSION,
     name = GGConstants.MODNAME,
     guiFactory = "ggfab.GGFabGUIFactory",

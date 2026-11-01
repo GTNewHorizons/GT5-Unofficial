@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.main.GoodGenerator;
+import gregtech.api.enums.Mods;
 
 public class GGItem extends Item {
 
@@ -82,7 +82,7 @@ public class GGItem extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         if (this.textureNames == null || this.textureNames.length < 1) {
-            this.itemIcon = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":" + this.tex);
+            this.itemIcon = iconRegister.registerIcon(Mods.ModIDs.GOOD_GENERATOR + ":" + this.tex);
         } else {
             this.texture = new IIcon[this.textureNames.length];
             for (int i = 0; i < this.textureNames.length; ++i) {

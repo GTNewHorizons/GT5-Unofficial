@@ -3,13 +3,16 @@ package gregtech.common.tileentities.machines.multi.turbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -22,11 +25,15 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
-    private static final IIconContainer[] TURBINE_ON = { Textures.BlockIcons.custom("icons/turbines/TURBINE_05") };
-    private static final IIconContainer[] TURBINE_OFF = { Textures.BlockIcons.custom("icons/turbines/TURBINE_15") };
-    private static final IIconContainer[] TURBINE_EMPTY = { Textures.BlockIcons.custom("icons/turbines/TURBINE_25") };
+    private static final IIconContainer[] TURBINE_ON = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_05") };
+    private static final IIconContainer[] TURBINE_OFF = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_15") };
+    private static final IIconContainer[] TURBINE_EMPTY = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_25") };
 
     public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -134,23 +141,21 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Steam Turbine, LST-SC")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+        return new MultiblockTooltipBuilder()
+            .addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.steam_turbine", "LST-SC"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-sc-steam-turbine"))
             .beginStructureBlock(3, 3, 6, false)
-            .addController("Front center")
-            .addCasingInfoRange("SC Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("PBI Frame Box", 14, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any SC Turbine Casing except the front 8", 2)
-            .addInputHatch("Any SC Turbine Casing except the front 8", 2)
-            .addOutputHatch("Any SC Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
-            .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("8-14", getTurbineCasing().getLocalizedName(), false)
+            .addCasing("12", getPipeCasing().getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_3x3_in_front_of_controller"))
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
     }
 }

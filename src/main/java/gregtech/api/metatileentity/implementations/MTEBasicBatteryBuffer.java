@@ -20,9 +20,11 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTModHandler;
@@ -32,6 +34,8 @@ import ic2.api.item.IElectricItem;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
 
     public boolean mCharge = false, mDecharge = false;
@@ -51,10 +55,24 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.batterybuffer.small.name";
+            case 9 -> "gt.blockmachines.batterybuffer.large.name";
+            case 16 -> "gt.blockmachines.batterybuffer.huge.name";
+            default -> "gt.blockmachines.batterybuffer.name";
+        };
+        return StatCollector
+            .translateToLocalFormatted(nameKey, GTValues.getLocalizedLongVoltageName(mTier), GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
         String[] desc = new String[mDescriptionArray.length + 1];
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = mInventory.length + " Slots";
+        desc[mDescriptionArray.length] = StatCollector
+            .translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length);
         return desc;
     }
 
@@ -185,7 +203,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();;
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3 && !forceCharge();
             mBatteryCount = 0;
             mChargeableCount = 0;
@@ -200,18 +218,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName()
-            .startsWith("gt.metaitem.01.")) {
-            String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metaitem.01.32510") || name.equals("gt.metaitem.01.32511")
-                || name.equals("gt.metaitem.01.32520")
-                || name.equals("gt.metaitem.01.32521")
-                || name.equals("gt.metaitem.01.32530")
-                || name.equals("gt.metaitem.01.32531")) {
-                return ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0;
-            }
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -272,14 +279,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
         updateStorageInfo();
 
         return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.stored_items",
                 EnumChatFormatting.GREEN + formatNumber(mStored) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMax) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.average_input",
                 formatNumber(getBaseMetaTileEntity().getAverageElectricInput())),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.battery_buffer.average_output",
                 formatNumber(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }

@@ -6,6 +6,7 @@ import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -14,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.SKIP_CELL_RECIPE_GENERATION;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -37,8 +39,8 @@ public class FissionFuelLoader implements Runnable {
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_238.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235_Small.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium_Small.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Plutonium", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("smallPlutonium", 1L));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_MOX_Fuel.get(1));
 
@@ -215,7 +217,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
                     ItemList.IC2_Uranium_238.get(4),
                     Materials.Iron.getDust(1))
                 .duration(25 * SECONDS)
@@ -224,7 +226,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 2L),
                     ItemList.IC2_Uranium_238.get(8),
                     Materials.Iron.getDust(3))
                 .duration(25 * SECONDS)
@@ -233,7 +235,7 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 4L),
                     ItemList.IC2_Uranium_238.get(16),
                     Materials.Iron.getDust(6))
                 .duration(25 * SECONDS)
@@ -285,7 +287,9 @@ public class FissionFuelLoader implements Runnable {
 
             // MOX
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
+                .itemInputs(
+                    ItemList.IC2_Uranium_238.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 3L))
                 .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(1_000))
                 .duration(20 * SECONDS)
@@ -324,8 +328,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
-                    ItemList.IC2_Plutonium.get(3),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 3L),
                     Materials.Iron.getDust(1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -333,8 +337,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
-                    ItemList.IC2_Plutonium.get(6),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 6L),
                     Materials.Iron.getDust(3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -342,8 +346,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
-                    ItemList.IC2_Plutonium.get(12),
+                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 12L),
                     Materials.Iron.getDust(6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -436,6 +440,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32), Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityUranium.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                Materials.Uranium.getDust(2),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(2),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
+            .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(1 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodHighDensityUranium2.get(1))
@@ -450,6 +469,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64), Materials.TungstenCarbide.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityUranium2.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(2),
+                Materials.Uranium.getDust(4),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(4),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
+            .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodHighDensityUranium4.get(1))
@@ -464,6 +498,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128), Materials.TungstenCarbide.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityUranium4.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(4),
+                Materials.Uranium.getDust(8),
+                Materials.Plutonium.getDust(2),
+                Materials.Graphite.getDust(8),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
+            .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
+            .fluidOutputs(Materials.TungstenCarbide.getMolten(4 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
 
         // High Density Plutonium
@@ -509,6 +558,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(Materials.Argon.getGas(32), Materials.HSSS.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityPlutonium.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                Materials.Plutonium.getDust(4),
+                Materials.Plutonium241.getDust(2),
+                Materials.Carbon.getDust(2),
+                Materials.Uranium.getDust(1),
+                Materials.Uranium235.getDust(1))
+            .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
+            .fluidOutputs(Materials.HSSS.getMolten(1 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium2.get(1))
@@ -523,6 +587,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(Materials.Argon.getGas(64), Materials.HSSS.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityPlutonium2.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(2),
+                Materials.Plutonium.getDust(8),
+                Materials.Plutonium241.getDust(4),
+                Materials.Carbon.getDust(4),
+                Materials.Uranium.getDust(2),
+                Materials.Uranium235.getDust(2))
+            .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
+            .fluidOutputs(Materials.HSSS.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium4.get(1))
@@ -537,6 +616,21 @@ public class FissionFuelLoader implements Runnable {
             .fluidOutputs(Materials.Argon.getGas(128), Materials.HSSS.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeNonCellRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodHighDensityPlutonium4.get(1))
+            .itemOutputs(
+                ItemRefer.Advanced_Fuel_Rod.get(4),
+                Materials.Plutonium.getDust(16),
+                Materials.Plutonium241.getDust(8),
+                Materials.Carbon.getDust(8),
+                Materials.Uranium.getDust(4),
+                Materials.Uranium235.getDust(4))
+            .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
+            .fluidOutputs(Materials.HSSS.getMolten(4 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(SKIP_CELL_RECIPE_GENERATION, true)
             .addTo(centrifugeRecipes);
 
         // Excited Uranium

@@ -18,13 +18,13 @@ import java.util.Collections;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.items.ItemLabParts;
-import bartworks.common.loaders.BioItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -52,7 +52,7 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
     private void loadLabPartRecipes(ItemStack aResult) {
         for (CachedDefaultRecipe recipe : this.getCache()) {
             for (PositionedStack stack : recipe.mInputs) {
-                if (GTUtility.areStacksEqual(stack.item, BioItemList.getPetriDish(null), true)
+                if (GTUtility.areStacksEqual(stack.item, ItemList.EmptyPetriDish.get(1), true)
                     && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }

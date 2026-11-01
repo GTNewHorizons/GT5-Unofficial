@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,7 +26,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
 import tectech.thing.gui.MTEDebugPollutorGui;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -43,7 +43,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") });
     }
@@ -61,7 +61,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = TextureFactory.of(Textures.BlockIcons.custom("iconsets/POLLUTOR"));
+        POLLUTOR = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/POLLUTOR"));
     }
 
     @Override

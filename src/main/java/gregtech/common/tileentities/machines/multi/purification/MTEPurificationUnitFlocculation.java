@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -26,11 +25,13 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,7 +39,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -46,6 +49,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -54,6 +58,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTEPurificationUnitFlocculation>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -231,15 +236,14 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 'W');
             return;
         }
-
+        checkCasingMin(errors, casingCount, MIN_CASING);
         checkHasInputHatch(errors);
         // At most three input hatches allowed
         checkHatchMax(errors, InputHatch, 3);
-
         checkHasOutputHatch(errors);
         // At most three output hatches allowed
         checkHatchMax(errors, OutputHatch, 3);
-        checkCasingMin(errors, casingCount, MIN_CASING);
+
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -264,114 +268,35 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Supply with " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " to operate")
-            .addInfo(
-                "Outputs " + EnumChatFormatting.WHITE
-                    + addFormattedString(OUTPUT_WASTE.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " that can be recycled")
-            .addSeparator()
-            .addInfo(
-                "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " in the input hatch")
-            .addInfo(
-                "At the end of the recipe, for every " + EnumChatFormatting.RED
-                    + INPUT_CHEMICAL_PER_LEVEL
-                    + "L "
-                    + EnumChatFormatting.GRAY
-                    + "of "
-                    + EnumChatFormatting.WHITE
-                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " consumed")
-            .addInfo(
-                "gain an additive " + EnumChatFormatting.RED
-                    + SUCCESS_PER_LEVEL
-                    + "%%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success. If total fluid supplied is not")
-            .addInfo(
-                "a multiple of " + EnumChatFormatting.RED
-                    + INPUT_CHEMICAL_PER_LEVEL
-                    + "L"
-                    + EnumChatFormatting.GRAY
-                    + ", a penalty to success is applied using the following formula:")
-            .addInfo(EnumChatFormatting.GREEN + "Success = Success * 2^(-10 * Overflow ratio)")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Step three in purifying water is to remove microscopic contaminants such as dusts, microplastics and other")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "pollutants using a clarifying agent (In this case, polyaluminium chloride) to cause flocculation - the process")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_flocculation"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-flocculation"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("input", INPUT_CHEMICAL.getLocalizedName())
+                    .put("waste", OUTPUT_WASTE.getLocalizedName())
+                    .put("per_level", INPUT_CHEMICAL_PER_LEVEL)
+                    .put("success", SUCCESS_PER_LEVEL)
+                    .build())
             .beginStructureBlock(9, 5, 8, false)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Slick Sterile Flocculation Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                65,
-                EnumChatFormatting.GOLD,
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing(MIN_CASING + "-63", Casings.SlickSterileFlocculationCasing.getLocalizedName(), false)
+            .addCasing("30", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("16", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Adamantium), false)
+            .addCasing("9", Casings.FilterMachineCasing.getLocalizedName(), false)
+            .addCasing(
+                "6",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
                 false)
-            .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                16,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Adamantium Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Filter Machine Casing",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
-                1)
-            .addOutputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
-                1)
+            .addInputHatch("1-3", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
+            .addOutputHatch("1-3", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -461,7 +386,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
                 INPUT_CHEMICAL.getLocalizedName(),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));

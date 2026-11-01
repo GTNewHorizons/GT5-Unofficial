@@ -10,6 +10,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -20,11 +21,11 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvFusionMk5 extends MTEFusionComputer {
 
     public MTEAdvFusionMk5(int aID, String aName, String aNameRegional) {
@@ -38,28 +39,6 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
     @Override
     protected OverclockDescriber createOverclockDescriber() {
         return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo("Performs 4/4 overclocks")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casing MK IV", 79, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coil II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified Casing", 2)
-            .addInputHatch("2-16, Specified Casing", 1)
-            .addOutputHatch("1-16, Specified Casing", 3)
-            .addStructureInfo("ALL Hatches must be UEV or better")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override

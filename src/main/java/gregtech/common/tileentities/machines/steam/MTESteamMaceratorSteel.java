@@ -18,6 +18,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,6 +39,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
 
@@ -49,8 +52,19 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
     }
 
     @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        tooltip.add(TooltipHelper.recipeSlotLimit(mOutputItems.length));
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESteamMaceratorSteel(this.mName, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

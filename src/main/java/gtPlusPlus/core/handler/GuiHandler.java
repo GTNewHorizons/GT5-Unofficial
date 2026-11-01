@@ -50,9 +50,7 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI5 -> {
-                yield null;
-            }
+            case GUI5 -> null;
             case GUI6 -> new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
             case GUI8 -> new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
             case GUI18 -> new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
