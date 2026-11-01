@@ -2955,6 +2955,7 @@ GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitalchest.tooltip=Stores %s items
 GT5U.machines.digitalchest.tooltip1=Use a screwdriver to enable\nvoiding items on overflow
+GT5U.machines.digitalchest.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
