@@ -6,3 +6,4 @@ Each slot holds {green:{var:seedCapacityPerSlot}} seeds
 Process time: {green:5s}, divided by tiers past {green:{var:minVoltageTierMinus1}} (min {green:1s})
 Crops grow at the end of the operation, no seed drops
 Fertilizer: up to {green:{var:maxFertilizerUsagePerSeed}} per seed per cycle, {green:{var:fertilizerBonus}} boost each
+Supports infused seeds, each takes the space of {green:8} common seeds
