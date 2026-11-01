@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -38,22 +37,15 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
             .coverChildren()
             .childPadding(1);
 
-        mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.childIf(
-            supportsFluidIOColumn(),
-            () -> createIO(
-                panel,
-                syncManager,
-                machine.getInputSlot(),
-                machine.getOutputSlot(),
-                machine.getFluidTank()));
-        mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
+        mainRow.childIf(supportsScreen(), () -> createScreen(panel, syncManager));
+        mainRow.childIf(supportsScreenIOColumn(), () -> createScreenIO(panel, syncManager));
+        mainRow.childIf(supportsFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override
-    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
+    protected FluidSlot createSlot(ModularPanel panel, PanelSyncManager syncManager) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
 
         FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank())
@@ -63,12 +55,12 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
             machine.lockFluid(mode == 8 || mode == 9);
         });
 
-        return super.createFluidSlot(panel, syncManager, fluidTank).syncHandler(fluidSlotSH);
+        return super.createSlot(panel, syncManager).syncHandler(fluidSlotSH);
     }
 
     @Override
     protected ParentWidget<?> createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> screen = CommonWidgets.createFluidScreen(FLUID_FILTER_SCREEN_WIDTH, FLUID_FILTER_SCREEN_HEIGHT);
+        ParentWidget<?> screen = CommonWidgets.createHatchScreen(FILTER_SCREEN_WIDTH, FILTER_SCREEN_HEIGHT);
 
         Flow textColumn = Flow.column()
             .childPadding(1)
