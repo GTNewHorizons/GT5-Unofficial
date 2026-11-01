@@ -1,6 +1,6 @@
 package gregtech.common.render.shader;
 
-import static gregtech.common.render.shader.ShaderProfile.LOG;
+import static gregtech.GTLoggers.GT_SHADER_LOGGER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,11 +142,11 @@ public final class ShaderRecipe {
         final ShaderProfile preferred = ShaderProfile.preferred();
         ShaderHandle handle = tryBake(preferred);
         if (handle == null && preferred != ShaderProfile.LEGACY) {
-            LOG.error("Shader {}: falling back to the legacy variant", id());
+            GT_SHADER_LOGGER.error("Shader {}: falling back to the legacy variant", id());
             handle = tryBake(ShaderProfile.LEGACY);
         }
         if (handle == null) {
-            LOG.error("Shader {}: unavailable in every profile, it will not render", id());
+            GT_SHADER_LOGGER.error("Shader {}: unavailable in every profile, it will not render", id());
             return ShaderHandle.invalid(this);
         }
         return handle;
@@ -158,7 +158,8 @@ public final class ShaderRecipe {
 
         final ShaderProgram program = new ShaderProgram(domain, vert, frag);
         if (program.getProgram() == 0) {
-            LOG.error("Shader {} [{}]: {} + {} did not compile, link or validate", id(), profile, vert, frag);
+            GT_SHADER_LOGGER
+                .error("Shader {} [{}]: {} + {} did not compile, link or validate", id(), profile, vert, frag);
             program.close();
             return null;
         }
@@ -194,7 +195,7 @@ public final class ShaderRecipe {
             final String name = attributeNames.get(i);
             final int location = GL20.glGetAttribLocation(program, name);
             if (location < 0) {
-                LOG.error("Shader {} [{}]: vertex attribute {} is missing or unused", id(), profile, name);
+                GT_SHADER_LOGGER.error("Shader {} [{}]: vertex attribute {} is missing or unused", id(), profile, name);
                 return null;
             }
             final VertexAttribute kind = attributeKinds.get(i);
@@ -217,7 +218,8 @@ public final class ShaderRecipe {
             final int location = GL20.glGetUniformLocation(program, uniform);
             out[declared.indexOf(uniform)] = location;
             if (location < 0) {
-                LOG.error("Shader {} [{}]: required uniform {} is missing or unused", id(), profile, uniform);
+                GT_SHADER_LOGGER
+                    .error("Shader {} [{}]: required uniform {} is missing or unused", id(), profile, uniform);
                 ok = false;
             }
         }
@@ -245,11 +247,11 @@ public final class ShaderRecipe {
 
         if (profile == owner) {
             if (location < 0) {
-                LOG.error("Shader {} [{}]: uniform {} is missing or unused", id(), profile, uniform);
+                GT_SHADER_LOGGER.error("Shader {} [{}]: uniform {} is missing or unused", id(), profile, uniform);
                 return false;
             }
         } else if (location >= 0) {
-            LOG.error(
+            GT_SHADER_LOGGER.error(
                 "Shader {} [{}]: uniform {} was declared {}-only but this variant uses it too",
                 id(),
                 profile,

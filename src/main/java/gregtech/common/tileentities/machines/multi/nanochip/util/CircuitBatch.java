@@ -21,6 +21,8 @@ public class CircuitBatch {
 
     // Returns leftover if total exceeds BATCH_SIZE
     public int add(CircuitCalibration circuitType, int amount) {
+        if (circuitType == CircuitCalibration.NONE) return 0;
+
         int leftover = 0;
         if (total + amount > BATCH_SIZE) {
             leftover = total + amount - BATCH_SIZE;
@@ -58,6 +60,6 @@ public class CircuitBatch {
         cosmics = history[6];
         temporals = history[7];
         specials = history[8];
-
+        total = primitives + crystals + wetwares + bios + opticals + exotics + cosmics + temporals + specials;
     }
 }

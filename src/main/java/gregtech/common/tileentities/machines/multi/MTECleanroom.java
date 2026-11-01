@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -21,20 +22,24 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
@@ -54,15 +59,22 @@ import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECleanroom extends MTETooltipMultiBlockBase
     implements IConstructable, ICleanroom, ICasingTextureProvider {
+
+    public static final int STARTUP_EU = 40;
+    public static final int IDLE_EU = 4;
+    public static final int LV_AMPERAGE = 2;
+    public static final float MAINTENANCE_PENALTY_PERCENT = 10.0f;
+    private static final int MIN_TIER = VoltageIndex.LV;
+    private static final int MIN_TIER_FOR_OC = VoltageIndex.HV;
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.
@@ -133,65 +145,43 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cleanroom")
-            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency")
-            .addInfo("Can accept 2A from an LV energy hatch")
-            .addInfo("Will overclock and gain efficiency faster starting from HV")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Warning:")
-            .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-            .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
-            .addInfo("Generating any pollution inside causes the cleanroom to shut down")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cleanroom"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "cleanroom"),
+                ImmutableMap.<String, Object>builder()
+                    .put("startup_eu", STARTUP_EU)
+                    .put("idle_eu", IDLE_EU)
+                    .put("min_tier_amperage", LV_AMPERAGE)
+                    .put("maint_penalty", MAINTENANCE_PENALTY_PERCENT)
+                    .put("min_tier", MIN_TIER)
+                    .put("min_tier_for_oc", MIN_TIER_FOR_OC)
+                    .build())
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-            .addController("Top center")
-            .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
-            .addCasing("0-168", "Filter Machine Casing", false)
-            .addEnergyHatch("1", "Any plascrete block", 1)
-            .addMaintenanceHatch("1", "Any plascrete block", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center"))
+            .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", ItemList.Block_Plascrete.get(1).getDisplayName(), false)
+            .addCasing("0-168", Casings.FilterMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_plascrete_block"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_plascrete_block"), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                "If the width or length is even, the controller can be in either of the two middle positions")
-            .addStructureFooter(
-                "Up to " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.maxReplacementPercentage
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of the plascrete blocks can be replaced by other valid blocks:")
-            .addStructureFooter(
-                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " Tiered Glass")
-            .addStructureFooter("- Machine Hulls or Diodes for item or power transfer, respectively")
-            .addStructureFooter(
-                "- Reinforced Doors (" + EnumChatFormatting.ITALIC
-                    + "IC2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + "). Keep closed, no gaps allowed or efficiency will drop!")
-            .addStructureFooter(
-                "- Elevators (" + EnumChatFormatting.ITALIC
-                    + "OpenBlocks"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") or Travel Anchors ("
-                    + EnumChatFormatting.ITALIC
-                    + "EnderIO"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addStructureFooter(
-                "See " + EnumChatFormatting.DARK_GRAY
-                    + "config/GregTech/MachineStats.cfg"
-                    + EnumChatFormatting.GRAY
-                    + " for more valid blocks")
-            .addStructureFooter("Use Wireless Connectors for transferring AE2 channels")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_even_size_controller"))
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.cleanroom_replacement", MachineStats.cleanroom.maxReplacementPercentage))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_glass"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_hulls"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_doors"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_elevators"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_config"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_wireless"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.size"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] { "The base can be rectangular." };
+        return new String[] { StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_rectangular_base") };
     }
 
     @Nonnull
@@ -202,13 +192,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         // only allow LV+ energy hatches
         if (inputVoltage < TierEU.LV) {
-            return CheckRecipeResultRegistry.insufficientPower(40);
+            return CheckRecipeResultRegistry.insufficientPower(STARTUP_EU);
         }
 
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
-        int amperage = inputVoltage == TierEU.LV ? 2 : 1;
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(40)
+        int amperage = inputVoltage == TierEU.LV ? LV_AMPERAGE : 1;
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(STARTUP_EU)
             .setEUt(inputVoltage * amperage)
             .setDuration(45 * Math.max(1, mHeight - 1))
             .calculate();
@@ -307,7 +297,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 if (doorOrientation < 0) {
                     // Somehow an invalid door block.
                     if (debugCleanroom)
-                        GTLog.out.println("Cleanroom: Invalid block at offset (" + dx + ", " + dy + ", " + dz + ").");
+                        GT_FML_LOGGER.debug("Cleanroom: Invalid block at offset ({}, {}, {}).", dx, dy, dz);
                     return CleanroomBlockType.INVALID;
                 }
                 if (doorOrientation % 2 == 0) {
@@ -341,7 +331,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 }
 
                 if (debugCleanroom && isDoorOpen) {
-                    GTLog.out.println("Cleanroom: Open door at offset (" + dx + ", " + dy + ", " + dz + ").");
+                    GT_FML_LOGGER.debug("Cleanroom: Open door at offset ({}, {}, {}).", dx, dy, dz);
                 }
             }
             return CleanroomBlockType.DOOR;
@@ -401,8 +391,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 return true;
 
             case INVALID:
-                if (debugCleanroom)
-                    GTLog.out.println("Cleanroom: Invalid block at offset (" + dx + ", " + dy + ", " + dz + ").");
+                if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Invalid block at offset ({}, {}, {}).", dx, dy, dz);
                 errors.add(
                     new PositionedStructureError(
                         aBaseMetaTileEntity.getXCoord() + dx,
@@ -433,7 +422,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
         if (dxMin < -MAX_WIDTH / 2) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too large (x-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too large (x-axis).");
             return false;
         }
 
@@ -443,12 +432,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
         if (dxMax > MAX_WIDTH / 2) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too large (x-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too large (x-axis).");
             return false;
         }
 
         if (Math.abs(dxMin + dxMax) > 1) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Controller not centered (x-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Controller not centered (x-axis).");
             return false;
         }
 
@@ -460,7 +449,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
         if (dzMin < -MAX_WIDTH / 2) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too large (z-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too large (z-axis).");
             return false;
         }
 
@@ -470,17 +459,17 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
         if (dzMax > MAX_WIDTH / 2) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too large (z-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too large (z-axis).");
             return false;
         }
 
         if (Math.abs(dzMin + dzMax) > 1) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Controller not centered (z-axis).");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Controller not centered (z-axis).");
             return false;
         }
 
-        if (debugCleanroom) GTLog.out.println(
-            "Cleanroom: dxMin = " + dxMin + ", dxMax = " + dxMax + ", dzMin = " + dzMin + ", dzMax = " + dzMax + ".");
+        if (debugCleanroom) GT_FML_LOGGER
+            .debug("Cleanroom: dxMin = {}, dxMax = {}, dzMin = {}, dzMax = {}.", dxMin, dxMax, dzMin, dzMax);
         return true;
     }
 
@@ -604,7 +593,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         otherCount = 0;
         isDoorOpen = false;
 
-        if (debugCleanroom) GTLog.out.println("Cleanroom: Starting structure check.");
+        if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Starting structure check.");
 
         // Optimization: a vast majority of the time, the size of the CR won't change. Try checking it using the old
         // size, and only if that fails, try to find a new size.
@@ -638,14 +627,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
         if (dyMin < -(MAX_HEIGHT - 1)) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too tall.");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too tall.");
             errors.add(StructureErrorRegistry.TOO_TALL);
             return;
         }
         mHeight = -dyMin + 1;
 
-        if (debugCleanroom) GTLog.out.println(
-            "Cleanroom: Structure complete. Found " + casingCount + " casings, " + otherCount + " other blocks.");
+        if (debugCleanroom) GT_FML_LOGGER
+            .debug("Cleanroom: Structure complete. Found {} casings, {} other blocks.", casingCount, otherCount);
 
         // Validate structure.
         if (this.mEnergyHatches.size() != 1) {
@@ -658,10 +647,10 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
 
         if (casingCount < MachineStats.cleanroom.minCasingCount) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Not enough plascrete blocks.");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Not enough plascrete blocks.");
             errors.add(StructureErrors.missingCasings(casingCount, MachineStats.cleanroom.minCasingCount));
         } else if ((otherCount * 100) / (casingCount + otherCount) > MachineStats.cleanroom.maxReplacementPercentage) {
-            if (debugCleanroom) GTLog.out.println("Cleanroom: Too many non-plascrete blocks.");
+            if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Too many non-plascrete blocks.");
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cleanroom_plascrete"));
         }
 
@@ -691,7 +680,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         }
 
-        if (debugCleanroom) GTLog.out.println("Cleanroom: Check successful.");
+        if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Check successful.");
 
     }
 

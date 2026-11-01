@@ -23,7 +23,7 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public int getIconWidth() {
-        return this.baseIcon.getIconWidth();
+        return getBaseIcon().getIconWidth();
     }
 
     /**
@@ -31,7 +31,7 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public int getIconHeight() {
-        return this.baseIcon.getIconHeight();
+        return getBaseIcon().getIconHeight();
     }
 
     /**
@@ -39,7 +39,8 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public float getMinU() {
-        return this.flipU ? this.baseIcon.getMaxU() : this.baseIcon.getMinU();
+        final IIcon icon = getBaseIcon();
+        return this.flipU ? icon.getMaxU() : icon.getMinU();
     }
 
     /**
@@ -47,7 +48,8 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public float getMaxU() {
-        return this.flipU ? this.baseIcon.getMinU() : this.baseIcon.getMaxU();
+        final IIcon icon = getBaseIcon();
+        return this.flipU ? icon.getMinU() : icon.getMaxU();
     }
 
     /**
@@ -64,7 +66,8 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public float getMinV() {
-        return this.flipV ? this.baseIcon.getMaxV() : this.baseIcon.getMinV();
+        final IIcon icon = getBaseIcon();
+        return this.flipV ? icon.getMaxV() : icon.getMinV();
     }
 
     /**
@@ -72,7 +75,8 @@ public class GTIconFlipped implements IIcon {
      */
     @Override
     public float getMaxV() {
-        return this.flipV ? this.baseIcon.getMinV() : this.baseIcon.getMaxV();
+        final IIcon icon = getBaseIcon();
+        return this.flipV ? icon.getMinV() : icon.getMaxV();
     }
 
     /**
@@ -86,6 +90,10 @@ public class GTIconFlipped implements IIcon {
 
     @Override
     public String getIconName() {
-        return this.baseIcon.getIconName();
+        return getBaseIcon().getIconName();
+    }
+
+    IIcon getBaseIcon() {
+        return baseIcon;
     }
 }

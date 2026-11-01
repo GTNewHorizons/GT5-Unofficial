@@ -1,13 +1,10 @@
 package gtnhlanth;
 
-import java.util.logging.Logger;
-
 import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
@@ -28,8 +25,6 @@ import gtnhlanth.loader.RecipeLoader;
         + "required-after:GoodGenerator; "
         + "before:miscutils; ")
 public class GTNHLanthanides {
-
-    public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
 
     @Mod.Instance(Mods.ModIDs.G_T_N_H_LANTHANIDES)
     public static GTNHLanthanides instance;
@@ -67,13 +62,6 @@ public class GTNHLanthanides {
 
         BotRecipes.addGTRecipe();
         proxy.postInit(e);
-
-    }
-
-    @EventHandler
-    public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
-
-        RecipeLoader.removeCeriumSources();
 
     }
 }

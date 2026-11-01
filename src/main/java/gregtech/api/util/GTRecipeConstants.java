@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeMapUtil.convertCellToFluid;
 
@@ -190,6 +191,8 @@ public class GTRecipeConstants {
 
     /**
      * Tier of advanced compression (HIP/black hole)
+     * 1: HIP
+     * 2: Black Hole
      */
     public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
@@ -578,11 +581,10 @@ public class GTRecipeConstants {
             ItemStack[] alts = mOreDictAlt[i];
             Object input = inputs[i];
             if (input == null) {
-                GTLog.err.println(
-                    "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                        + " --> "
-                        + aOutput.getUnlocalizedName()
-                        + " there is some null item in that recipe");
+                GT_FML_LOGGER.error(
+                    "addAssemblingLineRecipe {} --> {} there is some null item in that recipe",
+                    aResearchItem.getDisplayName(),
+                    aOutput.getUnlocalizedName());
             }
             if (input instanceof ItemStack) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash((ItemStack) input, true, false);
@@ -590,11 +592,10 @@ public class GTRecipeConstants {
                 for (ItemStack alt : ((ItemStack[]) input)) {
                     tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(alt, true, false);
                     if (alt == null) {
-                        GTLog.err.println(
-                            "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                                + " --> "
-                                + aOutput.getUnlocalizedName()
-                                + " there is some null alt item in that recipe");
+                        GT_FML_LOGGER.error(
+                            "addAssemblingLineRecipe {} --> {} there is some null alt item in that recipe",
+                            aResearchItem.getDisplayName(),
+                            aOutput.getUnlocalizedName());
                     }
                 }
                 tPersistentHash *= 31;

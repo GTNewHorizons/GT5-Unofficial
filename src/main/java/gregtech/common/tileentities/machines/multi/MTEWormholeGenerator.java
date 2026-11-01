@@ -34,11 +34,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -51,9 +53,11 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import gregtech.GTMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -83,6 +87,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -238,28 +243,28 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
         .addElement('t',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(TOP_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(BOTTOM_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(LEFT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(RIGHT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
@@ -269,9 +274,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     private static class TransferHatch implements IHatchElement<MTEWormholeGenerator> {
 
+        private final String name;
+
         public final int mIndex;
 
-        public TransferHatch(int index) {
+        public TransferHatch(String name, int index) {
+            this.name = name;
             this.mIndex = index;
         }
 
@@ -293,13 +301,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
                     case MTEHatchEnergyMulti input -> {
                         input.updateTexture(aBaseCasingIndex);
-                        input.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mSendHatches[mIndex] = input;
                         return true;
                     }
                     case MTEHatchDynamoMulti output -> {
                         output.updateTexture(aBaseCasingIndex);
-                        output.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mReceiveHatches[mIndex] = output;
                         return true;
                     }
@@ -320,10 +328,21 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         public long count(MTEWormholeGenerator t) {
             return t.mExoticEnergyHatches.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
@@ -708,7 +727,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 aNBT.setTag("mLink", link);
             }
         } catch (Exception t) {
-            GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
+            GTLoggers.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
 
@@ -759,7 +778,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
+                GTLoggers.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
     }
@@ -968,38 +987,31 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         // spotless:off
-        tt.addMachineType("Wormhole Generator, MWG")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
-            .addGlassEnergyLimitInfo()
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wormhole_generator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "wormhole-generator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("transfer_efficiency", TRANSFER_EFFICIENCY * 100)
+                    .put("overclock_limit", MAX_OVERCLOCKS)
+                    .build())
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
-            .addController("Front center, 4th layer")
-            .addCasing("0-51", "High Power Casing", false)
-            .addCasing("36", "Any Tiered Glass", true)
-            .addCasing("24", "Molecular Casing", false)
-            .addCasing("22", "Fusion Coil Block", false)
-            .addCasing("8", "Europium Reinforced Radiation Proof Machine Casing", false)
-            .addMiscHatch("0-4", "Laser Target Hatch", "Any center side casing", 2)
-            .addMiscHatch("0-4", "Laser Source Hatch", "Any center side casing", 2)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addInputBus("1+", "Any high power casing", 1)
+            .addEnergyHatchGlassTier()
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-51", Casings.HighPowerCasing.getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("24", Casings.MolecularCasing.getLocalizedName(), false)
+            .addCasing("22", Casings.FusionCoilBlock.getLocalizedName(), false)
+            .addCasing("8", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Insert an entangled singularity into the controller to link it with another one")
-            .addStructureFooter("Each laser target hatch must have a corresponding laser source hatch")
-            .addStructureFooter("on the other linked generator on the opposite side")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+            .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 

@@ -12,13 +12,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import com.gtnewhorizon.structurelib.StructureLib;
 
@@ -30,6 +34,7 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.commands.GTBaseCommand;
+import gregtech.common.GTWorldgenerator;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;
 
@@ -49,17 +54,18 @@ public final class GTMiscCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>";
+        return "Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|oregenpattern|pollution|toggle>";
     }
 
     // spotless:off
     @Override
     protected List<IChatComponent> getHelpMessages() {
         final List<IChatComponent> list = new ArrayList<>();
-        list.add(new ChatComponentText("Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|pollution|toggle>"));
+        list.add(new ChatComponentText("Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|oregenpattern|pollution|toggle>"));
         list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
         list.add(new ChatComponentText("\"cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>\" - Bypass cleanroom and/or low-grav requirements"));
         list.add(new ChatComponentText("\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
+        list.add(new ChatComponentText("\"oregenpattern [set <pattern> [confirm]]\" - show the ore vein pattern of this world, or override it"));
         list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, \n if <amount> isn't specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
         list.add(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         list.add(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
@@ -99,6 +105,7 @@ public final class GTMiscCommand extends GTBaseCommand {
                 "global_energy_display",
                 "global_energy_join",
                 "global_energy_set",
+                "oregenpattern",
                 "pollution",
                 "toggle");
         } else if (args.length == 2) {
@@ -123,6 +130,9 @@ public final class GTMiscCommand extends GTBaseCommand {
             if (args[0].equals("cleanroom_bypass")) {
                 return getListOfStringsMatchingLastWord(args, "on", "off", "status");
             }
+            if (args[0].equals("oregenpattern")) {
+                return getListOfStringsMatchingLastWord(args, "set");
+            }
             if (GLOBAL_ENERGY_COMMANDS.contains(args[0])) {
                 // 1st username of wireless network commands
                 return getListOfStringsMatchingLastWord(args, getAllUsernames());
@@ -134,6 +144,9 @@ public final class GTMiscCommand extends GTBaseCommand {
             }
             if (args[0].equals("cleanroom_bypass")) {
                 return getListOfStringsMatchingLastWord(args, "all", "cleanroom", "lowgrav");
+            }
+            if (args[0].equals("oregenpattern") && args[1].equals("set")) {
+                return getListOfStringsMatchingLastWord(args, patternNames());
             }
         }
 
@@ -156,6 +169,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             case "chunks" -> this.processChunksCommand(sender);
             case "cleanroom_bypass" -> this.processCleanroomBypassCommand(sender, args);
             case "dump_music_durations" -> this.processDumpMusicDurationsCommand(sender);
+            case "oregenpattern" -> this.processOregenPatternCommand(sender, args);
             case "pollution" -> this.processPollutionCommand(sender, args);
             case "global_energy_add" -> this.processGlobalEnergyAddCommand(sender, args);
             case "global_energy_display" -> this.processGlobalEnergyDisplayCommand(sender, args);
@@ -400,6 +414,101 @@ public final class GTMiscCommand extends GTBaseCommand {
                 + EnumChatFormatting.BLUE
                 + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
                 + EnumChatFormatting.RESET
+                + ".");
+    }
+
+    private static String[] patternNames() {
+        return Arrays.stream(GTWorldgenerator.OregenPattern.values())
+            .map(Enum::name)
+            .toArray(String[]::new);
+    }
+
+    private void processOregenPatternCommand(ICommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sendChatToPlayer(
+                sender,
+                EnumChatFormatting.YELLOW + "Ore vein pattern: "
+                    + EnumChatFormatting.WHITE
+                    + GTWorldgenerator.getOregenPattern()
+                    + EnumChatFormatting.YELLOW
+                    + " ("
+                    + GTWorldgenerator.getOregenPatternSource().description
+                    + ")");
+            // An operator who just set this does not need to be told it looks wrong
+            if (GTWorldgenerator.getOregenPattern() == GTWorldgenerator.OregenPattern.AXISSYMMETRICAL
+                && GTWorldgenerator.getOregenPatternSource() != GTWorldgenerator.PatternSource.COMMAND) {
+                // spotless:off
+                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "Worlds created since July 2023 use EQUAL_SPACING. If this one was, the value above is");
+                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "wrong and its veins do not sit where prospecting tools report them.");
+                // spotless:on
+            }
+            return;
+        }
+
+        if (!"set".equals(args[1])) {
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "Usage: gt oregenpattern [set <pattern> [confirm]]");
+            return;
+        }
+
+        // gt already requires permission level 4, this makes the gate explicit on the destructive branch
+        if (sender instanceof EntityPlayerMP && !isOpedPlayer(sender)) {
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "You are not allowed to change the ore vein pattern.");
+            return;
+        }
+
+        if (args.length < 3) {
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "Usage: gt oregenpattern set <pattern> [confirm]");
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "Valid patterns: " + String.join(", ", patternNames()));
+            return;
+        }
+
+        final GTWorldgenerator.OregenPattern newPattern;
+        try {
+            newPattern = GTWorldgenerator.OregenPattern.valueOf(args[2].toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "Unknown ore vein pattern: " + args[2]);
+            return;
+        }
+
+        final World overworld = DimensionManager.getWorld(0);
+        if (overworld == null) {
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "The overworld is not loaded, cannot change it now.");
+            return;
+        }
+
+        final GTWorldgenerator.OregenPattern oldPattern = GTWorldgenerator.getOregenPattern();
+
+        if (args.length < 4 || !"confirm".equals(args[3])) {
+            // spotless:off
+            sendChatToPlayer(sender, EnumChatFormatting.RED + "This changes where GregTech places ore veins. Read before confirming.");
+            sendChatToPlayer(sender, EnumChatFormatting.YELLOW + "Current: " + EnumChatFormatting.WHITE + oldPattern + EnumChatFormatting.YELLOW + " (" + GTWorldgenerator.getOregenPatternSource().description + ")");
+            sendChatToPlayer(sender, EnumChatFormatting.YELLOW + "New:     " + EnumChatFormatting.WHITE + newPattern);
+            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "Veins that already generated do not move. Chunks generated from now on use the new");
+            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "pattern, and prospecting tools report it for the whole world, including the parts");
+            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "that were generated with the old one. Only do this if the current value is wrong.");
+            sendChatToPlayer(sender, EnumChatFormatting.GREEN + "Run \"/gt oregenpattern set " + newPattern + " confirm\" to apply.");
+            // spotless:on
+            return;
+        }
+
+        if (!GTWorldgenerator.OregenPatternSavedData.overridePattern(overworld, newPattern)) {
+            sendChatToPlayer(
+                sender,
+                EnumChatFormatting.RED
+                    + "The stored pattern was written by a newer GregTech and cannot be replaced. See the log.");
+            return;
+        }
+
+        sendChatToPlayer(
+            sender,
+            EnumChatFormatting.GREEN + "Ore vein pattern changed from "
+                + EnumChatFormatting.WHITE
+                + oldPattern
+                + EnumChatFormatting.GREEN
+                + " to "
+                + EnumChatFormatting.WHITE
+                + newPattern
+                + EnumChatFormatting.GREEN
                 + ".");
     }
 

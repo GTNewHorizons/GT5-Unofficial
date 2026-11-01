@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugStones;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
@@ -102,8 +102,8 @@ public class WorldgenStone extends GTWorldgen {
                         validStoneSeeds.put(hash, new StoneSeeds(true));
                         // Add to generation list
                         stones.add(new ValidSeeds(x, z));
-                        if (debugStones) GTLog.out.println(
-                            "New stoneseed=" + mWorldGenName + " x=" + x + " z=" + z + " realSize=" + realSize);
+                        if (debugStones) GT_FML_LOGGER
+                            .debug("New stoneseed={} x={} z={} realSize={}", mWorldGenName, x, z, realSize);
                     } else {
                         validStoneSeeds.put(hash, new StoneSeeds(false));
                     }
@@ -168,7 +168,7 @@ public class WorldgenStone extends GTWorldgen {
                     .isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
                     // spotless:off
                     if (debugStones)
-                        GTLog.out.printf("%s tX=%d tY=%d tZ=%d realSize=%s xSize=%s ySize=%s zSize=%s tMinY=%d tMaxY=%d - Skipped because first requesting chunk would not contain this stone%n",
+                        GT_FML_LOGGER.debug("{} tX={} tY={} tZ={} realSize={} xSize={} ySize={} zSize={} tMinY={} tMaxY={} - Skipped because first requesting chunk would not contain this stone%n",
                             mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, tMinY, tMaxY);
                     // spotless:on
                     long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
@@ -188,7 +188,7 @@ public class WorldgenStone extends GTWorldgen {
 
                 // spotless:off
                 if (debugStones)
-                    GTLog.out.printf("%s tX=%d tY=%d tZ=%d realSize=%s xSize=%s ySize=%s zSize=%s wX=%d eX=%d tMinY=%d tMaxY=%d sZ=%d nZ=%d%n",
+                    GT_FML_LOGGER.debug("{} tX={} tY={} tZ={} realSize={} xSize={} ySize={} zSize={} wX={} eX={} tMinY={} tMaxY={} sZ={} nZ={}",
                         mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, wX, eX, tMinY, tMaxY, sZ, nZ);
                 // spotless:on
 

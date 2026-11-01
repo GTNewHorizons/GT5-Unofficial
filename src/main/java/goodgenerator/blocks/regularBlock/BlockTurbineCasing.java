@@ -11,7 +11,7 @@ public class BlockTurbineCasing extends BlockCasing {
 
     public BlockTurbineCasing(String name, String texture) {
         super(name, new String[] { Mods.ModIDs.GOOD_GENERATOR + ":" + texture });
-        base = Textures.BlockIcons.custom("icons/" + texture);
+        base = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/" + texture);
     }
 
     @Override

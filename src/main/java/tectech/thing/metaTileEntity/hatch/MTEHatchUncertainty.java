@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -31,11 +32,11 @@ import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 15.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer ScreenON;
@@ -43,6 +44,7 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
     private final short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500, 500 };
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
+    private boolean showValues = false;
     private boolean stopChecking = false;
     private String clientLocale = "en_US";
 
@@ -89,12 +91,20 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
         this.status = status;
     }
 
+    public boolean isShowingValues() {
+        return showValues;
+    }
+
+    public void setShowValues(boolean showValues) {
+        this.showValues = showValues;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
-        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override
@@ -162,6 +172,7 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
         aNBT.setByte("mSel", selection);
         aNBT.setByte("mMode", mode);
         aNBT.setByte("mStatus", status);
+        aNBT.setBoolean("mShowValues", showValues);
         NBTTagCompound mat = new NBTTagCompound();
         for (int i = 0; i < 16; i++) {
             mat.setShort(Integer.toString(i), matrix[i]);
@@ -175,6 +186,7 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
         selection = aNBT.getByte("mSel");
         mode = aNBT.getByte("mMode");
         status = aNBT.getByte("mStatus");
+        showValues = aNBT.getBoolean("mShowValues");
         NBTTagCompound mat = aNBT.getCompoundTag("mMat");
         for (int i = 0; i < 16; i++) {
             matrix[i] = mat.getShort(Integer.toString(i));
@@ -215,13 +227,12 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[4];
-        description[0] = CommonValues.TEC_MARK_EM;
-        description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
-        description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+        String[] description = new String[mTier < 6 ? 3 : 2];
+        description[0] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
+        description[1] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
             + translateToLocal("gt.blockmachines.hatch.certain.desc.1");
         if (mTier < 6) {
-            description[3] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
+            description[2] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
         }
         return description;
     }

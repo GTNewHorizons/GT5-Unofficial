@@ -1,12 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -37,7 +38,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        convert(aMaterial, GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)))
+                        convertOre(aMaterial, GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)))
                     .duration(10 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -45,7 +46,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        convert(
+                        convertOre(
                             aMaterial,
                             GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                             GTOreDictUnificator.get(
@@ -61,7 +62,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        convert(
+                        convertOre(
                             aMaterial,
                             GTOreDictUnificator.get(
                                 OrePrefixes.crushedCentrifuged,

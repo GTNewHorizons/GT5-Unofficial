@@ -31,6 +31,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -73,6 +74,15 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         private static Mode loadNBTData(NBTTagCompound NBT) {
             final byte index = NBT.getByte("inputMode");
+            return fromIndex(index);
+        }
+
+        private void writeToStream(ByteBuf buffer) {
+            buffer.writeByte(this.index);
+        }
+
+        private static Mode readFromStream(ByteBuf buffer) {
+            final byte index = buffer.readByte();
             return fromIndex(index);
         }
 
@@ -147,19 +157,15 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        final NBTTagCompound data = new NBTTagCompound();
-        mode.saveNBTData(data);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        mode.writeToStream(buffer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        mode = Mode.loadNBTData(data);
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base != null) {
-            base.issueTextureUpdate();
-        }
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mode = Mode.readFromStream(buffer);
     }
 
     @Override

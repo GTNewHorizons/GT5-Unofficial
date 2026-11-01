@@ -14,7 +14,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.render.shader.ShaderHandle;
 import gregtech.common.render.shader.SharedShaders;
 
@@ -47,7 +47,7 @@ public class DroneRender {
                 SharedShaders.textured()
                     .vertexFormat());
         } catch (RuntimeException e) {
-            GTMod.GT_FML_LOGGER.error("Failed to load drone model", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load drone model", e);
             release();
         }
     }

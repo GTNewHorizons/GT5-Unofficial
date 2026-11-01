@@ -47,22 +47,22 @@ public abstract class EOHRenderingUtils {
     private static final float[] BASE_ROTATIONS = { 130f, -49f, 67f };
     private static final ResourceLocation SPACE_LAYER_TEXTURE = new ResourceLocation(MODID, "models/spaceLayer.png");
 
-    public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, float partialTicks,
+    public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, double time,
         double starRadius) {
-        renderStar(base, type, EOHStarColour, partialTicks, starRadius);
+        renderStar(base, type, EOHStarColour, time, starRadius);
     }
 
     // Used for GORGE item renderer only.
     private static final Color GORGEStarColour = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-    public static void renderGORGEStar(Matrix4fc base, IItemRenderer.ItemRenderType type, float partialTicks,
+    public static void renderGORGEStar(Matrix4fc base, IItemRenderer.ItemRenderType type, double time,
         double starRadius) {
-        renderStar(base, type, GORGEStarColour, partialTicks, starRadius);
+        renderStar(base, type, GORGEStarColour, time, starRadius);
     }
 
     private static final Matrix4f starBase = new Matrix4f();
 
-    private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, float partialTicks,
+    private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, double time,
         double starRadius) {
         if (!shadersReady()) return;
 
@@ -83,9 +83,9 @@ public abstract class EOHRenderingUtils {
         texturedShader().use();
         eohSphere.bind();
 
-        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, partialTicks, starRadius);
-        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, partialTicks, starRadius);
-        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, partialTicks, starRadius);
+        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, time, starRadius);
+        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, time, starRadius);
+        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, time, starRadius);
 
         eohSphere.unbind();
         ShaderProgram.clear();
@@ -100,8 +100,8 @@ public abstract class EOHRenderingUtils {
 
     private static final Matrix4f layerMatrix = new Matrix4f();
 
-    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
-        float partialTicks, double starRadius) {
+    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha, double time,
+        double starRadius) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
@@ -116,7 +116,7 @@ public abstract class EOHRenderingUtils {
             .getTextureManager()
             .bindTexture(texture);
 
-        final float rotation = (BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * partialTicks) % 360f;
+        final float rotation = (float) ((BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * time) % 360f);
         final int maxLayer = 2;
         final float scale = (float) (starRadius * Math.pow(0.95f, maxLayer - layer));
         final Vector3f axis = LAYER_AXIS[layer];
@@ -198,7 +198,7 @@ public abstract class EOHRenderingUtils {
         ORBIT_MESHES.clear();
     }
 
-    public static void renderOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.OrbitingObject> objects, float time,
+    public static void renderOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.OrbitingObject> objects, double time,
         float starSize, float speedScale, float starRescale) {
         if (orbitShader == null || !orbitShader.isValid() || objects.isEmpty()) return;
 
@@ -218,8 +218,8 @@ public abstract class EOHRenderingUtils {
         for (int i = 0; i < count; i++) {
             final TileEntityEyeOfHarmony.OrbitingObject obj = objects.get(i);
 
-            final float orbitAngle = (obj.orbitSpeed * speedScale * time) % 360f;
-            final float spinAngle = (obj.rotationSpeed * speedScale * time) % 360f;
+            final float orbitAngle = (float) ((obj.orbitSpeed * speedScale * time) % 360f);
+            final float spinAngle = (float) ((obj.rotationSpeed * speedScale * time) % 360f);
 
             orbitTransforms.put(obj.zAngle * DEG_TO_RAD)
                 .put(obj.xAngle * DEG_TO_RAD)

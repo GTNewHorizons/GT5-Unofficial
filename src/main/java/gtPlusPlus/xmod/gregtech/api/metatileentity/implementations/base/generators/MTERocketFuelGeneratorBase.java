@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
+import gregtech.api.util.GTSplit;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -36,11 +37,12 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        String aPollution = "Causes between " + pollMin + " and " + pollMax + " Pollution per second";
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Fuel Efficiency: " + this.getEfficiency() + "%",
-            aPollution,
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.advancedgenerator.rocketfuel.desc",
+                this.getEfficiency(),
+                pollMin,
+                pollMax),
             GTPPCore.GT_Tooltip.get());
     }
 

@@ -65,6 +65,11 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return mTextures[(active ? 5 : 0) + (side == facingDirection ? 0

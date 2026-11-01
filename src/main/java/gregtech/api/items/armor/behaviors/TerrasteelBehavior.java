@@ -38,7 +38,7 @@ public class TerrasteelBehavior implements IArmorBehavior {
 
     @Override
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        context.getArmorState().manaDiscount += 0.2F;
+        context.getArmorState().manaDiscount = 0.4F;
     }
 }
 

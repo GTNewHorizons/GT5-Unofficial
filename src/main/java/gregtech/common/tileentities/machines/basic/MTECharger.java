@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +14,8 @@ import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTECharger extends MTEBasicBatteryBuffer {
 
     public MTECharger(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
@@ -19,6 +24,21 @@ public class MTECharger extends MTEBasicBatteryBuffer {
 
     public MTECharger(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("gt.blockmachines.batterycharger.desc"),
+            StatCollector.translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length) };
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.batterycharger.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override

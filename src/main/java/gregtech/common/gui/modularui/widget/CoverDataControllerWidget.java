@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.widget;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.io.IOException;
 import java.util.function.BiFunction;

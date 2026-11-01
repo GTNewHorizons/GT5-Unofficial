@@ -76,8 +76,6 @@ tooltip.rotor.1.name=Durabilité:
 tooltip.rotor.2.name=Efficacité
 tooltip.cp.0.name=Y-a-t-il un circuit dedans?
 
-tooltip.bw.0.name=Ajouté par
-tooltip.bw.1.name=Ajouté par bartimaeusnek via
 tooltip.bw.yes.name=Oui
 tooltip.bw.no.name=Non
 tooltip.bw.tier.name=Tier:
@@ -155,3 +153,7 @@ star.Ross128=Ross128
 solarsystem.Ross128System=Système-Ross128
 
 itemGroup.bw.MetaItems.0=Objets du Remaniement des Circuits BartWorks
+
+# Multiblocks
+gt.blockmachines.megachemicalreactor.name=Méga réacteur chimique 
+gt.blockmachines.megaoilcracker.name=Méga Craqueur

@@ -132,21 +132,21 @@ public class ItemUtils {
         // Tiny Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(9, tinyDust),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
         // Small Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(4, smallDust),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " D ", "   ", "   ", 'D', normalDust });
 
         return output;

@@ -150,6 +150,7 @@ public class GTForestryCompat {
                     .copy();
                 i++;
             }
+            GTOreDictUnificator.setStackArray(true, true, tOutputs);
             GTValues.RA.stdBuilder()
                 .itemInputs(tRecipe.getInput())
                 .itemOutputs(convert(tOutputs))

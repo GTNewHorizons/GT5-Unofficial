@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -32,7 +32,7 @@ public class GTppHelper {
                     encodeoresGTpp.put(m, i);
                 }
             } catch (Exception e) {
-                GTMod.GT_FML_LOGGER
+                GTLoggers.GT_FML_LOGGER
                     .error("Exception caught when trying to generate GT++ ore ids for detrav ore scanner", e);
             }
         }

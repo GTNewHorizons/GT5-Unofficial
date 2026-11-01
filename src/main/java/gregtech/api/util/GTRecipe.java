@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
@@ -323,7 +324,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Re-unificates all the items present in recipes.
      */
     public static void reInit() {
-        GTLog.out.println("GTMod: Re-Unificating Recipes.");
+        GT_FML_LOGGER.debug("GTMod: Re-Unificating Recipes.");
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             map.getBackend()
                 .reInit();
@@ -395,13 +396,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         if (tInputAmount < tOutputAmount) {
             if (!Materials.Tin.contains(mInputs)) {
-                GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get more Cells, than you put in? There must be something wrong.");
+                GT_FML_LOGGER.error(new Exception());
             }
         } else if (tInputAmount > tOutputAmount) {
             if (!Materials.Tin.contains(mOutputs)) {
-                GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
+                GT_FML_LOGGER.error(new Exception());
             }
         }
     }
@@ -493,7 +494,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * @return Computes a (cached) array of all input items, combined by type into stacks. Do not mutate.
      */
-    private @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
+    public @NotNull RecipeItemInput @NotNull [] getCachedCombinedItemInputs() {
         if (mergedInputCache != null) {
             if (mInputs != inputsAtCacheTime) {
                 throw new IllegalStateException(
@@ -1082,16 +1083,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
         static {
             if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
                 GregTechAPI.sFirstWorldTick.add(RecipeAssemblyLine::checkInvalidRecipes);
-            else GTLog.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
+            else GT_FML_LOGGER.debug("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
-            GTLog.out.println("Started assline validation");
+            GT_FML_LOGGER.info("Started assline validation");
             for (RecipeAssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;
-                    GTLog.err.printf("Invalid recipe: %s%n", recipe);
+                    GT_FML_LOGGER.error("Invalid recipe: {}", recipe);
                 }
             }
             if (invalidCount > 0) throw new RuntimeException(
@@ -1164,7 +1165,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         public int getPersistentHash() {
             if (mPersistentHash == 0)
-                GTLog.err.println("Assline recipe persistent hash has not been set! Recipe: " + mOutput);
+                GT_FML_LOGGER.error("Assline recipe persistent hash has not been set! Recipe: {}", mOutput);
             return mPersistentHash;
         }
 
@@ -1530,32 +1531,31 @@ public class GTRecipe implements Comparable<GTRecipe> {
             return null;
         }
 
-        public ArrayList<ItemStack> getAltRepresentativeFluidInput(int aIndex) {
-            if (aIndex < 0) return null;
-            if (mFluidInputs == null || aIndex >= mFluidInputs.length) return null;
+        public ArrayList<FluidStack> getAltRepresentativeFluidInput(int index) {
+            if (index < 0) return null;
+            if (mFluidInputs == null || index >= mFluidInputs.length) return null;
 
-            FluidStack mainFluid = mFluidInputs[aIndex];
+            FluidStack mainFluid = mFluidInputs[index];
+            ArrayList<FluidStack> fluids = new ArrayList<>();
 
-            ArrayList<ItemStack> display = new ArrayList<>();
-
-            if (mAltFluidInputs != null && aIndex < mAltFluidInputs.length) {
-                FluidStack[] alts = mAltFluidInputs[aIndex];
-                if (alts != null) {
-                    for (FluidStack alt : alts) {
-                        if (alt != null && alt.getFluid() != null) {
-                            display.add(GTUtility.getFluidDisplayStack(alt, true));
+            if (mAltFluidInputs != null && index < mAltFluidInputs.length) {
+                FluidStack[] alternatives = mAltFluidInputs[index];
+                if (alternatives != null) {
+                    for (FluidStack alternative : alternatives) {
+                        if (alternative != null && alternative.getFluid() != null) {
+                            fluids.add(alternative);
                         }
                     }
                 }
             }
 
             // fallback
-            if (display.isEmpty()) {
+            if (fluids.isEmpty()) {
                 if (mainFluid.getFluid() == null) return null;
-                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+                fluids.add(mainFluid);
             }
 
-            return display;
+            return fluids;
         }
 
         @Override

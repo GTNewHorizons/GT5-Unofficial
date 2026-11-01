@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -10,6 +11,7 @@ import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.MTERocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
 
     public MTERocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {

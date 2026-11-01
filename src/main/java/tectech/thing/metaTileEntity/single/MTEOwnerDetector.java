@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -37,8 +38,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
     }
@@ -56,8 +56,10 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = TextureFactory.of(Textures.BlockIcons.custom("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory
+            .of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory
+            .of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OWNER_OFFLINE"));
     }
 
     @Override

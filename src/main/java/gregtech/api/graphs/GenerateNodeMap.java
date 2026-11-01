@@ -151,7 +151,7 @@ public abstract class GenerateNodeMap {
         for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
             if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;
             final TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(s);
-            if (tNewTileEntity == null) continue;
+            if (tNewTileEntity == null) return new Pair(aTileEntity, side);
             if (isPipe(tNewTileEntity)) {
                 aPipes.add(tMetaPipe);
                 return getNextValidTileEntity(tNewTileEntity, aPipes, s, aNodeMap);

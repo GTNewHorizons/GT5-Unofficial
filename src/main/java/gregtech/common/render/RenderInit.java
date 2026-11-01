@@ -11,7 +11,8 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
+import gregtech.api.enums.Textures;
 import gregtech.common.render.shader.ShaderProfile;
 import gregtech.common.render.shader.SharedShaders;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
@@ -47,6 +48,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
         onResourceReload(WormholeRenderer::reload);
         onResourceReload(BlackholeRenderer::reload);
         onResourceReload(MTEExoFoundry::reloadRender);
+        onResourceReload(GTRendererBlock::clearInventoryDisplayListCache);
 
         ((IReloadableResourceManager) Minecraft.getMinecraft()
             .getResourceManager()).registerReloadListener(INSTANCE);
@@ -60,6 +62,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent.Post event) {
         if (event.map.getTextureType() != 0) return;
+        Textures.GlobalIcons.invalidateMissingIconCache();
         pending = true;
     }
 
@@ -77,7 +80,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
             try {
                 hook.run();
             } catch (Throwable t) {
-                GTMod.GT_FML_LOGGER.error("Renderer asset load failed", t);
+                GTLoggers.GT_FML_LOGGER.error("Renderer asset load failed", t);
             }
         }
     }

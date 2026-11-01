@@ -4,13 +4,13 @@ import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,6 +21,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchEnergyDebugGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     public MTEHatchEnergyDebug(int aID, String aName, String aNameRegional, int aTier) {
@@ -29,6 +30,12 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     public MTEHatchEnergyDebug(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("gt.blockmachines.hatch.energy.debug.name");
     }
 
     @Override
@@ -74,9 +81,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.energy_hatch_debug.desc",
-            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorChrom));
+        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch_debug.desc");
     }
 
     @Override

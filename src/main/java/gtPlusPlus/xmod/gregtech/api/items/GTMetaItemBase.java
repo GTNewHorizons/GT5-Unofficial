@@ -35,7 +35,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public GTMetaItemBase(final String aUnlocalized) {
-        super(aUnlocalized, null, null);
+        super(aUnlocalized);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }

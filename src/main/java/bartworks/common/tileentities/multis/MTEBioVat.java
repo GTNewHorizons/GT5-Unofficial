@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -46,10 +47,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -57,6 +59,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -78,6 +81,7 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -93,10 +97,12 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -104,6 +110,7 @@ import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.GTplusplus;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -172,50 +179,27 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
-            .addSeparator()
-            .addInfo(
-                "Some recipes require " + EnumChatFormatting.GREEN
-                    + "R"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "A"
-                    + EnumChatFormatting.GREEN
-                    + "D"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "I"
-                    + EnumChatFormatting.GREEN
-                    + "A"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "T"
-                    + EnumChatFormatting.GREEN
-                    + "I"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "O"
-                    + EnumChatFormatting.GREEN
-                    + "N"
-                    + EnumChatFormatting.GRAY
-                    + " supplied with a "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Radio Hatch")
-            .addInfo("Radiation can be either a minimum requirement or an exact value")
-            .addInfo("Efficiency depends on Output Hatch fluid level")
-            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bacterial_vat"))
+            .addMarkdown(new ResourceLocation("gregtech", "bio-vat"),
+            ImmutableMap.of(
+                "eff_mult", formatNumber(Configuration.Multiblocks.bioVatMaxParallelBonus + 1)))
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front bottom center")
-            .addCasing("19-45", "Stainless Steel Machine Casing", false)
-            .addCasing("32", "Any Tiered Glass", true)
-            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputBus("0+", "Any casing", 1)
-            .addOutputHatch("1", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("19-45", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), anyCasing, 1)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addInputBus("0+", anyCasing, 1)
+            .addInputHatch("1+", anyCasing, 1)
+            .addOutputBus("0+", anyCasing, 1)
+            .addOutputHatch("1", anyCasing, 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -300,9 +284,35 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             @NotNull
             @Override
             protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
+                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids))
+                    .setRecipeLocked(null, false)
+                    .setInputConsumer((adjustedRecipe, amountMultiplier, fluids, items) -> {
+                        if (isRecipeLocked && getSingleRecipeCheck() == null) {
+                            ItemStack[] copiedItems = GTUtility.copyItemArray(items);
+                            FluidStack[] copiedFluids = GTUtility.copyFluidArray(fluids);
+                            SingleRecipeCheck.Builder builder = SingleRecipeCheck.builder(getRecipeMap())
+                                .setRecipe(recipe)
+                                .setBefore(copiedItems, copiedFluids);
+                            recipe.consumeInput(1, copiedFluids, copiedItems);
+                            setSingleRecipeCheck(
+                                builder.setAfter(copiedItems, copiedFluids)
+                                    .build());
+                        }
+                        adjustedRecipe.consumeInput(amountMultiplier, fluids, items);
+                    });
             }
         };
+    }
+
+    @Override
+    protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        SingleRecipeCheck check = super.loadSingleRecipeChecker(aNBT);
+        if (check == null) return null;
+        FluidStack inputFluid = check.getRecipe().mFluidInputs[0];
+        GTUtility.streamCompounds(aNBT.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
+            .filter(cost -> FluidRegistry.getFluid(cost.getString("id")) == inputFluid.getFluid())
+            .forEach(cost -> cost.setInteger("count", inputFluid.amount));
+        return super.loadSingleRecipeChecker(aNBT);
     }
 
     protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
@@ -792,7 +802,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
 
-        RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+        RadioHatch("GT5U.MBTT.RadioHatch", MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
 
             @Override
             public long count(MTEBioVat mteBioVat) {
@@ -800,11 +810,13 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEBioVat> adder;
 
         @SafeVarargs
-        RadioHatchElement(IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        RadioHatchElement(String name, IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -817,6 +829,16 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         @Override
         public IGTHatchAdder<? super MTEBioVat> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

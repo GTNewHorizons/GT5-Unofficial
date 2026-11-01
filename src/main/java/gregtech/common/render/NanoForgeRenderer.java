@@ -16,7 +16,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.render.shader.RenderState;
 import gregtech.common.render.shader.ShaderHandle;
 import gregtech.common.render.shader.SharedShaders;
@@ -61,7 +61,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             nanoforgeRingTwoModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-two.obj"), format);
             nanoforgeRingThreeModel = WavefrontVBOBuilder.compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/nano-forge-render-ring-three.obj"), format);
         } catch (RuntimeException e) {
-            GTMod.GT_FML_LOGGER.error("Failed to load nano forge models", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load nano forge models", e);
             deleteModels();
             return;
         }

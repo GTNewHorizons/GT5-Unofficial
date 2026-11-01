@@ -484,8 +484,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 9))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1))
+                GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2),
+                GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2))
             .outputChances(5000, 1000)
             .duration(24 * MINUTES)
             .eut(320)
@@ -494,8 +494,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 4))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1))
+                GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2),
+                GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2))
             .outputChances(2000, 3000)
             .duration(21 * MINUTES + 20 * SECONDS)
             .eut(640)

@@ -107,6 +107,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                 .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
                 .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
                 .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "ttt", "ttt", "ttt" }, }))
+                .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 3, 12)
                 .addElement(
                     'b',
                     ofChain(
@@ -197,7 +198,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Fluids are output one per layer based on the slot number in NEI")
             .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3f)
@@ -224,7 +225,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
         }
@@ -237,7 +238,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
@@ -394,8 +395,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15F : 1F);
-        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1F / 2F : 1F / 3F);
+        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15D : 1.0D);
+        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1.0D / 2.0D : 1.0D / 3.0D);
     }
 
     @Override
@@ -435,9 +436,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

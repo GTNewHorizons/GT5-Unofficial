@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import java.util.Collection;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
@@ -382,6 +383,12 @@ public class MTEModificationTable extends MetaTileEntity {
 
             for (BehaviorName required : augment.getRequiredBehaviors()) {
                 if (!state.hasBehavior(required)) return false;
+            }
+
+            Collection<BehaviorName> requiredOr = augment.getRequiredBehaviorsOr();
+            if (!requiredOr.isEmpty() && requiredOr.stream()
+                .noneMatch(state::hasBehavior)) {
+                return false;
             }
 
             for (BehaviorName incompatible : augment.getIncompatibleBehaviors()) {

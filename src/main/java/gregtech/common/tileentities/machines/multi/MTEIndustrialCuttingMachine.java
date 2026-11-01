@@ -24,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +44,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -68,7 +68,9 @@ import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
@@ -104,20 +106,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     public enum SawbladeTiers {
 
-        TungstenTitaniumCarbide(2, 2.5F, 0.9F, VoltageIndex.LuV, false),
-        MysteriousCrystal(3, 3.0F, 0.8F, VoltageIndex.UV, false),
-        Neutronium(4, 3.5F, 0.7F, VoltageIndex.UEV, false),
-        TranscendentMetal(6, 4.5F, 0.6F, Integer.MAX_VALUE, true);
+        TungstenTitaniumCarbide(2, 2.5D, 0.9D, VoltageIndex.LuV, false),
+        MysteriousCrystal(3, 3.0D, 0.8D, VoltageIndex.UV, false),
+        Neutronium(4, 3.5D, 0.7D, VoltageIndex.UEV, false),
+        TranscendentMetal(6, 4.5D, 0.6D, Integer.MAX_VALUE, true);
 
         final int parallelPerVoltageTier;
-        final float speedBoost, euModifier;
+        final double speedBoost, euModifier;
         final int maxAllowedEnergyHatchTier;
         final boolean supportsExotic;
 
-        SawbladeTiers(int parallelPerVoltageTier, float speedBoost, float euModifier, int maxAllowedEnergyHatchTier,
+        SawbladeTiers(int parallelPerVoltageTier, double speedBoost, double euModifier, int maxAllowedEnergyHatchTier,
             boolean supportsExotic) {
             this.parallelPerVoltageTier = parallelPerVoltageTier;
-            this.speedBoost = 1F / speedBoost;
+            this.speedBoost = 1.0D / speedBoost;
             this.euModifier = euModifier;
             this.maxAllowedEnergyHatchTier = maxAllowedEnergyHatchTier;
             this.supportsExotic = supportsExotic;
@@ -133,8 +135,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 "gt.sawblade.tooltip.base",
                 hatchTierLimit,
                 sawblade.parallelPerVoltageTier,
-                Math.round(1F / sawblade.speedBoost * 100),
-                Math.round(sawblade.euModifier * 100));
+                Math.round(1.0D / sawblade.speedBoost * 100D),
+                Math.round(sawblade.euModifier * 100D));
 
             if (sawblade.supportsExotic) {
                 tooltip = tooltip + "\\n" + StatCollector.translateToLocal("gt.sawblade.tooltip.exotic");
@@ -162,37 +164,26 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cutting Machine, ICF")
-            .addInfo(
-                "Requires a " + EnumChatFormatting.AQUA
-                    + "Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + " in the controller slot to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Transcendent Metal Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
-            .addInfo("Use screwdriver to disable sawblade rendering")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-cutting-machine"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
-            .addController("Front left, 2nd layer")
-            .addCasing("10-29", "Cutting Factory Frame", false)
-            .addCasing("18", "Tantalum Carbide Frame Box", false)
-            .addCasing("16", "Any Tiered Glass", false)
-            .addCasing("13", "Black Steel Sheetmetal", false)
-            .addEnergyHatch("1+", "Any cutting factory frame", 1)
-            .addMaintenanceHatch("1", "Any cutting factory frame", 1)
-            .addMufflerHatch("1", "Any cutting factory frame", 1)
-            .addInputBus("1+", "Any cutting factory frame", 1)
-            .addInputHatch("1+", "Any cutting factory frame", 1)
-            .addOutputBus("1+", "Any cutting factory frame", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("10-29", Casings.CuttingFactoryFrame.getLocalizedName(), false)
+            .addCasing("18", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.TANTALUM_CARBIDE), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("13", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.BlackSteel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -326,7 +317,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private double getSpeedBonus() {
         SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
-        if (sawbladeTier == null) return 1D;
+        if (sawbladeTier == null) return 1.0D;
         return sawbladeTier.speedBoost;
     }
 
@@ -458,21 +449,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
         SawbladeTiers sawbladeTier = getSawbladeTier(getControllerSlot());
-        data.setBoolean("stopAllRendering", stopAllRendering);
-        data.setBoolean("machineFormed", mMachine);
-        data.setInteger("renderSawbladeTier", sawbladeTier == null ? -1 : sawbladeTier.ordinal());
-        return data;
+        buffer.writeBoolean(stopAllRendering);
+        buffer.writeBoolean(mMachine);
+        buffer.writeInt(sawbladeTier == null ? -1 : sawbladeTier.ordinal());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        stopAllRendering = data.getBoolean("stopAllRendering");
-        mMachine = data.getBoolean("machineFormed");
-        renderSawbladeTier = data.getInteger("renderSawbladeTier");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        stopAllRendering = buffer.readBoolean();
+        mMachine = buffer.readBoolean();
+        renderSawbladeTier = buffer.readInt();
     }
 
     @SideOnly(Side.CLIENT)

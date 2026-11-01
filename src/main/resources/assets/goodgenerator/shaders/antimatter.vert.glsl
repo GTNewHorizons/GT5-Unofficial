@@ -9,7 +9,7 @@ uniform float u_ScaleSnapshot;
 uniform vec3 u_ColorCore;
 uniform vec3 u_ColorSpike;
 uniform float u_Time;
-uniform float u_TimeSnapshot;
+uniform float u_TransitionProgress;
 uniform mat4 u_ModelMatrix;
 
 float lazyHash(vec3 toHash){
@@ -28,8 +28,7 @@ void main() {
     vec3 currentCoreColor = mix(u_ColorCore,u_ColorSpike,triangle(mod((u_Time/4.0 + lazyHash(pos)/2.0),1.0)));
     v_Color = currentCoreColor;
 
-    float timelerp = clamp((u_Time-u_TimeSnapshot)/2.5,0.0,1.0);
-    float scale = mix(u_ScaleSnapshot,u_Scale,timelerp);
+    float scale = mix(u_ScaleSnapshot,u_Scale,u_TransitionProgress);
     mat4 mScale = mat4(
         scale,0,0,0,
         0,scale,0,0,

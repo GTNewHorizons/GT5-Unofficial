@@ -16,6 +16,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -24,6 +25,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 27.10.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeData extends MTEHatchDataInput {
 
     private long production = Long.MAX_VALUE;
@@ -43,7 +45,7 @@ public class MTEHatchCreativeData extends MTEHatchDataInput {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
             translateToLocal("gt.blockmachines.debug.tt.data.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.data.desc.2") };
     }

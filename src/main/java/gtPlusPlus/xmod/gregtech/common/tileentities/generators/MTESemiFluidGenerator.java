@@ -7,15 +7,18 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     public MTESemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
@@ -45,9 +48,10 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Produces " + addFormattedString(String.valueOf(this.getPollution())) + " pollution/sec",
-            "Fuel Efficiency: " + addFormattedString(String.valueOf(this.getEfficiency())) + "%%",
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.basicgenerator.semifluid.desc",
+                this.getPollution(),
+                this.getEfficiency()),
             GTPPCore.GT_Tooltip.get());
     }
 

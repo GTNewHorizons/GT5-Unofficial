@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
@@ -186,7 +187,8 @@ public class BlockBaseModular extends BasicBlock {
         int tier = this.material.tier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
 
-        this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
+        this.blockIcon = Textures.BlockIcons
+            .textureSetWithRegister(Mods.GregTech.resourceDomain, metType, "/" + aType, iIcon)
             .getIcon();
     }
 

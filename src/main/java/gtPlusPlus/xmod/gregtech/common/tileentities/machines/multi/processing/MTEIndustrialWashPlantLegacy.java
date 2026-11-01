@@ -240,7 +240,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
         }.noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
+            .setSpeedBonus(1.0D / 5.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -385,9 +385,8 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

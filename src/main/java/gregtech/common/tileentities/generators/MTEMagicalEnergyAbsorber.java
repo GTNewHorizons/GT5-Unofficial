@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_DRAGONEGG;
@@ -42,6 +43,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Enums;
 
@@ -55,9 +57,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -400,7 +400,12 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.magicFuels;
+        return null;
+    }
+
+    @Override
+    public long getFuelValue(FluidStack aLiquid, boolean aLong) {
+        return 0;
     }
 
     @Override
@@ -763,7 +768,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             int tTier = (mTier + aOffset + tNumTiers) % tNumTiers;
             int tTrueTier = setTier(tTier);
             if (tTier != tTrueTier) {
-                GTLog.out.format("Absorber's BB Tier set to %d was capped to %d", tTier, tTrueTier);
+                GT_FML_LOGGER.debug("Absorber's BB Tier set to {} was capped to {}", tTier, tTrueTier);
             }
         }
     }

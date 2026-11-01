@@ -56,7 +56,11 @@ public class Textures {
         RENDERING_ERROR(null, null),
         VOID(InvisibleIcon.INVISIBLE_ICON, InvisibleIcon.INVISIBLE_ICON);
 
-        IIcon mIcon, mOverlay;
+        // Atlas sprites are replaced during stitching
+        // RenderInit clears this after the block atlas rebuilds
+        private static IIcon missingIcon;
+
+        private final IIcon mIcon, mOverlay;
 
         GlobalIcons(IIcon icon, IIcon overlay) {
             mIcon = icon;
@@ -65,14 +69,18 @@ public class Textures {
 
         @Override
         public IIcon getIcon() {
-            if (mIcon == null) mIcon = getMissingNo();
+            if (mIcon == null) return getMissingNo();
             return mIcon;
         }
 
         @Override
         public IIcon getOverlayIcon() {
-            if (mOverlay == null) mOverlay = getMissingNo();
+            if (mOverlay == null) return getMissingNo();
             return mOverlay;
+        }
+
+        public static void invalidateMissingIconCache() {
+            missingIcon = null;
         }
 
         @Override
@@ -81,9 +89,12 @@ public class Textures {
         }
 
         private static IIcon getMissingNo() {
-            return ((TextureMap) Minecraft.getMinecraft()
-                .getTextureManager()
-                .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+            if (missingIcon == null) {
+                missingIcon = ((TextureMap) Minecraft.getMinecraft()
+                    .getTextureManager()
+                    .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+            }
+            return missingIcon;
         }
     }
 
@@ -328,6 +339,7 @@ public class Textures {
             MACHINE_DIM_TRANS_CASING = create("MACHINE_DIM_TRANS_CASING"),
             MACHINE_DIM_INJECTOR = create("MACHINE_DIM_INJECTOR"),
             MACHINE_DIM_BRIDGE = create("MACHINE_DIM_BRIDGE"),
+            MACHINE_DIM_BRIDGE_CONVERGENCE = create("MACHINE_DIM_BRIDGE_CONVERGENCE"),
             MACHINE_COIL_SUPERCONDUCTOR = create("MACHINE_COIL_SUPERCONDUCTOR"),
 
             MACHINE_BRONZEBLASTFURNACE = createOptional("MACHINE_BRONZEBLASTFURNACE"),
@@ -490,6 +502,9 @@ public class Textures {
             MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION = create("MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION"),
             ALGAE_CASING = create("ALGAE_CASING"),
             NAQUADAH_REACTOR_CASING = create("NAQUADAH_REACTOR_CASING"),
+
+            TENSION_RESISTANT_MACHINE_CASING = create("TENSION_RESISTANT_MACHINE_CASING"),
+            EXTRUDER_MACHINE_CASING = create("EXTRUDER_MACHINE_CASING"),
 
             MACHINE_CASING_FRIDGE_TOP = create("MACHINE_CASING_FRIDGE_TOP"),
             MACHINE_CASING_FRIDGE_SIDE = create("MACHINE_CASING_FRIDGE_SIDE"),
@@ -1488,6 +1503,9 @@ public class Textures {
             OVERLAY_HATCH_CONDENSATE_DETECTOR = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR"),
             OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW"),
 
+            OVERLAY_HATCH_IO_NODE_CONTROLLER = createOptional("OVERLAY_HATCH_IO_NODE_CONTROLLER"),
+            OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW = createOptional("OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW"),
+
             OVERLAY_ADV_PUMP = createOptional("OVERLAY_ADV_PUMP"),
             OVERLAY_TELEPORTER = createOptional("OVERLAY_TELEPORTER"),
             OVERLAY_TELEPORTER_GLOW = createOptional("OVERLAY_TELEPORTER_GLOW"),
@@ -1971,6 +1989,23 @@ public class Textures {
             OVERLAY_ME_CRAFTING_INPUT_BUFFER = createOptional("OVERLAY_ME_CRAFTING_INPUT_BUFFER"),
             OVERLAY_ME_CRAFTING_INPUT_BUS = createOptional("OVERLAY_ME_CRAFTING_INPUT_BUS"),
             OVERLAY_ME_CRAFTING_INPUT_SLAVE = createOptional("OVERLAY_ME_CRAFTING_INPUT_SLAVE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_NONE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_NONE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_BLACK = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_BLACK"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_RED = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_RED"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_GREEN = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_GREEN"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_BROWN = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_BROWN"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_BLUE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_BLUE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_PURPLE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_PURPLE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_CYAN = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_CYAN"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTGRAY = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTGRAY"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_GRAY = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_GRAY"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_PINK = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_PINK"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_LIME = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_LIME"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_YELLOW = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_YELLOW"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTBLUE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTBLUE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_MAGENTA = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_MAGENTA"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_ORANGE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_ORANGE"),
+            OVERLAY_ME_CRAFTING_INPUT_COLOR_WHITE = createOptional("OVERLAY_ME_CRAFTING_INPUT_COLOR_WHITE"),
             OVERLAY_ME_CRAFTING_HATCH = createOptional("OVERLAY_ME_CRAFTING_HATCH"),
             OVERLAY_ME_CRAFTING_HATCH_ACTIVE = createOptional("OVERLAY_ME_CRAFTING_HATCH_ACTIVE"),
             OVERLAY_ME_FLUID_HATCH = createOptional("OVERLAY_ME_FLUID_HATCH"),
@@ -2216,10 +2251,10 @@ public class Textures {
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR = createOptional("OVERLAY_FRONT_SMD_PROCESSOR"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE"),
-            OVERLAY_FRONT_SMD_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR = createOptional("OVERLAY_FRONT_PART_PROCESSOR"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE"),
+            OVERLAY_FRONT_PART_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_SPLITTER = createOptional("OVERLAY_FRONT_SPLITTER"),
             OVERLAY_FRONT_SPLITTER_ACTIVE = createOptional("OVERLAY_FRONT_SPLITTER_ACTIVE"),
             OVERLAY_FRONT_SPLITTER_GLOW = createOptional("OVERLAY_FRONT_SPLITTER_GLOW"),
@@ -2279,6 +2314,15 @@ public class Textures {
                 OVERLAY_PIPE_COLOR_CYAN, OVERLAY_PIPE_COLOR_LIGHTGRAY, OVERLAY_PIPE_COLOR_GRAY, OVERLAY_PIPE_COLOR_PINK,
                 OVERLAY_PIPE_COLOR_LIME, OVERLAY_PIPE_COLOR_YELLOW, OVERLAY_PIPE_COLOR_LIGHTBLUE,
                 OVERLAY_PIPE_COLOR_MAGENTA, OVERLAY_PIPE_COLOR_ORANGE, OVERLAY_PIPE_COLOR_WHITE, },
+            OVERLAY_ME_CRAFTING_INPUT_COLORS = { OVERLAY_ME_CRAFTING_INPUT_COLOR_NONE,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_BLACK, OVERLAY_ME_CRAFTING_INPUT_COLOR_RED,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_GREEN, OVERLAY_ME_CRAFTING_INPUT_COLOR_BROWN,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_BLUE, OVERLAY_ME_CRAFTING_INPUT_COLOR_PURPLE,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_CYAN, OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTGRAY,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_GRAY, OVERLAY_ME_CRAFTING_INPUT_COLOR_PINK,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_LIME, OVERLAY_ME_CRAFTING_INPUT_COLOR_YELLOW,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_LIGHTBLUE, OVERLAY_ME_CRAFTING_INPUT_COLOR_MAGENTA,
+                OVERLAY_ME_CRAFTING_INPUT_COLOR_ORANGE, OVERLAY_ME_CRAFTING_INPUT_COLOR_WHITE, },
             OVERLAY_INPUT_HATCH_2x2_COLORS = { OVERLAY_INPUT_HATCH_2x2_NONE, OVERLAY_INPUT_HATCH_2x2_BLACK,
                 OVERLAY_INPUT_HATCH_2x2_RED, OVERLAY_INPUT_HATCH_2x2_GREEN, OVERLAY_INPUT_HATCH_2x2_BROWN,
                 OVERLAY_INPUT_HATCH_2x2_BLUE, OVERLAY_INPUT_HATCH_2x2_PURPLE, OVERLAY_INPUT_HATCH_2x2_CYAN,
@@ -2678,64 +2722,90 @@ public class Textures {
         /**
          * Registers a Custom Block {@link IIconContainer}
          *
-         * @param aIconName The unique identifier of the icon container.
+         * @param domain    The resource domain
+         * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return custom(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
+        public static @NotNull IIconContainer customOptional(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomOptionalBlockIconContainer.create(domain, aIconName);
+        }
+
+        /**
+         * @deprecated This method is a stub for external mods calling the old API
+         */
+        @Deprecated
         public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            return GTCustomOptionalBlockIconContainer.create(aIconName);
+            ResourceLocation location = aIconName.indexOf(':') < 0 ? Mods.GregTech.getResourceLocation(aIconName)
+                : new ResourceLocation(aIconName);
+            return customOptional(location.getResourceDomain(), location.getResourcePath());
         }
 
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1)
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
-            return GTCustomAlphaBlockIconContainer.create(aIconName);
+        public static @NotNull IIconContainer customAlpha(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomAlphaBlockIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
          * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
          *
-         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         * @param domain    The resource domain of the texture
+         * @param aIconName The colon-free {@code path/name} icon path<br>
          *                  (see: {@link IIconRegister#registerIcon}).
          * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer customAlphaFallback(@NotNull String aIconName,
+        public static @NotNull IIconContainer customAlphaFallback(@NotNull String domain, @NotNull String aIconName,
             @NotNull IIconContainer fallback) {
-            return GTCustomAlphaFallbackBlockIconContainer.create(aIconName, fallback);
+            return GTCustomAlphaFallbackBlockIconContainer.create(domain, aIconName, fallback);
         }
 
         /**
          * Registers a Block {@link IIconContainer} for a {@link TextureSet}
          *
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param domain  The resource domain
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2819,6 +2889,11 @@ public class Textures {
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
             MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
+            MASK_SUPERMASSIVE = create("MASK_SUPERMASSIVE"),
+            MASK_STRANDS = create("MASK_STRANDS"),
+            MASK_SPOOL = create("MASK_SPOOL"),
+            MASK_HARMONY = create("MASK_HARMONY"),
+            MASK_ENCASEMENT = create("MASK_ENCASEMENT"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
@@ -2840,29 +2915,32 @@ public class Textures {
          * Each custom item icon consists of a main icon, an overlay, or both.
          * At least one of the icon or overlay must be present; individually, each is optional.
          *
-         * @param aIconName The unique identifier of the custom item icon container.
+         * @param domain    The resource domain.
+         * @param aIconName The colon-free resource path of the custom item icon container.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return GTCustomItemIconContainer.create(aIconName);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName) {
+            return GTCustomItemIconContainer.create(domain, aIconName);
         }
 
         /**
          * Registers a Item {@link IIconContainer} for a {@link TextureSet}
          *
-         * @param setName The name of the TextureSet
-         * @param prefix  The prefix for the file name
+         * @param domain  The resource domain
+         * @param setName The colon-free name of the TextureSet
+         * @param prefix  The colon-free prefix for the file name
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, null);
         }
 
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
-            IIconRegister register) {
-            return GTTextureSetItemIconContainer.create(setName, prefix, register);
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
+            @NotNull String prefix, IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(domain, setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
