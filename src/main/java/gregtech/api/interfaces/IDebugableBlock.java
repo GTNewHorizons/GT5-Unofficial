@@ -12,10 +12,6 @@ import net.minecraft.util.IChatComponent;
 public interface IDebugableBlock {
 
     /**
-     * Deprecated. This function returns a String directly, preventing the text from being translated on the client.
-     * Please use {@link getDebugInfoChat} instead.
-     * <br>
-     *
      * Returns a Debug Message, for a generic DebugItem Blocks have to implement this interface NOT TileEntities!
      *
      * @param aPlayer   the Player, who right-clicked with his Debug Item
@@ -25,6 +21,9 @@ public interface IDebugableBlock {
      * @param aLogLevel the Log Level of the Debug Item. 0 = Obvious 1 = Visible for the regular Scanner 2 = Only
      *                  visible to more advanced Scanners 3 = Debug ONLY
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
+     *
+     * @deprecated This function returns a String directly, preventing the text from being translated on the client.
+     *             Please use {@link getDebugInfoChat} instead.
      */
     @Deprecated
     default ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
@@ -43,6 +42,7 @@ public interface IDebugableBlock {
      * @return a ChatComponent-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
     default ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        // Fall back to the old method if this method is not overridden.
         ArrayList<String> chats = this.getDebugInfo(aPlayer, aX, aY, aZ, aLogLevel);
         if (chats == null) return new ArrayList<>();
         return chats.stream()

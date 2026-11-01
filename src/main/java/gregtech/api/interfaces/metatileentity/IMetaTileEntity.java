@@ -363,10 +363,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean doTickProfilingMessageDuringThisTick();
 
     /**
-     * Deprecated. This function returns a String directly, preventing the text from being translated on the client.
-     * Please use {@link getSpecialDebugInfoChat} instead.
-     * <br>
      * returns the DebugLog
+     *
+     * @deprecated This function returns a String directly, preventing the text from being translated on the client.
+     *             Please use {@link getSpecialDebugInfoChat} instead.
      */
     @Deprecated
     default ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
@@ -375,7 +375,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     /**
-     * returns the DebugLog
+     * @return the DebugLog
      */
     default ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
         EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
