@@ -299,7 +299,7 @@ public class ArmorState {
         return state;
     }
 
-    private static final String[] KEPT_TAGS = { "display", "ench" };
+    private static final String[] KEPT_TAGS = { "display", "ench", "Lens", "LensIndex" };
 
     public static void save(ArmorContext context) {
         NBTTagCompound oldTag = context.getArmorStack()

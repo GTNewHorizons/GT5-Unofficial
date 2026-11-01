@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -113,11 +114,11 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             "euPerTickX20",
             formatNumber(EU_PER_TICK * 20),
             "euPerTick",
-            EU_PER_TICK,
+            formatNumber(EU_PER_TICK),
             "steamPerSec",
-            STEAM_PER_SEC,
+            formatNumber(STEAM_PER_SEC),
             "oxygenPerSec",
-            OXYGEN_PER_SEC);
+            formatNumber(OXYGEN_PER_SEC));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk1"), vars)
             .beginStructureBlock(3, 3, 5, false)
@@ -126,9 +127,9 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
             .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK1.electrolyte_unit"), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputHatch("1+", anyCasingText(), 1)
+            .addOutputHatch("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();

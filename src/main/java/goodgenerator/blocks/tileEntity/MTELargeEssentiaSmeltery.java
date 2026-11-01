@@ -25,7 +25,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -40,11 +39,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
 import gregtech.GTMod;
@@ -68,6 +62,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTELargeEssentiaSmelteryGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.Pollution;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -254,6 +250,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addMiscHatch("1+", StatCollector.translateToLocal("essentiaOutputHatch.0.name"), StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.LES_ESSENTIA_CELL)
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         // spotless:on
@@ -309,22 +306,6 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                            "gg.gui.text.large_essentia_smeltery.requires",
-                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
-                                + EnumChatFormatting.WHITE))
-                    .setTextAlignment((Alignment.CenterLeft)))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
-    }
-
-    @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         if (!isFullPower()) return SimpleCheckRecipeResult.ofFailure("node_too_small");
 
@@ -369,7 +350,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
                 break;
             } else {
                 this.mOutputAspects.add(getEssentia(fluidStack, p));
-                fluidStack.amount -= p;
+                fluidStack.amount -= p * 1000;
                 break;
             }
         }
@@ -436,7 +417,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         this.mOutputAspects.aspects.clear();
     }
 
-    private int expectedPower() {
+    public int expectedPower() {
         int maxEnergyInputTier_EM = this.getMaxEnergyInputTier_EM();
         return (int) (maxEnergyInputTier_EM * maxEnergyInputTier_EM * NODE_COST_MULTIPLIER);
     }
@@ -629,5 +610,20 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeEssentiaSmelteryGui(this);
     }
 }

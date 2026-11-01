@@ -39,8 +39,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -60,7 +60,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -287,7 +286,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public void clearHatches() {
         super.clearHatches();
+        // Electrode hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        if (electrodeHatch != null) {
+            electrodeHatch.updateCraftingIcon(null, getBaseMetaTileEntity());
+        }
         electrodeHatch = null;
+        clearCraftingIcons(electrodeDetectorHatch);
         electrodeDetectorHatch.clear();
     }
 
@@ -298,7 +302,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchElectrode hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             electrodeHatch = hatch;
             return true;
         }
@@ -311,7 +315,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchElectrodeDetector hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             electrodeDetectorHatch.add(hatch);
             return true;
         }
@@ -1018,7 +1022,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     enum ArcFurnaceHatches implements IHatchElement<MTEIndustrialArcFurnace> {
 
-        ElectrodeHatch(MTEIndustrialArcFurnace::addElectrodeHatchToMachineList, MTEHatchElectrode.class) {
+        ElectrodeHatch("GT5U.MBTT.ElectrodeHatch", MTEIndustrialArcFurnace::addElectrodeHatchToMachineList,
+            MTEHatchElectrode.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {
@@ -1026,8 +1031,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 return 1;
             }
         },
-        ElectrodeDetectorHatch(MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
-            MTEHatchElectrodeDetector.class) {
+        ElectrodeDetectorHatch("GT5U.MBTT.ElectrodeDetectorHatch",
+            MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList, MTEHatchElectrodeDetector.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {
@@ -1035,12 +1040,14 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
         },;
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEIndustrialArcFurnace> adder;
 
         @SafeVarargs
-        ArcFurnaceHatches(IGTHatchAdder<MTEIndustrialArcFurnace> adder,
+        ArcFurnaceHatches(String name, IGTHatchAdder<MTEIndustrialArcFurnace> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1054,16 +1061,21 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         public IGTHatchAdder<? super MTEIndustrialArcFurnace> adder() {
             return adder;
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
     @Override
     protected @NotNull String[] getCreditsText() {
-        return new String[] {
-            translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba),
-            translateToLocalFormatted("kubatech.gui.tooltip.contributors.design", GTAuthors.AuthorPxx500),
-            translateToLocalFormatted(
-                "kubatech.gui.tooltip.contributors.structure",
-                EnumChatFormatting.LIGHT_PURPLE + "Sol_IX") };
+        return new String[] { translateToLocalFormatted("kubatech.gui.tooltip.contributors.structure", "Sol_IX") };
     }
 
 }

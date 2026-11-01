@@ -127,13 +127,10 @@ tooltip.rotor.3.name=Скорость:
 tooltip.rotor.4.name=Выход:
 tooltip.cp.0.name=Имеет Схему внутри?
 
-tooltip.bw.0.name=Добавлено
-tooltip.bw.1.name=Добавлено §abartimaeusnek -
 tooltip.bw.yes.name=Да
 tooltip.bw.no.name=Нет
 tooltip.bw.tier.name=Тир:
 tooltip.bw.empty.name=Пусто
-tooltip.bw.mb_via.name=%s§7 через §2BartWorks
 
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
@@ -262,10 +259,22 @@ BW.NEI.display.radhatch.0=Зиверт: %s Sv
 BW.NEI.display.radhatch.1=Масса: %s кг
 BW.NEI.display.radhatch.2=Время: %s сек
 
-tooltip.cal.imprintedWith=Imprinted with: %s
+tooltip.cal.imprintedWith=Imprinted with: §e%s
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем
 #Liquids
+
+# bio name
+bw.bioname.barnadafis_arboriatoris=Barnadafis Arboriatoris
+bw.bioname.tcetieis_fucus_serratus=TCetiEis Fucus Serratus
+bw.bioname.corynebacterium_sludge_marsensis=Коринебактерии осадок Marsensis
+bw.bioname.xenoxene_xenoxsis=Xenoxene Xenoxsis
+bw.bioname.ova_evolutionis=Ova Evolutionis
+bw.bioname.derivantur_cellula_evolutionis=Derivantur Cellula Evolutionis
+bw.bioname.cellula_biologicum_evolutione=Cellula Biologicum Evolutione
+bw.bioname.binni_growth_medium=Binni питательная среда
+bw.bioname.binni_bacteria=Binni бактерия
+bw.bioname.mutagen_bacteria_a_spatio=Мутагенные бактерии Spatio
 
 # Multiblocks
 gt.blockmachines.bw.biovat.name=Бактериальный чан

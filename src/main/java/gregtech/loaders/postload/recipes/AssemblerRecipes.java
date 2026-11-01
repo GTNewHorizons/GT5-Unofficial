@@ -2570,14 +2570,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 8))
-            .circuit(8)
-            .itemOutputs(GTModHandler.getIC2Item("machine", 1))
-            .duration(1 * SECONDS + 5 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_ULV.get(1))
@@ -3422,6 +3414,18 @@ public class AssemblerRecipes implements Runnable {
             .circuit(17)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV / 4)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_Screen.get(1),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
+                ItemList.Sensor_EV.get(2),
+                ItemList.Emitter_EV.get(2))
+            .itemOutputs(ItemList.Item_Redstone_Sniffer.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
     }
 
