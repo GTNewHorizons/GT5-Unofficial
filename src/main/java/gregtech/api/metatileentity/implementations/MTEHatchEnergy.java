@@ -16,11 +16,14 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchEnergyGui;
 
@@ -114,8 +117,11 @@ public class MTEHatchEnergy extends MTEHatch {
         return acceptsFuse && getFuseTier(mInventory[FUSE_SLOT]) == mTier;
     }
 
+    /**
+     * Replaces the fuse with the tiny pile of glass dust left over from it.
+     */
     public void blowFuse() {
-        mInventory[FUSE_SLOT] = null;
+        mInventory[FUSE_SLOT] = GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 1L);
         markDirty();
     }
 
