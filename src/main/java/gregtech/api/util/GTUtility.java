@@ -89,7 +89,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentStyle;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -578,16 +577,43 @@ public class GTUtility {
         player.addChatComponentMessage(component);
     }
 
-    public static IChatComponent styledComp(ChatComponentStyle comp, EnumChatFormatting style) {
+    /**
+     * Applies a style to a chat component.
+     * <br>
+     * If you want to apply a single style to a component, such as color, bold, or italic, this function can save you
+     * some boilerplate code. However, if you need to apply multiple styles, please use
+     * {@link IChatComponent#setChatStyle} directly.
+     * <br>
+     * We didn't add overloads that accept String arguments because that could easily be misused.
+     *
+     * @param comp  the chat component to be styled
+     * @param style the style to be applied
+     * @return the styled chat component
+     */
+    public static IChatComponent styledComp(IChatComponent comp, EnumChatFormatting style) {
+        // Even when bold or italic is passed as an argument, setColor still works correctly. The trade-off is that only
+        // one style can be applied at a time.
         return comp.setChatStyle(new ChatStyle().setColor(style));
     }
 
-    public static IChatComponent styledComp(String text, EnumChatFormatting style) {
-        return new ChatComponentText(text).setChatStyle(new ChatStyle().setColor(style));
-    }
-
+    /**
+     * Same as {@link #styledComp(IChatComponent, EnumChatFormatting)}, but accepts a Number instead of a
+     * {@link IChatComponent}.
+     * <br>
+     * We often want to highlight numeric values used as variables in chat messages with colors. This helper can save
+     * you a lot of boilerplate code. However, if you need to apply multiple styles, please use setChatStyle directly.
+     *
+     * @param number the number to be converted to a chat component and styled
+     * @param style  the style to be applied
+     * @return the styled chat component
+     */
     public static IChatComponent styledComp(Number number, EnumChatFormatting style) {
-        return new ChatComponentNumber(number).setChatStyle(new ChatStyle().setColor(style));
+        // The reason we set the component's style directly instead of adding formatting codes like §b before the
+        // placeholder in the lang file is that:
+        // In ChatComponentTranslation, if an argument used to replace a placeholder does not have an explicitly set
+        // style, it inherits the style of its parent component. Therefore, setting a color in the lang file before a
+        // placeholder will have no effect.
+        return styledComp(new ChatComponentNumber(number), style);
     }
 
     public static void sendMessageInRadius(World world, double x, double y, double z, double range,

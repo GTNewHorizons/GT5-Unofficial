@@ -320,15 +320,13 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (aLogLevel > 3) {
             tList.add(
                 new ChatComponentTranslation(
-                    "GT5U.scanner.debug.meta_id",
-                    GTUtility.styledComp(String.valueOf(mID), EnumChatFormatting.BLUE),
+                    "GT5U.scanner.debug.meta_id.v2",
+                    GTUtility.styledComp(new ChatComponentText(String.valueOf(mID)), EnumChatFormatting.BLUE),
                     new ChatComponentTranslation(
-                        hasValidMetaTileEntity() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"))
-                            .appendText(" ")
-                            .appendSibling(
-                                (mMetaTileEntity == null
-                                    ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
-                                    : new ChatComponentText(" "))));
+                        hasValidMetaTileEntity() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"),
+                    (mMetaTileEntity == null
+                        ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
+                        : new ChatComponentText(""))));
         }
         if (aLogLevel > 1) {
             addProfilingInformation(tList);
