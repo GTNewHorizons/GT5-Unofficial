@@ -3,6 +3,7 @@ package gregtech.loaders.postload.chains;
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
@@ -190,11 +191,8 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(electricImplosionCompressorRecipes);
 
-            ItemStack dragonstoneLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dragonstone, 1);
-            dragonstoneLens.stackSize = 0;
-
             GTValues.RA.stdBuilder() // Engraving
-                .itemInputs(ItemList.Dim_Prismarine.get(16), dragonstoneLens)
+                .itemInputs(ItemList.Dim_Prismarine.get(16), getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0))
                 .fluidInputs(Materials.Strontium.getMolten(144))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
                 .duration(1 * SECONDS)
@@ -205,8 +203,8 @@ public class NetheriteRecipes {
                 GTValues.RA.stdBuilder() // Engraving with Comb
                     .itemInputs(
                         ItemList.Dim_Prismarine.get(16),
-                        dragonstoneLens,
-                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16))
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16),
+                        getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0))
                     .fluidInputs(Materials.Strontium.getMolten(144))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 32))
                     .duration(1 * SECONDS)
