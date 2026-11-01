@@ -2409,6 +2409,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_LAMBDA = fullImage(
         GTNHLanthanides.ID,
         "items/particle/lambda");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PION = fullImage(GTNHLanthanides.ID, "items/particle/pion");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUON = fullImage(GTNHLanthanides.ID, "items/particle/muon");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO = fullImage(
         GTNHLanthanides.ID,
@@ -2430,6 +2431,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_UPSILON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/upsilon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_GLUEBALL = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/glueball");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_WBOSON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/wboson");

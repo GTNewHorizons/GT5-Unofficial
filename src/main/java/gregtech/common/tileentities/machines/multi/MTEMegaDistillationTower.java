@@ -30,6 +30,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -85,6 +86,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int LAYER_OFFSET_BASE = 9;
     private static final int LAYER_OFFSET_INCREMENT = 6;
     private static final int FINAL_LAYER_OFFSET = 12;
+    private static final int[][] TOP_ROOF_CASINGS = { { 4, 6, 4 }, { 6, 6, 2 }, { 8, 6, 4 }, { 6, 6, 6 } };
 
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_TOP = "top";
@@ -238,12 +240,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 break; // needed to break out of the loop in the case the structure isn't max height.
             }
 
+            boolean reportTopErrors = this.height == 5 || hasRoofCasings(baseMTE);
             if (checkPiece(
                 STRUCTURE_PIECE_TOP,
                 HORIZONTAL_OFFSET,
                 FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + (LAYER_OFFSET_INCREMENT * (height)),
                 DEPTH_OFFSET,
-                null)) {
+                reportTopErrors ? errors : null)) {
                 this.isTopLayerFound = true;
                 int topHatchIndex = (this.height) * 2;
                 if (this.outputHatchesPerLayer.size() < topHatchIndex + 1
@@ -251,6 +254,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                         .isEmpty()) {
                     missingLayers.add(height + 1);
                 }
+            } else if (reportTopErrors) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
+                return;
             }
             if (!checkPiece(
                 STRUCTURE_PIECE_LAYER,
@@ -283,6 +289,26 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasAnyEnergy(errors);
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
+    }
+
+    private boolean hasRoofCasings(IGregTechTileEntity baseMTE) {
+        World world = baseMTE.getWorld();
+        int topOffset = FINAL_LAYER_OFFSET + LAYER_OFFSET_BASE + LAYER_OFFSET_INCREMENT * this.height;
+        int matchingCasings = 0;
+        int[] worldOffset = new int[3];
+        for (int[] casing : TOP_ROOF_CASINGS) {
+            getExtendedFacing().getWorldOffset(
+                new int[] { casing[0] - HORIZONTAL_OFFSET, casing[1] - topOffset, casing[2] - DEPTH_OFFSET },
+                worldOffset);
+            int x = baseMTE.getXCoord() + worldOffset[0];
+            int y = baseMTE.getYCoord() + worldOffset[1];
+            int z = baseMTE.getZCoord() + worldOffset[2];
+            if (Casings.CleanStainlessSteelMachineCasing
+                .matches(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) {
+                matchingCasings++;
+            }
+        }
+        return matchingCasings >= 2;
     }
 
     @Override

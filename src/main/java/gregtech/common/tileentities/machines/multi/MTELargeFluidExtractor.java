@@ -338,19 +338,19 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus",
                 YELLOW,
-                getCoilSpeedBonus() * 100,
+                formatNumber(getCoilSpeedBonus() * 100),
                 RESET));
         data.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.large_fluid_extractor.total_speed_multiplier",
                 YELLOW,
-                (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
+                formatNumber((BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100),
                 RESET));
         data.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.large_fluid_extractor.total_eu_multiplier",
                 YELLOW,
-                getEUMultiplier() * 100,
+                formatNumber(getEUMultiplier() * 100),
                 RESET));
 
         return data.toArray(new String[0]);
