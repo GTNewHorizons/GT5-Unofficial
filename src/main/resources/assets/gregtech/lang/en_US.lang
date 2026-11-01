@@ -273,6 +273,7 @@ gt.blockmachines.long_distance_pipeline.desc=Only one Input and Output are allow
 gt.blockmachines.dynamo_hatch.desc=Generating electric Energy from Multiblocks\nPuts out up to 1 Amp
 gt.blockmachines.dynamo_hatch_buffer.desc=Dynamo with internal storage and additional Amp capacity\nDoes not accept more than %sEU/t as input
 gt.blockmachines.energy_hatch.desc=Energy Injector for Multiblocks\nAccepts up to 2 Amps
+gt.blockmachines.energy_hatch.fuse.desc=Holds one Energy Hatch Fuse of its tier\nIf every Energy Hatch has one, a power failure blows them instead of voiding the recipe
 gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
 gt.blockmachines.energy_hatch_debug.desc=§7Buffers EU internally\n§7Configure Amps and Voltage in the UI\n§o/gt global_energy_set Develo-... begone!
 gt.blockmachines.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %s L
@@ -3520,6 +3521,7 @@ GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
 GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
 GT5U.gui.text.shutdown_reason.power_loss=§4Shut down due to power loss.
+GT5U.gui.text.recipe_held_by_fuses=§6The energy hatch fuses saved the recipe. Restart the machine to continue.
 GT5U.gui.text.no_void_mining=§4Cannot void mine this dimension (%s).
 GT5U.gui.text.shutdown_reason.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Failed to output all the fluids.
@@ -6908,6 +6910,8 @@ gt.item.phononic_seed_crystal.name=Phononic Seed Crystal
 gt.item.phononic_seed_crystal.tooltip=Perfect Thermal Conductance
 gt.item.harmonic_compound.name=Harmonic Compound
 gt.item.harmonic_compound.tooltip=Toxic violet with a red haze
+gt.item.energy_hatch_fuse.name=Energy Hatch Fuse (%s)
+gt.item.energy_hatch_fuse.tooltip=Fits a %s Energy Hatch. Blows on a power failure to save the recipe.
 
 ## Netherite stuff
 gt.item.heavy_hellish_mud.name=Heavy Hellish Mud

@@ -184,6 +184,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
+import static gregtech.common.items.IDMetaItem03.Energy_Hatch_Fuse_ULV;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.Gravitational_Lens;
@@ -329,6 +330,7 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.client.GTTooltipHandler;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -336,6 +338,7 @@ import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
+import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.render.items.UniversiumMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -2021,6 +2024,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.realized_quantum_circuit_rack.tooltip"));
 
         registerMetaMaterials();
+        registerEnergyHatchFuses();
 
         registerAllTieredTooltips();
         initOrePrefixes();
@@ -2123,6 +2127,22 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             String nameKey = "gt.item.meta_material." + baseKey + "." + adjectives[tier] + ".name";
             slot.set(addItem(id, $ -> StatCollector.translateToLocal(nameKey), $ -> ""));
         }
+    }
+
+    private void registerEnergyHatchFuses() {
+        for (int tier = 0; tier < ItemList.ENERGY_HATCH_FUSES.length; tier++) {
+            ItemList.ENERGY_HATCH_FUSES[tier].set(
+                addItemWithLocalizationKeysAndArgs(
+                    Energy_Hatch_Fuse_ULV.ID + tier,
+                    "gt.item.energy_hatch_fuse.name",
+                    new Object[] { GTValues.VN[tier] },
+                    "gt.item.energy_hatch_fuse.tooltip",
+                    new Object[] { GTValues.VN[tier] }));
+            registerTieredTooltip(ItemList.ENERGY_HATCH_FUSES[tier].get(1), GTTooltipHandler.Tier.values()[tier]);
+        }
+        ItemList.Energy_Hatch_Fuse_UHV.setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Energy_Hatch_Fuse_UEV.setRender(new InfinityMetaItemRenderer());
+        ItemList.Energy_Hatch_Fuse_UIV.setRender(new TranscendentalMetaItemRenderer());
     }
 
     private void registerAllTieredTooltips() {
