@@ -546,8 +546,6 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
         ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
         ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
-        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
-        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
         ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
         ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
@@ -964,6 +962,7 @@ public class GTProxy implements IFuelHandler {
 
         VacuumFactoryGrid.onServerClosed();
         BECFactoryGrid.onServerClosed();
+        WirelessDataStore.onServerClosed();
     }
 
     /**

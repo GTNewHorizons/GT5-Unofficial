@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -192,7 +191,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     public void clearHatches() {
         super.clearHatches();
 
+        // These hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(naniteDetectors);
         naniteDetectors.clear();
+        clearCraftingIcons(controllerHatches);
         controllerHatches.clear();
 
         if (losHatch != null) {
@@ -208,6 +210,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_io_node"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
+        // spotless:off
         tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
@@ -218,25 +221,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("20", CondensateGuidanceCoil.getLocalizedName(), false)
-            .addMiscHatch(
-                "0+",
-                "Nanite Detector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
-            .addMiscHatch(
-                "0+",
-                "Teleportation Node Controller Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.NaniteTierDetectorHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.TeleportationControllerHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                "Line-of-Sight Connector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"),
-                2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     @Override
@@ -513,7 +505,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
 
         if (this.requiredTier == null) {
             state = NodeState.InternalError;
@@ -660,6 +651,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     return;
                 }
             }
+        } else {
+            RecipeStep nextStep = getCurrentStep();
+            if (nextStep == null) {
+                state = NodeState.InternalError;
+                return;
+            }
+            setRequiredTier(nextStep.nanite);
         }
     }
 
@@ -1029,7 +1027,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (imte instanceof MTEHatchNaniteDetector hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
 
                     self.naniteDetectors.add(hatch);
                     hatch.setRequiredTier(self.requiredTier);
@@ -1079,7 +1077,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (imte instanceof MTEHatchIONodeController hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
 
                     self.controllerHatches.add(hatch);
 
@@ -1128,7 +1126,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (self.losHatch == null && imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
                     self.addIfSmartInput(hatch);

@@ -30,7 +30,6 @@ import gregtech.common.misc.WirelessNetworkManager;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
-import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
@@ -44,8 +43,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_EM,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
     }
 

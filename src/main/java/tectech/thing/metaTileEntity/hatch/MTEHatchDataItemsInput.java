@@ -147,7 +147,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
     }

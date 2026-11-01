@@ -75,7 +75,7 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
      * <li>(suffix) is "k", "K", "m", or "M" (optional)</li>
      * <li>(ev) is the string "ev", case-insensitive.</li>
      * </ul>
-     * Note that operators "==" and "!=" can not be converted exactly, as the new threshold supports only a binary
+     * Note that operators "==" and "!=" cannot be converted exactly, as the new threshold supports only a binary
      * comparison (less than, or greater than or equal). Thus "==" is interpreted in the same way as "<=", and "!=" as
      * ">". This shouldn't be a big problem for real setups, because one should probably not be testing for strict
      * equality here anyway. The possible reasonable conditions "==0eV" and "!=0eV" will continue working as before.

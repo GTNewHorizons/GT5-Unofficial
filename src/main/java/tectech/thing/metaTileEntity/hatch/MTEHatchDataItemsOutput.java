@@ -20,7 +20,6 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
-import tectech.util.CommonValues;
 
 public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
 
@@ -32,8 +31,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
     }

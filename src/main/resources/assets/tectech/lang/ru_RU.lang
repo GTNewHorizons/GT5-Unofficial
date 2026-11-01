@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Взрывается, но не так сильно...
 
 gt.spacetime_compression_field_generator.name=Генератор поля пространственно-временного сжатия
 gt.time_acceleration_field_generator.name=Генератор поля замедления времени
+gt.stabilisation_field_generator.name=Генератор поля стабилизации
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -1622,12 +1623,6 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Анти
 tt.keyword.Weird=*
-
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Проект Godforge
 
 tt.chat.debug.generator=Режим лазера: %s
 
