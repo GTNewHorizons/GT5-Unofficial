@@ -64,7 +64,6 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Long> FUSION_THRESHOLD = SimpleRecipeMetadataKey
         .create(Long.class, "fusion_threshold");
-
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage). Scanning time should be between 30
      * seconds and 3 minutes, and the voltage 1 tiers below the available scanner tier for the recipe.
