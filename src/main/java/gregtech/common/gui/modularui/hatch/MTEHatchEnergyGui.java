@@ -21,6 +21,10 @@ public class MTEHatchEnergyGui extends MTEHatchBaseGui<MTEHatchEnergy> {
         ParentWidget<?> parent = super.createContentSection(panel, syncManager);
 
         parent.child(
+            GTGuiTextures.PICTURE_ENERGY_HATCH_FUSE_BOX.asWidget()
+                .size(160, 76)
+                .center());
+        parent.child(
             new ItemSlot()
                 .slot(new ModularSlot(machine.inventoryHandler, MTEHatchEnergy.FUSE_SLOT).singletonSlotGroup())
                 .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_FUSE)

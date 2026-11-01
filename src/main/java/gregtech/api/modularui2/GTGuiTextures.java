@@ -2284,6 +2284,8 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture PICTURE_ENERGY_HATCH_FUSE_BOX = UITexture
+        .fullImage(GregTech.ID, "gui/picture/energy_hatch_fuse_box");
     public static final UITexture PICTURE_GAUGE = UITexture.builder()
         .location(GregTech.ID, "gui/picture/gauge.png")
         .fullImage()
