@@ -57,13 +57,15 @@ public class ChestUIFactory extends CoverUIFactory<CoverChest> {
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        CoverDataControllerWidget<CoverChest> w = new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         CoverChest cover = getCover();
         IItemHandlerModifiable h;
         if (cover == null) {
             // ???
             return;
         }
+        CoverDataControllerWidget<CoverChest> w = new CoverDataControllerWidget<>(
+            () -> cover.isAttached() ? cover : null,
+            getUIBuildContext());
         h = cover.getItems();
         SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
             .build();
