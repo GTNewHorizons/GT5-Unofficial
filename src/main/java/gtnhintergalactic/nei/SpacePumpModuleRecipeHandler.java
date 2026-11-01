@@ -206,19 +206,15 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     public void drawExtras(int recipeIndex) {
         CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.planettype") + ":",
+            I18n.format("ig.nei.elevatorpump.planet_label"),
             CATEGORY_TITLE_X,
             PLANET_TYPE_Y,
             TEXT_COLOR,
             false);
+        GuiDraw
+            .drawStringC(I18n.format("ig.nei.elevatorpump.gas_label"), CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.gastype") + ":",
-            CATEGORY_TITLE_X,
-            GAS_TYPE_Y,
-            TEXT_COLOR,
-            false);
-        GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.amount") + ":",
+            I18n.format("ig.nei.elevatorpump.amount_label"),
             CATEGORY_TITLE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,
