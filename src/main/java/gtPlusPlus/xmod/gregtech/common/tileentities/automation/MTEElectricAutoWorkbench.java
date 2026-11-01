@@ -33,6 +33,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
@@ -725,6 +726,15 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     @Override
     public int getCapacity() {
         return 16000;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicmachine.automation.autoworkbench.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
