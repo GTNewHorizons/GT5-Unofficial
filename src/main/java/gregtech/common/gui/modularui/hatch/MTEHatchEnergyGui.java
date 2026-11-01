@@ -14,10 +14,10 @@ import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
 public class MTEHatchEnergyGui extends MTEHatchBaseGui<MTEHatchEnergy> {
 
-    // size of the circuit diagram in the background, and the slot positions on it
     private static final int FUSE_BOX_WIDTH = 160, FUSE_BOX_HEIGHT = 76;
     private static final int[] FUSE_POSITION = { 28, 7 };
-    private static final int[][] BACKUP_CAPACITOR_POSITIONS = { { 78, 36 }, { 112, 36 } };
+    private static final int[] FIRST_BACKUP_CAPACITOR_POSITION = { 78, 36 };
+    private static final int[] SECOND_BACKUP_CAPACITOR_POSITION = { 112, 36 };
 
     public MTEHatchEnergyGui(MTEHatchEnergy hatch) {
         super(hatch);
@@ -25,33 +25,33 @@ public class MTEHatchEnergyGui extends MTEHatchBaseGui<MTEHatchEnergy> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> parent = super.createContentSection(panel, syncManager);
+        return super.createContentSection(panel, syncManager)
+            .child(
+                GTGuiTextures.PICTURE_ENERGY_HATCH_FUSE_BOX.asWidget()
+                    .size(FUSE_BOX_WIDTH, FUSE_BOX_HEIGHT)
+                    .center())
+            .child(
+                placeOnFuseBox(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, MTEHatchEnergy.FUSE_SLOT) {
 
-        parent.child(
-            GTGuiTextures.PICTURE_ENERGY_HATCH_FUSE_BOX.asWidget()
-                .size(FUSE_BOX_WIDTH, FUSE_BOX_HEIGHT)
-                .center());
-        parent.child(
-            placeOnFuseBox(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, MTEHatchEnergy.FUSE_SLOT) {
-
-                @Override
-                public boolean canTakeStack(EntityPlayer player) {
-                    return !machine.hasFuse();
-                }
-            }.singletonSlotGroup())
-                .background(GTGuiTextures.OVERLAY_SLOT_FUSE), FUSE_POSITION));
-        for (int i = 0; i < MTEHatchEnergy.BACKUP_CAPACITOR_SLOTS.length; i++) {
-            parent.child(
+                    @Override
+                    public boolean canTakeStack(EntityPlayer player) {
+                        return !machine.hasFuse();
+                    }
+                }.singletonSlotGroup())
+                    .disableThemeBackground(true), FUSE_POSITION))
+            .child(
                 placeOnFuseBox(
-                    new ItemSlot()
-                        .slot(
-                            new ModularSlot(machine.inventoryHandler, MTEHatchEnergy.BACKUP_CAPACITOR_SLOTS[i])
-                                .singletonSlotGroup())
-                        .background(GTGuiTextures.OVERLAY_SLOT_BACKUP_CAPACITOR),
-                    BACKUP_CAPACITOR_POSITIONS[i]));
-        }
+                    backupCapacitorSlot(MTEHatchEnergy.BACKUP_CAPACITOR_SLOTS[0]),
+                    FIRST_BACKUP_CAPACITOR_POSITION))
+            .child(
+                placeOnFuseBox(
+                    backupCapacitorSlot(MTEHatchEnergy.BACKUP_CAPACITOR_SLOTS[1]),
+                    SECOND_BACKUP_CAPACITOR_POSITION));
+    }
 
-        return parent;
+    private ItemSlot backupCapacitorSlot(int slot) {
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, slot).singletonSlotGroup())
+            .disableThemeBackground(true);
     }
 
     /**
