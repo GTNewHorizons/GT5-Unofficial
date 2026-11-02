@@ -205,6 +205,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
     protected boolean makePowerfailEvents = true;
+    /** The backup capacitors of the energy hatches kept the recipe, which waits until the machine is enabled again. */
+    protected boolean recipeHeldByCapacitors = false;
     // for the wireless maintenance detector cover gui, to display / not display the turbine row.
     protected boolean usesTurbine = false;
     protected boolean canBeMuffled = true;
@@ -394,6 +396,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
         aNBT.setBoolean("alwaysMaxParallel", alwaysMaxParallel);
         aNBT.setBoolean("makePowerfailEvents", makePowerfailEvents);
+        aNBT.setBoolean("recipeHeldByCapacitors", recipeHeldByCapacitors);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
         aNBT.setBoolean("usesTurbine", usesTurbine);
         aNBT.setBoolean("canBeMuffled", canBeMuffled);
@@ -416,6 +419,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
         makePowerfailEvents = !aNBT.hasKey("makePowerfailEvents") || aNBT.getBoolean("makePowerfailEvents");
+        recipeHeldByCapacitors = aNBT.getBoolean("recipeHeldByCapacitors");
         usesTurbine = aNBT.hasKey("usesTurbine") && aNBT.getBoolean("usesTurbine");
         canBeMuffled = aNBT.hasKey("canBeMuffled") && aNBT.getBoolean("canBeMuffled");
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
@@ -663,10 +667,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     | (mCrowbar ? 0 : 32)
                     | (mMachine ? 0 : 64));
 
-            aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-            setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
+            boolean isActive = mMaxProgresstime > 0 && !recipeHeldByCapacitors;
 
-            boolean isActive = mMaxProgresstime > 0;
+            aBaseMetaTileEntity.setActive(isActive);
+            setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
 
             if (!mMachine || !isActive) {
                 deactivateCoilLease();
@@ -830,6 +834,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (recipeHeldByCapacitors) {
+            if (!aBaseMetaTileEntity.isAllowedToWork()) return;
+            recipeHeldByCapacitors = false;
+        }
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
                 markDirty();
@@ -1468,13 +1476,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
         }
         mLastWorkingTick = mTotalRunTime;
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEUt = 0;
-        mEfficiency = 0;
-        mProgresstime = 0;
-        mMaxProgresstime = 0;
-        mEfficiencyIncrease = 0;
+        if (reason == ShutDownReasonRegistry.POWER_LOSS && mMaxProgresstime > 0 && dischargeBackupCapacitors()) {
+            // The backup capacitors discharged, so only recipe progress is lost
+            mProgresstime = 0;
+            recipeHeldByCapacitors = true;
+        } else {
+            // No backup capacitors to protect, so recipe progress and all inputs are lost.
+            mOutputItems = null;
+            mOutputFluids = null;
+            mEUt = 0;
+            mEfficiency = 0;
+            mProgresstime = 0;
+            mMaxProgresstime = 0;
+            mEfficiencyIncrease = 0;
+            recipeHeldByCapacitors = false;
+        }
         IGregTechTileEntity igte = getBaseMetaTileEntity();
         if (igte != null) {
             igte.setShutDownReason(reason);
@@ -1487,6 +1503,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (makePowerfailEvents && reason == ShutDownReasonRegistry.POWER_LOSS) {
             GTMod.proxy.powerfailTracker.createPowerfailEvent(igte);
         }
+    }
+
+    /**
+     * Discharges one backup capacitor in every energy hatch, but only if every energy hatch has a charged one.
+     * Machines with exotic energy hatches are never protected.
+     *
+     * @return Whether the backup capacitors discharged.
+     */
+    public boolean isRecipeHeldByCapacitors() {
+        return recipeHeldByCapacitors;
+    }
+
+    protected boolean dischargeBackupCapacitors() {
+        if (mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) return false;
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            if (!hatch.isValid() || !hatch.hasBackupCapacitor()) return false;
+        }
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            hatch.dischargeBackupCapacitor();
+        }
+        return true;
     }
 
     public int getRepairStatus() {
@@ -2775,6 +2812,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     tag.getInteger("maxProgress"),
                     tag.getInteger("progress")));
         }
+        if (tag.getBoolean("recipeHeldByCapacitors")) {
+            currentTip.add(translateToLocal("GT5U.gui.text.recipe_held_by_capacitors"));
+        }
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -2884,6 +2924,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
             tag.setBoolean("isAllowedToWork", tileEntity.isAllowedToWork());
+            tag.setBoolean("recipeHeldByCapacitors", recipeHeldByCapacitors);
             if (tileEntity.isActive()) {
                 if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
                 else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
@@ -3942,6 +3983,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+
+        screenElements
+            .widget(
+                new TextWidget(translateToLocal("GT5U.gui.text.recipe_held_by_capacitors"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> recipeHeldByCapacitors))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(() -> recipeHeldByCapacitors, held -> recipeHeldByCapacitors = held));
 
         handleStructureErrorsMui1(screenElements);
 

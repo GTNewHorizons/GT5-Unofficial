@@ -308,6 +308,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .fullWidth())
             .child(createShutdownDurationWidget(syncManager))
             .child(createShutdownReasonWidget(syncManager))
+            .child(createRecipeHeldByCapacitorsWidget(syncManager))
             .child(createStructureErrorWidget(syncManager))
             .child(createRecipeResultWidget())
             .childIf(multiblock.showRecipeTextInGUI(), () -> createRecipeInfoTextWidget(syncManager))
@@ -346,6 +347,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 widget -> shouldShutdownReasonBeDisplayed(
                     baseMetaTileEntity.getLastShutDownReason()
                         .getDisplayString()));
+    }
+
+    protected IWidget createRecipeHeldByCapacitorsWidget(PanelSyncManager syncManager) {
+        BooleanSyncValue recipeHeldByCapacitorsSyncer = syncManager
+            .findSyncHandler("recipeHeldByCapacitors", BooleanSyncValue.class);
+        return IKey.lang("GT5U.gui.text.recipe_held_by_capacitors")
+            .asWidget()
+            .fullWidth()
+            .marginBottom(2)
+            .setEnabledIf(widget -> recipeHeldByCapacitorsSyncer.getBoolValue());
     }
 
     protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
@@ -1174,6 +1185,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue(
             "machineActive",
             new BooleanSyncValue(baseMetaTileEntity::isActive, baseMetaTileEntity::setActive));
+        syncManager.syncValue("recipeHeldByCapacitors", new BooleanSyncValue(multiblock::isRecipeHeldByCapacitors));
 
         syncManager
             .syncValue("wrench", new BooleanSyncValue(() -> multiblock.mWrench, val -> multiblock.mWrench = val));
