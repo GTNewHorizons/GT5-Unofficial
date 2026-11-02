@@ -34,6 +34,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
@@ -80,6 +81,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
+    private final BitSet mItemsWithoutBaseIcon = new BitSet();
 
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
@@ -228,8 +230,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
         return addItem(
             aID,
-            $ -> GTUtility.translate(aNameKey, aNameArgs),
-            $ -> GTUtility.translate(aToolTipKey, aToolTipArgs),
+            $ -> StatCollector.translateToLocalFormatted(aNameKey, aNameArgs),
+            $ -> StatCollector.translateToLocalFormatted(aToolTipKey, aToolTipArgs),
             aRandomData);
     }
 
@@ -290,6 +292,10 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final MetaGeneratedItem setSubIcons(int metaValue, int length) {
         mIconList[metaValue] = Arrays.copyOf(mIconList[metaValue], length + 1);
         return this;
+    }
+
+    protected final void setNoBaseIcon(int itemId) {
+        if (itemId >= 0 && itemId < mItemAmount) mItemsWithoutBaseIcon.set(itemId);
     }
 
     /**
@@ -445,8 +451,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 mIconList[i][k] = aIconRegister.registerIcon(
                     GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
-            mIconList[i][0] = aIconRegister
-                .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            Long[] electricStats = mElectricStats.get((short) (i + mOffset));
+            if (mItemsWithoutBaseIcon.get(i)) {
+                mIconList[i][0] = Textures.InvisibleIcon.INVISIBLE_ICON;
+            } else if (mIconList[i].length > 1 && electricStats != null && electricStats[3] < 0) {
+                mIconList[i][0] = mIconList[i][1];
+            } else {
+                mIconList[i][0] = aIconRegister
+                    .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            }
         }
     }
 

@@ -15,7 +15,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -33,10 +32,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
@@ -97,7 +96,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GTModHandler.removeRecipeDelayed(aStack);
+        // The only plate that has a valid recipe to remove
+        if (aMaterial == Materials.Wood) GTModHandler.removeRecipeDelayed(aStack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
@@ -123,16 +123,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            BITS_STD,
-            new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
-
-        if (aMaterial == Materials.Paper) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, aStack),
-                BUFFERED,
-                new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+                GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
+                BITS_STD,
+                new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
+
+            if (aMaterial == Materials.Paper) {
+                GTModHandler.addCraftingRecipe(
+                    GTUtility.copyAmount(2, aStack),
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
+                    new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+            }
         }
 
         if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
@@ -393,7 +395,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (aMaterial.mStandardMoltenFluid != null) {
+        if (aMaterial.mStandardMoltenFluid != null
+            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L))
@@ -500,21 +503,14 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aOreDictName) {
             case "plateAlloyCarbon" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, aStack))
-                    .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-                    .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ULV)
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
@@ -522,13 +518,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case "plateAlloyAdvanced" -> {
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
@@ -558,7 +554,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             tStack == NI ?
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+                    .addIcon(aMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
                     .stdOrient()
                     .build()

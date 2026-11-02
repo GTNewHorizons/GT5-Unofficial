@@ -54,8 +54,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         return new FilteredTransactionWrapper();
     }
 
-    public class FilteredTransactionWrapper
-        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
+    public class FilteredTransactionWrapper implements IOutputHatchTransaction,
+        IOutputHatchTransaction.IRecipeCheckAware, IOutputHatchTransaction.IProtectOutputAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -73,19 +73,32 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
+        public void setProtectOutput(boolean isProtectOutput) {
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware rt) {
+                rt.setProtectOutput(isProtectOutput);
+            }
+        }
+
+        @Override
+        public boolean needsTotalParallelData() {
+            return transaction.needsTotalParallelData();
+        }
+
+        @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
             if (!hatch.isFilteredToFluid(id)) return false;
-            return transaction.storePartial(id, stack);
+            return transaction.storePartial(id, stack, totalPerParallel, perParallel);
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
-            transaction.completeFluid(id);
+        public void complete(GTUtility.FluidId id) {
+            transaction.complete(id);
         }
 
         @Override

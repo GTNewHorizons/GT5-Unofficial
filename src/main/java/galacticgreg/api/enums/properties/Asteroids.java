@@ -53,9 +53,9 @@ public enum Asteroids {
     ;
     // spotless:on
 
-    public ModContainers modContainers;
-    public DimensionDef dimensionDef;
-    public AsteroidPropertyBuilder asteroidPropertyBuilder;
+    public final ModContainers modContainers;
+    public final DimensionDef dimensionDef;
+    public final AsteroidPropertyBuilder asteroidPropertyBuilder;
 
     Asteroids(ModContainers modContainers, DimensionDef dimensionDef, AsteroidPropertyBuilder asteroidPropertyBuilder) {
         this.modContainers = modContainers;

@@ -125,8 +125,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         tt.addMachineType(getMachineType())
             .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
             .addInfo("Does not require maintenance")
-            .addInfo(
-                "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
+            .addInfo("Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2))
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
             .addInfo("Supports voltages >= UHV using MAX tier components")
@@ -134,8 +133,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             .addCasingInfoMin("Sub-Station External Casing", 10, false)
             .addDynamoHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.PSS_CELL)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannel(GTStructureChannels.PSS_CELL)
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -461,17 +460,22 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else {
-                if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+            switch (aMetaTileEntity) {
+                case MTEHatchEnergy mteHatchEnergy -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                }
+                case MTEHatchDynamo mteHatchDynamo -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case MTEHatchMaintenance mteHatchMaintenance -> {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case null, default -> {
+                    if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    }
                 }
             }
         }
@@ -655,12 +659,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public long getMinimumStoredEU() {
         return 0;
-    }
-
-    @Override
-    public void explodeMultiblock() {
-        // TODO Auto-generated method stub
-        super.explodeMultiblock();
     }
 
     @Override

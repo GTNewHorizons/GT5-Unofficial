@@ -32,7 +32,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -50,11 +51,13 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -66,17 +69,21 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
     implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 44;
     private int mCasingAmount = 0;
 
-    private static final int HELIUM_NEEDED = 730000;
-    private static final int powerUsage = (int) TierEU.RECIPE_IV / 2;
-    private static final int maxCapacity = 675000;
-    private static final int minCapacityToStart = 100000;
-    private int HeliumSupply;
+    private static final int HELIUM_NEEDED = 730_000;
+    private static final int POWER_USAGE = (int) TierEU.RECIPE_IV / 2;
+    private static final int MAX_CAPACITY = 675_000;
+    private static final int MIN_CAPACITY_TO_START = 100_000;
+    private static final double FUEL_CONSUMPTION_RATE = 0.005D;
+    private static final double COOLANT_PER_TICK = 4800.0D;
+    private static final int OPERATION_DURATION_TICKS = 648_000;
+    private int heliumSupply;
     private int fuelSupply;
     private boolean emptyingMode;
     private int coolingPerTick = 0;
@@ -147,42 +154,30 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("High Temperature Reactor, THTR")
-            .addInfo("Needs to be primed with " + formatNumber(HELIUM_NEEDED) + " of helium")
-            .addInfo(
-                "Needs a constant supply of " + EnumChatFormatting.AQUA
-                    + "coolant"
-                    + EnumChatFormatting.GRAY
-                    + " while running")
-            .addInfo(
-                "Needs at least " + EnumChatFormatting.GOLD
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " Fuel pebbles to start operation (can hold up to 675k pebbles)")
-            .addInfo(
-                "Consumes up to " + EnumChatFormatting.GOLD
-                    + "0.5%"
-                    + EnumChatFormatting.GRAY
-                    + " of total Fuel Pellets per Operation depending on efficiency")
-            .addInfo("Efficiency decreases exponentially if the internal buffer is not completely filled")
-            .addInfo(
-                "Reactor will take " + EnumChatFormatting.AQUA
-                    + "4800L/t"
-                    + EnumChatFormatting.GRAY
-                    + " of coolant multiplied by efficiency")
-            .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
-            .addInfo("One Operation takes 9 hours")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.high_temperature_reactor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "thorium-high-temp-reactor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("helium", formatNumber(HELIUM_NEEDED))
+                    .put("min_pebbles", formatNumber(MIN_CAPACITY_TO_START))
+                    .put("max_pebbles", formatNumber(MAX_CAPACITY))
+                    .put("power_usage", formatNumber(POWER_USAGE))
+                    .put("consumption", formatNumber(FUEL_CONSUMPTION_RATE * 100))
+                    .put("coolant_rate", formatNumber(COOLANT_PER_TICK))
+                    .put("duration", formatNumber(OPERATION_DURATION_TICKS / 20 / 60 / 60))
+                    .build())
             .beginStructureBlock(11, 12, 11, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Radiation Proof Casing", 500, false)
-            .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer Casing", 2)
-            .addInputHatch("Any top layer Casing", 2)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any bottom layer Casing", 1)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("500-531", Casings.RadiationProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -207,18 +202,18 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.mCasingAmount = 0;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0, errors)) return;
         checkCasingMin(errors, this.mCasingAmount, 500);
-        checkHasMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.HeliumSupply = aNBT.getInteger("HeliumSupply");
+        this.heliumSupply = aNBT.getInteger("HeliumSupply");
         this.fuelSupply = aNBT.getInteger("fuelsupply");
         this.coolingPerTick = aNBT.getInteger("coolanttaking");
         this.emptyingMode = aNBT.getBoolean("EmptyMode");
@@ -227,7 +222,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("HeliumSupply", this.HeliumSupply);
+        aNBT.setInteger("HeliumSupply", this.heliumSupply);
         aNBT.setInteger("fuelsupply", this.fuelSupply);
         aNBT.setInteger("coolanttaking", this.coolingPerTick);
         aNBT.setBoolean("EmptyMode", this.emptyingMode);
@@ -237,23 +232,23 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && !this.emptyingMode) {
-            if (this.HeliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED) {
+            if (this.heliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED) {
                 for (FluidStack fluidStack : this.getStoredFluids()) {
                     if (fluidStack.isFluidEqual(Materials.Helium.getGas(1))) {
                         int toget = Math
-                            .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
+                            .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
-                        this.HeliumSupply += toget;
+                        this.heliumSupply += toget;
                     }
                 }
             }
-            if (this.fuelSupply < maxCapacity) {
+            if (this.fuelSupply < MAX_CAPACITY) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     if (GTUtility.areStacksEqual(
                         itemStack,
                         new ItemStack(THTRMaterials.aTHTR_Materials, 1, THTRMaterials.MATERIAL_FUEL_INDEX))) {
-                        int toget = Math.min(maxCapacity - this.fuelSupply, itemStack.stackSize);
+                        int toget = Math.min(MAX_CAPACITY - this.fuelSupply, itemStack.stackSize);
                         if (toget == 0) continue;
                         itemStack.stackSize -= toget;
                         this.fuelSupply += toget;
@@ -266,24 +261,24 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     private double getEfficiency() {
-        double base = (this.fuelSupply - minCapacityToStart) / ((maxCapacity - minCapacityToStart) / 10D);
+        double base = (this.fuelSupply - MIN_CAPACITY_TO_START) / ((MAX_CAPACITY - MIN_CAPACITY_TO_START) / 10D);
         return Math.min(base * base + 1, 100D) / 100D - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
     }
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         if (emptyingMode) {
-            if (!(HeliumSupply > 0 || fuelSupply > 0)) return CheckRecipeResultRegistry.NO_RECIPE;
+            if (!(heliumSupply > 0 || fuelSupply > 0)) return CheckRecipeResultRegistry.NO_RECIPE;
             this.mEfficiency = 10000;
             this.mMaxProgresstime = 100;
         } else {
-            if (this.HeliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED || this.fuelSupply < minCapacityToStart)
+            if (this.heliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED || this.fuelSupply < MIN_CAPACITY_TO_START)
                 return CheckRecipeResultRegistry.NO_RECIPE;
 
             double efficiency = getEfficiency();
             if (efficiency <= 0.0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-            int toReduce = MathUtils.floorInt(this.fuelSupply * 0.005D * efficiency);
+            int toReduce = MathUtils.floorInt(this.fuelSupply * FUEL_CONSUMPTION_RATE * efficiency);
 
             final int originalToReduce = toReduce;
             int burnedBalls = toReduce / 64;
@@ -298,10 +293,10 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             this.fuelSupply -= originalToReduce;
             this.mOutputItems = toOutput;
 
-            this.coolingPerTick = (int) (4800.0 * efficiency);
+            this.coolingPerTick = (int) (COOLANT_PER_TICK * efficiency);
             this.mEfficiency = (int) (efficiency * 10000.0);
-            this.mEUt = -powerUsage;
-            this.mMaxProgresstime = 648000;
+            this.mEUt = -POWER_USAGE;
+            this.mMaxProgresstime = OPERATION_DURATION_TICKS;
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -310,10 +305,10 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public boolean onRunningTick(ItemStack aStack) {
 
         if (this.emptyingMode) {
-            this.addOutputPartial(Materials.Helium.getGas(this.HeliumSupply));
+            this.addOutputPartial(Materials.Helium.getGas(this.heliumSupply));
             this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
-            this.HeliumSupply = 0;
+            this.heliumSupply = 0;
             this.fuelSupply = 0;
             this.updateSlots();
             return true;
@@ -349,24 +344,20 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.thtr.progress",
                 formatNumber(this.mProgresstime / 20),
                 formatNumber(this.mMaxProgresstime / 20)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.triso_pebbles",
-                formatNumber(this.fuelSupply),
-                formatNumber(this.fuelSupply)),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.triso_pebbles", formatNumber(this.fuelSupply), formatNumber(this.fuelSupply)),
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.htr.helium_level",
-                formatNumber(this.HeliumSupply),
+                formatNumber(this.heliumSupply),
                 formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.coolant",
-                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.coolant", formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
+            IGregTechDeviceInformation
+                .encode("BW.infoData.htr.problems", String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override

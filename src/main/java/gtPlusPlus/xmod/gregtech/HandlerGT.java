@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import gregtech.loaders.postload.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.core.handler.CompatHandler;
-import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;

@@ -163,14 +163,13 @@ public final class LanthItemList {
 
         for (MaskList mask : MaskList.values()) {
 
+            if (mask == MaskList.ERROR) continue;
+
             String english = mask.getEnglishName();
 
             String descSpectrum = mask.getSpectrum();
 
-            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(
-                mask.getName(),
-                mask.getDamage(),
-                descSpectrum);
+            ItemPhotolithographicMask maskItem = new ItemPhotolithographicMask(mask.getName(), descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
 
             if (!mask.getName()

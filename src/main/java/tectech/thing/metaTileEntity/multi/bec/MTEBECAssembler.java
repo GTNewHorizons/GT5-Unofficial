@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,48 +8,29 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static net.minecraft.util.EnumChatFormatting.AQUA;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -56,28 +38,27 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
-import gregtech.common.modularui2.sync.NaniteTierSyncValue;
-import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
-import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
-import tectech.mechanics.boseEinsteinCondensate.CondensateList;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
+import tectech.thing.gui.bec.MTEBECAssemblerGui;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> implements IDataCopyable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
-    private final List<MTEBECIONode> ioNodes = new ArrayList<>();
+    public static final int MAX_NANITES = 2048 * 15;
+
+    private final List<MTEHatchLoS> losHatches = new ArrayList<>();
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
@@ -93,6 +74,41 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         super(prototype);
     }
 
+    public NaniteTier getCurrentNaniteTier() {
+        updateNaniteInfoIfDirty();
+        return currentNaniteTier;
+    }
+
+    public int getAvailableNanites() {
+        updateNaniteInfoIfDirty();
+        return availableNanites;
+    }
+
+    private void updateNaniteInfoIfDirty() {
+        if (this.nanitesDirty) {
+            this.nanitesDirty = false;
+            this.currentNaniteTier = null;
+            this.availableNanites = 0;
+
+            for (MTEHatchNanite hatch : this.naniteHatches) {
+                NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
+
+                if (tier == null) continue;
+
+                if (hatch.getItemCount() == 0) continue;
+
+                if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
+                    this.currentNaniteTier = tier;
+                }
+
+                this.availableNanites += hatch.getItemCount();
+            }
+
+            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
+
+        }
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBECAssembler(this);
@@ -105,17 +121,20 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
     @Override
     public IStructureDefinition<MTEBECAssembler> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
         structure.addCasing('F', CondensateTransformativeCoil);
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
-        structure.addCasing('1', FineStructureConstantManipulator)
+        structure.addCasing('1', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
+        structure.addCasing('2', FineStructureConstantManipulator)
             .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('3', FineStructureConstantManipulator)
+            .withHatches(3, 16, Arrays.asList(AssemblerLineOfSightHatch.INSTANCE));
 
         return structure.buildStructure(definition);
     }
@@ -124,6 +143,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     public void clearHatches() {
         super.clearHatches();
 
+        // LoS and nanite hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(this.losHatches);
+        for (MTEHatchLoS hatch : this.losHatches) {
+            hatch.setOwner(null);
+        }
+        this.losHatches.clear();
+        clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
     }
 
@@ -138,21 +164,35 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
+            .addMarkdown(
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(61, 31, 31, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
+            .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("1515", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
+            .addCasing("1444-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("664", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("560", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addCasing("464", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
+            .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        // spotless:on
     }
 
     @Override
-    protected ITexture getCasingTexture() {
-        return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    public ITexture getCasingTexture() {
+        return CoherencePreservingPlasmaConduit.getCasingTexture();
     }
 
     @Override
@@ -176,7 +216,18 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new Gui();
+        return new MTEBECAssemblerGui(this);
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -185,7 +236,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         mEfficiency = 10_000;
         useLongPower = true;
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        // 'Routing' makes more sense than 'Processing Recipe'
+        return SimpleCheckRecipeResult.ofSuccess("routing");
+    }
+
+    public List<MTEBECIONode> getIONodes() {
+        return losHatches.stream()
+            .map(MTEHatchLoS::getConnectedHatch)
+            .filter(Objects::nonNull)
+            .map(los -> los.getOwner() instanceof MTEBECIONode node ? node : null)
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     @Override
@@ -193,75 +254,16 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         super.onPostTick(igte, aTick);
 
         if (GTUtility.isServer()) {
-            for (MTEHatchNanite hatch : naniteHatches) {
-                if (hatch.hasChanged()) {
-                    this.nanitesDirty = true;
-                    hatch.unmarkChanged();
-                }
-            }
 
-            if (this.nanitesDirty) {
-                this.nanitesDirty = false;
-                this.currentNaniteTier = null;
-                this.availableNanites = 0;
-
-                for (MTEHatchNanite hatch : this.naniteHatches) {
-                    NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
-
-                    if (tier == null) continue;
-
-                    if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
-                        this.currentNaniteTier = tier;
-                    }
-
-                    this.availableNanites += hatch.getItemCount();
-                }
-
-                Iterator<MTEBECIONode> iter = this.ioNodes.iterator();
-
-                while (iter.hasNext()) {
-                    MTEBECIONode node = iter.next();
-
-                    if (node == null) {
-                        iter.remove();
-                        continue;
-                    }
-
-                    if (!node.isValid()) {
-                        node.setNaniteShare(null, 0);
-                        iter.remove();
-                        continue;
-                    }
-
-                    // Intentionally share the same nanite count between every io node even though it doesn't make
-                    // physical sense, so that proper automation is incentivized even more.
-                    node.setNaniteShare(this.currentNaniteTier, this.availableNanites);
-                }
-
-                igte.setActive(!ioNodes.isEmpty());
-            }
+            List<MTEBECIONode> nodes = getIONodes();
+            igte.setActive(!nodes.isEmpty());
 
             lEUt = 0;
 
             long euInput = getMaxInputEu();
 
-            Iterator<MTEBECIONode> iter = ioNodes.iterator();
-
-            while (iter.hasNext()) {
-                MTEBECIONode node = iter.next();
-
-                if (node == null) {
-                    iter.remove();
-                    continue;
-                }
-
+            for (var node : nodes) {
                 node.setPowered(false);
-
-                if (!node.isValid()) {
-                    node.setNaniteShare(null, 0);
-                    iter.remove();
-                    continue;
-                }
 
                 long request = node.getAssemblerEUt();
 
@@ -275,47 +277,23 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        nanitesDirty = true;
+    }
+
+    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
 
         if (reason.wasCritical()) {
             // you really don't want to powerfail :tootroll:
-            for (MTEBECIONode node : ioNodes) {
+            for (MTEBECIONode node : getIONodes()) {
                 if (node.isPowered()) {
                     node.stopMachine(reason);
                 }
             }
         }
-    }
-
-    public void addIONode(MTEBECIONode node) {
-        ioNodes.add(node);
-        node.setNaniteShare(currentNaniteTier, availableNanites);
-        BECFactoryGrid.INSTANCE.updateElement(this);
-    }
-
-    public void removeIONode(MTEBECIONode node) {
-        ioNodes.remove(node);
-        node.setNaniteShare(null, 0);
-        BECFactoryGrid.INSTANCE.updateElement(this);
-    }
-
-    @Override
-    public void onRemoval() {
-        super.onRemoval();
-
-        for (var node : new ArrayList<>(ioNodes)) {
-            node.disconnect();
-        }
-
-        ioNodes.clear();
-    }
-
-    @Override
-    public void getNeighbours(Collection<BECFactoryElement> neighbours) {
-        super.getNeighbours(neighbours);
-
-        neighbours.addAll(ioNodes);
     }
 
     public void drainCondensate(IAEFluidStack stack) {
@@ -328,70 +306,19 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         return network == null ? 0 : network.getSlowdowns(this, validMaterials);
     }
 
-    @Override
-    public void onUnload() {
-        super.onUnload();
-
-        if (GTUtility.isServer()) {
-            // copy list to prevent CMEs
-            List<MTEBECIONode> nodes = new ArrayList<>(ioNodes);
-            ioNodes.clear();
-
-            for (MTEBECIONode node : nodes) {
-                node.disconnect();
-            }
-        }
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity igte, EntityPlayer player) {
-        if (!(player instanceof EntityPlayerMP)) return;
-
-        ItemStack heldItem = player.getHeldItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
-
-        heldItem.setTagCompound(getCopiedData(player));
-        heldItem.setStackDisplayName(
-            MessageFormat.format(
-                "{0} Link Data Stick ({1}, {2}, {3})",
-                getStackForm(1).getDisplayName(),
-                igte.getXCoord(),
-                igte.getYCoord(),
-                igte.getZCoord()));
-        player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
-    }
-
-    @Override
-    public NBTTagCompound getCopiedData(EntityPlayer player) {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        tag.setString("type", getCopiedDataIdentifier(player));
-        tag.setInteger("x", igte.getXCoord());
-        tag.setInteger("y", igte.getYCoord());
-        tag.setInteger("z", igte.getZCoord());
-
-        return tag;
-    }
-
-    @Override
-    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        return false;
-    }
-
-    @Override
-    public String getCopiedDataIdentifier(EntityPlayer player) {
-        return "bec-assembler";
-    }
-
     private enum NaniteHatchElement implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteContainmentBus");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Arrays.asList(MTEHatchNanite.class);
+        }
+
+        NaniteHatchElement(String name) {
+            this.name = name;
         }
 
         @Override
@@ -402,8 +329,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         private static boolean adder(MTEBECAssembler assembler, IGregTechTileEntity igte, Short texture) {
             if (igte.getMetaTileEntity() instanceof MTEHatchNanite naniteHatch) {
                 assembler.naniteHatches.add(naniteHatch);
+                assembler.addIfSmartInput(naniteHatch);
                 naniteHatch.updateTexture(texture);
-                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon());
+                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon(), assembler.getBaseMetaTileEntity());
 
                 return true;
             }
@@ -413,7 +341,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
         @Override
         public String getDisplayName() {
-            return ItemList.Hatch_Nanite.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -422,73 +355,53 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         }
     }
 
-    private class Gui extends TTMultiblockBaseGui<MTEBECAssembler> {
+    public enum AssemblerLineOfSightHatch implements IHatchElement<MTEBECAssembler> {
 
-        public Gui() {
-            super(MTEBECAssembler.this);
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return List.of(MTEHatchLoS.class);
+        }
+
+        AssemblerLineOfSightHatch(String name) {
+            this.name = name;
         }
 
         @Override
-        protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList, ?> condensate = GenericSyncValue.builder(CondensateList.class)
-                .getter(
-                    () -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECAssembler.this))
-                .adapter(new CondensateListAdapter())
-                .build();
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
 
-            syncManager.syncValue("condensate", condensate);
-            syncManager
-                .syncValue("naniteTier", new NaniteTierSyncValue(() -> currentNaniteTier, t -> currentNaniteTier = t));
-            syncManager.syncValue("naniteCount", new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
 
-            TextWidget<?> naniteWidget = IKey
-                .dynamic(
-                    () -> GRAY + GTUtility.translate("GT5U.gui.text.providing-nanites")
-                        + "\n  "
-                        + AQUA
-                        + (currentNaniteTier == null ? GTUtility.translate("GT5U.gui.text.nil")
-                            : currentNaniteTier.describe())
-                        + GRAY
-                        + " x "
-                        + GOLD
-                        + NumberFormatUtil.formatNumber(availableNanites)
-                        + GRAY)
-                .asWidget()
-                .widthRel(1);
+        @Override
+        public long count(MTEBECAssembler self) {
+            return self.losHatches.size();
+        }
 
-            TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                StringBuilder ret = new StringBuilder();
+        @Override
+        public IGTHatchAdder<MTEBECAssembler> adder() {
+            return (self, igtme, id) -> {
+                IMetaTileEntity imte = igtme.getMetaTileEntity();
 
-                ret.append(GRAY)
-                    .append(GTUtility.translate("GT5U.gui.text.available-condensate"))
-                    .append('\n');
+                if (imte instanceof MTEHatchLoS hatch) {
+                    hatch.updateTexture(id);
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    hatch.setOwner(self);
 
-                if (condensate.getValue()
-                    .isEmpty()) {
-                    ret.append(GRAY)
-                        .append(GTUtility.translate("GT5U.gui.text.nil"));
+                    self.losHatches.add(hatch);
+
+                    return true;
+                } else {
+                    return false;
                 }
-
-                for (var e : condensate.getValue()
-                    .object2LongEntrySet()) {
-                    ret.append("  ")
-                        .append(AQUA)
-                        .append(CondensateType.getCondensateName(e.getKey()))
-                        .append(GRAY)
-                        .append(" x ")
-                        .append(GOLD)
-                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                        .append(GRAY)
-                        .append('\n');
-                }
-
-                return ret.toString();
-            })
-                .asWidget()
-                .widthRel(1);
-
-            return super.createTerminalTextWidget(syncManager, parent).child(naniteWidget)
-                .child(contentsWidget);
+            };
         }
     }
 }

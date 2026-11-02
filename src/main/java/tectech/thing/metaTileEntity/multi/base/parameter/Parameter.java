@@ -1,36 +1,32 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-public abstract class Parameter<T> {
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
+
+public abstract class Parameter<T, S extends SyncHandler<?>> {
 
     private T value;
-    // Suppliers relevant to number parameters only
-    private Supplier<T> min;
-    private Supplier<T> max;
     private final String nbtKey;
     private final String langKey;
     private final Object[] langArgs;
     private boolean showInGui = true;
+    private S syncHandler;
 
     public Parameter(T value, String langKey, String nbtKey, Object... langArgs) {
         this.value = value;
         this.langKey = langKey;
         this.nbtKey = nbtKey;
         this.langArgs = langArgs;
-    }
-
-    public Parameter(T value, String langKey, String nbtKey, Supplier<T> min, Supplier<T> max, Object... langArgs) {
-        this(value, langKey, nbtKey, langArgs);
-        this.min = min;
-        this.max = max;
     }
 
     public T getValue() {
@@ -51,14 +47,6 @@ public abstract class Parameter<T> {
 
     public Object[] getLangArgs() {
         return langArgs;
-    }
-
-    public T getMin() {
-        return min.get();
-    }
-
-    public T getMax() {
-        return max.get();
     }
 
     public void disableGui() {
@@ -86,9 +74,21 @@ public abstract class Parameter<T> {
         return showInGui;
     }
 
-    public abstract SyncHandler<?> createSyncHandler();
+    protected abstract S createSyncHandler();
 
-    public void registerSyncValue(PanelSyncManager syncManager, String prefix) {
-        syncManager.syncValue(prefix + getNbtKey(), createSyncHandler());
+    public void registerSyncValue(PanelSyncManager syncManager) {
+        this.registerSyncValue(syncManager, "");
     }
+
+    protected void registerSyncValue(PanelSyncManager syncManager, String prefix) {
+        syncManager.syncValue(prefix + getNbtKey(), this.createSyncHandler());
+    }
+
+    public S getSyncHandler() {
+        if (syncHandler == null) syncHandler = createSyncHandler();
+        return syncHandler;
+    }
+
+    public abstract void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator);
 }

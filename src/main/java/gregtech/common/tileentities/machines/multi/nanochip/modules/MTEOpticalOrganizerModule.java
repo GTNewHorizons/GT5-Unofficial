@@ -10,7 +10,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,10 +41,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
-// todo look over and cleanup. the functionality is present
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int OPTICAL_OFFSET_X = 3;
     protected static final int OPTICAL_OFFSET_Y = 7;
     protected static final int OPTICAL_OFFSET_Z = 0;
@@ -147,21 +144,19 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 56, false)
+            .addCasing("56", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
+            .addCasing("49", translateToLocal("gt.blockcasings12.1.name"), false)
             // Awakened Draconium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
-                48,
-                false)
+            .addCasing("48", "Awakened Draconium Frame Box", false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("40", translateToLocal("gt.blockglass1.8.name"), false)
+            .addInputHatch("1-2", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
         // spotless:on
     }
@@ -195,7 +190,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 
@@ -215,7 +210,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
                 .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
-                .collect(Collectors.toList());
+                .toList();
 
             if (fluid.size() >= 2) {
                 firstWater = fluid.get(0);

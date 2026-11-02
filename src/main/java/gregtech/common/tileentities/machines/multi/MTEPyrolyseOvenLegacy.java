@@ -99,7 +99,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
             .addStructureDeprecatedLine()
             .addInfo("Industrial Charcoal producer")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("EU/t is not affected by Coil tier")
+            .addInfo("EU/t is not affected by Coil Tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front bottom center")
@@ -112,7 +112,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
             .addInputHatch("Center 3x1x3 area in top layer", 2)
             .addOutputBus("Any bottom layer Casing", 1)
             .addOutputHatch("Any bottom layer Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -144,11 +144,6 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.pyrolyseRecipes;
     }
@@ -172,7 +167,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     public double getSpeedBonus() {
-        return 2f / (1 + coilHeat.getTier());
+        return 2.0D / (1.0D + coilHeat.getTier());
     }
 
     private void setCoilLevel(HeatingCoilLevel aCoilLevel) {

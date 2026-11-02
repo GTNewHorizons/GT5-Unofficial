@@ -15,7 +15,7 @@ import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.genetics.IEffectData;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.util.GTModHandler;
 
 public class GTEffectTreeTwister extends GTAlleleEffect {
@@ -32,10 +32,10 @@ public class GTEffectTreeTwister extends GTAlleleEffect {
 
     static {
         if (TF_TRANS_SAPLING == null) {
-            GTMod.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+            GTLoggers.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
         }
         if (BARN_SAPLING == null) {
-            GTMod.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+            GTLoggers.GT_FML_LOGGER.info("GTEffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
         }
     }
 

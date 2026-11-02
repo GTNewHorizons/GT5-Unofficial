@@ -9,12 +9,13 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
@@ -28,6 +29,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -44,7 +47,6 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     private MTEHatchInput coolantInputHatch;
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;
@@ -144,6 +146,13 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     private int ticker = 0;
 
     @Override
+    public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+        if (!this.depleteInput(Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC), true))
+            return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+        return super.validateRecipe(recipe);
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
             return false;
@@ -169,7 +178,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
      * @return A recipe if one was found, null otherwise
      */
     @Override
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))
@@ -193,25 +202,31 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 40, false)
+            .addCasing("40", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 29, false)
+            .addCasing("29", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Naquadria Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadria.getLocalizedName()),
-                24,
-                false)
+            .addCasing("24", "Naquadria Frame Box", false)
             // UEV Solenoid Superconductor Coil
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), 16, false)
+            .addCasing("16", translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), false)
             // UHV Solenoid Superconductor Coil
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings.cyclotron_coils.7.name"), 6, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("6", translateToLocal("gt.blockcasings.cyclotron_coils.7.name"), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

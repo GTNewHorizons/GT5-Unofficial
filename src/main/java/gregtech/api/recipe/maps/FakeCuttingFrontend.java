@@ -10,13 +10,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import codechicken.nei.recipe.StackInfo;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.loaders.postload.recipes.FakeCuttingSpecialInfo;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -39,16 +40,39 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
 
-        FluidStack fluid = GTUtility.getFluidFromContainerOrFluidDisplay(stack);
+        FluidStack fluid = StackInfo.getFluid(stack);
         if (fluid == null) return currentTip;
 
         GTRecipe currentRecipe = neiCachedRecipe.mRecipe;
         FakeCuttingSpecialInfo specialInfo = (FakeCuttingSpecialInfo) currentRecipe.mSpecialItems;
-        float displayTime = (float) specialInfo.getDurationForFluid(fluid) / SECONDS;
+        int fluidDuration = specialInfo.getDurationForFluid(fluid);
+
+        double overclockFactor = (double) neiCachedRecipe.calculator.getDuration() / currentRecipe.mDuration;
+
+        long recipeTotal = (long) currentRecipe.mDuration * currentRecipe.mEUt;
+        long fluidTotal = (long) fluidDuration * currentRecipe.mEUt;
+
+        double displayTime = (fluidDuration * overclockFactor) / SECONDS;
+        float displayDiscount = ((float) (recipeTotal - fluidTotal) / recipeTotal) * 100;
 
         currentTip.add(
             EnumChatFormatting.AQUA
                 + translateToLocalFormatted("GT5U.nei.display.duration.seconds", formatNumber(displayTime)));
+        currentTip.add(
+            EnumChatFormatting.GREEN
+                + translateToLocalFormatted("GT5U.nei.display.discount.energy", formatNumber(displayDiscount)));
+
         return currentTip;
+    }
+
+    @Override
+    protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
+        FakeCuttingSpecialInfo specialInfo = (FakeCuttingSpecialInfo) recipeInfo.recipe.mSpecialItems;
+
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.duration.seconds",
+                specialInfo.getDurationsString(recipeInfo)));
+        recipeInfo.drawTextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
     }
 }

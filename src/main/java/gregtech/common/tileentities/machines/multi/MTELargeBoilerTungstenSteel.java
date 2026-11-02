@@ -5,6 +5,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     public static final int EUT_GENERATED = 19200;
@@ -54,6 +55,6 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 120 / 750;
+        return mTime * 15 / 100;
     }
 }

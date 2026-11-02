@@ -1,14 +1,13 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 
 public class JetpackHoverBehavior implements IArmorBehavior {
 
@@ -32,6 +31,6 @@ public class JetpackHoverBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(ArmorKeybinds.JETPACK_HOVER_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 }

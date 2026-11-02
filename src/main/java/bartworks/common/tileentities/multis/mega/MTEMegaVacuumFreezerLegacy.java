@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis.mega;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -35,7 +36,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -54,6 +54,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -243,7 +244,7 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
@@ -256,9 +257,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "75", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "50", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "25", 3))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(0)))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(1)))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(2)))
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
@@ -360,7 +361,7 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
         }
     }
 
-    public SubspaceCoolingFluid findSubspaceCoolingFluid() {
+    private SubspaceCoolingFluid findSubspaceCoolingFluid() {
         // Loop over all hatches and find the first match with a valid fluid
         for (MTEHatchInput hatch : mInputHatches) {
             Optional<SubspaceCoolingFluid> fluid = SUBSPACE_COOLING_FLUIDS.stream()
@@ -385,7 +386,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                 currentCoolingFluid = findSubspaceCoolingFluid();
 
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
+                    .setMachineHeat(
+                        currentCoolingFluid == null ? 0
+                            : currentCoolingFluid.perfectOverclocks * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
@@ -471,16 +474,16 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(StatCollector.translateToLocalFormatted("BW.infoData.mega_vacuum_freezer.tier", mTier));
+        info.add(IGregTechDeviceInformation.encode("BW.infoData.mega_vacuum_freezer.tier", mTier));
         if (mTier == 2) {
             if (currentCoolingFluid != null) {
                 info.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "BW.infoData.mega_vacuum_freezer.subspace_cooling.active",
                         currentCoolingFluid.getStack()
                             .getLocalizedName()));
             } else {
-                info.add(StatCollector.translateToLocal("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive"));
+                info.add("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive");
             }
         }
         return info.toArray(new String[] {});
@@ -502,16 +505,16 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
         return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
     }
 
-    private String getCoolantTextFormatted(String fluidType, String litersConsumed, int ocboost) {
+    private String getCoolantTextFormatted(SubspaceCoolingFluid coolant) {
         return String.format(
-            "%s%s L/s%s : %s%d %s: %s%s",
+            "%s%s/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GREEN,
-            litersConsumed,
+            formatFluid(coolant.amount),
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GOLD,
-            ocboost,
+            coolant.perfectOverclocks,
             EnumChatFormatting.GRAY,
             EnumChatFormatting.LIGHT_PURPLE,
-            fluidType);
+            coolant.material.getLocalizedName());
     }
 }

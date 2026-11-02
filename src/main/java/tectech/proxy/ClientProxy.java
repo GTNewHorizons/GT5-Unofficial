@@ -20,12 +20,15 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.common.render.RenderInit;
 import tectech.Reference;
+import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.rendering.EOH.EOHTileEntitySR;
 import tectech.rendering.EOH.ItemRenderEOH;
+import tectech.thing.block.BlockGodforgeGlass;
+import tectech.thing.block.BlockQuantumGlass;
+import tectech.thing.block.RenderDoubleSidedGlass;
 import tectech.thing.block.RenderForgeOfGods;
-import tectech.thing.block.RenderGodforgeGlass;
-import tectech.thing.block.RenderQuantumGlass;
 import tectech.thing.block.TileEntityEyeOfHarmony;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.item.ItemRenderForgeOfGods;
@@ -34,16 +37,21 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderInfo() {
-        RenderingRegistry.registerBlockHandler(new RenderQuantumGlass());
+        RenderingRegistry.registerBlockHandler(
+            new RenderDoubleSidedGlass(() -> BlockQuantumGlass.stuff, BlockQuantumGlass.renderID));
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new ItemRenderEOH());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
-        RenderingRegistry.registerBlockHandler(new RenderGodforgeGlass());
+        RenderingRegistry.registerBlockHandler(
+            new RenderDoubleSidedGlass(() -> BlockGodforgeGlass.Icon, BlockGodforgeGlass.renderID));
 
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
+
+        RenderInit.onAtlasStitched(RenderForgeOfGods::reload);
+        RenderInit.onResourceReload(EOHRenderingUtils::reloadShaders);
     }
 
     @Override

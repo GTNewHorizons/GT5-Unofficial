@@ -10,11 +10,11 @@ import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import bartworks.common.loaders.BioItemList;
 import codechicken.nei.NEIClientUtils.Alignment;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.Badge;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -38,7 +38,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
         for (PositionedStack stack : recipe.mInputs) {
             if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
-                && GTUtility.areStacksEqual(fixed.item, BioItemList.getPetriDish(null), true)) {
+                && GTUtility.areStacksEqual(fixed.item, ItemList.EmptyPetriDish.get(1), true)) {
                 fixed.setMaxSize(0);
             }
         }

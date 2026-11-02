@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import galacticgreg.auxiliary.GalacticGregConfig;
-import galacticgreg.auxiliary.LogHelper;
 import galacticgreg.auxiliary.ProfilingStorage;
 import galacticgreg.command.AEStorageCommand;
 import galacticgreg.command.ProfilingCommand;
@@ -20,10 +22,11 @@ import galacticgreg.command.WorldgenCommand;
 import galacticgreg.registry.GalacticGregRegistry;
 import galacticgreg.schematics.SpaceSchematicHandler;
 import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
 import gregtech.api.world.GTWorldgen;
 
 @Mod(
-    modid = GalacticGreg.MODID,
+    modid = Mods.ModIDs.GALACTI_GREG,
     name = GalacticGreg.MODNAME,
     version = GalacticGreg.VERSION,
     dependencies = "after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
@@ -34,12 +37,11 @@ public class GalacticGreg {
     public static final List<GTWorldgen> oreVeinWorldgenList = new ArrayList<>();
 
     public static final String NICE_MODID = "GalacticGreg";
-    public static final String MODID = "galacticgreg";
     public static final String MODNAME = "Galactic Greg";
 
     public static final String VERSION = GT_Version.VERSION;
 
-    public static final LogHelper Logger = new LogHelper(NICE_MODID);
+    public static final Logger LOGGER = LogManager.getLogger(GalacticGreg.MODNAME);
     public static ProfilingStorage Profiler = new ProfilingStorage();
     public static SpaceSchematicHandler SchematicHandler;
 
@@ -55,15 +57,15 @@ public class GalacticGreg {
     @EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         GalacticConfig = new GalacticGregConfig(aEvent.getModConfigurationDirectory(), NICE_MODID, NICE_MODID);
-        if (!GalacticConfig.LoadConfig()) GalacticGreg.Logger
-            .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
+        if (!GalacticConfig.LoadConfig())
+            LOGGER.warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 
         GalacticRandom = new Random(System.currentTimeMillis());
 
         if (GalacticConfig.SchematicsEnabled)
             SchematicHandler = new SpaceSchematicHandler(aEvent.getModConfigurationDirectory());
 
-        Logger.trace("Leaving PRELOAD");
+        LOGGER.trace("Leaving PRELOAD");
     }
 
     public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<>();
@@ -77,7 +79,7 @@ public class GalacticGreg {
      */
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
-        Logger.trace("Entering POSTLOAD");
+        LOGGER.trace("Entering POSTLOAD");
 
         if (!GalacticGregRegistry.InitRegistry()) throw new RuntimeException(
             "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
@@ -86,13 +88,13 @@ public class GalacticGreg {
             try {
                 r.run();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e);
             }
         }
 
         GalacticConfig.serverPostInit();
 
-        Logger.trace("Leaving POSTLOAD");
+        LOGGER.trace("Leaving POSTLOAD");
     }
 
     /**
@@ -102,7 +104,7 @@ public class GalacticGreg {
      */
     @EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
-        Logger.trace("Entering SERVERLOAD");
+        LOGGER.trace("Entering SERVERLOAD");
 
         if (GalacticConfig.ProfileOreGen) pEvent.registerServerCommand(new ProfilingCommand());
 
@@ -111,6 +113,6 @@ public class GalacticGreg {
 
         pEvent.registerServerCommand(new WorldgenCommand());
 
-        Logger.trace("Leaving SERVERLOAD");
+        LOGGER.trace("Leaving SERVERLOAD");
     }
 }

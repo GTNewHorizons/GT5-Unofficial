@@ -3,7 +3,6 @@ package tectech.recipe;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static tectech.util.TTUtility.toExponentForm;
 
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import tectech.loader.ConfigHandler;
+import tectech.util.CommonValues;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -155,12 +155,12 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.SpacetimeTier",
-                    EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]));
+                    CommonValues.getLocalizedEohTierFancyNames((int) recipe.getSpacetimeCasingTierRequired())));
 
             // Energy Output
             switch (ConfigHandler.visual.EOH_NOTATION) {
-                case Numerical -> result.add(
-                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", formatNumber(recipe.getEUOutput())));
+                case Numerical -> result
+                    .add(StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", recipe.getEUOutput()));
                 case Scientific -> result.add(
                     StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", toExponentForm(recipe.getEUOutput())));
                 case SI -> result.add(
@@ -171,8 +171,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             // Energy Input
             switch (ConfigHandler.visual.EOH_NOTATION) {
-                case Numerical -> result.add(
-                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.In", formatNumber(recipe.getEUStartCost())));
+                case Numerical -> result
+                    .add(StatCollector.translateToLocalFormatted("EOH.Recipe.EU.In", recipe.getEUStartCost()));
                 case Scientific -> result.add(
                     StatCollector
                         .translateToLocalFormatted("EOH.Recipe.EU.In", toExponentForm(recipe.getEUStartCost())));

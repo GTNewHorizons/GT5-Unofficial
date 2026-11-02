@@ -1,6 +1,6 @@
 package gregtech.api.recipe.metadata;
 
-import static gregtech.api.util.GTUtility.trans;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,8 +26,8 @@ public class CompressionTierKey extends RecipeMetadataKey<Integer> {
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         int tier = cast(value, 1);
         switch (tier) {
-            case 1 -> recipeInfo.drawText(trans("509", "Requires HIP Unit"));
-            case 2 -> recipeInfo.drawText(trans("508", "Requires Stabilized Black Hole"));
+            case 1 -> recipeInfo.drawText(translateToLocal("GT5U.nei.compression.hip_unit"));
+            case 2 -> recipeInfo.drawText(translateToLocal("GT5U.nei.compression.stabilized_black_hole"));
         }
     }
 }

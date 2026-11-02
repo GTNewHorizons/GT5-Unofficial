@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -10,7 +12,6 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 
-import gregtech.api.util.GTUtility;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTMultiblockBaseGui<T> {
@@ -24,8 +25,9 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
         LongSyncValue euVarSyncer = syncManager.findSyncHandler("euVar", LongSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
-                () -> GTUtility
-                    .translate("tt.spaceelevator.storedEnergy", formatNumber(euVarSyncer.getValue()) + " EU"))
+                () -> StatCollector.translateToLocalFormatted(
+                    "tt.spaceelevator.storedEnergy",
+                    formatNumber(euVarSyncer.getValue()) + " EU"))
                 .asWidget()
                 .setEnabledIf(
                     w -> multiblock.getBaseMetaTileEntity()

@@ -26,20 +26,22 @@ import gregtech.api.util.StringUtils;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 
 public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
     private final Material blockMaterial;
+    private volatile ITexture[][] textureCache;
 
     public BlockBaseOre(final Material material, final BlockTypes blockType) {
         super(
             blockType,
             StringUtils.sanitizeString(material.getUnlocalizedName()),
             net.minecraft.block.material.Material.rock,
-            Math.min(Math.max(material.vTier, 1), 6));
-        int aMaterialTierForMining = Math.min(Math.max(material.vTier, 1), 6);
+            Math.min(Math.max(material.tier, 1), 6));
+        int aMaterialTierForMining = Math.min(Math.max(material.tier, 1), 6);
         this.blockMaterial = material;
         this.setHardness(1.0f * aMaterialTierForMining);
         this.setResistance(6.0F);
@@ -57,7 +59,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
                 "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()),
                 new ItemStack(this));
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -98,6 +100,9 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache;
+        if (cached != null) return cached;
+
         ITexture oreTexture = TextureFactory
             .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.getTextureIndex()], blockMaterial.getRGBA());
 
@@ -107,6 +112,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
             out[i] = new ITexture[] { StoneType.Stone.getTexture(i), oreTexture };
         }
 
+        textureCache = out;
         return out;
     }
 

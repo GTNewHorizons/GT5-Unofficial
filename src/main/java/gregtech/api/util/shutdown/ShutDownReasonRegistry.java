@@ -55,6 +55,16 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason POLLUTION_FAIL = SimpleShutDownReason.ofCritical("pollution_fail");
     /**
+     * Failed to output the fluids.
+     */
+    @Nonnull
+    public static final ShutDownReason FLUID_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("fluid_output_failed");
+    /**
+     * Failed to output the items.
+     */
+    @Nonnull
+    public static final ShutDownReason ITEM_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("item_output_failed");
+    /**
      * Shut down due to incomplete structure.
      */
     @Nonnull
@@ -69,6 +79,21 @@ public class ShutDownReasonRegistry {
      */
     @Nonnull
     public static final ShutDownReason NO_TURBINE = SimpleShutDownReason.ofNormal("no_turbine");
+    /**
+     * No valid rotor found.
+     */
+    @Nonnull
+    public static final ShutDownReason NO_ROTOR = SimpleShutDownReason.ofNormal("no_rotor");
+    /**
+     * Not enough wind.
+     */
+    @Nonnull
+    public static final ShutDownReason WIND_LOW = SimpleShutDownReason.ofNormal("wind_low");
+    /**
+     * Wind is too strong.
+     */
+    @Nonnull
+    public static final ShutDownReason WIND_HIGH = SimpleShutDownReason.ofNormal("wind_high");
     /**
      * No correct machine part in controller slot.
      */
@@ -90,6 +115,12 @@ public class ShutDownReasonRegistry {
      */
     @Nonnull
     public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dynamo");
+
+    /**
+     * Critical shut down due to overheat.
+     */
+    @Nonnull
+    public static final ShutDownReason OVERHEAT_FAIL = SimpleShutDownReason.ofCritical("overheat_fail");
 
     /**
      * Fluid that needs to be constantly supplied are out. E.g. PCB coolant with cooling upgrades enabled.

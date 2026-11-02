@@ -165,6 +165,11 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
@@ -192,8 +197,8 @@ public class MTEIndustrialSifterLegacy extends GTPPMultiBlockBase<MTEIndustrialS
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
-            .setEuModifier(0.75F)
+            .setSpeedBonus(1.0D / 5.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

@@ -1,8 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEYBIND;
-
-import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.potion.Potion;
@@ -12,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class NightVisionBehavior implements IArmorBehavior {
@@ -34,7 +32,7 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(NIGHT_VISION_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override

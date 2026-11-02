@@ -14,39 +14,41 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclearSaltProcessingPlant>
     implements ISurvivalConstructable {
+
+    private static final int BASE_PARALLEL = 2;
+    private static final double DURATION_MULTIPLIER = 2.5D;
+    private static final double EU_MULTIPLIER = 1.0D;
 
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
@@ -61,7 +63,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public String getMachineType() {
-        return "Reactor Processing Unit, Cold Trap, NSPP";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.nuclear_salt_processing_plant");
     }
 
     @Override
@@ -77,27 +79,29 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addBulkMachineInfo(2, 2.5f, 1f)
-            .addInfo("Processes depleted nuclear salts that come from the LFTR")
-            .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
-            .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
-            .addInfo("Mufflers on top, Energy Hatches on bottom, exactly 2 of each are required")
-            .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
-            .addInfo("Inputs go on the left side of the multi, outputs on the right side")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nuclear-salt-processing-plant"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", BASE_PARALLEL)
+                    .put("speed", Math.round(DURATION_MULTIPLIER * 100))
+                    .put("eu_eff", Math.round(EU_MULTIPLIER * 100))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("IV Machine Casing", 58, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 1, false)
-            .addInputBus("Left Half", 2)
-            .addInputHatch("Left Half", 2)
-            .addOutputBus("Right Half", 3)
-            .addOutputHatch("Right Half", 3)
-            .addMufflerHatch("Top Side, 2 Required", 4)
-            .addEnergyHatch("Bottom Side, 2 Required", 5)
-            .addMaintenanceHatch("Back Side, Opposite of Controller", 6)
+            .beginStructureBlock(9, 5, 3, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("58", Casings.IVMachineCasing.getLocalizedName(), false)
+            .addCasing("0-32", Casings.ThermallyInsulatedCasing.getLocalizedName(), false)
+            .addEnergyHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.bottom_insulated_casings"), 5)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.casing_behind_controller"), 1)
+            .addMufflerHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.top_insulated_casings"), 4)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_left_side_insulated_casing"), 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_left_side_insulated_casing"), 2)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_right_side_insulated_casing"), 3)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_right_side_insulated_casing"), 3)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -165,7 +169,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .hint(6)
+                        .hint(1)
                         .build())
                 .build();
         }
@@ -187,54 +191,31 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
-        checkHatch(errors);
         checkCasingMin(errors, casing, 1);
-        checkHasOutputHatch(errors);
-        checkHasInputHatch(errors);
-    }
-
-    @Override
-    public void checkHatch(List<StructureError> errors) {
         checkHatchExact(errors, Energy, 2);
         checkHatchExact(errors, Muffler, 2);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes;
+        return RecipeMaps.nuclearSaltProcessingPlantRecipes;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.5F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / DURATION_MULTIPLIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 2 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+        return BASE_PARALLEL * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
     @Override
     public boolean supportsInputSeparation() {
         return true;
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
     }
 }

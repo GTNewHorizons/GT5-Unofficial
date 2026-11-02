@@ -35,8 +35,7 @@ public class BeamCrafterMetadata {
         if (particleID_A != that.particleID_A) return false;
         if (particleID_B != that.particleID_B) return false;
         if (amount_A != that.amount_A) return false;
-        if (amount_B != that.amount_B) return false;
-        return true;
+        return amount_B == that.amount_B;
     }
 
     public static Builder builder() {

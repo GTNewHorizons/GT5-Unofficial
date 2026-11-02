@@ -15,7 +15,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaGenerator extends MTEBasicGenerator {
@@ -122,7 +122,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
 
     @Override
     protected String[] getTooltipLines() {
-        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.plasmagenerator.tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.plasmagenerator.tooltip");
     }
 
     @Override

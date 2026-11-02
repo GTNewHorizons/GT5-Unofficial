@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -33,15 +34,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -168,7 +169,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
+            GTLoggers.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
     }
@@ -190,7 +191,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -222,7 +223,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -236,7 +237,7 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
     }
@@ -683,9 +684,39 @@ public abstract class MetaBaseItem extends GTGenericItem
                 }
             }
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
 
         return false;
+    }
+
+    /**
+     * Applies a function to each behavior, returning a value from each behavior.
+     *
+     * @param itemStack The item whose behaviors are to be checked
+     * @param func      A function that is passed the itemStack and behavior. Return a null for non-complying behaviors.
+     * @param <V>       The type of value to return
+     * @return A {@link List} containing each behavior that returned a value. Any null results are omitted from the
+     *         list.
+     */
+    public <V> ImmutableList<V> mapEachBehavior(ItemStack itemStack, Function<IItemBehaviour<MetaBaseItem>, V> func) {
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return ImmutableList.of();
+        }
+
+        final ImmutableList.Builder<V> builder = ImmutableList.builder();
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final V result = func.apply(behavior);
+                if (result != null) {
+                    builder.add(result);
+                }
+            }
+        } catch (Exception e) {
+            if (D1) GT_FML_LOGGER.error(e);
+        }
+
+        return builder.build();
     }
 }

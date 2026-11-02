@@ -19,13 +19,14 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -34,8 +35,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -45,17 +50,24 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTEExtremeCombustionEngine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int LUBRICANT_PER_HOUR = 8000;
+    private static final int OXYGEN_RATE = 40;
+    private static final int DEFAULT_OUTPUT_EU = 10900;
+    private static final int DEFAULT_EFFICIENCY_PERCENT = 100;
+    private static final int BOOSTED_OUTPUT_EU = 32700;
+    private static final int BOOSTED_EFFICIENCY_PERCENT = 150;
+    private static final int WAIT_POWER_PERCENT = 300;
 
     protected int casingAmount;
     protected int turbineCasingAmount;
@@ -91,66 +103,59 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             'C',
             buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Muffler, Maintenance)
                 .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                .hint(1)
+                .hint(2)
                 .buildAndChain(
                     onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
         .addElement(
             'D',
-            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch)
                 .casingIndex(Casings.TungstensteelTurbineCasing.textureId)
-                .hint(2)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(x -> ++x.turbineCasingAmount, Casings.TungstensteelTurbineCasing.asElement())))
         .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
         .addElement('F', Casings.PTFEPipeCasing.asElement())
         .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
         .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
-        .addElement(
-            'I',
-            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo)
-                .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                .hint(3)
-                .buildAndChain(Casings.RobustTungstenSteelMachineCasing.asElement()))
+        .addElement('I', Dynamo.newAny(Casings.RobustTungstenSteelMachineCasing.textureId, 3))
         .build();
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
-        String lubricantRate = TooltipHelper.fluidText(8000);
-        String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euRateText(10900);
-        String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euRateText(32700);
-        String boostedEfficiency = TooltipHelper.effText(1.5f);
-        String waitPower = TooltipHelper.effText(3.0f);
-
-        tt.addMachineType("Combustion Generator, ECE")
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1_1", lubricantRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2_1", oxygenRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning2"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.combustion_generator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "extreme-combustion-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("lubricant", LUBRICANT_PER_HOUR)
+                    .put("oxygen", OXYGEN_RATE)
+                    .put("default_output", DEFAULT_OUTPUT_EU)
+                    .put("default_eff", DEFAULT_EFFICIENCY_PERCENT)
+                    .put("boosted_output", BOOSTED_OUTPUT_EU)
+                    .put("boosted_eff", BOOSTED_EFFICIENCY_PERCENT)
+                    .put("wait_power", WAIT_POWER_PERCENT)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(10, 5, 5, false)
-            .addController("Front left, 2nd layer")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 30, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 6, false)
-            .addCasingInfoExactly("Extreme Engine Intake Casing", 12, false)
-            .addCasingInfoExactly("PTFE Frame Box", 32, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 10, false)
-            .addCasingInfoMin("Tungstensteel Turbine Casing", 4, false)
-            .addCasingInfoExactly("Tungstensteel Firebox Casing", 12, false)
-            .addCasingInfoExactly("Chemically Inert Machine Casing", 30, false)
-            .addDynamoHatch("Back center", 3)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
-            .addMufflerHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
-            .addInputHatch("High Rating Fuel, next to a Gear Box", 2)
-            .addInputHatch("Lubricant, next to a Gear Box", 2)
-            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 2)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("30-33", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("30", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TungstensteelFireboxCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.ExtremeEngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("4-7", Casings.TungstensteelTurbineCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.right_center_casing"), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox"), 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_above_engine_intakes"))
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -167,29 +172,20 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.RobustTungstenSteelMachineCasing.getCasingTexture();
     }
 
     @Override
@@ -203,11 +199,11 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     }
 
     protected int getNominalOutput() {
-        return 10900;
+        return DEFAULT_OUTPUT_EU;
     }
 
-    protected Materials getBooster() {
-        return Materials.LiquidOxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.LiquidOxygen.getFluid(amount);
     }
 
     protected int getEfficiencyIncrease() {
@@ -243,54 +239,18 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.extreme_diesel_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(lEUt * mEfficiency / 10000)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(fuelRemaining)
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+        return new String[] { "GT5U.infodata.engine.extreme_diesel_title",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            getIdealStatus() == getRepairStatus() ? "GT5U.infodata.engine.maintenance.ok"
+                : "GT5U.infodata.engine.maintenance.needed",
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.output", formatNumber(lEUt * mEfficiency / 10000)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.consumption", formatNumber(fuelConsumption)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.value", formatNumber(fuelValue)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.fuel_remaining", formatNumber(fuelRemaining)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.efficiency", mEfficiency / 100F),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -298,8 +258,6 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         casingAmount = 0;
         turbineCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkCasingMin(errors, casingAmount, 30);
         if (turbineCasingAmount < 4) {
             errors.add(
@@ -309,8 +267,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     turbineCasingAmount,
                     4));
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
-        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override
@@ -391,9 +350,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     fuelConsumption = tLiquid.amount = getNominalOutput() / fuelValue;
                 }
 
-                // Deplete that amount
-                if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                // Deplete that amount, try next fuel if this one is insufficient
+                if (!depleteInput(tLiquid)) continue;
+                boostEu = depleteInput(getBooster(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {

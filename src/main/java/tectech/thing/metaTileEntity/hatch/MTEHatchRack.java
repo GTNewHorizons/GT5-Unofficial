@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -69,7 +70,7 @@ public class MTEHatchRack extends MTEHatch {
             aNameRegional,
             aTier,
             4,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
     }
 
@@ -97,8 +98,8 @@ public class MTEHatchRack extends MTEHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_R_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_RACK_ACTIVE");
-        EM_R = Textures.BlockIcons.custom("iconsets/EM_RACK");
+        EM_R_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_RACK_ACTIVE");
+        EM_R = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_RACK");
     }
 
     @Override
@@ -338,7 +339,7 @@ public class MTEHatchRack extends MTEHatch {
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
             if (ConfigHandler.debug.DEBUG_MODE) {
-                TecTech.LOGGER.info("Component registered: " + unlocalizedName);
+                TecTech.LOGGER.info("Component registered: {}", unlocalizedName);
             }
         }
 
@@ -367,7 +368,7 @@ public class MTEHatchRack extends MTEHatch {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 

@@ -16,16 +16,14 @@ public class FireProtectionBauble extends BaseBauble {
 
     public FireProtectionBauble() {
         super(BaubleType.RING);
-        String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
+        String aUnlocalName = "GTPP.bauble.fireprotection.0.name";
         this.setUnlocalizedName(aUnlocalName);
         this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
         this.setMaxDamage(100);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
-            GameRegistry.registerItem(this, aUnlocalName);
-        }
+        GameRegistry.registerItem(this, aUnlocalName);
     }
 
     @Override

@@ -38,12 +38,13 @@ import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
 import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
 import gregtech.api.items.armor.behaviors.JetpackBehavior;
 import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
-import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.LevitationBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
+import gregtech.api.items.armor.behaviors.SoulboundBehavior;
 import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
@@ -98,7 +99,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 2, 0, 0)
             .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(8)
+            .setProtection(0.75f)
         ),
         Medium(ItemList.Armor_Frame_Medium, new FrameBuilder()
             .setId("Medium")
@@ -106,7 +107,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 0, 2, 0)
             .setColor(new short[] {146, 153, 171, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(11)
+            .setProtection(0.75f)
         ),
         Heavy(ItemList.Armor_Frame_Heavy, new FrameBuilder()
             .setId("Heavy")
@@ -114,7 +115,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 0, 1, 0)
             .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(15)
+            .setProtection(0.75f)
         ),
 
         Nimble(ItemList.Armor_Frame_Nimble, new FrameBuilder()
@@ -123,7 +124,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 3, 1, 0)
             .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(10)
+            .setProtection(0.85f)
         ),
         Adaptive(ItemList.Armor_Frame_Adaptive, new FrameBuilder()
             .setId("Adaptive")
@@ -131,7 +132,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 1, 1)
             .setColor(new short[] {93, 115, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(13)
+            .setProtection(0.85f)
         ),
         Tough(ItemList.Armor_Frame_Tough, new FrameBuilder()
             .setId("Tough")
@@ -139,7 +140,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(3, 0, 2, 0)
             .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(17)
+            .setProtection(0.85f)
         ),
 
         Lightning(ItemList.Armor_Frame_Lightning, new FrameBuilder()
@@ -148,7 +149,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 4, 1, 1)
             .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(15)
+            .setProtection(0.95f)
         ),
         Morphic(ItemList.Armor_Frame_Morphic, new FrameBuilder()
             .setId("Morphic")
@@ -156,7 +157,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 2, 2)
             .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(17)
+            .setProtection(0.95f)
         ),
         Bulwark(ItemList.Armor_Frame_Bulwark, new FrameBuilder()
             .setId("Bulwark")
@@ -164,7 +165,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(4, 1, 1, 1)
             .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(20)
+            .setProtection(0.95f)
         ),
 
         Infinity(ItemList.Armor_Frame_Infinity, new FrameBuilder()
@@ -173,7 +174,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(5, 5, 5, 5)
             .setColor(Materials.Infinity.mRGBa)
             .setRarity(EnumRarity.epic)
-            .setProtection(30)
+            .setProtection(1)
         );
         // spotless:on
 
@@ -235,8 +236,18 @@ public class MechArmorAugmentRegistries {
         }
 
         @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
+        }
+
+        @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
         }
 
         public int getProtectionSlots() {
@@ -259,7 +270,7 @@ public class MechArmorAugmentRegistries {
             return this.builder.getColor();
         }
 
-        public int getProtection() {
+        public float getProtection() {
             return this.builder.getProtection();
         }
 
@@ -364,8 +375,18 @@ public class MechArmorAugmentRegistries {
         }
 
         @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
+        }
+
+        @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
         }
 
         public int getTier() {
@@ -431,8 +452,9 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentjetpack")
             .fitsInto(ArmorType.Chestplate)
             .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
-            .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
+            .providesBehaviors(JetpackBehavior.JETPACK, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
+            .incompatibleAugments(ItemList.Augment_VectoredJetpack)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -445,19 +467,35 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setMaxStack(2)
         ),
-        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
-            .setId("Travelers")
-            .setItemId("augmenttravelers")
+        ApprenticeStriders(ItemList.Augment_ApprenticeStriders, new AugmentBuilder()
+            .setId("ApprenticeStriders")
+            .setItemId("augmentapprenticestriders")
             .fitsInto(ArmorType.Boots)
-            .providesBehaviors(new JumpBoostBehavior(0.6F),
-                new SpeedBoostBehavior(0.15F),
+            .providesBehaviors(
+                new SpeedBoostBehavior(3.0F),
+                new JumpBoostBehavior(3.0F),
                 StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(4))
+                new VisDiscountBehavior(4),
+                OmniMovementBehavior.INSTANCE
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
+            )
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
 
         // Tier 1 - Utility
+        Soulbound(ItemList.Augment_Soulbound, new AugmentBuilder()
+            .setId("Soulbound")
+            .setItemId("augmentsoulbound")
+            .providesBehaviors(SoulboundBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
         NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
             .setId("NightVision")
             .setItemId("augmentnightvision")
@@ -495,7 +533,8 @@ public class MechArmorAugmentRegistries {
             .setId("Terrasteel")
             .setItemId("augmentterrasteel")
             .providesBehaviors(TerrasteelBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
+            .fitsInto(ArmorType.Chestplate)
+            .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Utility)
         ),
 
@@ -518,12 +557,14 @@ public class MechArmorAugmentRegistries {
         ),
 
         // Tier 2 - Movement
-        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
-            .setId("JetpackPerfectHover")
-            .setItemId("augmentjetpackperfecthover")
+        VectoredJetpack(ItemList.Augment_VectoredJetpack, new AugmentBuilder()
+            .setId("VectoredJetpack")
+            .setItemId("augmentvectoredjetpack")
             .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.Jetpack)
+            .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
+            .providesBehaviors(JetpackBehavior.VECTORED_JETPACK, JetpackHoverBehavior.INSTANCE)
+            .incompatibleBehaviors(BehaviorName.CreativeFlight)
+            .incompatibleAugments(ItemList.Augment_Jetpack)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -532,6 +573,11 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentstepassist")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(StepAssistBehavior.INSTANCE)
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders
+            )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -540,8 +586,9 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentspeedboost")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
-            .setMaxStack(3)
+            .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
         ),
         JumpBoost(ItemList.Augment_JumpBoost, new AugmentBuilder()
@@ -549,6 +596,7 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentjumpboost")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
             .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
@@ -559,6 +607,31 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(OmniMovementBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.SpeedBoost)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_EldritchStriders
+            )
+        ),
+        ArchmageStriders(ItemList.Augment_ArchmageStriders, new AugmentBuilder()
+            .setId("ArchmageStriders")
+            .setItemId("augmentarchmagestriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(5.0F),
+                new JumpBoostBehavior(4.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(5),
+                OmniMovementBehavior.INSTANCE
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
+            )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -590,7 +663,10 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentcreativeflight")
             .fitsInto(ArmorType.Chestplate)
             .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
-            .providesBehaviors(CreativeFlightBehavior.INSTANCE)
+            .providesBehaviors(
+                CreativeFlightBehavior.INSTANCE,
+                LevitationBehavior.INSTANCE
+            )
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
@@ -600,13 +676,34 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentinertiacanceling")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.CreativeFlight)
+            .requiresOr(BehaviorName.Jetpack, BehaviorName.CreativeFlight)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        EldritchStriders(ItemList.Augment_EldritchStriders, new AugmentBuilder()
+            .setId("EldritchStriders")
+            .setItemId("augmenteldritchstriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(10.0F),
+                new JumpBoostBehavior(5.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(10),
+                OmniMovementBehavior.INSTANCE
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_SpeedBoost,
+                ItemList.Augment_JumpBoost,
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
+            )
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );
 
         // Tier 3 - Utility
-
 
         // spotless:on
 
@@ -625,6 +722,10 @@ public class MechArmorAugmentRegistries {
         @Override
         public ItemStack getItem(int amount) {
             return item.get(amount);
+        }
+
+        public ItemList getListItem() {
+            return item;
         }
 
         @Override
@@ -668,8 +769,18 @@ public class MechArmorAugmentRegistries {
         }
 
         @Override
+        public Collection<BehaviorName> getRequiredBehaviorsOr() {
+            return this.builder.getRequiredBehaviorsOr();
+        }
+
+        @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
         }
 
         public IIcon getTexture(ArmorType armorType) {

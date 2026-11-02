@@ -6,10 +6,10 @@ import java.util.Collections;
 
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unchecked")
 public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
@@ -24,10 +24,14 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     private Collection<IArmorBehavior> providedBehaviors = Collections.emptyList();
     /// The behaviors that are required for this part to be installed
     private Collection<BehaviorName> requiredBehaviors = Collections.emptyList();
+    /// At least one of these behaviors is required for this part to be installed
+    private Collection<BehaviorName> requiredBehaviorsOr = Collections.emptyList();
     /// The behaviors that prevent this part from being installed
     private Collection<BehaviorName> incompatibleBehaviors = Collections.emptyList();
     /// The armor types this part can fit into
     private Collection<ArmorType> allowedArmorTypes = Arrays.asList(ArmorType.values());
+    /// The augments that prevent this part from being installed
+    private Collection<ItemList> incompatibleAugments = Collections.emptyList();
 
     protected void onMutated() {
         if (finished) {
@@ -65,7 +69,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getLocalizedName() {
-        return GTUtility.translate("GT5U.armor.part.name." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.name." + id);
     }
 
     public boolean hasTooltip() {
@@ -73,7 +77,7 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     }
 
     public String getTooltip() {
-        return GTUtility.translate("GT5U.armor.part.tooltip." + id);
+        return StatCollector.translateToLocal("GT5U.armor.part.tooltip." + id);
     }
 
     public Collection<IArmorBehavior> getProvidedBehaviors() {
@@ -84,8 +88,16 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return requiredBehaviors;
     }
 
+    public Collection<BehaviorName> getRequiredBehaviorsOr() {
+        return requiredBehaviorsOr;
+    }
+
     public Collection<BehaviorName> getIncompatibleBehaviors() {
         return incompatibleBehaviors;
+    }
+
+    public Collection<ItemList> getIncompatibleAugments() {
+        return incompatibleAugments;
     }
 
     public Self providesBehaviors(Collection<IArmorBehavior> behaviors) {
@@ -100,9 +112,21 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return (Self) this;
     }
 
+    public Self requiresOr(Collection<BehaviorName> behaviors) {
+        onMutated();
+        this.requiredBehaviorsOr = Collections.unmodifiableCollection(behaviors);
+        return (Self) this;
+    }
+
     public Self incompatibleBehaviors(Collection<BehaviorName> behaviors) {
         onMutated();
         this.incompatibleBehaviors = Collections.unmodifiableCollection(behaviors);
+        return (Self) this;
+    }
+
+    public Self incompatibleAugments(Collection<ItemList> augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(augments);
         return (Self) this;
     }
 
@@ -118,9 +142,21 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return (Self) this;
     }
 
+    public Self requiresOr(BehaviorName... behaviors) {
+        onMutated();
+        this.requiredBehaviorsOr = Collections.unmodifiableCollection(Arrays.asList(behaviors));
+        return (Self) this;
+    }
+
     public Self incompatibleBehaviors(BehaviorName... behaviors) {
         onMutated();
         this.incompatibleBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
+        return (Self) this;
+    }
+
+    public Self incompatibleAugments(ItemList... augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(Arrays.asList(augments));
         return (Self) this;
     }
 

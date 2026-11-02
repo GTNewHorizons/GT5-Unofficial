@@ -1,8 +1,9 @@
 package gregtech.api.enums;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public enum MachineType {
 
@@ -121,17 +122,17 @@ public enum MachineType {
     }
 
     public String type() {
-        return GTUtility.translate(this.name);
+        return StatCollector.translateToLocal(this.name);
     }
 
     public String description() {
-        return GTUtility.translate(this.description);
+        return StatCollector.translateToLocal(this.description);
     }
 
     public String[] tooltipDescription() {
         return new String[] { description(),
-            GTUtility.translate(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
+            StatCollector.translateToLocal(TT_machineType) + ": "
+                + TooltipHelper.MACHINE_TYPE_COLOR
                 + type()
                 + EnumChatFormatting.RESET };
     }

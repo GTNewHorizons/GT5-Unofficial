@@ -1,6 +1,6 @@
 package goodgenerator.blocks.regularBlock;
 
-import goodgenerator.main.GoodGenerator;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.common.render.GTRendererCasing;
@@ -10,8 +10,8 @@ public class BlockTurbineCasing extends BlockCasing {
     public IIconContainer base;
 
     public BlockTurbineCasing(String name, String texture) {
-        super(name, new String[] { GoodGenerator.MOD_ID + ":" + texture });
-        base = Textures.BlockIcons.custom("icons/" + texture);
+        super(name, new String[] { Mods.ModIDs.GOOD_GENERATOR + ":" + texture });
+        base = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/" + texture);
     }
 
     @Override

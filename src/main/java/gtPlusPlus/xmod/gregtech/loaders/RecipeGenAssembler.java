@@ -42,7 +42,7 @@ public class RecipeGenAssembler extends RecipeGenBase {
                 .circuit(4)
                 .itemOutputs(material.getFrameBox(1))
                 .duration(3 * SECONDS)
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(assemblerRecipes);
         }
 
@@ -54,7 +54,7 @@ public class RecipeGenAssembler extends RecipeGenBase {
                 material.getRing(1),
                 material.getRotor(1),
                 240,
-                material.vVoltageMultiplier);
+                material.voltageMultiplier);
     }
 
     @Deprecated

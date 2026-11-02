@@ -41,6 +41,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
@@ -84,7 +85,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     protected String[] getTooltipLines() {
         int pollution = (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
             * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
-        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.diesel.tooltip", pollution);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.basicgenerator.diesel.tooltip", pollution);
     }
 
     @Override

@@ -110,11 +110,6 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     }
 
     @Override
-    public int getRenderBlockPass() {
-        return 1;
-    }
-
-    @Override
     public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
         return new TileEntityDecayablesChest();
     }

@@ -214,6 +214,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
             || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return this.mOutputHatchesByLayer.get(this.mHeight - 1)
             .add(tHatch);
     }
@@ -262,7 +263,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom center")
@@ -274,7 +275,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
             .addOutputHatch("2-11x Output Hatches (One per Output Layer except bottom layer)")
             .addStructureInfo("An \"Output Layer\" consists of 5 layers!")
             .addStructureHint("The interior of this Mega Multiblock's hologram is empty, it should be all air.")
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }

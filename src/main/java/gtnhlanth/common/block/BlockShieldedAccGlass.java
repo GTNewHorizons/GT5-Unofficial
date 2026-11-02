@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class BlockShieldedAccGlass extends Block {
 
@@ -19,7 +19,7 @@ public class BlockShieldedAccGlass extends Block {
     public BlockShieldedAccGlass() {
         super(Material.glass);
         this.setBlockName("casing." + name);
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

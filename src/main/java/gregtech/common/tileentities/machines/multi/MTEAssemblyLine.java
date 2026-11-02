@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -27,24 +27,29 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -53,7 +58,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
@@ -67,7 +71,9 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine> implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -84,6 +90,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 5, 16)
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
@@ -91,12 +98,17 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement(
             'e',
             ofChain(
-                Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                buildHatchAdder(MTEAssemblyLine.class).atLeast(Energy)
+                    .casingIndex(16)
+                    .hint(4)
+                    .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
+                    .continueIfSuccess()
+                    .build(),
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess)
-                .hint(2)
+                .hint(3)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
@@ -104,7 +116,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             'b',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
-                .hint(3)
+                .hint(1)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTechAPI.sBlockCasings2, 0),
@@ -113,10 +125,10 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             'I',
             ofChain(
                 // all blocks nearby use solid steel casing, so let's use the texture of that
-                InputBus.newAny(16, 4, ForgeDirection.DOWN),
+                InputBus.newAny(16, 2, ForgeDirection.DOWN),
                 ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 3)))
-        .addElement('i', InputBus.newAny(16, 4, ForgeDirection.DOWN))
-        .addElement('o', OutputBus.newAny(16, 3, ForgeDirection.DOWN))
+        .addElement('i', InputBus.newAny(16, 2, ForgeDirection.DOWN))
+        .addElement('o', OutputBus.newAny(16, 1, ForgeDirection.DOWN))
         .build();
 
     public MTEAssemblyLine(int aID, String aName, String aNameRegional) {
@@ -135,58 +147,60 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, Assline, AL")
-            .addInfo("Used to craft complex machine parts (LuV+)")
-            .addInfo("Items & Fluids are inserted in NEI order, one per slice")
-            .addInfo("Does not run Assembler recipes")
-            .addMaxTierSkips(1)
-            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-            .addController("Either Grate Machine Casing on the first slice")
-            .addEnergyHatch("Any layer 4 casing", 1)
-            .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4)
-            .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine Casing on layer 1 of last slice", 3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any Grate Machine Casing NOT on the first slice",
-                2)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.assembly_line"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "assembly-line"),
+                ImmutableMap.<String, Object>builder()
+                    .put("complex_parts_tier", VoltageIndex.LuV)
+                    .build())
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_grate_casing_not_first_slice"), 3)
+            .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing", 4), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addInputBus("5-16", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_each_slice"), 2)
+            .addInputHatch("1-4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addOutputBus("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing_last_slice", 1), 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("10", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("8", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4-8", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblerMachineCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 4) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocal("gt.mbtt.structure.empty"), Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("gt.mbtt.structure.empty")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 3) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.GrateMachineCasing.getLocalizedName(), Casings.AssemblerMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName()))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 2) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), Casings.AssemblyLineCasing.getLocalizedName(), StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 1) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("GT5U.MBTT.InputBus"), Casings.SolidSteelMachineCasing.getLocalizedName()))
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.slices_footer", 16))
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ASSEMBLY_LINE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_GLOW,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.casingTexturePages[0][16];
     }
 
     @Override
@@ -216,7 +230,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         int[] tStacks = GTValues.emptyIntArray;
@@ -228,18 +242,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         Map<Fluid, FluidStack> fluidsFromME = getStoredFluidsFromME();
 
         for (RecipeAssemblyLine tRecipe : availableRecipes) {
-            // Recipe tier is limited to hatch tier + 1.
-            if (tRecipe.mEUt > averageVoltage * 4) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
-            // Insufficient power check.
-            if (tRecipe.mEUt > maxAmp * averageVoltage) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
             // So here we check against the recipe found on the data stick.
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up-to-date data stick.
@@ -291,17 +293,13 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 continue;
             }
 
-            int currentParallel = maxParallel;
-
-            currentParallel = (int) GTRecipe.RecipeAssemblyLine
-                .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
+            int currentParallel = (int) GTRecipe.RecipeAssemblyLine
+                .maxParallelCalculatedByInputItems(mInputBusses, Integer.MAX_VALUE, itemConsumptions, inputsFromME);
 
             if (currentParallel <= 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
-
-            tStacks = itemConsumptions;
 
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All Items accepted");
@@ -319,17 +317,32 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                         result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
                 }
-                tFluids = tRecipe.mFluidInputs;
             }
 
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All fluids accepted");
             }
 
+            // Recipe tier is limited to hatch tier + 1.
+            if (tRecipe.mEUt > averageVoltage * 4) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
+            // Insufficient power check.
+            if (tRecipe.mEUt > maxAmp * averageVoltage) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
 
+            tStacks = itemConsumptions;
+            tFluids = tRecipe.mFluidInputs;
+
+            currentParallel = Math.min(currentParallel, maxParallel);
             int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
             calculator.setCurrentParallel(currentParallelBeforeBatchMode)
@@ -428,11 +441,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // Output layer found, check machine conditions
-                checkHasEnergyHatch(errors);
-                checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
                     errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
+                checkHasEnergyHatch(errors);
+                checkHasMaintenanceHatch(errors);
                 return i;
             }
         }
@@ -446,6 +459,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDataAccess) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            addIfSmartInput(aMetaTileEntity);
             return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
         }
         return false;
@@ -454,7 +468,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 5, 16);
         for (int i = 1; i < tLength; i++) {
             buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
         }
@@ -465,7 +479,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (mMachine) return -1;
         int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 5, 16);
         for (int i = 1; i < tLength; i++) {
             build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
@@ -495,7 +509,13 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     private enum DataHatchElement implements IHatchElement<MTEAssemblyLine> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -510,6 +530,16 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         @Override
         public long count(MTEAssemblyLine t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

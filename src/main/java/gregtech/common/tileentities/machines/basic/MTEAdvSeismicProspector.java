@@ -16,10 +16,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -30,11 +32,13 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import ic2.core.Ic2Items;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     boolean ready = false;
@@ -71,9 +75,18 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicmachine.seismicprospector.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return GTUtility
-            .translateMultiline("gt.blockmachines.basicmachine.seismicprospector.tooltip", radius * 2, radius * 2);
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.basicmachine.seismicprospector.tooltip", radius * 2, radius * 2);
     }
 
     protected MTEAdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,

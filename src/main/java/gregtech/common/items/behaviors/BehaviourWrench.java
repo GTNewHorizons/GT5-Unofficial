@@ -17,10 +17,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import appeng.api.parts.IPartHost;
 import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.BlockRubWood;
@@ -62,7 +63,7 @@ public class BehaviourWrench extends BehaviourNone {
         try {
             return handler.handle() && !aWorld.isRemote;
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error wrenching", e);
+            GTLoggers.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;
     }
@@ -163,8 +164,14 @@ public class BehaviourWrench extends BehaviourNone {
 
             // blocks like chests and furnaces have only four directions
             if (isVanillaCantFaceAxisY(block)) {
-                if (targetSideOrdinal > 1) return setBlockMeta(costs, targetSideOrdinal);
-                else return false;
+                if (direction.offsetY != 0) return false;
+                if (isVanillaChest(block)) {
+                    // large chests needs special handling
+                    return doWrenchOperation(
+                        costs,
+                        () -> GTUtil.setVanillaChestDirection(world, x, y, z, targetSideOrdinal, block, false));
+                }
+                return setBlockMeta(costs, targetSideOrdinal);
             }
             if (tileEntity instanceof IPartHost) return false;
 
@@ -236,6 +243,10 @@ public class BehaviourWrench extends BehaviourNone {
             return false;
         }
 
+        Block getBlockAtSide(ForgeDirection side) {
+            return world.getBlock(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
+        }
+
         boolean setBlockMeta(int damage, int newMeta) {
             return doWrenchOperation(damage, () -> setBlockMetadataWithNotify(newMeta));
         }
@@ -268,6 +279,10 @@ public class BehaviourWrench extends BehaviourNone {
             Blocks.chest,
             Blocks.trapped_chest,
             Blocks.ender_chest);
+    }
+
+    public static boolean isVanillaChest(Block block) {
+        return GTUtility.arrayContains(block, Blocks.chest, Blocks.trapped_chest);
     }
 
     public static boolean isVanillaAllSideRotatable(Block block) {

@@ -63,10 +63,7 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
         FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(fluidTank);
         fluidSlotSH.setChangeListener(machine::setLockIfEmpty);
 
-        return new FluidSlot().syncHandler(fluidSlotSH)
-            .bottomRel(0)
-            .rightRel(0)
-            .background(GTGuiTextures.SLOT_FLUID_TANK);
+        return super.createFluidSlot(panel, syncManager, fluidTank).syncHandler(fluidSlotSH);
     }
 
     @Override

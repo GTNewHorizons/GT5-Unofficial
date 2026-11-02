@@ -16,12 +16,15 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -30,13 +33,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
 
     private int mCasing;
@@ -52,33 +56,29 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Fuel Refinery, RFPP";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery");
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addMarkdown(new ResourceLocation("gregtech", "refinery"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
-            .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-            .addCasingInfoMin("Reactor Shield Casing", 4, false)
-            .addCasingInfoMin("Hastelloy-N Sealant Block", 17, false)
-            .addInputHatch("Base platform", 1)
-            .addOutputHatch("Base platform", 1)
-            .addMufflerHatch("Base platform", 1)
-            .addMaintenanceHatch("Base platform", 1)
-            .addEnergyHatch("Base platform", 1)
-            .addStructureInfo("Muffler's Tier must be IV+")
-            .addStructureInfo("2+ Input Hatches, 1+ Output Hatches")
-            .addStructureInfo("1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("17", Casings.HastelloyNSealantBlock.getLocalizedName(), false)
+            .addCasing("7-11", Casings.HastelloyXStructuralBlock.getLocalizedName(), false)
+            .addCasing("5", Casings.IncoloyDSFluidContainmentBlock.getLocalizedName(), false)
+            .addCasing("4", Casings.ReactorShieldCasing.getLocalizedName(), false)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hastelloy_x_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hastelloy_x_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hastelloy_x_casing"), 1)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.any_hastelloy_x_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hastelloy_x_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -109,7 +109,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.fissionFuelProcessingRecipes;
+        return RecipeMaps.fissionFuelProcessingRecipes;
     }
 
     @Override
@@ -179,13 +179,14 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         mCasing = 0;
         if (!checkPiece(mName, 1, 7, 0, errors)) return;
         checkCasingMin(errors, mCasing, 7);
+        checkOneEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneMufflerHatch(errors);
         checkHatchMin(errors, InputHatch, 2);
         checkHatchMax(errors, InputHatch, 4);
         checkHasOutputHatch(errors);
         checkHatchMax(errors, OutputHatch, 2);
-        checkOneMufflerHatch(errors);
-        checkOneMaintenanceHatch(errors);
-        checkOneEnergyHatch(errors);
+
         if (errors.isEmpty()) {
             this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
         }

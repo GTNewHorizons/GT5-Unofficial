@@ -51,6 +51,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -157,7 +158,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         } else if (getTurbineType().contains("Steam")) {
             tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
         }
-        tt.addTecTechHatchInfo();
+        tt.addSupportAny();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top center")
@@ -254,8 +255,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
-                boolean aDidAdd = this.mTurbineRotorHatches.add(aTurbineHatch);
-                return aDidAdd;
+                return this.mTurbineRotorHatches.add(aTurbineHatch);
             }
         }
         return false;
@@ -489,7 +489,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }

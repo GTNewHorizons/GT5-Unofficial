@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -25,11 +24,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -37,8 +38,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -46,6 +49,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -54,6 +58,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTEPurificationUnitPlasmaHeater>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -252,139 +257,47 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
-                    + HEATING_POINT
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("and then cooling it back down to " + EnumChatFormatting.RED + "0K")
-            .addInfo(
-                "Initial temperature is reset to " + EnumChatFormatting.RED
-                    + "0K"
-                    + EnumChatFormatting.GRAY
-                    + " on recipe start")
-            .addInfo(
-                // TODO: Refer to heating cycles in another way to avoid confusion
-                "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
-                    + SUCCESS_PER_CYCLE
-                    + "%")
-            .addInfo(
-                "If the temperature ever reaches " + EnumChatFormatting.RED
-                    + MAX_TEMP
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " the recipe will fail and output steam")
-            .addSeparator()
-            .addInfo(
-                "Consumes up to " + EnumChatFormatting.RED
-                    + MAX_PLASMA_PER_SEC
-                    + "L/s "
-                    + EnumChatFormatting.WHITE
-                    + plasmaMaterial.getPlasma(1)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + " and up to "
-                    + EnumChatFormatting.RED
-                    + MAX_COOLANT_PER_SEC
-                    + "L/s "
-                    + EnumChatFormatting.WHITE
-                    + coolantMaterial.getFluid(1)
-                        .getLocalizedName())
-            .addInfo(
-                EnumChatFormatting.RED + "Raises "
-                    + EnumChatFormatting.GRAY
-                    + "the temperature by "
-                    + EnumChatFormatting.RED
-                    + PLASMA_TEMP_PER_LITER
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " per liter of plasma consumed")
-            .addInfo(
-                EnumChatFormatting.RED + "Lowers "
-                    + EnumChatFormatting.GRAY
-                    + "the temperature by "
-                    + EnumChatFormatting.RED
-                    + -COOLANT_TEMP_PER_LITER
-                    + "K"
-                    + EnumChatFormatting.GRAY
-                    + " per liter of coolant consumed")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Step five of water purification is to evaporate complex organic polymers and extremophile organisms")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "that might be resistant to simple acids, clarifying agents, and filters. Using an ultra high")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "pressure chamber in combination with extreme temperature fluctuations allows the water to remain")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "supercritical while evaporating any remaining contaminants, ready for filtration")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_plasma_heater"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-plasma-heater"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("heating_point", HEATING_POINT)
+                    .put("success", SUCCESS_PER_CYCLE)
+                    .put("max_temp", MAX_TEMP)
+                    .put("max_plasma", MAX_PLASMA_PER_SEC)
+                    .put("max_coolant", MAX_COOLANT_PER_SEC)
+                    .put(
+                        "plasma",
+                        plasmaMaterial.getPlasma(1)
+                            .getLocalizedName())
+                    .put(
+                        "coolant",
+                        coolantMaterial.getFluid(1)
+                            .getLocalizedName())
+                    .put("plasma_temp", PLASMA_TEMP_PER_LITER)
+                    .put("coolant_temp", -COOLANT_TEMP_PER_LITER)
+                    .build())
             .beginStructureBlock(23, 15, 15, false)
-            .addController("Front bottom center")
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                669,
-                EnumChatFormatting.GOLD,
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("672", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing(
+                "64",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
                 false)
-            .addCasingInfoExactlyColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                54,
-                EnumChatFormatting.GOLD,
+            .addCasing(MIN_CASING + "-53", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SuperconductorZPMBase), false)
+            .addCasing("9", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
+            .addCasing(
+                "8",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
                 false)
-            .addCasingInfoExactlyColored(
-                "Any Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                64,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Superconductor Base ZPM Frame Box",
-                EnumChatFormatting.GRAY,
-                40,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("Any Neonite", EnumChatFormatting.GRAY, 8, EnumChatFormatting.GOLD, false)
-            .addCasingInfoExactlyColored(
-                "Superconducting Coil Block",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
-                EnumChatFormatting.GOLD + "1",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"),
-                EnumChatFormatting.GOLD + "1",
-                2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
-                EnumChatFormatting.GOLD + "1",
-                3)
+            .addInputHatch("3+", StatCollector.translateToLocal("gt.mbtt.structure.plasma_heater_input_hatch"), 1, 2, 3)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_trinium_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -499,11 +412,11 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_plasma_heater.temperature",
                 "" + EnumChatFormatting.YELLOW + currentTemperature));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_plasma_heater.heating_cycles",
                 "" + EnumChatFormatting.YELLOW + cyclesCompleted));
         return infoData.toArray(new String[] {});

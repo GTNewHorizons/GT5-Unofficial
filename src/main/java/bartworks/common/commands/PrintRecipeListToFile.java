@@ -22,6 +22,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.crafting.CraftingManager;
 
+import bartworks.MainMod;
+
 public class PrintRecipeListToFile extends CommandBase {
 
     @Override
@@ -50,13 +52,13 @@ public class PrintRecipeListToFile extends CommandBase {
                                     .getDisplayName()
                                 + "\n");
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        MainMod.LOGGER.error(ex);
                     }
                 });
             fw.flush();
             fw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
         }
     }
 }

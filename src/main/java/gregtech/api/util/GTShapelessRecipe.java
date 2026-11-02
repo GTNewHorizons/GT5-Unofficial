@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -20,6 +21,7 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
     public final boolean mRemovableByGT, mKeepingNBT, overwriteNBT;
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
+    private final Predicate<InventoryCrafting> mInputValidator;
 
     @Deprecated
     public GTShapelessRecipe(ItemStack aResult, boolean aDismantleable, boolean aRemovableByGT, boolean aKeepingNBT,
@@ -29,6 +31,11 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
 
     public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
         Enchantment[] enchants, int[] enchantLevels, Object... aRecipe) {
+        this(aResult, aRemovableByGT, aKeepingNBT, overwriteNBT, enchants, enchantLevels, grid -> true, aRecipe);
+    }
+
+    public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
+        Enchantment[] enchants, int[] enchantLevels, Predicate<InventoryCrafting> inputValidator, Object... aRecipe) {
         super(aResult, aRecipe);
         final boolean hasEnchants = enchants != null && enchants.length > 0
             && enchantLevels != null
@@ -43,10 +50,12 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
         this.overwriteNBT = overwriteNBT;
         this.mRemovableByGT = aRemovableByGT;
         this.mKeepingNBT = aKeepingNBT;
+        this.mInputValidator = inputValidator;
     }
 
     @Override
     public boolean matches(InventoryCrafting aGrid, World aWorld) {
+        if (!mInputValidator.test(aGrid)) return false;
         if (mKeepingNBT) {
             ItemStack tStack = null;
             for (int i = 0; i < aGrid.getSizeInventory(); i++) {

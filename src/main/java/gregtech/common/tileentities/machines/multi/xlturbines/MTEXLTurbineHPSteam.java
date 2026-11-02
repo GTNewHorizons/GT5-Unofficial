@@ -3,12 +3,14 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -17,6 +19,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
 
     public boolean achievement = false;
@@ -33,11 +36,6 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEXLTurbineHPSteam(mName);
-    }
-
-    @Override
-    public boolean requiresOutputHatch() {
-        return true;
     }
 
     @Override
@@ -58,29 +56,24 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine, XLST-HP")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
-            .addTecTechHatchInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 29, false)
-            .addController("Front center")
-            .addCasingInfoMin("Reinforced HP Steam Turbine Casing", 430, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 100, false)
-            .addCasingInfoExactly("Any Tiered Glass", 36, false)
-            .addCasingInfoExactly("Titanium Frame Box", 34, false)
-            .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addOutputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.steam_turbine", "XLST-HP"))
+            .addMarkdown(new ResourceLocation("gregtech", "xl-hp-steam-turbine"))
+            .addSupportAny()
+            .beginStructureBlock(9, 9, 29, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_5th_layer"))
+            .addCasing(minCasingAmount() + "-440", getCasing().getLocalizedName(), false)
+            .addCasing("100", getRotorCasing().getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
+            .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

@@ -76,8 +76,6 @@ tooltip.rotor.1.name=Durabilité:
 tooltip.rotor.2.name=Efficacité
 tooltip.cp.0.name=Y-a-t-il un circuit dedans?
 
-tooltip.bw.0.name=Ajouté par
-tooltip.bw.1.name=Ajouté par bartimaeusnek via
 tooltip.bw.yes.name=Oui
 tooltip.bw.no.name=Non
 tooltip.bw.tier.name=Tier:
@@ -90,10 +88,10 @@ tooltip.labparts.1.name=Une fiole d'ADN vide.
 tooltip.labparts.2.name=Une cellule de plasmide vide.
 tooltip.labparts.3.name=Un nettoyant spécial pour la Bio-ingéniérie.
 tooltip.labparts.4.name=Une poudre de séparation d'ADN par électrophorèse.
-tooltip.labparts.5.name=Une boîte de Pétri contenant:
+tooltip.labparts.5.name=Une boîte de Pétri contenant: %s
 tooltip.labparts.6.name=Ceci est une culture faible, elle ne peut pas se reproduire dans la Bio Cuve!
-tooltip.labparts.7.name=Une fiole d'ADN contenant:
-tooltip.labparts.8.name=Une cellule de plasmide contenant:
+tooltip.labparts.7.name=Une fiole d'ADN contenant: %s
+tooltip.labparts.8.name=Une cellule de plasmide contenant: %s
 
 tooltip.tile.waterpump.0.name=Produit
 tooltip.tile.waterpump.1.name=L/s Water quand il est alimenté.
@@ -155,3 +153,7 @@ star.Ross128=Ross128
 solarsystem.Ross128System=Système-Ross128
 
 itemGroup.bw.MetaItems.0=Objets du Remaniement des Circuits BartWorks
+
+# Multiblocks
+gt.blockmachines.megachemicalreactor.name=Méga réacteur chimique 
+gt.blockmachines.megaoilcracker.name=Méga Craqueur

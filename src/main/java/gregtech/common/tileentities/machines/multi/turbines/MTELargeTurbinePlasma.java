@@ -7,7 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -29,6 +31,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
 
     public MTELargeTurbinePlasma(int aID, String aName, String aNameRegional) {
@@ -78,20 +81,20 @@ public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Turbine, LPT")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use your Fusion Reactor to produce the Plasma")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.plasma_turbine", "LPT"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-plasma-turbine"))
             .beginStructureBlock(3, 3, 6, false)
-            .addController("Front center")
-            .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 14, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addInputHatch("Plasma Fluid, Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addOutputHatch("Molten Fluid, optional, Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
-            .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("8-14", getTurbineCasing().getLocalizedName(), false)
+            .addCasing("12", getPipeCasing().getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_3x3_in_front_of_controller"))
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

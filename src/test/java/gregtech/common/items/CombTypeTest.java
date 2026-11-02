@@ -13,14 +13,14 @@ class CombTypeTest {
     @Test
     void noDuplicateID() {
         Set<Integer> seen = new HashSet<>();
-        for (CombType value : CombType.values()) {
+        for (CombType value : CombType.VALUES) {
             assertTrue(seen.add(value.getId()), "Comb type must not have duplicate ID");
         }
     }
 
     @Test
     void noNegativeID() {
-        for (CombType value : CombType.values()) {
+        for (CombType value : CombType.VALUES) {
             if (value == CombType._NULL) assertTrue(value.getId() <= 0, "Comb type ID must be negative for _NULL");
             else assertTrue(value.getId() >= 0, "Comb type ID must not be negative");
         }
@@ -34,7 +34,7 @@ class CombTypeTest {
 
     @Test
     void validIDCorrectComb() {
-        for (CombType value : CombType.values()) {
+        for (CombType value : CombType.VALUES) {
             if (value != CombType._NULL)
                 assertEquals(CombType.valueOf(value.getId()), value, "Valid ID Lookup should result in correct output");
         }

@@ -23,24 +23,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -51,7 +56,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
@@ -62,30 +66,32 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialElectromagneticSeparator
-    extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator> implements ISurvivalConstructable {
+    extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1.1F, false),
-        Steel(24, 0.75F, 1.25F, false),
-        Neodymium(48, 0.7F, 1.5F, false),
-        Samarium(96, 0.6F, 2F, false),
-        Tengam(256, 0.5F, 2.5F, true);
+        Iron(8, 0.8D, 1.1D, false),
+        Steel(24, 0.75D, 1.25D, false),
+        Neodymium(48, 0.7D, 1.5D, false),
+        Samarium(96, 0.6D, 2.0D, false),
+        Tengam(256, 0.5D, 2.5D, true);
 
         final int maxParallel;
-        final float euModifier, speedBoost;
+        final double euModifier, speedBoost;
         final boolean supportsExotic;
 
-        MagnetTiers(int maxParallel, float euModifier, float speedBoost, boolean supportsExotic) {
+        MagnetTiers(int maxParallel, double euModifier, double speedBoost, boolean supportsExotic) {
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
-            this.speedBoost = 1F / speedBoost;
+            this.speedBoost = 1.0D / speedBoost;
             this.supportsExotic = supportsExotic;
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = GTUtility.translate(
+            String tooltip = StatCollector.translateToLocalFormatted(
                 "gt.magnet.tooltip.base",
                 EnumChatFormatting.LIGHT_PURPLE,
                 Math.round((1F / m.speedBoost * 100) - 100),
@@ -96,7 +102,7 @@ public class MTEIndustrialElectromagneticSeparator
 
             if (m.supportsExotic) {
                 tooltip = tooltip + "\\n"
-                    + GTUtility.translate(
+                    + StatCollector.translateToLocalFormatted(
                         "gt.magnet.tooltip.exotic",
                         EnumChatFormatting.BOLD,
                         EnumChatFormatting.GREEN,
@@ -146,6 +152,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
+                .exclusive()
                 .build())
         .build();
 
@@ -168,67 +175,51 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EMS_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EMS,
+            OVERLAY_FRONT_EMS_GLOW,
+            OVERLAY_FRONT_EMS_ACTIVE,
+            OVERLAY_FRONT_EMS_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 0));
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo("Insert an electromagnet into the electromagnet housing to use")
-            .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
-            .beginStructureBlock(7, 6, 7, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("MagTech Casing", MIN_CASING, false)
-            .addCasingInfoExactly("Any Tiered Glass", 12, false)
-            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
-            .addOtherStructurePart(
-                GTUtility.translate("GT5U.tooltip.structure.electromagnet_housing"),
-                "1 Block Above/Behind Controller",
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electromagnetic_separator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-electromagnetic-separator"),
+                ImmutableMap.<String, Object>builder().build())
+            .beginStructureBlock(7, 6, 7, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASING + "-73", Casings.MagTechCasing.getLocalizedName(), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NeodymiumMagnetic), false)
+            .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.one_block_above_behind_controller"),
                 2)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.authorBaps);
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -354,9 +345,8 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

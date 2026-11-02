@@ -43,9 +43,11 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -84,14 +86,15 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         // CoAL casing
         .addElement(
             'B',
-            ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTEAssemblyMatrixModule::setCasingTier,
-                MTEAssemblyMatrixModule::getCasingTier))
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTEAssemblyMatrixModule::setCasingTier,
+                    MTEAssemblyMatrixModule::getCasingTier)))
         // Nanochip Mesh Interface Casing
         .addElement('C', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
@@ -163,10 +166,43 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {
-                baseMulti.addToHistory(circuitComponent.circuitType, stack.stackSize);
+                baseMulti.addToHistory(
+                    circuitComponent.circuitType,
+                    (int) Math.max(1, stack.stackSize * circuitComponent.weight));
             }
         }
         return super.addItemOutputs(outputItems);
+    }
+
+    @Override
+    public GTRecipe transformRecipe(GTRecipe recipe) {
+        GTRecipe transformedRecipe = super.transformRecipe(recipe);
+        ItemStack output = transformedRecipe.mOutputs[0];
+        CircuitComponent cc = CircuitComponent.tryGetFromFakeStack(output);
+        if (cc == null || cc.circuitType != CircuitCalibration.PRIMITIVE || !baseMulti.primitiveT1Active) {
+            return transformedRecipe;
+
+        }
+        // 10% chance to set recipe duration to 10 ticks flat
+        if (random.nextFloat() <= 0.1) {
+            transformedRecipe.setDuration(10);
+        }
+
+        if (cc == CircuitComponent.PrimedUnattunedCircuitry) return transformedRecipe;
+
+        // 5% chance to double circuit output T2 calibration
+        // 10% chance instead at T3
+        if (baseMulti.primitiveT2Active) {
+            double chance = 0.05;
+            if (baseMulti.primitiveT3Active) {
+                chance += 0.05;
+            }
+            if (random.nextFloat() <= chance) {
+                transformedRecipe.setOutputs(output, output.copy());
+            }
+        }
+
+        return transformedRecipe;
     }
 
     @Override
@@ -181,6 +217,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body.3",
+                    TooltipHelper.EFF_COLOR,
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
@@ -188,27 +229,32 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 25, false)
+            .addCasing("25", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Component Assembly Line Casing
-            .addCasingInfoExactly(translateToLocal("componentAssemblyLineCasing.name"), 20, true)
+            .addCasing("20", translateToLocal("componentAssemblyLineCasing.name"), true)
             // Naquadah Alloy Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", Materials.NaquadahAlloy.getLocalizedName()),
-                12,
-                false)
+            .addCasing("12", "Naquadah Alloy Frame Box", false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 8, false)
+            .addCasing("8", translateToLocal("gt.blockcasings12.1.name"), false)
             // Naquadah Alloy Sheetmetal
-            .addCasingInfoExactly(OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), 3, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("3", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
+            .addSubChannel(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher();
     }
 
@@ -231,23 +277,33 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getPriority() {
-        return -1;
+    protected float getEUDiscountModifier(@NotNull GTRecipe recipe) {
+        // assumes machine tier is always >= recipe tier as that is done in validateRecipe
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
+        int machineTier = getCasingTier();
+        return (float) Math.pow(0.95, machineTier - recipeTier);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    protected boolean supportsXOROutput() {
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultInputSeparationMode() {
+        return false;
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", machineTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("tier")

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 import java.util.function.ToLongFunction;
+import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
@@ -43,6 +44,11 @@ public interface IHatchElement<T> {
     }
 
     long count(T t);
+
+    default boolean matchesHatch(IMetaTileEntity mte) {
+        return mteClasses().stream()
+            .anyMatch(c -> c.isInstance(mte));
+    }
 
     default <T2 extends T> IHatchElement<T2> withMteClass(Class<? extends IMetaTileEntity> aClass) {
         if (aClass == null) throw new IllegalArgumentException();
@@ -159,6 +165,7 @@ class HatchElementEither<T> implements IHatchElement<T> {
 
     private final IHatchElement<? super T> first, second;
     private ImmutableList<? extends Class<? extends IMetaTileEntity>> mMteClasses;
+    private ImmutableList<Class<? extends IMetaTileEntity>> mMteBlacklist;
     private String name, displayName;
 
     HatchElementEither(IHatchElement<? super T> first, IHatchElement<? super T> second) {
@@ -173,6 +180,19 @@ class HatchElementEither<T> implements IHatchElement<T> {
             .addAll(second.mteClasses())
             .build();
         return mMteClasses;
+    }
+
+    @Override
+    public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+        if (mMteBlacklist == null) {
+            var builder = ImmutableList.<Class<? extends IMetaTileEntity>>builder();
+            Stream.of(first.mteBlacklist(), second.mteBlacklist())
+                .flatMap(List::stream)
+                .filter(blacklisted -> !mteClasses().contains(blacklisted))
+                .forEach(builder::add);
+            mMteBlacklist = builder.build();
+        }
+        return mMteBlacklist;
     }
 
     @Override
@@ -205,6 +225,11 @@ class HatchElementEither<T> implements IHatchElement<T> {
     @Override
     public long count(T t) {
         return first.count(t) + second.count(t);
+    }
+
+    @Override
+    public boolean matchesHatch(IMetaTileEntity mte) {
+        return first.matchesHatch(mte) || second.matchesHatch(mte);
     }
 }
 
@@ -254,6 +279,11 @@ class HatchElement<T> implements IHatchElement<T> {
     @Override
     public long count(T t) {
         return mCount == null ? mBacking.count(t) : mCount.applyAsLong(t);
+    }
+
+    @Override
+    public boolean matchesHatch(IMetaTileEntity mte) {
+        return mBacking.matchesHatch(mte);
     }
 
     @Override

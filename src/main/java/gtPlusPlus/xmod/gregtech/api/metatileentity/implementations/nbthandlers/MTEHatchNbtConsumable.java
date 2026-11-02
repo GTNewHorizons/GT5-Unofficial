@@ -176,9 +176,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         ItemStack aStack) {
         if (side != aBaseMetaTileEntity.getFrontFacing()) return false;
         if (aIndex >= getFirstUsageSlot()) return false;
-        if (!isItemValidForInputSlot(aStack)) return false;
-
-        return true;
+        return isItemValidForInputSlot(aStack);
     }
 
     /**

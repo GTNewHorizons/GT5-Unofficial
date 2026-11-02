@@ -1,5 +1,5 @@
 {
-  "format_version": 1,
+  "format_version": 2,
   "size": [3, 4, 3],
   "palette": {
     "A": {"name": "gregtech:gt.blockcasings5", "meta": 0, "label": "Cupronickel Coil Block"},

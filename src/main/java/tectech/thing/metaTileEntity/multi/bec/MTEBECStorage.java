@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
@@ -21,29 +21,18 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -52,10 +41,9 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -63,27 +51,29 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.CircularSound;
 import gregtech.client.volumetric.LinearSound;
-import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
-import tectech.thing.CustomItemList;
+import tectech.thing.gui.bec.MTEBECStorageGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.LongParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory, IParametrized {
 
     private final CondensateList storedCondensate = new CondensateList();
     private final HashSet<MTEHatchCondensateDetector> condensateDetectors = new HashSet<>();
 
     private boolean contentsChanged = false;
 
-    private long fieldStrength = 1;
+    public static final String FIELD_STRENGTH_PARAMETER = "fieldStrength";
+
+    private LongParameter fieldStrengthParameter;
     private GTSoundLoop pillar, torus, torusFar;
 
     public MTEBECStorage(int aID, String aName) {
@@ -106,9 +96,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 42, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -125,6 +115,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void clearHatches() {
         super.clearHatches();
 
+        // Condensate detectors register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(condensateDetectors);
         condensateDetectors.clear();
     }
 
@@ -144,38 +136,38 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new Gui();
+        return new MTEBECStorageGui(this);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"));
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addController(GTUtility.translate("GT5U.chat.bec-storage-controller-pos"));
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo(
-            Arrays.asList(
-                SuperconductivePlasmaEnergyConduit,
-                ElectromagneticallyIsolatedCasing,
-                FineStructureConstantManipulator,
-                ConflictInducementCasing,
-                PeaceEnforcementCasing,
-                CondensateTransformativeCoil,
-                CondensateGuidanceCoil,
-                ElectromagneticWaveguide),
-            null);
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(45, 17, 45, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
+            .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("1045", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
+            .addCasing("896", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addCasing("439-442", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("322-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("292", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
+            .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
+            .addMiscHatch("0+", "Bose-Einstein Condensate Detector Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return FineStructureConstantManipulator.getCasingTexture();
     }
 
@@ -184,7 +176,6 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         super.saveNBTData(aNBT);
 
         aNBT.setTag("condensate", storedCondensate.saveToNBT());
-        aNBT.setLong("fieldStrength", fieldStrength);
     }
 
     @Override
@@ -192,7 +183,6 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         super.loadNBTData(aNBT);
 
         storedCondensate.loadFromNBT(aNBT.getCompoundTag("condensate"));
-        fieldStrength = aNBT.getLong("fieldStrength");
     }
 
     @Override
@@ -200,9 +190,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         mMaxProgresstime = 20;
         mEfficiency = 10_000;
         useLongPower = true;
-        lEUt = -fieldStrength;
+        lEUt = -fieldStrengthParameter.getValue();
 
-        if (getAmountStored() > fieldStrength) {
+        if (getAmountStored() > fieldStrengthParameter.getValue()) {
             IntFraction decay = new IntFraction(9, 10);
 
             storedCondensate.replaceAll((mat, amount) -> decay.apply(amount));
@@ -211,10 +201,20 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 .removeIf(e -> e.getLongValue() <= 0);
         }
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return SimpleCheckRecipeResult.ofSuccess("routing");
     }
 
-    private double getAmountStored() {
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    public double getAmountStored() {
         double sum = 0;
 
         for (long l : storedCondensate.values()) {
@@ -224,9 +224,14 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         return sum;
     }
 
+    public void refreshContentForHatch() {
+        contentsChanged = true;
+    }
+
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
+        contentsChanged = true;
         storedCondensate.clear();
     }
 
@@ -242,13 +247,14 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public double getCondensateCapacity() {
-        return fieldStrength;
+        return fieldStrengthParameter.getValue();
     }
 
     @Override
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return;
         }
@@ -263,6 +269,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return false;
         }
@@ -304,7 +311,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -350,9 +357,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     .playSound(pillar);
             }
         } else {
-            if (pillar != null) pillar.stop();
-            if (torus != null) torus.stop();
-            if (torusFar != null) torusFar.stop();
+            if (pillar != null) pillar.setFadeMe(true);
+            if (torus != null) torus.setFadeMe(true);
+            if (torusFar != null) torusFar.setFadeMe(true);
 
             pillar = null;
             torus = null;
@@ -362,12 +369,12 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @OCMethod
     public void setFieldStrength(long strength) {
-        fieldStrength = Math.max(1, strength);
+        fieldStrengthParameter.setValue(Math.max(1, strength));
     }
 
     @OCMethod
     public long getFieldStrength() {
-        return fieldStrength;
+        return fieldStrengthParameter.getValue();
     }
 
     @OCMethod
@@ -378,9 +385,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .collect(Collectors.toList());
     }
 
-    private static class DetectorHatchElement implements IHatchElement<MTEBECStorage> {
+    private enum DetectorHatchElement implements IHatchElement<MTEBECStorage> {
 
-        public static final DetectorHatchElement INSTANCE = new DetectorHatchElement();
+        INSTANCE("GT5U.MBTT.CondensateDetectorHatch");
+
+        private final String name;
+
+        DetectorHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -394,8 +407,10 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
+                    self.contentsChanged = true;
                     return true;
                 } else {
                     return false;
@@ -404,13 +419,13 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         @Override
-        public String name() {
-            return "DetectorHatchElement";
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
-        public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_CondensateDetector.getDisplayName();
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -419,77 +434,21 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
     }
 
-    private class Gui extends TTMultiblockBaseGui<MTEBECStorage> {
+    @Override
+    public void initParameters() {
+        fieldStrengthParameter = new LongParameter(
+            1L,
+            "GT5U.gui.text.bec-field-strength",
+            FIELD_STRENGTH_PARAMETER,
+            () -> 1L,
+            () -> Long.MAX_VALUE);
+    }
 
-        public Gui() {
-            super(MTEBECStorage.this);
-        }
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
 
-        @Override
-        protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
-                .getter(() -> storedCondensate)
-                .adapter(new CondensateListAdapter())
-                .build();
-
-            syncManager.syncValue("contents", contents);
-
-            TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                StringBuilder ret = new StringBuilder();
-
-                ret.append(EnumChatFormatting.GRAY)
-                    .append(GTUtility.translate("GT5U.gui.text.bec-stored-condensate"))
-                    .append('\n');
-
-                if (contents.getValue()
-                    .isEmpty()) {
-                    ret.append(EnumChatFormatting.GRAY)
-                        .append("None");
-                }
-
-                for (var e : contents.getValue()
-                    .object2LongEntrySet()) {
-                    ret.append("  ")
-                        .append(EnumChatFormatting.AQUA)
-                        .append(CondensateType.getCondensateName(e.getKey()))
-                        .append(EnumChatFormatting.GRAY)
-                        .append(" x ")
-                        .append(EnumChatFormatting.GOLD)
-                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                        .append(EnumChatFormatting.GRAY)
-                        .append('\n');
-                }
-
-                return ret.toString();
-            })
-                .asWidget()
-                .widthRel(1);
-
-            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
-        }
-
-        @Override
-        protected boolean isParametrized() {
-            return true;
-        }
-
-        @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
-            return SettingsPanel.builder()
-                .setDividerPosition(50)
-                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
-                .addLongEditor(
-                    IKey.lang("GT5U.gui.text.bec-field-strength"),
-                    () -> fieldStrength,
-                    l -> fieldStrength = l,
-                    (panel1, syncManager1, widget) -> { widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE); })
-                .addReadout(
-                    IKey.lang("GT5U.gui.text.bec-stored"),
-                    new DoubleSyncValue(MTEBECStorage.this::getAmountStored),
-                    amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
-                .build(panel, syncManager)
-                .size(150, 75);
-        }
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(fieldStrengthParameter);
     }
 }
