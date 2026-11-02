@@ -486,7 +486,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTESolarHeater mTile) {
-                if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
+                if (mTile.canSeeSky()) {
                     mTile.setSolarTower(this);
                     return this.mSolarHeaters.add(mTile);
                 }
@@ -508,7 +508,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         this.mEfficiencyIncrease = 100;
         this.mMaxProgresstime = CYCLE_TICKS;
 
-        if (this.mSolarHeaters.isEmpty() || this.mSolarHeaters.size() < 340
+        if (this.mSolarHeaters.isEmpty() || this.mSolarHeaters.size() <= 340
             || this.getTotalRuntimeInTicks() % CYCLE_TICKS == 0) {
             getConnectedSolarReflectors();
         }
@@ -640,7 +640,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             IGregTechDeviceInformation
                 .encode("gt.infoData.solar_tower.heat", formatNumber(this.mHeatLevel), formatNumber(HEAT_CAP)),
             IGregTechDeviceInformation
-                .encode("ggt.infoData.solar_tower.reflectors", formatNumber(this.mSolarHeaters.size()))} ;
+                .encode("gt.infoData.solar_tower.reflectors", String.valueOf(this.mSolarHeaters.size())) };
     }
 
 }
