@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -19,7 +20,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -130,13 +130,7 @@ public class AchievementHandler {
         this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
         this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
         this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.boiler.thermal",
-            -12,
-            -7,
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
-            "multi.abs",
-            false);
+        this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
         this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
@@ -205,8 +199,8 @@ public class AchievementHandler {
 
         achievement.registerStat();
         if (GTPPCore.DEVENV) {
-            GTLog.out.println("achievement." + textId + "=");
-            GTLog.out.println("achievement." + textId + ".desc=");
+            GT_FML_LOGGER.debug("achievement.{}=", textId);
+            GT_FML_LOGGER.debug("achievement.{}.desc=", textId);
         }
 
         this.achievementList.put(textId, achievement);

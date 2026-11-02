@@ -1,6 +1,6 @@
 package gregtech.client.iconContainers.items;
 
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 import static gregtech.api.enums.Textures.OverlaySuffix;
 import static gregtech.api.enums.Textures.TextureMaterialIconDirectory;
 import static gregtech.api.enums.Textures.TextureSetFallback;
@@ -14,14 +14,13 @@ import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
-import gregtech.common.config.Gregtech;
 
 public class GTTextureSetItemIconContainer extends AbstractItemIconContainer implements Runnable {
 
@@ -33,35 +32,49 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     protected ResourceLocation iconResource, iconFallbackResource;
     protected ResourceLocation iconOverlayResource, iconOverlayFallbackResource;
 
-    private GTTextureSetItemIconContainer(@NotNull Pair<String, String> pair) {
-        this(pair.getLeft(), pair.getRight());
+    private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull Pair<String, String> pair) {
+        this(domain, pair.getLeft(), pair.getRight(), null);
     }
 
-    private GTTextureSetItemIconContainer(@NotNull String setName, @NotNull String prefix) {
-        this.iconName = createIconName(setName, prefix);
-        this.fallbackIconName = createIconName(TextureSetFallback, prefix);
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconName);
-        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconName);
+    private GTTextureSetItemIconContainer(@NotNull String domain, @NotNull String setName, @NotNull String prefix,
+        @Nullable IIconRegister override) {
+        String iconPath = createIconName(setName, prefix);
+        String fallbackIconPath = createIconName(TextureSetFallback, prefix);
+        this.iconName = ResourceUtils.getIconRegisterName(domain, iconPath);
+        this.fallbackIconName = ResourceUtils.getIconRegisterName(domain, fallbackIconPath);
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, iconPath);
+        iconFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, fallbackIconPath);
 
-        this.iconOverlayName = createIconName(setName, prefix + OverlaySuffix);
-        this.fallbackIconOverlayName = createIconName(TextureSetFallback, prefix + OverlaySuffix);
-        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconOverlayName);
-        iconOverlayFallbackResource = ResourceUtils.getCompleteItemTextureResourceLocation(fallbackIconOverlayName);
+        String iconOverlayPath = createIconName(setName, prefix + OverlaySuffix);
+        String fallbackIconOverlayPath = createIconName(TextureSetFallback, prefix + OverlaySuffix);
+        this.iconOverlayName = ResourceUtils.getIconRegisterName(domain, iconOverlayPath);
+        this.fallbackIconOverlayName = ResourceUtils.getIconRegisterName(domain, fallbackIconOverlayPath);
+        iconOverlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, iconOverlayPath);
+        iconOverlayFallbackResource = ResourceUtils
+            .getCompleteItemTextureResourceLocation(domain, fallbackIconOverlayPath);
 
-        GregTechAPI.sGTItemIconload.add(this);
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+        if (override != null) {
+            run(override);
+        } else {
+            GregTechAPI.sGTItemIconload.add(this);
+        }
+        logRegisterIcons();
     }
 
     public static String createIconName(String setName, String prefix) {
-        String iconName = TextureMaterialIconDirectory + setName + prefix;
-        return iconName.contains(":") ? iconName : GregTech.resourceDomain + ":" + iconName;
+        return TextureMaterialIconDirectory + setName + prefix;
     }
 
     // 2026-13-05: Counted 7371 unique Item TextureSetIcons, so 9.4K will avoid resize until 7500 entries
     private static Map<Pair<String, String>, IIconContainer> INSTANCES = new HashMap<>(9375);
 
-    public static @NotNull IIconContainer create(@NotNull String setName, @NotNull String prefix) {
-        return INSTANCES.computeIfAbsent(Pair.of(setName, prefix), GTTextureSetItemIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String setName,
+        @NotNull String prefix, IIconRegister override) {
+        if (override != null) {
+            return new GTTextureSetItemIconContainer(domain, setName, prefix, override);
+        }
+        return INSTANCES
+            .computeIfAbsent(Pair.of(setName, prefix), key -> new GTTextureSetItemIconContainer(domain, key));
     }
 
     public static void cleanup() {
@@ -69,8 +82,8 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     }
 
     protected void logRegisterIcons() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + iconOverlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", iconOverlayResource);
     }
 
     @Override
@@ -85,18 +98,22 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
 
     @Override
     public void run() {
+        run(GregTechAPI.sItemIcons);
+    }
+
+    private void run(IIconRegister register) {
         Pair<IIcon, TextureSetIconType> iconPair = registerResourceOrFallback(
             iconResource,
             iconName,
             iconFallbackResource,
             fallbackIconName,
-            GregTechAPI.sItemIcons);
+            register);
         Pair<IIcon, TextureSetIconType> overlayPair = registerResourceOrFallback(
             iconOverlayResource,
             iconOverlayName,
             iconOverlayFallbackResource,
             fallbackIconOverlayName,
-            GregTechAPI.sItemIcons);
+            register);
 
         mIcon = iconPair.getLeft();
         mOverlay = overlayPair.getLeft();

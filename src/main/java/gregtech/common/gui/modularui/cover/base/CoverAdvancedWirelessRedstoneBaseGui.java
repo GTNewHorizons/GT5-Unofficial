@@ -17,11 +17,11 @@ import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 
 public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWirelessRedstoneBase> extends CoverBaseGui<T> {
 
-    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover) {
-        super((T) cover);
+    public CoverAdvancedWirelessRedstoneBaseGui(T cover) {
+        super(cover);
     }
 
-    public CoverAdvancedWirelessRedstoneBaseGui(CoverAdvancedWirelessRedstoneBase cover, boolean buttonRowSpacing) {
+    public CoverAdvancedWirelessRedstoneBaseGui(T cover, boolean buttonRowSpacing) {
         this(cover);
         this.buttonRowSpacing = buttonRowSpacing;
     }
@@ -30,13 +30,17 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        StringSyncValue frequencySyncer = new StringSyncValue(cover::getFrequency, cover::setFrequency);
+        StringSyncValue frequencySyncer = createFrequencySyncer();
         UUID uuid = data.getPlayer()
             .getUniqueID();
         column.child(makeFrequencyRow(frequencySyncer))
             .child(makeButtonRow(uuid))
             .child(makeThirdFlow(syncManager, data));
 
+    }
+
+    protected StringSyncValue createFrequencySyncer() {
+        return new StringSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
     }
 
     protected Flow makeFrequencyRow(StringSyncValue frequencySyncer) {
@@ -56,11 +60,15 @@ public class CoverAdvancedWirelessRedstoneBaseGui<T extends CoverAdvancedWireles
             .coverChildren(0, 20)
             .child(
                 new ToggleButton().size(16, 16)
-                    .value(new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)))
+                    .value(createPrivacySyncer(uuid))
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS))
             .child(new TextWidget<>(IKey.lang("gt.interact.desc.privfreq")).marginLeft(4))
             .marginRight(TICK_RATE_BUTTON_SIZE);
+    }
+
+    protected BooleanSyncValue createPrivacySyncer(UUID uuid) {
+        return new BooleanSyncValue(cover::getPrivacyState, b -> cover.syncPrivacyState(b, uuid)).allowC2S();
     }
 
     // allows for overriding in subclasses for better ui positioning

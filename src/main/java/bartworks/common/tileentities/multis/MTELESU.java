@@ -18,6 +18,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +51,6 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -65,8 +65,11 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELESU extends MTEMultiBlockBase {
 
     private static final byte TEXID_SIDE = 0;
@@ -184,7 +187,6 @@ public class MTELESU extends MTEMultiBlockBase {
             .split(";");
         Collections.addAll(e, dsc);
         e.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
-        e.add(BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
         return e.toArray(new String[0]);
     }
 
@@ -275,7 +277,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public String getInventoryName() {
-        return "L.E.S.U.";
+        return getLocalNameKey();
     }
 
     @Override
@@ -324,7 +326,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        this.checkMachine(aBaseMetaTileEntity, null);
+        this.checkStructure(true, aBaseMetaTileEntity);
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
@@ -332,7 +334,7 @@ public class MTELESU extends MTEMultiBlockBase {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             this.mMaxProgresstime = 1;
-            if (aTick % 20 == 0) this.checkMachine(aBaseMetaTileEntity, null);
+            if (aTick % 20 == 0) this.checkStructure(true, aBaseMetaTileEntity);
         }
     }
 
@@ -363,7 +365,8 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
         this.connectedcells.get_connected(
@@ -387,7 +390,8 @@ public class MTELESU extends MTEMultiBlockBase {
             this.mStorage = 0;
             this.mMaxProgresstime = 0;
             this.mProgresstime = 0;
-            return false;
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.lesu_error"));
+            return;
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
@@ -405,27 +409,21 @@ public class MTELESU extends MTEMultiBlockBase {
             .setActive(true);
 
         long finishedTime = System.nanoTime();
-        // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
+
         if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
-            "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
-                + "ns / "
-                + (finishedTime - startingTime) / 1000000
-                + "ms) Owner:"
-                + this.getBaseMetaTileEntity()
-                    .getOwnerName()
-                + " Check at x:"
-                + this.getBaseMetaTileEntity()
-                    .getXCoord()
-                + " y:"
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " z:"
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIM-ID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId);
-        return true;
+            "LESU LookUp took longer than 5ms!({}ns / {}ms) Owner:{} Check at x:{} y:{} z:{} DIM-ID: {}",
+            finishedTime - startingTime,
+            (finishedTime - startingTime) / 1000000,
+            this.getBaseMetaTileEntity()
+                .getOwnerName(),
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord(),
+            this.getBaseMetaTileEntity()
+                .getWorld().provider.dimensionId);
     }
 
     public World getWorld() {

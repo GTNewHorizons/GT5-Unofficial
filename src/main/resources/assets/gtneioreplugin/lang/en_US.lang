@@ -23,6 +23,7 @@ gtnop.gui.nei.title=%s
 
 gtnop.gui.nei.chance.value=%s%%
 gtnop.gui.nei.orechunkchance.value=§eChance per ore chunk: §7%s%%
+gtnop.gui.nei.oredimheight.value=§eHeight in dim: §7%s
 gtnop.gui.nei.fluidAmount.value=%s-%s
 
 gtnop.gui.nei.asteroidPrimary=Main-Gen1

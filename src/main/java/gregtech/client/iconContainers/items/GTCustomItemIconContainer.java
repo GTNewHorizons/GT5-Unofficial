@@ -1,6 +1,6 @@
 package gregtech.client.iconContainers.items;
 
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
-import gregtech.common.config.Gregtech;
 
 public class GTCustomItemIconContainer extends AbstractItemIconContainer implements Runnable {
 
@@ -23,25 +21,26 @@ public class GTCustomItemIconContainer extends AbstractItemIconContainer impleme
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
-    GTCustomItemIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
-        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-        mOverlayName = mIconName + Textures.OverlaySuffix;
-        overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+    GTCustomItemIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
+        iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(domain, aIconName);
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aIconName + Textures.OverlaySuffix);
+        overlayResource = ResourceUtils
+            .getCompleteItemTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTItemIconload.add(this);
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+        logRegisterIcons();
     }
 
     protected void logRegisterIcons() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + overlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", overlayResource);
     }
 
     // 2026-13-05: Currently unused
     private static Map<String, IIconContainer> INSTANCES = new HashMap<>();
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomItemIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomItemIconContainer(domain, key));
     }
 
     public static void cleanup() {

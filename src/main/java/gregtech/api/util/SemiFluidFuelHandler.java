@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.api.recipe.RecipeMaps.semiFluidFuels;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.util.HashMap;
 

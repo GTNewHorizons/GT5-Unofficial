@@ -56,7 +56,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
             addEdge(element, adj);
 
             element.onEdgeAdded(adj);
-            adj.onEdgeRemoved(element);
+            adj.onEdgeAdded(element);
         }
 
         if (element.getNetwork() == null) {
@@ -74,6 +74,25 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
 
     @Override
     public void removeElement(TElement element) {
+        if (edges.get(element)
+            .isEmpty()) {
+            // If there are no edges, removeEdge never gets called, preventing the network lifecycle methods from
+            // running
+            // Call them manually here
+            TNetwork network = element.getNetwork();
+            if (network != null) {
+                network.removeElement(element);
+                element.setNetwork(null);
+                if (network.getElements()
+                    .isEmpty()) {
+                    network.onNetworkRemoved();
+                    networks.remove(network);
+                    vertices.remove(element);
+                }
+            }
+            return;
+        }
+
         for (TElement adj : new HashSet<>(edges.get(element))) {
             removeEdge(element, adj, true);
         }
@@ -150,6 +169,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
                 }
 
                 TNetwork newNetwork = createNetwork();
+                networks.add(newNetwork);
 
                 for (TElement e : smallerClump) {
                     e.setNetwork(newNetwork);
@@ -251,11 +271,11 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
         while (!queue.isEmpty()) {
             TElement current = queue.removeFirst();
 
-            if (!discovered.add(current)) continue;;
+            if (!discovered.add(current)) continue;
 
             if (networks != null) networks.add(current.getNetwork());
 
-            if (current == start || (recurseIntoNetworked ? true : current.getNetwork() == null)) {
+            if (current == start || (recurseIntoNetworked || current.getNetwork() == null)) {
                 queue.addAll(edges.get(current));
             }
         }

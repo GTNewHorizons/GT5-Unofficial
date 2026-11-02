@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.util.GTRecipeConstants.SKIP_CELL_RECIPE_GENERATION;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.init.Items;
@@ -11,9 +13,12 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe.GTRecipe_WithAlt;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 public class RecipeGenMultisUsingFluidInsteadOfCells {
 
@@ -25,27 +30,14 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (!mInit) {
             mInit = true;
 
-            mEmptyItems.add(ItemList.Cell_Empty.get(1));
+            ItemStack emptyCell = ItemList.Cell_Empty.get(1);
+            mEmptyItems.add(emptyCell);
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
-            mItemsToIgnore.add(
-                new ItemStack(
-                    ItemList.Cell_Empty.get(1)
-                        .getItem(),
-                    1,
-                    8));
+            // Electrolyzed Water Cell
+            mItemsToIgnore.add(new ItemStack(emptyCell.getItem(), 1, 8));
         }
-    }
-
-    private static boolean doesItemMatchIgnoringStackSize(ItemStack a, ItemStack b) {
-        if (a == null || b == null) {
-            return false;
-        }
-        if (a.getItem() == b.getItem()) {
-            return a.getItemDamage() == b.getItemDamage();
-        }
-        return false;
     }
 
     private static boolean isEmptyCell(ItemStack aCell) {
@@ -53,130 +45,117 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             return false;
         }
         for (ItemStack emptyItem : mEmptyItems) {
-            emptyItem.stackSize = aCell.stackSize;
-            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
+            if (GTUtility.areStacksEqual(emptyItem, aCell, true)) {
                 return true;
             }
-
         }
         return false;
     }
 
-    private static synchronized FluidStack getFluidFromItemStack(final ItemStack ingot) {
-        if (ingot == null) {
-            return null;
-        }
-        return GTUtility.getFluidForFilledItem(ingot, true);
-    }
-
-    public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
+    public static void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs) {
         init();
-        int aRecipesHandled = 0;
         ArrayList<GTRecipe> deDuplicationInputArray = new ArrayList<>();
 
-        recipe: for (GTRecipe x : aInputs.getAllRecipes()) {
-            if (x != null) {
+        recipeLoop: for (GTRecipe recipe : aInputs.getAllRecipes()) {
+            if (recipe == null) continue;
+            if (recipe.getMetadataOrDefault(SKIP_CELL_RECIPE_GENERATION, false)) continue;
 
-                ItemStack[] aInputItems = x.mInputs.clone();
-                ItemStack[] aOutputItems = x.mOutputs.clone();
-                FluidStack[] aInputFluids = x.mFluidInputs.clone();
-                FluidStack[] aOutputFluids = x.mFluidOutputs.clone();
+            ArrayList<ItemStack> aInputItemsMap = new ArrayList<>();
+            ArrayList<ItemStack> aOutputItemsMap = new ArrayList<>();
+            ArrayList<FluidStack> aInputFluidsMap = new ArrayList<>();
+            ArrayList<FluidStack> aOutputFluidsMap = new ArrayList<>();
 
-                ArrayList<ItemStack> aInputItemsMap = new ArrayList<>();
-                ArrayList<ItemStack> aOutputItemsMap = new ArrayList<>();
-                ArrayList<FluidStack> aInputFluidsMap = new ArrayList<>();
-                ArrayList<FluidStack> aOutputFluidsMap = new ArrayList<>();
+            // For GTRecipe_WithAlt
+            List<ItemStack[]> oreDictList = null;
+            IntList oreDictIds = null;
+            GTRecipe_WithAlt altRecipe = null;
 
-                // Iterate Inputs, Convert valid items into fluids
-                for (ItemStack aInputStack : aInputItems) {
-                    FluidStack aFoundFluid = getFluidFromItemStack(aInputStack);
-                    if (aFoundFluid == null) {
-                        for (ItemStack aBadStack : mItemsToIgnore) {
-                            if (doesItemMatchIgnoringStackSize(aInputStack, aBadStack)) {
-                                continue recipe; // Skip this recipe entirely if we find an item we don't like
-                            }
-                        }
-                        if (!isEmptyCell(aInputStack)) {
-                            aInputItemsMap.add(aInputStack);
-                        }
-                    } else {
-                        aFoundFluid.amount = aFoundFluid.amount * aInputStack.stackSize;
-                        aInputFluidsMap.add(aFoundFluid);
-                    }
-                }
-                // Iterate Outputs, Convert valid items into fluids
-                for (ItemStack aOutputStack : aOutputItems) {
-                    FluidStack aFoundFluid = getFluidFromItemStack(aOutputStack);
-                    if (aFoundFluid == null) {
-                        for (ItemStack aBadStack : mItemsToIgnore) {
-                            if (doesItemMatchIgnoringStackSize(aOutputStack, aBadStack)) {
-                                continue recipe; // Skip this recipe entirely if we find an item we don't like
-                            }
-                        }
-                        if (!isEmptyCell(aOutputStack)) {
-                            aOutputItemsMap.add(aOutputStack);
-                        }
-                    } else {
-                        aFoundFluid.amount = aFoundFluid.amount * aOutputStack.stackSize;
-                        aOutputFluidsMap.add(aFoundFluid);
-                    }
-                }
-                // Add Input fluids second
-                aInputFluidsMap.addAll(Arrays.asList(aInputFluids));
-                // Add Output fluids second
-                aOutputFluidsMap.addAll(Arrays.asList(aOutputFluids));
-
-                // Make some new Arrays
-                ItemStack[] aNewItemInputs = new ItemStack[aInputItemsMap.size()];
-                ItemStack[] aNewItemOutputs = new ItemStack[aOutputItemsMap.size()];
-                FluidStack[] aNewFluidInputs = new FluidStack[aInputFluidsMap.size()];
-                FluidStack[] aNewFluidOutputs = new FluidStack[aOutputFluidsMap.size()];
-
-                // Add AutoMap contents to Arrays
-                for (int i = 0; i < aInputItemsMap.size(); i++) {
-                    aNewItemInputs[i] = aInputItemsMap.get(i);
-                }
-                for (int i = 0; i < aOutputItemsMap.size(); i++) {
-                    aNewItemOutputs[i] = aOutputItemsMap.get(i);
-                }
-                for (int i = 0; i < aInputFluidsMap.size(); i++) {
-                    aNewFluidInputs[i] = aInputFluidsMap.get(i);
-                }
-                for (int i = 0; i < aOutputFluidsMap.size(); i++) {
-                    aNewFluidOutputs[i] = aOutputFluidsMap.get(i);
-                }
-
-                if (!(ItemUtils.checkForInvalidItems(aNewItemInputs)
-                    && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
-                    continue; // Skip this recipe entirely if we find an item we don't like
-                }
-                GTRecipe aNewRecipe = new GTRecipe(
-                    aNewItemInputs,
-                    aNewItemOutputs,
-                    x.mSpecialItems,
-                    x.mInputChances,
-                    x.mOutputChances,
-                    x.mFluidInputChances,
-                    x.mFluidOutputChances,
-                    aNewFluidInputs,
-                    aNewFluidOutputs,
-                    x.mDuration,
-                    x.mEUt,
-                    x.mSpecialValue);
-                aNewRecipe.owners = x.owners == null ? null : new ArrayList<>(x.owners);
-
-                // add all recipes to an intermediate array
-                deDuplicationInputArray.add(aNewRecipe);
-
-                aRecipesHandled++;
+            if (recipe instanceof GTRecipe_WithAlt alt) {
+                altRecipe = alt;
+                if (altRecipe.mOreDictAlt != null) oreDictList = new ArrayList<>(altRecipe.mOreDictAlt.length);
+                if (altRecipe.mOreDictIds != null) oreDictIds = new IntArrayList(altRecipe.mOreDictIds.length);
             }
+
+            // Iterate Inputs, Convert valid items into fluids
+            for (int i = 0; i < recipe.mInputs.length; i++) {
+                ItemStack aInputStack = recipe.mInputs[i];
+                FluidStack aFoundFluid = GTUtility.getFluidForFilledItem(aInputStack, true);
+                if (aFoundFluid == null) {
+                    for (ItemStack aBadStack : mItemsToIgnore) {
+                        if (GTUtility.areStacksEqual(aInputStack, aBadStack, true)) {
+                            continue recipeLoop; // Skip this recipe entirely if we find an item we don't like
+                        }
+                    }
+                    if (!isEmptyCell(aInputStack)) {
+                        aInputItemsMap.add(aInputStack);
+                        if (altRecipe != null) {
+                            if (oreDictList != null && i < altRecipe.mOreDictAlt.length)
+                                oreDictList.add(altRecipe.mOreDictAlt[i]);
+                            if (oreDictIds != null && i < altRecipe.mOreDictIds.length)
+                                oreDictIds.add(altRecipe.mOreDictIds[i]);
+                        }
+                    }
+                } else {
+                    aFoundFluid.amount = aFoundFluid.amount * aInputStack.stackSize;
+                    aInputFluidsMap.add(aFoundFluid);
+                }
+            }
+
+            // Iterate Outputs, Convert valid items into fluids
+            for (ItemStack aOutputStack : recipe.mOutputs) {
+                FluidStack aFoundFluid = GTUtility.getFluidForFilledItem(aOutputStack, true);
+                if (aFoundFluid == null) {
+                    for (ItemStack aBadStack : mItemsToIgnore) {
+                        if (GTUtility.areStacksEqual(aOutputStack, aBadStack, true)) {
+                            continue recipeLoop; // Skip this recipe entirely if we find an item we don't like
+                        }
+                    }
+                    if (!isEmptyCell(aOutputStack)) {
+                        aOutputItemsMap.add(aOutputStack);
+                    }
+                } else {
+                    aFoundFluid.amount = aFoundFluid.amount * aOutputStack.stackSize;
+                    aOutputFluidsMap.add(aFoundFluid);
+                }
+            }
+
+            // Add Input fluids second
+            Collections.addAll(aInputFluidsMap, recipe.mFluidInputs);
+            // Add Output fluids second
+            Collections.addAll(aOutputFluidsMap, recipe.mFluidOutputs);
+
+            // Make some new Arrays
+            ItemStack[] aNewItemInputs = aInputItemsMap.toArray(new ItemStack[0]);
+            ItemStack[] aNewItemOutputs = aOutputItemsMap.toArray(new ItemStack[0]);
+            FluidStack[] aNewFluidInputs = aInputFluidsMap.toArray(new FluidStack[0]);
+            FluidStack[] aNewFluidOutputs = aOutputFluidsMap.toArray(new FluidStack[0]);
+
+            if (!(ItemUtils.checkForInvalidItems(aNewItemInputs) && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
+                continue; // Skip this recipe entirely if we find an item we don't like
+            }
+
+            GTRecipe aNewRecipe = recipe.copyShallow();
+            aNewRecipe.setInputs(aNewItemInputs);
+            aNewRecipe.setOutputs(aNewItemOutputs);
+            aNewRecipe.setFluidInputs(aNewFluidInputs);
+            aNewRecipe.setFluidOutputs(aNewFluidOutputs);
+
+            if (aNewRecipe instanceof GTRecipe_WithAlt alt) {
+                if (oreDictList != null) alt.mOreDictAlt = oreDictList.toArray(new ItemStack[0][]);
+                if (oreDictIds != null) alt.mOreDictIds = oreDictIds.toIntArray();
+            }
+
+            aNewRecipe.owners = recipe.owners == null ? null : new ArrayList<>(recipe.owners);
+
+            // add all recipes to an intermediate array
+            deDuplicationInputArray.add(aNewRecipe);
         }
+
         // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
         List<GTRecipe> deDuplicationOutputArray = GTRecipeUtils.removeDuplicates(deDuplicationInputArray);
         // add each recipe from the above output to the intended recipe map
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
-        return aRecipesHandled;
     }
 }

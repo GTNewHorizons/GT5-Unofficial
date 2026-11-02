@@ -1,11 +1,13 @@
 package ggfab.mte;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
 import net.minecraft.entity.item.EntityItem;
@@ -64,6 +66,58 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTELinkedInputBus(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        // Copied on the way out because AE2 renames the stack it gets when the interface carries a custom name, and
+        // that stack is the one the other busses of the channel read.
+        final ItemStack own = super.getMachineCraftingIcon();
+        if (own != null) return own.copy();
+        if (mRealInventory == null) return null;
+        // A bus outside of a structure has no icon of its own, so it borrows the one of a bus that stands in a
+        // multiblock on the same channel. Interfaces then name it after the multiblock the channel feeds.
+        MTELinkedInputBus source = null;
+        for (MTELinkedInputBus bus : mRealInventory.busses) {
+            if (bus == this || !bus.hasValidBase() || bus.getMachineCraftingIconDirectly() == null) continue;
+            // Two formed multiblocks on one channel both qualify, so the lowest position wins. Picking whichever
+            // comes first would let the name flip between them and resend the terminal entry every time.
+            if (source == null || comparePosition(bus, source) < 0) source = bus;
+        }
+        return source == null ? null
+            : source.getMachineCraftingIconDirectly()
+                .copy();
+    }
+
+    private static int comparePosition(MTELinkedInputBus a, MTELinkedInputBus b) {
+        final IGregTechTileEntity baseA = a.getBaseMetaTileEntity();
+        final IGregTechTileEntity baseB = b.getBaseMetaTileEntity();
+        if (baseA.getXCoord() != baseB.getXCoord()) return Integer.compare(baseA.getXCoord(), baseB.getXCoord());
+        if (baseA.getYCoord() != baseB.getYCoord()) return Integer.compare(baseA.getYCoord(), baseB.getYCoord());
+        return Integer.compare(baseA.getZCoord(), baseB.getZCoord());
+    }
+
+    private ItemStack getMachineCraftingIconDirectly() {
+        return super.getMachineCraftingIcon();
+    }
+
+    private boolean hasValidBase() {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        return base != null && !base.isDead();
+    }
+
+    private void joinChannel() {
+        if (mRealInventory != null) mRealInventory.busses.add(this);
+    }
+
+    private void leaveChannel() {
+        if (mRealInventory != null) mRealInventory.busses.remove(this);
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+        leaveChannel();
     }
 
     @Override
@@ -213,6 +267,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         if (mRealInventory != null) {
+            leaveChannel();
             if (--mRealInventory.ref <= 0) getWorldSave().remove(mChannel);
         }
     }
@@ -239,6 +294,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         if (mChannel != null) {
             mRealInventory = getWorldSave().get(getRealChannel());
             handler.set(mRealInventory.stacks);
+            joinChannel();
         }
     }
 
@@ -409,6 +465,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             return;
         }
         getWorldSave().markDirty();
+        leaveChannel();
         if (--this.mRealInventory.ref <= 0) {
             // last referrer, drop inventory
             dropItems(mRealInventory.stacks);
@@ -418,6 +475,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         mRealInventory = getWorldSave().get(getRealChannel());
         this.handler.set(mRealInventory.stacks);
         mRealInventory.ref++;
+        joinChannel();
         getWorldSave().markDirty();
     }
 
@@ -439,6 +497,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         }
         if (Objects.equals(this.mChannel, aChannel)) return; // noop
         if (this.mChannel != null) {
+            leaveChannel();
             if (--this.mRealInventory.ref <= 0) {
                 // last referrer, drop inventory
                 dropItems(mRealInventory.stacks);
@@ -454,6 +513,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             this.mRealInventory = getWorldSave().get(getRealChannel());
             this.handler.set(mRealInventory.stacks);
             mRealInventory.ref++;
+            joinChannel();
         }
         getWorldSave().markDirty();
     }
@@ -492,6 +552,9 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         public boolean disableSort;
         private boolean used;
         private int ref;
+        /** Loaded busses on this channel, so that one can read the crafting icon of another. Not persisted. */
+        private final Set<MTELinkedInputBus> busses = Collections
+            .newSetFromMap(new WeakHashMap<MTELinkedInputBus, Boolean>());
 
         public SharedInventory() {
             this.stacks = new ItemStack[SIZE_INVENTORY];

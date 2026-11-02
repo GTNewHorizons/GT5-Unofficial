@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -52,6 +53,15 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
             }
         }
 
+        // Link during init so GT's postInit scanner/replicator recipe generation sees the element.
+        if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+            Element element = Element.get(werkstoff.getFormulaTooltip());
+            if (element != Element._NULL && element.mLinkedMaterials.isEmpty()) {
+                werkstoffBridgeMaterial.mElement = element;
+                element.mLinkedMaterials.add(werkstoffBridgeMaterial);
+            }
+        }
+
         if (werkstoff.hasItemType(cell)) {
             werkstoffBridgeMaterial.setHasCorrespondingFluid(true);
             werkstoffBridgeMaterial.setHasCorrespondingGas(true);
@@ -78,6 +88,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         }
         werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
         werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
+        werkstoffBridgeMaterial.setProcessingMaterialTierEU(stats.getProcessingMaterialTierEU());
 
         if (stats.isRadioactive()) {
             werkstoffBridgeMaterial

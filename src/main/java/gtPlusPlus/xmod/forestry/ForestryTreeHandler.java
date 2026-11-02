@@ -15,6 +15,12 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 
 public class ForestryTreeHandler {
 
+    private static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
+        ItemStack fruit) {
+        MTETreeFarmLegacy.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+        MTETreeFarm.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+    }
+
     public static void generateForestryTrees() {
         for (TreeDefinition tree : TreeDefinition.values()) {
             String speciesUID = tree.getUID();
@@ -45,14 +51,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarmLegacy.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves.copy(),
-                fruit == null ? null : fruit.copy());
-
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
@@ -89,14 +88,7 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarmLegacy.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves.copy(),
-                fruit == null ? null : fruit.copy());
-
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),

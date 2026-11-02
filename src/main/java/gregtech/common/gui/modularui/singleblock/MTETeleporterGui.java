@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -21,28 +23,21 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX);
-        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY);
-        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ);
-        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD);
+        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX).allowC2S();
+        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY).allowC2S();
+        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ).allowC2S();
+        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD).allowC2S();
 
         Flow mainColumn = Flow.column()
             .coverChildren()
             .childPadding(2)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .marginTop(4)
-            .marginLeft(4);
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         mainColumn.child(createInputRow("x", xSyncer, false));
         mainColumn.child(createInputRow("y", ySyncer, false));
@@ -68,8 +63,8 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
         // input field
         row.child(
             new TextFieldWidget().value(value)
-                .setFormatAsInteger(true)
-                .setNumbers()
+                .formatAsInteger(true)
+                .numbersInt()
                 .setMaxLength(11)
                 .size(80, 12));
 
@@ -78,13 +73,13 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
             isDimRow && machine.hasDimensionalTeleportCapability(),
             () -> GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.asWidget()
                 .setEnabledIf($ -> GTUtility.isRealDimension(value.getIntValue()))
-                .tooltip(t -> t.addLine(GTUtility.translate("GT5U.gui.text.dim.valid")))
+                .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.dim.valid")))
                 .decoration());
         row.childIf(
             isDimRow && machine.hasDimensionalTeleportCapability(),
             () -> GTGuiTextures.OVERLAY_BUTTON_CROSS.asWidget()
                 .setEnabledIf($ -> !GTUtility.isRealDimension(value.getIntValue()))
-                .tooltip(t -> t.addLine(GTUtility.translate("GT5U.gui.text.dim.invalid")))
+                .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.dim.invalid")))
                 .decoration());
 
         return row;

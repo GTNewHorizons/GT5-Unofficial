@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -28,10 +29,16 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
     }
 
     @Override
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List<String> aList,
+    public String getItemStackDisplayName(final ItemStack aStack) {
+        if (aStack.getItemDamage() == WILDCARD) return translateToLocal("gt.block.any_sub_block");
+        return super.getItemStackDisplayName(aStack);
+    }
+
+    @Override
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
         final boolean aF3_H) {
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
-        aList.add(translateToLocal("gt.casing.no-mob-spawning"));
-        aList.add(translateToLocal("gt.casing.not-tile-entity"));
+        super.addInformation(stack, player, tooltip, aF3_H);
+        tooltip.add(translateToLocal("gt.casing.no-mob-spawning"));
+        tooltip.add(translateToLocal("gt.casing.not-tile-entity"));
     }
 }

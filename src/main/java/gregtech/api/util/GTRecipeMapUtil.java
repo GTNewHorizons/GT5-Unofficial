@@ -43,7 +43,7 @@ public class GTRecipeMapUtil {
     /**
      * Set of metadata that work as alias for special values.
      */
-    public static final Set<RecipeMetadataKey<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
+    public static final Set<RecipeMetadataKey<? extends Number>> SPECIAL_VALUE_ALIASES = new HashSet<>();
 
     public static <T> T[] appendArray(T[] arr, T val) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
@@ -124,7 +124,7 @@ public class GTRecipeMapUtil {
     }
 
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {
-        if (builder.getItemInputsOreDict() != null) {
+        if (builder.getItemInputsOreDict() != null || builder.getFluidInputsInterchangeable() != null) {
             return builder.buildWithAlt()
                 .<List<GTRecipe>>map(Collections::singletonList)
                 .orElse(Collections.emptyList());

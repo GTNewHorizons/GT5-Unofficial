@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.MouseData;
@@ -20,7 +21,6 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTESpecialFilterBaseGui;
 import gregtech.common.tileentities.automation.MTETypeFilter;
 
@@ -43,10 +43,14 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                 .getValue());
 
         List<String> replacementTooltip = new ArrayList<>();
-        replacementTooltip.add(GTUtility.translate("GT5U.tooltip.typefilter.set_to", orePrefix.getDefaultLocalName()));
-        replacementTooltip.add(GTUtility.translate("GT5U.tooltip.typefilter.ore_prefix", "§e" + orePrefix + "§r"));
-        replacementTooltip
-            .add(GTUtility.translate("GT5U.tooltip.typefilter.size", "§e" + orePrefix.mPrefixedItems.size() + "§r"));
+        replacementTooltip.add(
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.typefilter.set_to", orePrefix.getDefaultLocalName()));
+        replacementTooltip.add(
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.typefilter.ore_prefix", "§e" + orePrefix + "§r"));
+        replacementTooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.typefilter.size",
+                "§e" + orePrefix.mPrefixedItems.size() + "§r"));
         replacementTooltip.addAll(machine.mTooltipCache.getData("GT5U.type_filter.representation_slot.tooltip").text);
         return replacementTooltip;
     }
@@ -124,9 +128,10 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.registerSlotGroup("item_inv", 3);
 
-        syncManager.syncValue("rotationIndex", new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex));
-        syncManager.syncValue("orePrefix", new StringSyncValue(machine::getPrefix, machine::setPrefix));
+        syncManager.syncValue(
+            "rotationIndex",
+            new IntSyncValue(machine::getRotationIndex, machine::setRotationIndex).allowC2S());
+        syncManager.syncValue("orePrefix", new StringSyncValue(machine::getPrefix, machine::setPrefix).allowC2S());
     }
 }

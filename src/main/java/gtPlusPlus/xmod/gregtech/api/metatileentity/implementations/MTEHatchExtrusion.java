@@ -4,32 +4,30 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
-import gregtech.common.gui.modularui.util.ProxiedItemHandlerModifiable;
-import gregtech.common.items.ItemIntegratedCircuit;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public int shapeSlot = getSlots(mTier);
     public int circuitSlot = getSlots(mTier) + 1;
-    private final @Nullable IItemHandlerModifiable limitedInventoryHandler;
 
     public static final ItemStack[] extruderShapes = {
         // Tools
@@ -53,33 +51,21 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        this.limitedInventoryHandler = null;
     }
 
     public MTEHatchExtrusion(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier) + 2, aDescription, aTextures);
-        this.limitedInventoryHandler = initializeLimitedInventoryHandler();
-    }
-
-    private @NotNull ProxiedItemHandlerModifiable initializeLimitedInventoryHandler() {
-        return new ProxiedItemHandlerModifiable(inventoryHandler) {
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return getInventoryStackLimit();
-            }
-        };
-    }
-
-    public @NotNull IItemHandlerModifiable getLimitedInventoryHandler() {
-        if (limitedInventoryHandler == null) {
-            throw new IllegalStateException("Cannot be called on the prototype MTE.");
-        }
-        return limitedInventoryHandler;
     }
 
     public static int getSlots(int aTier) {
-        return (aTier - 4) * 18 + 9;
+        return MTEHatchInputBus.getSlots(aTier);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.extrusion.name", GTUtility.getRomanNumeral(mTier - 4));
     }
 
     @Override
@@ -95,10 +81,11 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
-            "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.hatch.extrusion.desc",
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.blockmachines.hatch.extrusion.machine")
+                + EnumChatFormatting.RESET,
+            formatNumber(getSlots(mTier)));
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {
@@ -112,9 +99,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
-        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1
-            && (aStack.getItem() instanceof ItemIntegratedCircuit
-                || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
         return super.isItemValidForSlot(aIndex, aStack);
     }
 
@@ -169,11 +153,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex != shapeSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
     }
 
     @Override

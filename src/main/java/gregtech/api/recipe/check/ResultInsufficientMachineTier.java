@@ -35,7 +35,9 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.insufficient_machine_tier", formatNumber(required)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.recipe_result.insufficient_machine_tier",
+                formatNumber(required)));
     }
 
     @Override

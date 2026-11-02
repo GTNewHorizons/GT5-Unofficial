@@ -55,7 +55,7 @@ public class ItemDrop extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (DropType type : DropType.values()) {
+        for (DropType type : DropType.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -88,11 +88,11 @@ public class ItemDrop extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(DropType.values().length - 1, stack.getItemDamage()));
-        int colour = DropType.values()[meta].getColours()[0];
+        int meta = Math.max(0, Math.min(DropType.VALUES.length - 1, stack.getItemDamage()));
+        int colour = DropType.VALUES[meta].getColours()[0];
 
         if (pass >= 1) {
-            colour = DropType.values()[meta].getColours()[1];
+            colour = DropType.VALUES[meta].getColours()[1];
         }
 
         return colour;
@@ -100,7 +100,7 @@ public class ItemDrop extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return DropType.values()[stack.getItemDamage()].getLocalizedName();
+        return DropType.VALUES[stack.getItemDamage()].getLocalizedName();
     }
 
     public void initDropsRecipes() {
@@ -152,7 +152,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            Materials.LiquidOxygen.getGas(100),
+            Materials.LiquidOxygen.getFluid(100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

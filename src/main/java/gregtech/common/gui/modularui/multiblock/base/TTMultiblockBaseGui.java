@@ -1,12 +1,13 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.function.Function;
+
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IBoolValue;
-import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -14,22 +15,19 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
-import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.StringParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.SettingsPanelParameterCompat;
 
 public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
 
@@ -57,7 +55,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .childIf(multiblock.doesBindPlayerInventory(), this::createControllerSlot);
     }
 
-    private IWidget createControllerSlot() {
+    protected ItemSlot createControllerSlot() {
         return new ItemSlot()
             .slot(
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
@@ -71,8 +69,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
 
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
-            .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18)
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
             .overlay(createPowerPassOverlay());
     }
 
@@ -81,14 +78,12 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             multiblock.ePowerPass = bool;
             if (isPowerSwitchDisabled()) { // TRANSFORMER HACK
                 if (multiblock.ePowerPass) {
-                    multiblock.getBaseMetaTileEntity()
-                        .enableWorking();
+                    baseMetaTileEntity.enableWorking();
                 } else {
-                    multiblock.getBaseMetaTileEntity()
-                        .disableWorking();
+                    baseMetaTileEntity.disableWorking();
                 }
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable createPowerPassOverlay() {
@@ -104,12 +99,11 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             true,
             (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
-            .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18)
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.edit_parameters"))
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 
-    protected boolean isParametrized() {
+    protected final boolean isParametrized() {
         return multiblock instanceof IParametrized;
     }
 
@@ -126,7 +120,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     private IGuiAction.MousePressed onEditParametersPressed(IPanelHandler infoPanel) {
-        return mouseData -> {
+        return _ -> {
             if (!isParametrized()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
@@ -138,118 +132,49 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     }
 
     private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
+        if (!isParametrized())
+            throw new UnsupportedOperationException("Cannot open parameter panel on an unparametrized multiblock!");
+
         ModularPanel panel = new ModularPanel("parametersPanel") {
 
             @Override
             public boolean isDraggable() {
                 return false;
             }
-        }.coverChildren()
+        }.coverChildrenWidth(80)
+            .coverChildrenHeight()
             .relative(parent)
-            .rightRel(0, 0, 1)
             .topRel(0)
-            .padding(4);
+            .leftRel(1)
+            .padding(4)
+            .child(ButtonWidget.panelCloseButton());
 
-        return panel.child(getParameterEditor(panel, syncManager));
-    }
-
-    protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow column = Flow.column()
+        Flow mainColumn = Flow.column()
             .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+            .childPadding(10)
+            .child(
+                IKey.lang("tt.gui.parameter.header")
+                    .asWidget())
+            .child(getSettingsPanelBuilder().build(panel, syncManager, getBasePanelHeight() - 8));
 
-        ((IParametrized) multiblock).getParameters()
-            .forEach(parameter -> {
-                if (!parameter.shouldShowInGui()) {
-                    return;
-                }
-                ButtonWidget<?> parameterEditButton = new ButtonWidget<>()
-                    .overlay(IKey.lang(parameter.getLangKey(), parameter.getLangArgs()))
-                    .width(100)
-                    .marginBottom(2);
-
-                IPanelHandler editParameterPanel = syncManager.syncedPanel(
-                    "parameterEditPanel_" + parameter.getNbtKey(),
-                    true,
-                    (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager));
-
-                column.child(parameterEditButton.onMousePressed(d -> {
-                    if (!editParameterPanel.isPanelOpen()) {
-                        editParameterPanel.openPanel();
-                    } else {
-                        editParameterPanel.closePanel();
-                    }
-                    return true;
-                }));
-            });
-        return column;
+        return panel.child(mainColumn);
     }
 
-    protected @NotNull ModularPanel openParameterEditPanel(ButtonWidget<?> parameterEditButton, Parameter<?> parameter,
-        PanelSyncManager syncManager) {
-        return new ModularPanel("parameterEditPanel_" + parameter.getNbtKey()) {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.coverChildren()
-            .relative(parameterEditButton)
-            .topRel(1)
-            .leftRel(0)
-            .child(
-                Flow.column()
-                    .coverChildren()
-                    .padding(4)
-                    .child(createParameterEditLabelRow(parameter))
-                    .child(createInputWidget(parameter, parameter.getLangKey(), syncManager)));
+    protected SettingsPanelBuilder getSettingsPanelBuilder() {
+        return SettingsPanelParameterCompat
+            .addSettingsForParameters(((IParametrized) multiblock).getParameters(), getParameterWidgetConfigurator());
     }
 
-    private IWidget createParameterEditLabelRow(Parameter<?> parameter) {
-        return Flow.row()
-            .coverChildren()
-            .child(
-                IKey.lang(parameter.getLangKey(), parameter.getLangArgs())
-                    .asWidget()
-                    .textAlign(Alignment.CenterLeft)
-                    .margin(0, 14, 2, 2))
-            .child(
-                ButtonWidget.panelCloseButton()
-                    .top(0)
-                    .right(0));
-    }
-
-    private IWidget createInputWidget(Parameter<?> parameter, String mapKey, PanelSyncManager syncManager) {
-        if (parameter instanceof IntegerParameter integerParameter) {
-            return new TextFieldWidget().value((IStringValue<?>) integerParameter.createSyncHandler())
-                .setNumbers(integerParameter::getMin, integerParameter::getMax);
-        }
-        if (parameter instanceof DoubleParameter doubleParameter) {
-            return new TextFieldWidget().value((IStringValue<?>) doubleParameter.createSyncHandler())
-                .setNumbersDouble(doubleParameter::validateValue);
-        }
-        if (parameter instanceof BooleanParameter booleanParameter) {
-            return new ToggleButton().value((IBoolValue<?>) booleanParameter.createSyncHandler())
-                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
-        }
-        if (parameter instanceof StringParameter stringParameter) {
-            return new TextFieldWidget().value((IStringValue<?>) stringParameter.createSyncHandler());
-        }
-        throw new IllegalArgumentException(
-            "Tried to create an input widget for an unsupported parameter type " + parameter.getClass());
+    protected Function<Parameter<?, ?>, WidgetConfigurator<?>> getParameterWidgetConfigurator() {
+        return _ -> null;
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        if (multiblock instanceof IParametrized parametrized) {
-            parametrized.getParameters()
-                .forEach(parameter -> {
-                    if (parameter.shouldShowInGui()) {
-                        syncManager.syncValue(parameter.getNbtKey(), parameter.createSyncHandler());
-                    }
-                });
+        if (isParametrized()) {
+            ((IParametrized) multiblock).getParameters()
+                .forEach(parameter -> parameter.registerSyncValue(syncManager));
         }
     }
 }

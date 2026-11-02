@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnegative;
@@ -36,15 +35,17 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.StructureChecker;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.WrongBlockError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -83,12 +84,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
-            mMachine = false;
-            mUpdated = false;
-            mUpdate = 50;
+            onMachineBlockUpdate();
             if (getBaseMetaTileEntity().isServerSide()
                 && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
@@ -204,9 +202,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         GTSoundLoop loop = super.createSoundLoop(activitySound);
 
         // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
-        loop.setVolume(Math.max(1f, structureRadius / 16f * 4f));
+        loop.setVolume(Math.max(1f, structureRadius / 16f * this.getSoundRadiusMultiplier()));
 
         return loop;
+    }
+
+    // allows for fine-tuning on multiblocks that may be a little bit too loud/quiet.
+    @SideOnly(Side.CLIENT)
+    protected float getSoundRadiusMultiplier() {
+        return 4f;
     }
 
     @SideOnly(Side.CLIENT)
@@ -222,12 +226,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    protected void onStructureCheckFinished() {
-        super.onStructureCheckFinished();
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
 
         StructureSize size = centerWalker.finish();
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (size != null) {
             this.center.set(size.centerX, size.centerY, size.centerZ);
@@ -334,10 +336,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
-    protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
-        List<StructureError> errors) {
+    public final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
+        @Nullable List<StructureError> errors) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        StructureChecker checker = new StructureChecker(!mMachine, errors);
+        StructureChecker<MTEEnhancedMultiBlockBase<T>> checker = new StructureChecker<>(this, !mMachine, errors);
         getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),
@@ -550,52 +552,153 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-
-        if (data == null) data = new NBTTagCompound();
-
-        data.setFloat("centerX", center.x);
-        data.setFloat("centerY", center.y);
-        data.setFloat("centerZ", center.z);
-        data.setInteger("radius", structureRadius);
-
-        data.setByte(
-            "eRotation",
-            (byte) mExtendedFacing.getRotation()
-                .getIndex());
-        data.setByte(
-            "eFlip",
-            (byte) mExtendedFacing.getFlip()
-                .getIndex());
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeFloat(center.x);
+        buffer.writeFloat(center.y);
+        buffer.writeFloat(center.z);
+        buffer.writeInt(structureRadius);
+        buffer.writeByte(mExtendedFacing.getIndex());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onDescriptionPacket(NBTTagCompound data) {
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        center.x = buffer.readFloat();
+        center.y = buffer.readFloat();
+        center.z = buffer.readFloat();
+
         int oldRadius = structureRadius;
-
-        center.set(data.getFloat("centerX"), data.getFloat("centerY"), data.getFloat("centerZ"));
-        structureRadius = data.getInteger("radius");
-
+        structureRadius = buffer.readInt();
         if (oldRadius != structureRadius) {
             restartActivitySound();
         }
 
-        mExtendedFacing = ExtendedFacing.of(
-            getBaseMetaTileEntity().getFrontFacing(),
-            Rotation.byIndex(data.getByte("eRotation")),
-            Flip.byIndex(data.getByte("eFlip")));
+        mExtendedFacing = ExtendedFacing.byIndex(buffer.readByte());
     }
 
-    @Override
-    protected void generateStructureErrorDiagnostics(Collection<StructureError> errors) {
-        super.generateStructureErrorDiagnostics(errors);
-        if (structureStatus == StructureStatus.WRONG_BLOCK) {
-            errors.add(new WrongBlockError(errorPos.x, errorPos.y, errorPos.z));
-        } else if (structureStatus == StructureStatus.BLOCK_NOT_LOADED) {
-            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
+    protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {
+        int count = (int) element.count(this);
+        if (count < min) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, element, count, min));
+        }
+    }
+
+    protected final void checkHatchExact(List<StructureError> errors, HatchElement element, int target) {
+        int count = (int) element.count(this);
+        if (count != target) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, element, count, target));
+        }
+    }
+
+    protected final void checkHatchMax(List<StructureError> errors, HatchElement element, int max) {
+        int count = (int) element.count(this);
+        if (count > max) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, element, count, max));
+        }
+    }
+
+    protected final void checkCasingMin(List<StructureError> errors, int current, int required) {
+        if (current < required) {
+            errors.add(StructureErrors.missingCasings(current, required));
+        }
+    }
+
+    protected final void checkHasEnergyHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Energy, 1);
+    }
+
+    protected final void checkOneEnergyHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Energy, 1);
+    }
+
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMufflerHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkOneMufflerHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkOneInputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkHasInputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkOneInputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkHasOutputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkOneOutputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkHasOutputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected final void checkOneOutputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected void checkHasAnyInput(List<StructureError> errors) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_input"));
+        }
+    }
+
+    protected void checkHasAnyOutput(List<StructureError> errors) {
+        if (mOutputBusses.isEmpty() && mOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_output"));
+        }
+    }
+
+    protected void checkHasAnyEnergy(List<StructureError> errors) {
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        }
+    }
+
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
+        }
+    }
+
+    protected void checkOneEnergyHatchMaybeExotic(List<StructureError> errors) {
+        int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+        if (count == 0) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        } else if (count > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.Energy, count, 1));
         }
     }
 
@@ -668,42 +771,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
             int y, int z, int a, int b, int c) {
             structureStatus = StructureStatus.BLOCK_NOT_LOADED;
-            return false;
-        }
-    }
-
-    private class StructureChecker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
-
-        final boolean forced;
-        final List<StructureError> errors;
-        public boolean success = true;
-
-        StructureChecker(boolean forced, List<StructureError> errors) {
-            this.forced = forced;
-            this.errors = errors;
-        }
-
-        @Override
-        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
-            int a, int b, int c) {
-            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
-
-            if (!result) {
-                this.success = false;
-                errors.add(new WrongBlockError(x, y, z));
-            }
-
-            return result;
-        }
-
-        @Override
-        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
-            int y, int z, int a, int b, int c) {
-            if (forced) {
-                return visit(element, world, x, y, z, a, b, c);
-            }
-            this.success = false;
-            errors.add(StructureErrorRegistry.BLOCK_NOT_LOADED);
             return false;
         }
     }

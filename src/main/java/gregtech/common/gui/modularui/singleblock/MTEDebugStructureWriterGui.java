@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -44,13 +45,12 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ShortSyncValue[] numberSyncers = IntStream.range(0, 6)
             .mapToObj(
-                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number)))
+                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number))
+                    .allowC2S())
             .toArray(ShortSyncValue[]::new);
 
         Flow mainRow = Flow.row()
-            .sizeRel(1)
-            .paddingTop(4)
-            .paddingLeft(4)
+            .coverChildren()
             .childPadding(5)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
@@ -92,8 +92,8 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                     .size(isOriginColumn ? 45 : 40, 14)
                     .marginRight(2)
                     .setMaxLength(isOriginColumn ? 6 : 5)
-                    .setFormatAsInteger(true)
-                    .setNumbers(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
+                    .formatAsInteger(true)
+                    .numbersInt(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
 
             // text widget for this coordinate
             coordinateRow.child(
@@ -129,62 +129,44 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
             textColumn.child(coordinateRow);
         }
 
-        textColumn.childIf(isOriginColumn, this::createButtonRow);
-
         return textColumn;
     }
 
     private void createAddButtonTooltip(RichTooltip t, boolean isOriginColumn, String axis) {
+        t.addLine(StatCollector.translateToLocal("GT5U.machines.debugstructurewriter.gui.add.tooltip.shift_click"));
         t.addLine(
-            EnumChatFormatting.GREEN + "(Shift) "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.AQUA
-                + "Left"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Right"
-                + EnumChatFormatting.RESET
-                + " Click to "
-                + EnumChatFormatting.AQUA
-                + "Increment"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Decrement");
-        t.addLine((isOriginColumn ? " Origin " : " Size ") + axis + " value by 1 " + EnumChatFormatting.GREEN + "(16)");
+            StatCollector.translateToLocalFormatted(
+                isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin"
+                    : "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size",
+                axis,
+                1));
         t.addLine(
             EnumChatFormatting.GRAY + ""
                 + EnumChatFormatting.ITALIC
-                + (isOriginColumn ? "Origin: " : "Size: ")
+                + StatCollector.translateToLocal(
+                    isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.origin"
+                        : "GT5U.machines.debugstructurewriter.gui.size")
+                + ": "
                 + formatNumber(isOriginColumn ? MIN_ORIGIN : MIN_SIZE)
                 + " - "
                 + formatNumber(isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
     }
 
     private void createMultButtonTooltip(RichTooltip t, boolean isOriginColumn, String axis) {
+        t.addLine(StatCollector.translateToLocal("GT5U.machines.debugstructurewriter.gui.mult.tooltip.shift_click"));
         t.addLine(
-            EnumChatFormatting.GREEN + "(Shift) "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.AQUA
-                + "Left"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Right"
-                + EnumChatFormatting.RESET
-                + " Click to "
-                + EnumChatFormatting.AQUA
-                + "Multiply"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Divide");
-        t.addLine((isOriginColumn ? " Origin " : " Size ") + axis + " value by 2 " + EnumChatFormatting.GREEN + "(16)");
+            StatCollector.translateToLocalFormatted(
+                isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin"
+                    : "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size",
+                axis,
+                2));
         t.addLine(
             EnumChatFormatting.GRAY + ""
                 + EnumChatFormatting.ITALIC
-                + (isOriginColumn ? "Origin: " : "Size: ")
+                + StatCollector.translateToLocal(
+                    isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.origin"
+                        : "GT5U.machines.debugstructurewriter.gui.size")
+                + ": "
                 + formatNumber(isOriginColumn ? MIN_ORIGIN : MIN_SIZE)
                 + " - "
                 + formatNumber(isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
@@ -223,18 +205,18 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
         numberSyncer.setIntValue(changedNumber);
     }
 
-    private Flow createButtonRow() {
-        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose);
+    @Override
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose)
+            .allowC2S();
         BooleanSyncValue showHighlightBoxSyncer = new BooleanSyncValue(
             machine::getShowHighlightBox,
-            machine::setShowHighlightBox);
+            machine::setShowHighlightBox).allowC2S();
 
-        Flow buttonRow = Flow.row()
-            .coverChildren()
-            .marginTop(3);
+        Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
 
         // button for printing
-        buttonRow.child(
+        row.child(
             new com.cleanroommc.modularui.widgets.ButtonWidget<>()
                 .syncHandler(
                     new InteractionSyncHandler().setOnMousePressed(
@@ -245,7 +227,7 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                 .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.print.tooltip"))));
 
         // button for copying to clipboard
-        buttonRow.child(
+        row.child(
             new com.cleanroommc.modularui.widgets.ButtonWidget<>()
                 .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
                     if (!baseMetaTileEntity.isServerSide()) {
@@ -256,32 +238,22 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                 .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.copy.tooltip"))));
 
         // button for toggling transpose
-        buttonRow.child(
+        row.child(
             new ToggleButton().value(transposeSyncer)
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TRANSPOSE)
                 .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.transpose.tooltip"))));
 
         // button for toggling the bounding box
-        buttonRow.child(
+        row.child(
             new ToggleButton().value(showHighlightBoxSyncer)
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX)
                 .tooltip(t -> t.addLine(IKey.lang("GT5U.machines.debugstructurewriter.gui.highlight.tooltip"))));
 
-        return buttonRow;
+        return row;
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
-    }
-
-    @Override
-    protected boolean supportsMuffler() {
-        return false;
-    }
-
-    @Override
-    protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 5;
     }
 }

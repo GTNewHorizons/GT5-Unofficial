@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.main.GoodGenerator;
+import gregtech.api.enums.Mods;
 
 public class GGItem extends Item {
 
@@ -82,7 +82,7 @@ public class GGItem extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         if (this.textureNames == null || this.textureNames.length < 1) {
-            this.itemIcon = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":" + this.tex);
+            this.itemIcon = iconRegister.registerIcon(Mods.ModIDs.GOOD_GENERATOR + ":" + this.tex);
         } else {
             this.texture = new IIcon[this.textureNames.length];
             for (int i = 0; i < this.textureNames.length; ++i) {
@@ -102,8 +102,7 @@ public class GGItem extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         if (this.texture == null || this.texture.length < 1) list.add(new ItemStack(item, 1, 0));
         else {
             for (int i = 0; i < this.texture.length; ++i) {
@@ -114,15 +113,14 @@ public class GGItem extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
         if (!tooltips.isEmpty()) {
-            p_77624_3_.addAll(tooltips);
+            tooltip.addAll(tooltips);
         }
         if (!tooltipses.isEmpty()) {
-            int meta = p_77624_1_.getItemDamage();
+            int meta = stack.getItemDamage();
             if (tooltipses.size() - 1 < meta) meta = tooltipses.size() - 1;
-            p_77624_3_.add(tooltipses.get(meta));
+            tooltip.add(tooltipses.get(meta));
         }
     }
 }

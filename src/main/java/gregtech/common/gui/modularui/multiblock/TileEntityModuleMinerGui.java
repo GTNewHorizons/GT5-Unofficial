@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,9 +67,9 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import akka.japi.Pair;
 import gregtech.api.enums.Materials;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.ColorUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import gtnhintergalactic.recipe.AsteroidData;
@@ -107,7 +108,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         ListWidget<IWidget, ?> minerInfo = new ListWidget<>().child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + GTUtility.translate("tt.spaceminer.textFieldDistance")
+                () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("tt.spaceminer.textFieldDistance")
                     + ": "
                     + EnumChatFormatting.GREEN
                     + (cycleSyncer.getValue() ? cycleDistanceSyncer.getValue() : distanceSyncer.getValue()))
@@ -219,7 +220,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createFilterSlotGroup(PanelSyncManager syncManager) {
-        GenericSyncValue<ItemStackHandler> filterSyncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("filter");
 
         // Update cache if parametrizer card was used to paste config
@@ -266,7 +267,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     index)) {
                 return new DrawableStack(
                     GuiTextures.SLOT_ITEM,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {
@@ -342,7 +346,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 .filter(
                     asteroid -> asteroid.second()
                         .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
-                .collect(toList());
+                .toList();
             for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) {
                 if (visited.contains(asteroid.first())) continue;
                 if (Arrays.stream(asteroid.second().mOutputs)
@@ -437,14 +441,15 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         Set<Integer> visited = new HashSet<>();
         for (int i = start; i <= end; i++) {
-            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i)
-                .stream()
-                .filter(
-                    asteroid -> asteroid.second()
-                        .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
-                .collect(toList());
-
-            for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) visited.add(asteroid.first());
+            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i);
+            if (asteroidsAtDistance != null) {
+                asteroidsAtDistance.stream()
+                    .filter(
+                        asteroid -> asteroid.second()
+                            .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
+                    .toList();
+                for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) visited.add(asteroid.first());
+            }
         }
 
         Grid asteroidGrid = new Grid()
@@ -475,7 +480,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (filterContainsAsteroidOre(data)) {
                 return new DrawableStack(
                     GuiTextures.BUTTON_CLEAN,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {
@@ -518,6 +526,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             if (!filterContainsOre(ore)) {
                 int j = findFirstEmptySlot(visited);
+                if (j == -1) return;
+
                 filterModularSlots[j].putStack(ore);
                 filterSlots[j].getSyncHandler()
                     .updateFromClient(ore, 0);
@@ -598,7 +608,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 droneFilterSyncer.getValue(),
                 moduleTierFilterSyncer.getValue())) {
                 return new DrawableStack(
-                    new Rectangle().color(Color.rgb(0, 255, 0))
+                    new Rectangle().color(ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor())
                         .asIcon()
                         .size(16),
                     new ItemDrawable(oreItem).asIcon()
@@ -636,8 +646,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private Flow createTierInputRow(PanelSyncManager syncManager) {
@@ -652,8 +662,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierFilterSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private SlotLikeButtonWidget createUtilityPanelDroneSelector(PanelSyncManager syncManager) {
@@ -872,8 +882,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private void createDropDisplayTooltip(RichTooltip t, int i, ItemStack ore, AsteroidData data, int totalWeight) {
         t.addLine(IKey.str(ore.getDisplayName()))
             .addLine(IKey.str(String.format("%.2f%%", ((double) data.chances[i] / totalWeight) * 100)));
-        if (isAsteroidPanelForFilter)
-            t.addLine(IKey.str(EnumChatFormatting.DARK_GREEN + GTUtility.translate("tt.spaceminer.filter.addOre")));
+        if (isAsteroidPanelForFilter) t.addLine(
+            IKey.str(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("tt.spaceminer.filter.addOre")));
     }
 
     private IGuiAction.MousePressed createDropDisplayOnMousePressed(ItemStack ore) {
@@ -894,7 +904,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (filterContainsOre(ore)) {
                 return new DrawableStack(
                     GuiTextures.SLOT_ITEM,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {
@@ -1091,10 +1104,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         ModularPanel parent) {
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
         AtomicInteger distance = new AtomicInteger(0);
-        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set);
+        IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set).allowC2S();
 
         AtomicInteger moduleTier = new AtomicInteger(0);
-        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set);
+        IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set).allowC2S();
 
         IntSyncValue droneSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         droneSelectorButtonCalculator = new SlotLikeButtonWidget(
@@ -1163,8 +1176,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private IWidget createCalculatorTierInput(IntSyncValue moduleTierSyncer) {
@@ -1178,8 +1191,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private IWidget createCalculatorDroneInput(IPanelHandler droneSelectorPanel, IntSyncValue distanceSyncer,
@@ -1296,7 +1309,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        GenericSyncValue<ItemStackHandler> filterSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> filterSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.filterInventory,
             handler -> multiblock.filterInventory = handler,
@@ -1308,7 +1321,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         BooleanSyncValue isWhiteListedSyncer = new BooleanSyncValue(
             () -> multiblock.isWhitelisted,
-            val -> multiblock.isWhitelisted = val);
+            val -> multiblock.isWhitelisted = val).allowC2S();
         syncManager.syncValue("isWhiteListed", isWhiteListedSyncer);
 
         IntSyncValue droneTierSyncer = new IntSyncValue(
@@ -1317,7 +1330,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTier", droneTierSyncer);
 
         AtomicInteger droneFilter = new AtomicInteger(-1);
-        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set);
+        IntSyncValue droneFilterSyncer = new IntSyncValue(droneFilter::get, droneFilter::set).allowC2S();
         syncManager.syncValue("droneFilter", droneFilterSyncer);
 
         AtomicInteger targetDroneTier = new AtomicInteger(-1);
@@ -1325,19 +1338,19 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         syncManager.syncValue("droneTarget", targetDroneTierSyncer);
 
         AtomicInteger selectedAsteroid = new AtomicInteger(0);
-        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set);
+        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set).allowC2S();
         syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
 
         AtomicReference<String> oreFilter = new AtomicReference<>("");
-        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set);
+        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set).allowC2S();
         syncManager.syncValue("oreFilter", oreFilterSyncer);
 
         AtomicInteger distanceFilter = new AtomicInteger(0);
-        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set);
+        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set).allowC2S();
         syncManager.syncValue("distanceFilter", distanceFilterSyncer);
 
         AtomicInteger moduleTierFilter = new AtomicInteger(0);
-        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
+        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set).allowC2S();
         syncManager.syncValue("moduleTierFilter", moduleTierFilterSyncer);
 
     }

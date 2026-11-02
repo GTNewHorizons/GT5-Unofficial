@@ -17,7 +17,6 @@ import bartworks.common.loaders.recipes.Assembler;
 import bartworks.common.loaders.recipes.AssemblyLine;
 import bartworks.common.loaders.recipes.Autoclave;
 import bartworks.common.loaders.recipes.Centrifuge;
-import bartworks.common.loaders.recipes.ChemicalBath;
 import bartworks.common.loaders.recipes.ChemicalReactor;
 import bartworks.common.loaders.recipes.CraftingRecipes;
 import bartworks.common.loaders.recipes.Electrolyzer;
@@ -39,7 +38,6 @@ public class RecipeLoader {
         new AssemblyLine().run();
         new Autoclave().run();
         new Centrifuge().run();
-        new ChemicalBath().run();
         new ChemicalReactor().run();
         new CraftingRecipes().run();
         new Electrolyzer().run();

@@ -30,7 +30,18 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
         if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
-        return this.componentColour;
+        if (this.componentMaterial == null) {
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+            }
+            return this.componentColour;
+        }
+
+        if (this.componentMaterial.getRGBA()[3] <= 1) {
+            return this.componentColour;
+        }
+        // See BaseItemComponent.getColorFromItemStack: animated materials ship baked textures, rendered untinted.
+        return Utils.rgbtoHexValue(255, 255, 255);
     }
 
     @Override

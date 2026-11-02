@@ -1,10 +1,12 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_MIRROR;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -16,23 +18,25 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_TIER2 = "tier2";
+    private byte mTier = 0;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
@@ -73,22 +77,51 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 "BBB"
             }})
         //spotless:on
+        .addShape(
+            STRUCTURE_PIECE_TIER2,
+            // spotless:off
+            new String[][]{{
+                "EEE",
+                "EDE",
+                "   ",
+                "   ",
+                "ECE",
+                "E~E"
+            },{
+                "BBB",
+                "BAB",
+                "   ",
+                "   ",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BAB",
+                "   ",
+                "   ",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BAB",
+                "BAB",
+                "BAB",
+                "BAB",
+                "BBB"
+            },{
+                "BBB",
+                "BBB",
+                "BBB",
+                "BBB",
+                "BBB",
+                "BBB"
+            }}
+        )
+        //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(1)
-                .adder(MTEBeamMirror::addBeamLineInputHatch)
-                .build()) // beamline input hatch
-        .addElement(
-            'D',
-            buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamMirror::addBeamLineOutputHatch)
-                .build()) // beamline output hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamMirror.class, ShieldedAccCasingTextureID, 1))
+        .addElement('D', buildBeamlineOutputHatch(MTEBeamMirror.class, ShieldedAccCasingTextureID, 2))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -149,54 +182,88 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2"))
-            .beginStructureBlock(3, 5, 5, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                40,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                5,
-                true)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
-                1,
-                false)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+        String shieldedCasing = StatCollector
+            .translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing");
+        String grateCasing = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing");
+        String anyGlass = StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_mirror"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam-mirror"))
+            .beginStructureBlock(3, 6, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.above_controller"), 1)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), StatCollector.translateToLocal("gt.mbtt.structure.opposite_controller"), 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.beam_mirror_bend", 90, 1))
+            .addCasing("31", shieldedCasing, false)
+            .addCasing("9", grateCasing, false)
+            .addCasing("5", anyGlass, false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.beam_mirror_bend", 180, 2))
+            .addCasing("52", shieldedCasing, false)
+            .addCasing("9", grateCasing, false)
+            .addCasing("8", anyGlass, false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        if (stackSize.stackSize >= 2) {
+            buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, 1, 5, 0);
+        } else {
+            buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
+
+        if (stackSize.stackSize >= 2) {
+            return survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 1, 5, 0, elementBudget, env, false, true);
+        }
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mInputBeamline.clear();
-        mOutputBeamline.clear();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_TIER2, 1, 5, 0, null)) {
+            mTier = 2;
+            updateHatchRotation();
+            return;
+        }
+        clearHatches();
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0, errors)) {
+            mTier = 1;
+            updateHatchRotation();
+            return;
+        }
+        mTier = 0;
     }
+
+    private void updateHatchRotation() {
+        if (!mInputBeamline.isEmpty()) {
+            mInputBeamline.get(0)
+                .getBaseMetaTileEntity()
+                .setFrontFacing(getDirection());
+        }
+        if (!mOutputBeamline.isEmpty()) {
+            MTEHatchOutputBeamline beamOutput = mOutputBeamline.get(0);
+            if (this.mTier == 2) {
+                beamOutput.getBaseMetaTileEntity()
+                    .setFrontFacing(getDirection());
+            } else if (this.mTier == 1) {
+                beamOutput.getBaseMetaTileEntity()
+                    .setFrontFacing(
+                        this.getExtendedFacing()
+                            .getRelativeUpInWorld());
+            }
+        }
+    }
+
 }

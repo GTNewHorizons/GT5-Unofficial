@@ -18,9 +18,12 @@ public class MTETurbineHousingGui extends MTEHatchBaseGui<MTEHatchTurbineProvide
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
-            new ItemSlot().slot(
-                new ModularSlot(hatch.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(hatch::isItemStackTurbine))
+            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup())
                 .center());
+    }
+
+    @Override
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

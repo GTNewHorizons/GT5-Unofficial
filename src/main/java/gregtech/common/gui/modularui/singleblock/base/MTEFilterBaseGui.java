@@ -10,7 +10,9 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.metatileentity.implementations.MTEFilterBase;
 import gregtech.api.modularui2.GTGuiTextures;
-import xyz.wagyourtail.jvmdg.util.Pair;
+import gregtech.api.modularui2.common.CommonButtons;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectImmutablePair;
+import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 
 public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<T> {
 
@@ -23,17 +25,17 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
     }
 
     @Override
-    protected List<Pair<Boolean, Supplier<IWidget>>> createButtonList(ModularPanel panel,
+    protected List<BooleanObjectPair<Supplier<IWidget>>> createButtonList(ModularPanel panel,
         PanelSyncManager syncManager) {
-        List<Pair<Boolean, Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
+        List<BooleanObjectPair<Supplier<IWidget>>> buttons = super.createButtonList(panel, syncManager);
 
         // change emit redstone button
         buttons.set(
             EMIT_REDSTONE_BUTTON_INDEX,
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsEmitRedstone(),
-                () -> createButton(
-                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull),
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
+                    new BooleanSyncValue(machine::isRedstoneIfFull, machine::setRedstoneIfFull).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_EMIT_REDSTONE,
                     configureDynamicTooltip(
                         "GT5U.machines.emit_redstone_gradually.tooltip",
@@ -42,10 +44,10 @@ public class MTEFilterBaseGui<T extends MTEFilterBase> extends MTEBufferBaseGui<
 
         // invert filter button
         buttons.add(
-            new Pair<>(
+            new BooleanObjectImmutablePair<>(
                 supportsInvertFilter(),
-                () -> createButton(
-                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter),
+                () -> CommonButtons.createToggleButtonDynamicTooltip(
+                    new BooleanSyncValue(machine::isInvertFilter, machine::setInvertFilter).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_INVERT_FILTER,
                     configureTooltip("GT5U.machines.invert_filter.tooltip"))));
 

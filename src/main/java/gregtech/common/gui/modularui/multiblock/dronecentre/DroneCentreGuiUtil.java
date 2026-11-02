@@ -5,19 +5,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -35,12 +39,14 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import appeng.api.util.DimensionalCoord;
 import appeng.client.render.highlighter.BlockPosHighlighter;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.ProductionStatsSyncHandler;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import mcp.mobius.waila.api.SpecialChars;
 
 public class DroneCentreGuiUtil {
 
@@ -54,7 +60,7 @@ public class DroneCentreGuiUtil {
         DroneCentreGuiUtil.TIME_OPTIONS.put(-1, "All");
     }
 
-    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+    public static ButtonWidget<?> createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
         return new ButtonWidget<>().syncHandler(
             dynamicSyncManager.getOrCreateSyncHandler(
                 "teleportPlayer" + conn.uuid.toString(),
@@ -71,14 +77,19 @@ public class DroneCentreGuiUtil {
                         }
                         DroneCentreGuiUtil.teleportPlayerToMachine(conn, player);
                         player.closeScreen();
-                    } else if (NetworkUtils.isClient() && var.mouseButton == 0) {
-                        ChunkCoordinates machineCoord = conn.getMachineCoord();
-                        DimensionalCoord blockPos = new DimensionalCoord(
-                            machineCoord.posX,
-                            machineCoord.posY,
-                            machineCoord.posZ,
-                            player.dimension);
-                        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                    } else if (var.mouseButton == 0) {
+                        if (NetworkUtils.isClient()) {
+                            ChunkCoordinates machineCoord = conn.getMachineCoord();
+                            DimensionalCoord blockPos = new DimensionalCoord(
+                                machineCoord.posX,
+                                machineCoord.posY,
+                                machineCoord.posZ,
+                                player.dimension);
+                            BlockPosHighlighter
+                                .highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                        } else {
+                            player.closeScreen();
+                        }
                     }
                 })))
             .size(16)
@@ -127,7 +138,7 @@ public class DroneCentreGuiUtil {
                 lines.set(i, EnumChatFormatting.GRAY + lines.get(i));
             }
         }
-        tooltipBuilder.add(lines.get(0))
+        tooltipBuilder.add(lines.getFirst())
             .newLine();
         if (lines.size() > 1) {
             tooltipBuilder.spaceLine();
@@ -210,19 +221,28 @@ public class DroneCentreGuiUtil {
 
         DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
             multiblock::getConnectionList);
-        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+        EnumSyncValue<SortMode, ?> sortModeSyncHandler = new EnumSyncValue<>(
             DroneCentreGuiUtil.SortMode.class,
             multiblock::getSortMode,
-            multiblock::setSortMode);
+            multiblock::setSortMode).allowC2S();
         StringSyncValue searchFilterSyncHandler = new StringSyncValue(
             multiblock::getSearchBarText,
-            multiblock::setSearchBarText);
-        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
+            multiblock::setSearchBarText).allowC2S();
+        StringSyncValue productionSearchFilterSyncHandler = new StringSyncValue(
+            multiblock::getProductionSearchFilter,
+            multiblock::setProductionSearchFilter).allowC2S();
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup)
+            .allowC2S();
         BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
             multiblock::getSearchOriginalName,
-            multiblock::setSearchOriginalName);
-        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
-        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate);
+            multiblock::setSearchOriginalName).allowC2S();
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode)
+            .allowC2S();
+        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate)
+            .allowC2S();
+        BooleanSyncValue renamingActiveGroupSyncHandler = new BooleanSyncValue(
+            multiblock::getRenamingActiveGroup,
+            multiblock::setRenamingActiveGroup).allowC2S();
 
         GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
             () -> multiblock.group,
@@ -235,17 +255,178 @@ public class DroneCentreGuiUtil {
         syncManager.syncValue("droneList", droneConnectionListSyncHandler);
         syncManager.syncValue("sortMode", sortModeSyncHandler);
         syncManager.syncValue("searchFilter", searchFilterSyncHandler);
+        syncManager.syncValue("productionSearchFilter", productionSearchFilterSyncHandler);
         syncManager.syncValue("groupNameList", groupSyncHandler);
         syncManager.syncValue("activeGroup", activeGroupSyncHandler);
         syncManager.syncValue("searchOri", searchOriSyncHandler);
         syncManager.syncValue("editMode", editModeSyncHandler);
         syncManager.syncValue("update", updateSyncHandler);
+        syncManager.syncValue("renamingActiveGroup", renamingActiveGroupSyncHandler);
+        syncManager.syncValue("addNewGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.addNewGroup();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
+        syncManager.syncValue("deleteGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.deleteGroup(multiblock.getActiveGroup());
+                multiblock.setActiveGroup(0);
+                syncManager.findSyncHandler("activeGroup", IntSyncValue.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
+        syncManager.syncValue("toggleSelectAll", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                int activeGroup = multiblock.getActiveGroup();
+                if (activeGroup == 0) return;
+                List<DroneConnection> allConnections = multiblock.getConnectionList();
+                if (allConnections == null || allConnections.isEmpty()) return;
+                List<DroneConnection> filtered = allConnections.stream()
+                    .filter(conn -> matchesSearchFilter(conn, multiblock))
+                    .toList();
+                if (filtered.isEmpty()) return;
+                long groupBit = 1L << activeGroup;
+                boolean allInGroup = filtered.stream()
+                    .allMatch(conn -> (conn.getGroupMask() & groupBit) != 0);
+                for (DroneConnection conn : filtered) {
+                    long mask = conn.getGroupMask();
+                    if (allInGroup) {
+                        conn.setGroupMask(mask & ~groupBit);
+                    } else {
+                        conn.setGroupMask(mask | groupBit);
+                    }
+                }
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
 
-        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
+            .allowC2S();
         ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
-            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L));
+            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L))
+                .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
+    }
+
+    private static final int SHORT_RECIPE_MAX_TICKS = 2 * TickTime.SECOND;
+
+    /** WAILA formatting */
+    private static final Pattern STRAY_WAILA_CHARACTERS = Pattern.compile(
+        "[" + SpecialChars.WailaStyle
+            + SpecialChars.WailaIcon
+            + SpecialChars.WailaRenderer
+            + SpecialChars.WailaRendererComma
+            + "\u0001-\u0004]");
+
+    public static String cleanWailaLine(String line) {
+        if (line == null) return "";
+
+        int contentStart = 0;
+        while (contentStart < line.length()) {
+            char c = line.charAt(contentStart);
+            if (c == ' ' || c == ' ') {
+                contentStart++;
+            } else if (line.startsWith(SpecialChars.MCStyle, contentStart) && contentStart + 1 < line.length()) {
+                contentStart += 2;
+            } else {
+                break;
+            }
+        }
+        String prefix = line.substring(0, contentStart);
+        String content = line.substring(contentStart);
+
+        Matcher renderer = SpecialChars.patternRender.matcher(content);
+        if (renderer.matches()) {
+            String rendererText = rendererToText(
+                renderer.group("name"),
+                renderer.group("args")
+                    .split(SpecialChars.WailaRendererComma));
+            if (rendererText != null) {
+                return prefix + rendererText;
+            }
+        }
+
+        content = SpecialChars.patternRender.matcher(content)
+            .replaceAll("");
+        content = SpecialChars.patternWaila.matcher(content)
+            .replaceAll("");
+        content = STRAY_WAILA_CHARACTERS.matcher(content)
+            .replaceAll("");
+        return prefix + content.trim();
+    }
+
+    private static String rendererToText(String rendererName, String[] args) {
+        try {
+            return switch (rendererName) {
+                case "waila.gt.progress" -> formatProgress(Long.parseLong(args[0]), Long.parseLong(args[1]));
+                case "waila.stack" -> formatStack(args);
+                default -> null;
+            };
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    private static String formatProgress(long progressTicks, long maxProgressTicks) {
+        String progressText;
+        if (maxProgressTicks <= SHORT_RECIPE_MAX_TICKS) {
+            progressText = StatCollector
+                .translateToLocalFormatted("GT5U.waila.machine.progress_tick", progressTicks, maxProgressTicks);
+        } else {
+            double ratio = (double) progressTicks / maxProgressTicks;
+            progressText = StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine.in_progress",
+                (double) progressTicks / TickTime.SECOND,
+                (double) maxProgressTicks / TickTime.SECOND,
+                Math.round(ratio * 1000) / 10.0);
+        }
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.drone_progress", progressText);
+    }
+
+    private static String formatStack(String[] args) {
+        String registryName = args[1];
+        int amount = Integer.parseInt(args[2]);
+        int meta = Integer.parseInt(args[3]);
+        ItemStack stack = switch (args[0]) {
+            case "0" -> Block.blockRegistry.getObject(registryName) instanceof Block block
+                ? new ItemStack(block, amount, meta)
+                : null;
+            case "1" -> Item.itemRegistry.getObject(registryName) instanceof Item item
+                ? new ItemStack(item, amount, meta)
+                : null;
+            default -> null;
+        };
+        if (stack == null) {
+            return null;
+        }
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.drone_output_item", stack.getDisplayName(), amount);
+    }
+
+    public static boolean matchesSearchFilter(DroneConnection conn, MTEDroneCentre centre) {
+        String searchText = centre.getSearchBarText();
+        if (searchText == null || searchText.isEmpty()) return true;
+        String searchTextLower = searchText.toLowerCase();
+
+        String customName = conn.getCustomName();
+        String customNameLower = customName == null ? "" : customName.toLowerCase();
+        if (customNameLower.contains(searchTextLower)) {
+            return true;
+        }
+        if (centre.getSearchOriginalName()) {
+            String locName = conn.getLocalizedName();
+            String locNameLower = locName == null ? "" : locName.toLowerCase();
+            return locNameLower.contains(searchTextLower);
+        }
+        return false;
     }
 
     public enum SortMode {

@@ -10,6 +10,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+
 /**
  * This is a bunch of Functions my TileEntities provide, to make life much easier, and to get rid of internal TileEntity
  * stuff.
@@ -33,6 +38,10 @@ public interface IHasWorldObjectAndCoords {
         return new ChunkCoordinates(getXCoord(), getYCoord(), getZCoord());
     }
 
+    default BlockPos getBlockPos() {
+        return new BlockPos(getXCoord(), getYCoord(), getZCoord());
+    }
+
     boolean isServerSide();
 
     boolean isClientSide();
@@ -40,6 +49,21 @@ public interface IHasWorldObjectAndCoords {
     int getRandomNumber(int aRange);
 
     TileEntity getTileEntity(int aX, int aY, int aZ);
+
+    default TileEntity getTileEntity(BlockPos pos) {
+        return getTileEntity(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    default <MTE extends MetaTileEntity> MTE getMetaTileEntity(BlockPos pos, Class<MTE> clazz) {
+        if (!(getTileEntity(pos) instanceof IGregTechTileEntity igte)) return null;
+
+        IMetaTileEntity mte = igte.getMetaTileEntity();
+
+        if (!clazz.isInstance(mte)) return null;
+
+        // noinspection unchecked
+        return (MTE) mte;
+    }
 
     TileEntity getTileEntityOffset(int aX, int aY, int aZ);
 

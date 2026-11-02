@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -27,9 +28,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.Multimaps;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
@@ -41,13 +39,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
-import it.unimi.dsi.fastutil.Pair;
 
 public enum StoneType implements IStoneType {
 
@@ -187,10 +184,6 @@ public enum StoneType implements IStoneType {
     // spotless:on
 
     public static final List<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
-    public static final List<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(
-        Arrays.stream(values())
-            .filter(s -> s.builder.enabled && !s.isExtraneous())
-            .toArray(StoneType[]::new));
 
     public static final List<IStoneType> STONE_ONLY = ImmutableList.of(StoneType.Stone);
     public static final List<IStoneType> STONES = ImmutableList.copyOf(
@@ -203,17 +196,11 @@ public enum StoneType implements IStoneType {
             .toArray(StoneType[]::new));
 
     public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
-
+    public static final StoneType[] VALUES = StoneType.values();
     static {
-        Supplier<ListMultimap<OrePrefixes, StoneType>> mapMaker = () -> MultimapBuilder.hashKeys()
-            .arrayListValues()
-            .build();
-
-        var map = StoneType.STONE_TYPES.stream()
-            .map(s -> Pair.of(s.builder.oreBlockPrefix, s))
-            .collect(GTDataUtils.toMultiMap(mapMaker));
-
-        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(Multimaps.asMap(map));
+        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
+            StoneType.STONE_TYPES.stream()
+                .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
     }
 
     private final StoneBuilder builder;
@@ -251,6 +238,21 @@ public enum StoneType implements IStoneType {
     @Override
     public OrePrefixes getPrefix() {
         return builder.oreBlockPrefix;
+    }
+
+    /**
+     * Gets the display name using shared ore templates. Material and stone are separate localization keys so languages
+     * can reorder and inflect them without translations for every material/stone combination.
+     */
+    public String getLocalizedOreName(IOreMaterial material, boolean small) {
+        OrePrefixes basePrefix = small ? OrePrefixes.oreSmall : OrePrefixes.ore;
+        if (this == Stone) return basePrefix.getLocalizedNameForItem(material);
+
+        return OrePrefixes.getLocalizedNameForItemWithInflection(
+            basePrefix.getOreprefixKey(material) + ".with_stone",
+            material,
+            material.getLocalizedNameKey(),
+            "gt.ore.stone." + name().toLowerCase(Locale.ROOT));
     }
 
     @Override
@@ -350,11 +352,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isDimensionSpecific() {
         return switch (this) {
-            case Stone -> false;
-            case BlackGranite -> false;
-            case RedGranite -> false;
-            case Marble -> false;
-            case Basalt -> false;
+            case Stone, RedGranite, Marble, Basalt, BlackGranite -> false;
             default -> true;
         };
     }
@@ -362,10 +360,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isExtraneous() {
         return switch (this) {
-            case Stone -> false;
-            case Netherrack -> false;
-            case Endstone -> false;
-            case PackedIce -> false;
+            case Stone, Netherrack, Endstone, PackedIce -> false;
             default -> true;
         };
     }
@@ -394,11 +389,30 @@ public enum StoneType implements IStoneType {
             || builder.allowedDimensions.contains(DimensionDef.getDimensionName(world));
     }
 
+    /**
+     * Finds the stone type for the block at the given position, considering only types that can generate in
+     * this dimension so blocks claimed by several dimension-scoped types resolve to the one valid here.
+     */
     @Nullable
     public static StoneType findStoneType(World world, int x, int y, int z) {
-        return findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+        Block block = world.getBlock(x, y, z);
+        if (block == Blocks.air) return null;
+
+        int meta = world.getBlockMetadata(x, y, z);
+
+        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
+            StoneType stoneType = STONE_TYPES.get(i);
+            if (stoneType.builder.enabled && stoneType.canGenerateInWorld(world) && stoneType.contains(block, meta)) {
+                return stoneType;
+            }
+        }
+
+        return null;
     }
 
+    /**
+     * Finds the stone type for a block, ignoring dimension constraints. Returns the first match by enum order.
+     */
     @Nullable
     public static StoneType findStoneType(Block block, int meta) {
         if (block == Blocks.air) return null;
@@ -416,9 +430,9 @@ public enum StoneType implements IStoneType {
     public static StoneType findStoneTypeByPrefix(OrePrefixes prefix) {
         var options = STONE_TYPES_BY_PREFIX.get(prefix);
 
-        if (options.isEmpty()) return null;
+        if (options == null || options.isEmpty()) return null;
 
-        return options.get(0);
+        return options.getFirst();
     }
 
     private static class StoneBuilder {

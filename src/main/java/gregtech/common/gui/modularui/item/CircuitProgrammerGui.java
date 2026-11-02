@@ -77,7 +77,7 @@ public class CircuitProgrammerGui {
         // for syncing current circuit config
         IntSyncValue circuitSyncer = new IntSyncValue(
             () -> -1,
-            val -> { if (val != -1) circuitSlot.putStack(createRealCircuit(val)); });
+            val -> { if (val != -1) circuitSlot.putStack(createRealCircuit(val)); }).allowC2S();
         syncManager.syncValue("circuit", circuitSyncer);
 
         ModularPanel panel = ModularPanel.defaultPanel("circuit_programmer", 256, 166)

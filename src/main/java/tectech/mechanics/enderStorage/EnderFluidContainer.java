@@ -37,6 +37,10 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
         this.fluidStack = fluidStack;
     }
 
+    public boolean isEmpty() {
+        return fluidStack == null || fluidStack.amount <= 0;
+    }
+
     @Override
     public int fill(ForgeDirection side, FluidStack fluidStackIn, boolean doFill) {
         int filledFluid = 0;
@@ -126,7 +130,7 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
                 fluidStack = null;
                 break;
             default:
-                TecTech.LOGGER.error("Something very wrong... got a fluid container with state " + type);
+                TecTech.LOGGER.error("Something very wrong... got a fluid container with state {}", type);
                 fluidStack = null;
         }
         if (fluidStack != null) fluidStack.tag = tag;

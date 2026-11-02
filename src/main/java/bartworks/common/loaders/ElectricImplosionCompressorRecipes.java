@@ -18,17 +18,17 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
+import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectricImplosionCompressorRecipes implements Runnable {
@@ -52,16 +52,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .addTo(electricImplosionCompressorRecipes);
             }
         }
-
-        // Manual Add due to werkstoff material system disconnected from autogeneration
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
-            .itemOutputs(
-                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 12L))
-            .duration(1 * TICKS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
@@ -109,10 +99,25 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Eternity.getNanite(1), Materials.Universium.getNanite(1))
-            .fluidInputs(Materials.RawStarMatter.getFluid(2 * STACKS))
-            .fluidOutputs(Materials.MHDCSM.getMolten(32 * INGOTS))
-            .duration(1 * SECONDS)
+            .itemInputs(Materials.Eternity.getNanite(1))
+            .fluidInputs(Materials.RawStarMatter.getFluid(4 * STACKS))
+            .fluidOutputs(Materials.MHDCSM.getMolten(72 * INGOTS))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(electricImplosionCompressorRecipes);
+
+        // Flawed Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Amalgatite, 3),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Spinel, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amethyst, 64),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.gemFlawless, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Tanzanite, 64))
+            .fluidInputs(Materials.PhononCrystalSolution.getFluid(500))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.Amalgatite, 1))
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
 

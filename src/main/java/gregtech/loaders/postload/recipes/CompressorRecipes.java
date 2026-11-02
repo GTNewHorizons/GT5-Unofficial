@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
 
 import net.minecraft.init.Blocks;
@@ -21,7 +22,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -97,13 +97,6 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.netherbrick, 4))
             .itemOutputs(new ItemStack(Blocks.nether_brick, 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("smallPlutonium", 9))
-            .itemOutputs(GTModHandler.getIC2Item("Plutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -193,22 +186,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1))
-            .itemOutputs(GTModHandler.getIC2Item("Plutonium", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1))
             .itemOutputs(GTModHandler.getIC2Item("smallUran235", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1))
-            .itemOutputs(GTModHandler.getIC2Item("smallPlutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -286,7 +265,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid(1 * STACKS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HotProtoHalkonite, 1))
             // Require stabilized black hole
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(compressorRecipes);
@@ -296,7 +275,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid(32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HotProtoHalkonite, 1))
             // Require stabilized black hole
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)
             .eut(TierEU.RECIPE_UIV)
             .addTo(compressorRecipes);
@@ -306,16 +285,26 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(Materials.MoltenProtoHalkoniteBase.getFluid(32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HotProtoHalkonite, 1))
             // Require stabilized black hole
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)
             .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.NuclearStar.get(64L))
+            .fluidInputs(Materials.CosmicNeutronium.getPlasma(64 * INGOTS))
+            .itemOutputs(ItemList.PseudoStar.get(4L))
+            // Require stabilized black hole
+            .metadata(COMPRESSION_TIER, 2)
+            .duration(48 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 64))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1))
             // Require stabilized black hole
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .duration(1 * HOURS + 15 * MINUTES)
             .eut(TierEU.RECIPE_UXV)
             .addTo(compressorRecipes);

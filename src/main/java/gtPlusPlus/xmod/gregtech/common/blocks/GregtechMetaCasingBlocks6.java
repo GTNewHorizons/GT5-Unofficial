@@ -19,9 +19,9 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 2; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
@@ -32,8 +32,8 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
@@ -41,6 +41,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.6", MaterialCasings.INSTANCE);
         TAE.registerTexture(3, 4, TextureFactory.of(this, 0));
         TAE.registerTexture(3, 5, TextureFactory.of(this, 1));
+        TAE.registerTexture(3, 6, TextureFactory.of(this, 2));
         GregtechItemList.Casing_Fusion_External2.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Fusion_Internal2.set(new ItemStack(this, 1, 1));
     }
@@ -51,6 +52,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
             return switch (aMeta) {
                 case 0 -> TexturesGtBlock.TEXTURE_CASING_FUSION_4.getIcon();
                 case 1 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_4.getIcon();
+                case 2 -> TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY.getIcon();
                 default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }

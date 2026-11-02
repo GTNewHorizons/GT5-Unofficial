@@ -272,7 +272,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
                                 GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
-                            .eut(8)
+                            .eut(TierEU.RECIPE_ULV)
                             .addTo(latheRecipes);
                     }
 

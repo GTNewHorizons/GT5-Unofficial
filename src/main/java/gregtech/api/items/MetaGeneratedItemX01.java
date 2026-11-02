@@ -50,8 +50,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public MetaGeneratedItemX01(String aUnlocalized, OrePrefixes aGeneratedPrefix, int aIconSetIndex) {
         super(aUnlocalized, (short) 32000, (short) 766);
         mPrefix = aGeneratedPrefix;
-        mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex
-            : aGeneratedPrefix.getTextureIndex() >= 0 ? aGeneratedPrefix.getTextureIndex() : 0;
+        mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex : Math.max(aGeneratedPrefix.getTextureIndex(), 0);
 
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             OrePrefixes tPrefix = mPrefix;
@@ -70,7 +69,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(tPrefix, OrePrefixes.getMaterial(tOreName, tPrefix), tStack);
+                    GTOreDictUnificator.add(tPrefix, OrePrefixes.getMaterial(tOreName, tPrefix), tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tOreName, tStack);
                 }

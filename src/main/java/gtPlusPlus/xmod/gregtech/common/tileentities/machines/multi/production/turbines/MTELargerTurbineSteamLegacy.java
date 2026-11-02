@@ -137,7 +137,7 @@ public class MTELargerTurbineSteamLegacy extends MTELargerTurbineBaseLegacy {
         } else {
             waterToOutput = useWater(totalFlow / 160.0f);
         }
-        addOutput(GTModHandler.getDistilledWater(waterToOutput));
+        addOutputPartial(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}

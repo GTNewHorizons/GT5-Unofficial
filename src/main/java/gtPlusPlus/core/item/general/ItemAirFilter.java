@@ -122,7 +122,7 @@ public class ItemAirFilter extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.air_filter.0"));
         long maxDamage = getFilterMaxDamage(stack);
         list.add(
@@ -130,7 +130,7 @@ public class ItemAirFilter extends Item {
                 "GTPP.tooltip.air_filter.1",
                 (maxDamage - getFilterDamage(stack)),
                 maxDamage));
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

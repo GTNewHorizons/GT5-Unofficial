@@ -44,8 +44,8 @@ public class PlasmaDebugPanel {
         IntSyncValue plasmaParallelSyncer = SyncValues.DEBUG_PLASMA_PARALLEL
             .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, Integer.MAX_VALUE)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, Integer.MAX_VALUE)
                 .value(new IntValue.Dynamic(plasmaParallelSyncer::getIntValue, plasmaParallelSyncer::setIntValue))
                 .setTextAlignment(Alignment.CENTER)
                 .size(70, 16)
@@ -56,8 +56,8 @@ public class PlasmaDebugPanel {
         IntSyncValue fusionTierSyncer = SyncValues.DEBUG_FUSION_TIER
             .lookupFrom(Modules.PLASMA, Panels.PLASMA_DEBUG, hypervisor);
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 2)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 2)
                 .value(new IntValue.Dynamic(fusionTierSyncer::getIntValue, fusionTierSyncer::setIntValue))
                 .setTextAlignment(Alignment.CENTER)
                 .size(16)

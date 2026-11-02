@@ -34,11 +34,11 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
         super.registerSyncValues(syncManager);
         BooleanSyncValue convergenceSyncer = new BooleanSyncValue(
             multiblock::getConvergenceStatus,
-            multiblock::setConvergenceStatus);
+            multiblock::setConvergenceStatus).allowC2S();
         syncManager.syncValue("convergence", convergenceSyncer);
         IntSyncValue catalystTypeSyncer = new IntSyncValue(
             multiblock::getCatalystTypeForRecipesWithoutCatalyst,
-            multiblock::setCatalystTypeForRecipesWithoutCatalyst);
+            multiblock::setCatalystTypeForRecipesWithoutCatalyst).allowC2S();
         syncManager.syncValue("catalystType", catalystTypeSyncer);
     }
 
@@ -53,8 +53,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
             .syncedPanel("catalystPanel", true, (p_syncManager, syncHandler) -> openCatalystPanel(syncManager, parent));
 
         BooleanSyncValue convergenceSyncer = syncManager.findSyncHandler("convergence", BooleanSyncValue.class);
-        return new ButtonWidget<>().size(18)
-            .marginBottom(2)
+        return new ButtonWidget<>().marginBottom(2)
             .tooltip(
                 t -> t.addLine(translateToLocal("GT5U.DTPF.convergencebutton"))
                     .addLine(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
@@ -104,10 +103,10 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
                 .asWidget()
                 .marginBottom(2));
         holdingColumn.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, 5)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, 5)
                 .setTextAlignment(Alignment.CENTER)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .value(catalystSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18));
 

@@ -42,6 +42,8 @@ import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -50,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -119,8 +122,7 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
             .addMufflerHatch("Any Casing", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
-                "In the center of 3x3x3 structure",
-                2)
+                "In the center of 3x3x3 structure")
             .toolTipFinisher();
         return tt;
     }
@@ -194,13 +196,16 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 6);
+        checkHatch(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
@@ -237,7 +242,7 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1 / 2F)
+            .setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -260,19 +265,16 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", mAnvilTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + formatNumber(tag.getInteger("tier"))

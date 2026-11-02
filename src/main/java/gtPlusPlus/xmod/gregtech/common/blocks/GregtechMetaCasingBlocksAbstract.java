@@ -41,9 +41,9 @@ public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(final Item aItem, final CreativeTabs par2CreativeTabs, final List aList) {
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 }

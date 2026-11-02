@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -115,21 +116,15 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && aStack != null
+        return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
-                .ordinal()) {
-            return true;
-        }
-        return false;
+                .ordinal();
     }
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
-            return true;
-        }
-        return false;
+        return aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit;
     }
 
     @Override
@@ -162,4 +157,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         return new MTEHatchElementalDataOrbHolderGui(this).build(data, syncManager, uiSettings);
     }
 
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true) && super.isItemValidForSlot(index, itemStack);
+    }
 }

@@ -43,7 +43,7 @@ public class ItemBasicScrubberTurbine extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 3; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -86,7 +86,7 @@ public class ItemBasicScrubberTurbine extends Item {
         return true;
     }
 
-    public static long getFilterDamage(final ItemStack aStack) {
+    public static long getRotorDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("BasicTurbine");
@@ -99,7 +99,7 @@ public class ItemBasicScrubberTurbine extends Item {
         return 0L;
     }
 
-    public static boolean setFilterDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setRotorDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("BasicTurbine");
@@ -132,21 +132,21 @@ public class ItemBasicScrubberTurbine extends Item {
         if (stack.getTagCompound() == null) {
             createNBT(stack);
         }
-        double currentDamage = getFilterDamage(stack);
+        double currentDamage = getRotorDamage(stack);
         double meta = getMaxDurability(stack);
         return currentDamage / meta;
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.scrubber_turbine.early_tier"));
         int maxDamage = getMaxDurability(stack);
         list.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "gtpp.tooltip.scrubber_turbine.uses_left",
-                (maxDamage - getFilterDamage(stack)),
+                (maxDamage - getRotorDamage(stack)),
                 maxDamage));
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

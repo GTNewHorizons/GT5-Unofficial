@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gtnhlanth.common.beamline.Particle;
@@ -51,7 +50,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
                     () -> multiblock.getBufferMap()
                         .get(key),
                     i -> multiblock.getBufferMap()
-                        .put(key, i)));
+                        .put(key, i)).allowC2S());
         }
 
         syncManager.syncValue("currentRecipeParticleIDA", new IntSyncValue(multiblock::getCurrentRecipeParticleIDA));
@@ -60,9 +59,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-
-        ListWidget<IWidget, ?> outputWidget = new ListWidget<>().widthRel(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+        ListWidget<IWidget, ?> outputWidget = super.createTerminalTextWidget(syncManager, parent);
 
         IKey guiHeaderKeyCrafting = IKey.dynamic(this::formatGuiHeaderCrafting);
         IKey guiHeaderKeyBuffer = IKey.dynamic(this::formatGuiHeaderBuffer);
@@ -128,7 +125,9 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             .childPadding(10);
 
         mainColumn.child(
-            IKey.dynamic(() -> GTUtility.translate("gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer"))
+            IKey.dynamic(
+                () -> StatCollector
+                    .translateToLocal("gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer"))
                 .asWidget()
                 .textAlign(Alignment.CENTER));
 
@@ -143,7 +142,7 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
     }
 
     private Grid createParticleButtonGrid(PanelSyncManager syncManager) {
-        Particle[] particles = Particle.values();
+        Particle[] particles = Particle.VALUES;
 
         return new Grid()
             .gridOfWidthElements(

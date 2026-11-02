@@ -1,14 +1,16 @@
 package gregtech.common.gui.modularui.widget.settings;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
 
 import it.unimi.dsi.fastutil.Pair;
 
-public interface ISettingRow<State> {
+public interface ISettingRow<W extends IWidget> {
 
-    Pair<State, Widget<?>> build(ModularPanel panel, PanelSyncManager syncManager, SettingsPanel settings);
-
-    void resize(SettingsPanel settings, State state, Widget<?> widget, int dividerPosition);
+    @NotNull
+    Pair<IKey, W> build(ModularPanel panel, PanelSyncManager syncManager, SettingsPanel settings);
 }

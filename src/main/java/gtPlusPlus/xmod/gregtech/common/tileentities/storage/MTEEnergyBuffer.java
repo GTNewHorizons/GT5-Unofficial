@@ -15,13 +15,17 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     protected static final byte DEFAULT_OUTPUT_AMPERAGE = 4;
@@ -38,13 +42,18 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.energybuffer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Defaults 4A In/Out",
-            "Change output Amperage with a screwdriver",
-            "Now Portable!",
-            GTPPCore.GT_Tooltip.get());
+        return ArrayUtils
+            .addAll(GTSplit.splitLocalized("gt.blockmachines.energybuffer.desc"), GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -295,8 +304,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         String fmt = String.format("%%%ds", max.length());
         cur = String.format(fmt, cur);
 
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_stored", cur),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_capacity", max) };
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.energy_buffer.eu_stored", cur),
+            IGregTechDeviceInformation.encode("gtpp.infodata.energy_buffer.eu_capacity", max) };
     }
 
     @Override

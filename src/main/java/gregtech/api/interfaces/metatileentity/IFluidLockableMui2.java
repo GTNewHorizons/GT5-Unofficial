@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.Fluid;
  */
 public interface IFluidLockableMui2 {
 
-    void setLockedFluid(Fluid name);
+    void setLockedFluid(Fluid lockedFluid);
 
     Fluid getLockedFluid();
 
@@ -19,5 +19,5 @@ public interface IFluidLockableMui2 {
 
     boolean isFluidLocked();
 
-    boolean acceptsFluidLock(Fluid name);
+    boolean acceptsFluidLock(Fluid fluid);
 }

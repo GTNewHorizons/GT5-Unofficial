@@ -35,8 +35,8 @@ public class FoundryFakeModuleCostLoader {
                 GGMaterial.preciousMetalAlloy.get(OrePrefixes.blockCasing, 8),
                 GGMaterial.preciousMetalAlloy.get(OrePrefixes.blockCasingAdvanced, 4),
                 GGMaterial.preciousMetalAlloy.get(OrePrefixes.sheetmetal, 8),
-                GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.Erbium, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Erbium, 30))
+                GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.Erbium, 8),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Erbium, 28))
             .itemOutputs(ItemList.Extra_Casting_Basins_ExoFoundry.get(1))
             .duration(1)
             .eut(1)

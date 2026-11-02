@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
@@ -20,7 +21,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -29,7 +29,7 @@ public class LoaderGTItemData implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Loading Item Data Tags");
+        GT_FML_LOGGER.debug("GTMod: Loading Item Data Tags");
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(TwilightForest.ID, "item.giantPick", 1L, 0),
             new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));
@@ -116,11 +116,8 @@ public class LoaderGTItemData implements Runnable {
             .addItemData(new ItemStack(Blocks.brick_block, 1, 32767), new ItemData(Materials.Brick, 3628800L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_238.get(1), new ItemData(Materials.Uranium, 3628800L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Uranium_235.get(1), new ItemData(Materials.Uranium235, 3628800L));
-        GTOreDictUnificator.addItemData(ItemList.IC2_Plutonium.get(1), new ItemData(Materials.Plutonium, 3628800L));
         GTOreDictUnificator
             .addItemData(ItemList.IC2_Uranium_235_Small.get(1), new ItemData(Materials.Uranium235, 403200L));
-        GTOreDictUnificator
-            .addItemData(ItemList.IC2_Plutonium_Small.get(1), new ItemData(Materials.Plutonium, 403200L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Iron.get(1L), new ItemData(Materials.Iron, 1814400L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Item_Casing_Gold.get(1L), new ItemData(Materials.Gold, 1814400L));
         GTOreDictUnificator

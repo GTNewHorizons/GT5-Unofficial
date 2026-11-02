@@ -178,7 +178,6 @@ public class SelectItemGuiBuilder {
         int rows = (choices.size() - 1) / COLS + 1;
         panel.size(GUI_WIDTH, 53 + 18 * rows);
 
-        // noinspection DataFlowIssue
         panel.childIf(
             headerItem != null || title != null,
             () -> Flow.row()

@@ -1,11 +1,15 @@
 package gregtech.common.tileentities.machines.basic;
 
+import java.util.Arrays;
+
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -30,7 +34,11 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private String overlays;
         private boolean hasInputFluidSlot = false;
         private boolean hasOutputFluidSlot = false;
+        private boolean showRecipeOutputLimitTooltip = false;
         private int fluidTankCapacityOverride = 0;
+        private int machineAmperageOverride = 0;
+        private int machineEUtMultiplier = 1;
+        private boolean deprecated = false;
         private SpecialEffects specialEffect = SpecialEffects.NONE;
 
         public Builder(int id) {
@@ -77,6 +85,12 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         @Override
+        public SoundStep setRecipeOutputLimitTooltip() {
+            this.showRecipeOutputLimitTooltip = true;
+            return this;
+        }
+
+        @Override
         public OverlaysStep setSound(SoundResource sound) {
             this.sound = sound;
             return this;
@@ -111,14 +125,64 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         @Override
+        public OptionalStep setMachineAmperage(int amperage) {
+            if (amperage < 1) throw new IllegalArgumentException("Machine amperage must be at least 1");
+            this.machineAmperageOverride = amperage;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setMachineEUtMultiplier(int multiplier) {
+            if (multiplier < 1) throw new IllegalArgumentException("Machine EU/t multiplier must be at least 1");
+            this.machineEUtMultiplier = multiplier;
+            return this;
+        }
+
+        @Override
+        public OptionalStep setDeprecated() {
+            this.deprecated = true;
+            return this;
+        }
+
+        @Override
         public MTEBasicMachineWithRecipe build() {
+            String[] finalDescription = description;
+            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0)
+                + (showRecipeOutputLimitTooltip ? 1 : 0);
+            if (extraDescriptionLines > 0) {
+                finalDescription = Arrays.copyOf(description, description.length + extraDescriptionLines);
+                int descriptionIndex = description.length;
+                if (machineEUtMultiplier != 1) {
+                    finalDescription[descriptionIndex++] = EnumChatFormatting.GRAY
+                        + StatCollector.translateToLocal("GT5U.MBTT.PowerUsage")
+                        + ": "
+                        + EnumChatFormatting.RED
+                        + (machineEUtMultiplier * 100)
+                        + "%"
+                        + EnumChatFormatting.RESET;
+                }
+                if (machineAmperageOverride != 0) {
+                    finalDescription[descriptionIndex] = EnumChatFormatting.GRAY
+                        + StatCollector.translateToLocal("GT5U.MBTT.BaseAmperage")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + machineAmperageOverride
+                        + "A"
+                        + EnumChatFormatting.RESET;
+                    descriptionIndex++;
+                }
+                if (showRecipeOutputLimitTooltip) {
+                    finalDescription[descriptionIndex] = TooltipHelper.recipeSlotLimit(outputSlotCount);
+                }
+            }
+            MTEBasicMachineWithRecipe machine;
             if (fluidTankCapacityOverride == 0) {
-                return new MTEBasicMachineWithRecipe(
+                machine = new MTEBasicMachineWithRecipe(
                     id,
                     unlocalizedName,
                     englishName,
                     tier,
-                    description,
+                    finalDescription,
                     recipes,
                     inputSlotCount,
                     outputSlotCount,
@@ -127,23 +191,28 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     sound,
                     specialEffect,
                     overlays);
+            } else {
+                machine = new MTEBasicMachineWithRecipe(
+                    id,
+                    unlocalizedName,
+                    englishName,
+                    tier,
+                    finalDescription,
+                    recipes,
+                    inputSlotCount,
+                    outputSlotCount,
+                    hasInputFluidSlot,
+                    hasOutputFluidSlot,
+                    fluidTankCapacityOverride,
+                    sound,
+                    specialEffect,
+                    overlays);
             }
-
-            return new MTEBasicMachineWithRecipe(
-                id,
-                unlocalizedName,
-                englishName,
-                tier,
-                description,
-                recipes,
-                inputSlotCount,
-                outputSlotCount,
-                hasInputFluidSlot,
-                hasOutputFluidSlot,
-                fluidTankCapacityOverride,
-                sound,
-                specialEffect,
-                overlays);
+            if (machineAmperageOverride != 0) {
+                machine.setMachineAmperage(machineAmperageOverride);
+            }
+            return machine.setMachineEUtMultiplier(machineEUtMultiplier)
+                .setDeprecated(deprecated);
         }
     }
 
@@ -176,6 +245,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
 
     public interface SoundStep {
 
+        SoundStep setRecipeOutputLimitTooltip();
+
         OverlaysStep setSound(SoundResource sound);
     }
 
@@ -191,6 +262,12 @@ public final class MTEBasicMachineWithRecipeBuilder {
         OptionalStep setFluidSlots(boolean hasInput, boolean hasOutput, int capacityOverride);
 
         OptionalStep setSpecialEffect(SpecialEffects specialEffect);
+
+        OptionalStep setMachineAmperage(int amperage);
+
+        OptionalStep setMachineEUtMultiplier(int multiplier);
+
+        OptionalStep setDeprecated();
 
         MTEBasicMachineWithRecipe build();
     }

@@ -11,6 +11,7 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
@@ -74,7 +75,7 @@ public class FormingPressBackend extends RecipeMapBackend {
             .itemInputs(GTUtility.copyAmount(0, mold), GTUtility.copyAmount(1, input))
             .itemOutputs(output)
             .duration(128)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .noBuffer()
             .nbtSensitive()
             .build()

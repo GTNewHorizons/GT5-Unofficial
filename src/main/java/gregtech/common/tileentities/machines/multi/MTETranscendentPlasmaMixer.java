@@ -2,10 +2,8 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
@@ -21,6 +19,7 @@ import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRA
 import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -28,6 +27,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,8 +40,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -50,6 +52,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -57,6 +60,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
 
@@ -74,7 +78,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         .addElement(
             'B',
             buildHatchAdder(MTETranscendentPlasmaMixer.class)
-                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
+                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1))
                 .casingIndex(DIM_INJECTION_CASING)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
@@ -105,26 +109,17 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("This multiblock will run in parallel according to the amount set in the parallel menu")
-            .addInfo("All inputs will scale, except time...")
-            .addInfo("All EU is deducted from wireless EU networks only")
-            .beginStructureBlock(5, 7, 5, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
-            .addCasingInfoExactly("Dimensional Bridge", 16, false)
-            .addCasingInfoRangeColored(
-                "Dimensional Injection Casing",
-                EnumChatFormatting.GRAY,
-                0,
-                33,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Dimensional Injection Casing", 1)
-            .addInputHatch("Any Dimensional Injection Casing", 1)
-            .addOutputHatch("Any Dimensional Injection Casing", 1)
-            .toolTipFinisher(AuthorColen);
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.transcendent_mixer"))
+            .addMarkdown(new ResourceLocation("gregtech", "transcendent-plasma-mixer"))
+            .beginStructureBlock(5, 7, 5, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("48", Casings.DimensionallyTranscendentCasing.getLocalizedName(), false)
+            .addCasing("0-35", Casings.DimensionalInjectionCasing.getLocalizedName(), false)
+            .addCasing("16", Casings.DimensionalBridge.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -253,16 +248,11 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check the main structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
-
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        return (mMaintenanceHatches.size() <= 1);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -301,25 +291,19 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + (mMaxProgresstime == 0 ? "0"
-                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.progress",
+                EnumChatFormatting.GREEN + formatNumber(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.usage.fmt",
+                EnumChatFormatting.RED
+                    + (mMaxProgresstime == 0 ? "0"
+                        : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+                    + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.recipesDone.fmt",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 
     @Override

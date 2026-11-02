@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Industrial_MassFab;
+import static gregtech.api.recipe.RecipeMaps.multiblockMassFabricatorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockMassFabricatorRecipes;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -51,6 +51,26 @@ public class GregtechIndustrialMassFabricator {
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
 
+        // Boosted UUA1
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_Scrap.get(9L))
+            .circuit(10)
+            .fluidInputs(Materials.UUMatter.getFluid(1L))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(10L))
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockMassFabricatorRecipes);
+
+        // Boosted UUA2
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_Scrapbox.get(1L))
+            .circuit(20)
+            .fluidInputs(Materials.UUMatter.getFluid(1L))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(10L))
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockMassFabricatorRecipes);
+
         // Basic UUM
         GTValues.RA.stdBuilder()
             .circuit(1)
@@ -73,7 +93,7 @@ public class GregtechIndustrialMassFabricator {
             .circuit(3)
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(65536)
+            .eut(TierEU.RECIPE_ZPM / 2)
             .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
@@ -82,7 +102,7 @@ public class GregtechIndustrialMassFabricator {
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
-            .eut(65536)
+            .eut(TierEU.RECIPE_ZPM / 2)
             .addTo(multiblockMassFabricatorRecipes);
     }
 }

@@ -19,6 +19,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,16 +41,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -68,8 +72,9 @@ import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEBrickedBlastFurnace extends MetaTileEntity
-    implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment, ISurvivalConstructable,
+    RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable, ICasingTextureProvider {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final IStructureDefinition<MTEBrickedBlastFurnace> STRUCTURE_DEFINITION = IStructureDefinition
@@ -80,16 +85,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
                 new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
                     { "ccc", "ccc", "ccc" }, }))
         .addElement('c', lazy(t -> ofBlock(GregTechAPI.sBlockCasings4, 15)))
-        .addElement('l', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1)))
+        .addElement('l', ofChain(ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1), isAir()))
         .build();
-    private static final ITexture[] FACING_SIDE = { TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS) };
-    private static final ITexture[] FACING_FRONT = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE) };
-    private static final ITexture[] FACING_ACTIVE = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE), TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
-            .glow()
-            .build() };
 
     private MultiblockTooltipBuilder tooltipBuilder;
 
@@ -135,16 +132,16 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            tooltipBuilder.addMachineType("Blast Furnace, BBF")
-                .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("Has a useful interface, unlike other gregtech multis")
+            tooltipBuilder.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bricked_blast_furnace"))
+                .addMarkdown(new ResourceLocation("gregtech", "bricked-blast-furnace"))
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
-                .addController("Front center")
-                .addOtherStructurePart("Firebricks", "Everything except the controller")
-                .addStructureInfo("The top block is also empty")
-                .addStructureInfo("You can share the walls of GT multis, so")
-                .addStructureInfo("each additional one costs less, up to 4")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+                .addCasing("32", Casings.Firebricks.getLocalizedName(), false)
+                .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior_and_top_center"))
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_1"))
+                .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_2"))
                 .toolTipFinisher();
         }
         return tooltipBuilder;
@@ -168,10 +165,20 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            return aActive ? FACING_ACTIVE : FACING_FRONT;
-        }
-        return FACING_SIDE;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS);
     }
 
     @Override
@@ -569,8 +576,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.PRIMITIVE;
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
     @Override
@@ -579,13 +586,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.PRIMITIVE;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.PRIMITIVE;
     }
 
     @Override

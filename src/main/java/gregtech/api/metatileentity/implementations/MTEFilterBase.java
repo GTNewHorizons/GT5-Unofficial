@@ -6,20 +6,14 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GTTooltipDataCache;
 import gregtech.common.gui.modularui.singleblock.base.MTEFilterBaseGui;
 
 public abstract class MTEFilterBase extends MTEBuffer {
 
-    private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
     public static final int FILTER_SLOT_INDEX = 9;
     protected static final int NUM_INVENTORY_SLOTS = 9;
-    private static final String EMIT_REDSTONE_GRADUALLY_TOOLTIP = "GT5U" + ".machines.emit_redstone_gradually.tooltip";
     protected boolean invertFilter = false;
 
     public MTEFilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
@@ -77,38 +71,6 @@ public abstract class MTEFilterBase extends MTEBuffer {
             if (mInventory[i] == null) ++emptySlots;
         }
         return emptySlots;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addSortStacksButton(builder);
-        addEmitRedstoneGraduallyButton(builder);
-        addInvertRedstoneButton(builder);
-        addInvertFilterButton(builder);
-    }
-
-    private void addEmitRedstoneGraduallyButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bRedstoneIfFull,
-                val -> bRedstoneIfFull = val,
-                GTUITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                this::getEmitRedstoneGraduallyButtonTooltip).setUpdateTooltipEveryTick(true));
-    }
-
-    private GTTooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
-        return mTooltipCache
-            .getUncachedTooltipData(EMIT_REDSTONE_GRADUALLY_TOOLTIP, getEmptySlots(), getRedstoneOutput());
-    }
-
-    private void addInvertFilterButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> invertFilter,
-                val -> invertFilter = val,
-                GTUITextures.OVERLAY_BUTTON_INVERT_FILTER,
-                () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
     }
 
     @Override

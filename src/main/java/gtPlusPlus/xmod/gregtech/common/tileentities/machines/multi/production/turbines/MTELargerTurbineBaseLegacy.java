@@ -10,9 +10,11 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Turbine_Rotor;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,12 +43,15 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -86,7 +92,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                     lazy(
                         t -> buildHatchAdder(MTELargerTurbineBaseLegacy.class)
                             .adder(MTELargerTurbineBaseLegacy::addTurbineHatch)
-                            .hatchClass(MTEHatchTurbine.class)
+                            .hatchId(MetaTileEntityIDs.Hatch_Turbine_Rotor.ID)
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(1)
                             .build()))
@@ -152,7 +158,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         } else if (getTurbineType().contains("Steam")) {
             tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
         }
-        tt.addTecTechHatchInfo();
+        tt.addSupportAny();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top center")
@@ -160,17 +166,17 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Hint Block Number 1",
+                "Hint block number 1",
                 1)
-            .addInputBus("Hint Block Number 4 (Min 1)", 4)
-            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
+            .addInputBus("Hint block number 4 (Min 1)", 4)
+            .addInputHatch("Hint block number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
+            tt.addOutputHatch("Hint block number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
-            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
+        tt.addDynamoHatch("Hint block number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint block number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
+            tt.addMufflerHatch("Hint block number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;
@@ -203,18 +209,26 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // we do not check for casing count here. the bare minimal is 372 but we only require 360
-        boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        if (mTurbineRotorHatches.size() != 12 || mMaintenanceHatches.size() != 1
-            || (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty())
-            || (requiresMufflers() && mMufflerHatches.size() != 4)
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()
-            || (requiresOutputHatch() && mOutputHatches.isEmpty())) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
+        if (mTurbineRotorHatches.size() != 12) {
+            errors.add(
+                StructureErrors
+                    .hatchCount(ErrorType.NOT_MATCH, Hatch_Turbine_Rotor.get(1), mTurbineRotorHatches.size(), 12));
         }
-        return aStructure;
+        checkOneMaintenanceHatch(errors);
+        if (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
+        if (requiresMufflers()) {
+            checkHatchExact(errors, Muffler, 4);
+        }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (requiresOutputHatch()) {
+            checkHasOutputHatch(errors);
+        }
     }
 
     @Override
@@ -241,8 +255,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
-                boolean aDidAdd = this.mTurbineRotorHatches.add(aTurbineHatch);
-                return aDidAdd;
+                return this.mTurbineRotorHatches.add(aTurbineHatch);
             }
         }
         return false;
@@ -476,7 +489,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
@@ -558,24 +571,22 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     }
 
     @Override
-    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
-        ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1],
-            facing == side ? getFrontFacingTurbineTexture(aActive)
-                : Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
     }
 
-    protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
-        if (isActive) {
-            return TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                .extFacing()
-                .build();
-        }
-        return TextureFactory.builder()
-            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-            .extFacing()
-            .build();
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex());
     }
 
     @Override

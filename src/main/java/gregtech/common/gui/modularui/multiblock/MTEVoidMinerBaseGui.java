@@ -60,11 +60,11 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     public ModularPanel createFilterPopup(PanelSyncManager syncManager, IPanelHandler panelHandler) {
-        GenericSyncValue<ItemStackHandler> listSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> listSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.selected,
             handler -> multiblock.selected = handler,
-            new ItemStackListAdapter());
+            new ItemStackListAdapter()).allowC2S();
         syncManager.syncValue("selected", listSyncer);
 
         GTUtility.ItemId[] ores = sortOres(multiblock.dropMap);
@@ -82,7 +82,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                             .crossAxisAlignment(Alignment.CrossAxis.START)
                             .coverChildren())
                     .child(
-                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str))
+                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str).allowC2S())
                             .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                             .autoUpdateOnChange(true)
                             .anchorLeft(0)
@@ -94,7 +94,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private ListWidget<IWidget, ?> createOreToggleButtonGrid(PanelSyncManager syncManager, GTUtility.ItemId[] ores) {
-        GenericSyncValue<ItemStackHandler> syncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> syncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("selected");
         int buttonsPerRow = 10;
         int rowCount = (int) Math.ceil((double) ores.length / buttonsPerRow);
@@ -116,8 +116,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         .background(false, GTGuiTextures.BUTTON_STANDARD)
                         .tooltipBuilder(false, t -> getOreButtonTooltip(t, stack, false))
                         .tooltipBuilder(true, t -> getOreButtonTooltip(t, stack, true))
-                        .setEnabledIf($ -> matchesSearch(stack))
-                        .size(18);
+                        .setEnabledIf($ -> matchesSearch(stack));
                 })
                 .wrap()
                 .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -128,11 +127,11 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .height(18 * Math.min(rowCount, 8));
     }
 
-    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
+    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler, ?> syncer, GTUtility.ItemId[] ores) {
         return Flow.column()
             .child(
-                new ToggleButton()
-                    .value(new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool))
+                new ToggleButton().value(
+                    new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool).allowC2S())
                     .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.button.vm.whitelist")))
                     .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.button.vm.blacklist")))
                     .overlay(

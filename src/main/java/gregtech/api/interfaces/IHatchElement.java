@@ -1,10 +1,13 @@
 package gregtech.api.interfaces;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.function.ToLongFunction;
+import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
@@ -32,7 +35,20 @@ public interface IHatchElement<T> {
         return StatCollector.translateToLocal("hatch_type_" + name().toLowerCase());
     }
 
+    default String getDescriptionLangKey() {
+        return "hatch_type_" + name().toLowerCase();
+    }
+
+    default List<String> getDescriptionLangKeys() {
+        return Collections.singletonList(getDescriptionLangKey());
+    }
+
     long count(T t);
+
+    default boolean matchesHatch(IMetaTileEntity mte) {
+        return mteClasses().stream()
+            .anyMatch(c -> c.isInstance(mte));
+    }
 
     default <T2 extends T> IHatchElement<T2> withMteClass(Class<? extends IMetaTileEntity> aClass) {
         if (aClass == null) throw new IllegalArgumentException();
@@ -76,6 +92,20 @@ public interface IHatchElement<T> {
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .hint(aHintNumber)
+            .continueIfSuccess()
+            .exclusive()
+            .build();
+    }
+
+    default <T2 extends T> IStructureElement<T2> newAnyWithDescription(int aCasingIndex, int aHintNumber,
+        Supplier<String> description) {
+        if (aCasingIndex < 0 || aHintNumber < 0) throw new IllegalArgumentException();
+        return GTStructureUtility.<T2>buildHatchAdder()
+            .anyOf(this)
+            .casingIndex(aCasingIndex)
+            .hint(aHintNumber)
+            .description(description)
+            .cacheHint(() -> StatCollector.translateToLocal(description.get()))
             .continueIfSuccess()
             .exclusive()
             .build();
@@ -135,6 +165,7 @@ class HatchElementEither<T> implements IHatchElement<T> {
 
     private final IHatchElement<? super T> first, second;
     private ImmutableList<? extends Class<? extends IMetaTileEntity>> mMteClasses;
+    private ImmutableList<Class<? extends IMetaTileEntity>> mMteBlacklist;
     private String name, displayName;
 
     HatchElementEither(IHatchElement<? super T> first, IHatchElement<? super T> second) {
@@ -149,6 +180,19 @@ class HatchElementEither<T> implements IHatchElement<T> {
             .addAll(second.mteClasses())
             .build();
         return mMteClasses;
+    }
+
+    @Override
+    public List<Class<? extends IMetaTileEntity>> mteBlacklist() {
+        if (mMteBlacklist == null) {
+            var builder = ImmutableList.<Class<? extends IMetaTileEntity>>builder();
+            Stream.of(first.mteBlacklist(), second.mteBlacklist())
+                .flatMap(List::stream)
+                .filter(blacklisted -> !mteClasses().contains(blacklisted))
+                .forEach(builder::add);
+            mMteBlacklist = builder.build();
+        }
+        return mMteBlacklist;
     }
 
     @Override
@@ -172,8 +216,20 @@ class HatchElementEither<T> implements IHatchElement<T> {
     }
 
     @Override
+    public List<String> getDescriptionLangKeys() {
+        List<String> result = new ArrayList<>(first.getDescriptionLangKeys());
+        result.addAll(second.getDescriptionLangKeys());
+        return result;
+    }
+
+    @Override
     public long count(T t) {
         return first.count(t) + second.count(t);
+    }
+
+    @Override
+    public boolean matchesHatch(IMetaTileEntity mte) {
+        return first.matchesHatch(mte) || second.matchesHatch(mte);
     }
 }
 
@@ -216,8 +272,18 @@ class HatchElement<T> implements IHatchElement<T> {
     }
 
     @Override
+    public List<String> getDescriptionLangKeys() {
+        return mBacking.getDescriptionLangKeys();
+    }
+
+    @Override
     public long count(T t) {
         return mCount == null ? mBacking.count(t) : mCount.applyAsLong(t);
+    }
+
+    @Override
+    public boolean matchesHatch(IMetaTileEntity mte) {
+        return mBacking.matchesHatch(mte);
     }
 
     @Override

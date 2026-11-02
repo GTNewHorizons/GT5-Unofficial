@@ -52,11 +52,10 @@ public class KubaItemBlock extends ItemBlock {
             .getDisplayName(p_77653_1_);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-        KubaBlock.blocks.get(p_77624_1_.getItemDamage())
-            .addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
+        KubaBlock.blocks.get(stack.getItemDamage())
+            .addInformation(stack, player, tooltip, adv);
     }
 
     @Override

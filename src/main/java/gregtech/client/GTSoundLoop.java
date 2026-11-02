@@ -54,7 +54,6 @@ public class GTSoundLoop extends MovingSound {
         zPosF = soundZ;
         worldID = base.getWorld().provider.dimensionId;
         repeat = true;
-        targetVolume = VOLUME_RAMP;
         volume = VOLUME_RAMP;
     }
 
@@ -173,6 +172,10 @@ public class GTSoundLoop extends MovingSound {
         targetVolume = volume;
 
         return this;
+    }
+
+    public float getTargetVolume() {
+        return targetVolume;
     }
 
     public GTSoundLoop setPosition(ISoundPosition position) {

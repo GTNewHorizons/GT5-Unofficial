@@ -14,8 +14,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;
+import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector.MaintenanceMode;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
@@ -23,16 +23,16 @@ import gregtech.common.modularui2.widget.SelectButton;
 public class CoverWirelessMaintenenceDetectorGui
     extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessMaintenanceDetector> {
 
-    public CoverWirelessMaintenenceDetectorGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverWirelessMaintenenceDetectorGui(CoverWirelessMaintenanceDetector cover) {
         super(cover);
     }
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceModeSync = new EnumSyncValue<>(
-            CoverWirelessMaintenanceDetector.MaintenanceMode.class,
+        EnumSyncValue<MaintenanceMode, ?> maintenanceModeSync = new EnumSyncValue<>(
+            MaintenanceMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("maintenanceMode", maintenanceModeSync);
         super.addUIWidgets(syncManager, column, data);
     }
@@ -40,9 +40,9 @@ public class CoverWirelessMaintenenceDetectorGui
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
         // column contains 4 other rows, each has 2 enum values
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         @SuppressWarnings("unchecked")
-        EnumSyncValue<CoverWirelessMaintenanceDetector.MaintenanceMode> maintenanceSync = syncManager
+        EnumSyncValue<MaintenanceMode, ?> maintenanceSync = syncManager
             .findSyncHandler("maintenanceMode", EnumSyncValue.class);
         final ICoverable tile = data.getCoverable();
         boolean usesTurbines = false;
@@ -55,32 +55,17 @@ public class CoverWirelessMaintenenceDetectorGui
         }
         return Flow.column()
             .coverChildren()
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.NO_ISSUE,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.ONE_ISSUE))
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.TWO_ISSUES,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.THREE_ISSUES))
-            .child(
-                makeSyncedBoolRow(
-                    maintenanceSync,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.FOUR_ISSUES,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.FIVE_ISSUES))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.NO_ISSUE, MaintenanceMode.ONE_ISSUE))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.TWO_ISSUES, MaintenanceMode.THREE_ISSUES))
+            .child(makeSyncedBoolRow(maintenanceSync, MaintenanceMode.FOUR_ISSUES, MaintenanceMode.FIVE_ISSUES))
             .childIf(
                 usesTurbines,
-                () -> makeSyncedBoolRow(
-                    maintenanceSync,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_80,
-                    CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_100))
+                () -> makeSyncedBoolRow(maintenanceSync, MaintenanceMode.ROTOR_80, MaintenanceMode.ROTOR_100))
             .child(physicalRow(physicalSyncer));
     }
 
-    protected Flow makeSyncedBoolRow(EnumSyncValue syncValue, CoverWirelessMaintenanceDetector.MaintenanceMode value1,
-        CoverWirelessMaintenanceDetector.MaintenanceMode value2) {
+    protected Flow makeSyncedBoolRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value1,
+        MaintenanceMode value2) {
         return Flow.row()
             .coverChildren()
             .child(makeMaintanenceIssueRow(syncValue, value1).marginRight(8))
@@ -88,8 +73,7 @@ public class CoverWirelessMaintenenceDetectorGui
             .marginBottom(4);
     }
 
-    private Flow makeMaintanenceIssueRow(EnumSyncValue syncValue,
-        CoverWirelessMaintenanceDetector.MaintenanceMode value) {
+    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value) {
         return Flow.row()
             .size(90, 18)
             .child(

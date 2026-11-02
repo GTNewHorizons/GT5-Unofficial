@@ -1,3 +1,4 @@
+Machine Type: {yellow:BEC Conduit}
 Connects several Bose-Einstein Condensate multiblocks together into a network.
 Multiblocks must have a {gold:{item:gregtech:gt.blockmachines:15476}} that connects to a conduit to connect to the network.
 Use a {gold:{item:gregtech:gt.blockmachines:15760}} to control the flow of condensate.

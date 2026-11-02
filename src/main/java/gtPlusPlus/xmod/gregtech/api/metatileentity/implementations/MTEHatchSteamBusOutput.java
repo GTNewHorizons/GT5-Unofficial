@@ -14,9 +14,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
@@ -143,23 +143,13 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
-    public boolean isFiltered() {
-        return false;
-    }
-
-    @Override
-    public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return false;
-    }
-
-    @Override
     public boolean pushOutputInventory() {
         return false;
     }
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.output_bus_steam.desc");
+        return GTSplit.splitLocalizedWithSuffix("gt.blockmachines.output_bus_steam.desc", GTPPCore.GT_Tooltip.get());
     }
 
     @Override

@@ -53,7 +53,7 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(5, 2), Materials.Helium3.getGas(2_800_000));
         RECIPES.put(Pair.of(5, 3), Materials.SaltWater.getFluid(2_800_000));
         RECIPES.put(Pair.of(5, 4), Materials.Helium.getGas(1_400_000));
-        RECIPES.put(Pair.of(5, 5), Materials.LiquidOxygen.getGas(896_000));
+        RECIPES.put(Pair.of(5, 5), Materials.LiquidOxygen.getFluid(896_000));
         RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(32_000));
         RECIPES.put(Pair.of(5, 7), Materials.Argon.getGas(32_000));
         RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8_000));

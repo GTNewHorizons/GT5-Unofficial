@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -32,51 +31,52 @@ import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEOreDrillingPlantBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.WorkAreaChunk;
 import gregtech.common.misc.workarea.IWorkAreaProvider;
 import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
     protected int mTier = 1;
+
+    private static final int FORTUNE_VALUE = 3;
+    private static final int ORE_MULTIPLIER = 3;
 
     private static final String NBT_VEIN_NAME = "veinName";
     private static final String NBT_REPLACE_WITH_COBBLESTONE = "replaceWithCobblestone";
@@ -101,19 +101,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     private int cachedBoundsZDrill = Integer.MIN_VALUE;
     private int cachedBoundsRadius = Integer.MIN_VALUE;
 
-    /** Used to drive the remaining ores count in the UI. */
     private int clientOreListSize = 0;
-
-    /** Used to drive the current chunk number in the UI. */
     private int clientCurrentChunk = 0;
 
-    /** Used to drive the total chunk count in the UI. */
     private int clientTotalChunks = 0;
-
-    /** Used to drive the drill's y-level in the UI. */
     private int clientYHead = 0;
-
-    /** Contains the name of the currently mined vein. Used for driving metrics cover output. */
     private String veinName = null;
     private final XSTR random = new XSTR();
 
@@ -186,45 +178,29 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(chunkRadiusConfig);
+        buffer.writeBoolean(showWorkArea);
+        buffer.writeInt(workState.ordinal());
 
-        data.setInteger(NBT_CHUNK_RADIUS_CONFIG, chunkRadiusConfig);
-        data.setBoolean(NBT_SHOW_WORK_AREA, showWorkArea);
-
-        data.setInteger(NBT_WORK_STATE, workState.ordinal());
-        data.setBoolean(NBT_HAS_CURRENT_WORK_CHUNK, mCurrentChunk != null);
-
+        buffer.writeBoolean(mCurrentChunk != null);
         if (mCurrentChunk != null) {
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_X, mCurrentChunk.chunkXPos);
-            data.setInteger(NBT_CURRENT_WORK_CHUNK_Z, mCurrentChunk.chunkZPos);
+            buffer.writeInt(mCurrentChunk.chunkXPos);
+            buffer.writeInt(mCurrentChunk.chunkZPos);
         }
-
-        return data;
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        if (data == null) {
-            return;
-        }
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        chunkRadiusConfig = buffer.readInt();
+        showWorkArea = buffer.readBoolean();
+        setWorkState(WorkState.fromOrdinal(buffer.readInt()));
 
-        if (data.hasKey(NBT_CHUNK_RADIUS_CONFIG)) {
-            chunkRadiusConfig = data.getInteger(NBT_CHUNK_RADIUS_CONFIG);
-        }
-
-        if (data.hasKey(NBT_SHOW_WORK_AREA)) {
-            showWorkArea = data.getBoolean(NBT_SHOW_WORK_AREA);
-        }
-
-        if (data.hasKey(NBT_WORK_STATE)) {
-            setWorkState(data.getInteger(NBT_WORK_STATE));
-        }
-
-        if (data.getBoolean(NBT_HAS_CURRENT_WORK_CHUNK)) {
-            mCurrentChunk = new ChunkCoordIntPair(
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_X),
-                data.getInteger(NBT_CURRENT_WORK_CHUNK_Z));
+        boolean hasWorkChunk = buffer.readBoolean();
+        if (hasWorkChunk) {
+            mCurrentChunk = new ChunkCoordIntPair(buffer.readInt(), buffer.readInt());
         } else {
             mCurrentChunk = null;
         }
@@ -268,24 +244,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     public String[] getInfoData() {
         final String diameter = formatNumber(chunkRadiusConfig * 2L);
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                + EnumChatFormatting.GREEN
-                + diameter
-                + "x"
-                + diameter
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.machines.chunks") };
-    }
-
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
+        return new String[] { "GT5U.infodata.ore_drill.title",
+            IGregTechDeviceInformation.encode("GT5U.infodata.ore_drill.work_area", diameter, diameter) };
     }
 
     @Override
@@ -293,6 +253,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
+        int maxUsefulTier = 1;
+        int baseTime = (workState == WorkState.DOWNWARD || workState == WorkState.AT_BOTTOM) ? getBaseProgressTime()
+            : 80;
+        while ((baseTime >> maxUsefulTier) > 1) {
+            maxUsefulTier++;
+        }
+        if (tier > maxUsefulTier) {
+            tier = maxUsefulTier;
+        }
         this.mEUt = -3 * (1 << (tier << 1));
         this.mMaxProgresstime = calculateMaxProgressTime(tier);
     }
@@ -379,7 +348,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
 
         if (!result) {
-            setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+            setShutdownReason("GT5U.gui.text.drill_exhausted");
         }
 
         return result;
@@ -399,8 +368,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         syncWorkAreaData();
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MINER;
     }
 
@@ -410,64 +380,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base == null) {
-            return;
-        }
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.drill_ores_left_chunk",
-                            numberFormat.format(clientOreListSize)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> base.isActive() && clientOreListSize > 0 && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.drill_ores_left_layer",
-                            numberFormat.format(clientYHead),
-                            numberFormat.format(clientOreListSize)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> base.isActive() && clientYHead > 0 && workState == WorkState.DOWNWARD))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.drill_chunks_left",
-                            numberFormat.format(clientCurrentChunk),
-                            numberFormat.format(clientTotalChunks)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> base.isActive() && clientCurrentChunk > 0 && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> veinName != null
-                            && (workState == WorkState.AT_BOTTOM || workState == WorkState.DOWNWARD)))
-            .widget(new FakeSyncWidget.IntegerSyncer(oreBlockPositions::size, (newInt) -> clientOreListSize = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getTotalChunkCount, (newInt) -> clientTotalChunks = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getChunkNumber, (newInt) -> clientCurrentChunk = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, (newInt) -> clientYHead = newInt))
-            .widget(new FakeSyncWidget.StringSyncer(() -> veinName, (newString) -> veinName = newString));
-    }
-
-    @Override
-    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of(
-            createReplaceWithCobblestone(builder),
-            createChunkRangeButton(builder),
-            createWorkAreaToggleButton(builder));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEOreDrillingPlantBaseGui(this);
     }
 
     /********************************************************
@@ -482,31 +396,27 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         if (!base.isActive()) {
             return ImmutableList.of(
-                getFailureReason()
-                    .map(
-                        reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
-                    .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
+                getEncodedFailureReason()
+                    .map(reason -> IGregTechDeviceInformation.encode("GT5U.gui.text.drill_offline_reason", reason))
+                    .orElse("GT5U.gui.text.drill_offline_generic"));
         }
 
         return switch (workState) {
             case AT_BOTTOM -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_chunk",
-                    formatNumber(oreBlockPositions.size())),
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation
+                    .encode("GT5U.gui.text.drill_ores_left_chunk", formatNumber(oreBlockPositions.size())),
+                IGregTechDeviceInformation.encode(
                     "GT5U.gui.text.drill_chunks_left",
                     formatNumber(getChunkNumber()),
                     formatNumber(getTotalChunkCount())),
                 veinName == null ? ""
-                    : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
+                    : IGregTechDeviceInformation.encode("GT5U.gui.text.drill_current_vein", veinName));
             case DOWNWARD -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_layer",
-                    getYHead(),
-                    formatNumber(oreBlockPositions.size())),
+                IGregTechDeviceInformation
+                    .encode("GT5U.gui.text.drill_ores_left_layer", getYHead(), formatNumber(oreBlockPositions.size())),
                 veinName == null ? ""
-                    : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
-            case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+                    : IGregTechDeviceInformation.encode("GT5U.gui.text.drill_current_vein", veinName));
+            case UPWARD, ABORT -> ImmutableList.of("GT5U.gui.text.retracting_pipe");
         };
     }
 
@@ -582,53 +492,100 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
-        final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
-        tt.addMachineType("Miner, MBM")
-            .addInfo("Use a Screwdriver to configure working area")
-            .addInfo(
-                "Maximum area is " + chunkDiameter
-                    + "x"
-                    + chunkDiameter
-                    + " chunks ("
-                    + blockDiameter
-                    + "x"
-                    + blockDiameter
-                    + " blocks)")
-            .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
-            .addInfo("Use Soldering iron to turn off chunk mode")
-            .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
-            .addInfo("Gives ~3x as much crushed ore vs normal processing")
-            .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
+
+        final long chunkDiameter = chunkRadiusConfig * 2L;
+        final long blockDiameter = chunkRadiusConfig * 32L;
+
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_drilling_plant"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "ore-drilling-plant"),
+                ImmutableMap.<String, Object>builder()
+                    .put("chunk_diameter", chunkDiameter)
+                    .put("block_diameter", blockDiameter)
+                    .put("fortune", mTier + FORTUNE_VALUE)
+                    .put("cycle_time", cycleTimeDisplay)
+                    .put("ore_multiplier", ORE_MULTIPLIER)
+                    .build())
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes, optional, any base casing", 1)
-            .addInputHatch("Drilling Fluid, any base casing", 1)
-            .addOutputBus("Any base casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("5-7", casings, false)
+            .addEnergyHatch("1-2", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0-1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
     /********************************************************
-     * Private getters
+     * Getters and setters
      *******************************************************/
-    private int getTotalChunkCount() {
+    public int getTotalChunkCount() {
         final ChunkCoordIntPair topLeft = getTopLeftChunkCoords();
         final ChunkCoordIntPair bottomRight = getBottomRightChunkCoords();
         return (bottomRight.chunkXPos - topLeft.chunkXPos) * (bottomRight.chunkZPos - topLeft.chunkZPos);
+    }
+
+    public int getOreBlockCount() {
+        return oreBlockPositions.size();
+    }
+
+    public int getChunkRadiusConfig() {
+        return chunkRadiusConfig;
+    }
+
+    public void setChunkRadiusConfig(int val) {
+        chunkRadiusConfig = val;
+    }
+
+    public boolean isReplaceWithCobblestone() {
+        return replaceWithCobblestone;
+    }
+
+    public void setReplaceWithCobblestone(boolean val) {
+        replaceWithCobblestone = val;
+    }
+
+    public boolean isShowWorkArea() {
+        return showWorkArea;
+    }
+
+    public void setShowWorkArea(boolean val) {
+        showWorkArea = val;
+        updateWorkAreaRendererRegistration();
+    }
+
+    public String getVeinName() {
+        return veinName;
+    }
+
+    public void setVeinName(String val) {
+        veinName = val;
+    }
+
+    public void setClientOreListSize(int val) {
+        clientOreListSize = val;
+    }
+
+    public void setClientCurrentChunk(int val) {
+        clientCurrentChunk = val;
+    }
+
+    public void setClientTotalChunks(int val) {
+        clientTotalChunks = val;
+    }
+
+    public void setClientYHead(int val) {
+        clientYHead = val;
     }
 
     @NotNull
@@ -696,7 +653,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
      * @return 0 if the miner is not in operation, positive integer corresponding to the chunk currently being drilled
      */
     @SuppressWarnings("ExtractMethodRecommender")
-    private int getChunkNumber() {
+    public int getChunkNumber() {
         if (mCurrentChunk == null) {
             return 0;
         }
@@ -821,7 +778,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     /********************************************************
-     * Private helpers
+     * Helpers
      *******************************************************/
     private boolean tryProcessOreList() {
         // Even though it works fine without this check,
@@ -886,7 +843,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             }
 
             List<ItemStack> oreBlockDrops = OreManager
-                .mineBlock(random, world, x, y, z, false, mTier + 3, simulate, replaceWithCobblestone);
+                .mineBlock(random, world, x, y, z, true, mTier + FORTUNE_VALUE, simulate, replaceWithCobblestone);
 
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
 
@@ -970,6 +927,14 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
     }
 
+    @Override
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+    }
+
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
         ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
         return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
@@ -1046,7 +1011,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
     }
 
-    private void adjustChunkRadius(boolean increase) {
+    public void adjustChunkRadius(boolean increase) {
         if (increase) {
             if (chunkRadiusConfig <= getRadiusInChunks()) {
                 chunkRadiusConfig++;
@@ -1067,13 +1032,13 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         createInitialWorkingChunk();
     }
 
-    private void toggleWorkArea() {
+    public void toggleWorkArea() {
         showWorkArea = !showWorkArea;
         updateWorkAreaRendererRegistration();
         syncWorkAreaData();
     }
 
-    private void syncWorkAreaData() {
+    public void syncWorkAreaData() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) {
             return;
@@ -1087,89 +1052,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
     }
 
-    private void updateWorkAreaRendererRegistration() {
+    public void updateWorkAreaRendererRegistration() {
         WorkAreaProviderRegistry.setActive(this, showWorkArea);
-    }
-
-    private void setShowWorkAreaFromSync(boolean value) {
-        showWorkArea = value;
-        updateWorkAreaRendererRegistration();
-    }
-
-    /********************************************************
-     * UI Buttons
-     *******************************************************/
-    private ButtonWidget createReplaceWithCobblestone(ModularWindow.Builder builder) {
-        IGregTechTileEntity base = Objects.requireNonNull(
-            getBaseMetaTileEntity(),
-            "Oil drill base meta tile entity is null while creating replace with cobblestone button");
-
-        return (ButtonWidget) new LockedWhileActiveButton(base, builder)
-            .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                if (replaceWithCobblestone) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_ON };
-                }
-                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_REPLACE_COBBLE_OFF };
-            })
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> replaceWithCobblestone, (val) -> replaceWithCobblestone = val),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocal(
-                        replaceWithCobblestone ? "GT5U.gui.button.ore_drill_cobblestone_on"
-                            : "GT5U.gui.button.ore_drill_cobblestone_off")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-    }
-
-    private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
-        IGregTechTileEntity base = Objects.requireNonNull(
-            getBaseMetaTileEntity(),
-            "Oil drill base meta tile entity is null while creating range button");
-
-        return (ButtonWidget) new LockedWhileActiveButton(base, builder)
-            .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
-            .setPlayClickSound(true)
-            .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
-            .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(() -> chunkRadiusConfig, (val) -> chunkRadiusConfig = val),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.button.ore_drill_radius_1",
-                        formatNumber((long) chunkRadiusConfig << 4)),
-                    StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-    }
-
-    private ButtonWidget createWorkAreaToggleButton(ModularWindow.Builder builder) {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                if (showWorkArea) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
-                }
-                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
-            })
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, this::setShowWorkAreaFromSync),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocal(
-                        showWorkArea ? "GT5U.gui.button.work_area_preview_on"
-                            : "GT5U.gui.button.work_area_preview_off")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
     }
 }

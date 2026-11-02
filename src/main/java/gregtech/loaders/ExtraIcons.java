@@ -22,6 +22,15 @@ public class ExtraIcons {
     public static IIcon neutroniumLargeCellInner;
     public static IIcon circuitComponentOverlay;
 
+    // Modular Augments
+    public static IIcon nightVisionAugment;
+    public static IIcon holoInventoryAugment;
+    public static IIcon jetpackAugment;
+    public static IIcon creativeFlightAugment;
+    public static IIcon forceFieldAugment;
+    public static IIcon rebreatherAugment;
+    public static IIcon revealingAugment;
+
     @SubscribeEvent
     public void regIcons(TextureStitchEvent.Pre event) {
         TextureMap reg = event.map;
@@ -42,6 +51,20 @@ public class ExtraIcons {
             osmiumLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "osmium_inner"));
             neutroniumLargeCellInner = reg
                 .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
+            // Modular Augments
+            nightVisionAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_nightvision"));
+            rebreatherAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_rebreather"));
+            revealingAugment = reg.registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_revealing"));
+            holoInventoryAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_holoinventory"));
+            jetpackAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_jetpack"));
+            creativeFlightAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_creativeflight"));
+            forceFieldAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_forcefield"));
             circuitComponentOverlay = reg
                 .registerIcon(GregTech.getResourcePath("gt.circuitcomponent", "circuit_component_overlay"));
         }

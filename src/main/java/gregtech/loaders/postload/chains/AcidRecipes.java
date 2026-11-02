@@ -1,7 +1,12 @@
 package gregtech.loaders.postload.chains;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -11,10 +16,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.electrolyzerNonCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -47,7 +48,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.ThoriumElutionAdsorbent.getFluid(8000L))
             .itemOutputs(Materials.Chrome.getDust(4))
-            .outputChances(5500)
+            .outputChances(4500)
             .fluidOutputs(Materials.ImpureFranciumSolution.getFluid(4500L), Materials.Ammonia.getGas(3500L))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
@@ -73,8 +74,8 @@ public class AcidRecipes {
             .itemOutputs(Materials.FranciumHydroxide.getDust(3))
             .fluidInputs(Materials.Water.getFluid(1000L))
             .fluidOutputs(Materials.Hydrogen.getGas(1000L))
-            .duration(5 * SECONDS)
-            .eut(8)
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
         // Chlorosulfonic Acid Line
         GTValues.RA.stdBuilder()
@@ -82,7 +83,7 @@ public class AcidRecipes {
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4000))
             .fluidOutputs(Materials.PhosphorusChlorineMixture.getFluid(2000L), Materials.Water.getFluid(5000L))
             .duration(24 * SECONDS)
-            .eut(480)
+            .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Bismuthinit.get(OrePrefixes.crushed, 5))
@@ -118,7 +119,7 @@ public class AcidRecipes {
                 Materials.Naquadah.getDust(3))
             .fluidInputs(Materials.ActivatedWasteWater.getFluid(24000L))
             .itemOutputs(GregtechItemList.ChlorinationCatalyst.get(10))
-            .eut(7680)
+            .eut(TierEU.RECIPE_IV)
             .duration(150 * SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -137,27 +138,27 @@ public class AcidRecipes {
                 BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(3000),
                 Materials.UltraContaminatedGas.getGas(2000L),
                 WerkstoffLoader.Krypton.getFluidOrGas(1500))
-            .eut(1920)
+            .eut(TierEU.RECIPE_EV)
             .duration(20 * SECONDS)
             .addTo(distillationTowerRecipes);
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.ToxicAir.getGas(3000L), Materials.Ozone.getGas(10000L))
             .fluidOutputs(Materials.ToxicSlurry.getFluid(400L))
-            .eut(1920)
-            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .duration(5 * SECONDS)
             .addTo(vacuumFreezerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Quantium, 6))
             .fluidInputs(Materials.ToxicSlurry.getFluid(3000L))
             .fluidOutputs(Materials.DestabilizationSlurry.getFluid(2500L))
-            .eut(7680)
+            .eut(TierEU.RECIPE_IV)
             .duration(20 * SECONDS)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.STANDALONE.RUNITE.getCrushed(4))
             .fluidInputs(Materials.ToxicSlurry.getFluid(3000L))
             .fluidOutputs(Materials.DestabilizationSlurry.getFluid(3000L))
-            .eut(7680)
+            .eut(TierEU.RECIPE_IV)
             .duration(20 * SECONDS)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
@@ -166,7 +167,7 @@ public class AcidRecipes {
                 Materials.TerephthalicAcid.getFluid(2500L),
                 Materials.CarbonDioxide.getGas(2000L),
                 Materials.Ammonia.getGas(1800L))
-            .eut(480)
+            .eut(TierEU.RECIPE_HV)
             .duration(15 * SECONDS)
             .addTo(centrifugeNonCellRecipes);
         GTValues.RA.stdBuilder()
@@ -180,7 +181,7 @@ public class AcidRecipes {
                 Materials.HydrochloricAcid.getFluid(10000L),
                 Materials.PhosphoricAcid.getFluid(5000L),
                 Materials.AgitatingSlurry.getFluid(1000L))
-            .eut(7680)
+            .eut(TierEU.RECIPE_IV)
             .duration(5 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
         if (Mods.UniversalSingularities.isModLoaded()) {
@@ -188,9 +189,35 @@ public class AcidRecipes {
                 .itemInputs(getModItem(Mods.UniversalSingularities.ID, "universal.toxic.singularity", 0))
                 .fluidInputs(Materials.AgitatingSlurry.getFluid(10000L), Materials.Ozone.getGas(2000L))
                 .fluidOutputs(Materials.DestabilizationSlurry.getFluid(7000L))
-                .eut(1920)
+                .eut(TierEU.RECIPE_EV)
                 .duration(10 * SECONDS)
                 .addTo(multiblockChemicalReactorRecipes);
         }
+        if (Mods.TwilightForest.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getModItem(Mods.TwilightForest.ID, "tile.TFSapling", 4))
+                .fluidInputs(Materials.SulfuricAcid.getFluid(2000L))
+                .fluidOutputs(Materials.PoisonousSlurry.getFluid(2500L))
+                .eut(TierEU.RECIPE_EV)
+                .duration(10 * SECONDS)
+                .metadata(COIL_HEAT, 3050)
+                .addTo(blastFurnaceRecipes);
+        }
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.PoisonousSlurry.getFluid(7500L), new FluidStack(GTPPFluids.FermentationBase, 2500))
+            .fluidOutputs(Materials.ToxicSlurry.getFluid(1000L))
+            .eut(TierEU.RECIPE_IV)
+            .duration(4 * SECONDS)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
+            .addTo(chemicalPlantRecipes);
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                Materials.Benzene.getFluid(7000L),
+                new FluidStack(GTPPFluids.Formaldehyde, 4000),
+                Materials.Diphenylisophthalate.getFluid(1000))
+            .fluidOutputs(Materials.UltraContaminatedGas.getGas(12000L))
+            .eut(TierEU.RECIPE_EV)
+            .duration(8 * SECONDS)
+            .addTo(mixerNonCellRecipes);
     }
 }

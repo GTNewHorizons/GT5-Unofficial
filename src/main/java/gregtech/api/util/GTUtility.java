@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
@@ -13,6 +13,7 @@ import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -104,6 +105,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -115,6 +117,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -130,7 +133,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -141,10 +143,13 @@ import com.mojang.authlib.GameProfile;
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
@@ -189,6 +194,8 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2Potion;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
@@ -210,7 +217,6 @@ public class GTUtility {
      * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
     private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
-
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GTPlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
@@ -219,6 +225,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
+    private static Block DISTILLED_WATER_BLOCK;
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -233,6 +240,21 @@ public class GTUtility {
         return (int) Math.min(Integer.MAX_VALUE, number);
     }
 
+    /// Performs a fast X / Y * Z operation, without causing long overflows in the intermediate operations.
+    /// If the result is too large for a long, overflows will still occur.
+    /// Note that this method does not truncate like standard integer math - it tries to get as close to the exact
+    /// mathematical answer as it can. `7 / 3 * 3` equals 7, not 6.
+    public static long fastDivMul(long value, long div, long mult) {
+        if (div == mult) {
+            return mult == 0 ? 0 : value;
+        }
+
+        long integral = value / div * mult;
+        long decimal = value % div * mult / div;
+
+        return integral + decimal;
+    }
+
     public static Field getField(Object aObject, String aField) {
         Field rField = null;
         try {
@@ -240,7 +262,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return rField;
     }
@@ -251,7 +273,7 @@ public class GTUtility {
             field.setAccessible(true);
             return field;
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -266,7 +288,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField;
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -281,7 +303,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -322,7 +344,7 @@ public class GTUtility {
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -335,17 +357,17 @@ public class GTUtility {
                     try {
                         return tConstructor.newInstance(aParameters);
                     } catch (Exception e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                        if (D1) GT_FML_LOGGER.error(e);
                     }
                 }
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         }
         return aReplacementObject;
@@ -446,6 +468,14 @@ public class GTUtility {
         return ceilDiv(voltage, GTValues.V[tier]);
     }
 
+    public static double getExactAmperageForTier(long voltage, byte tier) {
+        if (GTValues.V[tier] <= 0) {
+            return 0.0D;
+        }
+
+        return (double) voltage / (double) GTValues.V[tier];
+    }
+
     /**
      * Rounds up partial voltage that exceeds tiered voltage, e.g. 4,096 -> 8,192(IV)
      */
@@ -454,6 +484,16 @@ public class GTUtility {
             return voltage;
         }
         return V[GTUtility.getTier(voltage)];
+    }
+
+    private static final String[] ROMAN_NUMERALS = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+
+    /**
+     * Roman numeral of a number from 1 to 10, used by machine families numbered that way. Anything outside that range
+     * is returned as digits.
+     */
+    public static String getRomanNumeral(int number) {
+        return number >= 1 && number <= ROMAN_NUMERALS.length ? ROMAN_NUMERALS[number - 1] : String.valueOf(number);
     }
 
     public static String getColoredTierNameFromVoltage(long voltage) {
@@ -465,6 +505,16 @@ public class GTUtility {
     }
 
     /**
+     * Applies secondary formatting to tooltip text
+     *
+     * @param tooltip the tooltip text
+     * @return formatted tooltip string
+     */
+    public static String getColoredSecondaryTooltip(String tooltip) {
+        return EnumChatFormatting.GRAY + tooltip + EnumChatFormatting.RESET;
+    }
+
+    /**
      * @return e.g. {@code " (LV)"}
      */
     @Nonnull
@@ -472,7 +522,9 @@ public class GTUtility {
         byte tier = getTier(voltage);
         tier = tier < 1 ? 1 : tier;
         String color = GTValues.TIER_COLORS[tier];
-        return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
+        return translateToLocalFormatted(
+            "GT5U.gui.text.tier_name_with_parentheses",
+            color + GTValues.VN[tier] + EnumChatFormatting.RESET);
     }
 
     public static String getForgeDirectionNameKey(ForgeDirection side) {
@@ -611,10 +663,10 @@ public class GTUtility {
                         .append(code);
                 } else if (code == 's') {
                     // Push, save the current format and don't emit to the output buffer
-                    stack.push(currentFormat);
+                    stack.push(currentFormat.isEmpty() ? "§r" : currentFormat);
                 } else if (code == 't') {
                     // Pop, restore the top format and don't emit to the output buffer
-                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    currentFormat = stack.isEmpty() ? "§r" : stack.pop();
                     out.append(currentFormat);
                 }
 
@@ -623,11 +675,56 @@ public class GTUtility {
             }
         }
 
+        // A format code at the very end has nothing left to format, so a pop that lands there only emits noise.
+        // Drop it, otherwise consumers that match whole lines (tooltip separators, for one) never see a clean line.
+        while (out.length() >= 2 && out.charAt(out.length() - 2) == FORMAT_ESCAPE) {
+            out.setLength(out.length() - 2);
+        }
+
         return out.toString();
     }
 
+    public static void addSeparatorIfNeeded(List<String> tooltip) {
+        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1)
+            .trim()
+            .isEmpty()) {
+            tooltip.add("");
+        }
+    }
+
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
@@ -710,6 +807,9 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+
     /**
      * Compacts an inventory like this:
      * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
@@ -720,8 +820,8 @@ public class GTUtility {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
-        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
-            GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = slotsSupplier.get();
+        slots.clear();
 
         for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
@@ -800,6 +900,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        slots.clear();
 
         return didSomething.booleanValue();
     }
@@ -973,6 +1075,11 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
+     * <p>
+     * Only one fluid type is moved per call. If the fluid the source offers first cannot be moved (dest refuses it or
+     * the filter rejects it), the other fluids reported by the source's tank info are tried in order. Multi-tank
+     * handlers are free to keep offering the same tank from an unspecified drain, so without this fallback a full or
+     * unwilling dest would stall the transfer even though the source holds fluids dest would accept.
      *
      * @param source    tank to drain from. method become noop if this is null
      * @param dest      tank to fill to. method become noop if this is null
@@ -990,7 +1097,36 @@ public class GTUtility {
         liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
             dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+            return;
         }
+
+        FluidTankInfo[] tanks = source.getTankInfo(drainSide);
+        if (tanks == null || tanks.length < 2) return;
+        for (int i = 0; i < tanks.length; i++) {
+            if (!isFluidCandidate(tanks[i]) || tanks[i].fluid.isFluidEqual(liquid) || isFluidInEarlierTank(tanks, i))
+                continue;
+            FluidStack request = tanks[i].fluid.copy();
+            request.amount = maxAmount;
+            FluidStack candidate = source.drain(drainSide, request, false);
+            if (candidate == null || candidate.amount <= 0) continue;
+            candidate = candidate.copy();
+            candidate.amount = dest.fill(fillSide, candidate, false);
+            if (candidate.amount > 0 && (allowMove == null || allowMove.test(candidate))) {
+                dest.fill(fillSide, source.drain(drainSide, candidate, true), true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isFluidCandidate(FluidTankInfo tank) {
+        return tank != null && tank.fluid != null && tank.fluid.amount > 0;
+    }
+
+    private static boolean isFluidInEarlierTank(FluidTankInfo[] tanks, int index) {
+        for (int j = 0; j < index; j++) {
+            if (isFluidCandidate(tanks[j]) && tanks[j].fluid.isFluidEqual(tanks[index].fluid)) return true;
+        }
+        return false;
     }
 
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
@@ -1172,7 +1308,7 @@ public class GTUtility {
             tmp = aFluid.getFluid()
                 .getID();
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
@@ -1194,15 +1330,13 @@ public class GTUtility {
     }
 
     public static FluidStack getFluidFromDisplayStack(ItemStack aDisplayStack) {
-        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()
-            || !aDisplayStack.hasTagCompound()) return null;
-        Fluid tFluid = FluidRegistry.getFluid(
+        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()) return null;
+        final NBTTagCompound tNBT = aDisplayStack.getTagCompound();
+        final Fluid tFluid = FluidRegistry.getFluid(
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
-        return new FluidStack(
-            tFluid,
-            (int) aDisplayStack.getTagCompound()
-                .getLong("mFluidDisplayAmount"));
+
+        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
@@ -1292,6 +1426,19 @@ public class GTUtility {
         return histogram;
     }
 
+    public static Object2LongOpenHashMap<FluidId> getFluidStackHistogram(Iterable<FluidStack> stacks) {
+        Object2LongOpenHashMap<FluidId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (FluidStack stack : stacks) {
+            if (stack == null || stack.getFluid() == null) continue;
+            histogram.addTo(FluidId.create(stack), stack.amount);
+        }
+
+        return histogram;
+    }
+
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
         return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
@@ -1375,7 +1522,7 @@ public class GTUtility {
         ItemData tOreName = GTOreDictUnificator.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
-                GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GT_FML_LOGGER.info("EmptyIC2Output!{}", aInput.getUnlocalizedName());
                 return false;
             }
         }
@@ -1415,19 +1562,19 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? GTUtility.translate(aTitle) : aTitle);
+        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? translateToLocal(aTitle) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
             String pageKeyOrText = aPages[i] == null ? "" : aPages[i];
-            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? translateToLocal(pageKeyOrText)
                 : pageKeyOrText;
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
-                else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
+                else GT_FML_LOGGER.error("WARNING: String for written Book too long! -> {}", aPages[i]);
             } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
+                GT_FML_LOGGER.error("WARNING: Too much Pages for written Book! -> {}", aTitle);
                 break;
             }
         }
@@ -1435,13 +1582,11 @@ public class GTUtility {
             new NBTTagString(StatCollector.translateToLocalFormatted("gt.book.credits", aAuthor, sBookCount)));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GTLog.out.println(
-            "GTMod: Added Book to Book List  -  Mapping: '" + aMapping
-                + "'  -  Name: '"
-                + aTitle
-                + "'  -  Author: '"
-                + aAuthor
-                + "'");
+        GT_FML_LOGGER.debug(
+            "GTMod: Added Book to Book List  -  Mapping: '{}'  -  Name: '{}'  -  Author: '{}'",
+            aMapping,
+            aTitle,
+            aAuthor);
         GregTechAPI.sBookList.put(aMapping, rStack);
         return copyOrNull(rStack);
     }
@@ -1672,6 +1817,10 @@ public class GTUtility {
 
     public static boolean isStackValid(ItemStack aStack) {
         return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
+    }
+
+    public static boolean isStackValid(FluidStack aStack) {
+        return (aStack != null) && aStack.getFluid() != null && aStack.amount >= 0;
     }
 
     @Deprecated
@@ -1911,7 +2060,7 @@ public class GTUtility {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+                GTLoggers.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
         return false;
@@ -2035,6 +2184,12 @@ public class GTUtility {
 
     @Contract("null -> null")
     public static ItemStack copyOrNull(ItemStack stack) {
+        if (isStackValid(stack)) return stack.copy();
+        return null;
+    }
+
+    @Contract("null -> null")
+    public static FluidStack copyOrNull(FluidStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -2169,14 +2324,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2188,7 +2343,7 @@ public class GTUtility {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 
@@ -2545,70 +2700,6 @@ public class GTUtility {
         }
     }
 
-    /**
-     * Translates a localization key to a localized string.
-     *
-     * @param key the localization key to translate
-     * @return the translated string
-     */
-    public static String translate(String key) {
-        return StatCollector.translateToLocal(key);
-    }
-
-    /**
-     * Translates a localization key to a localized string.
-     * If parameters are provided, they are substituted into the translated string via
-     * {@link StatCollector#translateToLocalFormatted(String, Object...)}.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return the translated string
-     */
-    public static String translate(String key, Object... parameters) {
-        return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
-            : StatCollector.translateToLocalFormatted(key, parameters);
-    }
-
-    /**
-     * Translates a localization key and splits the result into multiple lines.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return an array of lines from the translated string
-     * @see #translate(String, Object...)
-     */
-    public static String[] translateMultiline(String key, Object... parameters) {
-        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
-    }
-
-    /**
-     * Translates a localization key, splits the result into multiple lines,
-     * and adds each line directly into the provided collection.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * <p>
-     * This overload avoids allocating an intermediate array and is preferred
-     * when the caller already holds a {@link Collection}, such as the tooltip
-     * list in {@code addInformation}.
-     *
-     * <p>
-     * Note: the literal text {@code \n} cannot appear in tooltip lines,
-     * as it is used as the line separator.
-     *
-     * @param tooltip the collection to add translated lines into
-     * @param key     the localization key to translate
-     * @param args    optional substitution arguments for the translated string
-     * @see #translateMultiline(String, Object...)
-     */
-    public static void translateMultiline(Collection<String> tooltip, String key, Object... args) {
-        for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
-            tooltip.add(line);
-        }
-    }
-
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -2644,7 +2735,7 @@ public class GTUtility {
 
     public static String joinListToString(List<String> list) {
         StringBuilder result = new StringBuilder(32);
-        for (String s : list) result.append(result.length() == 0 ? s : '|' + s);
+        for (String s : list) result.append(result.isEmpty() ? s : '|' + s);
         return result.toString();
     }
 
@@ -3075,17 +3166,17 @@ public class GTUtility {
             do {
                 tPageText = new StringBuilder();
                 for (int i = tPage * aItemsPerPage; i < (tPage + 1) * aItemsPerPage && i < list.length; i += 1)
-                    tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
+                    tPageText.append((tPageText.isEmpty()) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() != 0) {
+                if (!tPageText.isEmpty()) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() != 0);
+            } while (!tPageText.isEmpty());
         }
 
         /**
@@ -3181,27 +3272,32 @@ public class GTUtility {
         List<ItemStack> inputs = new ArrayList<>();
 
         for (Object o : aRecipe) {
-            if (o instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o).copy();
-                inputs.add(toAdd);
-            } else if (o instanceof String) {
-                ItemStack stack = GTOreDictUnificator.get(o, 1);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres((String) o)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    inputs.add(toAdd);
+                }
+                case String s -> {
+                    ItemStack stack = GTOreDictUnificator.get(o, 1);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    inputs.add(copy);
                 }
-            } else if (o instanceof Item) inputs.add(new ItemStack((Item) o));
-            else if (o instanceof Block) inputs.add(new ItemStack((Block) o));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item));
+                case Block block -> inputs.add(new ItemStack(block));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
@@ -3249,32 +3345,37 @@ public class GTUtility {
 
         for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
             final int amount = o.getValue();
-            if (o.getKey() instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o.getKey()).copy();
-                toAdd.stackSize = amount;
-                inputs.add(toAdd);
-            } else if (o.getKey() instanceof String dictName) {
-                // Do not register tools dictName in inputs
-                if (ToolDictNames.contains(dictName)) continue;
-                ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o.getKey()) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    toAdd.stackSize = amount;
+                    inputs.add(toAdd);
+                }
+                case String dictName -> {
+                    // Do not register tools dictName in inputs
+                    if (ToolDictNames.contains(dictName)) continue;
+                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            copy.stackSize = amount;
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         copy.stackSize = amount;
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    copy.stackSize = amount;
-                    inputs.add(copy);
                 }
-            } else if (o.getKey() instanceof Item) inputs.add(new ItemStack((Item) o.getKey(), amount));
-            else if (o.getKey() instanceof Block) inputs.add(new ItemStack((Block) o.getKey(), amount));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item, amount));
+                case Block block -> inputs.add(new ItemStack(block, amount));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
@@ -3397,27 +3498,36 @@ public class GTUtility {
         return k > (double) l ? l + 1 : l;
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static int ceilDiv(int lhs, int rhs) {
-        return (lhs + rhs - 1) / rhs;
-    }
-
-    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
-    public static int ceilDiv2(int lhs, int rhs) {
-        int sign = Integer.signum(lhs) * Integer.signum(rhs);
-
-        if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
 
-        lhs = Math.abs(lhs);
-        rhs = Math.abs(rhs);
-
-        int unsigned = 1 + ((lhs - 1) / rhs);
-
-        return unsigned * sign;
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static long ceilDiv(long lhs, long rhs) {
-        return (lhs + rhs - 1) / rhs;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(int, int)] otherwise.
+    public static int ceilDiv2(int lhs, int rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(long, long)] otherwise.
+    public static long ceilDiv2(long lhs, long rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
     }
 
     /** @deprecated Use {@link Integer#signum(int)} instead.} */
@@ -3442,6 +3552,15 @@ public class GTUtility {
 
     public static int mod(int value, int divisor) {
         return ((value % divisor) + divisor) % divisor;
+    }
+
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
     }
 
     /**
@@ -3588,6 +3707,32 @@ public class GTUtility {
         }
 
         return result;
+    }
+
+    /// Multiplies two integers, clamping to the min/max for an int if the result overflows.
+    public static int mulSafe(int a, int b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
+    }
+
+    /// Multiplies two longs, clamping to the min/max for a long if the result overflows.
+    public static long mulSafe(long a, long b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Long.MAX_VALUE;
+            } else {
+                return Long.MIN_VALUE;
+            }
+        }
     }
 
     /**
@@ -4022,6 +4167,16 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
+
+        public boolean matches(FluidStack stack) {
+            if (fluid() != stack.getFluid()) return false;
+
+            return Objects.equals(nbt(), stack.tag);
+        }
+
+        public boolean matches(Fluid fluid) {
+            return fluid() == fluid;
+        }
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
@@ -4070,6 +4225,25 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
+     *
+     * @param ticks The number of ticks
+     * @return A localized string
+     */
+    public static String formatTime(int ticks) {
+        if (ticks < 20) {
+            return translateToLocalFormatted(
+                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(ticks));
+        } else {
+            double seconds = ticks / 20.0;
+            return translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
+        }
+    }
+
     public static String truncateText(String text, int limit) {
         if (limit < 0) limit = 1;
         if (text == null) {
@@ -4109,17 +4283,14 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
+            ret.append(" ");
             if (perSecond <= 1) {
-                ret.append(df.format(progressTime / amount));
-                ret.append("s/each");
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short_slow", df.format(progressTime / amount)));
             } else {
-                ret.append(formatShortenedLong((long) perSecond));
-                ret.append("/s");
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short", formatShortenedLong((long) perSecond)));
             }
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
@@ -4132,65 +4303,45 @@ public class GTUtility {
                 perTickText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perTick)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perTick)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perSecond)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perMinute)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perHour > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perHour)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perDay > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perDay)) : "")
                     + EnumChatFormatting.RESET);
         }
         return ret.toString();
@@ -4214,11 +4365,9 @@ public class GTUtility {
         Flip flip = extendedFacing.getFlip();
 
         float faceAngleDeg = switch (direction) {
-            case DOWN -> 90f;
-            case UP -> -90f;
+            case DOWN, WEST -> 90f;
+            case UP, EAST -> -90f;
             case SOUTH -> 180f;
-            case WEST -> 90f;
-            case EAST -> -90f;
             default -> 0f; // NORTH
         };
 
@@ -4261,5 +4410,102 @@ public class GTUtility {
         // Convert to degrees for consistency
         axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
         return axisAngle;
+    }
+
+    public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        boolean isFlowing = isFlowingWater(block, world, x, y, z);
+        boolean isAir = block == Blocks.air;
+        return (isFlowing || isAir);
+    }
+
+    public static boolean isCOFHWater(Block block) {
+        return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
+    }
+
+    private static boolean isDistilledWater(Block block) {
+        if (DISTILLED_WATER_BLOCK == null) {
+            Block b = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+            if (b != null) {
+                DISTILLED_WATER_BLOCK = b;
+            }
+        }
+        return DISTILLED_WATER_BLOCK != null
+            && Block.getIdFromBlock(block) == Block.getIdFromBlock(DISTILLED_WATER_BLOCK);
+    }
+
+    public static boolean isWater(Block block) {
+        return block == Blocks.flowing_water || block == Blocks.water || isDistilledWater(block) || isCOFHWater(block);
+    }
+
+    public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        if (isCOFHWater(block)) {
+            return world.getBlockMetadata(x, y, z) > 0;
+        }
+        return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
+    }
+
+    public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
+        return isWater(block) && !isFlowingWater(block, world, x, y, z);
+    }
+
+    public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
+        int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        FluidStack[] result = new FluidStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(amount, Integer.MAX_VALUE);
+            FluidStack tmp = fluid.copy();
+            tmp.amount = a;
+            result[i] = tmp;
+            amount -= a;
+        }
+        return result;
+    }
+
+    public static String getStackCustomName(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.stackTagCompound == null) return null;
+        NBTTagCompound subTag = stack.stackTagCompound.getCompoundTag("display");
+        if (subTag == null) return null;
+        if (!subTag.hasKey("Name", Constants.NBT.TAG_STRING)) return null;
+        return subTag.getString("Name");
+    }
+
+    public static List<ItemStack> mergeAndSortItemStacks(List<ItemStack> inputItems) {
+        List<ItemStack> result = new ArrayList<>();
+        Map<ItemId, Integer> itemCounts = new HashMap<>();
+
+        for (ItemStack item : inputItems) {
+            if (item == null) {
+                continue;
+            }
+
+            ItemId id = ItemId.create(item);
+
+            int currentCount = itemCounts.getOrDefault(id, 0);
+            itemCounts.put(id, currentCount + item.stackSize);
+        }
+
+        for (Map.Entry<ItemId, Integer> entry : itemCounts.entrySet()) {
+            ItemId id = entry.getKey();
+            int totalCount = entry.getValue();
+            int maxStack = id.getItemStack()
+                .getMaxStackSize();
+
+            while (totalCount > maxStack) {
+                ItemStack stack = id.getItemStack(maxStack);
+                result.add(stack);
+                totalCount -= maxStack;
+            }
+
+            if (totalCount > 0) {
+                ItemStack stack = id.getItemStack(totalCount);
+                result.add(stack);
+            }
+        }
+
+        result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
+
+        return result;
     }
 }

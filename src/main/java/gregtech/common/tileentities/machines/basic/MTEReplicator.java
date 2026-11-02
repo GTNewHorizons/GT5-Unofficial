@@ -4,11 +4,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -19,6 +25,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEReplicator extends MTEBasicMachine {
@@ -34,70 +41,99 @@ public class MTEReplicator extends MTEBasicMachine {
             1,
             1,
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE")),
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons
-                            .customOptional("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons
-                            .customOptional("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        Textures.BlockIcons
-                            .customOptional("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_TOP_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_GLOW"))
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE")),
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons
-                            .customOptional("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW"))
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR")),
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE")),
                 TextureFactory.builder()
                     .addIcon(
-                        Textures.BlockIcons.customOptional("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_GLOW"))
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_TOP_REPLICATOR")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_GLOW"))
                     .glow()
                     .build()));
     }
@@ -139,4 +175,14 @@ public class MTEReplicator extends MTEBasicMachine {
         return SoundResource.GTCEU_LOOP_REPLICATOR;
     }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

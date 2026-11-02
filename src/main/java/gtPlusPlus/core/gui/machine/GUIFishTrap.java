@@ -32,18 +32,4 @@ public class GUIFishTrap extends GuiContainer {
         final int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
     }
-
-    // This method is called when the Gui is first called!
-    @Override
-    public void initGui() {
-        // You have to add this line for the Gui to function properly!
-        super.initGui();
-
-        // The parameters of GuiButton are(id, x, y, width, height, text);
-        // this.buttonList.add(new GuiButton( 1, 367, 132, 18, 18, "X"));
-        // this.buttonList.add(new GuiButton( 2, 385, 132, 18, 18, "Y"));
-        // NOTE: the id always has to be different or else it might get called twice or never!
-
-        // Add any other buttons here too!
-    }
 }

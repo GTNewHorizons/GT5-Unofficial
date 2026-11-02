@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -23,7 +23,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
 
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -42,9 +42,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -54,6 +52,8 @@ import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.oredict.OreDictRegistrationHandler;
+import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -62,22 +62,24 @@ import ic2.api.recipe.RecipeOutput;
 @SuppressWarnings("deprecation")
 public class GTPostLoad {
 
-    public static void activateOreDictHandler() {
+    public static void processOreDictRegistrations() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.proxy.activateOreDictHandler();
+
+        OreDictRegistrationHandler.processBufferedRegistrations();
+        OreDictUnificationOverrides.finalizeUnification();
 
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER
-            .info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
-        GTLog.out.println(
-            "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GTLog.out.println(
-            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sVanillaRecipeList_warntOutput.toString());
-        GTLog.out.println(
-            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.debug(
+            "GTMod: List of Lists of Tool Recipes: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sVanillaRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
     }
 
     public static void removeIc2Recipes(Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList,
@@ -102,7 +104,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void registerFluidCannerRecipes() {
@@ -121,6 +123,13 @@ public class GTPostLoad {
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(cannerRecipes);
+            if (GTUtility.areFluidsEqual(WerkstoffLoader.Ruthenium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(WerkstoffLoader.Rhodium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), tData.fluid)) {
+                continue;
+            }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -134,7 +143,7 @@ public class GTPostLoad {
     }
 
     public static void addFakeRecipes() {
-        GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
+        GT_FML_LOGGER.debug("GTMod: Adding Fake Recipes for NEI");
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
@@ -315,15 +324,14 @@ public class GTPostLoad {
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.top"))
+            b -> b.recipeDescription("gt.recipe.rockbreaker.fakeitem.top")
                 .sideBlocks(Blocks.water)
                 .topBlock(Blocks.lava)
                 .outputItem(new ItemStack(Blocks.stone, 1))
                 .duration(16 * TICKS));
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.side"))
-                .sideBlocks(Blocks.water, Blocks.lava)
+            b -> b.sideBlocks(Blocks.water, Blocks.lava)
                 .outputItem(new ItemStack(Blocks.cobblestone, 1))
                 .duration(16 * TICKS));
 
@@ -367,7 +375,7 @@ public class GTPostLoad {
             return;
         }
 
-        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
+        GT_FML_LOGGER.debug("GTMod: Updating Vanilla Wooden Tools");
         Items.wooden_sword.setMaxDamage(64);
         Items.wooden_pickaxe.setMaxDamage(64);
         Items.wooden_shovel.setMaxDamage(64);
@@ -378,25 +386,22 @@ public class GTPostLoad {
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
+        GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
         Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
             .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
-        if (BetterLoadingScreen.isModLoaded()) {
-            GTCLSCompat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
-            GTCLSCompat.pushToDisplayProgress();
-        } else {
-            replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(m.mDefaultLocalName);
-                doActualRegistration(m);
-            });
+
+        for (Materials material : replaceVanillaItemsSet) {
+            progressBar.step(material.getLocalizedName());
+            doActualRegistration(material);
         }
+
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void doActualRegistration(Materials m) {

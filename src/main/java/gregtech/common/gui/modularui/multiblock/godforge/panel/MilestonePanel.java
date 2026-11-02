@@ -69,7 +69,7 @@ public class MilestonePanel {
     private static ParentWidget<?> createMilestone(Milestones milestone, SyncHypervisor hypervisor) {
         IPanelHandler individualPanel = Panels.INDIVIDUAL_MILESTONE.getFrom(Panels.MILESTONE, hypervisor);
 
-        EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
+        EnumSyncValue<Milestones, ?> milestoneSyncer = SyncValues.MILESTONE_CLICKED
             .lookupFrom(Panels.MILESTONE, hypervisor);
         FloatSyncValue progressSyncer = milestone.getProgressSyncer()
             .lookupFrom(Panels.MILESTONE, hypervisor);
@@ -113,14 +113,14 @@ public class MilestonePanel {
                 .texture(
                     GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND,
                     milestone.getProgressBarMainOverlay(),
-                    -1)
+                    130)
                 .direction(Direction.RIGHT)
                 .verticalCenter()
                 .widthRel(1.0f)
                 .height(MILESTONE_PROGRESS_BAR_H));
         parent.child(
             new ProgressWidget().value(new DoubleSyncValue(invertedProgressSyncer::getDoubleValue))
-                .texture(GTGuiTextures.TRANSPARENT, milestone.getProgressBarInvertedOverlay(), -1)
+                .texture(GTGuiTextures.TRANSPARENT, milestone.getProgressBarInvertedOverlay(), 130)
                 .direction(Direction.LEFT)
                 .verticalCenter()
                 .widthRel(1.0f)

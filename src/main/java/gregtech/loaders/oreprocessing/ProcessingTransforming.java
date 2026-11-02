@@ -76,7 +76,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     }
                 }
             }
-            case "WroughtIron" -> {
+            case "CastIron" -> {
                 // Chemical bath recipes
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {

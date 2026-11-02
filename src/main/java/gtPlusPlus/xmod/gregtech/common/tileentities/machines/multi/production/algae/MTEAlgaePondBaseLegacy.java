@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -42,16 +43,19 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -105,12 +109,12 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
-            .addCasingInfoExactly("Sterile Farm Casings", 64, false)
+            .addCasingInfoMin("Machine Casing", MINIMUM_CASINGS, true)
+            .addCasingInfoExactly("Sterile Farm Casing", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.TIER_CASING)
+            .addSubChannel(GTStructureChannels.TIER_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -165,19 +169,25 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         tier = -1;
         checkMeta = -1;
 
-        if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
-            && checkMeta > 0
-            && !mInputHatches.isEmpty()
-            && !mOutputBusses.isEmpty()) {
-            tier = checkMeta - 1;
-            return true;
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+
+        checkCasingMin(errors, mCasing, MINIMUM_CASINGS);
+        if (checkMeta <= 0) {
+            // Somehow the player manage to provide 0 machine casing for tier identification.
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.unknown_machine_casing_tier"));
         }
-        return false;
+
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+
+        if (errors.isEmpty()) {
+            tier = checkMeta - 1;
+        }
     }
 
     @Override
@@ -291,6 +301,11 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         // Silly Client Syncing
@@ -317,7 +332,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setEuModifier(0F)
+        }.setEuModifier(0.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -340,7 +355,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             }
             return 0;
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
             return -1;
         }
     }
@@ -351,7 +366,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
     }
 
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.algaePondRecipes;
+        return RecipeMaps.algaePondRecipes;
     }
 
     @Override
@@ -379,7 +394,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             inputs = GTValues.emptyItemStackArray;
         }
 
-        for (GTRecipe recipe : GTPPRecipeMaps.algaePondRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.algaePondRecipes.getAllRecipes()) {
             // We assume the unicity of tiered recipes
             if (recipe.mSpecialValue == tier) {
                 matchingRecipe = recipe.copyShallow();

@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -48,7 +48,9 @@ public class BaseItemComponent extends Item {
     public short[] extraData;
 
     @SideOnly(Side.CLIENT)
-    protected IIconContainer iconContainer;
+    protected IIcon iconBase;
+    @SideOnly(Side.CLIENT)
+    protected IIcon iconOverlay;
 
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
@@ -80,8 +82,7 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        this.componentMaterial = aTempMaterial;
+        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -179,14 +180,14 @@ public class BaseItemComponent extends Item {
                         list.add(
                             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                                 "GTPP.tooltip.material.radioactivity",
-                                this.componentMaterial.vRadiationLevel));
+                                this.componentMaterial.radiationLevel));
                     } else {
                         list.add(
                             EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -197,7 +198,7 @@ public class BaseItemComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }
@@ -236,22 +237,8 @@ public class BaseItemComponent extends Item {
             if (this.componentMaterial.getRGBA()[3] <= 1) {
                 return this.componentColour;
             } else {
-                // Mild Glow Effect
-                if (this.componentMaterial.getRGBA()[3] == 2) {
-                    // 4 sec cycle, 200 control point. 20ms interval.
-                    int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
-                    int value = currentFrame < 50 ? currentFrame + 1
-                        : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
-                    return Utils.rgbtoHexValue(
-                        Math.min(255, Math.max(componentMaterial.getRGBA()[0] + value, 0)),
-                        Math.min(255, Math.max(componentMaterial.getRGBA()[1] + value, 0)),
-                        Math.min(255, Math.max(componentMaterial.getRGBA()[2] + value, 0)));
-                }
-
-                // Rainbow Hue Cycle
-                else if (this.componentMaterial.getRGBA()[3] == 3) {
-                    return Color.HSBtoRGB((float) (System.nanoTime() % 8_000_000_000L) / 8_000_000_000f, 1, 1);
-                }
+                // Animated materials ship baked animated textures; render them untinted.
+                return Utils.rgbtoHexValue(255, 255, 255);
             }
 
         } catch (Exception ignored) {}
@@ -262,9 +249,9 @@ public class BaseItemComponent extends Item {
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.iconContainer.getIcon();
+            return iconBase;
         }
-        return this.iconContainer.getOverlayIcon();
+        return iconOverlay;
     }
 
     @Override
@@ -278,7 +265,13 @@ public class BaseItemComponent extends Item {
             }
         }
         metType = (metType == null ? "METALLIC" : metType);
-        iconContainer = Textures.ItemIcons.textureSet(metType, "/" + this.componentType.getOreDictName());
+        IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
+            Mods.GregTech.resourceDomain,
+            metType,
+            "/" + this.componentType.getOreDictName(),
+            i);
+        iconBase = container.getIcon();
+        iconOverlay = container.getOverlayIcon();
     }
 
     public enum ComponentTypes {

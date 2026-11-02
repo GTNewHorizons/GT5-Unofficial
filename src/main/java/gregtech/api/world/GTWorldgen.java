@@ -42,11 +42,6 @@ public abstract class GTWorldgen {
         return false;
     }
 
-    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
-        int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        return NO_OVERLAP_AIR_BLOCK; // This is for the empty Orevein
-    }
-
     /**
      *
      * @param aDimName              The Dimension Name

@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IBlockOnWalkOver;
+import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.util.GTOreDictUnificator;
 
-public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkOver {
+public class BlockConcretes extends BlockStonesAbstract implements IUpdatePlayerMovement {
 
     public BlockConcretes() {
         super(ItemConcretes.class, "gt.blockconcretes");
@@ -48,15 +48,10 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
     }
 
     // Increase horizontal movement speed. Should be the same as Chisel's concrete (0.05 + chisel.cfg value).
+    // Only called by the client
     @Override
-    public void onWalkOver(EntityLivingBase entity, World world, int x, int y, int z) {
-        if (entity.motionX == 0 && entity.motionZ == 0) return;
-        if (entity.isInWater()) return;
-        if (entity.isWet()) return;
-        if (entity.isSneaking()) return;
-
-        final double tSpeed = 1.4;
-        entity.motionX *= tSpeed;
-        entity.motionZ *= tSpeed;
+    public void updatePlayerMovement(EntityLivingBase player) {
+        player.motionX *= 1.4;
+        player.motionZ *= 1.4;
     }
 }

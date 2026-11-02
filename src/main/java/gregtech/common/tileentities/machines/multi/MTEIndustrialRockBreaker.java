@@ -15,13 +15,16 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,27 +33,32 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTEIndustrialRockBreaker>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -79,8 +87,8 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
                 .casingIndex(Casings.ThermalProcessingCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.ThermalProcessingCasing.asElement())))
-        .addElement('D', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1)))
-        .addElement('E', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('D', ofChain(ofBlockAnyMeta(Blocks.lava, 1), isAir()))
+        .addElement('E', ofChain(ofAnyWater(false), isAir()))
         .build();
 
     public MTEIndustrialRockBreaker(final int aID, final String aName, final String aNameRegional) {
@@ -98,26 +106,24 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Rock Breaker")
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.rock_breaker"))
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
-            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-rock-breaker"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Thermal Processing Casing", 50, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 36, false)
-            .addCasingInfoExactly("Any Tiered Glass", 12, false)
-            .addInputBus("Any Thermal Processing Casing", 1)
-            .addInputHatch("Any Thermal Processing Casing", 1)
-            .addOutputBus("Any Thermal Processing Casing", 1)
-            .addEnergyHatch("Any Thermal Processing Casing", 1)
-            .addMaintenanceHatch("Any Thermal Processing Casing", 1)
-            .addMufflerHatch("Any Thermal Processing Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("50-55", Casings.ThermalProcessingCasing.getLocalizedName(), false)
+            .addCasing("36", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.water_and_lava_free"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -148,53 +154,55 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        boolean valid = checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 50
-            && checkHatch();
-        if (valid) needsFluidRefill = true;
-        return valid;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsFluidRefill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E');
+            return;
+        }
+        checkCasingMin(errors, casingAmount, 50);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasOutputBus(errors);
+        if (errors.isEmpty()) needsFluidRefill = true;
     }
 
-    public boolean checkHatch() {
-        return !mEnergyHatches.isEmpty() && !mMufflerHatches.isEmpty() && !mOutputBusses.isEmpty();
-    }
-
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialRockBreakerActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialRockBreakerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialRockBreaker)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialRockBreakerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.ThermalProcessingCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialRockBreaker,
+            TexturesGtBlock.oMCAIndustrialRockBreakerGlow,
+            TexturesGtBlock.oMCAIndustrialRockBreakerActive,
+            TexturesGtBlock.oMCAIndustrialRockBreakerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.ThermalProcessingCasing.getCasingTexture();
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.multiblockRockBreakerRecipes;
+        return RecipeMaps.multiblockRockBreakerRecipes;
     }
 
     @Override
@@ -204,8 +212,8 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1 / 3.0)
-            .setEuModifier(0.75)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 3.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
 
     }
@@ -221,19 +229,13 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
     }
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 
@@ -250,7 +252,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && mMachine && aTick % 20 == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && needsFluidRefill && aTick % 20 == 0) {
             World world = aBaseMetaTileEntity.getWorld();
             boolean allFilled = true;
             int controllerX = aBaseMetaTileEntity.getXCoord();
@@ -272,31 +274,22 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
                         int wx = controllerX + xyz[0];
                         int wy = controllerY + xyz[1];
                         int wz = controllerZ + xyz[2];
-
-                        Block existing = world.getBlock(wx, wy, wz);
-                        boolean isReplaceable;
+                        Block block = world.getBlock(wx, wy, wz);
 
                         if (c == 'E') {
-                            boolean isCOFHCore = Mods.COFHCore.isModLoaded()
-                                && (existing instanceof BlockWater || existing instanceof BlockTickingWater);
-                            boolean isFlowing = existing == Blocks.flowing_water;
-                            boolean isWater = isFlowing || existing == Blocks.water || isCOFHCore;
-                            isFlowing = isFlowing || (isWater && world.getBlockMetadata(wx, wy, wz) > 0);
-                            isReplaceable = isFlowing || existing == Blocks.air;
-
-                            if (existing != Blocks.water && !isCOFHCore) {
-                                if (isReplaceable) {
-                                    world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                                } else allFilled = false;
+                            if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
+                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
+                            } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
+                                allFilled = false;
                             }
                         } else {
-                            isReplaceable = existing == Blocks.air || existing == Blocks.flowing_lava
-                                || existing.isReplaceable(world, wx, wy, wz);
-
-                            if (existing != Blocks.lava) {
-                                if (isReplaceable) {
+                            if (block != Blocks.lava) {
+                                if (block == Blocks.air || block == Blocks.flowing_lava
+                                    || block.isReplaceable(world, wx, wy, wz)) {
                                     world.setBlock(wx, wy, wz, Blocks.lava, 0, 3);
-                                } else allFilled = false;
+                                } else {
+                                    allFilled = false;
+                                }
                             }
                         }
                     }
@@ -304,6 +297,5 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             }
             if (allFilled) needsFluidRefill = false;
         }
-
     }
 }

@@ -2,8 +2,6 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.NW;
-import static gregtech.api.util.GTLanguageManager.FACES;
-import static gregtech.api.util.GTLanguageManager.getTranslation;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
@@ -74,10 +72,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
+    // Whether block update is needed because of redstone changes.
+    protected boolean mNeedsBlockUpdate = true;
+    // The actual redstone signal per side, direct modifiers of this are required to issue block update for change.
+    // Use `setOutputRedstoneSignal` to modify the redstone output and issue block update on the server if changed.
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    protected boolean mRedstone = false;
-    protected byte mStrongRedstone = 0;
-    protected byte oldStrongRedstone = 0;
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    protected byte oldRedstoneData = 63;
+    // Use `setStrongRedstone` to automatically send block update on change
+    private byte mStrongRedstone = 0;
+    // To only issue update to sides that has strong redstone set either previously or currently
+    private byte oldStrongRedstone = 0;
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -92,7 +97,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (!isDrop) {
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setBoolean("mRedstone", mRedstone);
         }
     }
 
@@ -112,7 +116,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
-        mRedstone = aNBT.getBoolean("mRedstone");
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
         if (aNBT.hasKey("mRedstoneSided")) {
@@ -148,6 +151,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected boolean doCoverThings() {
         byte validCoversMask = this.validCoversMask;
         if (validCoversMask == 0) return true;
+
+        sendCoverDataIfNeeded();
 
         for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
             if (((validCoversMask >>> i) & 1) == 0) continue;
@@ -200,7 +205,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    public abstract void issueClientUpdate();
+    public abstract void issueTileUpdate();
+
+    public abstract void scheduleTexturePacket();
 
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
@@ -250,6 +257,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
         issueCoverUpdate(side);
+        issueTileUpdate();
         issueBlockUpdate();
     }
 
@@ -328,6 +336,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    /**
+     * Used on client side, no need to issue block update
+     */
     protected void setRedstoneOutput(int packedRedstoneValue) {
         mSidedRedstone[0] = (byte) ((packedRedstoneValue & 1) == 1 ? 15 : 0);
         mSidedRedstone[1] = (byte) ((packedRedstoneValue & 2) == 2 ? 15 : 0);
@@ -347,31 +358,87 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return redstone;
     }
 
+    public final byte getStrongRedstone() {
+        return mStrongRedstone;
+    }
+
+    /**
+     * Sets a new value for strong redstone. If the value is changed, block update is issued automatically.
+     */
+    public final void setStrongRedstone(byte newStrongRedstone) {
+        if (isClientSide()) return;
+        if (newStrongRedstone != mStrongRedstone) {
+            mStrongRedstone = newStrongRedstone;
+            markDirty();
+            issueBlockUpdate();
+        }
+    }
+
+    /**
+     * Toggles the specified side for strong redstone
+     *
+     * @return whether the side is emitting strong redstone
+     */
+    public final boolean toggleStrongRedstone(ForgeDirection side) {
+        mStrongRedstone ^= (byte) side.flag;
+        markDirty();
+        issueBlockUpdate();
+        return (mStrongRedstone & side.flag) != 0;
+    }
+
+    @Override
+    public void issueBlockUpdate() {
+        mNeedsBlockUpdate = true;
+        if (isTickDisabled()) {
+            doBlockUpdateServer();
+        }
+    }
+
+    public final void doBlockUpdateServer() {
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
+    }
+
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        if (isClientSide()) return;
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
         final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
         if (side == ForgeDirection.UNKNOWN) return;
 
         final int ordinalSide = side.ordinal();
-        if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
+        if (mSidedRedstone[ordinalSide] != cappedStrength) {
             mSidedRedstone[ordinalSide] = cappedStrength;
+            handleSidedRedstoneChangeServer();
             issueBlockUpdate();
-            issueClientUpdate();
+            scheduleTexturePacket();
         }
     }
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= (byte) side.flag;
+        setStrongRedstone((byte) (mStrongRedstone | side.flag));
         setOutputRedstoneSignal(side, strength);
     }
 
     @Override
     public void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {
         if (isStrong) {
-            mStrongRedstone |= (byte) side.flag;
+            setStrongRedstone((byte) (mStrongRedstone | side.flag));
         } else {
-            mStrongRedstone &= ~(byte) side.flag;
+            setStrongRedstone((byte) (mStrongRedstone & (~side.flag)));
         }
         setOutputRedstoneSignal(side, mSidedRedstone[side.ordinal()]);
     }
@@ -419,12 +486,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return side != ForgeDirection.UNKNOWN && (mStrongRedstone & (1 << ordinalSide)) != 0
             ? (byte) (mSidedRedstone[ordinalSide] & 15)
             : 0;
-    }
-
-    @Override
-    public void setGenericRedstoneOutput(boolean aOnOff) {
-        mRedstone = aOnOff;
-        issueClientUpdate();
     }
 
     @Override
@@ -526,6 +587,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    // Indexed by ForgeDirection ordinal
+    private static final String[] FACES = { "gt.lang.face.bottom", "gt.lang.face.top", "gt.lang.face.left",
+        "gt.lang.face.front", "gt.lang.face.right", "gt.lang.face.back", "gt.lang.face.none" };
+
     /**
      * Add installed cover information, generally called from ItemBlock
      *
@@ -547,7 +612,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        getTranslation(FACES[sideValue]),
+                        StatCollector.translateToLocal(FACES[sideValue]),
                         coverStack.getDisplayName()));
             }
         }

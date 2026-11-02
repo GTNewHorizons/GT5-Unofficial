@@ -20,6 +20,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
@@ -196,7 +197,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
@@ -247,7 +248,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                     output = FluidRegistry.getFluidStack("molten." + outputName, totalFlow);
                 }
                 if (output != null) {
-                    addOutput(output);
+                    addOutputPartial(output);
                 }
             }
             if (totalFlow <= 0) return 0;

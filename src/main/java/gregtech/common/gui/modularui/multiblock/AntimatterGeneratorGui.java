@@ -6,7 +6,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -47,7 +46,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
         syncManager.syncValue("canUseWireless", new BooleanSyncValue(multiblock::canUseWireless));
         syncManager.syncValue(
             "wirelessMode",
-            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled));
+            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled).allowC2S());
         syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
         syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
         syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));
@@ -62,30 +61,21 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.0")
-                            + ": "
-                            + EnumChatFormatting.BLUE
-                            + standardFormat.format(energyProducedSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " EU")))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.0.s",
+                            standardFormat.format(energyProducedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.1.s",
+                            numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")));
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.2.s",
+                            numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))))));
     }
 
     @Override

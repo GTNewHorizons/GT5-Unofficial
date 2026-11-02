@@ -42,9 +42,9 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         list.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "gtpp.tooltip.buffer_core.key_crafting_component",

@@ -51,7 +51,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                 Flow.row()
                     .child(
                         new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> base.mTargetX, i -> base.mTargetX = i))
+                            .value(new IntSyncValue(() -> base.mTargetX, i -> base.mTargetX = i).allowC2S())
                             .size(77, 12)
                             .margin(2, 0))
                     .child(
@@ -62,7 +62,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                 Flow.row()
                     .child(
                         new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> base.mTargetY, i -> base.mTargetY = i))
+                            .value(new IntSyncValue(() -> base.mTargetY, i -> base.mTargetY = i).allowC2S())
                             .size(77, 12)
                             .margin(2, 0))
                     .child(
@@ -73,7 +73,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                 Flow.row()
                     .child(
                         new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> base.mTargetZ, i -> base.mTargetZ = i))
+                            .value(new IntSyncValue(() -> base.mTargetZ, i -> base.mTargetZ = i).allowC2S())
                             .size(77, 12)
                             .margin(2, 0))
                     .child(
@@ -84,7 +84,7 @@ public class MTEMicrowaveEnergyTransmitterGui {
                 Flow.row()
                     .child(
                         new TextFieldWidget().setFormatAsInteger(true)
-                            .value(new IntSyncValue(() -> base.mTargetD, i -> base.mTargetD = i))
+                            .value(new IntSyncValue(() -> base.mTargetD, i -> base.mTargetD = i).allowC2S())
                             .size(77, 12)
                             .margin(2, 0))
                     .child(

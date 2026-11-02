@@ -111,8 +111,8 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 255)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 255)
                 // spotless:off
                 .value(new IntValue.Dynamic(
                     () ->
@@ -213,7 +213,7 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, maxValue))
+            new TextFieldWidget().numbersDouble(raw -> MathHelper.clamp_double(raw, 0, maxValue))
                 // spotless:off
                 .value(new FloatValue.Dynamic(
                     () ->
@@ -267,7 +267,7 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
+            new TextFieldWidget().numbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
                 .value(new FloatValue.Dynamic(colorData::getGamma, colorData::setGamma))
                 .size(32, 16)
                 .marginLeft(2)

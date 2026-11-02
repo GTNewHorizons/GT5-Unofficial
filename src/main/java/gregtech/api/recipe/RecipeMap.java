@@ -2,10 +2,12 @@ package gregtech.api.recipe;
 
 import static gregtech.api.util.GTRecipeBuilder.ENABLE_COLLISION_CHECK;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -84,6 +87,28 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     @Unmodifiable
     public Collection<GTRecipe> getAllRecipes() {
         return backend.getAllRecipes();
+    }
+
+    private Set<GTUtility.ItemId> nonConsumedInputItemIds = null;
+    private int nonConsumedInputItemIdsRecipeCount = -1;
+
+    /**
+     * @return Item IDs (ignoring stack size) of every non-consumed input item (i.e. recipe input with stackSize == 0,
+     *         like a mold) across all recipes of this recipemap. Used to detect items like molds sitting in an input
+     *         bus so they can be shown in the AE2 terminal interface name.
+     */
+    public Set<GTUtility.ItemId> getNonConsumedInputItemIds() {
+        // ponytail: recomputes on recipe count change rather than tracking individual additions/removals
+        if (nonConsumedInputItemIds == null || nonConsumedInputItemIdsRecipeCount != getAllRecipes().size()) {
+            nonConsumedInputItemIdsRecipeCount = getAllRecipes().size();
+            nonConsumedInputItemIds = getAllRecipes().stream()
+                .filter(recipe -> recipe.mInputs != null)
+                .flatMap(recipe -> Arrays.stream(recipe.mInputs))
+                .filter(stack -> stack != null && stack.stackSize == 0)
+                .map(GTUtility.ItemId::create)
+                .collect(Collectors.toSet());
+        }
+        return nonConsumedInputItemIds;
     }
 
     /**
@@ -151,7 +176,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     public GTRecipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
         @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
-        boolean hidden) {
+        @Nullable FluidStack[][] aFluidAlt, boolean hidden) {
         return addFakeRecipe(
             aCheckForCollisions,
             new GTRecipe.GTRecipe_WithAlt(
@@ -168,7 +193,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
                 aDuration,
                 aEUt,
                 aSpecialValue,
-                aAlt),
+                aAlt,
+                aFluidAlt),
             hidden);
     }
 

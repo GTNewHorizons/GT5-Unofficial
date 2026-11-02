@@ -99,7 +99,7 @@ public class ToolboxInventoryGui {
         final int genericSlotSize = ToolboxSlot.GENERIC_SLOTS.size();
         final SlotGroup toolGroup = new SlotGroup(
             "gt5:toolbox:tools",
-            ToolboxSlot.values().length - genericSlotSize,
+            ToolboxSlot.VALUES.length - genericSlotSize,
             0,
             true);
         final SlotGroup genericGroup = new SlotGroup("gt5:toolbox:generic", genericSlotSize, 100, true);
@@ -107,7 +107,7 @@ public class ToolboxInventoryGui {
         syncManager.registerSlotGroup(toolGroup);
         syncManager.registerSlotGroup(genericGroup);
 
-        for (final ToolboxSlot slot : ToolboxSlot.values()) {
+        for (final ToolboxSlot slot : ToolboxSlot.VALUES) {
 
             final ItemSlot itemSlot = new CustomItemSlot(() -> itemHandler, slot).slot(
                 new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(slot.isGeneric() ? genericGroup : toolGroup))
@@ -123,7 +123,7 @@ public class ToolboxInventoryGui {
 
         slotGroupWidget.size(
             ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE + GAP_SIZE,
-            (int) (Math.ceil((double) ToolboxSlot.values().length / (double) ToolboxSlot.ROW_WIDTH)) * SLOT_DRAW_SIZE);
+            (int) (Math.ceil((double) ToolboxSlot.VALUES.length / (double) ToolboxSlot.ROW_WIDTH)) * SLOT_DRAW_SIZE);
         column.child(slotGroupWidget);
 
         panel.child(column);

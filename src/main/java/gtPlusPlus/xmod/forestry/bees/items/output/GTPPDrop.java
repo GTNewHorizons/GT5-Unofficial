@@ -44,7 +44,7 @@ public class GTPPDrop extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPDropType type : GTPPDropType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));
@@ -102,12 +102,12 @@ public class GTPPDrop extends Item {
         ItemStack tDrop;
         for (GTPPDropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
-            FluidStack aOutput = new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]);
+            FluidStack aOutput = new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.tier]);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .fluidOutputs(aOutput)
-                .duration(aDrop.mMaterial.vTier * 30 * SECONDS)
-                .eut(aDrop.mMaterial.vVoltageMultiplier)
+                .duration(aDrop.mMaterial.tier * 30 * SECONDS)
+                .eut(aDrop.mMaterial.voltageMultiplier)
                 .addTo(fluidExtractionRecipes);
 
         }

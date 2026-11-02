@@ -3,6 +3,7 @@ package tectech.thing.item;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -15,13 +16,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.base.Strings;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,9 +40,9 @@ import tectech.Reference;
 import tectech.TecTech;
 import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -65,21 +70,21 @@ public final class ItemParametrizerMemoryCard extends Item {
         IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
         if (metaTE instanceof TTMultiblockBase controller && controller instanceof IParametrized parametrized) {
             NBTTagCompound tNBT = ItemStackNBT.get(aStack);
-            List<Parameter<?>> parameterList = parametrized.getParameters();
+            List<Parameter<?, ?>> parameterList = parametrized.getParameters();
 
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
-                if (!hasIdenticalParameterList(parameterList, tNBT)) {
-                    String reason;
+                if (!hasIdenticalParameterList("paramList", parameterList, tNBT)) {
+                    IChatComponent reason;
                     if (!tNBT.hasKey("controller")) {
-                        reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
+                        reason = new ChatComponentTranslation("item.em.parametrizerMemoryCard.noConfig");
                     } else {
-                        reason = translateToLocalFormatted(
+                        reason = new ChatComponentTranslation(
                             "item.em.parametrizerMemoryCard.controllerMismatch",
                             tNBT.getString("controller"),
-                            controller.getLocalName());
+                            new ChatComponentTranslation(controller.getLocalNameKey()));
                     }
-                    GTUtility.sendChatToPlayer(aPlayer, reason);
+                    GTUtility.sendChatComp(aPlayer, reason);
 
                     return true;
                 }
@@ -100,7 +105,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 // read from controller
                 NBTTagCompound newTag = new NBTTagCompound();
                 NBTTagList tagList = new NBTTagList();
-                for (Parameter<?> parameter : parameterList) {
+                for (Parameter<?, ?> parameter : parameterList) {
                     NBTTagCompound parameterTag = new NBTTagCompound();
                     parameter.saveToParameterCard(parameterTag);
                     tagList.appendTag(parameterTag);
@@ -122,17 +127,20 @@ public final class ItemParametrizerMemoryCard extends Item {
         return false;
     }
 
-    private boolean hasIdenticalParameterList(List<Parameter<?>> controllerParameters, NBTTagCompound tNBT) {
-        if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
-            NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+    private boolean hasIdenticalParameterList(String key, List<Parameter<?, ?>> controllerParameters,
+        NBTTagCompound tNBT) {
+        if (tNBT.hasKey(key, Constants.NBT.TAG_LIST)) {
+            NBTTagList tagList = tNBT.getTagList(key, Constants.NBT.TAG_COMPOUND);
 
             if (tagList.tagList.size() != controllerParameters.size()) return false;
 
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
-                Parameter<?> parameter = controllerParameters.get(i);
+                Parameter<?, ?> parameter = controllerParameters.get(i);
                 if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
+                if (parameter instanceof CompositeParameter compositeParameter
+                    && !hasIdenticalParameterList("value", compositeParameter.getValue(), tag)) return false;
             }
 
             return true;
@@ -166,7 +174,6 @@ public final class ItemParametrizerMemoryCard extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0")); // Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
@@ -190,18 +197,8 @@ public final class ItemParametrizerMemoryCard extends Item {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
-                Object[] args = null;
 
-                NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
-                if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
-                    .mapToObj(argsList::getStringTagAt)
-                    .toArray(Object[]::new);
-
-                aList.add(
-                    EnumChatFormatting.AQUA + GTUtility.translate(tag.getString("langKey"), args)
-                        + ": "
-                        + EnumChatFormatting.GRAY
-                        + getValueFromTag(tag));
+                aList.addAll(getInfoLines(tag, 0));
             }
         }
         if (tNBT.hasKey("filter")) {
@@ -223,14 +220,43 @@ public final class ItemParametrizerMemoryCard extends Item {
         }
     }
 
-    private String getValueFromTag(NBTTagCompound tag) {
-        return switch (tag.getString("type")) {
-            case "integer" -> String.valueOf(tag.getInteger("value"));
-            case "double" -> String.valueOf(tag.getDouble("value"));
-            case "string" -> tag.getString("value");
-            case "boolean" -> String.valueOf(tag.getBoolean("value"));
-            default -> "";
-        };
+    private List<String> getInfoLines(NBTTagCompound tag, int offset) {
+        List<String> infoLines = new ArrayList<>();
+        if (tag.getString("langKey")
+            .isEmpty()) return infoLines;
+
+        switch (tag.getString("type")) {
+            case "integer" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getInteger("value"))));
+            case "double" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getDouble("value"))));
+            case "string" -> infoLines.add(getInfoLine(tag, offset, tag.getString("value")));
+            case "boolean" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getBoolean("value"))));
+            case "composite" -> {
+                infoLines.add(getInfoLine(tag, offset, ""));
+                NBTTagList parameters = tag.getTagList("value", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < parameters.tagCount(); i++)
+                    infoLines.addAll(getInfoLines(parameters.getCompoundTagAt(i), offset + 2));
+            }
+            case "enum", "fluid" -> infoLines.add(getInfoLine(tag, offset, tag.getString("displayName")));
+            case "long" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getLong("value"))));
+            default -> {}
+        }
+
+        return infoLines;
+    }
+
+    private String getInfoLine(NBTTagCompound tag, int offset, String value) {
+        Object[] args = null;
+
+        NBTTagList argsList = tag.getTagList("langArgs", Constants.NBT.TAG_STRING);
+        if (argsList != null && argsList.tagCount() > 0) args = IntStream.range(0, argsList.tagCount())
+            .mapToObj(argsList::getStringTagAt)
+            .toArray(Object[]::new);
+
+        return Strings.repeat(" ", offset) + EnumChatFormatting.AQUA
+            + StatCollector.translateToLocalFormatted(tag.getString("langKey"), args)
+            + ": "
+            + EnumChatFormatting.GRAY
+            + value;
     }
 
     public static void run() {

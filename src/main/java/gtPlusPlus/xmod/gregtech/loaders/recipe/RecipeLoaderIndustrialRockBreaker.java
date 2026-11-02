@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.multiblockRockBreakerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockRockBreakerRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -66,6 +66,31 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .circuit(5)
                 .itemOutputs(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
                 .duration(16 * TICKS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(multiblockRockBreakerRecipes);
+        }
+
+        if (Mods.ThaumicBases.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 1, 2))
+                .inputChances(1000)
+                .circuit(6)
+                .itemOutputs(
+                    new ItemStack(Blocks.netherrack, 1),
+                    new ItemStack(Blocks.soul_sand, 1),
+                    new ItemStack(Blocks.quartz_ore, 1))
+                .outputChances(6000, 3000, 1000)
+                .duration(SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(multiblockRockBreakerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Mods.ThaumicBases.ID, "genLeaves", 1, 3))
+                .inputChances(1000)
+                .circuit(7)
+                .itemOutputs(new ItemStack(Blocks.end_stone, 1), new ItemStack(Blocks.obsidian, 1))
+                .outputChances(9000, 1000)
+                .duration(SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(multiblockRockBreakerRecipes);
         }
