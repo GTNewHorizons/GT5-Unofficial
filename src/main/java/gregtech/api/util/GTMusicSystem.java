@@ -37,7 +37,7 @@ import com.jcraft.jorbis.VorbisFile;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.client.ElectricJukeboxSound;
@@ -112,7 +112,7 @@ public final class GTMusicSystem {
             }
         }
 
-        public void setEmitter(int index, Vector4i position, float volume) {
+        public void setEmitter(int index, Vector4i position, double volume) {
             int arrIndex = index * EMITTER_STRIDE;
             if (arrIndex < 0 || arrIndex >= emitterParameters.length) {
                 throw new IndexOutOfBoundsException(
@@ -137,7 +137,7 @@ public final class GTMusicSystem {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_DIMENSION] = position.w;
             }
-            final int intVolume = (int) (volume * 100.0f);
+            final int intVolume = (int) (volume * 100);
             if (emitterParameters[arrIndex + EMITTER_VOLUME_X_100] != intVolume) {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_VOLUME_X_100] = intVolume;
@@ -477,11 +477,11 @@ public final class GTMusicSystem {
                                 json.soundDurationsMs.put(res.toString(), (int) Math.ceil(totalSeconds * 1000.0f));
                             }
                         } catch (Exception e) {
-                            GTMod.GT_FML_LOGGER.warn("Skipping {}: {}", record.recordName, res, e);
+                            GTLoggers.GT_FML_LOGGER.warn("Skipping {}: {}", record.recordName, res, e);
                         }
                     }
                 }
-                GTMod.GT_FML_LOGGER.info(
+                GTLoggers.GT_FML_LOGGER.info(
                     "Sound durations json: \n{}",
                     new GsonBuilder().setPrettyPrinting()
                         .create()
@@ -668,7 +668,7 @@ public final class GTMusicSystem {
                                     .intValue());
                         }
                     } catch (Exception e) {
-                        GTMod.GT_FML_LOGGER.error("Could not parse sound durations from {}", url, e);
+                        GTLoggers.GT_FML_LOGGER.error("Could not parse sound durations from {}", url, e);
                     }
                 }
             } catch (IOException e) {

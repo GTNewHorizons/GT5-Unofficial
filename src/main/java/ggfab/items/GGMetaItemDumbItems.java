@@ -58,7 +58,9 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
         mEnabledItems.set(aID);
         mVisibleItems.set(aID);
         GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+        if (!aToolTip.isEmpty()) {
+            GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
+        }
         List<TCAspects.TC_AspectStack> tAspects = new ArrayList<>();
         // Important Stuff to do first
         for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {
@@ -127,16 +129,15 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
         return mIconList.get(aMetaData);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         int j = mEnabledItems.length();
         for (int i = 0; i < j; i++) {
             if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
-                aList.add(tStack);
+                list.add(tStack);
             }
         }
     }

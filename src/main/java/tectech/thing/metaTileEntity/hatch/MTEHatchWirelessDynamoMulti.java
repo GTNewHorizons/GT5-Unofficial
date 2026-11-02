@@ -1,9 +1,5 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -16,10 +12,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     private UUID owner_uuid;
@@ -29,20 +27,7 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
      * of Long.MAX, meant to consolidate an LSC for power gen options. Takes in UMV amps 65k.
      */
     public MTEHatchWirelessDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
-                true,
-                aTier,
-                aAmp,
-                GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block accepts EU into the network."),
-            aAmp);
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
     }
 
     public MTEHatchWirelessDynamoMulti(String aName, int aTier, int aAmp, String[] aDescription,
@@ -130,4 +115,8 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
         }
     }
 
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.dynamo_hatch.wireless");
+    }
 }

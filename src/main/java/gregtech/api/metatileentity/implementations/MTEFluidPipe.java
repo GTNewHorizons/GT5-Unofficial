@@ -29,7 +29,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,13 +57,16 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -71,7 +78,8 @@ import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluidPipe extends MetaPipeEntity {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
@@ -115,15 +123,19 @@ public class MTEFluidPipe extends MetaPipeEntity {
      * Bitmask for whether disable fluid input form each side.
      */
     public byte mDisableInput = 0;
+    private String mPrefixKey;
+    private String materialKeyOverride;
+    private boolean shouldSkipMaterialTooltip = false;
 
-    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
-        int aCapacity, int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof) {
+        this(aID, aName, aPrefixKey, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
-        int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aNameRegional, 0, false);
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+        super(aID, aName, 0, false);
+        mPrefixKey = aPrefixKey;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
         mCapacity = aCapacity;
@@ -294,6 +306,11 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return false;
     }
 
     @Override
@@ -500,7 +517,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
             for (int i = 0; i < mPipeAmount; i++) {
                 if (this.mFluids[i] != null) {
                     newPipe.mFluids[i] = this.mFluids[i].copy();
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.getCapacity());
                 }
             }
         }
@@ -510,53 +527,59 @@ public class MTEFluidPipe extends MetaPipeEntity {
         newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         // Construct a change message if needed
-        StringBuilder message = new StringBuilder();
+        IChatComponent message = new ChatComponentText("");
+        boolean hasContent = false;
 
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
-            message.append(oldCapacity * 20)
-                .append("L/seconds → ");
-            message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mCapacity * 20)
-                .append("L/secs")
-                .append(EnumChatFormatting.RESET);
+            EnumChatFormatting capacityColor = newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldCapacity * 20));
+            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
+            message.appendText(" → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mCapacity * 20L))
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            message.appendSibling(
+                new ChatComponentTranslation("gt.unit.liter_per_second")
+                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+            hasContent = true;
         }
 
         // Compare heat resistance
         if (oldHeatResistance != newPipe.mHeatResistance) {
-            if (message.length() > 0) message.append(" | ");
-            message.append(oldHeatResistance)
-                .append("K → ");
-            message
-                .append(newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append(newPipe.mHeatResistance)
-                .append("K")
-                .append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting heatColor = newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.RED;
+            message.appendText(formatNumber(oldHeatResistance) + "K → ");
+            message.appendSibling(
+                new ChatComponentText(formatNumber(newPipe.mHeatResistance) + "K")
+                    .setChatStyle(new ChatStyle().setColor(heatColor)));
+            hasContent = true;
         }
 
         // Compare gas handling
         if (oldGasProof != newPipe.mGasProof) {
-            if (message.length() > 0) message.append(" | ");
-            if (newPipe.mGasProof) {
-                message.append(EnumChatFormatting.GREEN)
-                    .append("Now Gas-Proof");
-            } else {
-                message.append(EnumChatFormatting.RED)
-                    .append("No Longer Gas-Proof");
-            }
-            message.append(EnumChatFormatting.RESET);
+            if (hasContent) message.appendText(" | ");
+            EnumChatFormatting gasProofColor = newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED;
+            message.appendSibling(
+                new ChatComponentTranslation(
+                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof" : "GT5U.item.pipe.swap.no_longer_gas_proof")
+                        .setChatStyle(new ChatStyle().setColor(gasProofColor)));
+            hasContent = true;
         }
 
-        // Send a chat message if anything changed
-        if (message.length() > 0) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message.toString());
+        // Send a chat message if anything changed. Only send server-side, since this method also runs
+        // client-side for responsive placement and would otherwise send the message twice.
+        if (hasContent && aBaseMetaTileEntity.isServerSide()) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
         }
 
         // Force updates to sync changes
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueClientUpdate();
+        aBaseMetaTileEntity.issueTileUpdate();
 
         // Handle inventory operations unless in creative mode
         if (!aPlayer.capabilities.isCreativeMode) {
@@ -653,6 +676,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
                             if (!mFluids[i].isFluidEqual(nextPipe.mFluids[i])) {
                                 return wasActionPerformed;
                             }
+                        } else if (mFluids[i] == null || nextPipe.mFluids[i] == null) {
+                            // one pipe is empty, so it doesn't matter if the other has fluid.
                         } else if (mFluids[i] != nextPipe.mFluids[i]) {
                             return wasActionPerformed;
                         }
@@ -912,20 +937,17 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
-            EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                + formatNumber(mCapacity * 20L)
-                + "%%% L/sec"
-                + EnumChatFormatting.GRAY);
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: %%%"
-                + formatNumber(mHeatResistance)
-                + "%%% K"
-                + EnumChatFormatting.GRAY);
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
         if (!mGasProof) {
-            descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
+            descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
         if (mPipeAmount != 1) {
-            descriptions.add(EnumChatFormatting.AQUA + "Pipe Amount: %%%" + mPipeAmount + EnumChatFormatting.GRAY);
+            descriptions.add(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.pipe_amount.desc", mPipeAmount));
         }
         return descriptions.toArray(new String[0]);
     }
@@ -1010,6 +1032,39 @@ public class MTEFluidPipe extends MetaPipeEntity {
     protected static ForgeDirection getSideAtBorder(ForgeDirection side, Border border) {
         return FACE_BORDER_MAP.get(side)
             .get(border);
+    }
+
+    @Override
+    public IOreMaterial getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public String getPrefixKey() {
+        return mPrefixKey;
+    }
+
+    @Override
+    public String getMaterialKeyOverride() {
+        return materialKeyOverride;
+    }
+
+    @Override
+    public boolean shouldSkipMaterialTooltip() {
+        return shouldSkipMaterialTooltip;
+    }
+
+    public MTEFluidPipe renameMaterial(String newName) {
+        if (newName == null) return this;
+        final String key = mMaterial.getLocalizedNameKey() + ".fluidpipe.newname";
+        GTLanguageManager.addStringLocalization(key, newName);
+        this.materialKeyOverride = key;
+        return this;
+    }
+
+    public MTEFluidPipe setShouldSkipMaterialTooltip(boolean shouldSkipMaterialTooltip) {
+        this.shouldSkipMaterialTooltip = shouldSkipMaterialTooltip;
+        return this;
     }
 
     protected enum Border {

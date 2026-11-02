@@ -34,7 +34,7 @@ public class BlockRenderer<T extends TileEntity> extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = iconRegister.registerIcon("gregtech:iconsets/TRANSPARENT");
+        // Rendered by TESR; no block-atlas sprite required.
     }
 
     /**
@@ -94,5 +94,10 @@ public class BlockRenderer<T extends TileEntity> extends Block {
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z) {
         return null;
+    }
+
+    @Override
+    public int getRenderType() {
+        return -1;
     }
 }

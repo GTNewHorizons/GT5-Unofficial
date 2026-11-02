@@ -54,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(1L),
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 8))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
@@ -75,7 +75,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 32))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS), Materials.SuperCoolant.getFluid(8000))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
-            .eut(TierEU.UV)
+            .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)
             .addTo(AssemblyLine);
 
@@ -95,7 +95,7 @@ public class AssemblyLine implements Runnable {
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.GrowthMediumSterilized.getFluid(27648))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
-            .eut(TierEU.UV)
+            .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)
             .addTo(AssemblyLine);
     }

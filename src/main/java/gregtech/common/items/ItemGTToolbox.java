@@ -38,16 +38,17 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
@@ -56,8 +57,10 @@ import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.modularui2.ToolboxSelectGuiFactory;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTModHandler;
@@ -88,7 +91,11 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public static final String CURRENT_TOOL_KEY = "gt5u.toolbox:SelectedSlot";
     public static final String RECENTLY_BROKEN_SLOT_KEY = "gt5u.toolbox:RecentlyBroken";
     public static final String BROKEN_TOOL_ANIMATION_END_KEY = "gt5u.toolbox:BrokenToolAnimationEnd";
+    public static final String DISPLAY_CRAFTING_MESSAGE_KEY = "gt5u.toolbox:DisplayCraftingMessage";
     public static final int NO_TOOL_SELECTED = -1;
+
+    private static final String LAST_PICKED_COORDS_KEY = "gt5u.toolbox:LastPickedBlock";
+    private static final String LAST_PICKED_INDEX_KEY = "gt5u.toolbox:LastPickedIndex";
 
     /**
      * The charging mechanic of the toolbox happens every one in CHARGE_TICK ticks. All numbers are multiplied by this
@@ -141,7 +148,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                             true
                         );
 
-                        for (final ToolboxSlot slot : ToolboxSlot.values()) {
+                        for (final ToolboxSlot slot : ToolboxSlot.VALUES) {
                             if (slot == ToolboxSlot.BATTERY) {
                                 continue;
                             }
@@ -184,13 +191,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 ToolboxUtil.saveToolbox(toolbox, handler);
             }
 
-            if (!toolbox.hasTagCompound()) {
-                toolbox.setTagCompound(new NBTTagCompound());
-            }
-            final NBTTagCompound tag = toolbox.getTagCompound();
-
             // Handle broken tool animation
-            if (tag.hasKey(RECENTLY_BROKEN_SLOT_KEY)) {
+            if (ItemStackNBT.hasKey(toolbox, RECENTLY_BROKEN_SLOT_KEY)) {
+                final NBTTagCompound tag = toolbox.getTagCompound();
                 if (tag.getBoolean(TOOLBOX_OPEN_KEY) || (tag.hasKey(CURRENT_TOOL_KEY) && tag.getInteger(CURRENT_TOOL_KEY) != NO_TOOL_SELECTED)) {
                     tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
                     tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
@@ -199,6 +202,9 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 } else if (tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) < world.getTotalWorldTime()) {
                     tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
                     tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
+                }
+                if (tag.hasNoTags()) {
+                    toolbox.setTagCompound(null);
                 }
             }
         }
@@ -259,8 +265,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
                         ? mgToolItem.getToolModeName(currentTool)
                         : "").orElse(""))
-                    : StatCollector
-                    .translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
+                    : StatCollector.translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
             })
             .orElse(base);
 
@@ -269,6 +274,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
+
+        if (toolbox.hasTagCompound() && toolbox.getTagCompound().getBoolean(DISPLAY_CRAFTING_MESSAGE_KEY)) {
+            tooltipList.add(StatCollector.translateToLocal("GT5U.item.toolbox.tooltip.crafting"));
+        }
+
+        super.addInformation(toolbox, player, tooltipList, f3mode);
+
         final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
 
         final GameSettings settings = Minecraft.getMinecraft().gameSettings;
@@ -319,9 +331,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                         "GT5U.item.toolbox.tooltip.tool_durability",
                         StatCollector.translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(
-                                maxDamage - MetaGeneratedTool.getToolDamage(tool)
-                            ) + " ", " " + formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
+                            formatNumber(maxDamage - MetaGeneratedTool.getToolDamage(tool)),
+                            formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
         }
 
         final Optional<ItemStack> battery = ToolboxUtil.getBattery(toolbox);
@@ -361,49 +372,65 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public ModularPanel buildUI(final PlayerInventoryGuiData data, final PanelSyncManager syncManager,
         final UISettings settings) {
         final int slot = data.getSlotIndex();
-        final ToolboxItemStackHandler stackHandler = new ToolboxItemStackHandler(data.getPlayer(), slot);
+        final ItemStack candidate = data.getUsedItemStack();
 
-        if (data.getUsedItemStack() != null) {
-            syncManager.addOpenListener(player -> {
-                // Despite the Javadoc's insistence, this function only runs on the client.
-                // Keeping this check in here just in case it gets fixed upstream, so it doesn't break later.
-                if (player.worldObj.isRemote) {
-                    GTValues.NW.sendToServer(new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.UI_OPEN, slot));
-                }
-            })
-                .addCloseListener(player -> {
-                    if (!player.worldObj.isRemote) {
-                        // Retrieve stack from player again. Persist the toolbox contents and allow charging again.
-                        final ItemStack toolbox = player.inventory.getStackInSlot(slot);
-
-                        ToolboxUtil.saveToolbox(toolbox, stackHandler, tag -> {
-                            tag.setBoolean(TOOLBOX_OPEN_KEY, false);
-                            tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
-                            tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
-
-                            // Unselect the active tool if it was removed from the toolbox.
-                            if (tag.hasKey(CURRENT_TOOL_KEY)) {
-                                final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_KEY);
-                                if (selectedToolSlot >= 0 && selectedToolSlot < stackHandler.getSlots()
-                                    && stackHandler.getStackInSlot(selectedToolSlot) == null) {
-                                    tag.removeTag(CURRENT_TOOL_KEY);
-                                }
-                            }
-                        });
-
-                        player.inventory.setInventorySlotContents(data.getSlotIndex(), toolbox);
-
-                        GTUtility.sendSoundToPlayers(
-                            player.worldObj,
-                            SoundResource.GT_TOOLBOX_CLOSE,
-                            1.0F,
-                            1,
-                            player.posX,
-                            player.posY,
-                            player.posZ);
-                    }
-                });
+        if (candidate == null || !(candidate.getItem() instanceof ItemGTToolbox)) {
+            throw new RuntimeException(
+                String.format("Toolbox was expected in slot %d but was either not found or not a toolbox", slot));
         }
+
+        final ToolboxItemStackHandler stackHandler = new ToolboxItemStackHandler(candidate);
+
+        syncManager.addOpenListener(player -> {
+            // Despite the Javadoc's insistence, this function only runs on the client.
+            // Keeping this check in here just in case it gets fixed upstream, so it doesn't break later.
+            if (player.worldObj.isRemote) {
+                GTValues.NW.sendToServer(new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.UI_OPEN, slot));
+            }
+        })
+            .addCloseListener(player -> {
+                if (!player.worldObj.isRemote) {
+                    // Retrieve stack from player again. Persist the toolbox contents and allow charging again.
+                    ItemStack toolbox = checkForOpenToolbox(player.inventory.getStackInSlot(slot));
+
+                    // In case the inventory was modified in some strange way, scan the entire thing to try to find the
+                    // toolbox we were working with when we opened the GUI.
+                    for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                        // Do some cheeky short-circuiting here if the previous check found the toolbox (which it should
+                        // nearly all the time.)
+                        if (toolbox != null) {
+                            break;
+                        }
+
+                        if (i == slot) {
+                            continue;
+                        }
+
+                        toolbox = checkForOpenToolbox(player.inventory.getStackInSlot(i));
+                    }
+
+                    if (toolbox == null) {
+                        GTLoggers.GT_FML_LOGGER.warn("Tried to save the toolbox, but it could not be found.");
+                        return;
+                    }
+
+                    ToolboxUtil.saveToolbox(toolbox, stackHandler, tag -> {
+                        tag.removeTag(TOOLBOX_OPEN_KEY);
+                        tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
+                        tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
+                    });
+
+                    GTUtility.sendSoundToPlayers(
+                        player.worldObj,
+                        SoundResource.GT_TOOLBOX_CLOSE,
+                        1.0F,
+                        1,
+                        player.posX,
+                        player.posY,
+                        player.posZ);
+                }
+            });
+
         return new ToolboxInventoryGui(syncManager, data, stackHandler).build();
     }
 
@@ -438,6 +465,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             return false;
         }
 
+        final TileEntity baseTE = event.player.worldObj.getTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
+        if (baseTE instanceof final IGregTechTileEntity gregTE
+            && gregTE.getMetaTileEntity() instanceof MetaPipeEntity
+            && ToolboxUtil.getSelectedTool(event.currentItem).isEmpty()) {
+            return false;
+        }
+
         return !ToolboxPickBlockDecider.getSuggestedTool(event)
             .suggestedTools()
             .isEmpty();
@@ -453,8 +487,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
      * @return true if it isn't a few ticks immediately after breaking a tool
      */
     private static boolean canOpenInventoryGui(final ItemStack toolbox, final World world) {
-        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-        final boolean recentlyBrokenTool = tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
+        final NBTTagCompound tag = toolbox.getTagCompound();
+        final boolean recentlyBrokenTool = tag != null && tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
 
         if (recentlyBrokenTool && (tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)
             ? tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) - world.getTotalWorldTime()
@@ -491,6 +525,15 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL, inventorySlot, newToolType));
     }
 
+    private static ItemStack checkForOpenToolbox(final ItemStack candidate) {
+        if (candidate != null && candidate.getItem() instanceof ItemGTToolbox) {
+            if (ItemStackNBT.getBoolean(candidate, TOOLBOX_OPEN_KEY)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
     // region Event Handlers
 
     @Override
@@ -505,6 +548,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
         if (player.isSneaking()) {
             if (selectedToolType.isPresent()) {
+                removeLastPickedData(player);
                 sendChangeToolPacket(inventorySlot, NO_TOOL_SELECTED);
                 return true;
             }
@@ -534,6 +578,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
         if (!player.isSneaking()) {
             if (toolCount == 1) {
+                removeLastPickedData(player);
                 sendChangeToolPacket(inventorySlot, selectedToolType.isPresent() ? NO_TOOL_SELECTED : lastSlot);
                 return true;
             } else {
@@ -548,17 +593,54 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     return true;
                 }
 
-                for (ToolboxSlot suggested : pickResults.suggestedTools()) {
-                    if (handler.getStackInSlot(suggested.getSlotID()) != null) {
-                        sendChangeToolPacket(inventorySlot, suggested.getSlotID());
-                        return true;
+                final List<ToolboxSlot> suggestedTools = pickResults.suggestedTools();
+                final long currentCoords = pickResults.packedCoordinates();
+
+                if (!suggestedTools.isEmpty() && currentCoords != 0L) {
+                    final NBTTagCompound tag = player.getEntityData()
+                        .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+                    final int lastIndex = tag.getInteger(LAST_PICKED_INDEX_KEY);
+
+                    int startingIndex = 0;
+                    if (suggestedTools.size() > 1 && tag.getLong(LAST_PICKED_COORDS_KEY) == currentCoords
+                        && lastIndex + 1 < suggestedTools.size()) {
+                        startingIndex = lastIndex + 1;
                     }
+
+                    for (int i = startingIndex; i < suggestedTools.size(); i++) {
+                        final int slotID = suggestedTools.get(i)
+                            .getSlotID();
+                        if (handler.getStackInSlot(slotID) != null) {
+                            sendChangeToolPacket(inventorySlot, slotID);
+
+                            tag.setLong(LAST_PICKED_COORDS_KEY, currentCoords);
+                            tag.setInteger(LAST_PICKED_INDEX_KEY, i);
+                            player.getEntityData()
+                                .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+
+                            return true;
+                        }
+                    }
+
                 }
             }
         }
 
+        removeLastPickedData(player);
         ToolboxSelectGuiFactory.INSTANCE.open(player);
         return true;
+    }
+
+    private static void removeLastPickedData(final EntityPlayer player) {
+        final NBTTagCompound tag = player.getEntityData()
+            .getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+
+        if (tag.hasKey(LAST_PICKED_COORDS_KEY)) {
+            tag.removeTag(LAST_PICKED_COORDS_KEY);
+            tag.removeTag(LAST_PICKED_INDEX_KEY);
+            player.getEntityData()
+                .setTag(EntityPlayer.PERSISTED_NBT_TAG, tag);
+        }
     }
 
     /**
@@ -584,7 +666,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
         getToolboxIfEquipped(event.getPlayer()).flatMap(ToolboxUtil::getSelectedTool).ifPresent(tool -> {
             if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
@@ -597,7 +678,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
             .ifPresent(tool -> {
@@ -834,6 +914,23 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void damageScrewdriver(final EntityPlayer player, final ItemStack toolbox) {
         ToolboxUtil.damageSelectedTool(toolbox);
+    }
+    // endregion
+
+    // region Vanilla Crafting Methods
+    @Override
+    public boolean hasContainerItem(final ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public boolean doesContainerItemLeaveCraftingGrid(final ItemStack p_77630_1_) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getContainerItem(final ItemStack aStack) {
+        return aStack;
     }
     // endregion
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.UUID;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -103,10 +102,8 @@ public class GTPowerfailCommand extends GTBaseCommand {
                 ChatMessage.PowerfailsClearedDim.send(player);
             }
             case "list" -> {
-                final UUID playerId = player.getGameProfile()
-                    .getId();
                 List<GTPowerfailTracker.Powerfail> powerfails = GTMod.proxy.powerfailTracker
-                    .getPowerfails(playerId, OptionalInt.empty());
+                    .getPowerfails(player, OptionalInt.empty());
 
                 sendChatToPlayer(sender, "");
 

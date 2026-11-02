@@ -7,8 +7,8 @@ import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
 
     public MTEHatchCreativeUncertainty(int aID, String aName, String aNameRegional, int aTier) {
@@ -26,14 +26,9 @@ public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.certain.desc.0"), // Feeling
-                                                                                                                      // certain,
-                                                                                                                      // for
-                                                                                                                      // sure
+        return new String[] { translateToLocal("gt.blockmachines.debug.tt.certain.desc.0"),
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") // Schrödinger's cat escaped the
-                                                                               // box
-        };
+                + translateToLocal("gt.blockmachines.debug.tt.certain.desc.1") };
     }
 
     @Override

@@ -79,7 +79,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         byteBuf.writeBoolean(invert);
     }
 
-    private void unregisterSignal() {
+    public void unregisterSignal() {
         unregisterSignal(uuid, frequency);
     }
 
@@ -87,7 +87,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
         final CoverPosition key = getCoverKey(coverable, coverSide);
-        removeSignalAt(uuid, frequency, key);
+        removeSignalAt(oldUuid, oldFrequency, key);
     }
 
     @Override
@@ -109,7 +109,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverAdvancedRedstoneTransmitterBaseGui(this);
+        return new CoverAdvancedRedstoneTransmitterBaseGui<>(this);
     }
 
 }

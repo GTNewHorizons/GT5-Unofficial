@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,16 +13,17 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -164,8 +164,8 @@ public class MTERTGenerator extends MTEBasicGenerator {
             this.mDescriptionArray,
             "Fuel is measured in minecraft days (Check with Scanner)",
             "RTG changes output voltage depending on fuel",
-            "Generates power at " + formatNumber(this.getEfficiency()) + "% Efficiency per tick",
-            "Output Voltage: " + formatNumber(this.getOutputTier()) + " EU/t",
+            "Generates power at " + addFormattedString(formatNumber(this.getEfficiency())) + "%% Efficiency per tick",
+            "Output Voltage: " + addFormattedString(formatNumber(this.getOutputTier())) + " EU/t",
             GTPPCore.GT_Tooltip.get());
     }
 
@@ -204,7 +204,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.rtgFuels;
+        return RecipeMaps.rtgFuels;
     }
 
     @Override
@@ -316,20 +316,16 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 TTUtility.setTier(mTier2, this);
                 this.mNewTier = mTier2;
             } catch (Exception e) {
-                Logger.WARNING("Failed setting mTier.");
-                e.printStackTrace();
+                GTplusplus.logger.error(e);
             }
 
             this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
             if (mTicksToBurnFor >= Integer.MAX_VALUE) {
                 mTicksToBurnFor = Integer.MAX_VALUE;
-                Logger.WARNING("Fuel went over Int limit, setting to MAX_VALUE.");
             }
             this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor / 20 / 60 / 3);
-            Logger.WARNING("step | " + (int) (mTicksToBurnFor * getEfficiency() / 100L));
             return (int) (mTicksToBurnFor * getEfficiency() / 100L);
         }
-        Logger.WARNING("Not sure");
         return 0;
     }
 
@@ -353,20 +349,17 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
-            StatCollector.translateToLocalFormatted(
+        return new String[] { IGregTechDeviceInformation.encode("gtpp.infodata.rtg.running_at", this.mTier),
+            IGregTechDeviceInformation.encode(
                 "gtpp.infodata.rtg.active",
                 this.getBaseMetaTileEntity()
                     .isActive()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.rtg.remaining.days",
-                formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.rtg.remaining.hours",
-                formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
-            StatCollector
-                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.output", formatNumber(mVoltage)),
+            IGregTechDeviceInformation
+                .encode("gtpp.infodata.rtg.remaining.days", formatNumber(mTicksToBurnFor / 20 / 60 / 20)),
+            IGregTechDeviceInformation
+                .encode("gtpp.infodata.rtg.remaining.hours", formatNumber(mTicksToBurnFor / 20 / 60 / 60)),
+            IGregTechDeviceInformation.encode("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

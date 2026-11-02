@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -31,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -124,12 +126,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     protected MTEPurificationUnitBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean doRandomMaintenanceDamage() {
-        // The individual purification unit structures cannot have maintenance issues, so do nothing.
-        return true;
     }
 
     @Override
@@ -436,7 +432,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
         if (mOutputFluids != null) {
             FluidStack outputWater = getDegradedOutputWater();
-            this.addOutput(outputWater);
+            this.addOutputPartial(outputWater);
         }
     }
 
@@ -476,18 +472,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public long getActualPowerUsage() {
         return getBasePowerUsage() * effectiveParallel;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // The individual purification unit structures cannot have maintenance issues, so fix them all.
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftMallet = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-        return true;
     }
 
     @Override
@@ -578,7 +562,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Make sure this data stick is a proper purification plant link data stick.
-        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+        if (!ItemStackNBT.getString(dataStick, "type")
             .equals("PurificationPlant")) {
             return false;
         }
@@ -649,52 +633,46 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.purification_unit_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.purification_unit_base.linked_at", controllerX, controllerY, controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        } else ret.add("GT5U.infodata.purification_unit_base.not_linked");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.parallel.current", "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.purification_unit_base.linked_to",
                     tag.getInteger("controllerX"),
                     tag.getInteger("controllerY"),
                     tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
+            list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
 
         tag.setBoolean("linked", getController() != null);
@@ -703,8 +681,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             tag.setInteger("controllerY", controllerY);
             tag.setInteger("controllerZ", controllerZ);
         }
-
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     public PurificationUnitStatus status() {
@@ -743,11 +719,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean supportsMaintenanceIssueHoverable() {
-        return false;
-    }
-
-    @Override
     public boolean supportsLogo() {
         return false;
     }
@@ -759,6 +730,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     protected boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

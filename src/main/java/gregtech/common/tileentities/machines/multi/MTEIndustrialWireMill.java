@@ -10,35 +10,41 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMill>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEIndustrialWireMill> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -48,8 +54,9 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 4;
-    private static final float SPEED_INCREASE_TIER = 0.5f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final double SPEED_INCREASE_TIER = 0.5D;
+    private static final double EU_EFFICIENCY = 0.75D;
+    private static final double BASE_SPEED = 1.0D;
 
     public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -108,66 +115,61 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWireMillActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWireMillActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWireMill)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWireMillGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.WireFactoryCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialWireMill,
+            TexturesGtBlock.oMCDIndustrialWireMillGlow,
+            TexturesGtBlock.oMCDIndustrialWireMillActive,
+            TexturesGtBlock.oMCDIndustrialWireMillActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.WireFactoryCasing.getCasingTexture();
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Wiremill, IWF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wiremill"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo((float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 3, 3, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Wire Factory Casings", 14, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .beginStructureBlock(3, 3, 7, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("14-35", Casings.WireFactoryCasing.getLocalizedName(), false)
+            .addCasing("15", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * itemPipeTier));
-                return super.process();
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(EU_EFFICIENCY)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1.0D / (BASE_SPEED + SPEED_INCREASE_TIER * itemPipeTier);
     }
 
     private int mCasingAmount;
@@ -207,10 +209,16 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         itemPipeTier = -1;
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 14;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 14);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -223,8 +231,9 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MOTOR;
     }
 
@@ -235,11 +244,6 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

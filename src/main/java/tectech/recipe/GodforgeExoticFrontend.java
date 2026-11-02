@@ -46,7 +46,7 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(Materials.QuarkGluonPlasma.getFluid(1_000))) {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(quarkGluonItemsForNEI, 48, 23, true));
             neiCachedRecipe.mInputs.set(1, new PositionedStack(quarkGluonFluidItemsForNEI, 48, 52, true));

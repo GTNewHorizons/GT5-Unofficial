@@ -3,31 +3,33 @@ package gregtech.common.tileentities.machines.outputme;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.AEApi;
+import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -49,48 +51,49 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.IOutputHatchTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
+import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput
-    implements IPowerChannelState, IMEConnectable, IDataCopyable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEFluidStack, MEFilterFluid, FluidStack> {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
+
+    public static final long DEFAULT_CAPACITY = 128_000;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            4,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs",
-                "Right click with screwdriver to toggle Cache Mode",
-                "Shift right click with screwdriver to toggle Check Mode" },
-            1);
+        super(aID, aName, aNameRegional, 4, null, 1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack>(
-        this,
-        new MEFilterFluid(),
-        128_000) {};
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(this) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_me.desc");
     }
 
     @Override
@@ -127,22 +130,14 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        boolean ok = provider.storePartial(aFluid, !doFill);
-        return ok ? aFluid.amount : 0;
-    }
-
-    public int tryFillAE(final FluidStack aFluid) {
-        if (aFluid == null) return 0;
-        if (canAcceptFluid() || (provider.getTickCounter() == provider.getLastInputTick())) {
-            provider.addToCache(aFluid);
-            return aFluid.amount;
-        }
-        return 0;
+        IAEFluidStack input = AEFluidStack.create(aFluid);
+        provider.storePartial(input, !doFill);
+        return aFluid.amount - (int) input.getStackSize();
     }
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.canStore(fluidStack);
+        return provider.canStore(AEFluidStack.create(fluidStack));
     }
 
     @Override
@@ -155,23 +150,30 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return 0;
     }
 
-    /**
-     * Check if the internal cache can still fit more fluids in it for a recipe check
-     */
-    public boolean canAcceptFluid() {
-        return provider.hasAvailableSpace();
+    @Override
+    public long getDefaultCapacity() {
+        return DEFAULT_CAPACITY;
     }
 
-    /**
-     * Check if there is space for fluids or if we can overfill.
-     */
-    public boolean canFillFluid() {
-        return provider.canAcceptAnyInput();
+    public boolean getCheckMode() {
+        return provider.getCheckMode();
+    }
+
+    public boolean shouldCheckCell() {
+        return provider.shouldCheckCell();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
+    }
+
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
     }
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return !provider.isFiltered() && !provider.shouldCheck();
+        return !provider.isFiltered() && !provider.getCheckMode();
     }
 
     BaseActionSource requestSource;
@@ -195,6 +197,11 @@ public class MTEHatchOutputME extends MTEHatchOutput
     EntityPlayer lastClickedPlayer = null;
 
     @Override
+    public boolean acceptsConfigCopy() {
+        return false;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         lastClickedPlayer = aPlayer;
 
@@ -211,6 +218,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
     @Override
     public boolean isValidSlot(int aIndex) {
         return true;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex == 0 && side == aBaseMetaTileEntity.getFrontFacing() && isItemValidForSlot(aIndex, aStack);
     }
 
     @Override
@@ -262,6 +275,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
+    public void notifyOutputSpaceChanged() {
+        // The provider detected its free space grew or its cell was swapped/repartitioned; re-check a blocked recipe.
+        notifyWatchers();
+    }
+
+    @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         provider.addAdditionalTooltipInformation(stack, tooltip);
     }
@@ -285,6 +304,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
     }
 
     @Override
@@ -298,41 +318,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-
-        NBTTagList stacks = tag.getTagList("stacks", 10);
-        int stackCount = tag.getInteger("stackCount");
-
-        if (stackCount == 0) {
-            ss.add(translateToLocal("GT5U.waila.hatch.outputme.fluid_cache_empty"));
-        } else {
-            ss.add(
-                translateToLocalFormatted(
-                    "GT5U.waila.hatch.outputme.fluid_cache_detail",
-                    stackCount,
-                    stackCount > 1 ? "s" : ""));
-
-            for (int i = 0; i < stacks.tagCount(); i++) {
-                NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
-                FluidStack stack = FluidStack.loadFluidStackFromNBT(stackTag);
-
-                ss.add(
-                    String.format(
-                        "%s: %s%s L%s",
-                        stack.getLocalizedName(),
-                        EnumChatFormatting.GOLD,
-                        formatNumber(stackTag.getLong("Amount")),
-                        EnumChatFormatting.RESET));
-            }
-
-            if (stackCount > stacks.tagCount()) {
-                ss.add(
-                    translateToLocalFormatted(
-                        "GT5U.waila.hatch.outputme.fluid_cache_detail.more",
-                        stackCount - stacks.tagCount()));
-            }
-        }
+        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("fluid", ss, accessor);
     }
 
     @Override
@@ -364,9 +350,9 @@ public class MTEHatchOutputME extends MTEHatchOutput
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
-                            + tagFluidStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -445,59 +431,28 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
 
         // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
         // This is only called when the hatch is placed since it will never change over its lifetime
 
-        provider.writeToClientPacket(tag);
-
-        return tag;
+        provider.writeToClientPacket(buffer);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        provider.readFromClientPacket(data);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        provider.readFromClientPacket(buffer);
     }
 
     @Override
     public String[] getInfoData() {
-        List<String> ss = new ArrayList<>();
-        ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
-        ss.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(provider.getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
-        List<IAEFluidStack> fluidList = provider.getCacheList();
-        if (fluidList.isEmpty()) {
-            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
-        } else {
-            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidList.size()));
-            fluidList.stream()
-                .limit(100)
-                .forEach(s -> {
-                    ss.add(
-                        s.getFluidStack()
-                            .getLocalizedName() + ": "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber(s.getStackSize())
-                            + " L"
-                            + EnumChatFormatting.RESET);
-                });
-        }
-        return ss.toArray(new String[Math.min(fluidList.size(), 100) + 2]);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        provider.addUIWidgets(builder, buildContext);
+        return provider.getInfoData(
+            getAEDiagnostics(),
+            "GT5U.infodata.hatch.output_me",
+            (IAEFluidStack s) -> s.getFluidStack()
+                .getLocalizedName());
     }
 
     @Override
@@ -550,7 +505,172 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
+    public MTEHatchOutputMEBase<IAEFluidStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getEnableKey() {
+        return "GT5U.hatch.fluid.filter.enable";
+    }
+
+    @Override
+    public String getDisableKey() {
+        return "GT5U.hatch.fluid.filter.disable";
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return provider.isFiltered();
+    }
+
+    @Override
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        return canStoreFluid(id.getFluidStack());
+    }
+
+    @Override
+    public OutputHatchType getHatchType() {
+        if (provider.getCacheMode())
+            return provider.isFiltered() ? OutputHatchType.MECacheFiltered : OutputHatchType.MECacheUnfiltered;
+        else return provider.isFiltered() ? OutputHatchType.MEFiltered : OutputHatchType.MEUnfiltered;
+    }
+
+    @Override
+    public IOutputHatchTransaction createTransaction() {
+        return new MEOutputHatchTransaction();
+    }
+
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware {
+
+        private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
+        private final long availableSpace;
+        private boolean active = true;
+        private boolean allowAnyInput = false;
+        private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
+        private IMEInventoryHandler<IAEFluidStack> cell = null;
+
+        public MEOutputHatchTransaction() {
+            availableSpace = provider.getPhysicalSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
+            if (isRecipeCheck && shouldCheckCell()) {
+                provider.flushCachedStack();
+                cell = AEApi.instance()
+                    .registries()
+                    .cell()
+                    .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
+            }
+            updateFlags();
+        }
+
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+            updateFlags();
+        }
+
+        private void updateFlags() {
+            // only false when cache mode on and is distribution
+            isDynamicCapacity = isRecipeCheck && isProtectOutput
+                && getCheckMode()
+                && (!provider.getCacheMode() || !provider.isDistribution())
+                && !provider.canVoidOverflow();
+            allowAnyInput = !getCheckMode() && availableSpace > 0;
+            if (!isRecipeCheck) {
+                allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
+            }
+        }
+
+        @Override
+        public boolean needsTotalParallelData() {
+            return isDynamicCapacity;
+        }
+
+        @Override
+        public IOutputHatch getHatch() {
+            return MTEHatchOutputME.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return allowAnyInput || cache.getTotal() < availableSpace;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            if (isRecipeCheck) {
+                if (shouldCheckCell()) {
+                    IAEFluidStack input = AEFluidStack.create(stack);
+                    if (isDynamicCapacity) {
+                        long cellAvailableSpace = provider.getCellAvailableSpace();
+                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
+                        amount = Math.min(amount, stack.amount);
+                        input.setStackSize(amount);
+                    }
+                    IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
+                    cache.insert(id, inserted);
+                    stack.amount -= inserted;
+                    return inserted > 0;
+                } else if (isDynamicCapacity) {
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.amount);
+                    cache.insert(id, amount);
+                    stack.amount -= amount;
+                    return amount > 0;
+                }
+            }
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
+                return false;
+            }
+            cache.insert(id, stack.amount);
+            stack.amount = 0;
+            return true;
+        }
+
+        @Override
+        public void complete(GTUtility.FluidId id) {
+            // Do nothing
+        }
+
+        @Override
+        public void commit() {
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEFluidStack.create(id.getFluidStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputME.this.markDirty();
+            }
+            active = false;
+        }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isFluidCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isFluidCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
     }
 }

@@ -1,24 +1,24 @@
 package gregtech.common.items.behaviors;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.ColoredBlockContainer;
-import gregtech.api.util.GTLanguageManager;
 
 public class BehaviourSprayColorRemover extends BehaviourSprayColor {
 
     public BehaviourSprayColorRemover(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses) {
         super(aEmpty, aUsed, aFull, aUses);
-        this.mTooltip = GTLanguageManager
-            .addStringLocalization("gt.behaviour.paintspray.solvent.tooltip", "Can remove paint from things");
+        this.tooltip = () -> StatCollector.translateToLocal("gt.behaviour.paintspray.solvent.tooltip");
     }
 
     @Override
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
-            .removeColor();
+    protected boolean colorize(ColoredBlockContainer container) {
+        return container.removeColor();
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        return -1;
     }
 }

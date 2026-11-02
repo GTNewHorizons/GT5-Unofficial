@@ -1,29 +1,30 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtnhintergalactic.gui.IG_UITextures;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -36,7 +37,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModuleBase extends TTMultiblockBase {
+public abstract class TileEntityModuleBase extends TTMultiblockBase implements ICasingTextureProvider {
 
     /** Base size of the EU buffer at UV */
     protected static long EU_BUFFER_BASE_SIZE = 160008000L;
@@ -55,8 +56,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(
@@ -100,7 +101,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -120,7 +121,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
@@ -136,7 +137,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -154,7 +155,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
@@ -263,6 +264,13 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
+     * @return True if the module is connected to a Space Elevator, else false
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This
@@ -317,7 +325,12 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 1, 0);
+    }
+
+    @Override
+    protected boolean cyclicUpdate_EM() {
+        return !mMachine ? mUpdate <= -20 : super.cyclicUpdate_EM();
     }
 
     @Override
@@ -333,9 +346,9 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fixAllIssues();
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0);
+        checkPiece(STRUCTURE_PIECE_MAIN, 0, 1, 0, errors);
     }
 
     /**
@@ -346,6 +359,16 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     public boolean willExplodeInRain() {
         return false;
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.INTERGALACTIC_STANDARD;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new TileEntityModuleBaseGui<>(this);
     }
 
     /**
@@ -363,52 +386,15 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+            return new ITexture[] { getCasingTexture(),
                 new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
+        return new ITexture[] { getCasingTexture() };
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK)
-                .setSize(18, 18)
-                .setPos(173, 74));
-    }
-
-    /**
-     * Draw texts on the project module GUI
-     *
-     * @param screenElements Column that holds all screen elements
-     * @param inventorySlot  Inventory slot of the controller
-     */
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false)
-            .setSpace(0);
-
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.ready"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.noRecipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && !getBaseMetaTileEntity().isActive()));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.recipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && getBaseMetaTileEntity().isActive()));
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE);
     }
 
     /**

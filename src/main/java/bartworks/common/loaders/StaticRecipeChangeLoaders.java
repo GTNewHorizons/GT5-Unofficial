@@ -37,16 +37,16 @@ public class StaticRecipeChangeLoaders {
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
+            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
+            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
+            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
             GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
                 GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
             }
         }
@@ -54,17 +54,17 @@ public class StaticRecipeChangeLoaders {
 
     private static void runMaterialLinker(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getToolTip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
+            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
+            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
+            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
         }
 
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
                 GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
                 }
             }
     }

@@ -7,6 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.Dyes;
@@ -30,7 +31,7 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        final Dyes dye = BehaviourSprayColorInfinite.getDye(item);
+        final Dyes dye = BehaviourSprayColorInfinite.getSpraycanDye(item);
         final short[] modulation = dye.getRGBA();
 
         if (!(item.getItem() instanceof final MetaGeneratedItem mgItem)) {
@@ -50,12 +51,7 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
             return;
         }
 
-        boolean locked = false;
-
-        if (item.hasTagCompound()) {
-            locked = item.getTagCompound()
-                .getBoolean(BehaviourSprayColorInfinite.LOCK_NBT_TAG);
-        }
+        final boolean locked = ItemStackNBT.getBoolean(item,BehaviourSprayColorInfinite.LOCK_NBT_TAG);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

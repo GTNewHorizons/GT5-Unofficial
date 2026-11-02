@@ -51,7 +51,7 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private IWidget createRedstoneModeButton() {
-        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted);
+        BooleanSyncValue isInvertedSyncer = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
 
         return new ToggleButton().value(isInvertedSyncer)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
@@ -66,14 +66,14 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private Flow createItemThresholdRow() {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
             .child(
                 makeNumberField(50).value(thresholdSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE)
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE)
                     .marginRight(2))
             .child(
                 IKey.lang("gt.interact.desc.itemthreshold")
@@ -81,26 +81,25 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     }
 
     private Flow createSlotRow(PanelSyncManager syncManager) {
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
         IItemHandler inventoryHandler = getInventoryHandler();
-
-        syncManager.syncValue(
-            "display_item",
-            GenericSyncValue.forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null));
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot).allowC2S();
+        GenericSyncValue<ItemStack, ?> displayItemSyncer = GenericSyncValue
+            .forItem(() -> queryMTEItem(inventoryHandler, slotSyncer.getIntValue()), null);
 
         return Flow.row()
             .child(createSlotInputField(slotSyncer))
-            .child(createItemDisplayWidget(slotSyncer))
+            .child(createItemDisplayWidget(slotSyncer, displayItemSyncer))
             .child(
                 IKey.lang("gt.interact.desc.item_slot")
-                    .asWidget());
+                    .asWidget()
+                    .paddingRight(TICK_RATE_BUTTON_SIZE));
     }
 
     private IWidget createSlotInputField(IntSyncValue slotSyncer) {
         // number field with 'Any' goes here
         return makeNumberField(50).value(slotSyncer)
-            .setDefaultNumber(-1)
-            .setNumbers(
+            .defaultNumber(-1)
+            .numbersInt(
                 -1,
                 cover.getTile()
                     .getSizeInventory() - 1)
@@ -136,8 +135,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
         };
     }
 
-    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer) {
-        return new ItemDisplayWidget().syncHandler("display_item")
+    private IWidget createItemDisplayWidget(IntSyncValue slotSyncer, GenericSyncValue<ItemStack, ?> stackSyncer) {
+        return new ItemDisplayWidget().item(stackSyncer)
             .displayAmount(false)
             .tooltipDynamic(getItemDisplayTooltip(slotSyncer));
     }

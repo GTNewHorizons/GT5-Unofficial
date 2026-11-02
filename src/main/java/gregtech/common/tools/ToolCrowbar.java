@@ -10,7 +10,7 @@ import net.minecraft.util.IChatComponent;
 
 import com.google.common.base.Strings;
 
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -68,7 +68,9 @@ public class ToolCrowbar extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_crowbar]
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_CROWBAR
+                .ordinal()]
             : null;
     }
 

@@ -2,14 +2,12 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_MolecularTransformer;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialMolecularTransformerLegacy;
 
 public class GregtechMolecularTransformer {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Molecular Transformer Multiblock.");
         run1();
     }
 

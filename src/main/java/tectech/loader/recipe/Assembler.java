@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import tectech.thing.CustomItemList;
@@ -46,7 +47,7 @@ public class Assembler implements Runnable {
 
         // Quantum Glass
         GTValues.RA.stdBuilder()
-            .itemInputs(CustomItemList.eM_Containment.get(1), GTModHandler.getIC2Item("reinforcedGlass", 1L))
+            .itemInputs(CustomItemList.eM_Containment.get(1), ItemList.ReinforcedGlass.get(1L))
             .itemOutputs(new ItemStack(BlockQuantumGlass.INSTANCE, 1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
@@ -230,6 +231,17 @@ public class Assembler implements Runnable {
         {
             // Dynamo Hatches 4A
             {
+                // Dynamo HV 4A
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        ItemList.Hatch_Dynamo_HV.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Gold, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
+                    .itemOutputs(CustomItemList.eM_dynamoMulti4_HV.get(1))
+                    .fluidInputs(Materials.Kanthal.getMolten(1 * INGOTS))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(assemblerRecipes);
                 // Dynamo EV 4A
                 GTValues.RA.stdBuilder()
                     .itemInputs(
@@ -237,7 +249,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -248,7 +260,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -262,7 +274,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -273,7 +285,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -284,7 +296,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -295,7 +307,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -304,12 +316,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -318,12 +327,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -334,7 +340,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -346,7 +352,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 1),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -363,7 +369,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -375,7 +381,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -390,7 +396,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -402,7 +408,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -414,7 +420,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -426,7 +432,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -436,12 +442,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UIV_UEV.get(1),
                         CustomItemList.eM_dynamoMulti4_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -451,12 +454,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UMV_UIV.get(1),
                         CustomItemList.eM_dynamoMulti4_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -468,7 +468,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -481,7 +481,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -498,7 +498,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -510,7 +510,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -525,7 +525,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -537,7 +537,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -549,7 +549,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -561,7 +561,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -571,12 +571,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(1),
                         CustomItemList.eM_dynamoMulti16_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -586,12 +583,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(1),
                         CustomItemList.eM_dynamoMulti16_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -603,7 +597,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(64 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -616,7 +610,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 3),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -629,7 +623,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(256 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -641,7 +635,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(256 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -651,12 +645,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(4),
                         CustomItemList.eM_dynamoMulti64_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            8))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(256 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -666,12 +657,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(4),
                         CustomItemList.eM_dynamoMulti64_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            8))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(256 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -683,7 +671,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(256 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -696,7 +684,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 4),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 4L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(256 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -715,7 +703,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -726,7 +714,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -740,7 +728,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -751,7 +739,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -762,7 +750,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -773,7 +761,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -782,12 +770,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -796,12 +781,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            2))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -812,7 +794,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -824,7 +806,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 1),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(4 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -841,7 +823,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -853,7 +835,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -868,7 +850,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -880,7 +862,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -892,7 +874,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -904,7 +886,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -914,12 +896,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UIV_UEV.get(1),
                         CustomItemList.eM_energyMulti4_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -929,12 +908,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_UMV_UIV.get(1),
                         CustomItemList.eM_energyMulti4_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            4))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -946,7 +922,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -959,7 +935,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(16 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -976,7 +952,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_EV.get(1))
-                    .fluidInputs(Materials.Nichrome.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Nichrome.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(assemblerRecipes);
@@ -988,7 +964,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Tungsten, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_IV.get(1))
-                    .fluidInputs(Materials.TPV.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.TPV.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -1003,7 +979,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_LuV.get(1))
-                    .fluidInputs(Materials.HSSG.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.HSSG.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
@@ -1015,7 +991,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Naquadah, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_ZPM.get(1))
-                    .fluidInputs(Materials.Naquadah.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Naquadah.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
@@ -1027,7 +1003,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NaquadahAlloy, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UV.get(1))
-                    .fluidInputs(Materials.Trinium.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Trinium.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
@@ -1039,7 +1015,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UHV.get(1))
-                    .fluidInputs(Materials.ElectrumFlux.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.ElectrumFlux.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
@@ -1049,12 +1025,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UIV_UEV.get(1),
                         CustomItemList.eM_energyMulti16_UEV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Draconium, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UEV.get(1))
-                    .fluidInputs(Materials.DraconiumAwakened.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.DraconiumAwakened.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
@@ -1064,12 +1037,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_UMV_UIV.get(1),
                         CustomItemList.eM_energyMulti16_UIV.get(1),
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.plate,
-                            BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
-                            6))
+                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UIV.get(1))
-                    .fluidInputs(Materials.Infinity.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Infinity.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -1081,7 +1051,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
-                    .fluidInputs(HYPOGEN.getFluidStack(64 * INGOTS))
+                    .fluidInputs(HYPOGEN.getFluidStack(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1094,7 +1064,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 3),
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UXV.get(1))
-                    .fluidInputs(Materials.SpaceTime.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.SpaceTime.getMolten(16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -1102,7 +1072,7 @@ public class Assembler implements Runnable {
             }
         }
 
-        // Buck Converter IV-UIV
+        // Buck Converter IV-UXV
         // Buck Converter IV
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1170,7 +1140,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
-                new ItemStack(bw_realglas, 4, 5))
+                new ItemStack(bw_realglas, 2, 6))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UHV.get(1))
             .fluidInputs(Materials.Neutronium.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
@@ -1182,14 +1152,11 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UIV_UEV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
-                new ItemStack(bw_realglas, 8, 5))
+                new ItemStack(bw_realglas, 2, 7))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
-            .fluidInputs(
-                BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium)
-                    .getMolten(2 * INGOTS))
+            .fluidInputs(Materials.Infinity.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -1199,16 +1166,44 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_UMV_UIV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
-                GTOreDictUnificator
-                    .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
-                new ItemStack(bw_realglas, 16, 5))
+                new ItemStack(bw_realglas, 2, 8))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
-            .fluidInputs(
-                BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium)
-                    .getMolten(2 * INGOTS))
+            .fluidInputs(Materials.TranscendentMetal.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        // Buck Converter UMV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_UXV_UMV.get(1),
+                BaseRecipeLoader.getNHCoreModItem("Display", 1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 4),
+                new ItemStack(bw_realglas, 2, 9))
+            .itemOutputs(CustomItemList.Machine_BuckConverter_UMV.get(1))
+            .fluidInputs(Materials.SpaceTime.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+
+        // Buck Converter UXV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_MAX_UXV.get(1),
+                BaseRecipeLoader.getNHCoreModItem("Display", 1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 4),
+                new ItemStack(bw_realglas, 2, 10))
+            .itemOutputs(CustomItemList.Machine_BuckConverter_UXV.get(1))
+            .fluidInputs(Materials.MHDCSM.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
 
         // Laser Dynamo
@@ -2393,31 +2388,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
             .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 0))
-            .fluidInputs(Materials.Lead.getMolten(2 * INGOTS))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
-            .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 0))
-            .fluidInputs(Materials.Tin.getMolten(1 * INGOTS))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
-            .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 0))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2430,31 +2401,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
             .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 1))
-            .fluidInputs(Materials.Lead.getMolten(2 * INGOTS))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
-            .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 1))
-            .fluidInputs(Materials.Tin.getMolten(1 * INGOTS))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
-            .itemOutputs(CustomItemList.teslaCover.getWithDamage(1, 1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * HALF_INGOTS))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2504,21 +2451,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_1by1_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_LV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_LV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_LV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -2526,21 +2459,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_1by1_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_MV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_MV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_MV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2548,21 +2467,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_1by1_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_HV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_HV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_HV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2570,21 +2475,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_1by1_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_EV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_EV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_EV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2592,21 +2483,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_1by1_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_IV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_IV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_1by1_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_1by1_IV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2614,21 +2491,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_2by2_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_LV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_LV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_LV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -2636,21 +2499,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_2by2_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_MV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_MV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_MV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2658,21 +2507,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_2by2_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_HV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_HV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_HV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2680,21 +2515,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_2by2_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_EV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_EV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_EV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2702,21 +2523,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_2by2_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_IV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_IV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_2by2_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_2by2_IV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2724,21 +2531,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_3by3_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_LV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_LV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_LV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -2746,21 +2539,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_3by3_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_MV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_MV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_MV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2768,21 +2547,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_3by3_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_HV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_HV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_HV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2790,21 +2555,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_3by3_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_EV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_EV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_EV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2812,21 +2563,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_3by3_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_IV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_IV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_IV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2834,21 +2571,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_4by4_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_LV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_LV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_LV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -2856,21 +2579,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_4by4_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_MV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_MV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_MV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2878,21 +2587,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_4by4_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_HV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_HV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_HV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2900,21 +2595,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_4by4_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_EV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_EV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_EV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2922,21 +2603,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Buffer_4by4_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_IV.get(1))
-            .fluidInputs(Materials.Lead.getMolten(4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_IV.get(1))
-            .fluidInputs(Materials.Tin.getMolten(2 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_4by4_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
-            .itemOutputs(CustomItemList.Machine_TeslaCoil_4by4_IV.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
+            .fluidInputs(SubstituteFluidStack.soldering(1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3008,7 +2675,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.DATApipe.get(1),
-                GTModHandler.getIC2Item("reinforcedGlass", 1L),
+                ItemList.ReinforcedGlass.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 2))
             .itemOutputs(CustomItemList.LASERpipe.get(1))
             .requiresCleanRoom()

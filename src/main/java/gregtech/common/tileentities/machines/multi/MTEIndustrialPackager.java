@@ -13,6 +13,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -22,7 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,18 +37,24 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -54,8 +63,9 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEIndustrialPackager>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEIndustrialPackager> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -67,8 +77,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 16;
-    private static final float SPEED_INCREASE_TIER = 1f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final double SPEED_INCREASE_TIER = 1.0D;
+    private static final double EU_EFFICIENCY = 0.75D;
 
     public MTEIndustrialPackager(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -128,53 +138,45 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAAmazonPackagerActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAmazonPackagerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAAmazonPackager)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAmazonPackagerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAAmazonPackager,
+            TexturesGtBlock.oMCAAmazonPackagerGlow,
+            TexturesGtBlock.oMCAAmazonPackagerActive,
+            TexturesGtBlock.oMCAAmazonPackagerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SupplyDepotCasing.getCasingTexture();
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Packager, Unpackager, AWD")
-            .addInfo("This Multiblock is used for EXTREME packaging requirements")
-            .addInfo("Can be configured to work as an Unpackager in controller")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.packager_unpackager"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo((float) EU_EFFICIENCY)
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-packager"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Supply Depot Casings", 4, false)
-            .addCasingInfoExactly("Item Pipe", 3, true)
-            .addCasingInfoExactly("Iron Frame Box", 2, false)
-            .addCasingInfoExactly("Any Tiered Glass", 3, true)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_right_2nd_layer"))
+            .addCasing("4-15", Casings.SupplyDepotCasing.getLocalizedName(), false)
+            .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("3", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Iron), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -183,19 +185,61 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @NotNull
+            @Nonnull
             @Override
-            public CheckRecipeResult process() {
-                setEuModifier(EU_EFFICIENCY);
-                setSpeedBonus(1F / (SPEED_INCREASE_TIER * (itemPipeTier + 1)));
-                return super.process();
+            protected Stream<GTRecipe> findRecipeMatches(RecipeMap<?> map) {
+                Stream<GTRecipe> recipes = super.findRecipeMatches(map);
+                if (map != RecipeMaps.packagerRecipes) return recipes;
+                GTRecipe schematicRecipe = findSchematicRecipe(inputItems);
+                return schematicRecipe == null ? recipes : Stream.concat(recipes, Stream.of(schematicRecipe));
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(EU_EFFICIENCY)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    private static GTRecipe findSchematicRecipe(ItemStack[] inputs) {
+        ItemStack schematic = null;
+        int size = 0;
+        for (ItemStack input : inputs) {
+            if (ItemList.Schematic_1by1.isStackEqual(input)) size = 1;
+            else if (ItemList.Schematic_2by2.isStackEqual(input)) size = 2;
+            else if (ItemList.Schematic_3by3.isStackEqual(input)) size = 3;
+            else continue;
+            schematic = input;
+            break;
+        }
+        if (schematic == null) return null;
+
+        for (ItemStack input : inputs) {
+            if (GTUtility.isStackInvalid(input) || input == schematic
+                || GTUtility.getContainerItem(input, true) != null) continue;
+            ItemStack output = switch (size) {
+                case 1 -> GTModHandler.getRecipeOutput(input);
+                case 2 -> GTModHandler.getRecipeOutput(input, input, null, input, input);
+                case 3 -> GTModHandler.getRecipeOutput(input, input, input, input, input, input, input, input, input);
+                default -> null;
+            };
+            if (output == null) continue;
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(size * size, input), GTUtility.copyAmount(0, schematic))
+                .itemOutputs(output)
+                .duration(16 << (size - 1))
+                .eut(30)
+                .nbtSensitive()
+                .build()
+                .orElse(null);
+        }
+        return null;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1.0D / (SPEED_INCREASE_TIER * (itemPipeTier + 1));
     }
 
     private int casingAmount;
@@ -235,10 +279,16 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         itemPipeTier = -1;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 4;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 4);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -250,9 +300,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 
@@ -292,8 +341,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
     }
@@ -305,11 +354,6 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

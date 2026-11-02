@@ -9,10 +9,13 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +27,19 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.net.GTPacketNodeInfo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -49,8 +55,9 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.tiles.TileNode;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 184;
     private static final int MAX_LENGTH = 13;
@@ -127,6 +134,11 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     public void setNodeValues(int nodeDistance, int nodeColor) {
         this.lastNodeDistance = nodeDistance;
         this.lastNodeColor = nodeColor;
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override
@@ -279,22 +291,36 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         mLength = 1;
         mCasing = 0;
         endFound = false;
 
         // check front
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 1, 1, 0, errors)) return;
 
         // check middle pieces
         while (!endFound && mLength++ < MAX_LENGTH) {
-            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1))) return false;
+            if (!checkPiece(STRUCTURE_PIECE_LATER, 1, 1, -(mLength - 1), errors)) return;
         }
 
-        return endFound && mLength >= 3
-            && checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1))
-            && mCasing >= mLength * 3;
+        if (!endFound) {
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
+        }
+
+        if (mLength < 3) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+        }
+
+        if (!checkPiece(STRUCTURE_PIECE_LAST, 0, 1, -(mLength - 1), errors)) return;
+
+        checkCasingMin(errors, mCasing, mLength * 3);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -311,30 +337,22 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int ColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_RESEARCH_COMPLETER,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_GLOW,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE,
+            OVERLAY_FRONT_RESEARCH_COMPLETER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -345,17 +363,18 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Research Completer")
-            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-            .addInfo("Place nodes in the center row")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.research_completer"))
+            .addMarkdown(new ResourceLocation("gregtech", "research-completer"))
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
-            .addController("Front center")
-            .addOtherStructurePart("Magical machine casing", "Top and bottom layers outside. 3 x L minimum")
-            .addOtherStructurePart("Warded glass", "Middle layer outside")
-            .addEnergyHatch("Any casing")
-            .addMaintenanceHatch("Any casing")
-            .addInputBus("Any casing")
-            .addOutputBus("Any casing")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("9-52", Casings.MagicalMachineCasing.getLocalizedName(), false)
+            .addCasing("7-27", Casings.WardedGlass.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
     }
@@ -402,5 +421,10 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             env,
             false,
             true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

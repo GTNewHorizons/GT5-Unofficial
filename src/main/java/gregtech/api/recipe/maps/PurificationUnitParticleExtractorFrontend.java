@@ -42,7 +42,7 @@ public class PurificationUnitParticleExtractorFrontend extends RecipeMapFrontend
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mInputs.size() != 3) {
             List<Pos2d> positions = UIHelper.getGridPositions(2, 30, 14, 2, 1);
             Pos2d pos1 = positions.get(0);
@@ -54,6 +54,5 @@ public class PurificationUnitParticleExtractorFrontend extends RecipeMapFrontend
             neiCachedRecipe.mInputs.set(0, new PositionedStack(inputItems, pos1.x, pos1.y, true));
             neiCachedRecipe.mInputs.set(1, new PositionedStack(inputItemsShuffled, pos2.x, pos2.y, true));
         }
-        super.drawNEIOverlays(neiCachedRecipe);
     }
 }

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.covers.gui;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -10,7 +11,7 @@ import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflowValve;
 
 public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
@@ -35,8 +36,8 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     private Flow makeOverflowPointRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getOverflowPoint, cover::setOverflowPoint))
-                    .setNumbers(cover::getMinOverflowPoint, cover::getMaxOverflowPoint))
+                makeNumberField().value(new IntSyncValue(cover::getOverflowPoint, cover::setOverflowPoint).allowC2S())
+                    .numbersInt(cover::getMinOverflowPoint, cover::getMaxOverflowPoint))
             .child(
                 IKey.lang("GTPP.gui.text.cover_overflow_valve_liter")
                     .asWidget());
@@ -45,8 +46,8 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     private Flow makeVoidingRateRow() {
         return Flow.row()
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getVoidingRate, cover::setVoidingRate))
-                    .setNumbers(cover::getMinOverflowPoint, cover::getMaxOverflowPoint)
+                makeNumberField().value(new IntSyncValue(cover::getVoidingRate, cover::setVoidingRate).allowC2S())
+                    .numbersInt(cover::getMinOverflowPoint, cover::getMaxOverflowPoint)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GTPP.gui.text.cover_overflow_valve_l_per_update")
@@ -54,31 +55,31 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
     }
 
     private Flow makeIoRow(PanelSyncManager syncManager) {
-        EnumSyncValue<BlockMode> outputModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> outputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidOutputMode,
-            cover::setFluidOutputMode);
+            cover::setFluidOutputMode).allowC2S();
         syncManager.syncValue("output_mode", outputModeSyncValue);
-        EnumSyncValue<BlockMode> inputModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> inputModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getFluidInputMode,
-            cover::setFluidInputMode);
+            cover::setFluidInputMode).allowC2S();
         syncManager.syncValue("input_mode", inputModeSyncValue);
         return Flow.row()
             .child(
-                new EnumRowBuilder<>(BlockMode.class).value(outputModeSyncValue)
+                new EnumSeriesBuilder<>(BlockMode.class).value(outputModeSyncValue)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_OUTPUT, GTGuiTextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
                     .tooltip(
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"),
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
-                    .build())
+                    .build(GuiAxis.X))
             .child(
-                new EnumRowBuilder<>(BlockMode.class).value(inputModeSyncValue)
+                new EnumSeriesBuilder<>(BlockMode.class).value(inputModeSyncValue)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT, GTGuiTextures.OVERLAY_BUTTON_BLOCK_INPUT)
                     .tooltip(
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"),
                         IKey.lang("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
-                    .build());
+                    .build(GuiAxis.X));
     }
 
 }

@@ -23,7 +23,7 @@ public enum MaskList {
     CBLANK("cblank", "Crystal", 0, "X-RAY", null, null, 0, 0, 0, 0, 0, null, null), // Better at resolving smaller
                                                                                     // features, in theory
 
-    ILC("ilc", "Integrated Logic Circuit", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
+    ILC("ilc", "Logic IC", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
         ItemList.Circuit_Wafer_ILC.get(1), null),
     RAM("ram", "Random Access Memory", 200, "", BLANK1, Dyes.dyeCyan, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 40, 2,
         ItemList.Circuit_Wafer_Ram.get(1), null, ItemList.Circuit_Silicon_Wafer),
@@ -89,12 +89,21 @@ public enum MaskList {
     QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 3.2f, 9, 50, 6,
         ItemList.Circuit_Wafer_QPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
-
+    PrQPIC("prqpic", "Prepared Quantum Power IC", 0, "", QPIC, null, TierEU.RECIPE_UHV, 0, 0, 0, 0, null, null), // Made
+                                                                                                                 // in
+                                                                                                                 // CR
+                                                                                                                 // from
+                                                                                                                 // QPIC
+    FPIC("fpic", "FPIC", 50, "", PrQPIC, Dyes.dyePurple, TierEU.RECIPE_UHV, 6f, 14, 50, 6,
+        ItemList.Circuit_Wafer_FPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
+        ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
     CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6,
         ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing
                                                                                                     // Crystal CPUs
                                                                                                     // from
                                                                                                     // Engraved CCs
+    ELC("elc", "Engraved Lapotron Chip", 120, "", CBLANK, Dyes.dyeCyan, 10_000, 1, 3, 50, 3,
+        ItemList.Circuit_Parts_Crystal_Chip_Master.get(4), ItemList.IC2_LapotronCrystal.getWildcard(1)),
     CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8,
         ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),
     ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 55, 12,
@@ -104,45 +113,44 @@ public enum MaskList {
 
     ;
 
-    String name;
-    String englishName;
-    String spectrum;
+    final String name;
+    final String englishName;
+    final String spectrum;
 
-    int maxDamage;
+    final int maxUses;
 
-    MaskList precursor;
-    Dyes lensColour;
+    final MaskList precursor;
+    final Dyes lensColour;
 
-    long engraverEUt;
+    final long engraverEUt;
 
-    float minEnergy;
-    float maxEnergy;
+    final float minEnergy;
+    final float maxEnergy;
 
-    float minFocus;
-    int baselineAmount;
+    final float minFocus;
+    final int baselineAmount;
 
-    ItemStack tcTargetItem;
-    ItemStack producedItem;
+    final ItemStack tcTargetItem;
+    final ItemStack producedItem;
 
-    ItemList[] forbiddenWafers;
+    final ItemList[] forbiddenWafers;
 
     MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,
         ItemStack tcTargetItem, ItemList... forbiddenWafers) {
         this.name = name;
         this.englishName = englishName;
+        this.maxUses = maxUses;
         this.spectrum = spectrum;
-        this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to
-                                      // durability levels 0-99
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
-        this.minFocus = minFocus;
         this.minEnergy = minEnergy;
         this.maxEnergy = maxEnergy;
+        this.minFocus = minFocus;
         this.baselineAmount = baselineAmount;
-        this.tcTargetItem = tcTargetItem;
         this.producedItem = producedItem;
+        this.tcTargetItem = tcTargetItem;
         this.forbiddenWafers = forbiddenWafers;
     }
 
@@ -154,12 +162,12 @@ public enum MaskList {
         return this.englishName;
     }
 
-    public String getSpectrum() {
-        return this.spectrum;
+    public int getMaxUses() {
+        return this.maxUses;
     }
 
-    public int getDamage() {
-        return this.maxDamage;
+    public String getSpectrum() {
+        return this.spectrum;
     }
 
     public MaskList getPrecursor() {
@@ -190,16 +198,15 @@ public enum MaskList {
         return this.baselineAmount;
     }
 
-    public ItemStack getTCTargetItem() {
-        return this.tcTargetItem;
-    }
-
     public ItemStack getProducedItem() {
         return this.producedItem;
+    }
+
+    public ItemStack getTCTargetItem() {
+        return this.tcTargetItem;
     }
 
     public ItemList[] getForbiddenWafers() {
         return this.forbiddenWafers;
     }
-
 }

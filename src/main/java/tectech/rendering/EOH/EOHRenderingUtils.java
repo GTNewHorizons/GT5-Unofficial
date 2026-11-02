@@ -6,63 +6,105 @@ import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_1;
 import static tectech.rendering.EOH.EOHTileEntitySR.STAR_LAYER_2;
 
 import java.awt.Color;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import gregtech.api.enums.Mods;
+import gregtech.common.render.shader.MeshBuilder;
+import gregtech.common.render.shader.QuadSink;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.ShaderRecipe;
+import gregtech.common.render.shader.SharedShaders;
+import gregtech.common.render.shader.Uniform;
+import gregtech.common.render.shader.VertexAttribute;
+import tectech.TecTech;
+import tectech.loader.ConfigHandler;
+import tectech.thing.block.TileEntityEyeOfHarmony;
 
 public abstract class EOHRenderingUtils {
 
     private static final Color EOHStarColour = new Color(1.0f, 0.4f, 0.05f, 1.0f);
 
-    public static void renderEOHStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
-        renderStar(type, EOHStarColour, partialTicks, starRadius);
+    private static final float[] ROTATION_SPEEDS = { 1.5f, 1.2f, 1.6f };
+    private static final float[] BASE_ROTATIONS = { 130f, -49f, 67f };
+    private static final ResourceLocation SPACE_LAYER_TEXTURE = new ResourceLocation(MODID, "models/spaceLayer.png");
+
+    public static void renderEOHStar(Matrix4fc base, IItemRenderer.ItemRenderType type, double time,
+        double starRadius) {
+        renderStar(base, type, EOHStarColour, time, starRadius);
     }
 
     // Used for GORGE item renderer only.
     private static final Color GORGEStarColour = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-    public static void renderGORGEStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
-        renderStar(type, GORGEStarColour, partialTicks, starRadius);
+    public static void renderGORGEStar(Matrix4fc base, IItemRenderer.ItemRenderType type, double time,
+        double starRadius) {
+        renderStar(base, type, GORGEStarColour, time, starRadius);
     }
 
-    private static void renderStar(IItemRenderer.ItemRenderType type, Color color, float partialTicks,
-        double starRadius) {
-        GL11.glPushMatrix();
+    private static final Matrix4f starBase = new Matrix4f();
 
-        if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
+    private static void renderStar(Matrix4fc base, IItemRenderer.ItemRenderType type, Color color, double time,
+        double starRadius) {
+        if (!shadersReady()) return;
+
+        starBase.set(base);
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) starBase.rotateY((float) Math.PI);
         else if (type == IItemRenderer.ItemRenderType.EQUIPPED
             || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                GL11.glTranslated(0.5, 0.5, 0.5);
-                if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
+                starBase.translate(0.5f, 0.5f, 0.5f);
+                if (type == IItemRenderer.ItemRenderType.EQUIPPED) starBase.rotateY((float) Math.PI / 2f);
             }
 
-        // Render star stuff.
-        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, partialTicks, starRadius);
-        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, partialTicks, starRadius);
-        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, partialTicks, starRadius);
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final long blendFuncWas = RenderState.savedBlendFunc();
 
-        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        final long cullWas = beginSphereCull(false);
+
+        texturedShader().use();
+        eohSphere.bind();
+
+        renderStarLayer(0, STAR_LAYER_0, color, 1.0f, time, starRadius);
+        renderStarLayer(1, STAR_LAYER_1, color, 0.4f, time, starRadius);
+        renderStarLayer(2, STAR_LAYER_2, color, 0.2f, time, starRadius);
+
+        eohSphere.unbind();
+        ShaderProgram.clear();
+
+        endSphereCull(cullWas);
+        RenderState.restore(GL11.GL_BLEND, blendWas);
+        RenderState.restoreBlendFunc(blendFuncWas);
     }
 
-    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
-        float partialTicks, double starRadius) {
+    private static final Vector3f[] LAYER_AXIS = { new Vector3f(0, 1, 1).normalize(), new Vector3f(1, 1, 0).normalize(),
+        new Vector3f(1, 0, 1).normalize() };
+
+    private static final Matrix4f layerMatrix = new Matrix4f();
+
+    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha, double time,
+        double starRadius) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
-        GL11.glPushMatrix();
-
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
         if (alpha < 1.0f) {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         } else {
@@ -74,60 +116,205 @@ public abstract class EOHRenderingUtils {
             .getTextureManager()
             .bindTexture(texture);
 
-        float[] rotationSpeeds = { 1.5f, 1.2f, 1.6f };
-        float[] baseRotations = { 130f, -49f, 67f };
+        final float rotation = (float) ((BASE_ROTATIONS[layer] + ROTATION_SPEEDS[layer] * time) % 360f);
+        final int maxLayer = 2;
+        final float scale = (float) (starRadius * Math.pow(0.95f, maxLayer - layer));
+        final Vector3f axis = LAYER_AXIS[layer];
 
-        float rotation = (baseRotations[layer] + rotationSpeeds[layer] * partialTicks) % 360f;
+        layerMatrix.set(starBase)
+            .rotate((float) Math.toRadians(rotation), axis.x, axis.y, axis.z)
+            .scale(scale);
 
-        switch (layer) {
-            case 0 -> GL11.glRotatef(rotation, 0F, 1F, 1F);
-            case 1 -> GL11.glRotatef(rotation, 1F, 1F, 0F);
-            case 2 -> GL11.glRotatef(rotation, 1F, 0F, 1F);
+        final ShaderHandle shader = texturedShader();
+        GL20.glUniform4f(
+            shader.loc(SharedShaders.U_TINT),
+            color.getRed() / 255f,
+            color.getGreen() / 255f,
+            color.getBlue() / 255f,
+            alpha);
+        shader.uploadModel(layerMatrix);
+        eohSphere.draw();
+    }
+
+    public static final Matrix4fc IDENTITY = new Matrix4f();
+
+    private static final int MAX_ORBIT_OBJECTS = 16;
+
+    private static final int VERTICES_PER_BLOCK = 36;
+
+    private static final ShaderRecipe ORBIT = ShaderRecipe.of(Mods.GregTech.resourceDomain, "orbit")
+        .required("u_Objects")
+        .sampler("u_Texture", 0)
+        .modelUniform("u_ModelMatrix")
+        .attribute("a_Position", VertexAttribute.POSITION)
+        .attribute("a_UV", VertexAttribute.UV)
+        .attribute("a_Instance", VertexAttribute.INSTANCE_INDEX);
+
+    private static final Uniform ORBIT_OBJECTS = ORBIT.uniform("u_Objects");
+
+    private static ShaderHandle orbitShader;
+
+    private static final int EOH_TESSELLATION = 64;
+
+    private static IVertexArrayObject eohSphere;
+
+    /** One mesh per drawn block sequence. FIFO eviction */
+    private static final List<OrbitMesh> ORBIT_MESHES = new ArrayList<>();
+
+    private static boolean warnedOrbitOverflow;
+
+    private static final FloatBuffer orbitTransforms = BufferUtils.createFloatBuffer(MAX_ORBIT_OBJECTS * 6);
+    private static final float DEG_TO_RAD = (float) Math.PI / 180f;
+
+    public static void reloadShaders() {
+        releaseShaders();
+
+        orbitShader = ORBIT.bake();
+        if (SharedShaders.ready()) {
+            eohSphere = buildSphere(texturedShader(), EOH_TESSELLATION, EOH_TESSELLATION);
+        }
+    }
+
+    public static ShaderHandle texturedShader() {
+        return SharedShaders.textured();
+    }
+
+    private static void releaseShaders() {
+        if (eohSphere != null) {
+            eohSphere.delete();
+            eohSphere = null;
+        }
+        if (orbitShader != null) {
+            orbitShader.release();
+            orbitShader = null;
+        }
+        releaseOrbitMesh();
+    }
+
+    private static void releaseOrbitMesh() {
+        for (int i = 0; i < ORBIT_MESHES.size(); i++) {
+            ORBIT_MESHES.get(i).vao.delete();
+        }
+        ORBIT_MESHES.clear();
+    }
+
+    public static void renderOrbits(Matrix4fc base, List<TileEntityEyeOfHarmony.OrbitingObject> objects, double time,
+        float starSize, float speedScale, float starRescale) {
+        if (orbitShader == null || !orbitShader.isValid() || objects.isEmpty()) return;
+
+        final int count = Math.min(objects.size(), MAX_ORBIT_OBJECTS);
+        if (objects.size() > MAX_ORBIT_OBJECTS && !warnedOrbitOverflow) {
+            warnedOrbitOverflow = true;
+            TecTech.LOGGER.warn(
+                "Eye of Harmony has {} orbiting objects, only {} can be drawn",
+                objects.size(),
+                MAX_ORBIT_OBJECTS);
         }
 
-        GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, alpha);
+        final IVertexArrayObject mesh = orbitMesh(objects, count);
+        if (mesh == null) return;
 
-        int maxLayer = 2;
-        double scale = starRadius * Math.pow(0.95f, maxLayer - layer);
-        renderTessellatedSphere(64, 64, scale);
+        orbitTransforms.clear();
+        for (int i = 0; i < count; i++) {
+            final TileEntityEyeOfHarmony.OrbitingObject obj = objects.get(i);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            final float orbitAngle = (float) ((obj.orbitSpeed * speedScale * time) % 360f);
+            final float spinAngle = (float) ((obj.rotationSpeed * speedScale * time) % 360f);
 
-        GL11.glPopMatrix();
+            orbitTransforms.put(obj.zAngle * DEG_TO_RAD)
+                .put(obj.xAngle * DEG_TO_RAD)
+                .put(orbitAngle * DEG_TO_RAD)
+                .put(spinAngle * DEG_TO_RAD)
+                .put(-0.2f - obj.distance - starRescale * starSize)
+                .put(obj.scale);
+        }
+        orbitTransforms.flip();
+
+        orbitShader.use();
+        GL20.glUniform3(orbitShader.loc(ORBIT_OBJECTS), orbitTransforms);
+        orbitShader.uploadModel(base);
+        mesh.render();
+        ShaderProgram.clear();
     }
 
-    public static void beginRenderingBlocksInWorld(final float blockSize) {
-        final Tessellator tes = Tessellator.instance;
+    private static IVertexArrayObject orbitMesh(List<TileEntityEyeOfHarmony.OrbitingObject> objects, int count) {
+        for (int i = 0; i < ORBIT_MESHES.size(); i++) {
+            final OrbitMesh cached = ORBIT_MESHES.get(i);
+            if (cached.matches(objects, count)) return cached.vao;
+        }
 
-        GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        final Block[] blocks = new Block[count];
+        for (int i = 0; i < count; i++) {
+            blocks[i] = objects.get(i).block;
+        }
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        final IVertexArrayObject built;
+        try (MeshBuilder mesh = MeshBuilder.of(orbitShader, count * VERTICES_PER_BLOCK)) {
+            for (int i = 0; i < count; i++) {
+                mesh.instanceIndex(i);
+                addRenderedBlockInWorld(mesh, blocks[i], 0, IDENTITY);
+            }
+            built = mesh.build();
+        }
 
-        tes.setColorOpaque_F(1f, 1f, 1f);
-        tes.startDrawingQuads();
-
-        GL11.glScalef(blockSize, blockSize, blockSize);
+        final int cap = Math.max(1, ConfigHandler.visual.EOH_ORBIT_MESH_CACHE_SIZE);
+        final int excess = ORBIT_MESHES.size() - cap + 1;
+        if (excess > 0) {
+            for (int i = 0; i < excess; i++) {
+                ORBIT_MESHES.get(i).vao.delete();
+            }
+            ORBIT_MESHES.subList(0, excess)
+                .clear();
+        }
+        ORBIT_MESHES.add(new OrbitMesh(blocks, built));
+        return built;
     }
 
-    public static void endRenderingBlocksInWorld() {
-        Tessellator.instance.draw();
+    private static final class OrbitMesh {
 
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
+        private final Block[] blocks;
+        private final IVertexArrayObject vao;
+
+        OrbitMesh(Block[] blocks, IVertexArrayObject vao) {
+            this.blocks = blocks;
+            this.vao = vao;
+        }
+
+        boolean matches(List<TileEntityEyeOfHarmony.OrbitingObject> objects, int count) {
+            if (blocks.length != count) return false;
+            for (int i = 0; i < count; i++) {
+                if (blocks[i] != objects.get(i).block) return false;
+            }
+            return true;
+        }
+    }
+
+    private static boolean shadersReady() {
+        return SharedShaders.ready() && eohSphere != null;
     }
 
     static final double[] BLOCK_X = { -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, -0.5, -0.5 };
     static final double[] BLOCK_Y = { +0.5, -0.5, -0.5, +0.5, +0.5, -0.5, -0.5, +0.5 };
     static final double[] BLOCK_Z = { +0.5, +0.5, +0.5, +0.5, -0.5, -0.5, -0.5, -0.5 };
 
-    public static void addRenderedBlockInWorld(final Block block, final int meta, final double x, final double y,
-        final double z) {
-        final Tessellator tes = Tessellator.instance;
+    private static final float[] cornerX = new float[8];
+    private static final float[] cornerY = new float[8];
+    private static final float[] cornerZ = new float[8];
+    private static final Vector3f corner = new Vector3f();
 
+    public static void addRenderedBlockInWorld(final QuadSink sink, final Block block, final int meta,
+        final Matrix4fc transform) {
+        for (int i = 0; i < 8; i++) {
+            corner.set((float) BLOCK_X[i], (float) BLOCK_Y[i], (float) BLOCK_Z[i]);
+            transform.transformPosition(corner);
+            cornerX[i] = corner.x;
+            cornerY[i] = corner.y;
+            cornerZ[i] = corner.z;
+        }
+        emitBlock(sink, block, meta);
+    }
+
+    private static void emitBlock(final QuadSink sink, final Block block, final int meta) {
         IIcon texture;
 
         double minU;
@@ -143,10 +330,10 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], minU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], minU, maxV);
+            sink.vertex(cornerX[1], cornerY[1], cornerZ[1], maxU, maxV);
+            sink.vertex(cornerX[0], cornerY[0], cornerZ[0], maxU, minV);
+            sink.vertex(cornerX[7], cornerY[7], cornerZ[7], minU, minV);
+            sink.vertex(cornerX[6], cornerY[6], cornerZ[6], minU, maxV);
         }
 
         {
@@ -158,10 +345,10 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], minU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], minU, minV);
+            sink.vertex(cornerX[5], cornerY[5], cornerZ[5], maxU, minV);
+            sink.vertex(cornerX[2], cornerY[2], cornerZ[2], maxU, maxV);
+            sink.vertex(cornerX[1], cornerY[1], cornerZ[1], minU, maxV);
+            sink.vertex(cornerX[6], cornerY[6], cornerZ[6], minU, minV);
         }
 
         {
@@ -172,10 +359,10 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], minU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], minU, maxV);
+            sink.vertex(cornerX[6], cornerY[6], cornerZ[6], maxU, maxV);
+            sink.vertex(cornerX[7], cornerY[7], cornerZ[7], maxU, minV);
+            sink.vertex(cornerX[4], cornerY[4], cornerZ[4], minU, minV);
+            sink.vertex(cornerX[5], cornerY[5], cornerZ[5], minU, maxV);
         }
 
         {
@@ -186,10 +373,10 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], minU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], minU, maxV);
+            sink.vertex(cornerX[5], cornerY[5], cornerZ[5], maxU, maxV);
+            sink.vertex(cornerX[4], cornerY[4], cornerZ[4], maxU, minV);
+            sink.vertex(cornerX[3], cornerY[3], cornerZ[3], minU, minV);
+            sink.vertex(cornerX[2], cornerY[2], cornerZ[2], minU, maxV);
         }
 
         {
@@ -200,10 +387,10 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], minU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], minU, maxV);
+            sink.vertex(cornerX[3], cornerY[3], cornerZ[3], maxU, maxV);
+            sink.vertex(cornerX[4], cornerY[4], cornerZ[4], maxU, minV);
+            sink.vertex(cornerX[7], cornerY[7], cornerZ[7], minU, minV);
+            sink.vertex(cornerX[0], cornerY[0], cornerZ[0], minU, maxV);
         }
 
         {
@@ -214,92 +401,105 @@ public abstract class EOHRenderingUtils {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], maxU, maxV);
-            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], maxU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], minU, minV);
-            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], minU, maxV);
+            sink.vertex(cornerX[2], cornerY[2], cornerZ[2], maxU, maxV);
+            sink.vertex(cornerX[3], cornerY[3], cornerZ[3], maxU, minV);
+            sink.vertex(cornerX[0], cornerY[0], cornerZ[0], minU, minV);
+            sink.vertex(cornerX[1], cornerY[1], cornerZ[1], minU, maxV);
         }
     }
 
-    public static void renderBlockInWorld(final Block block, final int meta, final float blockSize) {
-        beginRenderingBlocksInWorld(blockSize);
+    private static final long CULL_ENABLED_BIT = 1L << 32;
 
-        addRenderedBlockInWorld(block, meta, 0, 0, 0);
-
-        endRenderingBlocksInWorld();
-    }
-
-    public static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
-        renderCachedSphereVBO(slices, stacks, radiusInBlocks, false);
-    }
-
-    private static void renderTessellatedSphereWithInvertedNormals(int slices, int stacks, double radiusInBlocks) {
-        renderCachedSphereVBO(slices, stacks, radiusInBlocks, true);
-    }
-
-    public static void renderOuterSpaceShell(double playerDistance) {
-
-        // Save current OpenGL state.
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-        // Begin animation.
-        GL11.glPushMatrix();
-
-        // Disables lighting, so star is always lit.
-        GL11.glDisable(GL11.GL_LIGHTING);
-        // Merges colors of the various layers of the star.
-        // GL11.glEnable(GL11.GL_BLEND);
-
-        // Bind animation to layer of star.
-        FMLClientHandler.instance()
-            .getClient()
-            .getTextureManager()
-            .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
-
-        final float scale = 0.01f * 17.5f;
-        // Scale the star up in the x, y and z directions.
-        GL11.glScalef(scale, scale, scale);
-
-        GL11.glColor4f(1, 1, 1, 1);
-
-        // Render the sphere object itself dynamically.
-        renderTessellatedSphereWithInvertedNormals(64, 64, 74);
-
-        // Finish animation.
-        GL11.glPopMatrix();
-
-        // Restore previous OpenGL state.
-        GL11.glPopAttrib();
-    }
-
-    private static void renderCachedSphereVBO(int slices, int stacks, double radiusInBlocks, boolean invertFrontFace) {
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        boolean wasCull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        int oldCullMode = GL11.glGetInteger(GL11.GL_CULL_FACE_MODE);
-        int oldFrontFace = GL11.glGetInteger(GL11.GL_FRONT_FACE);
+    public static long beginSphereCull(boolean invertFrontFace) {
+        final long saved = (GL11.glGetBoolean(GL11.GL_CULL_FACE) ? CULL_ENABLED_BIT : 0L)
+            | (GL11.glGetInteger(GL11.GL_FRONT_FACE) & 0xFFFFL) << 16
+            | (GL11.glGetInteger(GL11.GL_CULL_FACE_MODE) & 0xFFFFL);
 
         GL11.glEnable(GL11.GL_CULL_FACE);
-
         if (invertFrontFace) {
             GL11.glFrontFace(GL11.GL_CW);
             GL11.glCullFace(GL11.GL_BACK);
         } else {
-            GL11.glFrontFace(oldFrontFace);
+            GL11.glFrontFace(GL11.GL_CCW);
             GL11.glCullFace(GL11.GL_FRONT);
         }
-
-        IVertexArrayObject vbo = SphereVBOCache.getOrCreate(slices, stacks);
-
-        GL11.glPushMatrix();
-        int inversionMultiplier = invertFrontFace ? -1 : 1;
-        GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks);
-        vbo.render();
-        GL11.glPopMatrix();
-
-        GL11.glFrontFace(oldFrontFace);
-        GL11.glCullFace(oldCullMode);
-        if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
+        return saved;
     }
 
+    public static void endSphereCull(long saved) {
+        GL11.glFrontFace((int) (saved >>> 16) & 0xFFFF);
+        GL11.glCullFace((int) saved & 0xFFFF);
+        RenderState.restore(GL11.GL_CULL_FACE, (saved & CULL_ENABLED_BIT) != 0);
+    }
+
+    public static IVertexArrayObject buildSphere(ShaderHandle shader, int slices, int stacks) {
+        try (MeshBuilder mesh = MeshBuilder.of(shader, slices * stacks * 6)) {
+            for (int i = 0; i < stacks; i++) {
+                final double v0 = (double) i / (double) stacks;
+                final double v1 = (double) (i + 1) / (double) stacks;
+
+                final double phi0 = Math.PI / 2.0 - i * Math.PI / stacks;
+                final double phi1 = Math.PI / 2.0 - (i + 1) * Math.PI / stacks;
+
+                final double y0 = Math.sin(phi0);
+                final double y1 = Math.sin(phi1);
+
+                final double r0 = Math.cos(phi0);
+                final double r1 = Math.cos(phi1);
+
+                for (int j = 0; j < slices; j++) {
+                    final float uu0 = (float) (1.0 - (double) j / (double) slices);
+                    final float uu1 = (float) (1.0 - (double) (j + 1) / (double) slices);
+
+                    final double th0 = j * 2.0 * Math.PI / slices;
+                    final double th1 = (j + 1) * 2.0 * Math.PI / slices;
+
+                    final double x00 = r0 * Math.cos(th0);
+                    final double z00 = r0 * Math.sin(th0);
+
+                    final double x10 = r1 * Math.cos(th0);
+                    final double z10 = r1 * Math.sin(th0);
+
+                    final double x11 = r1 * Math.cos(th1);
+                    final double z11 = r1 * Math.sin(th1);
+
+                    final double x01 = r0 * Math.cos(th1);
+                    final double z01 = r0 * Math.sin(th1);
+
+                    mesh.triangleVertex(x00, y0, z00, uu0, v0);
+                    mesh.triangleVertex(x10, y1, z10, uu0, v1);
+                    mesh.triangleVertex(x11, y1, z11, uu1, v1);
+
+                    mesh.triangleVertex(x00, y0, z00, uu0, v0);
+                    mesh.triangleVertex(x11, y1, z11, uu1, v1);
+                    mesh.triangleVertex(x01, y0, z01, uu1, v0);
+                }
+            }
+            return mesh.build();
+        }
+    }
+
+    private static final Matrix4f shellMatrix = new Matrix4f();
+
+    public static void renderOuterSpaceShell(Matrix4fc base, double playerDistance) {
+        if (!shadersReady()) return;
+
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(SPACE_LAYER_TEXTURE);
+
+        final float scale = 0.01f * 17.5f * 74f;
+        shellMatrix.set(base)
+            .scale(-scale, scale, scale);
+
+        final ShaderHandle shader = texturedShader();
+        shader.use();
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f);
+        shader.uploadModel(shellMatrix);
+        final long cullWas = beginSphereCull(true);
+        eohSphere.render();
+        endSphereCull(cullWas);
+        ShaderProgram.clear();
+    }
 }

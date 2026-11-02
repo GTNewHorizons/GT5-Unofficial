@@ -22,9 +22,7 @@ import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -136,7 +134,8 @@ public class UpgradeTreePanel {
             .pos(upgrade.getTreeX(), upgrade.getTreeY())
             // skip background since the connector lines draw over the background layer
             // no matter the order widgets are added to the panel
-            .background(IDrawable.EMPTY)
+            .disableThemeBackground(true)
+            .disableHoverThemeBackground(true)
             .overlay(new DynamicDrawable(() -> {
                 ForgeOfGodsData data = hypervisor.getData();
                 if (data.isUpgradeActive(upgrade)) {
@@ -156,7 +155,7 @@ public class UpgradeTreePanel {
                             .isCostPaid(upgrade)) {
                             SyncActions.COMPLETE_UPGRADE.callFrom(Panels.UPGRADE_TREE, hypervisor, upgrade);
                         } else {
-                            EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                            EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer = SyncValues.UPGRADE_CLICKED
                                 .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                             syncer.setValue(upgrade);
                             if (!manualInsertionPanel.isPanelOpen()) {
@@ -169,7 +168,7 @@ public class UpgradeTreePanel {
                                 .closeIfOpen();
                         }
                     } else {
-                        EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                        EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer = SyncValues.UPGRADE_CLICKED
                             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                         syncer.setValue(upgrade);
                         if (!individualPanel.isPanelOpen()) {
@@ -224,7 +223,8 @@ public class UpgradeTreePanel {
     }
 
     private static Flow createSecretUpgrade(SyncHypervisor hypervisor) {
-        Flow row = new Row().size(60, 15)
+        Flow row = Flow.row()
+            .size(60, 15)
             .pos(START.getTreeX() - 60, START.getTreeY());
 
         // Upgrade button
@@ -260,7 +260,6 @@ public class UpgradeTreePanel {
         row.child(
             GTGuiTextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE.asWidget()
                 .size(20, 6)
-                .alignY(0.5f)
                 .setEnabledIf($ -> {
                     ForgeOfGodsData data = hypervisor.getData();
                     return data.isSecretUpgrade();
@@ -270,12 +269,14 @@ public class UpgradeTreePanel {
     }
 
     private static Flow getDebugWidgets(SyncHypervisor hypervisor) {
-        Flow row = new Column().coverChildren()
-            .align(Alignment.TopLeft)
+        Flow col = Flow.column()
+            .coverChildren()
+            .topRel(0)
+            .leftRel(0)
             .setEnabledIf($ -> ConfigHandler.debug.DEBUG_MODE);
 
         // Reset upgrades
-        row.child(new ButtonWidget<>().onMousePressed(d -> {
+        col.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .resetAllUpgrades();
             SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
@@ -290,9 +291,9 @@ public class UpgradeTreePanel {
             .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Graviton shard amount
-        row.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 112)
+        col.child(
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 112)
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
                 .setScrollValues(1, 4, 64)
@@ -301,7 +302,7 @@ public class UpgradeTreePanel {
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // Unlock all upgrades
-        row.child(new ButtonWidget<>().onMousePressed(d -> {
+        col.child(new ButtonWidget<>().onMousePressed(d -> {
             hypervisor.getData()
                 .unlockAllUpgrades();
             SyncValues.UPGRADES_LIST.notifyUpdateFrom(Panels.MAIN, hypervisor);
@@ -315,6 +316,6 @@ public class UpgradeTreePanel {
             .tooltip(t -> t.addLine(translateToLocal("fog.debug.unlockall.text")))
             .tooltipShowUpTimer(TOOLTIP_DELAY));
 
-        return row;
+        return col;
     }
 }

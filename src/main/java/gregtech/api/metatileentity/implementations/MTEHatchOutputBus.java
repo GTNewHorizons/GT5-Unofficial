@@ -13,36 +13,41 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
-import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
-public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus, ISmartInputHatch {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -54,17 +59,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     }
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -82,6 +77,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     public MTEHatchOutputBus(String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             openGui(aPlayer);
             return true;
         }
@@ -138,7 +139,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             return;
         }
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
@@ -259,6 +260,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
                 GTUtility.cleanInventory(this);
             }
         }
+        // A drained output bus frees up space, which can unblock a recipe that failed with ITEM_OUTPUT_FULL. This must
+        // run AFTER the auto-eject above: that eject marks the inventory dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
     }
 
     @Override
@@ -274,41 +281,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         super.loadNBTData(aNBT);
         if (aNBT.hasKey(LOCKED_ITEM_NBT_KEY)) {
             lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(LOCKED_ITEM_NBT_KEY));
-        }
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int BUTTON_SIZE = 18;
-        int slotCount = getSizeInventory();
-        final int itemColumns = Math.max(1, mTier + 1);
-        final int itemRows = Math.max(1, mTier + 1);
-        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
-        final int centerY = 14 - (mTier - 1);
-
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {
-                for (int row = 0; row < itemRows; row++) {
-                    for (int col = 0; col < itemColumns; col++) {
-                        int slotIndex = row * itemColumns + col;
-                        if (slotIndex < slotCount) {
-                            builder.widget(
-                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
-                                    .setPos(centerX + col * 18, centerY + row * 18));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (acceptsItemLock()) {
-            builder.widget(
-                new PhantomItemButton(this).setPos(6, 60 + getOffsetY())
-                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
 
@@ -338,16 +310,18 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return true;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(18, 18)
-                .setPos(152 + getOffsetX(), 60 + getOffsetY()));
+    @OCMethod
+    public ItemStack getFilter() {
+        return lockedItem == null ? null : lockedItem.copy();
+    }
+
+    @OCMethod
+    public void setFilter(@Nullable ItemStack aStack) {
+        setLockedItem(aStack);
     }
 
     @Override
@@ -382,17 +356,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
     }
 
-    /**
-     * Gets the max stack size limit for a slot and a stack.
-     *
-     * @param slot  The slot, or -1 for a general 'lowest slot' query.
-     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
-     */
-    @Override
-    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
-    }
-
     class StandardOutputBusTransaction implements IOutputBusTransaction {
 
         private final ItemStack[] inventory;
@@ -421,7 +384,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             int maxStackSize = getStackSizeLimit(-1, stack);
@@ -458,7 +421,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             for (int i = 0, invLength = inventory.length; i < invLength; i++) {
@@ -488,5 +451,22 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
             active = false;
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.output_bus.desc" : "gt.blockmachines.output_bus.singular.desc",
+            getSlots(mTier));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this).build(guiData, syncManager, uiSettings);
     }
 }

@@ -19,12 +19,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     public MTEHatchTurbineProvider(int aID, String aName, String aNameRegional, int aTier) {
@@ -47,14 +50,10 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "An automation port for Large Turbines",
-            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-            "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
+        return GTSplit.splitLocalizedWithSuffix("gt.blockmachines.input_bus_turbine.desc", GTPPCore.GT_Tooltip.get());
     }
 
-    private MTELargeTurbine mParent = null;
+    private MTEMultiBlockBase mParent = null;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -66,7 +65,6 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     private void tryFindParentTurbine() {
-        Logger.INFO("This turbine housing has no parent, searching world.");
         IGregTechTileEntity T = this.getBaseMetaTileEntity();
         World W = T.getWorld();
         Chunk C = W.getChunkFromBlockCoords(T.getXCoord(), T.getZCoord());
@@ -76,11 +74,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTELargeTurbine aTurb) {
+                if (aMetaTileEntity instanceof MTEMultiBlockBase aTurb
+                    && (aMetaTileEntity instanceof MTELargeTurbineLegacy
+                        || aMetaTileEntity instanceof MTELargeTurbineBase)) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
-                            Logger.INFO("Found a Parent to attach to this housing.");
                             return;
                         }
                     }
@@ -115,7 +114,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
+        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
             return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
@@ -209,4 +208,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         return false;
     }
 
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isItemStackTurbine(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }

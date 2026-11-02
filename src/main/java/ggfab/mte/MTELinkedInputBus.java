@@ -1,11 +1,14 @@
 package ggfab.mte;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,28 +17,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import ggfab.GGConstants;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -43,30 +38,25 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTELinkedInputBusGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IDataCopyable {
 
     public static final int SIZE_INVENTORY = 18;
     public static final String COPIED_DATA_IDENTIFIER = "linkedinputbus";
     private SharedInventory mRealInventory;
-    private final ItemStackHandlerProxy handler = new ItemStackHandlerProxy();
+    private final ItemStackHandlerProxy handler = new ItemStackHandlerProxy(this::getChannel);
     private String mChannel;
     private boolean mPrivate;
     private State mState;
     private WorldSave save;
 
     public MTELinkedInputBus(int id, String name, String nameRegional, int tier) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            1,
-            new String[] { SIZE_INVENTORY + " slot input bus linked together wirelessly",
-                "Link does not cross world boundary", "Left/right click with data stick to copy/paste configuration",
-                GGConstants.GGMARK_TOOLTIP, });
+        super(id, name, nameRegional, tier, 1, null);
     }
 
     public MTELinkedInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -79,63 +69,65 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    public ItemStack getMachineCraftingIcon() {
+        // Copied on the way out because AE2 renames the stack it gets when the interface carries a custom name, and
+        // that stack is the one the other busses of the channel read.
+        final ItemStack own = super.getMachineCraftingIcon();
+        if (own != null) return own.copy();
+        if (mRealInventory == null) return null;
+        // A bus outside of a structure has no icon of its own, so it borrows the one of a bus that stands in a
+        // multiblock on the same channel. Interfaces then name it after the multiblock the channel feeds.
+        MTELinkedInputBus source = null;
+        for (MTELinkedInputBus bus : mRealInventory.busses) {
+            if (bus == this || !bus.hasValidBase() || bus.getMachineCraftingIconDirectly() == null) continue;
+            // Two formed multiblocks on one channel both qualify, so the lowest position wins. Picking whichever
+            // comes first would let the name flip between them and resend the terminal entry every time.
+            if (source == null || comparePosition(bus, source) < 0) source = bus;
+        }
+        return source == null ? null
+            : source.getMachineCraftingIconDirectly()
+                .copy();
+    }
+
+    private static int comparePosition(MTELinkedInputBus a, MTELinkedInputBus b) {
+        final IGregTechTileEntity baseA = a.getBaseMetaTileEntity();
+        final IGregTechTileEntity baseB = b.getBaseMetaTileEntity();
+        if (baseA.getXCoord() != baseB.getXCoord()) return Integer.compare(baseA.getXCoord(), baseB.getXCoord());
+        if (baseA.getYCoord() != baseB.getYCoord()) return Integer.compare(baseA.getYCoord(), baseB.getYCoord());
+        return Integer.compare(baseA.getZCoord(), baseB.getZCoord());
+    }
+
+    private ItemStack getMachineCraftingIconDirectly() {
+        return super.getMachineCraftingIcon();
+    }
+
+    private boolean hasValidBase() {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        return base != null && !base.isDead();
+    }
+
+    private void joinChannel() {
+        if (mRealInventory != null) mRealInventory.busses.add(this);
+    }
+
+    private void leaveChannel() {
+        if (mRealInventory != null) mRealInventory.busses.remove(this);
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+        leaveChannel();
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTELinkedInputBusGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public int getCircuitSlot() {
         return 0;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new TextFieldWidget().setSynced(true, true)
-                .setGetter(() -> mChannel == null ? "" : mChannel)
-                .setSetter(this::setChannel)
-                .setTextColor(Color.WHITE.dark(1))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.change_freq_warn"))
-                .setSize(60, 18)
-                .setPos(48, 3))
-            .widget(
-                new CycleButtonWidget().setToggle(this::isPrivate, this::setPrivate)
-                    .setTextureGetter(
-                        i -> i == 1 ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                    .setSynced(true, true)
-                    .setGTTooltip(() -> mTooltipCache.getData("ggfab.tooltip.linked_input_bus.private"))
-                    .setSize(18, 18)
-                    .setPos(150, 3))
-            .widget(
-                SlotGroup.ofItemHandler(handler, 9)
-                    .startFromSlot(0)
-                    .endAtSlot(SIZE_INVENTORY - 1)
-                    .background(getGUITextureSet().getItemSlot())
-                    .slotCreator(i -> new BaseSlot(handler, i, false) {
-
-                        @Override
-                        public ItemStack getStack() {
-                            return isEnabled() ? super.getStack() : null;
-                        }
-
-                        @Override
-                        public boolean isEnabled() {
-                            return mChannel != null;
-                        }
-                    })
-                    .build()
-                    .setPos(7, 24))
-            .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.private")))
-                    .setPos(110, 3)
-                    .setSize(43, 20))
-            .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.channel")))
-                    .setPos(5, 3)
-                    .setSize(43, 20));
     }
 
     @Override
@@ -275,6 +267,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         if (mRealInventory != null) {
+            leaveChannel();
             if (--mRealInventory.ref <= 0) getWorldSave().remove(mChannel);
         }
     }
@@ -290,13 +283,9 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         String channel = aNBT.getString("channel");
-        if ("".equals(channel)) channel = null;
+        if (channel.isEmpty()) channel = null;
         this.mChannel = channel;
         mPrivate = aNBT.getBoolean("private");
-    }
-
-    public String getChannel() {
-        return mChannel;
     }
 
     @Override
@@ -305,6 +294,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         if (mChannel != null) {
             mRealInventory = getWorldSave().get(getRealChannel());
             handler.set(mRealInventory.stacks);
+            joinChannel();
         }
     }
 
@@ -351,7 +341,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public NBTTagCompound getCopiedData(EntityPlayer player) {
-        if (getChannel() == null) {
+        if (getChannel().isEmpty()) {
             return null;
         }
         NBTTagCompound tag = new NBTTagCompound();
@@ -381,7 +371,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
         String channel = nbt.getString("channel");
         if (GTUtility.isStackInvalid(circuit)) circuit = null;
-        if ("".equals(channel)) {
+        if (channel.isEmpty()) {
             return false;
         } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
             .stream()
@@ -419,7 +409,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         ItemStack circuit = GTUtility.loadItem(stick.stackTagCompound, "circuit");
         String channel = stick.stackTagCompound.getString("channel");
         if (GTUtility.isStackInvalid(circuit)) circuit = null;
-        if ("".equals(channel)) {
+        if (channel.isEmpty()) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
         } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
@@ -447,7 +437,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         if (!(aPlayer instanceof EntityPlayerMP)) return;
         ItemStack stick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true)) return;
-        if (getChannel() == null) {
+        if (getChannel().isEmpty()) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
             return;
         }
@@ -458,12 +448,6 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         GTUtility.ItemNBT.setBookTitle(stick, "Channel: " + getChannel());
         if (getBaseMetaTileEntity().getOwnerName() != null)
             GTUtility.ItemNBT.setBookAuthor(stick, getBaseMetaTileEntity().getOwnerName());
-    }
-
-    private String getRealChannel() {
-        if (mChannel == null) return null;
-        if (mPrivate) return getBaseMetaTileEntity().getOwnerUuid() + mChannel;
-        return new UUID(0, 0) + mChannel;
     }
 
     public boolean isPrivate() {
@@ -481,6 +465,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             return;
         }
         getWorldSave().markDirty();
+        leaveChannel();
         if (--this.mRealInventory.ref <= 0) {
             // last referrer, drop inventory
             dropItems(mRealInventory.stacks);
@@ -490,17 +475,29 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         mRealInventory = getWorldSave().get(getRealChannel());
         this.handler.set(mRealInventory.stacks);
         mRealInventory.ref++;
+        joinChannel();
         getWorldSave().markDirty();
     }
 
+    private String getRealChannel() {
+        if (mChannel == null) return null;
+        if (mPrivate) return getBaseMetaTileEntity().getOwnerUuid() + mChannel;
+        return new UUID(0, 0) + mChannel;
+    }
+
+    public String getChannel() {
+        return mChannel == null ? "" : mChannel;
+    }
+
     public void setChannel(String aChannel) {
-        if ("".equals(aChannel)) aChannel = null;
+        if (aChannel.isEmpty()) aChannel = null;
         if (getBaseMetaTileEntity().isClientSide()) {
             mChannel = aChannel;
             return;
         }
         if (Objects.equals(this.mChannel, aChannel)) return; // noop
         if (this.mChannel != null) {
+            leaveChannel();
             if (--this.mRealInventory.ref <= 0) {
                 // last referrer, drop inventory
                 dropItems(mRealInventory.stacks);
@@ -516,6 +513,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             this.mRealInventory = getWorldSave().get(getRealChannel());
             this.handler.set(mRealInventory.stacks);
             mRealInventory.ref++;
+            joinChannel();
         }
         getWorldSave().markDirty();
     }
@@ -534,6 +532,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         return save;
     }
 
+    public ItemStackHandlerProxy getHandler() {
+        return handler;
+    }
+
     private enum State {
         Activated,
         Blocked,
@@ -546,20 +548,20 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         /**
          * Inventory wrapper for ModularUI
          */
-        private final ItemStackHandler inventoryHandler;
         public boolean disableLimited = true;
         public boolean disableSort;
         private boolean used;
         private int ref;
+        /** Loaded busses on this channel, so that one can read the crafting icon of another. Not persisted. */
+        private final Set<MTELinkedInputBus> busses = Collections
+            .newSetFromMap(new WeakHashMap<MTELinkedInputBus, Boolean>());
 
         public SharedInventory() {
             this.stacks = new ItemStack[SIZE_INVENTORY];
-            inventoryHandler = new ItemStackHandler(stacks);
         }
 
         public SharedInventory(NBTTagCompound tag) {
             this.stacks = new ItemStack[SIZE_INVENTORY];
-            inventoryHandler = new ItemStackHandler(stacks);
 
             for (int i = 0; i < SIZE_INVENTORY; i++) {
                 String key = "" + i;
@@ -624,14 +626,16 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         }
     }
 
-    private static class ItemStackHandlerProxy extends ItemStackHandler {
+    public static class ItemStackHandlerProxy extends ItemStackHandler {
 
         private static final ItemStack[] EMPTY = new ItemStack[SIZE_INVENTORY];
         private boolean fake;
+        private final Supplier<String> channel;
 
-        public ItemStackHandlerProxy() {
+        public ItemStackHandlerProxy(Supplier<String> channel) {
             super(EMPTY);
             fake = true;
+            this.channel = channel;
         }
 
         public void setFake() {
@@ -660,5 +664,17 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             super.deserializeNBT(nbt);
             fake = nbt.getBoolean("fake");
         }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            if (channel.get()
+                .isEmpty() || fake) return null;
+            return super.getStackInSlot(slot);
+        }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_bus_linked.desc", SIZE_INVENTORY);
     }
 }

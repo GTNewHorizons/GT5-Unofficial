@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -36,13 +37,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, ISmartInputHatch {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
@@ -81,6 +82,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     public void setItemCount(int amount) {
         itemCount = amount;
     }
+
+    public abstract int getItemCapacity();
 
     @Override
     public abstract boolean isValidItem(ItemStack item);
@@ -145,21 +148,14 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
+        if (ItemStackNBT.hasKey(stack, "itemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
             final int tSize = stack.stackTagCompound.getInteger("itemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getDisplayName()
-                        + EnumChatFormatting.GRAY);
-                tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + formatNumber(tSize)
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
+                tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }
@@ -216,11 +212,17 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.injectItems(input, mode, src);
     }
 
     @Override
     public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.extractItems(request, mode, src);
     }
 
@@ -274,7 +276,10 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             }
 
             meInventoryHandler.notifyListeners(count - savedCount, stack);
-            if (count != savedCount) getBaseMetaTileEntity().markDirty();
+            if (count != savedCount) {
+                getBaseMetaTileEntity().markDirty();
+            }
+            detectInventoryChange();
         }
     }
 
@@ -312,14 +317,15 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("itemCount", getItemCount());
-        if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        if (getItemStack() != null) aNBT.setTag("itemStack", GTUtility.saveItem(getItemStack()));
+        aNBT.setBoolean("outputLocked", isOutputSlotLocked);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
-        if (aNBT.hasKey("itemStack"))
-            setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("itemStack")));
+        if (aNBT.getTag("itemStack") instanceof NBTTagCompound compound) setItemStack(GTUtility.loadItem(compound));
+        if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 
     @Override

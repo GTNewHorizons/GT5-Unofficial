@@ -15,9 +15,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -88,7 +88,9 @@ public class ToolScrewdriver extends GTTool {
         return !aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
                 .getTextureIndex()]
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleScrewdriver];
+            : MetaGeneratedTool
+                .getSecondaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.HANDLE_SCREWDRIVER
+                    .ordinal()];
     }
 
     @Override

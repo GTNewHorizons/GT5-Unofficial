@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,23 +31,31 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchInputBus extends MTEHatch
+    implements IConfigurationCircuitSupport, ISmartInputHatch, IPhysicalCircuitDisplay, INonConsumedItemDisplay {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
@@ -66,16 +76,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Input for Multiblocks",
-                "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -84,6 +85,12 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     public MTEHatchInputBus(String aName, int aTier, int aSlots, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.input_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -153,7 +160,8 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            notifyWatchers();
             updateSlots();
         }
     }
@@ -165,7 +173,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void fillStacksIntoFirstSlots() {
-        GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        // Don't compact busses with fewer than 2 slots since there's no point
+        if (mInventory.length > 1) {
+            GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        }
     }
 
     @Override
@@ -260,6 +271,24 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
+    }
+
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        return IPhysicalCircuitDisplay.collectCircuitNumbers(this, 0, getSizeInventory(), getCircuitSlot());
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        List<ItemStack> result = new ArrayList<>();
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, stack)) {
+                result.add(stack);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -512,30 +541,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-
-        NBTTagCompound tag = super.getDescriptionData();
-        for (int i = 0; i < mInventory.length; i++) {
-            ItemStack stack = mInventory[i];
-            if (stack != null) {
-                NBTTagCompound s = new NBTTagCompound();
-                stack.writeToNBT(s);
-                tag.setTag("slot" + i, s);
-            }
-        }
-        return tag;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        for (int i = 0; i < mInventory.length; i++) {
-            String key = "slot" + i;
-            if (data.hasKey(key)) {
-                mInventory[i] = ItemStack.loadItemStackFromNBT(data.getCompoundTag(key));
-            } else {
-                mInventory[i] = null;
-            }
-        }
-        super.onDescriptionPacket(data);
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.input_bus.desc" : "gt.blockmachines.input_bus.singular.desc",
+            getSlots(mTier));
     }
 }

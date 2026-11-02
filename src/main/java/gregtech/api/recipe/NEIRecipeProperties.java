@@ -45,8 +45,7 @@ public final class NEIRecipeProperties {
     /**
      * Size of background shown.
      */
-    // todo make it final
-    public Size recipeBackgroundSize;
+    public final Size recipeBackgroundSize;
     /**
      * Offset of background shown.
      */

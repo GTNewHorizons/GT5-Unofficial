@@ -11,15 +11,12 @@ import net.minecraft.network.PacketBuffer;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
@@ -32,9 +29,7 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import bwcrossmod.galacticgreg.MTEVoidMinerBase;
@@ -65,27 +60,29 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     public ModularPanel createFilterPopup(PanelSyncManager syncManager, IPanelHandler panelHandler) {
-        GenericSyncValue<ItemStackHandler> listSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStackHandler, ?> listSyncer = new GenericSyncValue<>(
             ItemStackHandler.class,
             () -> multiblock.selected,
             handler -> multiblock.selected = handler,
-            new ItemStackListAdapter());
+            new ItemStackListAdapter()).allowC2S();
         syncManager.syncValue("selected", listSyncer);
 
         GTUtility.ItemId[] ores = sortOres(multiblock.dropMap);
         return new ModularPanel("gt:vm:filter").child(ButtonWidget.panelCloseButton())
             .child(
-                new Column().child(
-                    IKey.lang("GT5U.gui.text.vm.title")
-                        .asWidget())
+                Flow.column()
                     .child(
-                        new Row().child(createOreToggleButtonGrid(syncManager, ores))
+                        IKey.lang("GT5U.gui.text.vm.title")
+                            .asWidget())
+                    .child(
+                        Flow.row()
+                            .child(createOreToggleButtonGrid(syncManager, ores))
                             .child(createRightButtonColumn(listSyncer, ores))
                             .childPadding(3)
                             .crossAxisAlignment(Alignment.CrossAxis.START)
                             .coverChildren())
                     .child(
-                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str))
+                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str).allowC2S())
                             .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                             .autoUpdateOnChange(true)
                             .anchorLeft(0)
@@ -97,37 +94,44 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private ListWidget<IWidget, ?> createOreToggleButtonGrid(PanelSyncManager syncManager, GTUtility.ItemId[] ores) {
-        GenericSyncValue<ItemStackHandler> syncer = (GenericSyncValue<ItemStackHandler>) syncManager
+        GenericSyncValue<ItemStackHandler, ?> syncer = (GenericSyncValue<ItemStackHandler, ?>) syncManager
             .findSyncHandler("selected");
         int buttonsPerRow = 10;
         int rowCount = (int) Math.ceil((double) ores.length / buttonsPerRow);
-        return new ListWidget<>().children(rowCount, row -> {
-            return new Row().children(Math.min(buttonsPerRow, ores.length - (row * buttonsPerRow)), rowIndex -> {
-                int index = (row * buttonsPerRow) + rowIndex;
-                ItemStack stack = ores[index].getItemStack();
-                return new ToggleButton()
-                    .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
-                        if (bool) {
-                            multiblock.selected.insertItem(index, stack, false);
-                        } else multiblock.selected.extractItem(index, 1, false);
-                        syncer.setValue(multiblock.selected);
-                    }))
-                    .overlay(getOreButtonOverlay(stack))
-                    .tooltip(t -> t.add(stack.getDisplayName()))
-                    .size(18);
-            })
-                .coverChildren();
-        })
-            .crossAxisAlignment(Alignment.CrossAxis.START)
+        return new ListWidget<>().child(
+            Flow.row()
+                .children(ores.length, index -> {
+                    ItemStack stack = ores[index].getItemStack();
+                    return new ToggleButton()
+                        .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
+                            if (bool) {
+                                multiblock.selected.insertItem(index, stack, false);
+                            } else multiblock.selected.extractItem(index, 1, false);
+                            syncer.setValue(multiblock.selected);
+                        }))
+                        .overlay(
+                            new ItemDrawable(stack).asIcon()
+                                .size(16))
+                        .background(true, GTGuiTextures.BUTTON_STANDARD_PRESSED.withColorOverride(Color.GREY.main))
+                        .background(false, GTGuiTextures.BUTTON_STANDARD)
+                        .tooltipBuilder(false, t -> getOreButtonTooltip(t, stack, false))
+                        .tooltipBuilder(true, t -> getOreButtonTooltip(t, stack, true))
+                        .setEnabledIf($ -> matchesSearch(stack));
+                })
+                .wrap()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .width(18 * buttonsPerRow)
+                .coverChildrenHeight()
+                .collapseDisabledChild())
             .coverChildrenWidth()
             .height(18 * Math.min(rowCount, 8));
     }
 
-    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
-        return new Column()
+    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler, ?> syncer, GTUtility.ItemId[] ores) {
+        return Flow.column()
             .child(
-                new ToggleButton()
-                    .value(new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool))
+                new ToggleButton().value(
+                    new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool).allowC2S())
                     .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.button.vm.whitelist")))
                     .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.button.vm.blacklist")))
                     .overlay(
@@ -165,20 +169,6 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .heightRel(1F);
     }
 
-    private IDrawable getOreButtonOverlay(ItemStack stack) {
-        return new DynamicDrawable(() -> {
-            IDrawable oreDrawable = new ItemDrawable(stack).asIcon()
-                .size(16);
-            if (matchesSearch(stack)) {
-                return new DrawableStack(
-                    new Rectangle().color(Color.rgb(0, 255, 0))
-                        .asIcon()
-                        .size(16),
-                    oreDrawable);
-            } else return oreDrawable;
-        });
-    }
-
     // On game launch the order in the multis drop map randomizes, so we sort it by meta so everything can stay the same
     private GTUtility.ItemId[] sortOres(VoidMinerUtility.DropMap dropMap) {
         return Arrays.stream(dropMap.getOres())
@@ -189,8 +179,16 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .toArray(GTUtility.ItemId[]::new);
     }
 
+    private void getOreButtonTooltip(RichTooltip tt, ItemStack stack, boolean selected) {
+        tt.addFromItem(stack);
+        if (multiblock.blacklist) {
+            tt.addLine(translateToLocal("GT5U.gui.button.vm.tt." + (selected ? "void" : "novoid")));
+        } else tt.addLine(translateToLocal("GT5U.gui.button.vm.tt." + (selected ? "novoid" : "void")));
+        tt.setAutoUpdate(true);
+    }
+
     private boolean matchesSearch(ItemStack ore) {
-        return !search.isEmpty() && ore.getDisplayName()
+        return search.isEmpty() || ore.getDisplayName()
             .toLowerCase()
             .contains(search.toLowerCase());
     }

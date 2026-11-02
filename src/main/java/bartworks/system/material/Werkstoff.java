@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -50,7 +51,6 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
@@ -63,6 +63,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
@@ -101,6 +102,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     private byte[] rgb = new byte[3];
     private final String defaultName;
     private String toolTip;
+    private boolean isFormulaNeededLocalized = false;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -152,7 +154,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             generationFeatures,
             mID,
             materials.mIconSet,
-            (List) materials.mOreByProducts,
+            materials.mOreByProducts,
             Pair.of(materials, 1));
         if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
@@ -163,7 +165,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.stats.durOverride = materials.mDurability;
         this.stats.qualityOverride = materials.mToolQuality;
         this.stats.setGas(materials.mHasGas);
-        this.stats.setRadioactive(materials.isRadioactive());
+        this.stats.setRadioactive(false);
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
         this.stats.setMeltingVoltage(120);
         this.stats.isProxy = true;
@@ -210,7 +212,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
@@ -227,7 +229,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
@@ -243,7 +245,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             toolTip,
@@ -260,7 +262,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
@@ -276,7 +278,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
-        List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+        List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.clear();
         this.mOreByProducts.addAll(oreByProduct);
@@ -295,7 +297,8 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
+        GregTechAPI.sAfterGTPreload
+            .add(() -> GTLanguageManager.addStringLocalization(getLocalizedNameKey(), this.defaultName));
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -327,13 +330,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
                 } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
                     + (p.getValue() > 1 ? BWUtil.subscriptNumber(p.getValue()) : "");
             }
-        } else this.toolTip = toolTip;
-
-        // if (this.toolTip.length() > 25)
-        // this.toolTip = "The formula is to long...";
-
-        // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
+        } else {
+            this.toolTip = toolTip;
+            this.isFormulaNeededLocalized = true;
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
+        }
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -361,7 +362,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             if (count > 0) this.stats = stats.setMass(tmpmass / count);
         }
 
-        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = 1123;
+        if (this.stats.meltingPoint == 0) this.stats.meltingPoint = -1;
 
         if (this.stats.meltingVoltage == 0) this.stats.meltingVoltage = 120;
 
@@ -401,7 +402,8 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     private static String getFormula(Materials material) {
-        return material.mChemicalFormula.isEmpty() ? "?" : material.mChemicalFormula;
+        return material.getChemicalFormula()
+            .isEmpty() ? "?" : material.getChemicalFormula();
     }
 
     private static String getFormula(Werkstoff material) {
@@ -476,8 +478,8 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             case COMPOUND:
             case MIXTURE:
             case BIOLOGICAL: {
-                for (int i = 0; i < this.CONTENTS.toArray().length; i++) {
-                    ret += (int) this.CONTENTS.toArray(new Pair[0])[i].getValue();
+                for (Pair<ISubTagContainer, Integer> content : this.CONTENTS) {
+                    ret += content.getValue();
                 }
                 break;
             }
@@ -518,26 +520,43 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     @Override
-    public String getLocalizedName() {
-        return GTLanguageManager.addStringLocalization(
-            String.format("bw.werkstoff.%05d.name", this.mID),
-            this.defaultName,
-            !GregTechAPI.sPostloadFinished);
+    public String getDefaultLocalName() {
+        return getDefaultName();
     }
 
     public String getVarName() {
         return this.defaultName.replace(" ", "");
     }
 
-    public String getToolTip() {
+    public String getFormulaTooltip() {
         return this.toolTip;
     }
 
-    public String getLocalizedToolTip() {
-        return GTLanguageManager.addStringLocalization(
-            String.format("bw.werkstoff.%05d.tooltip", this.mID),
-            this.toolTip,
-            !GregTechAPI.sPostloadFinished);
+    public String getLocalizedFormulaTooltip() {
+        if (isFormulaNeededLocalized) {
+            return StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula");
+        }
+        return this.toolTip;
+    }
+
+    @Override
+    public void addTooltips(List<String> list) {
+        boolean showsRadioactiveWarning = Client.tooltip.showRadioactiveText && getStats().isRadioactive();
+        boolean showsToxicWarning = Client.tooltip.showToxicText && getStats().isToxic();
+        if (showsRadioactiveWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+        }
+        if (showsToxicWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Toxic"));
+        }
+        if (showsRadioactiveWarning || showsToxicWarning) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
+        }
+        if (!Client.tooltip.showFormula) {
+            return;
+        }
+        final String formula = getLocalizedFormulaTooltip();
+        if (GTUtility.isStringValid(formula)) list.add(formula);
     }
 
     public Werkstoff.Stats getStats() {
@@ -721,6 +740,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return GREEN + modName;
     }
 
+    public boolean isFormulaNeededLocalized() {
+        return isFormulaNeededLocalized;
+    }
+
     public enum Types {
 
         MATERIAL,
@@ -750,11 +773,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         public static final int ORES = 0b1 << 3;
         public static final int LIQUID_CELLS = 0b1 << 4;
         /// Unused
-        public static final int BOTTLES = 0b1 << 5;
+        public static final int PLASMA_CELLS = 0b1 << 5;
         public static final int MOLTEN_CELLS = 0b1 << 6;
         public static final int SIMPLE_METALWORKING = 0b1 << 7;
         public static final int CRAFTING_METALWORKING = 0b1 << 8;
-        /// Double and dense plates
+        /// Double, dense, and superdense plates
         public static final int DOUBLE_DENSE_PLATES = 0b1 << 9;
         /// Triple, quadruple, and quintuple plates
         public static final int MULTI_PLATES = 0b1 << 10;
@@ -784,7 +807,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             Mixing,
             /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
             /// some reason.
-            Sifting;
+            Sifting
         }
 
         public GenerationFeatures() {}
@@ -818,11 +841,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.rawOre, ORES);
 
             prefixLogic.put(OrePrefixes.cell, LIQUID_CELLS);
-            if (Mods.Forestry.isModLoaded()) {
-                prefixLogic.put(OrePrefixes.capsule, LIQUID_CELLS);
-                prefixLogic.put(OrePrefixes.capsuleMolten, MOLTEN_CELLS);
-            }
-            // prefixLogic.put(OrePrefixes.bottle, BOTTLES);
 
             prefixLogic.put(OrePrefixes.cellMolten, MOLTEN_CELLS);
 
@@ -845,9 +863,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             prefixLogic.put(OrePrefixes.rotor, CRAFTING_METALWORKING);
             prefixLogic.put(OrePrefixes.wireFine, CRAFTING_METALWORKING);
             prefixLogic.put(OrePrefixes.sheetmetal, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.frameGt, CRAFTING_METALWORKING);
 
             prefixLogic.put(OrePrefixes.plateDouble, DOUBLE_DENSE_PLATES);
             prefixLogic.put(OrePrefixes.plateDense, DOUBLE_DENSE_PLATES);
+            prefixLogic.put(OrePrefixes.plateSuperdense, DOUBLE_DENSE_PLATES);
 
             prefixLogic.put(OrePrefixes.plateTriple, MULTI_PLATES);
             prefixLogic.put(OrePrefixes.plateQuadruple, MULTI_PLATES);
@@ -1042,6 +1062,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         }
 
         public int getMeltingPoint() {
+            return this.meltingPoint == -1 ? 1123 : this.meltingPoint;
+        }
+
+        public int getMeltingPointDirect() {
             return this.meltingPoint;
         }
 
@@ -1109,6 +1133,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         private float speedOverride;
         private int meltingPoint;
         private int meltingVoltage;
+        private int processingMaterialTierEU;
         private long protons;
         private long neutrons;
         private long electrons;
@@ -1271,6 +1296,15 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
         public int getMeltingVoltage() {
             return this.meltingVoltage;
+        }
+
+        public Werkstoff.Stats setProcessingMaterialTierEU(long processingMaterialTierEU) {
+            this.processingMaterialTierEU = (int) processingMaterialTierEU;
+            return this;
+        }
+
+        public int getProcessingMaterialTierEU() {
+            return this.processingMaterialTierEU;
         }
 
         public boolean isElektrolysis() {

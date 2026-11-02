@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -48,6 +49,8 @@ import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
+import gregtech.nei.dumper.TurbineFuelDumper;
+import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
 
@@ -70,8 +73,10 @@ public class NEIGTConfig implements IConfigureNEI {
         .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
+    private static ListMultimap<RecipeCategory, RecipeMapWorkable> DEPRECATED_CATALYST_INDEX;
 
-    private static GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
+    private static final GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
+    private static final GTNEIMacerationStackConversion MACERATOR_UPGRADE_HANDLER = new GTNEIMacerationStackConversion();
 
     public static boolean sIsAdded = true;
 
@@ -110,6 +115,9 @@ public class NEIGTConfig implements IConfigureNEI {
 
         GuiCraftingRecipe.craftinghandlers.add(CAL_IMPRINT_HANDLER);
         GuiUsageRecipe.usagehandlers.add(CAL_IMPRINT_HANDLER);
+
+        GuiCraftingRecipe.craftinghandlers.add(MACERATOR_UPGRADE_HANDLER);
+        GuiUsageRecipe.usagehandlers.add(MACERATOR_UPGRADE_HANDLER);
     }
 
     private void registerCatalysts() {
@@ -122,11 +130,35 @@ public class NEIGTConfig implements IConfigureNEI {
                         entry.getKey().unlocalizedName,
                         recipeMapWorkable.getRecipeCatalystPriority()));
         }
+        for (Map.Entry<RecipeCategory, RecipeMapWorkable> entry : DEPRECATED_CATALYST_INDEX.entries()) {
+            API.removeRecipeCatalyst(
+                entry.getValue()
+                    .getStackForm(1),
+                entry.getKey().unlocalizedName);
+        }
         API.addRecipeCatalyst(
             GTModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
 
         API.addRecipeCatalyst(new ItemStack(Items.cauldron), RecipeMaps.cauldronRecipe.unlocalizedName);
+
+        for (ItemList item : Arrays.asList(
+            ItemList.Machine_LV_Cutter,
+            ItemList.Machine_MV_Cutter,
+            ItemList.Machine_HV_Cutter,
+            ItemList.Machine_EV_Cutter,
+            ItemList.Machine_IV_Cutter,
+            ItemList.CuttingMachineLuV,
+            ItemList.CuttingMachineZPM,
+            ItemList.CuttingMachineUV,
+            ItemList.CuttingMachineUHV,
+            ItemList.CuttingMachineUEV,
+            ItemList.CuttingMachineUIV,
+            ItemList.CuttingMachineUMV)) {
+            API.addRecipeCatalyst(item.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
+        }
+
+        API.addRecipeCatalyst(ItemList.IndustrialCuttingMachine.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
@@ -143,6 +175,8 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
+        API.addOption(new TurbineFuelDumper());
+        API.addOption(new TurbineRotorDumper());
     }
 
     private void registerFilters() {
@@ -193,53 +227,67 @@ public class NEIGTConfig implements IConfigureNEI {
         RecipeCategory.ALL_RECIPE_CATEGORIES.values()
             .forEach(recipeCategory -> {
                 HandlerInfo.Builder builder = createHandlerInfoBuilderTemplate(recipeCategory);
-                HandlerInfo handlerInfo;
+
                 if (recipeCategory.handlerInfoCreator != null) {
-                    handlerInfo = recipeCategory.handlerInfoCreator.apply(builder)
-                        .build();
-                } else {
-                    // Infer icon from recipe catalysts
-                    RECIPE_CATALYST_INDEX.get(recipeCategory)
-                        .stream()
-                        .findFirst()
-                        .ifPresent(catalyst -> builder.setDisplayStack(catalyst.getStackForm(1)));
-                    handlerInfo = builder.build();
+                    builder = recipeCategory.handlerInfoCreator.apply(builder);
                 }
-                event.registerHandlerInfo(handlerInfo);
+
+                event.registerHandlerInfo(builder.build());
             });
 
         event.registerHandlerInfo(
             new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
-                .setMaxRecipesPerPage(100)
+                .setMultipleWidgetsAllowed(true)
                 .setDisplayStack(
                     CircuitPartsItem.getCircuitParts()
                         .getStack(0))
                 .build());
+
+        event.registerHandlerInfo(
+            new HandlerInfo.Builder(MACERATOR_UPGRADE_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
+                .setMultipleWidgetsAllowed(true)
+                .setDisplayStack(ItemList.MacerationStack.get(1))
+                .build());
     }
 
     private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
+        // Infer icon from recipe catalysts
+        final RecipeMapWorkable catalyst = RECIPE_CATALYST_INDEX.get(recipeCategory)
+            .stream()
+            .findFirst()
+            .orElse(null);
+
         return new HandlerInfo.Builder(
             recipeCategory.unlocalizedName,
             recipeCategory.ownerMod.getName(),
-            recipeCategory.ownerMod.getModId()).setShiftY(6)
+            recipeCategory.ownerMod.getModId()).setShiftY(8)
                 .setHeight(135)
-                .setMaxRecipesPerPage(2);
+                .setShowBadge(true)
+                .setDisplayStack(catalyst != null ? catalyst.getStackForm(1) : null)
+                .setMultipleWidgetsAllowed(true);
     }
 
     private static void generateRecipeCatalystIndex() {
         ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> builder = new ImmutableListMultimap.Builder<>();
         builder
             .orderValuesBy(Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
+        ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> deprecatedBuilder = new ImmutableListMultimap.Builder<>();
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
             IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[i];
             if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
+            boolean deprecated = recipeMapWorkable.isDeprecated();
             for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
                 for (RecipeCategory recipeCategory : recipeMap.getAssociatedCategories()) {
-                    builder.put(recipeCategory, recipeMapWorkable);
+                    if (deprecated) {
+                        deprecatedBuilder.put(recipeCategory, recipeMapWorkable);
+                    } else {
+                        builder.put(recipeCategory, recipeMapWorkable);
+                    }
                 }
             }
         }
         RECIPE_CATALYST_INDEX = builder.build();
+        DEPRECATED_CATALYST_INDEX = deprecatedBuilder.build();
     }
 
     @Override

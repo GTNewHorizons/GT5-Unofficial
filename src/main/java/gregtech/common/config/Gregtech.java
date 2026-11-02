@@ -5,7 +5,11 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(
+    modid = Mods.ModIDs.GREG_TECH,
+    category = Mods.ModIDs.GREG_TECH,
+    configSubDirectory = "GregTech",
+    filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
@@ -150,6 +154,11 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         public boolean batchModeInitialValue;
 
+        @Config.Comment("If true, explosive food items (e.g. Explosive Ice Cream) deal damage when eaten. "
+            + "If false, only the explosion effect plays, with no damage.")
+        @Config.DefaultBoolean(true)
+        public boolean explosiveFoodDamage;
+
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
         @Config.RequiresMcRestart
@@ -229,11 +238,6 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
-
-        @Config.Comment("If true, hungers the players based on his amount of stuff in the inventory every 6s, regardless of player movement.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hungerEffect;
 
         @Config.Comment("If true, enables the item oredification of the items in the inventory.")
         @Config.DefaultBoolean(true)
@@ -340,6 +344,16 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean costlyCableConnection;
 
+        @Config.Comment("if true, enables cable multi-connection using a wire cutter.")
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        public boolean cableMultiConnectEnabled;
+
+        @Config.Comment("Maximum number of cables to check during multi-connect before stopping.")
+        @Config.DefaultInt(10000)
+        @Config.RequiresMcRestart
+        public int cableMultiConnectLimit;
+
         @Config.Comment("if true, crashes on null recipe input.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
@@ -375,7 +389,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/explosions.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
@@ -536,12 +550,12 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean machineThunderExplosions;
 
-        @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
+        @Config.Comment("If true, show the color of the dye applied to the machine as a swatch next to the GUI title.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean coloredGUI;
 
-        @Config.Comment("If true and if the machine tint is activated, the guis will have a uniform metallic tint no matter what color is applied to the machines.")
+        @Config.Comment("If true and if coloredGUI is enabled, hide the color swatch and show a uniform metallic tint no matter what color is applied to the machines.")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean machineMetalGUI;
@@ -554,6 +568,18 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.Name("Enable Powerfail Notifications")
         public boolean enablePowerfailNotifications;
+
+        @Config.Comment("Format template for the ghost circuit suffix in AE2 terminal display names. Use %s as placeholder for the circuit number. Applies to all GT machines and Crafting Input Bus/Buffer.")
+        @Config.DefaultString(" [%s]")
+        @Config.Name("Ghost Circuit Suffix Format")
+        @Config.RequiresMcRestart
+        public String ghostCircuitSuffixFormat = " [%s]";
+
+        @Config.Comment("Format template for the item slots suffix in AE2 terminal display names. Use %s as placeholder for comma-separated item names. Applies to Crafting Input Bus/Buffer manual slots and non-consumed recipe inputs (e.g. molds).")
+        @Config.DefaultString(" {%s}")
+        @Config.Name("Item Slots Suffix Format")
+        @Config.RequiresMcRestart
+        public String itemSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

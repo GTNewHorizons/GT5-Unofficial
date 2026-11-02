@@ -13,11 +13,7 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
 
     public static final short ANGLE_GRINDER = 7834;
     public static final short ELECTRIC_SNIPS = 7934;
-    public static MetaGeneratedTool INSTANCE;
-
-    static {
-        INSTANCE = new MetaGeneratedGregtechTools();
-    }
+    public static MetaGeneratedTool INSTANCE = new MetaGeneratedGregtechTools();
 
     public static MetaGeneratedTool getInstance() {
         return INSTANCE;

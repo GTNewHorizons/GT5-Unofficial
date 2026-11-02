@@ -5,6 +5,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
 
 public enum BlockIcons implements IIconContainer, Runnable {
@@ -16,7 +17,7 @@ public enum BlockIcons implements IIconContainer, Runnable {
     OVERLAY_FRONT_ADV_ASSLINE,
     OVERLAY_FRONT_ADV_ASSLINE_GLOW,;
 
-    public static final String RES_PATH = GGConstants.MODID + ":";
+    public static final String RES_PATH = Mods.ModIDs.G_G_FAB + ":";
     private IIcon mIcon;
 
     BlockIcons() {

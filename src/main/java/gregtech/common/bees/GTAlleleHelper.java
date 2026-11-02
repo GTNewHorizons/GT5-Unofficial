@@ -1,5 +1,7 @@
 package gregtech.common.bees;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,7 +29,6 @@ import forestry.core.genetics.alleles.EnumAllele;
 import forestry.core.genetics.alleles.IAlleleValue;
 import forestry.core.utils.vect.IVect;
 import forestry.plugins.PluginManager;
-import gregtech.GTMod;
 
 public class GTAlleleHelper extends AlleleHelper {
 
@@ -141,7 +142,7 @@ public class GTAlleleHelper extends AlleleHelper {
             helper.alleleMaps = (Map<Class<?>, Map<?, ? extends IAllele>>) FieldUtils
                 .readField(FieldUtils.getField(AlleleHelper.class, "alleleMaps", true), AlleleHelper.instance, true);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
 
         AlleleHelper.instance = helper;
@@ -152,13 +153,13 @@ public class GTAlleleHelper extends AlleleHelper {
     public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType, IAllele allele) {
 
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.warn("Allele is null!");
+            GT_FML_LOGGER.warn("Allele is null!");
             return;
         }
 
         if (!chromosomeType.getAlleleClass()
             .isInstance(allele)) {
-            GTMod.GT_FML_LOGGER.warn("chromosomeType is not an instance of allele!" + allele.getName());
+            GT_FML_LOGGER.warn("chromosomeType is not an instance of allele!{}", allele.getName());
             return;
         }
 

@@ -15,11 +15,11 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MT
 public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
     public MTEHatchMillingBalls(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", false);
+        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage");
     }
 
     public MTEHatchMillingBalls(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 6, 4, aDescription, false, aTextures);
+        super(aName, 6, 4, aDescription, aTextures);
     }
 
     @Override

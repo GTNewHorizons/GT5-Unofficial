@@ -1,11 +1,14 @@
 package gregtech.api.util.tooltip;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTUtility;
@@ -18,16 +21,91 @@ import gregtech.api.util.GTUtility;
 public class TooltipHelper {
 
     public static final EnumChatFormatting DEFAULT = EnumChatFormatting.DARK_GRAY;
-    public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
-    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
-    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
+    /** For tier-related highlighting. */
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
+    /** Major components that require highlighting like hatch types, tool names, and tired part names. */
+    public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
+    /** For steam related names and values. */
+    public static final EnumChatFormatting STEAM_COLOR = EnumChatFormatting.WHITE;
+    /**
+     * The text color for formula text.
+     * <br>
+     * example usage: {color:name}{color_formula: = ax+b}
+     */
+    public static final EnumChatFormatting FORMULA_COLOR = EnumChatFormatting.WHITE;
+    /** For warns and other important notes. */
+    public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;
+    /** For machine type names. */
+    public static final EnumChatFormatting MACHINE_TYPE_COLOR = EnumChatFormatting.YELLOW;
+    /** For miscellaneous component names or anything else that needs highlighting. */
+    public static final EnumChatFormatting MISC_COLOR = EnumChatFormatting.BLUE;
+    /** For cold things. */
+    public static final EnumChatFormatting COLD_COLOR = EnumChatFormatting.BLUE;
+    /** For speed modifiers. */
+    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
+    /** For range modifiers. */
+    public static final EnumChatFormatting RANGE_COLOR = EnumChatFormatting.GREEN;
+    /** For amount values. */
+    public static final EnumChatFormatting AMOUNT_COLOR = EnumChatFormatting.GREEN;
+    /** For hatch usage notes. */
+    public static final EnumChatFormatting HATCH_COLOR = EnumChatFormatting.GREEN;
+    /** For loss related values. */
+    public static final EnumChatFormatting LOSS_COLOR = EnumChatFormatting.GREEN;
+    /** For parallels counts and modifiers. */
+    public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
+    /** For machine mode names. */
+    public static final EnumChatFormatting MODE_COLOR = EnumChatFormatting.GOLD;
+    /** For things that are the key components of something. */
+    public static final EnumChatFormatting KEY_COLOR = EnumChatFormatting.GOLD;
+    /** For efficiency modifiers. */
+    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
+    /** For power usage (eg: x EU/t). */
+    public static final EnumChatFormatting EU_USAGE_COLOR = EnumChatFormatting.YELLOW;
+    /** For heat values. */
+    public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
+    /** For hot things. */
+    public static final EnumChatFormatting HOT_COLOR = EnumChatFormatting.RED;
+    /** For values relating to electron volts like eV, KeV, MeV and GeV. */
+    public static final EnumChatFormatting ELECTRON_VOLT_COLOR = EnumChatFormatting.RED;
+    /** For depreciation notices. */
+    public static final EnumChatFormatting DEPRECATED_COLOR = EnumChatFormatting.RED;
+    /** For dangerous component descriptions. */
+    public static final EnumChatFormatting DANGER_COLOR = EnumChatFormatting.DARK_RED;
+    /** For mechanic descriptions. */
+    public static final EnumChatFormatting MECHANIC_COLOR = EnumChatFormatting.LIGHT_PURPLE;
+    /** For time values. */
+    public static final EnumChatFormatting TIME_COLOR = EnumChatFormatting.LIGHT_PURPLE;
+    /** For pollution values. */
+    public static final EnumChatFormatting POLLUTION_COLOR = EnumChatFormatting.DARK_PURPLE;
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
+    /** For EU throughput measurements like EU/t values or input or output voltages. */
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
+    /** For amperage measurements. */
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
+    /** For eu capacity measurements. */
+    public static final EnumChatFormatting EU_CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
+
+    /**
+     * Get the "Any casing" text for structure tooltips.
+     */
+    public static String anyCasingText() {
+        // Translated on every call so it follows an in-game language change
+        return StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+    }
+
+    /**
+     * Describes the recipe item output limit using the appropriate singular or plural form.
+     */
+    public static String recipeSlotLimit(int outputSlots) {
+        return StatCollector.translateToLocalFormatted(
+            outputSlots == 1 ? "gt.blockmachines.recipe_output_limit.desc"
+                : "gt.blockmachines.recipe_output_limit_plural.desc",
+            outputSlots);
+    }
 
     /**
      * Wraps input string in parallel colors
@@ -114,8 +192,7 @@ public class TooltipHelper {
      * @return Colored String, resets to gray coloring after
      */
     public static String coloredText(String text, EnumChatFormatting coloring) {
-        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY)
-            return String.format("%s%s%s", coloring, text, EnumChatFormatting.GRAY);
+        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY) return coloring + text + EnumChatFormatting.GRAY;
         return text;
     }
 
@@ -126,7 +203,7 @@ public class TooltipHelper {
      * @return Italic String
      */
     public static String italicText(String text) {
-        return String.format("%s%s%s", ITALIC, text, EnumChatFormatting.RESET);
+        return ITALIC + text + EnumChatFormatting.RESET;
     }
 
     /**
@@ -154,7 +231,7 @@ public class TooltipHelper {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
-            + (withTierSuffix ? "-tier" : "");
+            + (withTierSuffix ? StatCollector.translateToLocal("gt.voltage.tier") : "");
     }
 
     /**
@@ -162,6 +239,20 @@ public class TooltipHelper {
      */
     public static String euText(long eu) {
         return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given EU/t, formatted in the form "[Number] EU/t".
+     */
+    public static String euRateText(long eu) {
+        return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(eu) + TIER_COLOR + " EU/t" + EnumChatFormatting.GRAY;
+    }
+
+    /**
+     * @return The given number of EU, formatted.
+     */
+    public static String euCapacityText(long capacity) {
+        return EU_CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
     }
 
     /**
@@ -184,17 +275,16 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY
-            + GTUtility.translate("GT5U.item.cable.eu_volt");
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.item.cable.loss.eu_volt",
+            CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
 
     /**
      * @return The given number of L, formatted.
      */
     public static String fluidText(long liters) {
-        String text = NumberFormatUtil.formatNumber(liters) + GTUtility.translate("gt.unit.liter");
+        String text = NumberFormatUtil.formatNumber(liters) + StatCollector.translateToLocal("gt.unit.liter");
         return coloredText(text, L_COLOR);
     }
 
@@ -202,7 +292,21 @@ public class TooltipHelper {
      * @return The given number of L per sec, formatted.
      */
     public static String fluidRateText(long litersPerSecond) {
-        String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
+        String text = NumberFormatUtil.formatNumber(litersPerSecond)
+            + StatCollector.translateToLocal("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
+    }
+
+    /**
+     * @return The tooltip as it was, but with a warning placed first if pollution is toggled off in config
+     */
+    public static String[] pollutionDisabledTooltip(String[] description) {
+        if (GTMod.proxy.mPollution) {
+            return description;
+        }
+        String[] descriptionWithWarning = Arrays.copyOf(description, description.length + 1);
+        System.arraycopy(descriptionWithWarning, 0, descriptionWithWarning, 1, description.length);
+        descriptionWithWarning[0] = EnumChatFormatting.RED + "Pollution is OFF - This Block is Redundant";
+        return descriptionWithWarning;
     }
 }

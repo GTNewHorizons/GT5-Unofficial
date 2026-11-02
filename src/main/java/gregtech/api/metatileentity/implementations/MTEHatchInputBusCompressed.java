@@ -7,15 +7,17 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -25,6 +27,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import appeng.api.AEApi;
@@ -40,9 +43,11 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -57,6 +62,8 @@ import gregtech.common.gui.modularui.util.ProxiedItemHandlerModifiable;
 import gregtech.common.inventory.AEInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchInputBusCompressed extends MTEHatchInputBus
     implements IMEMonitor<IAEItemStack>, IRecipeProcessingAwareHatch, IDataCopyable {
 
@@ -133,6 +140,15 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The same class serves the compressed and the quantum buses, which are named apart.
+        final String key = mName.startsWith("hatch.quantum") ? "gt.blockmachines.hatch.quantum-input-bus.name"
+            : "gt.blockmachines.hatch.comp-input-bus.name";
+        return StatCollector.translateToLocalFormatted(key, GTValues.VN[mTier]);
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInputBusCompressed(this);
     }
@@ -184,7 +200,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                 if (delta == 0) continue;
 
                 if (delta < 0) {
-                    GTMod.GT_FML_LOGGER.error(
+                    GTLoggers.GT_FML_LOGGER.error(
                         "Compressed input bus somehow has more items in it than was original stored; this recipe will be cancelled (slot index={}, original={}, contained={}, delta={})",
                         slotIndex,
                         original,
@@ -197,7 +213,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                 IAEItemStack stack = inventory.getAEStackInSlot(slotIndex);
 
                 if (stack == null || delta > stack.getStackSize()) {
-                    GTMod.GT_FML_LOGGER.error(
+                    GTLoggers.GT_FML_LOGGER.error(
                         "Compressed input bus somehow consumed more items than were available for this slot; this recipe will be cancelled (slot index={}, original={}, contained={}, delta={})",
                         slotIndex,
                         original,
@@ -250,7 +266,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
 
     @Override
     public ItemStack decrStackSize(int index, int amount) {
-        return inventory.extractItem(index, amount, false);
+        return inventory.extractItem(index, amount, false, true);
     }
 
     @Override
@@ -370,23 +386,17 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
-
-        NBTTagCompound tag = stack.getTagCompound();
-
-        if (tag != null && tag.hasKey("inv")) {
+        if (ItemStackNBT.hasKey(stack, "inv", NBT.TAG_COMPOUND)) {
             BusInventory inv = new BusInventory(this.slotCount);
-            inv.readFromNBT(tag.getCompoundTag("inv"));
-
+            inv.readFromNBT(ItemStackNBT.getCompoundTag(stack, "inv"));
             tooltip.add("");
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (GuiScreen.isShiftKeyDown()) {
                 for (IAEItemStack stored : inv.getStorageList()) {
                     tooltip.add(stored.getDisplayName() + " x " + GOLD + formatNumber(stored.getStackSize()));
                 }
             } else {
-                tooltip.add(GTUtility.translate("GT5U.gui.text.compressed_bus_stored_items"));
+                tooltip.add(StatCollector.translateToLocal("GT5U.gui.text.compressed_bus_stored_items"));
             }
-
             tooltip.add("");
         }
     }

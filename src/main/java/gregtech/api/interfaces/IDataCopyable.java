@@ -3,6 +3,8 @@ package gregtech.api.interfaces;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface IDataCopyable {
 
     /**
@@ -12,6 +14,7 @@ public interface IDataCopyable {
      *
      * @return null if cannot copy (e.g. not properly configured yet) or the data to copy.
      */
+    @Nullable
     NBTTagCompound getCopiedData(EntityPlayer player);
 
     /**
@@ -20,7 +23,7 @@ public interface IDataCopyable {
      *
      * @return true if pasted. false otherwise.
      */
-    boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt);
+    boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt);
 
     /**
      * @return the type identifier. this should be a constant for the given set of arguments.

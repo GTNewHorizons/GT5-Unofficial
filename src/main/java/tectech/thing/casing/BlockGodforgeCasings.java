@@ -7,13 +7,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import tectech.thing.CustomItemList;
@@ -37,22 +33,6 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = TextureFactory.of(this, b);
         }
-
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".0.name", "Singularity Reinforced Stellar Shielding Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Celestial Matter Guidance Casing");
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".2.name",
-            "Boundless Gravitationally Severed Structure Casing");
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".3.name",
-            "Transcendentally Amplified Magnetic Confinement Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Stellar Energy Siphon Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Central Graviton Flow Modulator");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
 
         CustomItemList.Godforge_SingularityShieldingCasing.set(new ItemStack(this, 1, 0));
         CustomItemList.Godforge_GuidanceCasing.set(new ItemStack(this, 1, 1));
@@ -114,17 +94,9 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> aList) {
         for (int i = 0; i <= 8; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            aList.add(new ItemStack(item, 1, i));
         }
     }
 }

@@ -157,12 +157,10 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     @Override
     public String[] getInfoData() {
         return this.mItemStack == null
-            ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty"), Integer.toString(0),
+            ? new String[] { "gtpp.infodata.tiered_chest.name", "GT5U.infodata.digital_chest.stored_items",
+                "GT5U.infodata.digital_chest.stored_items.empty", Integer.toString(0),
                 Integer.toString(this.getMaxItemCount()) }
-            : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
-                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+            : new String[] { "gtpp.infodata.tiered_chest.name", "GT5U.infodata.digital_chest.stored_items",
                 this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
                 Integer.toString(this.getMaxItemCount()) };
     }
@@ -227,7 +225,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             .widget(
                 SlotWidget.phantom(inventoryHandler, 2)
                     .disableInteraction()
-                    .setBackground(GTUITextures.TRANSPARENT)
+                    .setBackground(GTUITextures.TRANSPARENT) // Use GTGuiTextures.SLOT_ITEM_TANK when MUi2
                     .setPos(59, 42))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
@@ -235,7 +233,8 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mItemCount))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()) // Use .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE) when
+                                                             // MUi2
                     .setPos(10, 30));
     }
 

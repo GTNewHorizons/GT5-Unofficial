@@ -15,13 +15,13 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTabButton;
 
@@ -177,10 +177,12 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        return new CoverTabButton(coverable, side, getCoverPanel(coverable, side));
+        CoverTabButton button = new CoverTabButton(coverable, side);
+        button.setPanel(getCoverPanel(button, coverable, side));
+        return button;
     }
 
-    private IPanelHandler getCoverPanel(ICoverable coverable, ForgeDirection side) {
+    private IPanelHandler getCoverPanel(CoverTabButton button, ICoverable coverable, ForgeDirection side) {
         String panelKey = "cover_panel_" + side.toString()
             .toLowerCase();
         Cover cover = coverable.getCoverAtSide(side);
@@ -191,12 +193,13 @@ public final class GTBaseGuiBuilder {
             posGuiData.getX(),
             posGuiData.getY(),
             posGuiData.getZ(),
-            side);
+            side,
+            true);
         return syncManager.syncedPanel(
             panelKey,
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings)
+                .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
                 .child(ButtonWidget.panelCloseButton()));
     }
 
@@ -210,7 +213,7 @@ public final class GTBaseGuiBuilder {
 
     private IWidget createGregTechLogo() {
         return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
-            .size(17, 17) // todo: size
+            .size(18)
             .pos(gregtechLogoPosX, gregtechLogoPosY);
     }
 }

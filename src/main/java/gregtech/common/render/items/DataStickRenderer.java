@@ -1,13 +1,15 @@
 package gregtech.common.render.items;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.util.AssemblyLineUtils;
 
@@ -16,10 +18,7 @@ public class DataStickRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        final boolean isShiftHeld = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        final boolean shouldSwitch = item.hasTagCompound() && item.getTagCompound()
-            .hasKey("output");
-        return type == ItemRenderType.INVENTORY && isShiftHeld && shouldSwitch;
+        return type == ItemRenderType.INVENTORY && GuiScreen.isShiftKeyDown() && ItemStackNBT.hasKey(item, "output");
     }
 
     @Override

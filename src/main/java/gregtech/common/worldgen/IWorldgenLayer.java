@@ -6,9 +6,9 @@ import gregtech.api.interfaces.IStoneCategory;
 /** A worldgen layer that generates ore. */
 public interface IWorldgenLayer {
 
-    int getMinY();
+    int getMinY(String dim);
 
-    int getMaxY();
+    int getMaxY(String dim);
 
     /** Gets the RNG weight. */
     int getWeight();
@@ -33,7 +33,7 @@ public interface IWorldgenLayer {
 
     /**
      * Selects an ore for worldgen.
-     * 
+     *
      * @param k The weight, 0-1.
      * @return The ore.
      */

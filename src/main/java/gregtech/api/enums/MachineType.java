@@ -3,6 +3,8 @@ package gregtech.api.enums;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+
 public enum MachineType {
 
     ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "gt.recipe.alloysmelter"),
@@ -42,6 +44,7 @@ public enum MachineType {
     ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
     OVEN(FunnyTexts.OVEN, "gt.recipe.oven"),
     PACKAGER(FunnyTexts.PACKAGER, "gt.recipe.packager"),
+    @Deprecated
     PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "gt.recipe.plasmaarcfurnace"),
     POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
     PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),
@@ -129,7 +132,7 @@ public enum MachineType {
     public String[] tooltipDescription() {
         return new String[] { description(),
             StatCollector.translateToLocal(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
+                + TooltipHelper.MACHINE_TYPE_COLOR
                 + type()
                 + EnumChatFormatting.RESET };
     }

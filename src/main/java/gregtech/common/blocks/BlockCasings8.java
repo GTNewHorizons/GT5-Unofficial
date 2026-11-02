@@ -15,8 +15,6 @@ import gregtech.api.enums.Textures;
  */
 public class BlockCasings8 extends BlockCasingsAbstract {
 
-    public static boolean mConnectedMachineTextures = true;
-
     // WATCH OUT FOR TEXTURE ID's
     public BlockCasings8() {
         super(ItemCasings.class, "gt.blockcasings8", MaterialCasings.INSTANCE, 15);

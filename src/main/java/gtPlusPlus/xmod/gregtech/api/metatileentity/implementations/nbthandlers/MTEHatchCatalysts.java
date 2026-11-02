@@ -15,11 +15,11 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.ch
 public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
 
     public MTEHatchCatalysts(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage", false);
+        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage");
     }
 
     public MTEHatchCatalysts(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, 16, aDescription, false, aTextures);
+        super(aName, 0, 16, aDescription, aTextures);
     }
 
     @Override

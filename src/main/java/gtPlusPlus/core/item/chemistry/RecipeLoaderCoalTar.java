@@ -1,16 +1,17 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gregtech.api.recipe.RecipeMaps.semiFluidFuels;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -114,7 +115,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Cactus Charcoal
         GTValues.RA.stdBuilder()
@@ -123,7 +124,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Sugar Charcoal
         GTValues.RA.stdBuilder()
@@ -132,7 +133,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Cactus coke
         GTValues.RA.stdBuilder()
@@ -142,7 +143,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1_600))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Sugar coke
         GTValues.RA.stdBuilder()
@@ -152,7 +153,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1_600))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Lignite
         GTValues.RA.stdBuilder()
@@ -162,7 +163,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(54 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Coal
         GTValues.RA.stdBuilder()
@@ -172,7 +173,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 2_200))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         // Coke
         GTValues.RA.stdBuilder()
@@ -182,7 +183,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 3_400))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
     }
 
     private static void recipeCoalTarToCoalTarOil() {

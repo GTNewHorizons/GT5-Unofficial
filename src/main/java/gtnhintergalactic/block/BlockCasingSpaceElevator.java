@@ -7,14 +7,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -45,10 +43,6 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
         for (byte b = 0; b < NUMBER_OF_CASINGS; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[32][b] = TextureFactory.of(this, b);
         }
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Base Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Support Structure");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Internal Structure");
 
         ItemList.SpaceElevatorBaseCasing.set(new ItemStack(this, 1, 0));
         ItemList.SpaceElevatorSupportStructure.set(new ItemStack(this, 1, 1));
@@ -108,23 +102,6 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
     }
 
     /**
-     * Get the icon for this block
-     *
-     * @param world World in which the block exists
-     * @param x     X coordinate of the block
-     * @param y     Y coordinate of the block
-     * @param z     Z coordinate of the block
-     * @param side  Side for which the icon should be gotten
-     * @return Icon of the block
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        int meta = world.getBlockMetadata(x, y, z);
-        return getIcon(side, meta);
-    }
-
-    /**
      * Get all sub blocks of this block
      *
      * @param item Item that represents this block
@@ -132,8 +109,7 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
      * @param list List to which the sub blocks will be added
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (int i = 0; i < NUMBER_OF_CASINGS; i++) {
             list.add(new ItemStack(item, 1, i));
         }

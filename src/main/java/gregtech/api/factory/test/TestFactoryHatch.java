@@ -21,18 +21,15 @@ import it.unimi.dsi.fastutil.Pair;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
-import tectech.util.CommonValues;
 
 public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactoryElement {
 
-    public TestFactoryHatch(int aID, String aName, String aNameRegional, int aTier) {
+    public TestFactoryHatch(int aID, String aName, int aTier) {
         super(
             aID,
             aName,
-            aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
     }
@@ -79,8 +76,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
             for (TestFactoryHatch hatch : network.getComponents(TestFactoryHatch.class)) {
                 IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
 
-                data.add(
-                    base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch.toString());
+                data.add(base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch);
             }
         }
 

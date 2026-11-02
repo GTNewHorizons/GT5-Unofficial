@@ -10,13 +10,19 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -28,17 +34,18 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.pollution.Pollution;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEBoilerBronze extends MTEBoiler {
 
@@ -183,7 +190,7 @@ public class MTEBoilerBronze extends MTEBoiler {
         int burnTime = TileEntityFurnace.getItemBurnTime(fuel);
         getCombustionPotential(fuel, burnTime).ifPresent(ashMaterial -> {
             aBaseMetaTileEntity.decrStackSize(2, 1);
-            this.mProcessingEnergy += burnTime / 10;
+            addProcessingEnergy(burnTime / 10);
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
             combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))
@@ -254,7 +261,27 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean isProducingSteam = tag.getBoolean("isProducingSteam");
+        int power = tag.getInteger("power");
+        if (isProducingSteam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("isProducingSteam", this.isProducingSteam());
+        tag.setInteger("power", this.getProductionPerSecond());
     }
 }

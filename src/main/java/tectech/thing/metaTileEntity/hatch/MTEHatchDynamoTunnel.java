@@ -1,11 +1,13 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -13,6 +15,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,26 +31,28 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchDynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier, int amps) {
-        super(
-            ID,
-            unlocalisedName,
-            localisedName,
-            tier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                true,
-                tier,
-                amps,
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip")),
-            amps);
+        super(ID, unlocalisedName, localisedName, tier, 0, null, amps);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The legendary hatch carries a name of its own instead of the tier and amperage pattern.
+        if (getLocalNameKey().equals("gt.blockmachines.hatch.dynamotunnel.tier.14.name"))
+            return StatCollector.translateToLocal(getLocalNameKey());
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.dynamotunnel.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override
@@ -83,6 +88,15 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchDynamoTunnel(mName, mTier, Amperes, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        IGregTechTileEntity front = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (front != null && front.getMetaTileEntity() instanceof MTEPipeLaser laser) {
+            laser.setCheckConnections();
+        }
     }
 
     @Override
@@ -207,4 +221,13 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         return true;
     }
 
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            true,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.hatch.dynamotunnel.desc");
+    }
 }

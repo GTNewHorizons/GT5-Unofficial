@@ -5,10 +5,10 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.init.Blocks;
@@ -30,21 +30,12 @@ public class HandlerRailcraft {
 
     public static void preInit() {
         GregtechItemList.CustomCoalCoke.set(
-            new BaseItemBurnable(
-                "itemCoalCoke",
-                "Coking Coal",
-                tabMisc,
-                64,
-                0,
-                "Used for metallurgy.",
-                "fuelCoke",
-                3200,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemCoalCoke"));
+            new BaseItemBurnable("itemCoalCoke", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemCoalCoke"));
 
         GregtechItemList.CactusCharcoal.set(
             new BaseItemBurnable(
                 "itemCactusCharcoal",
-                "Cactus Charcoal",
                 tabMisc,
                 64,
                 0,
@@ -54,40 +45,16 @@ public class HandlerRailcraft {
                 0).setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCharcoal"));
 
         GregtechItemList.SugarCharcoal.set(
-            new BaseItemBurnable(
-                "itemSugarCharcoal",
-                "Sugar Charcoal",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelSugarCharcoal",
-                400,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCharcoal"));
+            new BaseItemBurnable("itemSugarCharcoal", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCharcoal", 400, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCharcoal"));
 
         GregtechItemList.CactusCoke.set(
-            new BaseItemBurnable(
-                "itemCactusCoke",
-                "Cactus Coke",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelCactusCoke",
-                800,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCoke"));
+            new BaseItemBurnable("itemCactusCoke", tabMisc, 64, 0, "Used for smelting.", "fuelCactusCoke", 800, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCoke"));
 
         GregtechItemList.SugarCoke.set(
-            new BaseItemBurnable(
-                "itemSugarCoke",
-                "Sugar Coke",
-                tabMisc,
-                64,
-                0,
-                "Used for smelting.",
-                "fuelSugarCoke",
-                800,
-                0).setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCoke"));
+            new BaseItemBurnable("itemSugarCoke", tabMisc, 64, 0, "Used for smelting.", "fuelSugarCoke", 800, 0)
+                .setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCoke"));
 
         GTOreDictUnificator.registerOre("itemCharcoalCactus", GregtechItemList.CactusCharcoal.get(1));
         GTOreDictUnificator.registerOre("itemCokeCactus", GregtechItemList.CactusCoke.get(1));
@@ -124,7 +91,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.Creosote.getFluid(100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
@@ -134,7 +101,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(10 * TICKS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -143,7 +110,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.Creosote.getFluid(200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(2 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -153,7 +120,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Generate Wood Tar and Wood Gas from these Cokes
         GTValues.RA.stdBuilder()
@@ -164,7 +131,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.WoodTar.getFluid(200))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
@@ -174,7 +141,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.WoodGas.getGas(300))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Fluid Extracting the Charcoals for Wood Tar
         GTValues.RA.stdBuilder()
@@ -195,7 +162,7 @@ public class HandlerRailcraft {
             .fluidInputs(Materials.Oxygen.getGas(500))
             .fluidOutputs(Materials.CarbonMonoxide.getGas(500))
             .duration(4 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         // C + 2O = CO2
@@ -206,7 +173,7 @@ public class HandlerRailcraft {
             .fluidInputs(Materials.Oxygen.getGas(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(2 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         if (Railcraft.isModLoaded()) {

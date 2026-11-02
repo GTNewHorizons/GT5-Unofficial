@@ -1,10 +1,9 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -26,23 +25,19 @@ public class MTEBlackHoleUtilityGui extends MTEHatchBaseGui<MTEBlackHoleUtility>
         return super.createContentSection(panel, syncManager).child(createInvertButtonRow());
     }
 
-    public Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(hatch::getMode, hatch::setMode);
+    private Flow createInvertButtonRow() {
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(machine::getMode, machine::setMode).allowC2S();
         return Flow.row()
             .child(
                 new ToggleButton().value(invertedSyncer)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_ANALOG)
-                    .size(16, 16))
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_ANALOG))
             .child(
                 IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? translateToLocal("GT5U.gui.text.static_mode")
-                        : translateToLocal("GT5U.gui.text.pulse_mode"))
+                    () -> StatCollector.translateToLocal(
+                        invertedSyncer.getValue() ? "GT5U.gui.text.static_mode" : "GT5U.gui.text.pulse_mode"))
                     .asWidget())
             .coverChildren()
-            .align(Alignment.TopLeft)
-            .paddingTop(4)
-            .paddingLeft(4)
             .childPadding(2);
     }
 }

@@ -1,7 +1,5 @@
 package gtPlusPlus.core.material;
 
-import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -31,10 +30,10 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.config.Client;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -43,7 +42,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
 public class Material implements IOreMaterial {
 
@@ -53,9 +51,11 @@ public class Material implements IOreMaterial {
     public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
     public static final HashMap<String, String> sChemicalFormula = new HashMap<>();
 
+    private static boolean registrationGateOpen = false;
+    private static final List<Material> pendingRegistration = new ArrayList<>();
+
     private String unlocalizedName;
-    private String localizedName;
-    private String translatedName;
+    private String defaultLocalName;
 
     private MaterialState materialState;
     private TextureSet textureSet;
@@ -63,36 +63,32 @@ public class Material implements IOreMaterial {
     private Fluid mFluid;
     private Fluid mPlasma;
 
-    private boolean vGenerateCells;
+    private boolean generateCells;
+    private boolean shouldGenerateFluid;
 
-    private ArrayList<MaterialStack> vMaterialInput = new ArrayList<>();
-    public long[] vSmallestRatio;
-    public short vComponentCount;
+    private ArrayList<MaterialStack> materialInput = new ArrayList<>();
+    public long[] smallestRatio;
+    public short componentCount;
 
     private short[] RGBA;
 
     private boolean usesBlastFurnace;
     public boolean isRadioactive;
-    public byte vRadiationLevel;
+    public byte radiationLevel;
 
     private int meltingPointK;
     private int boilingPointK;
     private int meltingPointC;
     private int boilingPointC;
-    private long vProtons;
-    private long vNeutrons;
-    private long vMass;
-    public int smallestStackSizeWhenProcessing; // Add a check for <=0 || > 64
-    public int vTier;
-    public int vVoltageMultiplier;
-    public String vChemicalFormula;
-    public String vChemicalSymbol;
+    private long protons;
+    private long neutrons;
+    public int smallestStackSizeWhenProcessing;
+    public int tier;
+    public int voltageMultiplier;
+    public String chemicalFormula;
+    public String chemicalSymbol;
 
-    public long vDurability;
-    public int vToolQuality;
-    public int vHarvestLevel;
-
-    public BaseTinkersMaterial vTiConHandler;
+    public long durability;
 
     public short werkstoffID;
 
@@ -104,36 +100,7 @@ public class Material implements IOreMaterial {
     private boolean hasOre;
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
-        this(materialName, defaultState, null, inputs);
-    }
-
-    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
-        final MaterialStack... inputs) {
-        this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", 0, false, false, inputs);
-    }
-
-    public Material(final String materialName, final MaterialState defaultState, final short[] rgba, int radiationLevel,
-        MaterialStack... materialStacks) {
-        this(
-            materialName,
-            defaultState,
-            null,
-            0,
-            rgba,
-            -1,
-            -1,
-            -1,
-            -1,
-            false,
-            "",
-            radiationLevel,
-            false,
-            materialStacks);
-    }
-
-    public Material(String materialName, MaterialState defaultState, short[] rgba, int j, int k, int l, int m,
-        int radiationLevel, MaterialStack[] materialStacks) {
-        this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
+        this(materialName, defaultState, null, 0, null, -1, -1, -1, -1, false, "", 0, false, false, inputs);
     }
 
     public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba,
@@ -152,7 +119,6 @@ public class Material implements IOreMaterial {
             false,
             "",
             radiationLevel,
-            false,
             materialStacks);
     }
 
@@ -210,42 +176,6 @@ public class Material implements IOreMaterial {
             0,
             generateCells,
             true,
-            inputs);
-    }
-
-    public Material(final String materialName, final MaterialState defaultState, final short[] rgba,
-        final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
-        final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs) {
-        this(
-            materialName,
-            defaultState,
-            0,
-            rgba,
-            meltingPoint,
-            boilingPoint,
-            protons,
-            neutrons,
-            blastFurnace,
-            "",
-            radiationLevel,
-            inputs);
-    }
-
-    public Material(final String materialName, final MaterialState defaultState, final long durability,
-        final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons,
-        final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs) {
-        this(
-            materialName,
-            defaultState,
-            durability,
-            rgba,
-            meltingPoint,
-            boilingPoint,
-            protons,
-            neutrons,
-            blastFurnace,
-            "",
-            radiationLevel,
             inputs);
     }
 
@@ -359,7 +289,7 @@ public class Material implements IOreMaterial {
     public Material(final String materialName, final MaterialState defaultState, final TextureSet set,
         final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons,
         final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel,
-        boolean generateCells, final MaterialStack... inputs) {
+        final MaterialStack... inputs) {
         this(
             materialName,
             defaultState,
@@ -382,6 +312,29 @@ public class Material implements IOreMaterial {
         final long durability, short[] rgba, final int meltingPoint, final int boilingPoint, final long protons,
         final long neutrons, final boolean blastFurnace, String chemicalSymbol, final int radiationLevel,
         boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
+        this(
+            materialName,
+            materialName,
+            defaultState,
+            set,
+            durability,
+            rgba,
+            meltingPoint,
+            boilingPoint,
+            protons,
+            neutrons,
+            blastFurnace,
+            chemicalSymbol,
+            radiationLevel,
+            generateCells,
+            generateFluid,
+            inputs);
+    }
+
+    public Material(final String materialName, final String materialDefaultLocalName, final MaterialState defaultState,
+        final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint,
+        final long protons, final long neutrons, final boolean blastFurnace, String chemicalSymbol,
+        final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
 
         mMaterialMap.add(this);
 
@@ -393,27 +346,21 @@ public class Material implements IOreMaterial {
 
         try {
             this.unlocalizedName = StringUtils.sanitizeString(materialName);
-            this.localizedName = materialName;
-            this.translatedName = GTLanguageManager
-                .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
-            mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+            this.defaultLocalName = materialDefaultLocalName;
+            MaterialUtils.generateMaterialLocalizedName(unlocalizedName, defaultLocalName);
+            mMaterialCache.put(getDefaultLocalName().toLowerCase(), this);
             mMaterialsByName.put(unlocalizedName, this);
-            Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
-
             this.materialState = defaultState;
-
-            Logger.MATERIALS(this.getLocalizedName() + " is " + defaultState.name() + ".");
-
-            this.vGenerateCells = generateCells;
+            this.generateCells = generateCells;
 
             // Add Components to an array.
             if (inputs == null) {
-                this.vMaterialInput = null;
+                this.materialInput = null;
             } else {
                 if (inputs.length != 0) {
                     for (int i = 0; i < inputs.length; i++) {
                         if (inputs[i] != null) {
-                            this.vMaterialInput.add(i, inputs[i]);
+                            this.materialInput.add(i, inputs[i]);
                         }
                     }
                 }
@@ -422,7 +369,7 @@ public class Material implements IOreMaterial {
             // set RGB
 
             if (rgba == null) {
-                if (!vMaterialInput.isEmpty()) {
+                if (!materialInput.isEmpty()) {
 
                     this.RGBA = getRGBColorForMat();
 
@@ -496,21 +443,19 @@ public class Material implements IOreMaterial {
 
             // Set Proton/Neutron count, if value is -1 calculate it from compound inputs.
             if (protons != -1) {
-                this.vProtons = protons;
+                this.protons = protons;
             } else {
-                this.vProtons = this.calculateProtons();
+                this.protons = this.calculateProtons();
             }
             if (boilingPoint != -1) {
-                this.vNeutrons = neutrons;
+                this.neutrons = neutrons;
             } else {
-                this.vNeutrons = this.calculateNeutrons();
+                this.neutrons = this.calculateNeutrons();
             }
-
-            this.vMass = this.getMass();
 
             // Sets tool Durability
             if (durability != 0) {
-                this.vDurability = durability;
+                this.durability = durability;
             } else {
                 long aTempDura = 0;
                 for (MaterialStack g : this.getComposites()) {
@@ -520,72 +465,45 @@ public class Material implements IOreMaterial {
                                 .getMass() * 2000);
                     }
                 }
-                this.vDurability = aTempDura > 0 ? aTempDura
+                this.durability = aTempDura > 0 ? aTempDura
                     : (this.getComposites()
                         .isEmpty() ? 51200
                             : 32_000L * this.getComposites()
                                 .size());
             }
 
-            if ((this.vDurability >= 0) && (this.vDurability < 64000)) {
-                this.vToolQuality = 1;
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 64000) && (this.vDurability < 128000)) {
-                this.vToolQuality = 2;
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 128000) && (this.vDurability < 256000)) {
-                this.vToolQuality = 3;
-                this.vHarvestLevel = 2;
-            } else if ((this.vDurability >= 256000) && (this.vDurability < 512000)) {
-                this.vToolQuality = 3;
-                this.vHarvestLevel = 3;
-            } else if ((this.vDurability >= 512000) && (this.vDurability <= Integer.MAX_VALUE)) {
-                this.vToolQuality = 4;
-                this.vHarvestLevel = 4;
-            } else {
-                this.vToolQuality = 1;
-                this.vHarvestLevel = 1;
-            }
-
             // Sets the Rad level
             if (radiationLevel > 0) {
-                Logger.MATERIALS(this.getLocalizedName() + " is radioactive. Level: " + radiationLevel + ".");
                 this.isRadioactive = true;
-                this.vRadiationLevel = (byte) radiationLevel;
+                this.radiationLevel = (byte) radiationLevel;
             } else {
-                if (!vMaterialInput.isEmpty()) {
+                if (!materialInput.isEmpty()) {
                     final byte radiation = calculateRadiation();
                     if (radiation > 0) {
-                        Logger.MATERIALS(
-                            this.getLocalizedName() + " is radioactive due to trace elements. Level: "
-                                + radiation
-                                + ".");
                         this.isRadioactive = true;
-                        this.vRadiationLevel = radiation;
+                        this.radiationLevel = radiation;
                     } else {
-                        Logger.MATERIALS(this.getLocalizedName() + " is not radioactive.");
                         this.isRadioactive = false;
-                        this.vRadiationLevel = 0;
+                        this.radiationLevel = 0;
                     }
                 } else {
-                    Logger.MATERIALS(this.getLocalizedName() + " is not radioactive.");
                     this.isRadioactive = false;
-                    this.vRadiationLevel = 0;
+                    this.radiationLevel = 0;
                 }
             }
 
-            this.vTier = MaterialUtils.getTierOfMaterial(meltingPoint);
+            this.tier = MaterialUtils.getTierOfMaterial(meltingPoint);
 
             // Sets the materials 'tier'. Will probably replace this logic.
 
             this.usesBlastFurnace = blastFurnace;
-            this.vVoltageMultiplier = MaterialUtils.getVoltageForTier(vTier);
+            this.voltageMultiplier = MaterialUtils.getVoltageForTier(tier);
 
-            this.vComponentCount = this.getComponentCount(inputs);
-            this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
+            this.componentCount = this.getComponentCount(inputs);
+            this.smallestRatio = this.getSmallestRatio(this.materialInput);
             int tempSmallestSize = 0;
 
-            for (long l : this.vSmallestRatio) {
+            for (long l : this.smallestRatio) {
                 tempSmallestSize = (int) (tempSmallestSize + l);
             }
             this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stacksizes
@@ -596,49 +514,29 @@ public class Material implements IOreMaterial {
                 chemicalSymbol = "";
             }
 
-            this.vChemicalSymbol = chemicalSymbol;
-            if (this.vMaterialInput != null) {
-                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.getMaterialAmount() / M, true);
-            } else if (!this.vChemicalSymbol.isEmpty()) {
-                Logger.MATERIALS("materialInput is null, using a valid chemical symbol.");
-                this.vChemicalFormula = this.vChemicalSymbol;
+            this.chemicalSymbol = chemicalSymbol;
+            if (this.materialInput != null) {
+                this.chemicalFormula = this.getToolTip(chemicalSymbol, true);
+            } else if (!this.chemicalSymbol.isEmpty()) {
+                this.chemicalFormula = this.chemicalSymbol;
             } else {
-                Logger.MATERIALS("MaterialInput == null && chemicalSymbol probably equals nothing");
-                this.vChemicalSymbol = "??";
-                this.vChemicalFormula = "??";
+                this.chemicalSymbol = "??";
+                this.chemicalFormula = "??";
             }
 
-            this.textureSet = setTextureSet(set, vTier);
+            this.textureSet = setTextureSet(set, tier);
 
+            this.shouldGenerateFluid = generateFluid;
             if (generateFluid) {
-                final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
-                FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);
-                if (aTest != null) {
-                    this.mFluid = aTest.getFluid();
-                    checkForCellAndGenerate(this);
+                if (registrationGateOpen) {
+                    performFluidAndCellRegistration();
                 } else {
-                    if (aGregtechMaterial != null && !MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
-                        aTest = FluidUtils.getWildcardFluidStack(aGregtechMaterial, 1);
-                    }
-                    if (aTest != null) {
-                        this.mFluid = aTest.getFluid();
-                        checkForCellAndGenerate(this);
-                    } else {
-                        mFluid = generateFluid();
-                    }
+                    pendingRegistration.add(this);
                 }
-                // Don't generate plasma for composites
-                if (this.getComposites()
-                    .isEmpty()) {
-                    this.mPlasma = this.generatePlasma();
-                }
-            } else {
-                this.mFluid = null;
-                this.mPlasma = null;
             }
             StringBuilder ratio = new StringBuilder();
-            if (this.vSmallestRatio != null) {
-                for (long l : this.vSmallestRatio) {
+            if (this.smallestRatio != null) {
+                for (long l : this.smallestRatio) {
                     if (ratio.toString()
                         .isEmpty()) {
                         ratio = new StringBuilder(String.valueOf(l));
@@ -649,57 +547,65 @@ public class Material implements IOreMaterial {
                 }
             }
 
-            if (TinkerConstruct.isModLoaded() && this.materialState == MaterialState.SOLID) {
-                if (this.getProtons() >= 98 || this.getComposites()
-                    .size() > 1 || this.getMeltingPointC() >= 3600) {
-                    this.vTiConHandler = new BaseTinkersMaterial(this);
-                }
-            }
-
-            sChemicalFormula.put(materialName.toLowerCase(), this.vChemicalFormula);
-            Logger.MATERIALS("Creating a Material instance for " + materialName);
-            Logger.MATERIALS(
-                "Formula: " + this.vChemicalFormula
-                    + " Smallest Stack: "
-                    + this.smallestStackSizeWhenProcessing
-                    + " Smallest Ratio:"
-                    + ratio);
-            Logger.MATERIALS("Protons: " + this.vProtons);
-            Logger.MATERIALS("Neutrons: " + this.vNeutrons);
-            Logger.MATERIALS("Mass: " + this.vMass + "/units");
-            Logger.MATERIALS("Melting Point: " + this.meltingPointC + "C.");
-            Logger.MATERIALS("Boiling Point: " + this.boilingPointC + "C.");
-        } catch (Exception t) {
-            Logger.MATERIALS("Stack Trace for " + materialName);
-            t.printStackTrace();
+            sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.chemicalFormula);
+        } catch (Throwable t) {
+            GTplusplus.logger.error(t);
         }
     }
 
     private static void checkForCellAndGenerate(Material material) {
-        if (!material.vGenerateCells) {
+        if (!material.generateCells) {
             return;
         }
         String aName = StringUtils.sanitizeString(material.unlocalizedName);
         String aName2 = StringUtils.sanitizeString(material.unlocalizedName.toLowerCase());
-        String aName3 = (material.localizedName == null) ? aName : material.localizedName;
+        String aName3 = (material.defaultLocalName == null) ? aName : material.defaultLocalName;
         ItemStack aTestCell1 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + aName, 1);
         ItemStack aTestCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + aName2, 1);
         ItemStack aTestCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + aName3, 1);
         if (aTestCell1 == null && aTestCell2 == null && aTestCell3 == null) {
-            Logger.INFO("Generating cell for " + material.localizedName);
             new BaseItemCell(material);
         } else {
             if (aTestCell1 != null) {
-                Logger.INFO("Registering existing cell for " + material.localizedName + ", " + aName);
                 material.registerComponentForMaterial(OrePrefixes.cell, aTestCell1);
             } else if (aTestCell2 != null) {
-                Logger.INFO("Registering existing cell for " + material.localizedName + ", " + aName2);
                 material.registerComponentForMaterial(OrePrefixes.cell, aTestCell2);
             } else {
-                Logger.INFO("Registering existing cell for " + material.localizedName + ", " + aName3);
                 material.registerComponentForMaterial(OrePrefixes.cell, aTestCell3);
             }
         }
+    }
+
+    private void performFluidAndCellRegistration() {
+        final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
+        FluidStack aTest = FluidUtils.getWildcardFluidStack(defaultLocalName, 1);
+        if (aTest != null) {
+            this.mFluid = aTest.getFluid();
+            checkForCellAndGenerate(this);
+        } else {
+            if (aGregtechMaterial != null && !MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+                aTest = FluidUtils.getWildcardFluidStack(aGregtechMaterial, 1);
+            }
+            if (aTest != null) {
+                this.mFluid = aTest.getFluid();
+                checkForCellAndGenerate(this);
+            } else {
+                mFluid = generateFluid();
+            }
+        }
+        // Don't generate plasma for composites
+        if (this.getComposites()
+            .isEmpty()) {
+            this.mPlasma = this.generatePlasma();
+        }
+    }
+
+    public static void registerAllPending() {
+        for (Material mat : pendingRegistration) {
+            mat.performFluidAndCellRegistration();
+        }
+        pendingRegistration.clear();
+        registrationGateOpen = true;
     }
 
     @Override
@@ -710,16 +616,11 @@ public class Material implements IOreMaterial {
     }
 
     public TextureSet setTextureSet(TextureSet set) {
-        return setTextureSet(set, vTier);
+        return setTextureSet(set, tier);
     }
 
     public TextureSet setTextureSet(TextureSet set, int aTier) {
         if (set != null) {
-            Logger.MATERIALS(
-                "Set textureset for " + this.localizedName
-                    + " to be "
-                    + set.mSetName
-                    + ". This textureSet was supplied.");
             return set;
         }
 
@@ -768,32 +669,20 @@ public class Material implements IOreMaterial {
         if (aGem >= this.getComposites()
             .size() / 2) {
             if (MathUtils.isNumberEven(aGem)) {
-                Logger.MATERIALS(
-                    "Set textureset for " + this.localizedName
-                        + " to be "
-                        + TextureSet.SET_GEM_HORIZONTAL.mSetName
-                        + ".");
                 return TextureSet.SET_GEM_HORIZONTAL;
             } else {
-                Logger.MATERIALS(
-                    "Set textureset for " + this.localizedName
-                        + " to be "
-                        + TextureSet.SET_GEM_VERTICAL.mSetName
-                        + ".");
                 return TextureSet.SET_GEM_VERTICAL;
             }
         }
 
         if (aShiny >= this.getComposites()
             .size() / 3) {
-            Logger.MATERIALS(
-                "Set textureset for " + this.localizedName + " to be " + TextureSet.SET_SHINY.mSetName + ".");
             return TextureSet.SET_SHINY;
         }
 
         // build hash table with count
         ArrayList<Material> sets = new ArrayList<>();
-        for (MaterialStack r : this.vMaterialInput) {
+        for (MaterialStack r : this.materialInput) {
             if (r.getStackMaterial()
                 .getTextureSet().mSetName.toLowerCase()
                     .contains("fluid")) {
@@ -804,21 +693,21 @@ public class Material implements IOreMaterial {
         }
         TextureSet mostUsedTypeTextureSet = MaterialUtils.getMostCommonTextureSet(sets);
         if (mostUsedTypeTextureSet instanceof TextureSet) {
-            Logger.MATERIALS(
-                "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
             return mostUsedTypeTextureSet;
         }
-        Logger.MATERIALS(
-            "Set textureset for " + this.localizedName + " to be " + Materials.Iron.mIconSet.mSetName + ". [Fallback]");
         return Materials.Gold.mIconSet;
     }
 
-    @Override
-    public final String getLocalizedName() {
-        if (this.localizedName != null) {
-            return this.localizedName;
+    public final String getDefaultLocalName() {
+        if (this.defaultLocalName != null) {
+            return this.defaultLocalName;
         }
-        return "ERROR BAD LOCALIZED NAME";
+        return "ERROR BAD DEFAULT LOCAL NAME";
+    }
+
+    @Override
+    public String getLocalizedNameKey() {
+        return MaterialUtils.getMaterialLocalizedNameKey(unlocalizedName);
     }
 
     @Override
@@ -853,13 +742,6 @@ public class Material implements IOreMaterial {
             return this.unlocalizedName;
         }
         return "ERROR.BAD.UNLOCALIZED.NAME";
-    }
-
-    public final String getTranslatedName() {
-        if (this.translatedName != null) {
-            return this.translatedName;
-        }
-        return "ERROR.BAD.TRANSLATED.NAME";
     }
 
     @Override
@@ -899,15 +781,15 @@ public class Material implements IOreMaterial {
     }
 
     public final long getProtons() {
-        return this.vProtons;
+        return this.protons;
     }
 
     public final long getNeutrons() {
-        return this.vNeutrons;
+        return this.neutrons;
     }
 
     public final long getMass() {
-        return this.vProtons + this.vNeutrons;
+        return this.protons + this.neutrons;
     }
 
     public final int getMeltingPointC() {
@@ -930,6 +812,11 @@ public class Material implements IOreMaterial {
         return this.usesBlastFurnace;
     }
 
+    @Override
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return getComponentByPrefix(prefix, amount);
+    }
+
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
         String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
@@ -947,7 +834,6 @@ public class Material implements IOreMaterial {
             if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
                 ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
                 if (Erg != null) {
-                    Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
                     g.put(aKey, Erg);
                     mComponentMap.put(unlocalizedName, g);
                     return Erg;
@@ -956,10 +842,6 @@ public class Material implements IOreMaterial {
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
                         if (Erg != null) {
-                            Logger.MATERIALS(
-                                "Found \"" + OrePrefixes.cellMolten.getName()
-                                    + this.unlocalizedName
-                                    + "\" using backup GT Materials option.");
                             g.put(aKey, Erg);
                             mComponentMap.put(unlocalizedName, g);
                             return Erg;
@@ -980,11 +862,6 @@ public class Material implements IOreMaterial {
 
     public final Block getBlock() {
         Block b = Block.getBlockFromItem(getBlock(1).getItem());
-        if (b == null) {
-            Logger.INFO(
-                "[ERROR] Tried to get invalid block for " + this.getLocalizedName()
-                    + ", returning debug block instead.");
-        }
         return b != null ? b : Blocks.lit_furnace;
     }
 
@@ -1027,8 +904,16 @@ public class Material implements IOreMaterial {
         return getComponentByPrefix(OrePrefixes.plateDense, stacksize);
     }
 
+    public final ItemStack getPlateSuperdense(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.plateSuperdense, stacksize);
+    }
+
     public final ItemStack getGear(final int stacksize) {
         return getComponentByPrefix(OrePrefixes.gearGt, stacksize);
+    }
+
+    public final ItemStack getGearSmall(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.gearGtSmall, stacksize);
     }
 
     public final ItemStack getRod(final int stacksize) {
@@ -1153,8 +1038,6 @@ public class Material implements IOreMaterial {
     }
 
     public final Block getOreBlock(final int stacksize) {
-        // Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for
-        // '"+"ore"+StringUtils.sanitizeString(this.getUnlocalizedName())+"'.");
         try {
             ItemStack a1 = getOre(1);
             Item a2 = a1.getItem();
@@ -1173,9 +1056,8 @@ public class Material implements IOreMaterial {
                 return x;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
-        // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
         return Blocks.stone;
     }
 
@@ -1217,27 +1099,20 @@ public class Material implements IOreMaterial {
     }
 
     public final ItemStack[] getMaterialComposites() {
-        if (this.vMaterialInput != null && !this.vMaterialInput.isEmpty()) {
-            final ItemStack[] temp = new ItemStack[this.vMaterialInput.size()];
-            for (int i = 0; i < this.vMaterialInput.size(); i++) {
-                // Utils.LOG_MATERIALS("i:"+i);
+        if (this.materialInput != null && !this.materialInput.isEmpty()) {
+            final ItemStack[] temp = new ItemStack[this.materialInput.size()];
+            for (int i = 0; i < this.materialInput.size(); i++) {
                 ItemStack testNull = null;
                 try {
-                    testNull = this.vMaterialInput.get(i)
+                    testNull = this.materialInput.get(i)
                         .getValidStack();
-                } catch (final Exception r) {
-                    Logger.MATERIALS("Failed gathering material stack for " + this.localizedName + ".");
-                    Logger.MATERIALS("What Failed: Length:" + this.vMaterialInput.size() + " current:" + i);
-                }
+                } catch (final Throwable ignored) {}
                 try {
                     if (testNull != null) {
-                        // Utils.LOG_MATERIALS("not null");
-                        temp[i] = this.vMaterialInput.get(i)
+                        temp[i] = this.materialInput.get(i)
                             .getValidStack();
                     }
-                } catch (final Exception r) {
-                    Logger.MATERIALS("Failed setting slot " + i + ", using " + this.localizedName);
-                }
+                } catch (final Throwable ignored) {}
             }
             return temp;
         }
@@ -1245,23 +1120,7 @@ public class Material implements IOreMaterial {
     }
 
     public final ArrayList<MaterialStack> getComposites() {
-        return this.vMaterialInput;
-    }
-
-    public final int[] getMaterialCompositeStackSizes() {
-        if (!this.vMaterialInput.isEmpty()) {
-            final int[] temp = new int[this.vMaterialInput.size()];
-            for (int i = 0; i < this.vMaterialInput.size(); i++) {
-                if (this.vMaterialInput.get(i) != null) {
-                    temp[i] = this.vMaterialInput.get(i)
-                        .getDustStack().stackSize;
-                } else {
-                    temp[i] = 0;
-                }
-            }
-            return temp;
-        }
-        return GTValues.emptyIntArray;
+        return this.materialInput;
     }
 
     private short getComponentCount(final MaterialStack[] inputs) {
@@ -1285,8 +1144,6 @@ public class Material implements IOreMaterial {
     public final long[] getSmallestRatio(final ArrayList<MaterialStack> tempInput) {
         if (tempInput != null) {
             if (!tempInput.isEmpty()) {
-                Logger.MATERIALS("length: " + tempInput.size());
-                Logger.MATERIALS("(inputs != null): true");
                 final long[] tempRatio = new long[tempInput.size()];
                 for (int x = 0; x < tempInput.size(); x++) {
                     if (tempInput.get(x) != null) {
@@ -1303,8 +1160,6 @@ public class Material implements IOreMaterial {
                         tempRatioStringThing1.append(value)
                             .append(" : ");
                     }
-                    Logger.MATERIALS("Default Ratio: " + tempRatioStringThing1);
-
                     StringBuilder tempRatioStringThing = new StringBuilder();
                     int tempSmallestCraftingUseSize = 0;
                     for (long l : smallestRatio) {
@@ -1313,7 +1168,6 @@ public class Material implements IOreMaterial {
                         tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
                     }
                     // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
-                    Logger.MATERIALS("Smallest Ratio: " + tempRatioStringThing);
                     return smallestRatio;
                 }
             }
@@ -1321,15 +1175,14 @@ public class Material implements IOreMaterial {
         return new long[] {};
     }
 
-    public final String getToolTip(final String chemSymbol, final long aMultiplier, final boolean aShowQuestionMarks) {
-        if (!aShowQuestionMarks && (this.vChemicalFormula.equals("?") || this.vChemicalFormula.equals("??"))) {
+    public final String getToolTip(final String chemSymbol, final boolean aShowQuestionMarks) {
+        if (!aShowQuestionMarks && (this.chemicalFormula.equals("?") || this.chemicalFormula.equals("??"))) {
             return "";
         }
-        Logger.MATERIALS("===============| Calculating Atomic Formula for " + this.localizedName + " |===============");
         if (!chemSymbol.isEmpty()) {
             return chemSymbol;
         }
-        final ArrayList<MaterialStack> tempInput = this.vMaterialInput;
+        final ArrayList<MaterialStack> tempInput = this.materialInput;
         if (tempInput != null) {
             if (!tempInput.isEmpty()) {
                 StringBuilder dummyFormula = new StringBuilder();
@@ -1340,8 +1193,8 @@ public class Material implements IOreMaterial {
                         if (g != null) {
                             if (g.getStackMaterial() != null) {
 
-                                String aChemSymbol = g.getStackMaterial().vChemicalSymbol;
-                                String aChemFormula = g.getStackMaterial().vChemicalFormula;
+                                String aChemSymbol = g.getStackMaterial().chemicalSymbol;
+                                String aChemFormula = g.getStackMaterial().chemicalFormula;
 
                                 if (aChemSymbol == null) {
                                     aChemSymbol = "??";
@@ -1384,12 +1237,8 @@ public class Material implements IOreMaterial {
                     return StringUtils.subscript(dummyFormula.toString());
                     // return dummyFormula;
                 }
-                Logger.MATERIALS("dummyFormulaArray <= 0");
-                Logger.MATERIALS("dummyFormulaArray == null");
             }
-            Logger.MATERIALS("tempInput.length <= 0");
         }
-        Logger.MATERIALS("tempInput == null");
         return "??";
     }
 
@@ -1402,7 +1251,7 @@ public class Material implements IOreMaterial {
 
         // Clean up Internal Fluid Generation
         final Materials n1 = MaterialUtils
-            .getMaterial(this.getLocalizedName(), StringUtils.sanitizeString(this.getLocalizedName()));
+            .getMaterial(this.getDefaultLocalName(), StringUtils.sanitizeString(this.getDefaultLocalName()));
         final Materials n2 = MaterialUtils
             .getMaterial(this.getUnlocalizedName(), StringUtils.sanitizeString(this.getUnlocalizedName()));
 
@@ -1411,7 +1260,7 @@ public class Material implements IOreMaterial {
         FluidStack f3 = FluidUtils
             .getWildcardFluidStack(StringUtils.sanitizeStringKeepDashes(this.getUnlocalizedName()), 1);
         FluidStack f4 = FluidUtils
-            .getWildcardFluidStack(StringUtils.sanitizeStringKeepDashes(this.getLocalizedName()), 1);
+            .getWildcardFluidStack(StringUtils.sanitizeStringKeepDashes(this.getDefaultLocalName()), 1);
 
         if (f1 != null) {
             aGTBaseFluid = f1.getFluid();
@@ -1424,24 +1273,21 @@ public class Material implements IOreMaterial {
         }
 
         ItemStack aFullCell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getUnlocalizedName(), 1);
-        ItemStack aFullCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + this.getLocalizedName(), 1);
+        ItemStack aFullCell2 = ItemUtils
+            .getItemStackOfAmountFromOreDictNoBroken("cell" + this.getDefaultLocalName(), 1);
         ItemStack aFullCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
             "cell" + StringUtils.sanitizeStringKeepDashes(this.getUnlocalizedName()),
             1);
         ItemStack aFullCell4 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "cell" + StringUtils.sanitizeStringKeepDashes(this.getLocalizedName()),
+            "cell" + StringUtils.sanitizeStringKeepDashes(this.getDefaultLocalName()),
             1);
 
-        Logger.MATERIALS("Generating our own fluid.");
         // Generate a Cell if we need to, but first validate all four searches are invalid
 
         if (!ItemUtils.checkForInvalidItems(new ItemStack[] { aFullCell, aFullCell2, aFullCell3, aFullCell4 })) {
-            if (this.vGenerateCells) {
+            if (this.generateCells) {
                 Item g = new BaseItemCell(this);
                 aFullCell = new ItemStack(g);
-                Logger.MATERIALS("Generated a cell for " + this.getUnlocalizedName());
-            } else {
-                Logger.MATERIALS("Did not generate a cell for " + this.getUnlocalizedName());
             }
         } else {
             // One cell we searched for was valid, let's register it.
@@ -1466,30 +1312,30 @@ public class Material implements IOreMaterial {
         if (this.materialState == MaterialState.SOLID) {
             return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
-                "Molten " + this.getLocalizedName(),
+                "Molten " + this.getDefaultLocalName(),
                 this.RGBA,
                 4,
                 this.getMeltingPointK(),
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells,
+                this.generateCells,
                 this);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
             return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
-                this.getLocalizedName(),
+                this.getDefaultLocalName(),
                 this.RGBA,
                 0,
                 this.getMeltingPointK(),
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells,
+                this.generateCells,
                 this);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils
-                .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
+                .generateGas(unlocalizedName, this.getDefaultLocalName(), getMeltingPointK(), getRGBA(), generateCells);
 
         } else { // Plasma
             return this.generatePlasma();
@@ -1502,7 +1348,7 @@ public class Material implements IOreMaterial {
         }
         final Materials isValid = tryFindGregtechMaterialEquivalent();
 
-        if (!this.vGenerateCells) {
+        if (!this.generateCells) {
             return null;
         }
         if (isValid != null) {
@@ -1512,11 +1358,9 @@ public class Material implements IOreMaterial {
                 }
             }
             if (isValid.mPlasma != null) {
-                Logger.MATERIALS("Using a pre-defined Plasma from GT.");
                 return isValid.mPlasma;
             }
         }
-        Logger.MATERIALS("Generating our own Plasma.");
         return FluidUtils.addGTPlasma(this);
     }
 
@@ -1568,7 +1412,7 @@ public class Material implements IOreMaterial {
                 return Materials.Steel.mRGBa;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
             return Materials.Steel.mRGBa;
         }
     }
@@ -1586,7 +1430,7 @@ public class Material implements IOreMaterial {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private byte calculateRadiation() {
-        ArrayList<MaterialStack> list = this.vMaterialInput;
+        ArrayList<MaterialStack> list = this.materialInput;
         int size = list.size();
         if (size == 0) {
             return 0;
@@ -1594,14 +1438,14 @@ public class Material implements IOreMaterial {
         long sum = 0;
         for (int i = 0; i < size; i++) {
             sum += list.get(i)
-                .getStackMaterial().vRadiationLevel;
+                .getStackMaterial().radiationLevel;
         }
         return MathUtils.safeByte(sum / size);
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private int calculateMeltingPoint() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        final ArrayList<MaterialStack> list = this.materialInput;
         int size = list.size();
         if (size == 0) {
             return 0;
@@ -1617,7 +1461,7 @@ public class Material implements IOreMaterial {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private int calculateBoilingPoint() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        final ArrayList<MaterialStack> list = this.materialInput;
         int size = list.size();
         if (size == 0) {
             return 0;
@@ -1633,7 +1477,7 @@ public class Material implements IOreMaterial {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private long calculateProtons() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        final ArrayList<MaterialStack> list = this.materialInput;
         int size = list.size();
         if (size == 0) {
             return 0;
@@ -1649,7 +1493,7 @@ public class Material implements IOreMaterial {
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private long calculateNeutrons() {
-        final ArrayList<MaterialStack> list = this.vMaterialInput;
+        final ArrayList<MaterialStack> list = this.materialInput;
         int size = list.size();
         if (size == 0) {
             return 0;
@@ -1672,7 +1516,7 @@ public class Material implements IOreMaterial {
             return false;
         }
         if (aObj.unlocalizedName.equals(this.unlocalizedName)) {
-            return aObj.localizedName.equals(this.localizedName);
+            return aObj.defaultLocalName.equals(this.defaultLocalName);
         }
         return false;
     }
@@ -1697,11 +1541,6 @@ public class Material implements IOreMaterial {
         return registerComponentForMaterial(this, aPrefix, aStack);
     }
 
-    public static boolean registerComponentForMaterial(Material componentMaterial, ComponentTypes aPrefix,
-        ItemStack aStack) {
-        return registerComponentForMaterial(componentMaterial, aPrefix.getGtOrePrefix(), aStack);
-    }
-
     public static boolean registerComponentForMaterial(Material componentMaterial, OrePrefixes aPrefix,
         ItemStack aStack) {
         if (componentMaterial == null) {
@@ -1716,16 +1555,9 @@ public class Material implements IOreMaterial {
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, aStack);
-            Logger.MATERIALS(
-                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: ["
-                    + aKey
-                    + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -1746,7 +1578,7 @@ public class Material implements IOreMaterial {
     }
 
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
-        String aMaterialName = aMaterial.getLocalizedName();
+        String aMaterialName = aMaterial.getDefaultLocalName();
         Materials aGregtechMaterial = Materials.get(aMaterialName);
         if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
             aMaterialName = aMaterialName.replace(" ", "_");
@@ -1784,5 +1616,20 @@ public class Material implements IOreMaterial {
     @Override
     public boolean remove(SubTag aTag) {
         return false;
+    }
+
+    @Override
+    public void addTooltips(List<String> list) {
+        if (Client.tooltip.showFormula) {
+            if (this.chemicalFormula.contains("?")) {
+                list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.chemicalFormula));
+            } else {
+                list.add(StringUtils.sanitizeStringKeepBrackets(this.chemicalFormula));
+            }
+        }
+        if (Client.tooltip.showRadioactiveText && this.isRadioactive) {
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
+        }
     }
 }

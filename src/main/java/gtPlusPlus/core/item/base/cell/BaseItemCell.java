@@ -1,8 +1,5 @@
 package gtPlusPlus.core.item.base.cell;
 
-import static gregtech.api.enums.Mods.GregTech;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -16,16 +13,21 @@ public class BaseItemCell extends BaseItemComponent {
     }
 
     @Override
-    public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell");
-        this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
-    }
-
-    @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 1) {
             return Utils.rgbtoHexValue(255, 255, 255);
         }
-        return this.componentColour;
+        if (this.componentMaterial == null) {
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
+            }
+            return this.componentColour;
+        }
+
+        if (this.componentMaterial.getRGBA()[3] <= 1) {
+            return this.componentColour;
+        }
+        // See BaseItemComponent.getColorFromItemStack: animated materials ship baked textures, rendered untinted.
+        return Utils.rgbtoHexValue(255, 255, 255);
     }
 }

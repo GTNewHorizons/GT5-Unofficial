@@ -2,7 +2,6 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
@@ -10,51 +9,44 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyInfo {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchDynamoMulti extends MTEHatchDynamo implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
     public int Amperes;
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            MTEHatch.formatEnergyInfoDesc(
-                true,
-                aTier,
-                aAmp,
-                translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0")));
-        Amperes = maxAmperes = aAmp;
-    }
-
-    public MTEHatchDynamoMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aID, aName, aNameRegional, aTier);
         Amperes = maxAmperes = aAmp;
     }
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int i, String[] description,
         int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, description);
+        super(aID, aName, aNameRegional, aTier, description);
+        Amperes = maxAmperes = aAmp;
+    }
+
+    public MTEHatchDynamoMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
         Amperes = maxAmperes = aAmp;
     }
 
@@ -64,6 +56,15 @@ public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyI
 
     public void setAmperes(int amperes) {
         Amperes = amperes;
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.hatch.dynamomulti.name",
+            GTValues.VN[mTier],
+            formatNumber(maxAmperes));
     }
 
     @Override
@@ -104,33 +105,8 @@ public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyI
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 128L * Amperes;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return V[mTier];
     }
 
     @Override
@@ -160,20 +136,17 @@ public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyI
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            GTUtility.translate(
+            StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(
+                formatNumber(
                     accessor.getNBTData()
-                        .getLong("amperage") * V[mTier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t"));
+                        .getLong("amperage") * V[mTier])));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { GTUtility.translate(
-            "gt.tileentity.throughput",
-            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
+        return new String[] {
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(Amperes * V[mTier])) };
     }
 
     @Override
@@ -182,14 +155,7 @@ public class MTEHatchDynamoMulti extends MTEHatch implements IHideTooltipEnergyI
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.hatch.dynamomulti.desc");
     }
 }

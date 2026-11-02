@@ -1,14 +1,20 @@
 package gregtech.api.util;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -16,11 +22,22 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.ResourceLocation;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
@@ -29,6 +46,7 @@ import it.unimi.dsi.fastutil.objects.ObjectIterators;
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
  */
+@SuppressWarnings({ "UnstableApiUsage", "unused" })
 public class GTDataUtils {
 
     public static <S, T> List<T> mapToList(Collection<S> in, Function<S, T> mapper) {
@@ -64,9 +82,8 @@ public class GTDataUtils {
         int l = array.length;
         int count = 0;
 
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < l; i++) {
-            if (array[i] != null) count++;
+        for (Object o : array) {
+            if (o != null) count++;
         }
 
         return count;
@@ -83,9 +100,7 @@ public class GTDataUtils {
 
         int j = 0, l = array.length;
 
-        for (int i = 0; i < l; i++) {
-            T t = array[i];
-
+        for (T t : array) {
             if (t != null) out[j++] = t;
         }
 
@@ -137,6 +152,14 @@ public class GTDataUtils {
         return -1;
     }
 
+    public static <T> int findIndex(T[] array, Predicate<T> matcher) {
+        for (int i = 0; i < array.length; i++) {
+            if (matcher.test(array[i])) return i;
+        }
+
+        return -1;
+    }
+
     @Nullable
     public static <T> T getIndexSafe(@Nullable T @Nullable [] array, int index) {
         return array == null || index < 0 || index >= array.length ? null : array[index];
@@ -165,13 +188,14 @@ public class GTDataUtils {
         return value == null ? Stream.empty() : Stream.of(value);
     }
 
+    @SafeVarargs
     public static <T> T[] concat(T[]... arrays) {
         int totalLength = 0;
 
         int l = arrays.length;
 
-        for (int i = 0; i < l; i++) {
-            totalLength += arrays[i].length;
+        for (T[] array : arrays) {
+            totalLength += array.length;
         }
 
         T[] out = Arrays.copyOf(arrays[0], totalLength);
@@ -220,7 +244,7 @@ public class GTDataUtils {
 
             @Override
             public BiConsumer<M, P> accumulator() {
-                return (map, pair) -> { map.put(pair.left(), pair.right()); };
+                return (map, pair) -> map.put(pair.left(), pair.right());
             }
 
             @Override
@@ -243,5 +267,100 @@ public class GTDataUtils {
             }
         };
 
+    }
+
+    public static <L, R> Iterator<Pair<L, R>> zip(Iterator<L> left, Iterator<R> right) {
+        return new Iterator<>() {
+
+            @Override
+            public boolean hasNext() {
+                boolean l = left.hasNext();
+                boolean r = right.hasNext();
+
+                if (l != r) throw new IllegalStateException(
+                    "zipped iterators did not have the same length: "
+                        + (l ? "left had more than right" : "right had more than left"));
+
+                return l && r;
+            }
+
+            @Override
+            public Pair<L, R> next() {
+                return Pair.of(left.next(), right.next());
+            }
+        };
+    }
+
+    /// Converts an [Iterator] into an [Iterable], so that you can pass a custom iterator into a for-each loop.
+    /// The iterator will be exhausted after the loop breaks, but keep in mind that breaking early may cause the
+    /// iterator to still have some elements.
+    /// ```java
+    /// Iterator<T> iter = ...;
+    ///
+    /// for (T value : oneshot(iter)) {
+    /// ...
+    /// }
+    /// ```
+    public static <T> Iterable<T> oneshot(Iterator<T> iter) {
+        return () -> iter;
+    }
+
+    public static final Gson GSON = new Gson();
+
+    @SideOnly(Side.CLIENT)
+    public static <K, V> Map<K, V> loadResourceMerged(Class<K> key, Class<V> value, ResourceLocation resource) {
+        return loadResourceMerged(GSON, key, value, resource);
+    }
+
+    /// Scans all resource packs for the given resource and merges them into one object. Entries with identical keys are
+    /// replaced - the entry from the bottom-most resource pack takes priority over all prior entries.
+    @SideOnly(Side.CLIENT)
+    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value, ResourceLocation loc) {
+        // Temporarily load the data into a string -> json map so that we can replace identical entries based on the
+        // key.
+        Map<String, JsonElement> temp = new HashMap<>();
+
+        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>() {}.getType(), loc, temp::putAll);
+
+        Map<K, V> out = new HashMap<>();
+
+        for (var e : temp.entrySet()) {
+            // Convert the String keys and JsonElement values into their proper values, now that we've scanned all
+            // resource packs
+            out.put(gson.fromJson(new JsonPrimitive(e.getKey()), key), gson.fromJson(e.getValue(), value));
+        }
+
+        return out;
+    }
+
+    /// Scans all resources packs for the given resource, and merges all of them into one object. This method does not
+    /// perform any of the merging logic, see [#loadResourceMerged(Gson, Class, Class, ResourceLocation)].
+    @SideOnly(Side.CLIENT)
+    public static <T> void loadResourceMerged(Gson gson, Type type, ResourceLocation loc, Consumer<T> fn) {
+        IResourceManager manager = Minecraft.getMinecraft()
+            .getResourceManager();
+
+        try {
+            for (IResource resource : manager.getAllResources(loc)) {
+                fn.accept(gson.fromJson(new InputStreamReader(resource.getInputStream()), type));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /// Loads a resource from the resource manager and parses it into the given [Type], with the given [Gson] object.
+    @SideOnly(Side.CLIENT)
+    public static <T> T loadResource(Gson gson, Type type, ResourceLocation location) {
+        IResourceManager manager = Minecraft.getMinecraft()
+            .getResourceManager();
+
+        try {
+            IResource resource = manager.getResource(location);
+
+            return gson.fromJson(new InputStreamReader(resource.getInputStream()), type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

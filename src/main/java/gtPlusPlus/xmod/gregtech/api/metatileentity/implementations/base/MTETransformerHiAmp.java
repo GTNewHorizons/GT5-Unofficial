@@ -6,27 +6,37 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTETransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.ha.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -48,6 +58,14 @@ public class MTETransformerHiAmp extends MTETransformer {
             return ((getBaseMetaTileEntity().isAllowedToWork()) ? 3L : 12L);
         }
         return ((getBaseMetaTileEntity().isAllowedToWork()) ? 6L : 24L);
+    }
+
+    @Override
+    public long displayedAmperesIn() {
+        if (this.mHalfMode) {
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
+        }
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
     }
 
     @Override
@@ -89,12 +107,14 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn1"),
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn2"),
-            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn3"),
-            GTPPCore.GT_Tooltip.get());
+        return GTSplit.splitLocalizedFormattedWithWarped(
+            "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
+            GTPPCore.GT_Tooltip.get(),
+            4,
+            16,
+            2,
+            8);
     }
 
     @Override

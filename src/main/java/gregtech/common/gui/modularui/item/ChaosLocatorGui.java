@@ -39,7 +39,7 @@ public class ChaosLocatorGui {
                 NBTTagCompound tag = guiData.getMainHandItem()
                     .getTagCompound();
                 tag.setInteger("xCoordinate", x);
-            });
+            }).allowC2S();
 
         IntSyncValue zSyncer = new IntSyncValue(
             () -> guiData.getMainHandItem()
@@ -54,7 +54,7 @@ public class ChaosLocatorGui {
                 NBTTagCompound tag = guiData.getMainHandItem()
                     .getTagCompound();
                 tag.setInteger("zCoordinate", z);
-            });
+            }).allowC2S();
 
         panel.resizer()
             .size(100, 100);
@@ -62,7 +62,7 @@ public class ChaosLocatorGui {
         panel.child(
             new TextWidget<>(IKey.lang("gt.item.chaos_locator.coords")).sizeRel(1f, 0.2f)
                 .posRel(0f, 0.1f)
-                .alignment(Alignment.Center)
+                .textAlign(Alignment.Center)
                 .color(10227735));
 
         panel.child(
@@ -77,14 +77,14 @@ public class ChaosLocatorGui {
                                 .height(18)
                                 .setTextAlignment(Alignment.Center)
                                 .setTextColor(10227735)
-                                .setFormatAsInteger(true)
-                                .setNumbers(-1000, 1000)
+                                .formatAsInteger(true)
+                                .numbersInt(-1000, 1000)
                                 .value(xSyncer)
-                                .setDefaultNumber(0))
+                                .defaultNumber(0))
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.chaos_locator.x")).widthRel(1f)
                                 .height(9)
-                                .alignment(Alignment.Center)
+                                .textAlign(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2))
                 .child(
@@ -97,14 +97,14 @@ public class ChaosLocatorGui {
                                 .height(18)
                                 .setTextAlignment(Alignment.Center)
                                 .setTextColor(10227735)
-                                .setFormatAsInteger(true)
-                                .setNumbers(-1000, 1000)
+                                .formatAsInteger(true)
+                                .numbersInt(-1000, 1000)
                                 .value(zSyncer)
-                                .setDefaultNumber(0))
+                                .defaultNumber(0))
                         .child(
                             new TextWidget<>(IKey.lang("gt.item.chaos_locator.z")).widthRel(1f)
                                 .height(9)
-                                .alignment(Alignment.Center)
+                                .textAlign(Alignment.Center)
                                 .color(10227735))
                         .childPadding(2)));
 
