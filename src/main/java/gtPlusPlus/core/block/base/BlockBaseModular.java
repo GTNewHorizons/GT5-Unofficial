@@ -40,6 +40,11 @@ public class BlockBaseModular extends BasicBlock {
 
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return false;
+    }
+
     public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
