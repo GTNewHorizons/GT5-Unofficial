@@ -86,8 +86,6 @@ public enum ItemList implements IItemContainer {
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
     IC2_Fuel_Rod_Empty,
-    IC2_Plutonium,
-    IC2_Plutonium_Small,
     IC2_Uranium_Fuel,
     IC2_MOX_Fuel,
     IC2_Food_Can_Empty,
