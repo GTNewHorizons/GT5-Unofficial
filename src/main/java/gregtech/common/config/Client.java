@@ -304,6 +304,11 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Universium Rendering")
         public boolean renderUniversiumFancy;
+
+        @Config.Comment("Enables or disables fancy MHDCSM block rendering. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Fancy MHDCSM Block Rendering")
+        public boolean renderMHDCSMFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
