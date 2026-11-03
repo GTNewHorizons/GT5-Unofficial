@@ -1667,6 +1667,8 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.LV) });
 
         if (NotEnoughItems.isModLoaded()) {
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("Plutonium", 1L));
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("smallPlutonium", 1L));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumSimple", 1L, 1));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumDual", 1L, 1));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumQuad", 1L, 1));
