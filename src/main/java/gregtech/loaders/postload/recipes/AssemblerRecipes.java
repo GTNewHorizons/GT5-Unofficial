@@ -2570,14 +2570,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 8))
-            .circuit(8)
-            .itemOutputs(GTModHandler.getIC2Item("machine", 1))
-            .duration(1 * SECONDS + 5 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_ULV.get(1))
