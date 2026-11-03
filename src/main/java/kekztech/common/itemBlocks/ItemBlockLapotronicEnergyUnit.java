@@ -35,46 +35,51 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
+    public static final int LSC_WIRELESS_EU_CAP_TIER_MULTIPLIER = 100;
+
     // 5 Minutes, 5 mins * 60s * 20 ticks.
-    public static long LSC_time_between_wireless_rebalance_in_ticks = 5L * 60L * 20L;
+    public static final long LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS = 5L * 60L * 20L;
 
     // 60 Trillion EU.
-    public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 12));
+    public static final BigInteger LSC_WIRELESS_EU_CAP = BigInteger.valueOf(60 * pow(10, 12));
 
     // 10 Billion EU/t
-    private static final BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap
-        .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static final BigInteger UHV_CAP_EU_PER_TICK = LSC_WIRELESS_EU_CAP
+        .divide(BigInteger.valueOf(LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS));
 
     // 6 Quadrillion EU.
-    public static BigInteger UEV_wireless_eu_cap = BigInteger.valueOf(100 * 60 * pow(10, 12));
+    public static final BigInteger UEV_WIRELESS_EU_CAP = LSC_WIRELESS_EU_CAP
+        .multiply(BigInteger.valueOf(LSC_WIRELESS_EU_CAP_TIER_MULTIPLIER));
 
     // 1 Trillion EU/t
-    private static final BigInteger UEV_cap_eu_per_tick = UEV_wireless_eu_cap
-        .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static final BigInteger UEV_CAP_EU_PER_TICK = UEV_WIRELESS_EU_CAP
+        .divide(BigInteger.valueOf(LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS));
 
     // 600 Quadrillion EU.
-    public static BigInteger UIV_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 16));
+    public static final BigInteger UIV_WIRELESS_EU_CAP = UEV_WIRELESS_EU_CAP
+        .multiply(BigInteger.valueOf(LSC_WIRELESS_EU_CAP_TIER_MULTIPLIER));
 
     // 100 Trillion EU/t
-    private static final BigInteger UIV_cap_eu_per_tick = UIV_wireless_eu_cap
-        .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static final BigInteger UIV_CAP_EU_PER_TICK = UIV_WIRELESS_EU_CAP
+        .divide(BigInteger.valueOf(LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS));
 
     // 60 Quintillion EU.
-    public static BigInteger UMV_wireless_eu_cap = UIV_wireless_eu_cap.multiply(BigInteger.valueOf(100));
+    public static final BigInteger UMV_WIRELESS_EU_CAP = UIV_WIRELESS_EU_CAP
+        .multiply(BigInteger.valueOf(LSC_WIRELESS_EU_CAP_TIER_MULTIPLIER));
 
     // 10 Quadrillion EU/t
-    private static final BigInteger UMV_cap_eu_per_tick = UMV_wireless_eu_cap
-        .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
+    private static final BigInteger UMV_CAP_EU_PER_TICK = UMV_WIRELESS_EU_CAP
+        .divide(BigInteger.valueOf(LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS));
 
-    public static long EV_cap_storage = 60_000_000L;
-    public static long IV_cap_storage = 600_000_000L;
-    public static long LuV_cap_storage = 6_000_000_000L;
-    public static long ZPM_cap_storage = 60_000_000_000L;
-    public static long UV_cap_storage = 600_000_000_000L;
-    public static long UHV_cap_storage = Long.MAX_VALUE;
-    public static long UEV_cap_storage = Long.MAX_VALUE;
-    public static long UIV_cap_storage = Long.MAX_VALUE;
-    public static BigInteger UMV_cap_storage = BigInteger.valueOf(UIV_cap_storage)
+    public static final long EV_CAP_STORAGE = 60_000_000L;
+    public static final long IV_CAP_STORAGE = 600_000_000L;
+    public static final long LUV_CAP_STORAGE = 6_000_000_000L;
+    public static final long ZPM_CAP_STORAGE = 60_000_000_000L;
+    public static final long UV_CAP_STORAGE = 600_000_000_000L;
+    public static final long UHV_CAP_STORAGE = Long.MAX_VALUE;
+    public static final long UEV_CAP_STORAGE = Long.MAX_VALUE;
+    public static final long UIV_CAP_STORAGE = Long.MAX_VALUE;
+    public static final BigInteger UMV_CAP_STORAGE = BigInteger.valueOf(UIV_CAP_STORAGE)
         .pow(2);
 
     @Override
@@ -85,35 +90,35 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(IV_cap_storage)));
+                        formatNumber(IV_CAP_STORAGE)));
                 break;
             case 2:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(LuV_cap_storage)));
+                        formatNumber(LUV_CAP_STORAGE)));
                 break;
             case 3:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(ZPM_cap_storage)));
+                        formatNumber(ZPM_CAP_STORAGE)));
                 break;
             case 4:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(UV_cap_storage)));
+                        formatNumber(UV_CAP_STORAGE)));
                 break;
             case 5:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(UHV_cap_storage)));
+                        formatNumber(UHV_CAP_STORAGE)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        formatNumber(UHV_cap_eu_per_tick),
+                        formatNumber(UHV_CAP_EU_PER_TICK),
                         GTValues.TIER_COLORS[9] + GTValues.VN[9]));
                 break;
             case 6:
@@ -123,39 +128,39 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(EV_cap_storage)));
+                        formatNumber(EV_CAP_STORAGE)));
                 break;
             case 8:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(UEV_cap_storage)));
+                        formatNumber(UEV_CAP_STORAGE)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        formatNumber(UEV_cap_eu_per_tick),
+                        formatNumber(UEV_CAP_EU_PER_TICK),
                         GTValues.TIER_COLORS[10] + GTValues.VN[10]));
                 break;
             case 9:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(UIV_cap_storage)));
+                        formatNumber(UIV_CAP_STORAGE)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        formatNumber(UIV_cap_eu_per_tick),
+                        formatNumber(UIV_CAP_EU_PER_TICK),
                         GTValues.TIER_COLORS[11] + GTValues.VN[11]));
                 break;
             case 10:
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.capacity",
-                        formatNumber(UMV_cap_storage)));
+                        formatNumber(UMV_CAP_STORAGE)));
                 lines.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
-                        formatNumber(UMV_cap_eu_per_tick),
+                        formatNumber(UMV_CAP_EU_PER_TICK),
                         GTValues.TIER_COLORS[12] + GTValues.VN[12]));
                 break;
         }

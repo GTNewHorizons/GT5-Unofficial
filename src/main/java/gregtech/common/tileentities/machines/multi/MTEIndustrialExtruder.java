@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -46,6 +47,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtruder>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -98,21 +100,23 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Extruder, IEM")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.extruder"))
             .addBulkMachineInfo(6, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(4, 4, 9, false)
-            .addController("Front right, 2nd layer")
-            .addCasing("8-33", "Tension Resistant Machine Casing", false)
-            .addCasing("24", "Tungsten Sheetmetal", false)
-            .addCasing("20", "Forming Core", false)
-            .addCasing("3-7", "Extruder Machine Casing", false)
-            .addEnergyHatch("1+", "Any tension resistant or extruder machine casing", 1)
-            .addMaintenanceHatch("1", "Any tension resistant or extruder machine casing", 1)
-            .addMufflerHatch("1", "Any tension resistant or extruder machine casing", 1)
-            .addMiscHatch("1+", "Input/Extrusion Bus", "Any tension resistant casing", 1)
-            .addOutputBus("1+", "Any tension resistant casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_right_2nd_layer"))
+            .addCasing("8-33", Casings.TensionResistantMachineCasing.getLocalizedName(), false)
+            .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("20", Casings.FormingCore.getLocalizedName(), false)
+            .addCasing("3-7", Casings.ExtruderMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_extrusion_bus"), StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

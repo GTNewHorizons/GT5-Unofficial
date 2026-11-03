@@ -60,7 +60,7 @@ public class TooltipHelper {
     /** For efficiency modifiers. */
     public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
     /** For power usage (eg: x EU/t). */
-    public static final EnumChatFormatting EU_USAGE_COLOR = EnumChatFormatting.AQUA;
+    public static final EnumChatFormatting EU_USAGE_COLOR = EnumChatFormatting.YELLOW;
     /** For heat values. */
     public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
     /** For hot things. */
@@ -78,10 +78,12 @@ public class TooltipHelper {
     /** For pollution values. */
     public static final EnumChatFormatting POLLUTION_COLOR = EnumChatFormatting.DARK_PURPLE;
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
+    /** For EU throughput measurements like EU/t values or input or output voltages. */
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     /** For amperage measurements. */
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
-    public static final EnumChatFormatting CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    /** For eu capacity measurements. */
+    public static final EnumChatFormatting EU_CAPACITY_COLOR = EnumChatFormatting.BLUE;
     public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
@@ -250,7 +252,7 @@ public class TooltipHelper {
      * @return The given number of EU, formatted.
      */
     public static String euCapacityText(long capacity) {
-        return CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
+        return EU_CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
     }
 
     /**

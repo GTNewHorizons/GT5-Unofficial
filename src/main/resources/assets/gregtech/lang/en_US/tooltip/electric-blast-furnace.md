@@ -1,7 +1,7 @@
 Base {color_heat:Heat} is determined by the {color_name:Heating Coils}
-Heat increases by {color_heat:+{var:heat_per_tier}{K}} for every {color_name:Voltage} tier past {var:voltageTier_MV}
+Heat increases by {color_heat:+{var:heat_per_tier}{K}} for every {color_name:Voltage} Tier past {VNF:base_tier_for_heat_increase}
 {hr}
-Every {color_heat:{var:eu_reduction_heat}{K}} above the recipe requirement reduces {color_eu_usage:{EU} Usage} by {color_efficiency:{var:eu_reduction}%}
+Every {color_heat:{var:eu_reduction_heat}{K}} above the recipe requirement reduces {EU} Usage by {color_eu_usage:{var:eu_reduction}%}
 Every {color_heat:{var:heat_per_poc}{K}} above the recipe requirement grants {color_mechanic:1 Perfect Overclock}
-Perfect Overclocks increase speed by 4x instead of 2x (100% energy efficient)
+{color_mechanic:Perfect Overclocks} increase speed by {color_speed:4x} instead of {color_speed:2x} (100% energy efficient)
 {color_note:Certain fluids also reduce the base recipe duration}
