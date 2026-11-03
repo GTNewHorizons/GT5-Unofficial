@@ -116,6 +116,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean coverTabsFlipped;
 
+        @Config.Comment("If true, allows certain covers to automatically have panels toggled open upon machine gui opening. Currently only includes item holder covers.")
+        @Config.DefaultBoolean(true)
+        public boolean autoOpenCovers;
+
         @Config.Comment("How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended.")
         @Config.DefaultInt(2)
         public int tooltipVerbosity;

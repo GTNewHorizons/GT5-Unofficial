@@ -177,7 +177,17 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        CoverTabButton button = new CoverTabButton(coverable, side);
+        boolean autoOpen = coverable.getCoverAtSide(side)
+            .getAutomaticOpen();
+        CoverTabButton button = new CoverTabButton(coverable, side) {
+
+            @Override
+            public void afterInit() {
+                if (autoOpen) {
+                    togglePanel();
+                }
+            }
+        };
         button.setPanel(getCoverPanel(button, coverable, side));
         return button;
     }

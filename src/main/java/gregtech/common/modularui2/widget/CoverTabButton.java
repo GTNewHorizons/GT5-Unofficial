@@ -55,7 +55,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
         this.panel = panel;
     }
 
-    private void togglePanel() {
+    public void togglePanel() {
         if (panel == null) return;
         if (panel.isPanelOpen()) {
             panel.closePanel();
