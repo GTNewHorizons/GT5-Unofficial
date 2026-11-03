@@ -127,7 +127,6 @@ public class AchievementHandler {
 
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
-        this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
         this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
         this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
         this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);

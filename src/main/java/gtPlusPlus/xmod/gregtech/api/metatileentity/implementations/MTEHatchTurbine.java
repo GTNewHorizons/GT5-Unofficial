@@ -34,12 +34,12 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.common.gui.modularui.hatch.MTEHatchTurbineGui;
+import gregtech.common.tileentities.machines.multi.xlturbines.MTEXLTurbineBase;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
 
 public class MTEHatchTurbine extends MTEHatch {
 
@@ -103,7 +103,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean hasTurbine() {
         if (getBaseMetaTileEntity().isServerSide()) {
             ItemStack aStack = this.mInventory[0];
-            return MTELargerTurbineBaseLegacy.isValidTurbine(aStack);
+            return isValidTurbine(aStack);
         }
         return mHasTurbine;
     }
@@ -116,7 +116,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean insertTurbine(ItemStack aTurbine) {
-        if (MTELargerTurbineBaseLegacy.isValidTurbine(aTurbine)) {
+        if (isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
             sendUpdate();
             return true;
@@ -201,18 +201,18 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean isControllerActive() {
-        MTELargerTurbineBaseLegacy x = getController();
+        var x = getController();
         if (x != null) {
             return x.lEUt > 0;
         }
         return false;
     }
 
-    public MTELargerTurbineBaseLegacy getController() {
+    public MTEXLTurbineBase getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBaseLegacy turbine) {
+            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTEXLTurbineBase turbine) {
                 return turbine;
             }
         }
@@ -336,8 +336,7 @@ public class MTEHatchTurbine extends MTEHatch {
             GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
-                String aSize = MTELargerTurbineBaseLegacy
-                    .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
+                String aSize = getTurbineSizeString(getTurbineSize(getTurbine()));
                 GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
             }
         } else {
@@ -439,7 +438,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public void sendUpdate() {
         PacketTurbineHatchUpdate message = new PacketTurbineHatchUpdate();
-        MTELargerTurbineBaseLegacy controller = getController();
+        var controller = getController();
         message.setX(getBaseMetaTileEntity().getXCoord());
         message.setY(getBaseMetaTileEntity().getYCoord());
         message.setZ(getBaseMetaTileEntity().getZCoord());
@@ -459,5 +458,36 @@ public class MTEHatchTurbine extends MTEHatch {
     public void onRemoval() {
         super.onRemoval();
         if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
+    }
+
+    public static boolean isValidTurbine(ItemStack aTurbine) {
+        return (aTurbine != null && aTurbine.getItem() instanceof MetaGeneratedTool
+            && aTurbine.getItemDamage() >= 170
+            && aTurbine.getItemDamage() <= 176);
+    }
+
+    public static String getTurbineSizeString(int aSize) {
+        return switch (aSize) {
+            case 1 -> "Small Turbine";
+            case 2 -> "Turbine";
+            case 3 -> "Large Turbine";
+            case 4 -> "Huge Turbine";
+            default -> "";
+        };
+    }
+
+    public static int getTurbineSize(ItemStack aTurbine) {
+        if (isValidTurbine(aTurbine)) {
+            if (aTurbine.getItemDamage() >= 170 && aTurbine.getItemDamage() < 172) {
+                return 1;
+            } else if (aTurbine.getItemDamage() >= 172 && aTurbine.getItemDamage() < 174) {
+                return 2;
+            } else if (aTurbine.getItemDamage() >= 174 && aTurbine.getItemDamage() < 176) {
+                return 3;
+            } else if (aTurbine.getItemDamage() >= 176 && aTurbine.getItemDamage() < 178) {
+                return 4;
+            }
+        }
+        return 0;
     }
 }

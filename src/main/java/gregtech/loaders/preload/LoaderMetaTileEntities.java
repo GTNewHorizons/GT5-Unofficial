@@ -149,7 +149,6 @@ import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
-import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
@@ -157,7 +156,6 @@ import gregtech.common.tileentities.machines.multi.MTEEndothermicFridge;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExothermicHearth;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
-import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
@@ -189,25 +187,16 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialSifter;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
-import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronzeLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitaniumLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteamLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasmaLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
@@ -225,7 +214,6 @@ import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill3;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill4;
 import gregtech.common.tileentities.machines.multi.MTEOilDrillInfinite;
-import gregtech.common.tileentities.machines.multi.MTEOilDrillInfiniteLegacy;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
@@ -233,7 +221,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
 import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
-import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
@@ -408,26 +395,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "hatch.degasifiercontrol",
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Bronze.set(
-            new MTELargeBoilerBronzeLegacy(
-                LARGE_BRONZE_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.bronze",
-                "Large Bronze Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Steel.set(
-            new MTELargeBoilerSteelLegacy(
-                LARGE_STEEL_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.steel",
-                "Large Steel Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Titanium.set(
-            new MTELargeBoilerTitaniumLegacy(
-                LARGE_TITANIUM_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.titanium",
-                "Large Titanium Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
-            new MTELargeBoilerTungstenSteelLegacy(
-                LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.tungstensteel",
-                "Large Tungstensteel Boiler").getStackForm(1L));
         ItemList.FusionComputer_LuV.set(
             new MTEFusionComputer1(FUSION_CONTROLLER_MKI.ID, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
                 .getStackForm(1L));
@@ -447,38 +414,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 DISTILLATION_TOWER_CONTROLLER.ID,
                 "multimachine.distillationtower",
                 "Distillation Tower").getStackForm(1L));
-        ItemList.Ore_Processor.set(
-            new MTEIntegratedOreFactoryLegacy(
-                INTEGRATED_ORE_FACTORY_CONTROLLER.ID,
-                "multimachine.oreprocessor",
-                "Integrated Ore Factory").getStackForm(1L));
 
-        ItemList.LargeSteamTurbine.set(
-            new MTELargeTurbineSteamLegacy(
-                LARGE_STEAM_TURBINE_CONTROLLER.ID,
-                "multimachine.largeturbine",
-                "Large Steam Turbine").getStackForm(1L));
-        ItemList.LargeGasTurbine.set(
-            new MTELargeTurbineGasLegacy(
-                LARGE_GAS_TURBINE_CONTROLLER.ID,
-                "multimachine.largegasturbine",
-                "Large Gas Turbine").getStackForm(1L));
-        ItemList.LargeHPSteamTurbine.set(
-            new MTELargeTurbineHPSteamLegacy(
-                LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
-                "multimachine.largehpturbine",
-                "Large HP Steam Turbine").getStackForm(1L));
         ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
             new MTETranscendentPlasmaMixer(
                 TRANSCENDENT_PLASMA_MIXER_CONTROLLER.ID,
                 "multimachine.transcendentplasmamixer",
                 "Transcendent Plasma Mixer").getStackForm(1));
 
-        ItemList.LargePlasmaTurbine.set(
-            new MTELargeTurbinePlasmaLegacy(
-                LARGE_PLASMA_TURBINE_CONTROLLER.ID,
-                "multimachine.largeplasmaturbine",
-                "Large Plasma Turbine").getStackForm(1L));
         ItemList.Machine_Multi_HeatExchanger.set(
             new MTEHeatExchanger(
                 LARGE_HEAT_EXCHANGER_CONTROLLER.ID,
@@ -503,11 +445,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.OilDrill4.set(
             new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
                 .getStackForm(1));
-        ItemList.OilDrillInfinite.set(
-            new MTEOilDrillInfiniteLegacy(
-                MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
-                "multimachine.oildrillinfinite",
-                "Infinite Fluid Drilling Rig").getStackForm(1));
 
         ItemList.ConcreteBackfiller1.set(
             new MTEConcreteBackfiller1(
@@ -532,9 +469,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEOreDrillingPlant4(ORE_DRILL_MKIV_CONTROLLER.ID, "multimachine.oredrill4", "Ore Drilling Plant IV")
                 .getStackForm(1));
 
-        ItemList.PyrolyseOven.set(
-            new MTEPyrolyseOvenLegacy(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven")
-                .getStackForm(1));
         ItemList.OilCracker.set(
             new MTEOilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
 
@@ -545,16 +479,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Assemblyline.set(
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembly Line")
                 .getStackForm(1L));
-        ItemList.Machine_Multi_DieselEngine.set(
-            new MTEDieselEngineLegacy(
-                COMBUSTION_ENGINE_CONTROLLER.ID,
-                "multimachine.dieselengine",
-                "Large Combustion Engine").getStackForm(1L));
-        ItemList.Machine_Multi_ExtremeDieselEngine.set(
-            new MTEExtremeDieselEngineLegacy(
-                EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
-                "multimachine.extremedieselengine",
-                "Extreme Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_Cleanroom.set(
             new MTECleanroom(CLEANROOM_CONTROLLER.ID, "multimachine.cleanroom", "Cleanroom Controller")
                 .getStackForm(1));
@@ -572,7 +496,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
-        ItemList.Machine_Multi_DroneCentre
+        ItemList.DroneCentre
             .set(new MTEDroneCentre(Drone_Centre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
 
         ItemList.Machine_Multi_IndustrialElectromagneticSeparator.set(
@@ -971,9 +895,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 InfiniteFluidDrillingRig.ID,
                 "multimachine.oildrillinfinite",
                 "Infinite Fluid Drilling Rig").getStackForm(1));
-
-        ItemList.DroneCentre
-            .set(new MTEDroneCentre(DroneCentre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
 
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")

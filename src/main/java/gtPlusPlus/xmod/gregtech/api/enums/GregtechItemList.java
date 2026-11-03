@@ -124,20 +124,17 @@ public enum GregtechItemList implements IItemContainer {
     Casing_IronPlatedBricks,
 
     // Large Centrifuge
-    Industrial_Centrifuge,
     Casing_Centrifuge1,
 
     // Large Alloy Smelter
     Industrial_AlloySmelter,
 
     // Coke Oven
-    Industrial_CokeOven,
     Casing_CokeOven,
     Casing_CokeOven_Coil1,
     Casing_CokeOven_Coil2,
 
     // Bending Maching // Plate Press // Press
-    Industrial_PlatePress,
     Casing_MaterialPress,
 
     // Matter Fab
@@ -165,18 +162,15 @@ public enum GregtechItemList implements IItemContainer {
     ForceFieldGlass,
 
     // Industrial Electrolyzer
-    Industrial_Electrolyzer,
     Casing_Electrolyzer,
 
     // Industrial Electromagnetic Separator
     Industrial_Electromagnetic_Separator,
 
     // Industrial Maceration Stack
-    Industrial_MacerationStack,
     Casing_MacerationStack,
 
     // Industrial Wire Factory
-    Industrial_WireFactory,
     Casing_WireFactory,
 
     // Power sub-station for mass storage. 3 hatches for input and output, whatever voltages you desire.
@@ -209,34 +203,25 @@ public enum GregtechItemList implements IItemContainer {
     Casing_Refinery_Internal,
 
     // Industrial Sifter
-    Industrial_Sifter,
     Casing_Sifter,
     Casing_SifterGrate,
 
     // Large Thermal Centrifuge
-    Industrial_ThermalCentrifuge,
     Casing_ThermalCentrifuge,
 
     // Cyclotron
-    COMET_Cyclotron,
     Casing_Cyclotron_Coil,
     Casing_Cyclotron_External,
 
     // Thermal Boiler
-    GT4_Thermal_Boiler,
     Casing_ThermalContainment,
 
     // Tree Farm
-    Industrial_TreeFarm,
     TreeFarmer_Structural,
     Casing_PLACEHOLDER_TreeFarmer,
 
     // Fish Pond
-    Industrial_FishingPond,
     Casing_FishPond,
-
-    // Algae
-    AlgaeFarm_Controller,
 
     // Chemical Plant
     ChemicalPlant_Controller,
@@ -246,15 +231,12 @@ public enum GregtechItemList implements IItemContainer {
     Casing_Autocrafter,
 
     // industrial Ore-Washer
-    Industrial_WashPlant,
     Casing_WashPlant,
 
     // Cutting Factory Controller
-    Industrial_CuttingFactoryController,
     Casing_CuttingFactoryFrame,
 
     // Large Extruder
-    Industrial_Extruder,
     Casing_Extruder,
 
     Casing_Multi_Use,
@@ -263,17 +245,14 @@ public enum GregtechItemList implements IItemContainer {
     Casing_BedrockMiner,
 
     // Large Packager
-    Amazon_Warehouse_Controller,
     Casing_AmazonWarehouse,
 
     // Advanced GT vanilla Multis
     Machine_Adv_BlastFurnace,
     Casing_Adv_BlastFurnace,
-    Machine_Adv_ImplosionCompressor,
     Machine_Adv_DistillationTower,
 
     // Advanced Vacuum Freezer
-    Industrial_Cryogenic_Freezer,
     Casing_AdvancedVacuum,
 
     // FusionTek MK IV
@@ -287,14 +266,10 @@ public enum GregtechItemList implements IItemContainer {
     Casing_Fusion_External2,
     Casing_Fusion_Internal2,
 
-    // large mixer
-    Industrial_Mixer,
-
     // Containment Casing
     Casing_Containment,
 
     // Arc Furnace
-    Industrial_Arc_Furnace,
     Casing_Industrial_Arc_Furnace,
 
     // Solar Tower
@@ -304,11 +279,6 @@ public enum GregtechItemList implements IItemContainer {
     Casing_SolarTower_HeatContainment,
 
     // Larger Turbines
-    Large_Steam_Turbine,
-    Large_HPSteam_Turbine,
-    Large_Gas_Turbine,
-    Large_Plasma_Turbine,
-    Large_SCSteam_Turbine,
     Casing_Turbine_Shaft,
     Casing_Turbine_LP,
     Casing_Turbine_HP,
@@ -342,7 +312,6 @@ public enum GregtechItemList implements IItemContainer {
     Casing_IsaMill_Pipe,
 
     // Flotation Cell
-    Controller_Flotation_Cell,
     Casing_Flotation_Cell,
 
     // Sparge Tower
@@ -355,11 +324,9 @@ public enum GregtechItemList implements IItemContainer {
     Casing_ElementalDuplicator,
 
     // Forge Hammer
-    Controller_IndustrialForgeHammer,
     Casing_IndustrialForgeHammer,
 
     // Molecular Transformer
-    Controller_MolecularTransformer,
     Casing_Molecular_Transformer_1,
     Casing_Molecular_Transformer_2,
     Casing_Molecular_Transformer_3,
@@ -381,11 +348,7 @@ public enum GregtechItemList implements IItemContainer {
     // Big Steam Furnace
     Controller_SteamFurnaceMulti,
 
-    // Industrial Rock Breaker
-    Controller_IndustrialRockBreaker,
-
     // Industrial Chisel
-    Controller_IndustrialAutoChisel,
     Casing_IndustrialAutoChisel,
 
     // Industrial Fluid Heater
