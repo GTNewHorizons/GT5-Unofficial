@@ -188,6 +188,7 @@ import ic2.api.recipe.RecipeOutput;
         + "after:TConstruct;"
         + "after:Translocator;"
         + "after:gendustry;"
+        + "after:dashboard@[1.0.13,);"
         + "before:computronics;")
 public class GTMod {
 
