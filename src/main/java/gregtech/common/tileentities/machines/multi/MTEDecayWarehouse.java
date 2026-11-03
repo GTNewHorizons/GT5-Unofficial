@@ -428,7 +428,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         int productAmount = MathHelper.floor_double(storedProduct + EPSILON);
 
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), protectsExcessItem(), true);
 
         // eject any stored product dusts
         if (productAmount > 0 && remainingIOQuota > 0) {
