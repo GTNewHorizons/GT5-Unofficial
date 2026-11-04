@@ -127,7 +127,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     public static final int M = 1_000_000;
     private static final int MAX_ENERGY_HATCHES = 32;
     public GTRecipe lastRecipe;
-    private ExtendedFacing cachedRingRenderFacing;
     public int para;
     protected OverclockDescriber overclockDescriber;
     private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -723,6 +722,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private static final Color color = new Color(132, 255, 255);
     private static final float hdrMultiplier = 12 / 255f;
+
+    private ExtendedFacing cachedRingRenderFacing;
 
     public static void reloadRender() {
         renderInitialized = false;
