@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -98,6 +99,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
     protected Map<String, UITexture> shutdownReasonTextureMap = new HashMap<>();
     protected Map<String, String> shutdownReasonTooltipMap = new HashMap<>();
+    protected int conditionCount = 0;
 
     public MTEMultiBlockBaseGui(T multiblock) {
         this.multiblock = multiblock;
@@ -743,6 +745,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected ButtonWidget<?> createVoidExcessButton(PanelSyncManager syncManager) {
         @SuppressWarnings("unchecked")
         EnumSyncValue<VoidingMode, ?> voidExcessSyncer = syncManager.findSyncHandler("voidExcess", EnumSyncValue.class);
+        BooleanSyncValue conditionSyncer = new BooleanSyncValue(multiblock::supportsVoidProtection);
+        syncManager.syncValue("condition", conditionCount++, conditionSyncer);
 
         ButtonWidget<?> button = new ButtonWidget<>()
             .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
@@ -750,7 +754,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .tooltipBuilder(this::createVoidExcessTooltip);
 
-        if (!multiblock.supportsVoidProtection()) button.widgetTheme(GTWidgetThemes.BUTTON_DISABLED);
+        conditionSyncer.changeListener(() -> {
+            if (conditionSyncer.getBoolValue()) button.widgetTheme(IThemeApi.BUTTON);
+            else button.widgetTheme(GTWidgetThemes.BUTTON_DISABLED);
+        });
 
         return button;
     }
@@ -781,8 +788,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         }
     }
 
-    protected ToggleButton createDisableableToggleButton(BooleanSyncValue syncValue, BooleanSupplier condition,
-        IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
+    protected ToggleButton createDisableableToggleButton(PanelSyncManager syncManager, BooleanSyncValue syncValue,
+        BooleanSupplier condition, IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
+
+        BooleanSyncValue conditionSyncer = new BooleanSyncValue(condition);
+        syncManager.syncValue("condition", conditionCount++, conditionSyncer);
+
         ToggleButton button = new ToggleButton() {
 
             @NotNull
@@ -797,13 +808,17 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .tooltipBuilder(tooltipBuilder)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
 
-        if (!condition.getAsBoolean()) button.widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+        conditionSyncer.changeListener(() -> {
+            if (conditionSyncer.getBoolValue()) button.widgetTheme(IThemeApi.TOGGLE_BUTTON);
+            else button.widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+        });
 
         return button;
     }
 
     protected ToggleButton createInputSeparationButton(PanelSyncManager syncManager) {
         return createDisableableToggleButton(
+            syncManager,
             syncManager.findSyncHandler("inputSeparation", BooleanSyncValue.class),
             multiblock::supportsInputSeparation,
             GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF,
@@ -885,6 +900,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ToggleButton createBatchModeButton(PanelSyncManager syncManager) {
         return createDisableableToggleButton(
+            syncManager,
             syncManager.findSyncHandler("batchMode", BooleanSyncValue.class),
             multiblock::supportsBatchMode,
             GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF,
@@ -902,6 +918,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ToggleButton createLockToSingleRecipeButton(PanelSyncManager syncManager) {
         return createDisableableToggleButton(
+            syncManager,
             syncManager.findSyncHandler("recipeLock", BooleanSyncValue.class),
             multiblock::supportsSingleRecipeLocking,
             GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED,
