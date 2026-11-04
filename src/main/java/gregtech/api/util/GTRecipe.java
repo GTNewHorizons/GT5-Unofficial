@@ -569,7 +569,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                             totalAvailable += GTUtility.getFluidAmount(provided);
                         }
                     }
-                    if (totalAvailable > 0 && alt.amount > 0) {
+                    if (totalAvailable > 0 && GTUtility.getFluidAmount(alt) > 0) {
                         double parallelForThisAlt = (double) totalAvailable / GTUtility.getFluidAmount(alt);
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;

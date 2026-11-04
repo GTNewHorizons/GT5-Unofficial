@@ -225,7 +225,7 @@ public class VoidProtectionHelper {
         for (int i = 0, fluidOutputsLength = fluidOutputs.length; i < fluidOutputsLength; i++) {
             FluidStack stack = fluidOutputs[i];
 
-            if (stack == null || stack.amount == 0) continue;
+            if (stack == null || GTUtility.getFluidAmount(stack) == 0) continue;
 
             // Find the max possible output for this stack (note the .ceil)
             // We can't know how many fluids per parallel will be eventually ejected, so we just check the

@@ -179,7 +179,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         Map<Fluid, Long> combinedFluids = new HashMap<>();
         for (FluidStack input : getStoredFluids()) {
-            if (input != null && input.amount > 0) {
+            if (input != null && GTUtility.getFluidAmount(input) > 0) {
                 combinedFluids.merge(input.getFluid(), GTUtility.getFluidAmount(input), Long::sum);
             }
         }
@@ -301,7 +301,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         for (MTEHatchInput hatch : validMTEList(hatches)) {
             if (drained >= amount) break;
             long chunk = amount - drained;
-            FluidStack result = hatch.drain(ForgeDirection.UNKNOWN, GTUtility.createFluidStack(fluid, chunk), !simulate);
+            FluidStack result = hatch
+                .drain(ForgeDirection.UNKNOWN, GTUtility.createFluidStack(fluid, chunk), !simulate);
             if (result == null || result.getFluid() != fluid) continue;
             drained += result.amount;
         }

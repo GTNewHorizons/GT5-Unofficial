@@ -2834,7 +2834,7 @@ public class GTUtility {
     public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
         Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
         for (FluidStack fluidStack : fluidStacks) {
-            if (fluidStack != null && fluidStack.amount > 0) {
+            if (fluidStack != null && getFluidAmount(fluidStack) > 0) {
                 result.merge(fluidStack.getFluid(), getFluidAmount(fluidStack), Long::sum);
             }
         }

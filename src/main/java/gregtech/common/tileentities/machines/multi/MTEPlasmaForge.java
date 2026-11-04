@@ -840,7 +840,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
         addOutputPartial(tLiquid);
-        return tLiquid.amount == 0;
+        return GTUtility.getFluidAmount(tLiquid) == 0;
     }
 
     @Override
