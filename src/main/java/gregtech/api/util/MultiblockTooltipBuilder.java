@@ -519,27 +519,27 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasing(String count, String name, boolean isTiered) {
+        return addCasing(count, name, isTiered, false);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)count name (Tiered) or (indent)count name (Tiered, can be mixed)
+     *
+     * @param count      Number of casings
+     * @param name       Name of casing
+     * @param isTiered   Flag for the (Tiered) tag
+     * @param mixedTiers If the block is tiered, whether different tiers can be mixed in one structure
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addCasing(String count, String name, boolean isTiered, boolean mixedTiers) {
         sLines.add(
             TAB + EnumChatFormatting.GOLD
                 + count
                 + " "
                 + EnumChatFormatting.WHITE
                 + name
-                + (isTiered ? " " + TT_tiered : ""));
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure for a tiered block whose tiers can be mixed:<br>
-     * (indent)count name (Tiered, can be mixed)
-     *
-     * @param count Number of casings
-     * @param name  Name of casing
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addCasingMixedTiers(String count, String name) {
-        sLines
-            .add(TAB + EnumChatFormatting.GOLD + count + " " + EnumChatFormatting.WHITE + name + " " + TT_tieredMixed);
+                + (isTiered ? " " + (mixedTiers ? TT_tieredMixed : TT_tiered) : ""));
         return this;
     }
 
