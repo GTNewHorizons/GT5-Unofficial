@@ -436,17 +436,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.casing"),
                 false)
             .addCasing("41", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing(
+            .addCasingMixedTiers(
                 "9",
-                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
-                true)
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"))
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing(
+            .addCasingMixedTiers(
                 "9",
-                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
-                true)
+                StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"))
             .addStructureInfo("")
             .addStructureFooter(
                 StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.structure_footer"))

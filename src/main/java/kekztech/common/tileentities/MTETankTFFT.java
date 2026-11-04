@@ -393,7 +393,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                 MIN_CASING_AMOUNT + "-46",
                 StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.0.name"),
                 false)
-            .addCasing("27", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
+            .addCasingMixedTiers(
+                "27",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"))
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addCasing(
@@ -401,7 +403,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                 StatCollector
                     .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
                 false)
-            .addCasing("9", StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"), true)
+            .addCasingMixedTiers(
+                "9",
+                StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.field_storage_block"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer1"))
             .addStructureFooter(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.footer2"))
