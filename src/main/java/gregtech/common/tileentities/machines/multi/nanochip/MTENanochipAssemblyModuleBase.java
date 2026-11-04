@@ -70,6 +70,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleInformation;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
@@ -91,11 +92,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         { " VVVVV ", "       ", " VVVVV " } };
     // spotless:on
 
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
 
     private boolean isConnected = false;
+
+    private final ModuleInformation moduleInfo = new ModuleInformation(getModuleType());
 
     private long availableEUt = 0;
     private int runningCooldown = 0;
@@ -112,7 +116,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return baseMulti;
     }
 
-    public MTENanochipAssemblyComplex setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
+    public void setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
         this.baseMulti = baseMulti;
         for (var hatchList : this.vacuumConveyorInputs.allHatches()) {
             for (var hatch : hatchList) {
@@ -124,7 +128,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 hatch.setMainController(baseMulti);
             }
         }
-        return baseMulti;
     }
 
     public void clearBaseMulti() {
@@ -153,8 +156,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement('P', Casings.NanochipMeshInterfaceCasing.asElement())
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());
     }
-
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
 
     public abstract int structureOffsetX();
 
@@ -668,7 +669,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             if (currentEU.compareTo(BigInteger.ZERO) <= 0 && mMaxProgresstime > 0) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             }
+            updateModuleInformation(this.moduleInfo);
         }
+    }
+
+    public void updateModuleInformation(ModuleInformation moduleInfo) {
+        moduleInfo.setRunning(this.mMaxProgresstime > 0);
+    }
+
+    public ModuleInformation getModuleInfo() {
+        return moduleInfo;
     }
 
     @Override
@@ -789,11 +799,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

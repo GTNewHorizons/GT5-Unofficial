@@ -169,7 +169,8 @@ public class ItemEjectionHelper {
             for (ItemParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;
 
-                startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
+                startingParallels = GTUtility
+                    .longToInt(Math.min(startingParallels, ejected / parallelData.perParallel));
             }
         }
 
@@ -188,7 +189,7 @@ public class ItemEjectionHelper {
         public long initialAmount, remainingAmount;
         public long perParallel;
         public PeekingIterator<IOutputBusTransaction> outputs;
-        private final ItemStack tmpStack;
+        public final ItemStack tmpStack;
 
         private ItemParallelData(GTUtility.ItemId id, long amount, long perParallel) {
             this.id = id;

@@ -173,7 +173,7 @@ public class NetheriteRecipes {
                 .addTo(vacuumFurnaceRecipes);
 
             GTValues.RA.stdBuilder() // Reaction
-                .fluidInputs(Materials.PrismaticGas.getFluid(4000), Materials.LiquidNitrogen.getGas(12000))
+                .fluidInputs(Materials.PrismaticGas.getFluid(4000), Materials.LiquidNitrogen.getFluid(12000))
                 .fluidOutputs(Materials.PrismaticAcid.getFluid(16000))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)

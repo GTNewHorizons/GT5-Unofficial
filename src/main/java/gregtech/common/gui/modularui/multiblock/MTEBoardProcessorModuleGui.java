@@ -48,8 +48,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             "automationPercentage",
             new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());
 
-        syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.fillTank());
-        syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.flushTank());
+        syncManager.registerSyncedAction("fillTank", Side.SERVER, _ -> multiblock.fillTank());
+        syncManager.registerSyncedAction("flushTank", Side.SERVER, _ -> multiblock.flushTank());
 
     }
 
@@ -132,8 +132,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             new ButtonWidget<>().size(18, 18)
                 .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down"))
                 .playClickSound(true)
-                .onMousePressed(d -> {
-                    syncManager.callSyncedAction("flushTank", $ -> {});
+                .onMousePressed(_ -> {
+                    syncManager.callSyncedAction("flushTank", _ -> {});
                     return false;
                 })
                 .tooltipBuilder(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.module.boardprocessor.flush_tank")))
@@ -172,10 +172,10 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
     protected IWidget createAutomationButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler automationPanel = syncManager
-            .syncedPanel("automationPanel", true, (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager));
+            .syncedPanel("automationPanel", true, (_, _) -> openAutoPanel(parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 if (!automationPanel.isPanelOpen()) {
                     automationPanel.openPanel();
                 } else {

@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,7 +34,6 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -40,6 +41,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -97,7 +99,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_generator"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
 
@@ -112,13 +115,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addCasing("101", CondensateTransformativeCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
             .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"),
-                2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        // spotless:on
     }
 
     @Override
@@ -191,20 +191,28 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         for (Map.Entry<Fluid, Long> entry : combinedFluids.entrySet()) {
             Fluid fluid = entry.getKey();
             long totalAmount = entry.getValue();
+
             GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
                 .fluids(new FluidStack(fluid, GTUtility.longToInt(totalAmount)))
                 .find();
             if (recipe == null) continue;
 
-            int maxParallelsByInput = (int) Math.min(
-                Integer.MAX_VALUE,
-                recipe.maxParallelCalculatedByInputs(
-                    Integer.MAX_VALUE,
-                    new FluidStack[] { GTUtility.createFluidStack(fluid, totalAmount) },
-                    GTValues.emptyItemStackArray));
-            if (maxParallelsByInput <= 0) continue;
+            if (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) continue;
+            int perParallel = recipe.mFluidInputs[0].amount;
+            if (perParallel <= 0) continue;
 
-            fluidCandidates.add(new FluidCandidate(recipe, maxParallelsByInput, fluid));
+            double recipeAccepts = recipe.maxParallelCalculatedByInputs(
+                1,
+                new FluidStack[] { GTUtility.createFluidStack(fluid, perParallel) },
+                GTValues.emptyItemStackArray);
+            if (recipeAccepts <= 0) continue;
+
+            long maxParallelsByInput = totalAmount / perParallel;
+            if (maxParallelsByInput > Integer.MAX_VALUE) {
+                maxParallelsByInput = Integer.MAX_VALUE;
+            }
+
+            fluidCandidates.add(new FluidCandidate(recipe, (int) maxParallelsByInput, fluid));
         }
         if (fluidCandidates.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -230,8 +238,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         for (FluidCandidate c : fluidCandidates) {
             int added = (int) Math.min(c.maxParallelsByInput - c.parallels, remainingPower / c.recipe.mEUt);
-            c.parallels += added;
-            remainingPower -= added * (double) c.recipe.mEUt;
+            if (added > 0) {
+                c.parallels += added;
+                remainingPower -= added * (double) c.recipe.mEUt;
+            }
         }
 
         CondensateList outputs = new CondensateList();
@@ -249,8 +259,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
-            long actualDrain = actualParallels * perParallel;
-            depleteInputQuantity(GTUtility.createFluidStack(candidate.fluid, actualDrain), false);
+            drainInputHatches(mInputHatches, (long) actualParallels * perParallel, candidate.fluid, false);
 
             outputs.addTo(candidate.fluid, perParallel * (long) actualParallels);
             anySuccess = true;
@@ -285,6 +294,18 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         long actualPower = (long) Math.ceil(actualPowerDouble);
         lEUt = -actualPower;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private static long drainInputHatches(List<MTEHatchInput> hatches, long amount, Fluid fluid, boolean simulate) {
+        long drained = 0;
+        for (MTEHatchInput hatch : validMTEList(hatches)) {
+            if (drained >= amount) break;
+            long chunk = amount - drained;
+            FluidStack result = hatch.drain(ForgeDirection.UNKNOWN, GTUtility.createFluidStack(fluid, chunk), !simulate);
+            if (result == null || result.getFluid() != fluid) continue;
+            drained += result.amount;
+        }
+        return drained;
     }
 
     private static class FluidCandidate {
