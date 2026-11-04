@@ -611,7 +611,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @NotNull
     private ChunkCoordIntPair getDrillCoords() {
-        // Metrics can be requested after loading NBT, before the structure check initializes the drill coordinates.
+        // Use tile coordinates because cached drill coordinates are initialized only during a structure check.
         return new ChunkCoordIntPair(
             getBaseMetaTileEntity().getXCoord() >> 4,
             getBaseMetaTileEntity().getZCoord() >> 4);
