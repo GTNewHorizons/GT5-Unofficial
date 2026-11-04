@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.STEAM_PER_WATER;
@@ -50,6 +49,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -68,6 +68,7 @@ import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<MTELargeBoilerBase>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -83,7 +84,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private static final int SECONDS_PER_HEAT_UNIT = 500;
     private static final long STEAM_MULTIPLIER = 40L;
     private static final long STEAM_DIVISOR_SUPERHEATED = 3L;
-    private static final int STEAM_EUT_MULTIPLIER = 2;
     private static final long MULTI_FUEL_BOOST_DIVISOR = 4L;
     private static final long THROTTLE_DISPLAY_AMOUNT = 1000L;
 
@@ -97,7 +97,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     private boolean firstRun = true;
     private int efficiencyChangePerTick = 0;
-    private int integratedCircuitConfig = 0;
+    private int integratedCircuitConfigFluid = 0;
+    private int integratedCircuitConfigSolid = 0;
     private int excessWater = 0;
     private int excessFuel = 0;
     private int excessProjectedEU = 0;
@@ -176,13 +177,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     .atLeast(InputHatch, InputBus, OutputHatch, Maintenance, Muffler)
                     .casingIndex(casing.getTextureId())
                     .hint(1)
+                    .allowOnly(ForgeDirection.NORTH)
                     .buildAndChain(
                         onElementPass(
                             MTELargeBoilerBase::onCasingAdded,
                             ofBlock(casing.getBlock(), casing.getBlockMeta()))))
             .addElement(
                 'F',
-                buildHatchAdder(MTELargeBoilerBase.class)
+                buildHatchAdder(MTELargeBoilerBase.class).allowOnly(ForgeDirection.SOUTH)
                     .atLeast(InputHatch, InputBus, OutputHatch, Maintenance, Muffler)
                     .casingIndex(fireboxCasing.getTextureId())
                     .hint(1)
@@ -226,44 +228,42 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         if (isSuperheated()) {
-            tt.addMachineType("Boiler")
+            tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.boiler"))
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler-superheated"),
                     ImmutableMap.<String, Object>builder()
-                        .put("steam_1_coal", formatNumber((getEUt() * STEAM_MULTIPLIER) * ((runtimeBoost(20) / (20f)) / STEAM_DIVISOR_SUPERHEATED)))
-                        .put("steam_per_sec", formatNumber((getEUt() * STEAM_MULTIPLIER) / STEAM_DIVISOR_SUPERHEATED))
-                        .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
-                        .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
-                        .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
+                        .put("steam_1_coal", getEUt() * STEAM_MULTIPLIER * (runtimeBoost(20) / 20f) / STEAM_DIVISOR_SUPERHEATED)
+                        .put("steam_per_sec", getEUt() * STEAM_MULTIPLIER / STEAM_DIVISOR_SUPERHEATED)
+                        .put("heat_seconds", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease())
+                        .put("throttle_amount", THROTTLE_DISPLAY_AMOUNT)
+                        .put("multi_fuel_boost", (double) 100 / MULTI_FUEL_BOOST_DIVISOR)
                         .build());
         } else {
-            tt.addMachineType("Boiler")
+            tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.boiler"))
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler"),
                     ImmutableMap.<String, Object>builder()
-                        .put("steam_1_coal", formatNumber((getEUt() * STEAM_MULTIPLIER) * (runtimeBoost(20) / 20f)))
-                        .put("steam_per_sec", formatNumber(getEUt() * STEAM_MULTIPLIER))
-                        .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
-                        .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
-                        .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
+                        .put("steam_1_coal", getEUt() * STEAM_MULTIPLIER * (runtimeBoost(20) / 20f))
+                        .put("steam_per_sec", getEUt() * STEAM_MULTIPLIER)
+                        .put("heat_seconds", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease())
+                        .put("throttle_amount", THROTTLE_DISPLAY_AMOUNT)
+                        .put("multi_fuel_boost", (double) 100 / MULTI_FUEL_BOOST_DIVISOR)
                         .build());
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
-            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
-            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
-            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
-            .addMufflerHatch("1", "Any machine or firebox casing", 1)
-            .addInputBus("0+", "Any machine or firebox casing", 1)
-            .addInputHatch("1+", "Any machine or firebox casing", 1)
-            .addOutputHatch("1+", "Any machine or firebox casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("20-28", casing.getLocalizedName(), false)
+            .addCasing("5-15", fireboxCasing.getLocalizedName(), false)
+            .addCasing("4", pipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Use solid fuel, liquid fuel, or both")
-            .addStructureFooter("Use regular or distilled water")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_boiler_fuel"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_boiler_water"))
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -309,20 +309,25 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
+    protected void setupCircuit(boolean isFluid) {
         // Do we have an integrated circuit with a valid configuration?
         if (Circuit_Integrated.isStackEqual(mInventory[1], true, true)) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, overwrite the current config
-                this.integratedCircuitConfig = circuit_config;
+                if (isFluid) this.integratedCircuitConfigFluid = circuit_config;
+                else this.integratedCircuitConfigSolid = circuit_config;
             }
         } else {
             // If not, set the config to zero
-            this.integratedCircuitConfig = 0;
+            if (isFluid) this.integratedCircuitConfigFluid = 0;
+            else this.integratedCircuitConfigSolid = 0;
         }
+    }
+
+    @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
 
         if (fluidBurnTime == 0) {
             for (FluidStack fluidInput : this.getStoredFluids()) {
@@ -378,9 +383,12 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         else burnDecrease = 2;
         fluidBurnTime = Math.max(fluidBurnTime - burnDecrease, 0);
         solidBurnTime = Math.max(solidBurnTime - burnDecrease, 0);
+        if (fluidBurnTime == 0) integratedCircuitConfigFluid = 0;
+        if (solidBurnTime == 0) integratedCircuitConfigSolid = 0;
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
+        setupCircuit(isFluid);
         rawBurnTime = runtimeBoost(rawBurnTime);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
@@ -494,6 +502,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("fluidBurnTime", fluidBurnTime);
         aNBT.setInteger("maxSolidBurnTime", maxSolidBurnTime);
         aNBT.setInteger("maxFluidBurnTime", maxFluidBurnTime);
+        aNBT.setInteger("integratedCircuitConfigSolid", integratedCircuitConfigSolid);
+        aNBT.setInteger("integratedCircuitConfigFluid", integratedCircuitConfigFluid);
     }
 
     @Override
@@ -511,6 +521,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         fluidBurnTime = aNBT.getInteger("fluidBurnTime");
         maxSolidBurnTime = aNBT.getInteger("maxSolidBurnTime");
         maxFluidBurnTime = aNBT.getInteger("maxFluidBurnTime");
+        integratedCircuitConfigSolid = aNBT.getInteger("integratedCircuitConfigSolid");
+        integratedCircuitConfigFluid = aNBT.getInteger("integratedCircuitConfigFluid");
     }
 
     @Override
@@ -551,9 +563,13 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         checkHasOutputHatch(errors);
     }
 
+    private int getCircuit() {
+        return Math.max(integratedCircuitConfigFluid, integratedCircuitConfigSolid);
+    }
+
     private int adjustEUtForConfig(int rawEUt) {
         int adjustedSteamOutput = rawEUt
-            - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * integratedCircuitConfig;
+            - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * getCircuit();
         return Math.max(adjustedSteamOutput, MIN_STEAM_OUTPUT);
     }
 
@@ -564,8 +580,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private int adjustBurnTimeForConfig(int rawBurnTime) {
         int adjustedEUt = Math.max(
             MIN_STEAM_OUTPUT,
-            getEUt()
-                - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * integratedCircuitConfig);
+            getEUt() - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * getCircuit());
         int adjustedBurnTime = (int) (rawBurnTime * (long) getEUt() / adjustedEUt);
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
@@ -702,8 +717,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Math.max(
-            0,
-            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * integratedCircuitConfig)));
+        return Math.max(0, (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getCircuit())));
     }
 }

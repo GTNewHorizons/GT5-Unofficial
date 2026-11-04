@@ -27,13 +27,11 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
@@ -181,7 +179,4 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         return new String[0];
     }
 
-    protected static @NotNull String voltageTooltipFormatted(int tier) {
-        return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.GRAY;
-    }
 }

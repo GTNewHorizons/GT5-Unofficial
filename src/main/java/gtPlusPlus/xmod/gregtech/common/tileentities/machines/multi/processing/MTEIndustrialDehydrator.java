@@ -97,14 +97,14 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(getMachineType())
+            .addStaticParallelInfo(4)
+            .addStaticSpeedInfo(2.2f)
+            .addStaticEuEffInfo(0.5f)
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-dehydrator"),
                 ImmutableMap.of(
                     "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
                     "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
-            .addStaticParallelInfo(4)
-            .addStaticSpeedInfo(2.2f)
-            .addStaticEuEffInfo(0.5f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

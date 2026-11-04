@@ -59,8 +59,13 @@ public class OverclockCalculator {
     protected boolean heatOC;
     /** Whether to enable heat discounts every HEAT_DISCOUNT_THRESHOLD heat difference */
     protected boolean heatDiscount;
+    /** The default value used for discount final eut per HEAT_DISCOUNT_THRESHOLD heat */
+    public static final double DEFAULT_HEAT_DISCOUNT_EXPONENT = 0.95D;
+    /** Pre-scaled percent value for tooltips */
+    public static final double DEFAULT_HEAT_DISCOUNT_PERCENT_FOR_TOOLTIPS = (1.0D - DEFAULT_HEAT_DISCOUNT_EXPONENT)
+        * 100;
     /** The value used for discount final eut per HEAT_DISCOUNT_THRESHOLD heat */
-    protected double heatDiscountExponent = 0.95;
+    protected double heatDiscountExponent = DEFAULT_HEAT_DISCOUNT_EXPONENT;
 
     // Results
     /** variable to check whether the overclocks have been calculated */
