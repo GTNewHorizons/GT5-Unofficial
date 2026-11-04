@@ -215,7 +215,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void doCleanup() {
         this.renderBlocks.useInventoryTint = true;
-        // Vanilla renderers that don't set enableAO themselves (e.g. cactus) use the AO vertex colours when it is on
+        // reset() modifies enableAO, so restore it
         this.renderBlocks.enableAO = prevEnableAO;
         super.doCleanup();
         this.blockAccess = null;
