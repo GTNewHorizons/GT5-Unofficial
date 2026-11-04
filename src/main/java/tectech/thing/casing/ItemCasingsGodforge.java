@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import gregtech.common.blocks.ItemCasings;
-import tectech.util.CommonValues;
 
 public class ItemCasingsGodforge extends ItemCasings {
 
@@ -22,7 +21,6 @@ public class ItemCasingsGodforge extends ItemCasings {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
-        tooltip.add(CommonValues.GODFORGE_MARK);
         switch (stack.getItemDamage()) {
             case 0:
                 tooltip.add(StatCollector.translateToLocal("tt.godforge.casings.0.Tooltip.0"));

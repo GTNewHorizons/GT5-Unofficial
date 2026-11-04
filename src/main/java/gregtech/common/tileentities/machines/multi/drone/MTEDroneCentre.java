@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -259,8 +258,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasing("28", "Iron Frame Box", false)
             .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
             .addInputBus("1+", "Any machine casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
-            .toolTipFinisher(AuthorSilverMoon);
+            .toolTipFinisher();
         return tt;
     }
 

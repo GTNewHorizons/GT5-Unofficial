@@ -11,7 +11,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
@@ -24,9 +26,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.armor.MechArmorBase;
+import ic2.core.IC2DamageSource;
 
 public class ArmorEventHandlers {
 
@@ -155,6 +160,28 @@ public class ArmorEventHandlers {
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
                 context.save();
             }
+        }
+    }
+
+    /**
+     * IC2 radiation and electricity damage bypasses armor and is only absorbed by IC2's own hazmat suit, so nothing
+     * else providing hazard protection ever gets a chance to stop it.
+     */
+    @SubscribeEvent
+    public void onLivingAttack(LivingAttackEvent event) {
+        DamageSource source = event.source;
+        final Hazard hazard;
+
+        if (source == IC2DamageSource.radiation) {
+            hazard = Hazard.RADIOLOGICAL;
+        } else if (source == IC2DamageSource.electricity) {
+            hazard = Hazard.ELECTRICAL;
+        } else {
+            return;
+        }
+
+        if (event.entityLiving != null && HazardProtection.isWearingFullHazmatAgainst(event.entityLiving, hazard)) {
+            event.setCanceled(true);
         }
     }
 

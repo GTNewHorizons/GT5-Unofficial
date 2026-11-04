@@ -21,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaserMirror extends MTEPipeLaser {
@@ -59,7 +58,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energymirror.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.pipe.energymirror.desc.0"),
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                 + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),
