@@ -891,6 +891,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (!isAsteroidPanelForFilter) return true;
             if (filterContainsOre(ore)) return true;
             int firstEmptySlot = findFirstEmptySlot();
+            if (firstEmptySlot == -1) return true;
+
             filterModularSlots[firstEmptySlot].putStack(ore);
             filterSlots[firstEmptySlot].getSyncHandler()
                 .updateFromClient(ore, 0);
