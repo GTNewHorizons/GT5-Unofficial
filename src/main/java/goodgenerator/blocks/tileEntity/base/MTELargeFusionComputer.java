@@ -813,9 +813,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         Rotation rot = getRotation();
         ringShader.use();
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
-        ringMatrix.identity();
-        ringMatrix.translation(0, 0, 0);
-        ringMatrix.scale(1.0f, 1.0f, 1.0f);
         if ((dir == UP && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == DOWN && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == WEST && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
