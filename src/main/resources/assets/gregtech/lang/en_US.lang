@@ -5389,7 +5389,7 @@ gt.item.book.written.03.name=Book
 
 ## Schematic
 gt.item.schematic.empty.name=Schematic
-gt.item.schematic.empty.tooltip=EMPTY
+gt.item.schematic.empty.tooltip=Blank
 gt.item.schematic.crafting.name=Schematic (Crafting)
 gt.item.schematic.crafting.tooltip=Crafts the Programmed Recipe
 gt.item.schematic.1x1.name=Schematic (1x1)
