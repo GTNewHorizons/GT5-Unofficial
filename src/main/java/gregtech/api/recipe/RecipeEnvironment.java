@@ -99,6 +99,10 @@ public abstract class RecipeEnvironment {
         return id;
     }
 
+    public final String getTranslationKey() {
+        return translationKey;
+    }
+
     public String getDescription() {
         return StatCollector.translateToLocal(translationKey);
     }

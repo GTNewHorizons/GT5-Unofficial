@@ -644,7 +644,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     checkMaintenance();
                     if (getRepairStatus() > 0) {
                         if (mMaxProgresstime > 0 && !satisfiesActiveRecipeEnvironments()) {
-                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            stopMachine(getEnvironmentShutdownReason());
                         } else {
                             runMachine(aBaseMetaTileEntity, aTick);
                         }
@@ -848,7 +848,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     incrementProgressTime();
                     if (mProgresstime >= mMaxProgresstime) {
                         if (!satisfiesActiveRecipeEnvironments(true)) {
-                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            stopMachine(getEnvironmentShutdownReason());
                             return;
                         }
                         // Record production data

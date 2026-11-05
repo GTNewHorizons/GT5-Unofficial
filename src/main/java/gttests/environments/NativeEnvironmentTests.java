@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,9 +42,11 @@ import gregtech.api.recipe.RecipeEnvironment;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
+import io.netty.buffer.Unpooled;
 
 @GameTestHolder(value = Mods.ModIDs.GREG_TECH, templatePrefix = "multiblock/environments")
 public class NativeEnvironmentTests {
@@ -52,6 +55,10 @@ public class NativeEnvironmentTests {
         .register(new TestEnvironment("nano_admission"));
     private static final TestEnvironment FUSION_ENVIRONMENT = RecipeEnvironment
         .register(new TestEnvironment("fusion_running"));
+    private static final TestEnvironment SECOND_FUSION_ENVIRONMENT = RecipeEnvironment
+        .register(new TestEnvironment("fusion_second"));
+    private static final TestEnvironment SATISFIED_FUSION_ENVIRONMENT = RecipeEnvironment
+        .register(new TestEnvironment("fusion_satisfied"));
     private static final TestEnvironment BASIC_ENVIRONMENT = RecipeEnvironment
         .register(new TestEnvironment("basic_running"));
     private static final TestEnvironment FUSION_RELOAD_ENVIRONMENT = RecipeEnvironment
@@ -274,7 +281,7 @@ public class NativeEnvironmentTests {
                     .fluidOutputs(output.copy())
                     .duration(2000)
                     .eut(8)
-                    .requiresEnvironment(FUSION_ENVIRONMENT));
+                    .requiresEnvironment(FUSION_ENVIRONMENT, SECOND_FUSION_ENVIRONMENT, SATISFIED_FUSION_ENVIRONMENT));
         machine.inputHatch(0)
             .fill(input.copy());
         machine.inputHatch(1)
@@ -283,6 +290,7 @@ public class NativeEnvironmentTests {
             .supply(TierEU.LuV, 1, 500);
 
         FUSION_ENVIRONMENT.available = true;
+        SECOND_FUSION_ENVIRONMENT.available = true;
         try {
             fusion.enableWorking();
             for (int tick = 0; tick < 200 && !machine.isProcessing(); tick++) {
@@ -300,6 +308,7 @@ public class NativeEnvironmentTests {
             helper.assertTrue(machine.progress() > 0, "Native fusion did not advance before environment loss");
 
             FUSION_ENVIRONMENT.available = false;
+            SECOND_FUSION_ENVIRONMENT.available = false;
             helper.gtnh()
                 .fastForwardTicks(2);
             helper.assertTrue(machine.isProcessing(), "Continuous conditions were still checked every tick");
@@ -307,12 +316,40 @@ public class NativeEnvironmentTests {
                 .fastForwardTicks(100);
             helper.assertTrue(!machine.isProcessing(), "Custom fusion tick ignored the environment check interval");
             helper.assertTrue(
-                ShutDownReasonRegistry.POWER_LOSS.getKey()
+                ShutDownReasonRegistry.ENVIRONMENT.getKey()
                     .equals(
                         base.getLastShutDownReason()
                             .getKey()),
-                "Native fusion did not stop through POWER_LOSS");
+                "Native fusion did not report environment loss");
+            ShutDownReason reason = base.getLastShutDownReason();
+            String display = reason.getDisplayString();
+            helper.assertTrue(
+                display.contains(FUSION_ENVIRONMENT.getDescription())
+                    && display.contains(SECOND_FUSION_ENVIRONMENT.getDescription())
+                    && !display.contains(SATISFIED_FUSION_ENVIRONMENT.getDescription()),
+                "Shutdown details omitted an unmet condition or included a satisfied condition: " + display);
+            ShutDownReason savedReason = ShutDownReasonRegistry.getSampleFromRegistry(reason.getID())
+                .newInstance();
+            savedReason.readFromNBT(reason.writeToNBT(new NBTTagCompound()));
+            helper.assertTrue(
+                display.equals(savedReason.getDisplayString()) && savedReason.wasCritical(),
+                "Saving the shutdown reason lost its environment details or critical status");
+            PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
+            try {
+                reason.encode(buffer);
+                ShutDownReason syncedReason = ShutDownReasonRegistry.getSampleFromRegistry(reason.getID())
+                    .newInstance();
+                syncedReason.decode(buffer);
+                helper.assertTrue(
+                    display.equals(syncedReason.getDisplayString()) && syncedReason.wasCritical(),
+                    "Synchronizing the shutdown reason lost its environment details or critical status");
+            } finally {
+                buffer.release();
+            }
             FUSION_ENVIRONMENT.available = true;
+            SECOND_FUSION_ENVIRONMENT.available = true;
+            helper
+                .assertTrue(display.equals(reason.getDisplayString()), "Environment recovery changed the saved cause");
             helper.gtnh()
                 .fastForwardTicks(100);
             helper.assertTrue(!base.isAllowedToWork(), "Environment recovery re-enabled failed fusion");
@@ -322,6 +359,7 @@ public class NativeEnvironmentTests {
             helper.succeed();
         } finally {
             FUSION_ENVIRONMENT.available = true;
+            SECOND_FUSION_ENVIRONMENT.available = true;
         }
     }
 
@@ -485,11 +523,11 @@ public class NativeEnvironmentTests {
                     .fastForwardTicks(120);
                 helper.assertTrue(!machine.isProcessing(), "Fusion reload discarded its saved invalid environment");
                 helper.assertTrue(
-                    ShutDownReasonRegistry.POWER_LOSS.getKey()
+                    ShutDownReasonRegistry.ENVIRONMENT.getKey()
                         .equals(
                             base.getLastShutDownReason()
                                 .getKey()),
-                    "Fusion reload did not reject its saved environment through POWER_LOSS");
+                    "Fusion reload did not report its invalid saved environment");
                 helper.assertTrue(!base.isAllowedToWork(), "Failed fusion reload remained enabled");
                 helper.assertTrue(fusion.mOutputFluids == null, "Failed fusion reload retained its pending output");
                 FUSION_RELOAD_ENVIRONMENT.available = true;

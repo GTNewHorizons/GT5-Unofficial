@@ -463,7 +463,7 @@ public class ElectricBlastFurnaceFormationTests {
                 .fastForwardTicks(2);
             helper.assertTrue(!ebf.isProcessing(), "EBF ignored environment loss immediately before completion");
             helper.assertTrue(
-                ShutDownReasonRegistry.POWER_LOSS.getKey()
+                ShutDownReasonRegistry.ENVIRONMENT.getKey()
                     .equals(
                         controller.getBaseMetaTileEntity()
                             .getLastShutDownReason()

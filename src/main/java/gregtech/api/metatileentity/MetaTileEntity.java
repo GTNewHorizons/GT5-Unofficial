@@ -51,6 +51,8 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.capability.CleanroomReference;
 import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.util.MTEItemStackHandler;
@@ -114,6 +116,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     protected final RecipeEnvironmentRequirements getActiveRecipeEnvironments() {
         return activeRecipeEnvironments;
+    }
+
+    protected final ShutDownReason getEnvironmentShutdownReason() {
+        return ShutDownReasonRegistry.environmentNotMet(activeRecipeEnvironments.getUnmetEnvironments(this, true));
     }
 
     protected final boolean satisfiesActiveRecipeEnvironments() {

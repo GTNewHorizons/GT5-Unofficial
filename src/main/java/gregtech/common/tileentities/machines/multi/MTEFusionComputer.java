@@ -377,7 +377,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 RecipeEnvironmentRequirements savedEnvironments = getActiveRecipeEnvironments();
                 if (!savedEnvironments.matches(this, true)) {
                     mRunningOnLoad = false;
-                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    stopMachine(getEnvironmentShutdownReason());
                 } else {
                     this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (checkRecipe()) {
@@ -405,9 +405,12 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             }
                         }
                     }
-                    if (mMaxProgresstime > 0 && (this.mEUStore <= 0
-                        || !satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1))) {
-                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    if (mMaxProgresstime > 0) {
+                        if (this.mEUStore <= 0) {
+                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        } else if (!satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1)) {
+                            stopMachine(getEnvironmentShutdownReason());
+                        }
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity()

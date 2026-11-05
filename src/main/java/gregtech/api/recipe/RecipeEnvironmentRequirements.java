@@ -1,7 +1,9 @@
 package gregtech.api.recipe;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -91,6 +93,18 @@ public final class RecipeEnvironmentRequirements {
             }
         }
         return true;
+    }
+
+    public List<RecipeEnvironment> getUnmetEnvironments(MetaTileEntity machine, boolean whileRunning) {
+        List<RecipeEnvironment> unmet = new ArrayList<>();
+        for (String id : ids) {
+            RecipeEnvironment environment = RecipeEnvironment.get(id);
+            if (environment != null && (!whileRunning || environment.requiresContinuousValidation())
+                && !environment.isSatisfied(machine)) {
+                unmet.add(environment);
+            }
+        }
+        return unmet;
     }
 
     public boolean hasContinuousRequirements() {

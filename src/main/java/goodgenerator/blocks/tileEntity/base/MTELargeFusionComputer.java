@@ -329,7 +329,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 RecipeEnvironmentRequirements savedEnvironments = getActiveRecipeEnvironments();
                 if (!savedEnvironments.matches(this, true)) {
                     mRunningOnLoad = false;
-                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    stopMachine(getEnvironmentShutdownReason());
                 } else if (checkRecipe()) {
                     setActiveRecipeEnvironments(getActiveRecipeEnvironments().and(savedEnvironments));
                 }
@@ -348,9 +348,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             }
             if (mStartUpCheck < 0) {
                 if (mMachine) {
-                    if (mMaxProgresstime > 0 && (aBaseMetaTileEntity.getStoredEU() <= 0
-                        || !satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1))) {
-                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    if (mMaxProgresstime > 0) {
+                        if (aBaseMetaTileEntity.getStoredEU() <= 0) {
+                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        } else if (!satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1)) {
+                            stopMachine(getEnvironmentShutdownReason());
+                        }
                     }
 
                     long energyLimit = getSingleHatchPower();

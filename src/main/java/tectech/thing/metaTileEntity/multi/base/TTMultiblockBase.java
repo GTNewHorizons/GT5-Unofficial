@@ -971,7 +971,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         chargeController_EM(aBaseMetaTileEntity);
 
                         if (mMaxProgresstime > 0 && !satisfiesActiveRecipeEnvironments()) {
-                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            stopMachine(getEnvironmentShutdownReason());
                         }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
@@ -985,7 +985,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
                                     boolean recipeComplete = getProgresstime() >= mMaxProgresstime;
                                     if (recipeComplete && !satisfiesActiveRecipeEnvironments(true)) {
-                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                                        stopMachine(getEnvironmentShutdownReason());
                                     } else if (recipeComplete) {
                                         hatchesStatusUpdate_EM();
 
