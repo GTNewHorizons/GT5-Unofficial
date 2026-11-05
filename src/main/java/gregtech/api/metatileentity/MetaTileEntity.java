@@ -103,13 +103,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     };
 
     private RecipeEnvironmentRequirements activeRecipeEnvironments = RecipeEnvironmentRequirements.EMPTY;
-    private boolean hasContinuousEnvironmentRequirements;
+    private boolean requiresActiveEnvironmentValidation;
     private boolean activeEnvironmentsSatisfied = true;
     private long nextEnvironmentCheck;
 
     public final void setActiveRecipeEnvironments(RecipeEnvironmentRequirements requirements) {
         activeRecipeEnvironments = requirements;
-        hasContinuousEnvironmentRequirements = requirements.hasContinuousRequirements();
+        requiresActiveEnvironmentValidation = requirements.requiresValidationWhileRunning();
         activeEnvironmentsSatisfied = true;
         nextEnvironmentCheck = 0;
     }
@@ -127,7 +127,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     protected final boolean satisfiesActiveRecipeEnvironments(boolean completingRecipe) {
-        if (!hasContinuousEnvironmentRequirements) return true;
+        if (!requiresActiveEnvironmentValidation) return true;
         long tick = getBaseMetaTileEntity().getTimer();
         if (tick >= nextEnvironmentCheck || (completingRecipe && activeEnvironmentsSatisfied)) {
             activeEnvironmentsSatisfied = activeRecipeEnvironments.matches(this, true);

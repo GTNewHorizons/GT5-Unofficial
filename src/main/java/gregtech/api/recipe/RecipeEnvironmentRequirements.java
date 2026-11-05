@@ -113,7 +113,7 @@ public final class RecipeEnvironmentRequirements {
         return unmet;
     }
 
-    public boolean hasContinuousRequirements() {
+    public boolean requiresValidationWhileRunning() {
         for (String id : ids) {
             RecipeEnvironment environment = RecipeEnvironment.get(id);
             if (environment == null || environment.requiresContinuousValidation()) return true;
