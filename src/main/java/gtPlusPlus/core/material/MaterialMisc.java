@@ -499,7 +499,7 @@ public final class MaterialMisc {
         new MaterialStack(MaterialsElements.getInstance().CHLORINE, 3));
 
     public static final Material ETHYL_CYANOACRYLATE = new Material(
-        "Ethyl Cyanoacrylate (Super Glue)",
+        "Super Glue",
         MaterialState.PURE_LIQUID, // State
         new short[] { 170, 190, 200 }, // Material Colour
         -25, // Melting Point in C
