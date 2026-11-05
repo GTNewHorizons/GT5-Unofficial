@@ -686,7 +686,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
 
-        // Collect final membership before publishing associations after the structure check
+        // Collect machines inside the cleanroom
 
         for (int dy = dyMin + 1; dy < 0; ++dy) {
             for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
