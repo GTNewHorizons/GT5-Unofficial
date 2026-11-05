@@ -79,13 +79,13 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
+    public static final long DEFAULT_CAPACITY = 128_000;
+
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 4, null, 1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(
-        this,
-        128_000) {};
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(this) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
@@ -148,6 +148,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public int getCapacity() {
         return 0;
+    }
+
+    @Override
+    public long getDefaultCapacity() {
+        return DEFAULT_CAPACITY;
     }
 
     public boolean getCheckMode() {

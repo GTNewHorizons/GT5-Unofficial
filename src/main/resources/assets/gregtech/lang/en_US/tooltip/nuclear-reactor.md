@@ -1,6 +1,6 @@
 Produces energy and new elements from Radioactive Beta Decay
 Consumes {color_key:1 {L}/s Molten Salt} for fuel and {color_key:2 {L}/s LFTB} for coolant
-Warm-up takes {var:warmup}}s, during which no fuel/coolant is consumed and no power is produced
+Warm-up takes {color_time:{var:warmup}s}, during which no fuel/coolant is consumed and no power is produced
 Once running, outputs {white:0.33 {L}/s U-233} on average
 Once finished, outputs various {color_hot:Depleted Molten Salts} based on the fuel used
 {hr}

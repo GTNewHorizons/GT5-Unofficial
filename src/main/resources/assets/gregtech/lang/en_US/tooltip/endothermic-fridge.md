@@ -1,3 +1,5 @@
+{isolate:{aqua:{italic:... without the other!}}}
+{hr}
 While active, the temperature slowly drops to increase its speed bonus up to {color_amount:{var:max_speed}x}
 Takes {color_time:{var:warmup_minutes} minutes} of constant running to reach the maximum bonus
 While inactive, the machine returns back to its normal temperature

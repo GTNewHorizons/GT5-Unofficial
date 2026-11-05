@@ -1,6 +1,6 @@
-Consumes {color_eu_usage:{var:startup_eu} {EU/t}} when first turned on, and {color_eu_usage:{var:idle_eu} {EU/t}} once at {color_amount:100%} efficiency
-Can accept {color_amperage:{var:lv_amperage}A} from an {var:voltageTier_LV} energy hatch
-Will overclock and gain efficiency faster starting from {var:voltageTier_HV}
+Consumes {color_voltage:{var:startup_eu}} {color_tier:{EU/t}} when first turned on, and {color_voltage:{var:idle_eu}} {color_tier:{EU/t}} while idling at {color_amount:100%} efficiency
+Can accept {TC:min_tier:{var:min_tier_amperage}A} from an {VNF:min_tier} energy hatch
+Will overclock and gain efficiency faster starting from {VNF:min_tier_for_oc}
 {hr}
 {color_danger:Warning:}
 Below {color_loss:100%} efficiency, machines inside have a chance to void outputs!

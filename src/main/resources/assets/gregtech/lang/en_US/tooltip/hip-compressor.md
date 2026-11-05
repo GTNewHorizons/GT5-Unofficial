@@ -5,7 +5,6 @@ When {color_danger:overheated}, recipes are slowed down drastically
 {hr}
 Some recipes {bold:require} HIP
 If the machine is {color_danger:overheated} when one of these recipes starts, it will be voided!
-{color_note:Cannot run recipes that require a black hole}
 Read the current heat using {color_name:Heat Sensor Hatches}
 {hr}
 More advanced coils allow better heat control - the unit will take longer to overheat

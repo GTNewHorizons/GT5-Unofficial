@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -28,6 +27,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
@@ -37,6 +37,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEConcreteBackfillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     private int mLastXOff = 0, mLastZOff = 0;
@@ -106,12 +107,9 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 new ResourceLocation("gregtech", "concrete-backfiller"),
                 ImmutableMap.<String, Object>builder()
                     .put("radius", getRadius())
-                    .put("min_tier", GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-                    .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
-                    .put(
-                        "cycle_time",
-                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " " + StatCollector.translateToLocal("gt.time.tick.plural")
-                            : StatCollector.translateToLocalFormatted("GT5U.gui.text.second.plural", formatNumber(baseCycleTime / 20.0)))
+                    .put("min_tier", getMinTier())
+                    .put("concrete_per_block", CONCRETE_PER_BLOCK)
+                    .put("cycle_time", GTUtility.formatTime(baseCycleTime))
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
