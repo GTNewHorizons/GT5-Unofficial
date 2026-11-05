@@ -855,7 +855,7 @@ public class GTRecipeBuilder {
      * Custom recipe consumers must integrate environment validation into their own lifecycle
      */
     public GTRecipeBuilder requiresEnvironment(RecipeEnvironment... environments) {
-        if (skip) return this;
+        if (skip || environments.length == 0) return this;
         return requiresEnvironment(RecipeEnvironmentRequirements.of(environments));
     }
 
