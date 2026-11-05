@@ -699,6 +699,7 @@ public enum ItemList implements IItemContainer {
 
     Spray_Color_Remover_Empty,
 
+    // region begin unused
     Armor_Cheat,
     Armor_Cloaking,
     Armor_Lamp,
@@ -712,6 +713,7 @@ public enum ItemList implements IItemContainer {
     Component_Turbine_Magnalium,
     Component_Turbine_TungstenSteel,
     Component_Turbine_Carbon,
+    // region end unused
     Component_LavaFilter,
     Component_Sawblade_Diamond,
     T1Sawblade,
