@@ -51,6 +51,21 @@ public class PosteaTransformers implements Runnable {
         // I.e. Uranium235, Uranium238, Plutonium, ect.
 
         ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran238",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235small",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
             "IC2:itemPlutonium",
             GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L),
             true);
@@ -59,7 +74,6 @@ public class PosteaTransformers implements Runnable {
             "IC2:itemPlutoniumsmall",
             GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
             true);
-
     }
 
     private void registerIC2BlocksTransformer() {
