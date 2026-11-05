@@ -152,8 +152,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     };
 
-    public static boolean DEBUG = false;
-
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -373,19 +371,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (upgradeFluid == null) {
                 continue;
             }
-            if (DEBUG) {
-                for (FluidStack inputFluid : inputFluids) {
-                    // this should always be true after the checks done by setModifiers on
-                    // the same reference of the valid input fluid stack setting the upgrade fluids
-                    // NEEDS TESTING THO
-                    if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
-                        inputFluid.amount -= fluidConsumptions[i];
-                        break;
-                    }
-                }
-            } else {
-                upgradeFluid.amount -= fluidConsumptions[i];
-            }
+            upgradeFluid.amount -= fluidConsumptions[i];
         }
 
         int antimatterChange = distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount);
