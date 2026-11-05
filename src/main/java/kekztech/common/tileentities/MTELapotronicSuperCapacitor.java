@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -21,7 +22,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,6 +40,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -111,25 +112,32 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
-    private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
-    private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
-    private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) GTUtility.powInt(10, 10);
-    private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) GTUtility.powInt(10, 12);
+    private static final long WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER = 100;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP = 1_000_000;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP
+        * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP
+        * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UMV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP
+        * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
+
+    /** The number of tiers under the capacitor tier that can be used for the structural glass. */
+    private static final int GLASS_TIERS_BELOW_CELL_ALLOWED = 3;
 
     private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
 
     public enum Capacitor {
 
-        IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
-        LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
-        ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
-        UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
-        UHV(6, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
+        IV(VoltageIndex.IV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_CAP_STORAGE)),
+        LuV(VoltageIndex.LuV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LUV_CAP_STORAGE)),
+        ZPM(VoltageIndex.ZPM, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_CAP_STORAGE)),
+        UV(VoltageIndex.UV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_CAP_STORAGE)),
+        UHV(VoltageIndex.UHV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_CAP_STORAGE)),
         None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
-        UEV(7, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
-        UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
-        UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
+        EV(VoltageIndex.EV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_CAP_STORAGE)),
+        UEV(VoltageIndex.UEV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_CAP_STORAGE)),
+        UIV(VoltageIndex.UIV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_CAP_STORAGE)),
+        UMV(VoltageIndex.UMV, ItemBlockLapotronicEnergyUnit.UMV_CAP_STORAGE);
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -138,8 +146,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .sorted(Comparator.comparingInt(Capacitor::getMinimalGlassTier))
             .toArray(Capacitor[]::new);
 
-        Capacitor(int minimalGlassTier, BigInteger providedCapacity) {
-            this.minimalGlassTier = minimalGlassTier;
+        Capacitor(int voltageIndex, BigInteger providedCapacity) {
+            this.minimalGlassTier = Math.max(0, voltageIndex - GLASS_TIERS_BELOW_CELL_ALLOWED);
             this.providedCapacity = providedCapacity;
         }
 
@@ -402,15 +410,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final Map<String, Object> tooltipVars = Map.of(
-            "maxPassiveDrain",
-            formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
-            "tierColorName",
-            GTValues.TIER_COLORS[9] + GTValues.VN[9],
-            "rebalanceTicks",
-            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
-            "wirelessEuCap",
-            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap));
+        final ImmutableMap<String, Object> tooltipVars = ImmutableMap.<String, Object>builder()
+            .put("maxPassiveDrain", MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP)
+            .put("wirelessCapPassiveDrainTierMultiplier", WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER)
+            .put("minWirelessCapacitorTier", VoltageIndex.UHV)
+            .put("rebalanceTicks", ItemBlockLapotronicEnergyUnit.LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS)
+            .put("wirelessCapTierMultiplier", ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP_TIER_MULTIPLIER)
+            .put("wirelessEuCap", ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP)
+            .put("glassTiersBelowCellAllowed", GLASS_TIERS_BELOW_CELL_ALLOWED)
+            .build();
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor"), tooltipVars)
@@ -418,9 +426,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addMinGlassForLaser(VoltageIndex.UV)
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("0+", anyCasingText(), 1)
+            .addDynamoHatch("0+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing(
@@ -682,9 +690,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             wireless_mode = false;
         }
 
-        // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
+        // Every LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS check against wireless network for re-balancing.
         counter++;
-        if (wireless_mode && (counter >= ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)) {
+        if (wireless_mode && (counter >= ItemBlockLapotronicEnergyUnit.LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS)) {
 
             // Reset tick counter.
             counter = rebalance();
@@ -723,15 +731,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         // Find difference.
         BigInteger transferred_eu = stored.subtract(
-            (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
+            (ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
                 .add(
-                    ItemBlockLapotronicEnergyUnit.UEV_wireless_eu_cap
+                    ItemBlockLapotronicEnergyUnit.UEV_WIRELESS_EU_CAP
                         .multiply(BigInteger.valueOf(getUEVCapacitorCount())))
                 .add(
-                    ItemBlockLapotronicEnergyUnit.UIV_wireless_eu_cap
+                    ItemBlockLapotronicEnergyUnit.UIV_WIRELESS_EU_CAP
                         .multiply(BigInteger.valueOf(getUIVCapacitorCount())))
                 .add(
-                    ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
+                    ItemBlockLapotronicEnergyUnit.UMV_WIRELESS_EU_CAP
                         .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
         if (transferred_eu.signum() == -1) {
@@ -743,16 +751,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // If that difference can be added then do so.
         if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
             // If it succeeds there was sufficient energy so set the internal capacity as such.
-            stored = ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap
+            stored = ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP
                 .multiply(BigInteger.valueOf(getUHVCapacitorCount()))
                 .add(
-                    ItemBlockLapotronicEnergyUnit.UEV_wireless_eu_cap
+                    ItemBlockLapotronicEnergyUnit.UEV_WIRELESS_EU_CAP
                         .multiply(BigInteger.valueOf(getUEVCapacitorCount()))
                         .add(
-                            ItemBlockLapotronicEnergyUnit.UIV_wireless_eu_cap
+                            ItemBlockLapotronicEnergyUnit.UIV_WIRELESS_EU_CAP
                                 .multiply(BigInteger.valueOf(getUIVCapacitorCount())))
                         .add(
-                            ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
+                            ItemBlockLapotronicEnergyUnit.UMV_WIRELESS_EU_CAP
                                 .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
         }
 
@@ -778,10 +786,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // Passive loss is multiplied by number of UHV+ caps. Minimum of 1 otherwise loss is 0 for non-UHV+ caps
         // calculations.
         if (wirelessCapableCapacitors() != 0) {
-            temp_capacity_divided = getUHVCapacitorCount() * max_passive_drain_eu_per_tick_per_uhv_cap
-                + getUEVCapacitorCount() * max_passive_drain_eu_per_tick_per_uev_cap
-                + getUIVCapacitorCount() * max_passive_drain_eu_per_tick_per_uiv_cap
-                + getUMVCapacitorCount() * max_passive_drain_eu_per_tick_per_umv_cap;
+            temp_capacity_divided = getUHVCapacitorCount() * MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP
+                + getUEVCapacitorCount() * MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP
+                + getUIVCapacitorCount() * MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP
+                + getUMVCapacitorCount() * MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UMV_CAP;
         }
 
         // Passive loss is multiplied by number of maintenance issues.
@@ -1122,14 +1130,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy(MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
+        Energy("GT5U.MBTT.AnyEnergyHatch", MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
+        Dynamo("GT5U.MBTT.AnyEnergyDynamo", MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
@@ -1137,10 +1145,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             }
         },;
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        LSCHatchElement(Class<? extends IMetaTileEntity>... mteClasses) {
+        LSCHatchElement(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Arrays.asList(mteClasses);
         }
 
@@ -1152,6 +1162,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         @Override
         public IGTHatchAdder<? super MTELapotronicSuperCapacitor> adder() {
             return MTELapotronicSuperCapacitor::addBottomHatches;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

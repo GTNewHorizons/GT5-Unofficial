@@ -38,7 +38,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BoilerChassis_Tier0.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1L), 'S',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'B',
@@ -47,7 +48,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BoilerChassis_Tier1.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 1L), 'S',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
@@ -56,7 +58,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.BoilerChassis_Tier2.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "DSD", "BTB", "DSD", 'D',
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 1L), 'S',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
@@ -67,7 +70,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_LV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_LV.get(1L), 'X', "circuitBasic", 'C',
                 GregtechItemList.BoilerChassis_Tier0, 'M', ItemList.Casing_LV.get(1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 1L), 'B',
@@ -75,7 +79,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_MV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_MV.get(1L), 'X', "circuitGood", 'C',
                 GregtechItemList.BoilerChassis_Tier1, 'M', ItemList.Casing_MV.get(1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 1L), 'B',
@@ -83,7 +88,8 @@ public class GregtechAdvancedBoilers {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_HV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "EXE", "CMC", "PBP", 'E', ItemList.Electric_Pump_HV.get(1L), 'X', "circuitAdvanced", 'C',
                 GregtechItemList.BoilerChassis_Tier2, 'M', ItemList.Casing_HV.get(1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 1L), 'B',

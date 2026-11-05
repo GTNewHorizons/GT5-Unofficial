@@ -33,8 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
-import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -51,6 +50,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
@@ -74,15 +74,25 @@ public class MTEExoticModule extends MTEBaseModule {
     private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
     private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
-    public final IFluidTanksHandler tankHandler = new FluidTanksHandler(NUMBER_OF_INPUTS, 128000);
+    private final FluidStack[] fluidStacks = new FluidStack[NUMBER_OF_INPUTS];
+    public final FluidStackTank[] fluidTanks = new FluidStackTank[NUMBER_OF_INPUTS];
     private BigInteger powerForRecipe = BigInteger.ZERO;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initialize();
     }
 
     public MTEExoticModule(String aName) {
         super(aName);
+        initialize();
+    }
+
+    private void initialize() {
+        for (int i = 0; i < fluidTanks.length; i++) {
+            final int ii = i;
+            fluidTanks[i] = new FluidStackTank(() -> fluidStacks[ii], val -> fluidStacks[ii] = val, 128000);
+        }
     }
 
     @Override
@@ -92,7 +102,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
@@ -111,8 +121,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!recipeInProgress || recipeRegenerated) {
-                    powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
-                        .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
+                    powerForRecipe = predictDrainedEnergy(recipe).multiply(BigInteger.valueOf(actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                         setPlasmaRecipe(null);
                         return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
@@ -155,6 +164,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     .multiply(BigInteger.valueOf(duration * actualParallel));
 
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
 
@@ -259,15 +269,15 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
             if (plasmaRecipe == null) {
-                tankHandler.setFluidInTank(i, null, 0);
+                fluidStacks[i] = null;
                 continue;
             }
 
             if (i < plasmaRecipe.mFluidInputs.length) {
                 FluidStack plasma = plasmaRecipe.mFluidInputs[i];
-                tankHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
+                fluidStacks[i] = new FluidStack(plasma.getFluid(), plasma.amount);
             } else {
-                tankHandler.setFluidInTank(i, null, 0);
+                fluidStacks[i] = null;
             }
         }
     }

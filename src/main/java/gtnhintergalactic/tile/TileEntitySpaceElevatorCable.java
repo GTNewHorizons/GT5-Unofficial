@@ -19,12 +19,15 @@ import micdoodle8.mods.galacticraft.core.util.Annotations;
 public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
 
     public enum ClimberAnimation {
+
         /** Let the climber sit on its spot */
         NO_ANIMATION,
         /** Animation that drives the climber into orbit, pauses a bit and then drives down */
         DELIVER_ANIMATION,
         /** Animation that spawns the climber in orbit and then drives it down */
-        FORMATION_ANIMATION,
+        FORMATION_ANIMATION;
+
+        public static final ClimberAnimation[] VALUES = values();
     }
 
     /** Vertical movement speed of the climber */
@@ -206,8 +209,8 @@ public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
     public void readExtraNetworkedData(ByteBuf dataStream) {
         if (worldObj.isRemote) {
             int animationOrdinal = dataStream.readInt();
-            if (animationOrdinal < ClimberAnimation.values().length) {
-                animation = ClimberAnimation.values()[animationOrdinal];
+            if (animationOrdinal < ClimberAnimation.VALUES.length) {
+                animation = ClimberAnimation.VALUES[animationOrdinal];
             } else {
                 animation = ClimberAnimation.NO_ANIMATION;
             }

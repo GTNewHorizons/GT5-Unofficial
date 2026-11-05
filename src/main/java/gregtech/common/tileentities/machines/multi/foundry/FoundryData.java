@@ -34,7 +34,7 @@ public class FoundryData {
 
     public int extraOverclocks = 0;
 
-    public boolean UIVRecipesEnabled = false;
+    public boolean moduleOnlyRecipesEnabled = false;
     public boolean hypercoolerPresent = false;
     public boolean universalCollapserPresent = false;
     public boolean effOCPresent = false;
@@ -60,7 +60,7 @@ public class FoundryData {
         parallelScaleMultiplier = 1.0F;
 
         hypercoolerPresent = false;
-        UIVRecipesEnabled = false;
+        moduleOnlyRecipesEnabled = false;
         universalCollapserPresent = false;
         effOCPresent = false;
         allowEternity = false;
@@ -153,7 +153,7 @@ public class FoundryData {
         return this.modules[3] != other.modules[3];
     }
 
-    public void setModule(int index, int ordinal) {
+    public void setModule(int index, int ordinal, boolean forceUpdate) {
         // just in case, shouldn't be possible
         if (index >= modules.length || index < 0)
             throw new IndexOutOfBoundsException("Index of Module to add must be in bounds.");
@@ -172,7 +172,7 @@ public class FoundryData {
             if (effOCPresent) return;
         }
 
-        if (modules[index] == moduleToAdd) return;
+        if (!forceUpdate && modules[index] == moduleToAdd) return;
 
         modules[index] = moduleToAdd;
         checkSolidifierModules();

@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -126,7 +127,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipe = Textures.BlockIcons.custom("iconsets/pipe");
+        pipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/pipe");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -152,11 +153,9 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("beamline.pipe.desc.0"), // Beamline pipe
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross,
-                                                                                              // split
-                                                                                              // or turn
-            "Added by " + EnumChatFormatting.GREEN + "GTNH: Lanthanides"
-
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1") // Does not cross,
+                                                                                             // split
+                                                                                             // or turn
         };
     }
 

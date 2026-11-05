@@ -45,6 +45,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.INEIPreviewModifier;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -61,6 +62,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTELargeTurbineLegacy extends MTEEnhancedMultiBlockBase<MTELargeTurbineLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
 

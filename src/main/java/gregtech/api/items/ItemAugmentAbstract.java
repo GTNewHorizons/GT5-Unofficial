@@ -76,6 +76,19 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
 
         addSeparatorIfNeeded(desc);
 
+        if (showAllInfo && !part.getRequiredBehaviorsOr()
+            .isEmpty()) {
+            desc.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("GT5U.armor.tooltip.requires_or"));
+
+            for (BehaviorName behavior : part.getRequiredBehaviorsOr()) {
+                if (!behavior.hasDisplayName()) continue;
+
+                desc.add(GRAY + "- " + behavior.getDisplayName());
+            }
+        }
+
+        addSeparatorIfNeeded(desc);
+
         if (showAllInfo && (!part.getIncompatibleBehaviors()
             .isEmpty()
             || !part.getIncompatibleAugments()

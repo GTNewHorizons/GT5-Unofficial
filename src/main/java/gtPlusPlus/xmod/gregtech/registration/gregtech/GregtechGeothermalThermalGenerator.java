@@ -43,7 +43,8 @@ public class GregtechGeothermalThermalGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.ZPM), 'W',
                 OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TANTALLOY_61.getGear(1) });
@@ -51,7 +52,8 @@ public class GregtechGeothermalThermalGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.UV), 'W',
                 OrePrefixes.cableGt04.get(Materials.Platinum), 'G', MaterialsAlloy.STELLITE.getGear(1) });
@@ -61,7 +63,8 @@ public class GregtechGeothermalThermalGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_LuV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
+                | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
                 OrePrefixes.circuit.get(Materials.UHV), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
                 MaterialsAlloy.ZERON_100.getGear(1) });

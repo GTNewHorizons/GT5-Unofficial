@@ -31,6 +31,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,6 +53,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -577,30 +579,30 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         runtimeFailure = newFailureReason;
     }
 
-    /**
-     * Gets a reason for why the drill turned off, for use in UIs and such.
-     *
-     * @return A reason, or empty if the machine is active or there is no message set yet.
-     */
+    /** Returns why the drill is off as an {@link IGregTechDeviceInformation#encode} argument, or empty if active. */
     @NotNull
-    protected Optional<String> getFailureReason() {
+    protected Optional<String> getEncodedFailureReason() {
         if (getBaseMetaTileEntity().isActive()) {
             return Optional.empty();
         }
 
         if (!shutdownReason.isEmpty()) {
-            return Optional.of(shutdownReason);
+            return Optional.of(IGregTechDeviceInformation.translatable(shutdownReason));
         }
 
+        // Other result types have no single lang key, so they stay in the server language.
         return Optional.ofNullable(lastRuntimeFailure)
-            .map(CheckRecipeResult::getDisplayString);
+            .map(
+                failure -> failure instanceof SimpleCheckRecipeResult simple
+                    ? IGregTechDeviceInformation.translatable(simple.getTranslationKey())
+                    : failure.getDisplayString());
     }
 
     /**
      * Sets a line in the UI to explain why the drill shut down. E.g.: operation finished. Should be used when the
      * machine has been turned off due to an operating issue or completion.
      *
-     * @param newReason The reason for the machine shutdown
+     * @param newReason Translation key of the reason for the machine shutdown, localized when it is displayed
      */
     public void setShutdownReason(@NotNull String newReason) {
         shutdownReason = newReason;
@@ -786,7 +788,13 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected enum DataHatchElement implements IHatchElement<MTEDrillerBase> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -801,6 +809,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         @Override
         public long count(MTEDrillerBase t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

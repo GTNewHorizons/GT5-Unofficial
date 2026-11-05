@@ -3,4 +3,4 @@
 在完成闪存写入之前不会消耗物品
 Use screwdriver to change mode
 Computation required in scanner mode follows the formula:
-Recipe duration in ticks * (2 ^ (Recipe voltage tier - 1))
+Recipe duration in ticks * (2 ^ (Recipe Voltage Tier - 1))

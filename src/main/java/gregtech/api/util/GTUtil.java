@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -19,17 +20,16 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class GTUtil {
 
@@ -155,8 +155,8 @@ public class GTUtil {
             world.getBlockMetadata(x, 0, z);
             aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
-                GTLog.err.println(
-                    "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
+                GT_FML_LOGGER
+                    .error("Some important Chunk does not exist for some reason at Coordinates X: {} and Z: {}", x, z);
                 return false;
             }
         }
@@ -204,16 +204,9 @@ public class GTUtil {
         if (list == null) return false;
         newTag.setTag("mOutputBusses", list);
         count += list.tagCount();
-
-        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
-        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
-            if (outputHatch instanceof MTEHatchOutputME hatch) {
-                meOutputHatches.add(hatch);
-            }
-        }
-        list = saveConfigurationToDataStick(player, meOutputHatches);
+        list = saveConfigurationToDataStick(player, controller.mOutputHatches);
         if (list == null) return false;
-        newTag.setTag("mMEOutputHatches", list);
+        newTag.setTag("mOutputHatches", list);
         count += list.tagCount();
 
         // For Crafting Input Proxy
@@ -227,8 +220,6 @@ public class GTUtil {
         if (list == null) return false;
         newTag.setTag("mDualInputHatches", list);
         count += list.tagCount();
-
-        // Output hatch config currently cannot be copied, so we omit this part for now
 
         dataOrb.setTagCompound(newTag);
         BehaviourDataOrb.setDataTitle(dataOrb, "Multiblock Hatch Configuration");
@@ -277,22 +268,14 @@ public class GTUtil {
                 player,
                 controller.mOutputBusses)) return false;
         }
-
-        // for ME output hatches (normal output hatches are not implemented)
-        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
-        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
-            if (outputHatch instanceof MTEHatchOutputME hatch) {
-                meOutputHatches.add(hatch);
-            }
-        }
         if (checkCanLoadConfigurationFromDataStick(
-            tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+            tag.getTagList("mOutputHatches", Constants.NBT.TAG_COMPOUND),
             player,
-            meOutputHatches)) {
+            controller.mOutputHatches)) {
             if (!loadConfigurationFromDataStick(
-                tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+                tag.getTagList("mOutputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                meOutputHatches)) return false;
+                controller.mOutputHatches)) return false;
         }
 
         // For Crafting Input Proxy
@@ -360,5 +343,38 @@ public class GTUtil {
                 .equals(tag.getString("type"))) return false;
         }
         return true;
+    }
+
+    /**
+     * Set the direction of a vanilla large chest. return false when the new direction is invalid
+     *
+     * @param dryRun pass in true to prevent actually setting block metadata
+     */
+    public static boolean setVanillaChestDirection(World world, int x, int y, int z, int newSide, Block currentBlock,
+        boolean dryRun) {
+        ForgeDirection newDirection = ForgeDirection.getOrientation(newSide);
+        if (newDirection.offsetY != 0) return false; // cannot face up/down
+        if (currentBlock == null) currentBlock = world.getBlock(x, y, z);
+        if (world.getBlock(x + newDirection.offsetX, y + newDirection.offsetY, z + newDirection.offsetZ) == currentBlock
+            || world.getBlock(x - newDirection.offsetX, y - newDirection.offsetY, z - newDirection.offsetZ)
+                == currentBlock) {
+            // new direction would face towards/away from another chest. not good
+            return false;
+        }
+        if (dryRun) return true;
+        ForgeDirection sideway = ForgeDirection
+            .getOrientation(ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][newSide]);
+        boolean result = true;
+        if (world.getBlock(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ) == currentBlock) {
+            result &= world
+                .setBlockMetadataWithNotify(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ, newSide, 3);
+        } else if (world.getBlock(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ) == currentBlock) {
+            result &= world
+                .setBlockMetadataWithNotify(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ, newSide, 3);
+        }
+        if (!result) {
+            return false;
+        }
+        return world.setBlockMetadataWithNotify(x, y, z, newSide, 3);
     }
 }

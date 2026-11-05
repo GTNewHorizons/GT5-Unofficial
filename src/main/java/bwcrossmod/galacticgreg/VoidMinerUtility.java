@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
@@ -79,7 +79,7 @@ public class VoidMinerUtility {
                     ItemStack stack = OreManager.getStack(info, 1);
 
                     if (stack == null) {
-                        GTMod.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
+                        GTLoggers.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
                         return;
                     }
 
@@ -101,7 +101,7 @@ public class VoidMinerUtility {
                 ItemStack stack = OreManager.getStack(info, 1);
 
                 if (stack == null) {
-                    GTMod.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
+                    GTLoggers.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
                     return;
                 }
 

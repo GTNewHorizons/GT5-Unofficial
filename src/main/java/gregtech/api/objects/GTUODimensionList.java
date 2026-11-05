@@ -1,6 +1,6 @@
 package gregtech.api.objects;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Dimensions.AlphaCentauriBb;
 import static gregtech.api.enums.Dimensions.BarnardaC;
 import static gregtech.api.enums.Dimensions.BarnardaE;
