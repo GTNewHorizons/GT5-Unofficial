@@ -298,25 +298,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     /// Compares the input fluid against the fluids for a given upgrade kind and sets the modifier if a match is found.
     ///
-    /// Resets the modifier and upgrade fluid if no match is found.
     /// @return true if a match was found, false otherwise
     private boolean setModifiers(FluidStack inputFluid, float step, FluidStack[] fluidArray, int upgradeId) {
-        boolean found = false;
         for (int tier = 1; tier <= fluidArray.length; tier++) {
             if (inputFluid.isFluidEqual(fluidArray[tier - 1])) {
                 if (inputFluid.amount >= fluidConsumptions[upgradeId]) {
                     modifiers[upgradeId] = step * tier;
                     upgradeFluids[upgradeId] = inputFluid;
-                    found = true;
-                    break;
+                    return true;
                 }
             }
         }
-        if (!found) {
-            modifiers[upgradeId] = 0.0f;
-            upgradeFluids[upgradeId] = null;
-        }
-        return found;
+        return false;
     }
 
     @Override
