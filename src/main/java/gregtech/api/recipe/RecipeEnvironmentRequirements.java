@@ -19,7 +19,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
  * Immutable conjunctive requirements shared by recipes, their copies and saved active processes
- * Saved IDs remain present when their defining addon is missing, so unknown conditions fail validation
+ * Saved IDs with missing definitions are discarded when loading an active process
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -116,7 +116,7 @@ public final class RecipeEnvironmentRequirements {
     public boolean requiresValidationWhileRunning() {
         for (String id : ids) {
             RecipeEnvironment environment = RecipeEnvironment.get(id);
-            if (environment == null || environment.requiresContinuousValidation()) return true;
+            if (environment != null && environment.requiresContinuousValidation()) return true;
         }
         return false;
     }
@@ -129,12 +129,16 @@ public final class RecipeEnvironmentRequirements {
         return result;
     }
 
+    /**
+     * Loads active requirements after addon environments have been registered
+     */
     public static RecipeEnvironmentRequirements readFromNBT(NBTTagList tags) {
         if (tags.tagCount() == 0) return EMPTY;
         Set<String> ids = new LinkedHashSet<>();
         for (int i = 0; i < tags.tagCount(); i++) {
-            ids.add(tags.getStringTagAt(i));
+            String id = tags.getStringTagAt(i);
+            if (RecipeEnvironment.get(id) != null) ids.add(id);
         }
-        return new RecipeEnvironmentRequirements(ids);
+        return ids.isEmpty() ? EMPTY : new RecipeEnvironmentRequirements(ids);
     }
 }

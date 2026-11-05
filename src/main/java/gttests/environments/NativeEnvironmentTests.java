@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -369,8 +370,18 @@ public class NativeEnvironmentTests {
     }
 
     @GameTest(template = "fusion_space", timeoutTicks = 3000, batch = "gt5.environments")
-    public static void fusionReloadRejectsAnUnknownSavedEnvironment(GameTestHelper helper) {
-        fusionReloadRetainsAcceptedEnvironment(helper, "gregtech:tests/absent_fusion_provider", false, false);
+    public static void fusionReloadDiscardsAnUnknownSavedEnvironment(GameTestHelper helper) {
+        fusionReloadRetainsAcceptedEnvironment(helper, "gregtech:tests/absent_fusion_provider", true, false);
+    }
+
+    @GameTest(template = "fusion_space", timeoutTicks = 3000, batch = "gt5.environments")
+    public static void fusionReloadKeepsKnownConditionsWhenDiscardingUnknownOnes(GameTestHelper helper) {
+        fusionReloadRetainsAcceptedEnvironment(
+            helper,
+            "gregtech:tests/absent_fusion_provider",
+            true,
+            true,
+            FUSION_RELOAD_ENVIRONMENT.getId());
     }
 
     @GameTest(template = "fusion_space", timeoutTicks = 3000, batch = "gt5.environments")
@@ -384,7 +395,7 @@ public class NativeEnvironmentTests {
     }
 
     private static void fusionReloadRetainsAcceptedEnvironment(GameTestHelper helper, String savedEnvironmentId,
-        boolean environmentAvailable, boolean loseEnvironmentAfterReload) {
+        boolean environmentAvailable, boolean loseEnvironmentAfterReload, String... additionalSavedEnvironmentIds) {
         TestPos controller = at(7, 1, 12);
         BaseMetaTileEntity base = placeMachine(helper, controller, ItemList.FusionComputer_LuV);
         MTEFusionComputer fusion = (MTEFusionComputer) base.getMetaTileEntity();
@@ -454,7 +465,7 @@ public class NativeEnvironmentTests {
 
             NBTTagCompound saved = new NBTTagCompound();
             base.writeToNBT(saved);
-            NBTTagList savedEnvironments = saved.getTagList("recipeEnvironments", 8);
+            NBTTagList savedEnvironments = saved.getTagList("recipeEnvironments", Constants.NBT.TAG_STRING);
             helper.assertTrue(
                 savedEnvironments.tagCount() == 1 && FUSION_RELOAD_ENVIRONMENT.getId()
                     .equals(savedEnvironments.getStringTagAt(0)),
@@ -465,6 +476,9 @@ public class NativeEnvironmentTests {
                     .assertTrue(RecipeEnvironment.get(savedEnvironmentId) == null, "Missing provider ID is registered");
                 NBTTagList unknownEnvironment = new NBTTagList();
                 unknownEnvironment.appendTag(new NBTTagString(savedEnvironmentId));
+                for (String id : additionalSavedEnvironmentIds) {
+                    unknownEnvironment.appendTag(new NBTTagString(id));
+                }
                 saved.setTag("recipeEnvironments", unknownEnvironment);
             }
             int progress = saved.getInteger("mProgresstime");
@@ -489,6 +503,19 @@ public class NativeEnvironmentTests {
                 "Current fusion reload recipe still has an admission requirement");
             FUSION_RELOAD_ENVIRONMENT.available = environmentAvailable;
             base.readFromNBT(saved);
+            NBTTagCompound resaved = new NBTTagCompound();
+            base.writeToNBT(resaved);
+            NBTTagList restoredEnvironments = resaved.getTagList("recipeEnvironments", Constants.NBT.TAG_STRING);
+            boolean savedEnvironmentKnown = RecipeEnvironment.get(savedEnvironmentId) != null;
+            helper.assertTrue(
+                restoredEnvironments.tagCount() == (savedEnvironmentKnown ? 1 : additionalSavedEnvironmentIds.length),
+                "Reload retained missing definitions or discarded registered environment requirements");
+            if (savedEnvironmentKnown || additionalSavedEnvironmentIds.length > 0) {
+                helper.assertTrue(
+                    FUSION_RELOAD_ENVIRONMENT.getId()
+                        .equals(restoredEnvironments.getStringTagAt(0)),
+                    "Reload replaced the registered requirement from the saved operation");
+            }
             fusion = (MTEFusionComputer) base.getMetaTileEntity();
             helper.assertTrue(
                 fusion.mProgresstime == progress && fusion.mMaxProgresstime == duration && base.isAllowedToWork(),
