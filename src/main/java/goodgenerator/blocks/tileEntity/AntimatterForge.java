@@ -152,6 +152,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     };
 
+    public static boolean DEBUG = false;
+
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -294,15 +296,27 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return antimatterStored;
     }
 
-    private void setModifiers(FluidStack inputFluid, float step, FluidStack[] fluidArray, int upgradeId) {
+    /// Compares the input fluid against the fluids for a given upgrade kind and sets the modifier if a match is found.
+    ///
+    /// Resets the modifier and upgrade fluid if no match is found.
+    /// @return true if a match was found, false otherwise
+    private boolean setModifiers(FluidStack inputFluid, float step, FluidStack[] fluidArray, int upgradeId) {
+        boolean found = false;
         for (int tier = 1; tier <= fluidArray.length; tier++) {
             if (inputFluid.isFluidEqual(fluidArray[tier - 1])) {
                 if (inputFluid.amount >= fluidConsumptions[upgradeId]) {
                     modifiers[upgradeId] = step * tier;
                     upgradeFluids[upgradeId] = inputFluid;
+                    found = true;
+                    break;
                 }
             }
         }
+        if (!found) {
+            modifiers[upgradeId] = 0.0f;
+            upgradeFluids[upgradeId] = null;
+        }
+        return found;
     }
 
     @Override
@@ -330,8 +344,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         // Check for upgrade fluids
-        fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
-        fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
+        int ceiledSqRoot = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
+        fluidConsumptions[MAGNETIC_ID] = ceiledSqRoot;
+        fluidConsumptions[GRAVITY_ID] = ceiledSqRoot;
         fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2.0f / 7.0f));
         fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1.0f / 3.0f));
 
@@ -341,11 +356,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         List<FluidStack> inputFluids = getStoredFluids();
+        // skips to the next fluid if it was a matching upgrade
         for (FluidStack inputFluid : inputFluids) {
-            setModifiers(inputFluid, -0.1f, MAGNETIC_UPGRADES, MAGNETIC_ID);
-            setModifiers(inputFluid, -0.05f, GRAVITY_UPGRADES, GRAVITY_ID);
-            setModifiers(inputFluid, 0.05f, CONTAINMENT_UPGRADES, CONTAINMENT_ID);
-            setModifiers(inputFluid, 0.05f, ACTIVATION_UPGRADES, ACTIVATION_ID);
+            if (setModifiers(inputFluid, -0.1f, MAGNETIC_UPGRADES, MAGNETIC_ID)) continue;
+            if (setModifiers(inputFluid, -0.05f, GRAVITY_UPGRADES, GRAVITY_ID)) continue;
+            if (setModifiers(inputFluid, 0.05f, CONTAINMENT_UPGRADES, CONTAINMENT_ID)) continue;
+            if (setModifiers(inputFluid, 0.05f, ACTIVATION_UPGRADES, ACTIVATION_ID)) continue;
         }
 
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
@@ -364,11 +380,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (upgradeFluid == null) {
                 continue;
             }
-            for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
-                if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
-                    inputFluid.amount -= fluidConsumptions[i];
-                    break;
+            if (DEBUG) {
+                for (FluidStack inputFluid : inputFluids) {
+                    // this should always be true after the checks done by setModifiers on
+                    // the same reference of the valid input fluid stack setting the upgrade fluids
+                    // NEEDS TESTING THO
+                    if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
+                        inputFluid.amount -= fluidConsumptions[i];
+                        break;
+                    }
                 }
+            } else {
+                upgradeFluid.amount -= fluidConsumptions[i];
             }
         }
 
