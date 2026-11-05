@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,6 +37,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
@@ -44,6 +46,8 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
+import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
@@ -56,8 +60,23 @@ public class BlockOverlayRenderer {
     private static final List<Block> ROTATABLE_VANILLA_BLOCKS;
     private static final int ROTATION_MARKER_RESOLUTION = 120;
 
+    // GRID_SWITCH_TABLE[sideHit][side.ordinal()] -> cell of a side: 0 centre, 1 +Z, 2 -X, 3 -Z, 4 +X, 5 corners
     private static final int[][] GRID_SWITCH_TABLE = new int[][] { { 0, 5, 3, 1, 2, 4 }, { 5, 0, 1, 3, 2, 4 },
         { 1, 3, 0, 5, 2, 4 }, { 3, 1, 5, 0, 2, 4 }, { 4, 2, 3, 1, 0, 5 }, { 2, 4, 3, 1, 5, 0 }, };
+    /** Half the edge length of the pipe icons, in blocks; slightly under the 0.125 half cell so they keep a gap. */
+    private static final float PIPE_ICON_HALF_SIZE = .115F;
+    private static final ResourceLocation PIPE_CONNECTED_ICON = new ResourceLocation(
+        "gregtech",
+        "textures/gui/overlay/pipe_connected.png");
+    private static final ResourceLocation PIPE_DISCONNECTED_ICON = new ResourceLocation(
+        "gregtech",
+        "textures/gui/overlay/pipe_disconnected.png");
+    private static final ResourceLocation CABLE_CONNECTED_ICON = new ResourceLocation(
+        "gregtech",
+        "textures/gui/overlay/cable_connected.png");
+    private static final ResourceLocation CABLE_DISCONNECTED_ICON = new ResourceLocation(
+        "gregtech",
+        "textures/gui/overlay/cable_disconnected.png");
 
     // don't ask. these "just works"
     private static final Transformation ROTATION_MARKER_TRANSFORM_CENTER = new Scale(0.5);
@@ -278,7 +297,7 @@ public class BlockOverlayRenderer {
                 else if (baseMetaTile.getMetaTileEntity() instanceof MTEBasicMachine basicMachine) {
                     tConnections |= basicMachine.mMainFacing.flag;
                 }
-            } else if (tTile instanceof BaseMetaPipeEntity pipeEntity) tConnections = pipeEntity.mConnections;
+            }
         } else if (tTile instanceof IWrenchable wrenchable) {
             tConnections |= ForgeDirection.getOrientation(wrenchable.getFacing()).flag;
         } else if (ROTATABLE_VANILLA_BLOCKS.contains(block)) {
@@ -343,6 +362,19 @@ public class BlockOverlayRenderer {
             }
         }
         tess.draw();
+        // pipes get an icon for every side instead of the indicators above; frames report no connections
+        // and would show all-red icons, so they keep the plain grid
+        if (!showCoverConnections && tTile instanceof BaseMetaPipeEntity pipeEntity) {
+            final IMetaTileEntity pipe = pipeEntity.getMetaTileEntity();
+            if (pipe != null && !(pipe instanceof MTEFrame)) {
+                final ForgeDirection selectedSide = GTUtility.determineWrenchingSide(
+                    ForgeDirection.getOrientation(target.sideHit),
+                    (float) (target.hitVec.xCoord - target.blockX),
+                    (float) (target.hitVec.yCoord - target.blockY),
+                    (float) (target.hitVec.zCoord - target.blockZ));
+                drawConnectionIcons(target.sideHit, pipeEntity.mConnections, pipe instanceof MTECable, selectedSide);
+            }
+        }
         // draw turning indicator
         Function<ForgeDirection, Transformation[]> getTransform = (ForgeDirection direction) -> {
             try {
@@ -472,6 +504,83 @@ public class BlockOverlayRenderer {
         t.addVertex(-0.15d, 0d, -0.04d);
         t.draw();
         GL11.glPopMatrix();
+    }
+
+    /** Draws GTCEu connection icons, with full opacity on the selected side. */
+    private static void drawConnectionIcons(int sideHit, int connections, boolean cable, ForgeDirection selectedSide) {
+        drawConnectionIcons(
+            sideHit,
+            connections,
+            true,
+            cable ? CABLE_CONNECTED_ICON : PIPE_CONNECTED_ICON,
+            selectedSide);
+        drawConnectionIcons(
+            sideHit,
+            connections,
+            false,
+            cable ? CABLE_DISCONNECTED_ICON : PIPE_DISCONNECTED_ICON,
+            selectedSide);
+    }
+
+    /** Draws matching connection states, keeping unselected sides at 65 percent opacity. */
+    private static void drawConnectionIcons(int sideHit, int connections, boolean connected, ResourceLocation icon,
+        ForgeDirection selectedSide) {
+        final Tessellator tess = Tessellator.instance;
+        // the east and west faces map the local x axis to world up, so their icons need a quarter turn
+        final boolean sideways = sideHit == ForgeDirection.EAST.ordinal() || sideHit == ForgeDirection.WEST.ordinal();
+
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_CURRENT_BIT);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDepthMask(false);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(icon);
+
+        tess.startDrawingQuads();
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (((connections & side.flag) != 0) == connected) {
+                tess.setColorRGBA(255, 255, 255, side == selectedSide ? 255 : 166);
+                drawConnectionIcon(tess, GRID_SWITCH_TABLE[sideHit][side.ordinal()], sideways);
+            }
+        }
+        tess.draw();
+
+        GL11.glPopAttrib();
+    }
+
+    private static void drawConnectionIcon(Tessellator tess, int cell, boolean sideways) {
+        switch (cell) {
+            case 0 -> addIconQuad(tess, 0F, 0F, sideways);
+            case 1 -> addIconQuad(tess, 0F, .375F, sideways);
+            case 2 -> addIconQuad(tess, -.375F, 0F, sideways);
+            case 3 -> addIconQuad(tess, 0F, -.375F, sideways);
+            case 4 -> addIconQuad(tess, .375F, 0F, sideways);
+            // the side opposite to the one being looked at has no cell of its own, it is shown in the four corners
+            default -> {
+                addIconQuad(tess, -.375F, -.375F, sideways);
+                addIconQuad(tess, .375F, -.375F, sideways);
+                addIconQuad(tess, -.375F, .375F, sideways);
+                addIconQuad(tess, .375F, .375F, sideways);
+            }
+        }
+    }
+
+    private static void addIconQuad(Tessellator tess, float centreX, float centreZ, boolean sideways) {
+        final float minX = centreX - PIPE_ICON_HALF_SIZE, maxX = centreX + PIPE_ICON_HALF_SIZE;
+        final float minZ = centreZ - PIPE_ICON_HALF_SIZE, maxZ = centreZ + PIPE_ICON_HALF_SIZE;
+        if (sideways) {
+            tess.addVertexWithUV(minX, 0, minZ, 0, 0);
+            tess.addVertexWithUV(maxX, 0, minZ, 0, 1);
+            tess.addVertexWithUV(maxX, 0, maxZ, 1, 1);
+            tess.addVertexWithUV(minX, 0, maxZ, 1, 0);
+            return;
+        }
+        tess.addVertexWithUV(minX, 0, minZ, 0, 1);
+        tess.addVertexWithUV(maxX, 0, minZ, 1, 1);
+        tess.addVertexWithUV(maxX, 0, maxZ, 1, 0);
+        tess.addVertexWithUV(minX, 0, maxZ, 0, 0);
     }
 
     private static float calculateLineWidth() {
