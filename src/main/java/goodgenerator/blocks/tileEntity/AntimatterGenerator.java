@@ -155,7 +155,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         // Set stats if one fluid supplied.
         if ((containedAntimatter == 0 && catalystFluid != null) || (containedAntimatter > 0 && catalystFluid == null)) {
             this.euLastCycle = 0;
-            setAvgEff(0f);
+            updateAnnihilationEfficiency(0f);
         }
 
         recipesDone++;
@@ -179,11 +179,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         if (modifier != null) {
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
-            setAvgEff(efficiency);
+            updateAnnihilationEfficiency(efficiency);
             generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
         } else { // Set stats and return if supplied antimatter with incorrect fluid.
             this.euLastCycle = 0;
-            setAvgEff(0f);
+            updateAnnihilationEfficiency(0f);
             return;
         }
 
@@ -332,13 +332,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         return this.annihilationEfficiency;
     }
 
-    private void setAvgEff(float a) {
-        this.annihilationEfficiency = a;
+    /// Adds a new efficiency value to the average efficiency calculation and replaces the oldest value in the list
+    /// once the list is full
+    private void updateAnnihilationEfficiency(float newEfficiency) {
+        this.annihilationEfficiency = newEfficiency;
         if (avgEffCounter == 10) avgEffCounter = 0;
         if (this.avgEff.size() < 10) {
-            this.avgEff.add(a);
+            this.avgEff.add(newEfficiency);
         } else {
-            this.avgEff.set(avgEffCounter, a);
+            this.avgEff.set(avgEffCounter, newEfficiency);
             avgEffCounter++;
         }
 
