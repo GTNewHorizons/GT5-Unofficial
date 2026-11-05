@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -38,7 +39,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTCC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, 1_000))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(laserEngraverRecipes);
@@ -46,7 +47,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTPC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 1_000))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .addTo(laserEngraverRecipes);
@@ -54,7 +55,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTRC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 1_000))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .addTo(laserEngraverRecipes);
@@ -62,7 +63,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTEC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 1_000))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .addTo(laserEngraverRecipes);
@@ -70,7 +71,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTSC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 1_000))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
             .addTo(laserEngraverRecipes);
@@ -108,7 +109,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_LapotronCrystal.getWildcard(1L), new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Master.get(3L))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(laserEngraverRecipes);
@@ -116,7 +117,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Chip_CrystalCPU.get(1L), new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(40000)
             .addTo(laserEngraverRecipes);
@@ -124,7 +125,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(ItemList.Circuit_Wafer_PIC.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(WaferEngravingRecipes);
@@ -132,7 +133,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(ItemList.Circuit_Wafer_PIC.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -140,7 +141,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(ItemList.Circuit_Wafer_QPIC.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_UV)
             .addTo(WaferEngravingRecipes);
@@ -174,7 +175,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.Circuit_Wafer_LPIC.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(WaferEngravingRecipes);
@@ -182,7 +183,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -190,7 +191,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(WaferEngravingRecipes);
@@ -198,7 +199,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC.get(8))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);
@@ -261,7 +262,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(ItemList.Circuit_Wafer_Ram.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(WaferEngravingRecipes);
@@ -269,7 +270,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(ItemList.Circuit_Wafer_Ram.get(8))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -277,7 +278,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(ItemList.Circuit_Wafer_Ram.get(16))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(WaferEngravingRecipes);
@@ -285,7 +286,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(ItemList.Circuit_Wafer_Ram.get(32))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);
@@ -319,7 +320,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(ItemList.Circuit_Wafer_ILC.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(WaferEngravingRecipes);
@@ -327,7 +328,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(ItemList.Circuit_Wafer_ILC.get(8))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -335,7 +336,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(ItemList.Circuit_Wafer_NPIC.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);
@@ -343,7 +344,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(ItemList.Circuit_Wafer_NPIC.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(WaferEngravingRecipes);
@@ -352,7 +353,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L), new OreDictItemStack("craftingLensGreen", 0))
             .itemOutputs(ItemList.Circuit_Chip_CrystalCPU.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(10000)
             .addTo(laserEngraverRecipes);
@@ -360,7 +361,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Chip_CrystalSoC.get(1L), new OreDictItemStack("craftingLensGreen", 0))
             .itemOutputs(ItemList.Circuit_Chip_CrystalSoC2.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(60 * SECONDS)
             .eut(80000)
             .addTo(laserEngraverRecipes);
@@ -382,7 +383,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensGreen", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC2.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -390,7 +391,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), new OreDictItemStack("craftingLensGreen", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC2.get(2))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(WaferEngravingRecipes);
@@ -398,7 +399,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensGreen", 0))
             .itemOutputs(ItemList.Circuit_Wafer_SoC2.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);
@@ -455,7 +456,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(ItemList.Circuit_Wafer_CPU.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(WaferEngravingRecipes);
@@ -463,7 +464,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(ItemList.Circuit_Wafer_CPU.get(4))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(WaferEngravingRecipes);
@@ -471,7 +472,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(ItemList.Circuit_Wafer_CPU.get(8))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(WaferEngravingRecipes);
@@ -479,7 +480,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(ItemList.Circuit_Wafer_CPU.get(16))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(WaferEngravingRecipes);
@@ -487,7 +488,7 @@ public class LaserEngraverRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(ItemList.Circuit_Wafer_CPU.get(32))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);

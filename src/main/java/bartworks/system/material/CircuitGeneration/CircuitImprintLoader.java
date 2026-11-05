@@ -16,6 +16,7 @@ package bartworks.system.material.CircuitGeneration;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -48,7 +49,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_NANDChipArray.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -56,7 +57,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_Microprocessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -64,7 +65,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_ElectronicCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -72,7 +73,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_GoodElectronicCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -80,7 +81,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -88,7 +89,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_GoodIntegratedCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(24)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -96,7 +97,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_AdvancedCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -104,7 +105,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_IntegratedProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -112,7 +113,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_ProcessorAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(96)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -120,7 +121,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_Workstation.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -128,7 +129,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_Mainframe.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -136,7 +137,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_NanoProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -144,7 +145,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_NanoAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(600)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -152,7 +153,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_NanoSupercomputer.get(1))
             .duration(15 * SECONDS)
             .eut(600)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -160,7 +161,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_NanoMainframe.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -168,7 +169,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_QuantumProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -176,7 +177,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_QuantumAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(2400)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -184,7 +185,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_QuantumSupercomputer.get(1))
             .duration(15 * SECONDS)
             .eut(2400)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -192,7 +193,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_QuantumMainframe.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -200,7 +201,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_CrystalProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -208,7 +209,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_CrystalAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(9600)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -216,7 +217,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_CrystalSupercomputer.get(1))
             .duration(15 * SECONDS)
             .eut(9600)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -224,7 +225,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_CrystalMainframe.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -232,7 +233,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_WetwareProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -240,7 +241,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_WetwareAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(38400)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -248,7 +249,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_WetwareSupercomputer.get(1))
             .duration(15 * SECONDS)
             .eut(38400)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -256,7 +257,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_BiowareProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -264,7 +265,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_BiowareAssembly.get(1))
             .duration(15 * SECONDS)
             .eut(153600)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -272,7 +273,7 @@ public class CircuitImprintLoader {
             .itemOutputs(ItemList.SlicedCircuit_OpticalProcessor.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(cutterRecipes);
 
         // recipes behind a mod loaded check because the ItemList entry is conditionally set, so if Forestry isn't
@@ -283,7 +284,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_BasicCircuitBoard.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
 
@@ -292,7 +293,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
 
@@ -301,7 +302,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_RefinedCircuitBoard.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
 
@@ -310,7 +311,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_IntricateCircuitBoard.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
         }
@@ -323,7 +324,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_ControllerCircuit.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
 
@@ -334,7 +335,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_ReceiverCircuit.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
 
@@ -345,7 +346,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_SignalCircuit.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
         }
@@ -358,7 +359,7 @@ public class CircuitImprintLoader {
                 .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .requireMods(NewHorizonsCoreMod)
                 .addTo(cutterRecipes);
         }

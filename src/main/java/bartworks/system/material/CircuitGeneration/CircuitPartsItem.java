@@ -14,6 +14,7 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -82,7 +83,7 @@ public class CircuitPartsItem extends Item {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(laserEngraverRecipes);
 
         GameRegistry.addRecipe(new DeprecatedPartsMigrationRecipe());

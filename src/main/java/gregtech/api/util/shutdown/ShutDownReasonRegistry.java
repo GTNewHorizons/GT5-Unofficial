@@ -1,13 +1,27 @@
 package gregtech.api.util.shutdown;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableList;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.recipe.RecipeEnvironment;
 
 public class ShutDownReasonRegistry {
 
@@ -47,6 +61,11 @@ public class ShutDownReasonRegistry {
      */
     @Nonnull
     public static final ShutDownReason POWER_LOSS = SimpleShutDownReason.ofCritical("power_loss");
+    /**
+     * Required processing environment is unavailable
+     */
+    @Nonnull
+    public static final ShutDownReason ENVIRONMENT = SimpleShutDownReason.ofCritical("environment");
     /**
      * Failed to output the pollution.
      */
@@ -144,8 +163,80 @@ public class ShutDownReasonRegistry {
         return new ReasonOutOfStuff(required, amount);
     }
 
+    @Nonnull
+    public static ShutDownReason environmentNotMet(Collection<RecipeEnvironment> environments) {
+        return new EnvironmentFailure(
+            environments.stream()
+                .map(RecipeEnvironment::getTranslationKey)
+                .collect(Collectors.toList()));
+    }
+
+    private static final class EnvironmentFailure extends SimpleShutDownReason {
+
+        private List<String> translationKeys;
+
+        private EnvironmentFailure(Collection<String> translationKeys) {
+            super("environment", true);
+            this.translationKeys = ImmutableList.copyOf(translationKeys);
+        }
+
+        @Nonnull
+        @Override
+        public String getID() {
+            return "environment";
+        }
+
+        @Nonnull
+        @Override
+        public String getDisplayString() {
+            String environments = translationKeys.stream()
+                .map(StatCollector::translateToLocal)
+                .collect(Collectors.joining(", "));
+            return StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.shutdown_reason.environment_details", environments);
+        }
+
+        @Nonnull
+        @Override
+        public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound tag) {
+            NBTTagList environments = new NBTTagList();
+            for (String key : translationKeys) {
+                environments.appendTag(new NBTTagString(key));
+            }
+            tag.setTag("environments", environments);
+            return tag;
+        }
+
+        @Override
+        public void readFromNBT(@Nonnull NBTTagCompound tag) {
+            NBTTagList environments = tag.getTagList("environments", Constants.NBT.TAG_STRING);
+            ImmutableList.Builder<String> keys = ImmutableList.builder();
+            for (int i = 0; i < environments.tagCount(); i++) {
+                keys.add(environments.getStringTagAt(i));
+            }
+            translationKeys = keys.build();
+        }
+
+        @Nonnull
+        @Override
+        public ShutDownReason newInstance() {
+            return new EnvironmentFailure(ImmutableList.of());
+        }
+
+        @Override
+        public void encode(@Nonnull PacketBuffer buffer) {
+            ByteBufUtils.writeTag(buffer, writeToNBT(new NBTTagCompound()));
+        }
+
+        @Override
+        public void decode(PacketBuffer buffer) {
+            readFromNBT(ByteBufUtils.readTag(buffer));
+        }
+    }
+
     static {
         register(new SimpleShutDownReason("", false));
+        register(new EnvironmentFailure(ImmutableList.of()));
         register(new ReasonOutOfFluid(null));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));

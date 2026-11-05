@@ -1,6 +1,7 @@
 package tectech.loader.recipe;
 
 import static bartworks.common.loaders.ItemRegistry.bw_realglas;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -2673,7 +2674,7 @@ public class Assembler implements Runnable {
             .itemOutputs(CustomItemList.DATApipe.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2681,7 +2682,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.DATApipe.get(1), ItemList.Casing_LuV.get(1))
             .itemOutputs(CustomItemList.DATApipeBlock.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2692,7 +2693,7 @@ public class Assembler implements Runnable {
                 ItemList.ReinforcedGlass.get(1L),
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.foil, 2))
             .itemOutputs(CustomItemList.LASERpipe.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -2700,7 +2701,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Casing_LuV.get(1))
             .itemOutputs(CustomItemList.LASERpipeBlock.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2714,7 +2715,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.SuperconductorLuV, TEBlockShapes.wireGt02, 4))
             .itemOutputs(CustomItemList.eM_Computer_Bus.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2727,7 +2728,7 @@ public class Assembler implements Runnable {
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataIn_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2740,7 +2741,7 @@ public class Assembler implements Runnable {
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataOut_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2753,7 +2754,7 @@ public class Assembler implements Runnable {
                 CustomItemList.DATApipe.get(4))
             .itemOutputs(CustomItemList.rack_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2768,7 +2769,7 @@ public class Assembler implements Runnable {
             .circuit(4)
             .itemOutputs(CustomItemList.UncertaintyX_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 2592))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2780,7 +2781,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.wireGt16, 4))
             .itemOutputs(CustomItemList.capacitor_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, 4 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2791,7 +2792,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Gold, TEBlockShapes.wireGt16, 4))
             .itemOutputs(CustomItemList.capacitor_Hatch.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, 4 * INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

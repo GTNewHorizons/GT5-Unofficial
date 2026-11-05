@@ -1,5 +1,6 @@
 package tectech.loader.recipe;
 
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -23,7 +24,7 @@ public class CircuitAssembler implements Runnable {
             .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(circuitAssemblerRecipes);

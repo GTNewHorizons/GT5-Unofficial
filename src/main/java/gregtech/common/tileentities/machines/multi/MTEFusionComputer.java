@@ -58,6 +58,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -373,8 +374,16 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkStructure(true, aBaseMetaTileEntity)) {
-                this.mEUStore = aBaseMetaTileEntity.getStoredEU();
-                checkRecipe();
+                RecipeEnvironmentRequirements savedEnvironments = getActiveRecipeEnvironments();
+                if (!savedEnvironments.matches(this, true)) {
+                    mRunningOnLoad = false;
+                    stopMachine(getEnvironmentShutdownReason());
+                } else {
+                    this.mEUStore = aBaseMetaTileEntity.getStoredEU();
+                    if (checkRecipe()) {
+                        setActiveRecipeEnvironments(getActiveRecipeEnvironments().and(savedEnvironments));
+                    }
+                }
             }
             if (mUpdated) {
                 mUpdate = 50;
@@ -396,8 +405,12 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             }
                         }
                     }
-                    if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                    if (mMaxProgresstime > 0) {
+                        if (this.mEUStore <= 0) {
+                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        } else if (!satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1)) {
+                            stopMachine(getEnvironmentShutdownReason());
+                        }
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity()
@@ -411,6 +424,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mOutputFluids = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
+                            setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
                             mEfficiencyIncrease = 0;
                             recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                             mLastWorkingTick = mTotalRunTime;

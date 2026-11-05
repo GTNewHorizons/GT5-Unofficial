@@ -87,6 +87,8 @@ import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
+import gregtech.api.recipe.RecipeEnvironment;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ColorUtils;
@@ -130,6 +132,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
         mCharge = false, mDecharge = false;
     private int errorDisplayID;
+    private boolean recipeCheckRequested;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
@@ -592,6 +595,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public void onRecipeEnvironmentChanged() {
+        super.onRecipeEnvironmentChanged();
+        recipeCheckRequested = true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
@@ -604,7 +613,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
             if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
+                if (mProgresstime < 0 || (satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1)
+                    && drainEnergyForProcess(mEUt))) {
                     aBaseMetaTileEntity.setActive(mProgresstime >= 0);
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
@@ -620,6 +630,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         mEUt = 0;
                         mProgresstime = 0;
                         mMaxProgresstime = 0;
+                        setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
                         mStuttering = false;
                         tSucceeded = true;
                         endProcess();
@@ -674,10 +685,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             if (allowToCheckRecipe()) {
                 if (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork()
                     && (tRemovedOutputFluid || tSucceeded
+                        || recipeCheckRequested
                         || aBaseMetaTileEntity.hasInventoryBeenModified()
                         || aTick % 600 == 0
                         || aBaseMetaTileEntity.hasWorkJustBeenEnabled())
                     && hasEnoughEnergyToCheckRecipe()) {
+                    recipeCheckRequested = false;
                     if (checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
                         if (getSpecialSlot() != null && getSpecialSlot().stackSize <= 0)
                             mInventory[getSpecialSlotIndex()] = null;
@@ -1057,6 +1070,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     public static boolean isValidForLowGravity(GTRecipe tRecipe, int dimId) {
+        return isValidForLowGravity(dimId);
+    }
+
+    public static boolean isValidForLowGravity(int dimId) {
         if (FakeCleanroom.isLowGravBypassEnabled()) return true;
         return // TODO check or get a better solution
         DimensionManager.getProvider(dimId)
@@ -1113,24 +1130,18 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             return DID_NOT_FIND_RECIPE;
         }
         if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
-            && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        RecipeEnvironmentRequirements requirements = tRecipe.getEnvironmentRequirements();
+        if (!requirements.matches(this, false)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         ICleanroom cleanroom = cleanroomReference.getCleanroom();
-        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
-            if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
-                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-            }
-        }
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = tRecipe.rollOutput(getBaseMetaTileEntity(), i);
-        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
+        if (requirements.contains(RecipeEnvironment.CLEANROOM)) {
             assert cleanroom != null;
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
                 && getBaseMetaTileEntity().getRandomNumber(10000) > cleanroom.getCleanness()) {
@@ -1150,6 +1161,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        setActiveRecipeEnvironments(requirements);
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 

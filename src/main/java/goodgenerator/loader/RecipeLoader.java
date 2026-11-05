@@ -1,6 +1,7 @@
 package goodgenerator.loader;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -1040,7 +1041,7 @@ public class RecipeLoader {
             .fluidInputs(GTUtility.getWater(1_000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
             .outputChances(3333)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -1051,7 +1052,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 4))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);

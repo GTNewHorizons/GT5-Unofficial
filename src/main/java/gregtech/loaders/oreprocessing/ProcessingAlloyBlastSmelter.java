@@ -160,7 +160,7 @@ public class ProcessingAlloyBlastSmelter {
             .addTo(alloyBlastSmelterRecipes);
     }
 
-    private static Map<String, FluidStack> ingotToFluid;
+    private static Map<String, GTRecipe> ingotMeltingRecipes;
     private static Map<String, String> hotToCold;
 
     /// Copies each enabled [RecipeMaps#blastFurnaceRecipes] recipe of at most 3600 K into `alloyBlastSmelterRecipes`,
@@ -168,7 +168,7 @@ public class ProcessingAlloyBlastSmelter {
     /// [RecipeMaps#fluidExtractionRecipes], and hot ingots through [RecipeMaps#vacuumFreezerRecipes]. Valid only
     /// after every other mod's recipes are registered.
     public static void generateFromExistingBlastFurnaceRecipes() {
-        ingotToFluid = new HashMap<>();
+        ingotMeltingRecipes = new HashMap<>();
         hotToCold = new HashMap<>();
 
         for (GTRecipe recipe : RecipeMaps.fluidExtractionRecipes.getAllRecipes()) {
@@ -181,7 +181,7 @@ public class ProcessingAlloyBlastSmelter {
                     && !oreName.contains("triple")
                     && !oreName.contains("quad")
                     && !oreName.contains("quintuple")) {
-                    ingotToFluid.put(uniqueId(input), recipe.mFluidOutputs[0]);
+                    ingotMeltingRecipes.put(uniqueId(input), recipe);
                 }
             }
         }
@@ -204,9 +204,11 @@ public class ProcessingAlloyBlastSmelter {
 
             ItemStack[] outputs = recipe.mOutputs.clone();
             FluidStack molten = null;
+            GTRecipe meltingRecipe = null;
             if (ArrayUtils.isNotEmpty(outputs) && outputs[0] != null) {
-                FluidStack fluid = fluidFromIngot(outputs[0]);
-                if (fluid != null) molten = new FluidStack(fluid, outputs[0].stackSize * 144);
+                meltingRecipe = meltingRecipeFromIngot(outputs[0]);
+                if (meltingRecipe != null)
+                    molten = new FluidStack(meltingRecipe.mFluidOutputs[0], outputs[0].stackSize * 144);
             }
             ItemStack[] inputs = recipe.mInputs.clone();
             FluidStack[] fluidInputs = recipe.mFluidInputs.clone();
@@ -238,6 +240,9 @@ public class ProcessingAlloyBlastSmelter {
                 .fluidOutputs(molten)
                 .duration(roundToClosestInt(recipe.mDuration * 0.8))
                 .eut(recipe.mEUt)
+                .requiresEnvironment(
+                    recipe.getEnvironmentRequirements()
+                        .and(meltingRecipe.getEnvironmentRequirements()))
                 .recipeCategory(
                     baseItemCount == 1 ? RecipeCategories.absNonAlloyRecipes
                         : alloyBlastSmelterRecipes.getDefaultRecipeCategory());
@@ -245,16 +250,16 @@ public class ProcessingAlloyBlastSmelter {
             builder.addTo(alloyBlastSmelterRecipes);
         }
 
-        ingotToFluid = null;
+        ingotMeltingRecipes = null;
         hotToCold = null;
     }
 
-    private static FluidStack fluidFromIngot(ItemStack ingot) {
+    private static GTRecipe meltingRecipeFromIngot(ItemStack ingot) {
         String id = uniqueId(ingot);
-        FluidStack direct = ingotToFluid.get(id);
+        GTRecipe direct = ingotMeltingRecipes.get(id);
         if (direct != null) return direct;
         String cold = hotToCold.get(id);
-        return cold != null ? ingotToFluid.get(cold) : null;
+        return cold != null ? ingotMeltingRecipes.get(cold) : null;
     }
 
     private static boolean itemStacksMatch(ItemStack[] a, ItemStack[] b) {

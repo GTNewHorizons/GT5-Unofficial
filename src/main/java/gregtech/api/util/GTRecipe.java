@@ -33,12 +33,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
+import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -179,7 +181,15 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
-        metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
+        RecipeEnvironmentRequirements requirements = aRecipe
+            .getMetadataOrDefault(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, RecipeEnvironmentRequirements.EMPTY);
+        if (requirements.isEmpty()) {
+            metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
+        } else {
+            RecipeMetadataStorage copiedMetadata = new RecipeMetadataStorage();
+            copiedMetadata.store(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, requirements);
+            metadataStorage = copiedMetadata;
+        }
         owners = aRecipe.owners == null ? null : new ArrayList<>(aRecipe.owners);
         reloadOwner();
     }
@@ -824,6 +834,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
     @NotNull
     public IRecipeMetadataStorage getMetadataStorage() {
         return metadataStorage;
+    }
+
+    @NotNull
+    public RecipeEnvironmentRequirements getEnvironmentRequirements() {
+        return getMetadataOrDefault(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, RecipeEnvironmentRequirements.EMPTY);
     }
 
     // endregion
