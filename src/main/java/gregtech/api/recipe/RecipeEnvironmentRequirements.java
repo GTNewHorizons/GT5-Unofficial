@@ -51,9 +51,18 @@ public final class RecipeEnvironmentRequirements {
     }
 
     public RecipeEnvironmentRequirements without(RecipeEnvironment environment) {
-        if (!contains(environment)) return this;
+        return without(new RecipeEnvironment[] { environment });
+    }
+
+    public RecipeEnvironmentRequirements without(RecipeEnvironment... environments) {
+        Objects.requireNonNull(environments, "environments");
         Set<String> remaining = new LinkedHashSet<>(ids);
-        remaining.remove(environment.getId());
+        for (RecipeEnvironment environment : environments) {
+            remaining.remove(
+                Objects.requireNonNull(environment, "environment")
+                    .getId());
+        }
+        if (remaining.size() == ids.size()) return this;
         return remaining.isEmpty() ? EMPTY : new RecipeEnvironmentRequirements(remaining);
     }
 

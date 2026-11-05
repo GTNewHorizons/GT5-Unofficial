@@ -41,7 +41,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
-import gregtech.api.recipe.RecipeEnvironment;
 import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
@@ -196,9 +195,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
             .voltage(TierEU.LV)
             .find();
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
-        RecipeEnvironmentRequirements requirements = tRecipe.getEnvironmentRequirements()
-            .without(RecipeEnvironment.CLEANROOM)
-            .without(RecipeEnvironment.LOW_GRAVITY);
+        RecipeEnvironmentRequirements requirements = tRecipe.getEnvironmentRequirements();
         if (!requirements.matches(this, false)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if ((canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
