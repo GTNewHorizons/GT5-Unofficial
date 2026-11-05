@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -37,8 +38,10 @@ public final class RecipeEnvironmentRequirements {
     }
 
     public RecipeEnvironmentRequirements with(RecipeEnvironment... environments) {
+        Objects.requireNonNull(environments, "environments");
         Set<String> combined = new LinkedHashSet<>(ids);
         for (RecipeEnvironment environment : environments) {
+            Objects.requireNonNull(environment, "environment");
             if (RecipeEnvironment.get(environment.getId()) != environment) {
                 throw new IllegalArgumentException("Unregistered recipe environment: " + environment.getId());
             }
@@ -55,6 +58,7 @@ public final class RecipeEnvironmentRequirements {
     }
 
     public RecipeEnvironmentRequirements and(RecipeEnvironmentRequirements other) {
+        Objects.requireNonNull(other, "other");
         if (other.isEmpty()) return this;
         Set<String> combined = new LinkedHashSet<>(ids);
         combined.addAll(other.ids);
@@ -62,7 +66,9 @@ public final class RecipeEnvironmentRequirements {
     }
 
     public boolean contains(RecipeEnvironment environment) {
-        return ids.contains(environment.getId());
+        return ids.contains(
+            Objects.requireNonNull(environment, "environment")
+                .getId());
     }
 
     public boolean isEmpty() {
