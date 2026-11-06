@@ -1,28 +1,36 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.coldTrapRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fissionFuelProcessingRecipes;
 import static gregtech.api.recipe.RecipeMaps.reactorProcessingUnitRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class RecipeLoaderNuclearFuelProcessing {
 
@@ -73,12 +81,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 ItemList.Cell_Empty.get(5),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 500, 500, 500, 250, 250, 250)
             .fluidInputs(MaterialsNuclides.LiFThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(1500))
@@ -92,12 +100,12 @@ public class RecipeLoaderNuclearFuelProcessing {
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500)
             .fluidInputs(MaterialsNuclides.LiFBeF2ThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(3000))
@@ -111,12 +119,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000)
             .fluidInputs(MaterialsNuclides.Sparged_LiFThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(3000))
@@ -130,12 +138,12 @@ public class RecipeLoaderNuclearFuelProcessing {
                 ItemList.Cell_Empty.get(2),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(2),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
-                MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1),
+                GregtechItemList.Protactinium233Dust.get(1))
             .outputChances(10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000)
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(10000))
             .fluidOutputs(MaterialsNuclides.UF6F2.getFluidStack(6000))
@@ -254,5 +262,126 @@ public class RecipeLoaderNuclearFuelProcessing {
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
+
+        // Pa dust -> Pa-233 dust: converts legacy plain-Pa dust into the decaying isotope
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsElements.getInstance().PROTACTINIUM.getDust(1))
+            .itemOutputs(GregtechItemList.Protactinium233Dust.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(centrifugeRecipes);
+
+        neptuniumLine();
+        technetiumLine();
+        seleniumLine();
+        uraniumLine();
+        zirconiumLine();
+    }
+
+    // NpF6 + 2H2O -> NpO2F2 + 4HF (hydrolysis, recovers 2/3 of the fluorine; Exxon, titanium casing)
+    // NpO2F2 -> Np + O2 + F2 (vacuum decomposition, Naquadah coils)
+    private static void neptuniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(MaterialsFluorides.NEPTUNYL_FLUORIDE.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsFluorides.NEPTUNYL_FLUORIDE.getDust(1))
+            .itemOutputs(MaterialsElements.getInstance().NEPTUNIUM.getDust(1))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000), Materials.Fluorine.getGas(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(COIL_HEAT, 7201) // Naquadah coils
+            .addTo(vacuumFurnaceRecipes);
+    }
+
+    // TcF6 + 2NaOH + H2O -> TcO2 + 4HF + 2NaF + O (Exxon, titanium casing)
+    // TcO2 -> Tc + O2 (electrolysis)
+    private static void technetiumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(1_000))
+            .itemInputs(Materials.SodiumHydroxide.getDust(2))
+            .itemOutputs(MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1), MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000), Materials.Oxygen.getGas(1_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialMisc.TECHNETIUM_DIOXIDE.getDust(1))
+            .itemOutputs(MaterialsElements.getInstance().TECHNETIUM.getDust(1))
+            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(electrolyzerRecipes);
+    }
+
+    // SeF6 + 2NaOH + H2O -> SeO2 (dust) + 4HF + 2NaF + O (Exxon, titanium casing)
+    // Yields SeO2 dust, which feeds the existing dust -> fluid -> selenious acid -> selenium chain.
+    private static void seleniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(1_000))
+            .itemInputs(Materials.SodiumHydroxide.getDust(2))
+            .itemOutputs(MaterialMisc.SELENIUM_DIOXIDE.getDust(1), MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000), Materials.Oxygen.getGas(1_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+    }
+
+    // UF6 + 2H2O -> UO2F2 + 4HF (hydrolysis; Exxon, titanium casing)
+    // UO2F2 + H2 -> UO2 + 2HF (reduction; UO2 = uraninite; TPV coils)
+    // UF4 + 2H2O -> UO2 + 4HF (un-make UF4; LCR recycling)
+    private static void uraniumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(2_000))
+            .itemOutputs(MaterialsFluorides.URANYL_FLUORIDE.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(CHEMPLANT_CASING_TIER, 4) // Titanium
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsFluorides.URANYL_FLUORIDE.getDust(1))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
+            .itemOutputs(Materials.Uraninite.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(COIL_HEAT, 4501) // TPV coils
+            .addTo(vacuumFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(1_000), Materials.Water.getFluid(2_000))
+            .itemOutputs(Materials.Uraninite.getDust(1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+    }
+
+    // ZrF4 + 2H2O -> ZrO2 + 4HF (un-make ZrF4; Zirconia feeds into zirconium lanthanides line)
+    private static void zirconiumLine() {
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1_000),
+                Materials.Water.getFluid(2_000))
+            .itemOutputs(WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 1))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
     }
 }
