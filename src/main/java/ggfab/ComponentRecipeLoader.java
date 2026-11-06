@@ -16,6 +16,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import tectech.thing.CustomItemList;
 
 class ComponentRecipeLoader implements Runnable {
 
@@ -48,6 +49,14 @@ class ComponentRecipeLoader implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Hatch_Input_Multi_2x2_LuV.get(1L), CustomItemList.enderLinkFluidCover.get(1))
+            .itemOutputs(GGItemList.LinkedInputHatch.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
     }
