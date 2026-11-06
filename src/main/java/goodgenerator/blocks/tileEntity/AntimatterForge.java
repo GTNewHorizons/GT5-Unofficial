@@ -103,6 +103,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiActiveEnergy = 0;
 
     private boolean canRender = true;
+    private TileAntimatter cachedAntimatterRender;
 
     private final List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -455,9 +456,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             // We round up so you are guaranteed to be antimatter positive on the first run (reduces startup RNG)
             int change = (int) (Math.ceil((r.nextGaussian() + BASE_SKEW + modifiers[ACTIVATION_ID]) * (coeff / 16)));
             difference += change;
-            if (change >= 0) {
+            if (change > 0) {
                 hatch.fill(Materials.Antimatter.getFluid(change), true);
-            } else {
+            } else if (change < 0) {
                 hatch.drain(-change, true);
             }
         }
@@ -705,7 +706,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        if (world.getTileEntity(x, y, z) instanceof TileAntimatter antimatterRender) return antimatterRender;
+        if (cachedAntimatterRender != null && !cachedAntimatterRender.isInvalid()
+            && cachedAntimatterRender.xCoord == x
+            && cachedAntimatterRender.yCoord == y
+            && cachedAntimatterRender.zCoord == z) return cachedAntimatterRender;
+
+        if (world.getTileEntity(x, y, z) instanceof TileAntimatter antimatterRender) {
+            cachedAntimatterRender = antimatterRender;
+            return antimatterRender;
+        }
+        cachedAntimatterRender = null;
         return null;
     }
 
@@ -730,6 +740,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         } else {
             if (world.getBlock(x, y, z)
                 .equals(Loaders.antimatterRenderBlock)) {
+                // not sure if this is needed
+                cachedAntimatterRender.invalidate();
                 world.setBlock(x, y, z, Blocks.air);
             }
         }
