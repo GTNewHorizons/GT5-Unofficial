@@ -116,7 +116,7 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean coverTabsFlipped;
 
-        @Config.Comment("If true, allows certain covers to automatically have panels toggled open if the panel was open before.")
+        @Config.Comment("If true, allows certain covers to automatically toggle panels opened if the panel was open before the GUI was closed previously.")
         @Config.DefaultBoolean(true)
         public boolean autoOpenCovers;
 
