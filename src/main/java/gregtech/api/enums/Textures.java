@@ -2889,6 +2889,8 @@ public class Textures {
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
             MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
+            MASK_ENERGY_HATCH_FUSE = create("MASK_ENERGY_HATCH_FUSE"),
+            MASK_BACKUP_CAPACITOR = create("MASK_BACKUP_CAPACITOR"),
             MASK_SUPERMASSIVE = create("MASK_SUPERMASSIVE"),
             MASK_STRANDS = create("MASK_STRANDS"),
             MASK_SPOOL = create("MASK_SPOOL"),

@@ -70,8 +70,8 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
-        this.lEUt = 0;
         super.stopMachine(reason);
+        if (!recipeHeldByCapacitors) this.lEUt = 0;
     }
 
     @Override
