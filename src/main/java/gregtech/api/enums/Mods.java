@@ -72,6 +72,7 @@ public enum Mods implements IMod {
     CropsNH(ModIDs.CROPS_NH),
     CustomMainMenu(ModIDs.CUSTOM_MAIN_MENU),
     Darkerer(ModIDs.DARKERER),
+    Dashboard(ModIDs.DASHBOARD),
     DefaultConfigs(ModIDs.DEFAULT_CONFIGS),
     DefaultServerList(ModIDs.DEFAULT_SERVER_LIST),
     DefaultWorldGenerator(ModIDs.DEFAULT_WORLD_GENERATOR),
@@ -416,6 +417,7 @@ public enum Mods implements IMod {
         public static final String CROPS_NH = "cropsnh";
         public static final String CUSTOM_MAIN_MENU = "custommainmenu";
         public static final String DARKERER = "darkerer";
+        public static final String DASHBOARD = "dashboard";
         public static final String DEFAULT_CONFIGS = "defaultkeys";
         public static final String DEFAULT_SERVER_LIST = "defaultserverlist";
         public static final String DEFAULT_WORLD_GENERATOR = "defaultworldgenerator";
