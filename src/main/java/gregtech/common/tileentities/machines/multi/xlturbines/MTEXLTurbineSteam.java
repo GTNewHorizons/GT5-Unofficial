@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.xlturbines;
 
+import static gregtech.api.enums.GTValues.STEAM_PER_WATER;
 import static gtPlusPlus.core.lib.GTPPCore.RANDOM;
 
 import java.util.ArrayList;
@@ -120,12 +121,13 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
                     } else if (!isUsingDenseSteam) {
                         continue;
                     }
-                    denseFlow = Math
-                        .min(aFluids.get(i).amount, MathUtils.safeInt((long) Math.ceil(remainingFlow / 1000.0d)));
+                    denseFlow = Math.min(
+                        aFluids.get(i).amount,
+                        MathUtils.safeInt((long) Math.ceil(remainingFlow / (double) DENSE_STEAM_RATIO)));
                     if (denseFlow <= 0) {
                         continue;
                     }
-                    int effectiveFlow = Math.min(remainingFlow, denseFlow * 1000);
+                    int effectiveFlow = Math.min(remainingFlow, denseFlow * DENSE_STEAM_RATIO);
                     depleteInput(new FluidStack(aFluids.get(i), denseFlow));
                     storedFluid += denseFlow;
                     remainingFlow -= effectiveFlow;
@@ -137,7 +139,8 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
         }
         if (totalFlow <= 0) return 0;
         tEU = (long) (totalFlow * 0.5f);
-        int waterToOutput = isUsingDenseSteam ? useWater(steamFlowForWater / 160.1f) : useWater(totalFlow / 160.0f);
+        int waterToOutput = isUsingDenseSteam ? useWater(steamFlowForWater / 160.1f)
+            : useWater(totalFlow / (float) STEAM_PER_WATER);
         addOutputPartial(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

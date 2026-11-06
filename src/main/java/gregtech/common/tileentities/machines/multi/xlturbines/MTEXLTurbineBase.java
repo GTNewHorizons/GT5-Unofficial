@@ -72,6 +72,8 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_Z = 0;
     protected static int casingAmount;
     private static final int TURBINE_SLOTS = 12;
+    /** Liters of regular steam that one liter of dense steam replaces. */
+    protected static final int DENSE_STEAM_RATIO = 1000;
     private static final String TURBINE_HOLDER_NBT = "turbineHolder";
     private static final ClassValue<IStructureDefinition<MTEXLTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
