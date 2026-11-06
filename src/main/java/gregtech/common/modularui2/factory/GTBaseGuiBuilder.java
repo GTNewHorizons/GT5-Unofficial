@@ -193,13 +193,15 @@ public final class GTBaseGuiBuilder {
             @Override
             public void togglePanel() {
                 if (panel == null) return;
-                boolean panelOpen; //Need this to update coverableTileEntity, cannot use isPanelOpen() because when the panel is opened, the data is sent to server and isPanelOpen() isn't updated accurately at the moment.
+                boolean panelOpen; // Need this to update coverableTileEntity, cannot use isPanelOpen() because when the
+                                   // panel is opened, the data is sent to server and isPanelOpen() isn't updated
+                                   // accurately at the moment.
                 if (panel.isPanelOpen()) {
                     panel.closePanel();
-                    panelOpen=false;
+                    panelOpen = false;
                 } else {
                     panel.openPanel();
-                    panelOpen=true;
+                    panelOpen = true;
                 }
                 if (!Client.iface.autoOpenCovers) return;
                 if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return;
