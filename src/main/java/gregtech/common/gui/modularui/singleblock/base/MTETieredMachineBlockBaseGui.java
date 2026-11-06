@@ -42,10 +42,10 @@ import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 /**
  * A base class for singleblock MUI2 guis. Has configurable corner panels and makes building ui's easier.
  * The main overriding is done in
- * {@link #createContentSection(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+ * {@link #createContentSection(ModularPanel, PanelSyncManager)}
  *
  * For heavily custom UI's, override
- * {@link #build(com.cleanroommc.modularui.factory.PosGuiData, com.cleanroommc.modularui.value.sync.PanelSyncManager, com.cleanroommc.modularui.screen.UISettings)}
+ * {@link #build(PosGuiData, PanelSyncManager, UISettings)}
  * instead.
  */
 public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {

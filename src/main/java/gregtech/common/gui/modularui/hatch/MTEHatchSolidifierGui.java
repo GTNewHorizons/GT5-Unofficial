@@ -22,9 +22,8 @@ public class MTEHatchSolidifierGui extends MTEHatchBaseGui<MTEHatchSolidifier> {
             .coverChildren()
             .childPadding(1);
 
-        mainRow.child(createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.child(
-            createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot(), machine.getFluidTank()));
+        mainRow.child(createScreen(panel, syncManager));
+        mainRow.child(createScreenIO(panel, syncManager));
         mainRow.child(
             new GhostMoldSlotWidget(machine, syncManager)
                 .slot(new ModularSlot(machine.inventoryHandler, MTEHatchSolidifier.moldSlot))
