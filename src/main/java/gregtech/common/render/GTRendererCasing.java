@@ -5,7 +5,6 @@ import static gregtech.common.render.GTRendererBlock.*;
 import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
@@ -85,7 +84,6 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled();
         aRenderer.useInventoryTint = false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
