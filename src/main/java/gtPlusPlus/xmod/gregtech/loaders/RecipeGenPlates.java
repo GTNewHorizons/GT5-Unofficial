@@ -161,6 +161,13 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier))
                 .addTo(benderRecipes);
 
+            GTValues.RA.stdBuilder()
+                .itemInputs(plate_SingleNine)
+                .circuit(1)
+                .itemOutputs(plate_Dense)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier) * 4)
+                .addTo(compressorRecipes);
         }
 
         int tier = Math.max(1, material.tier);
@@ -171,6 +178,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             int compressionTier = aVoltage >= TierEU.RECIPE_UEV ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_Stack64)
+                .circuit(2)
                 .itemOutputs(plate_Superdense)
                 .metadata(COMPRESSION_TIER, compressionTier)
                 .duration(Math.max(material.getMass() * 4L, 1L))

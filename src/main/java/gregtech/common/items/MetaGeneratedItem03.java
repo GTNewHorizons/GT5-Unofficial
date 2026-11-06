@@ -284,6 +284,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.Raw_Dense_Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
@@ -293,6 +294,7 @@ import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableEmptyContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableLeptonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableMesonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.Superdense_Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -1706,6 +1708,18 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Optical_Cpu_Containment_Housing.ID,
                 "gt.item.optical_cpu_containment_housing.name",
                 "gt.item.optical_cpu_containment_housing.tooltip",
+                o));
+        ItemList.Raw_Dense_Optical_Cpu_Containment_Housing.set(
+            addItemWithLocalizationKeys(
+                Raw_Dense_Optical_Cpu_Containment_Housing.ID,
+                "gt.item.raw_dense_optical_cpu_containment_housing.name",
+                "gt.item.raw_dense_optical_cpu_containment_housing.tooltip",
+                o));
+        ItemList.Superdense_Optical_Cpu_Containment_Housing.set(
+            addItemWithLocalizationKeys(
+                Superdense_Optical_Cpu_Containment_Housing.ID,
+                "gt.item.superdense_optical_cpu_containment_housing.name",
+                "gt.item.superdense_optical_cpu_containment_housing.tooltip",
                 o));
         ItemList.Optically_Perfected_CPU.set(
             addItemWithLocalizationKeys(
