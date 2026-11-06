@@ -1078,15 +1078,7 @@ gt.blockmachines.machine.tt.datareader.desc.0=Reads Data Sticks and Orbs
 gt.blockmachines.machine.tt.datareader.desc.1=Power it up and
 gt.blockmachines.machine.tt.datareader.desc.2=Put the data storage in
 
-gt.blockmachines.machine.tt.buck.05.name=Insane Buck Converter
-gt.blockmachines.machine.tt.buck.06.name=Ludicrous Buck Converter
-gt.blockmachines.machine.tt.buck.07.name=ZPM Voltage Buck Converter
-gt.blockmachines.machine.tt.buck.08.name=Ultimate Power Buck Converter
-gt.blockmachines.machine.tt.buck.09.name=Highly Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.10.name=Extremely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.11.name=Insanely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.12.name=Mega Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.13.name=Extended Mega Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.name=%1$s Buck Converter
 gt.blockmachines.machine.tt.buck.desc.0=Electronic voltage regulator
 gt.blockmachines.machine.tt.buck.desc.1=Adjustable step down transformer
 gt.blockmachines.machine.tt.buck.desc.2=Switching power supply...
@@ -1866,6 +1858,16 @@ tt.spaceminer.calculator.asteroidChance= %s
 tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
 tt.spaceminer.filter.noValidInputs=No valid inputs!
 tt.spaceminer.filter.addOre=Click to add this ore to the filter
+# Space Pump
+tt.spacepump.batchslider=Modifies the current batch recipe time (in s)
+tt.spacepump.rate=Pumps %s/s
+tt.spacepump.ratemax=Up to %s/s per recipe
+tt.spacepump.pendingqueue=Confirm or modify selected recipes:
+tt.spacepump.planettier=Tier %d:
+tt.spacepump.utilityapply=&aApply&r & &4overwrite&r existing recipes\n&eEmpty slots will unset running recipes!
+tt.spacepump.utilityremove=Click to remove selected fluid
+tt.spacepump.utilityselected=Selected: &c%s
+tt.spacepump.utilitypanelButtonTooltip=Open Space Pump Quick Picker\n - &6Click&r any &3fluid&r to add it to list (&aallows multiple&r)\n - &6Click&r on the preview slots at the bottom to free the slot\n - &6Click&r on the &2Apply&r button to change the &3pumps&r config
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
