@@ -2013,3 +2013,7 @@ Material.plastic.fluidpipe.newname=塑料
 Material.polytetrafluoroethylene.fluidpipe.newname=聚四氟乙烯
 Material.redstone.fluidpipe.newname=高压
 Material.wood.fluidpipe.newname=木
+
+# Prismarine
+gt.item.dim_prismarine.name=暗淡海晶石
+gt.item.dim_prismarine.tooltip=

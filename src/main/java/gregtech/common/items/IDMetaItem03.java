@@ -215,6 +215,7 @@ public enum IDMetaItem03 {
     UXV_Coil(262),
     MAX_Coil(263),
     PseudoStar(264),
+    Dim_Prismarine(265),
     Circuit_Wafer_FPIC(266),
     Circuit_Chip_FPIC(267),
     Circuit_Wafer_APIC(268),
