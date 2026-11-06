@@ -425,11 +425,10 @@ gt.blockmachines.multimachine.em.transformer.hint=1 - Энерговывод/в�
 
 gt.blockmachines.multimachine.tm.microwave.name=Совершенная микроволновая печь
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Настройки энергии
-gt.blockmachines.multimachine.tm.microwave.power=Энергия
-gt.blockmachines.multimachine.tm.microwave.timer=Время
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Настройки таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Значение таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Оставшееся время
+gt.blockmachines.multimachine.tm.microwave.timer=таймера: %s / %s
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Башня теслы
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Настройки нижнего порога гистерезиса
@@ -1078,7 +1077,6 @@ GT5U.gui.text.recipe_result.scanning=§aScanning
 GT5U.gui.text.recipe_result.charging=§aЗарядка
 GT5U.gui.text.recipe_result.microwaving=§aMicrowaving
 GT5U.gui.text.recipe_result.no_routing=§7Can't route
-GT5U.gui.text.recipe_result.invalid_timer=§7Неверный таймер
 GT5U.gui.text.recipe_result.no_research_item=§7Нет предмета для исследования
 GT5U.gui.text.recipe_result.no_chargeable_item=§7Нет заряжаемого предмета
 GT5U.gui.text.recipe_result.no_computing=§7Не могу вычислить

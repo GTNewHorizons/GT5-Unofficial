@@ -428,6 +428,8 @@ gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
+gt.blockmachines.multimachine.tm.microwave.timer=Timer: %s / %s
+gt.blockmachines.multimachine.tm.microwave.damage=Up to §c%s§r damage per second
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Hysteresis Low
@@ -1128,7 +1130,6 @@ GT5U.gui.text.recipe_result.scanning=§aScanning
 GT5U.gui.text.recipe_result.charging=§aCharging
 GT5U.gui.text.recipe_result.microwaving=§aMicrowaving
 GT5U.gui.text.recipe_result.no_routing=§7Can't route
-GT5U.gui.text.recipe_result.invalid_timer=§7Invalid timer
 GT5U.gui.text.recipe_result.no_research_item=§7No valid item to research
 GT5U.gui.text.recipe_result.no_chargeable_item=§7No chargeable item
 GT5U.gui.text.recipe_result.no_computing=§7Can't compute
