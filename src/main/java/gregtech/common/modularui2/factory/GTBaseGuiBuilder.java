@@ -18,10 +18,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonWidgets;
+import gregtech.common.config.Client;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTabButton;
 
@@ -177,7 +179,35 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        CoverTabButton button = new CoverTabButton(coverable, side);
+        CoverTabButton button = new CoverTabButton(coverable, side) {
+
+            @Override
+            public void afterInit() {
+                if (!Client.iface.autoOpenCovers) return;
+                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return;
+                if (coverableTileEntity.isCoverOpen[side.ordinal()]) {
+                    togglePanel();
+                }
+            }
+
+            @Override
+            public void togglePanel() {
+                if (panel == null) return;
+                boolean panelOpen; // Need this to update coverableTileEntity, cannot use isPanelOpen() because when the
+                                   // panel is opened, the data is sent to server and isPanelOpen() isn't updated
+                                   // accurately at the moment.
+                if (panel.isPanelOpen()) {
+                    panel.closePanel();
+                    panelOpen = false;
+                } else {
+                    panel.openPanel();
+                    panelOpen = true;
+                }
+                if (!Client.iface.autoOpenCovers) return;
+                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return;
+                coverableTileEntity.isCoverOpen[side.ordinal()] = panelOpen;
+            }
+        };
         button.setPanel(getCoverPanel(button, coverable, side));
         return button;
     }

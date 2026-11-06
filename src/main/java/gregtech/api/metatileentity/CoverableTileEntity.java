@@ -84,6 +84,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     // To only issue update to sides that has strong redstone set either previously or currently
     private byte oldStrongRedstone = 0;
 
+    /**
+     * Whether the cover panel on a side is open. Persists after the GUI is closed.
+     */
+    public final boolean[] isCoverOpen = new boolean[] { false, false, false, false, false, false };
+
     protected short mID = 0;
     public long mTickTimer = 0;
 
