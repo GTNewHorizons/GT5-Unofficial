@@ -1,6 +1,6 @@
 package goodgenerator.api.recipe;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,17 +44,16 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
             int threshold = recipeInfo.recipe.mSpecialValue;
-            String[] description = new String[4];
-            description[0] = StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                + formatNumber(Inputs[0].amount)
-                + " L/s";
-            description[1] = StatCollector.translateToLocal("value.extreme_heat_exchanger.1");
-            description[2] = formatNumber(Inputs[1].amount) + " L/s";
+            String[] description = new String[3];
+            description[0] = StatCollector.translateToLocalFormatted(
+                "value.extreme_heat_exchanger.hot_fluid_input",
+                formatFluid(Inputs[0].amount));
+            description[1] = StatCollector
+                .translateToLocalFormatted("value.extreme_heat_exchanger.water_input", formatFluid(Inputs[1].amount));
             if (!Inputs[0].getUnlocalizedName()
                 .contains("plasma")) {
-                description[3] = StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " "
-                    + threshold
-                    + " L/s";
+                description[2] = StatCollector
+                    .translateToLocalFormatted("value.extreme_heat_exchanger.threshold", formatFluid(threshold));
 
             }
             return Arrays.asList(description);

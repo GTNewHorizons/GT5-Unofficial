@@ -445,7 +445,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private String computeRecipeName() {
         String recipeName = StatCollector.translateToLocal(recipeCategory.unlocalizedName);
         if (overclockDescriber != null) {
-            String suffix = "(" + overclockDescriber.getTierString() + ")";
+            String suffix = StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.tier_name_with_parentheses",
+                overclockDescriber.getTierString());
             // Space will be cropped if title exceeds
             return shrinkRecipeName(recipeName + " ", suffix);
         } else {
