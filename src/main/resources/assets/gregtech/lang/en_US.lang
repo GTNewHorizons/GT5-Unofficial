@@ -5538,7 +5538,7 @@ gt.item.electric_pump.uiv.name=Electric Pump (UIV)
 gt.item.electric_pump.umv.name=Electric Pump (UMV)
 gt.item.electric_pump.uxv.name=Electric Pump (UXV)
 gt.item.electric_pump.max.name=Electric Pump (MAX)
-gt.item.electric_pump.tooltip=%s L/t (%s L/s)
+gt.item.electric_pump.tooltip=%1$s (%2$s) as Cover
 
 ## Other items
 gt.item.electronics_lump.name=Lump of Electronics
@@ -5568,7 +5568,7 @@ gt.item.steam_valve.mv.name=Steam Valve (MV)
 gt.item.steam_valve.hv.name=Steam Valve (HV)
 gt.item.steam_valve.ev.name=Steam Valve (EV)
 gt.item.steam_valve.iv.name=Steam Valve (IV)
-gt.item.steam_valve.tooltip=%s L/t (%s L/s) as Cover
+gt.item.steam_valve.tooltip=%1$s (%2$s) as Cover
 
 ## Fluid Regulators
 gt.item.fluid_regulator.lv.name=Fluid Regulator (LV)
@@ -5585,7 +5585,7 @@ gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
 gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
 gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
 gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
-gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by 1/16/256 L/sec per click\nCannot transfer more than 2.1B L per Operation
+gt.item.fluid_regulator.tooltip=Configurable up to %1$s (as Cover)\nRight-click, Screwdriver, or Shift+Screwdriver to adjust speed by %2$s per click\nCannot transfer more than %3$s per Operation
 
 ## Fluid Filter
 gt.item.fluid_filter.name=Fluid Filter Cover
@@ -5607,29 +5607,29 @@ gt.item.conveyor_module.lv.tooltip=1 stack of 16 items every 5 secs (as Cover)
 gt.item.conveyor_module.mv.name=Conveyor Module (MV)
 gt.item.conveyor_module.mv.tooltip=1 stack of 64 items every 5 secs (as Cover)
 gt.item.conveyor_module.hv.name=Conveyor Module (HV)
-gt.item.conveyor_module.hv.tooltip=1 stack of 64 items every 1 sec (as Cover)
+gt.item.conveyor_module.hv.tooltip=1 stack of 64 items every sec (as Cover)
 gt.item.conveyor_module.ev.name=Conveyor Module (EV)
-gt.item.conveyor_module.ev.tooltip=1 stack of 64 items every 1/5 sec (as Cover)
+gt.item.conveyor_module.ev.tooltip=1 stack of 64 items every 5 ticks (as Cover)
 gt.item.conveyor_module.iv.name=Conveyor Module (IV)
-gt.item.conveyor_module.iv.tooltip=1 stack of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.iv.tooltip=1 stack of 64 items every tick (as Cover)
 gt.item.conveyor_module.luv.name=Conveyor Module (LuV)
-gt.item.conveyor_module.luv.tooltip=4 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.luv.tooltip=4 stacks of 64 items every tick (as Cover)
 gt.item.conveyor_module.zpm.name=Conveyor Module (ZPM)
-gt.item.conveyor_module.zpm.tooltip=16 stacks of 64 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.zpm.tooltip=16 stacks of 64 items every tick (as Cover)
 gt.item.conveyor_module.uv.name=Conveyor Module (UV)
-gt.item.conveyor_module.uv.tooltip=16 stacks of 256 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uv.tooltip=16 stacks of 256 items every tick (as Cover)
 gt.item.conveyor_module.uhv.name=Conveyor Module (UHV)
-gt.item.conveyor_module.uhv.tooltip=16 stacks of 1,024 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uhv.tooltip=16 stacks of 1,024 items every tick (as Cover)
 gt.item.conveyor_module.uev.name=Conveyor Module (UEV)
-gt.item.conveyor_module.uev.tooltip=16 stacks of 4,096 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uev.tooltip=16 stacks of 4,096 items every tick (as Cover)
 gt.item.conveyor_module.uiv.name=Conveyor Module (UIV)
-gt.item.conveyor_module.uiv.tooltip=16 stacks of 16,384 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uiv.tooltip=16 stacks of 16,384 items every tick (as Cover)
 gt.item.conveyor_module.umv.name=Conveyor Module (UMV)
-gt.item.conveyor_module.umv.tooltip=16 stacks of 65,536 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.umv.tooltip=16 stacks of 65,536 items every tick (as Cover)
 gt.item.conveyor_module.uxv.name=Conveyor Module (UXV)
-gt.item.conveyor_module.uxv.tooltip=16 stacks of 262,144 items every 1/20 sec (as Cover)
+gt.item.conveyor_module.uxv.tooltip=16 stacks of 262,144 items every tick (as Cover)
 gt.item.conveyor_module.max.name=Conveyor Module (MAX)
-gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every 1/20 sec (as Cover)
+gt.item.conveyor_module.max.tooltip=16 stacks of 2.1B items every tick (as Cover)
 
 ## Robot Arms
 gt.item.robot_arm.lv.name=Robot Arm (LV)
@@ -5637,11 +5637,11 @@ gt.item.robot_arm.lv.tooltip=1 stack every 20 secs (as Cover)\nGrabs from and in
 gt.item.robot_arm.mv.name=Robot Arm (MV)
 gt.item.robot_arm.mv.tooltip=1 stack every 5 secs (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.hv.name=Robot Arm (HV)
-gt.item.robot_arm.hv.tooltip=1 stack every 1 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.hv.tooltip=1 stack every sec (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.ev.name=Robot Arm (EV)
-gt.item.robot_arm.ev.tooltip=1 stack every 1/5 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.ev.tooltip=1 stack every 5 ticks (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.iv.name=Robot Arm (IV)
-gt.item.robot_arm.iv.tooltip=1 stack every 1/20 sec (as Cover)\nGrabs from and inserts into specific slots
+gt.item.robot_arm.iv.tooltip=1 stack every tick (as Cover)\nGrabs from and inserts into specific slots
 gt.item.robot_arm.luv.name=Robot Arm (LuV)
 gt.item.robot_arm.zpm.name=Robot Arm (ZPM)
 gt.item.robot_arm.uv.name=Robot Arm (UV)

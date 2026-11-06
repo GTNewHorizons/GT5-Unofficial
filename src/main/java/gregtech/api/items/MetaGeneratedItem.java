@@ -12,6 +12,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -232,6 +233,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             aID,
             $ -> StatCollector.translateToLocalFormatted(aNameKey, aNameArgs),
             $ -> StatCollector.translateToLocalFormatted(aToolTipKey, aToolTipArgs),
+            aRandomData);
+    }
+
+    public final ItemStack addItemWithLocalizationKeysAndLiveArgs(int aID, String aNameKey, Object[] aNameArgs,
+        String aToolTipKey, Supplier<Object[]> aToolTipArgs, Object... aRandomData) {
+        return addItem(
+            aID,
+            $ -> StatCollector.translateToLocalFormatted(aNameKey, aNameArgs),
+            $ -> StatCollector.translateToLocalFormatted(aToolTipKey, aToolTipArgs.get()),
             aRandomData);
     }
 

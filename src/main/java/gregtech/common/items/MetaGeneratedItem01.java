@@ -1,6 +1,8 @@
 package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -2121,101 +2123,110 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
 
         ItemList.Electric_Pump_LV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_LV.ID,
                 "gt.item.electric_pump.lv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(32), formatNumber(32 * 20) },
+                () -> new Object[] { formatNumber(32) + " " + getFluidUnit() + "/t",
+                    formatNumber(32 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Electric_Pump_MV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_MV.ID,
                 "gt.item.electric_pump.mv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(128), formatNumber(128 * 20) },
+                () -> new Object[] { formatNumber(128) + " " + getFluidUnit() + "/t",
+                    formatNumber(128 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Electric_Pump_HV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_HV.ID,
                 "gt.item.electric_pump.hv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(512), formatNumber(512 * 20) },
+                () -> new Object[] { formatNumber(512) + " " + getFluidUnit() + "/t",
+                    formatNumber(512 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Electric_Pump_EV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_EV.ID,
                 "gt.item.electric_pump.ev.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                () -> new Object[] { formatNumber(2048) + " " + getFluidUnit() + "/t",
+                    formatNumber(2048 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Electric_Pump_IV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_IV.ID,
                 "gt.item.electric_pump.iv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                () -> new Object[] { formatNumber(8192) + " " + getFluidUnit() + "/t",
+                    formatNumber(8192 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
         ItemList.Electric_Pump_LuV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_LuV.ID,
                 "gt.item.electric_pump.luv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(32768), formatNumber(32768 * 20) },
+                () -> new Object[] { formatNumber(32768) + " " + getFluidUnit() + "/t",
+                    formatNumber(32768 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 32L)));
         ItemList.Electric_Pump_ZPM.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_ZPM.ID,
                 "gt.item.electric_pump.zpm.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(131072), formatNumber(131072 * 20) },
+                () -> new Object[] { formatNumber(131072) + " " + getFluidUnit() + "/t",
+                    formatNumber(131072 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 64L)));
         ItemList.Electric_Pump_UV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_UV.ID,
                 "gt.item.electric_pump.uv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(524288), formatNumber(524288 * 20) },
+                () -> new Object[] { formatNumber(524288) + " " + getFluidUnit() + "/t",
+                    formatNumber(524288 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 128L)));
         ItemList.Electric_Pump_UHV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     Electric_Pump_UHV.ID,
                     "gt.item.electric_pump.uhv.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(2097152), formatNumber(2097152 * 20) },
+                    () -> new Object[] { formatNumber(2097152) + " " + getFluidUnit() + "/t",
+                        formatNumber(2097152 * 20) + " " + getFluidUnit() + "/s" },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
@@ -2223,12 +2234,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.Electric_Pump_UEV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     Electric_Pump_UEV.ID,
                     "gt.item.electric_pump.uev.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(8388608), formatNumber(8388608 * 20) },
+                    () -> new Object[] { formatNumber(8388608) + " " + getFluidUnit() + "/t",
+                        formatNumber(8388608 * 20) + " " + getFluidUnit() + "/s" },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2236,211 +2248,220 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .setRender(new InfinityMetaItemRenderer());
         ItemList.Electric_Pump_UIV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     Electric_Pump_UIV.ID,
                     "gt.item.electric_pump.uiv.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(33554432), formatNumber(33554432 * 20) },
+                    () -> new Object[] { formatNumber(33554432) + " " + getFluidUnit() + "/t",
+                        formatNumber(33554432 * 20) + " " + getFluidUnit() + "/s" },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Pump_UMV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_UMV.ID,
                 "gt.item.electric_pump.umv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(134217728), formatNumber(134217728 * 20L) },
+                () -> new Object[] { formatNumber(134217728) + " " + getFluidUnit() + "/t",
+                    formatNumber(134217728 * 20L) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
         ItemList.Electric_Pump_UXV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_UXV.ID,
                 "gt.item.electric_pump.uxv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(536870912), formatNumber(536870912 * 20L) },
+                () -> new Object[] { formatNumber(536870912) + " " + getFluidUnit() + "/t",
+                    formatNumber(536870912 * 20L) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
         ItemList.Electric_Pump_MAX.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Electric_Pump_MAX.ID,
                 "gt.item.electric_pump.max.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(Integer.MAX_VALUE), formatNumber(Integer.MAX_VALUE * 20L) },
+                () -> new Object[] { formatNumber(Integer.MAX_VALUE) + " " + getFluidUnit() + "/t",
+                    formatNumber(Integer.MAX_VALUE * 20L) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
 
         ItemList.Steam_Valve_LV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Valve_LV.ID,
                 "gt.item.steam_valve.lv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
+                () -> new Object[] { formatNumber(1024) + " " + getFluidUnit() + "/t",
+                    formatNumber(1024 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Steam_Valve_MV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Valve_MV.ID,
                 "gt.item.steam_valve.mv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                () -> new Object[] { formatNumber(2048) + " " + getFluidUnit() + "/t",
+                    formatNumber(2048 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Steam_Valve_HV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Valve_HV.ID,
                 "gt.item.steam_valve.hv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
+                () -> new Object[] { formatNumber(4096) + " " + getFluidUnit() + "/t",
+                    formatNumber(4096 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Steam_Valve_EV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Valve_EV.ID,
                 "gt.item.steam_valve.ev.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                () -> new Object[] { formatNumber(8192) + " " + getFluidUnit() + "/t",
+                    formatNumber(8192 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Steam_Valve_IV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Valve_IV.ID,
                 "gt.item.steam_valve.iv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
+                () -> new Object[] { formatNumber(16384) + " " + getFluidUnit() + "/t",
+                    formatNumber(16384 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
 
         ItemList.FluidRegulator_LV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_LV.ID,
                 "gt.item.fluid_regulator.lv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(32 * 20) }));
+                () -> fluidRegulatorTooltipArgs(32 * 20L)));
         ItemList.FluidRegulator_MV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_MV.ID,
                 "gt.item.fluid_regulator.mv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(128 * 20) }));
+                () -> fluidRegulatorTooltipArgs(128 * 20L)));
         ItemList.FluidRegulator_HV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_HV.ID,
                 "gt.item.fluid_regulator.hv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(512 * 20) }));
+                () -> fluidRegulatorTooltipArgs(512 * 20L)));
         ItemList.FluidRegulator_EV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_EV.ID,
                 "gt.item.fluid_regulator.ev.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(2048 * 20) }));
+                () -> fluidRegulatorTooltipArgs(2048 * 20L)));
         ItemList.FluidRegulator_IV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_IV.ID,
                 "gt.item.fluid_regulator.iv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(8192 * 20) }));
+                () -> fluidRegulatorTooltipArgs(8192 * 20L)));
         ItemList.FluidRegulator_LuV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_LuV.ID,
                 "gt.item.fluid_regulator.luv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(32768 * 20) }));
+                () -> fluidRegulatorTooltipArgs(32768 * 20L)));
         ItemList.FluidRegulator_ZPM.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_ZPM.ID,
                 "gt.item.fluid_regulator.zpm.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(131072 * 20) }));
+                () -> fluidRegulatorTooltipArgs(131072 * 20L)));
         ItemList.FluidRegulator_UV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_UV.ID,
                 "gt.item.fluid_regulator.uv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(524288 * 20) }));
+                () -> fluidRegulatorTooltipArgs(524288 * 20L)));
         ItemList.FluidRegulator_UHV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     FluidRegulator_UHV.ID,
                     "gt.item.fluid_regulator.uhv.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(2097152 * 20) }))
+                    () -> fluidRegulatorTooltipArgs(2097152 * 20L)))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.FluidRegulator_UEV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     FluidRegulator_UEV.ID,
                     "gt.item.fluid_regulator.uev.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(8388608 * 20) }))
+                    () -> fluidRegulatorTooltipArgs(8388608 * 20L)))
             .setRender(new InfinityMetaItemRenderer());
         ItemList.FluidRegulator_UIV
             .set(
-                addItemWithLocalizationKeysAndArgs(
+                addItemWithLocalizationKeysAndLiveArgs(
                     FluidRegulator_UIV.ID,
                     "gt.item.fluid_regulator.uiv.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(33554432 * 20) }))
+                    () -> fluidRegulatorTooltipArgs(33554432 * 20L)))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_UMV.ID,
                 "gt.item.fluid_regulator.umv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(134217728 * 20L) }));
+                () -> fluidRegulatorTooltipArgs(134217728 * 20L)));
         ItemList.FluidRegulator_UXV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_UXV.ID,
                 "gt.item.fluid_regulator.uxv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(536870912 * 20L) }));
+                () -> fluidRegulatorTooltipArgs(536870912 * 20L)));
         ItemList.FluidRegulator_MAX.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 FluidRegulator_MAX.ID,
                 "gt.item.fluid_regulator.max.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(Integer.MAX_VALUE * 20L) }));
+                () -> fluidRegulatorTooltipArgs(Integer.MAX_VALUE * 20L)));
 
         ItemList.FluidFilter.set(
             addItemWithLocalizationKeys(FluidFilter.ID, "gt.item.fluid_filter.name", "gt.item.fluid_filter.tooltip"));
@@ -3630,56 +3651,61 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Steam_Regulator_LV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Regulator_LV.ID,
                 "gt.item.steam_regulator.lv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
+                () -> new Object[] { formatNumber(1024) + " " + getFluidUnit() + "/t",
+                    formatNumber(1024 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Steam_Regulator_MV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Regulator_MV.ID,
                 "gt.item.steam_regulator.mv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                () -> new Object[] { formatNumber(2048) + " " + getFluidUnit() + "/t",
+                    formatNumber(2048 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.Steam_Regulator_HV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Regulator_HV.ID,
                 "gt.item.steam_regulator.hv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
+                () -> new Object[] { formatNumber(4096) + " " + getFluidUnit() + "/t",
+                    formatNumber(4096 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
         ItemList.Steam_Regulator_EV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Regulator_EV.ID,
                 "gt.item.steam_regulator.ev.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                () -> new Object[] { formatNumber(8192) + " " + getFluidUnit() + "/t",
+                    formatNumber(8192 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
         ItemList.Steam_Regulator_IV.set(
-            addItemWithLocalizationKeysAndArgs(
+            addItemWithLocalizationKeysAndLiveArgs(
                 Steam_Regulator_IV.ID,
                 "gt.item.steam_regulator.iv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
+                () -> new Object[] { formatNumber(16384) + " " + getFluidUnit() + "/t",
+                    formatNumber(16384 * 20) + " " + getFluidUnit() + "/s" },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
@@ -3949,6 +3975,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         craftingShapedRecipes();
         craftingShapelessRecipes();
+    }
+
+    private static Object[] fluidRegulatorTooltipArgs(long rate) {
+        return new Object[] { formatNumber(rate) + " " + getFluidUnit() + "/s", "1/16/256 " + getFluidUnit() + "/s",
+            formatNumberCompact(2.1e9) + getFluidUnit() };
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
