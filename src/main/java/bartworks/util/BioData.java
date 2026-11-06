@@ -14,6 +14,7 @@
 package bartworks.util;
 
 import java.nio.ByteBuffer;
+import java.util.Locale;
 import java.util.Objects;
 
 import net.minecraft.item.EnumRarity;
@@ -47,7 +48,10 @@ public class BioData {
     }
 
     public String getLocalisedName() {
-        return StatCollector.translateToLocal(this.getName());
+        return StatCollector.translateToLocal(
+            "bw.bioname." + this.getName()
+                .toLowerCase(Locale.ROOT)
+                .replace(" ", "_"));
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
