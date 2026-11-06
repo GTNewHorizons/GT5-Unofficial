@@ -62,22 +62,17 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.AntimatterForgeGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final FluidStack[] MAGNETIC_UPGRADES = { Materials.TengamPurified.getMolten(1L),
-        Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
-    private static final FluidStack[] GRAVITY_UPGRADES = { Materials.SpaceTime.getMolten(1L),
-        Materials.Space.getMolten(1L), Materials.Eternity.getMolten(1L) };
-    private static final FluidStack[] CONTAINMENT_UPGRADES = { GGMaterial.shirabon.getMolten(1),
-        Materials.MHDCSM.getMolten(1L) };
-    private static final FluidStack[] ACTIVATION_UPGRADES = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
-        GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
-
     public static final String MAIN_NAME = "antimatterForge";
 
+    private static final Int2ObjectMap<UpgradeInformation> UPGRADE_MAP = new Int2ObjectArrayMap<>(10);
+    private static final float[] MODIFIER_STEPS = { -0.1f, -0.05f, 0.05f, 0.05f };
     private static final int MAGNETIC_ID = 0;
     private static final int GRAVITY_ID = 1;
     private static final int CONTAINMENT_ID = 2;
@@ -154,10 +149,30 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initUpgradeMap();
     }
 
     public AntimatterForge(String aName) {
         super(aName);
+        initUpgradeMap();
+    }
+
+    private void initUpgradeMap() {
+        if (!UPGRADE_MAP.isEmpty()) {
+            return;
+        }
+        // spotless:off
+        UPGRADE_MAP.put(Materials.TengamPurified.getMolten(1L).getFluidID(), new UpgradeInformation(MAGNETIC_ID, 1));
+        UPGRADE_MAP.put(Materials.Time.getMolten(1L).getFluidID(), new UpgradeInformation(MAGNETIC_ID, 2));
+        UPGRADE_MAP.put(Materials.MagMatter.getMolten(1L).getFluidID(), new UpgradeInformation(MAGNETIC_ID, 3));
+        UPGRADE_MAP.put(Materials.SpaceTime.getMolten(1L).getFluidID(), new UpgradeInformation(GRAVITY_ID, 1));
+        UPGRADE_MAP.put(Materials.Space.getMolten(1L).getFluidID(), new UpgradeInformation(GRAVITY_ID, 2));
+        UPGRADE_MAP.put(Materials.Eternity.getMolten(1L).getFluidID(), new UpgradeInformation(GRAVITY_ID, 3));
+        UPGRADE_MAP.put(GGMaterial.shirabon.getMolten(1).getFluidID(), new UpgradeInformation(CONTAINMENT_ID, 1));
+        UPGRADE_MAP.put(Materials.MHDCSM.getMolten(1L).getFluidID(), new UpgradeInformation(CONTAINMENT_ID, 2));
+        UPGRADE_MAP.put(GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1).getFluidID(), new UpgradeInformation(ACTIVATION_ID, 1));
+        UPGRADE_MAP.put(GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1).getFluidID(), new UpgradeInformation(ACTIVATION_ID, 2));
+        //spotless:on
     }
 
     @Override
@@ -294,22 +309,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return antimatterStored;
     }
 
-    /// Compares the input fluid against the fluids for a given upgrade kind and sets the modifier if a match is found.
-    ///
-    /// @return true if a match was found, false otherwise
-    private boolean setModifiers(FluidStack inputFluid, float step, FluidStack[] fluidArray, int upgradeId) {
-        for (int tier = 1; tier <= fluidArray.length; tier++) {
-            if (inputFluid.isFluidEqual(fluidArray[tier - 1])) {
-                if (inputFluid.amount >= fluidConsumptions[upgradeId]) {
-                    modifiers[upgradeId] = step * tier;
-                    upgradeFluids[upgradeId] = inputFluid;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public CheckRecipeResult checkProcessing() {
         long totalAntimatterAmount = 0;
@@ -335,7 +334,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         // Check for upgrade fluids
-        int ceiledSqRoot = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
+        int ceiledSqRoot = (int) Math.ceil(Math.sqrt(totalAntimatterAmount));
         fluidConsumptions[MAGNETIC_ID] = ceiledSqRoot;
         fluidConsumptions[GRAVITY_ID] = ceiledSqRoot;
         fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2.0f / 7.0f));
@@ -347,12 +346,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         List<FluidStack> inputFluids = getStoredFluids();
-        // skips to the next fluid if it was a matching upgrade
         for (FluidStack inputFluid : inputFluids) {
-            if (setModifiers(inputFluid, -0.1f, MAGNETIC_UPGRADES, MAGNETIC_ID)) continue;
-            if (setModifiers(inputFluid, -0.05f, GRAVITY_UPGRADES, GRAVITY_ID)) continue;
-            if (setModifiers(inputFluid, 0.05f, CONTAINMENT_UPGRADES, CONTAINMENT_ID)) continue;
-            if (setModifiers(inputFluid, 0.05f, ACTIVATION_UPGRADES, ACTIVATION_ID)) continue;
+            var upgradeInfo = UPGRADE_MAP.get(inputFluid.getFluidID());
+            if (upgradeInfo == null) continue;
+
+            int upgradeId = upgradeInfo.upgradeId;
+
+            if (inputFluid.amount < fluidConsumptions[upgradeId]) continue;
+
+            upgradeFluids[upgradeId] = inputFluid;
+            modifiers[upgradeId] = MODIFIER_STEPS[upgradeInfo.upgradeId] * upgradeInfo.tier;
         }
 
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
@@ -732,4 +735,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
     }
+
+    private record UpgradeInformation(int upgradeId, int tier) {}
 }
