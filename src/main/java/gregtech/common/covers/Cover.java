@@ -44,7 +44,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
@@ -328,18 +327,6 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new CoverUIFactory<>(buildContext).createWindow();
-    }
-
-    public boolean getAutomaticOpen() {
-        return automaticOpen() && Client.iface.autoOpenCovers;
-    }
-
-    /**
-     * If returns true, automatically opens the cover window as the machine GUI is opened and assuming the config is
-     * enabled.
-     */
-    protected boolean automaticOpen() {
-        return false;
     }
 
     public ModularUIContainer createCoverContainer(EntityPlayer player) {

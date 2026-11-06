@@ -116,7 +116,7 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean coverTabsFlipped;
 
-        @Config.Comment("If true, allows certain covers to automatically have panels toggled open upon machine gui opening. Currently only includes item holder covers.")
+        @Config.Comment("If true, allows certain covers to automatically have panels toggled open if the panel was open before.")
         @Config.DefaultBoolean(true)
         public boolean autoOpenCovers;
 

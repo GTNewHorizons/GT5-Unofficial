@@ -144,11 +144,6 @@ public class CoverChest extends Cover {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    @Override
-    protected boolean automaticOpen() {
-        return true;
-    }
-
     private static class LegacyLimitingItemStackHandler extends ItemStackHandler implements IItemHandlerModifiable {
 
         private final int slotLimit;
