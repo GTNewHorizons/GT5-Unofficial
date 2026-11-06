@@ -8670,6 +8670,8 @@ GT5U.infodata.dimension.registered.no=Dimension Registered: §cNo§r
 GT5U.infodata.yes=Yes
 GT5U.infodata.no=No
 
+gt.infoData.solar_tower.heat=Internal Heat Level: %s / %s
+gt.infoData.solar_tower.reflectors=Connected Solar Reflectors: %s
 
 GT5U.infodata.world_accelerator.mode=Accelerator running in %s mode
 GT5U.infodata.world_accelerator.mode.blocks=Accelerator running in Blocks mode
