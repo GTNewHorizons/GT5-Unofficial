@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.storage;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -32,6 +33,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
@@ -53,15 +55,16 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     protected boolean mDisableFilter = true;
 
     public MTEDigitalTankBase(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            3,
-            new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
-                translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
+        super(aID, aName, aNameRegional, aTier, 3, GTValues.emptyStringArray);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+            translateToLocalFormatted(
+                "GT5U.machines.digitaltank.tooltip",
+                formatNumber(commonSizeCompute(mTier)) + getFluidUnit()),
+            translateToLocal("GT5U.machines.digitaltank.tooltip1") };
     }
 
     protected static int commonSizeCompute(int tier) {
