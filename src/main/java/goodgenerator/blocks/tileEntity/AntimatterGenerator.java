@@ -142,7 +142,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             if (inputFluid.isFluidEqual(Materials.Antimatter.getFluid(1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
-                catalystFluid = inputFluid;
+                catalystFluid = inputFluid.copy();
             }
             // We annihilate everything, even if it was the wrong fluid
             inputFluid.amount = 0;
