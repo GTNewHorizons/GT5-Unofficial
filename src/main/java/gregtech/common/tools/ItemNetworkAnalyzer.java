@@ -130,7 +130,6 @@ public class ItemNetworkAnalyzer extends ItemTool {
             return;
         }
 
-        stack = player.inventory.getCurrentItem();
         final DimensionalCoord coord = getLocation(stack);
 
         if (coord != null && coord.getDimension() == world.provider.dimensionId
