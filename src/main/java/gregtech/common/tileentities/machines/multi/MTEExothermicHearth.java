@@ -16,7 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEARTH_GLOW;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
@@ -148,7 +148,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         .addElement(
             'E',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEExothermicHearth::setCoilLevel, MTEExothermicHearth::getCoilLevel))))
+                .use(activeBlocks(ofCoil(MTEExothermicHearth::setCoilLevel, MTEExothermicHearth::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
         .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())

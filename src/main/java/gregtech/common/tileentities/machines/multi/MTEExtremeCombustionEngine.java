@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -98,7 +99,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 { "    H----H", "H H CGGGGC", "CCC CDDDDC", "CCC CBBBBC", "FEFEFEEEEF" },
                 { "          ", "    H    H", "H H H    H", "H H H    H", "FEFEFEEEEF" } })
         .addElement('A', Casings.SteelGearBoxCasing.asElement())
-        .addElement('B', Casings.TungstensteelFireboxCasing.asElement())
+        .addElement('B', activeBlocks(Casings.TungstensteelFireboxCasing.asElement()))
         .addElement(
             'C',
             buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Muffler, Maintenance)

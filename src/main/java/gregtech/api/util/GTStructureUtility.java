@@ -613,18 +613,23 @@ public class GTStructureUtility {
         }, aHeatingCoilGetter);
     }
 
-    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
+    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeBlocks(IStructureElement<T> element) {
         return new ProxyStructureElement<>(element) {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 if (!element.check(t, world, x, y, z)) return false;
 
-                t.mCoils.add(CoordinatePacker.pack(x, y, z));
+                t.activeBlocks.add(CoordinatePacker.pack(x, y, z));
 
                 return true;
             }
         };
+    }
+
+    @Deprecated
+    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
+        return activeBlocks(element);
     }
 
     /**

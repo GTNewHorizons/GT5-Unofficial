@@ -8,6 +8,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.GregTechAPI.sBlockCasings3;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -165,12 +166,13 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
                         t -> t.tierPipeCasing))
                 .addElement(
                     'D', // Firebox
-                    ofBlocksTiered(
-                        this::getTierFireboxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
+                    activeBlocks(
+                        ofBlocksTiered(
+                            this::getTierFireboxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireboxCasing = m,
+                            t -> t.tierFireboxCasing)))
                 .addElement('G', chainAllGlasses())
                 .build();
         }

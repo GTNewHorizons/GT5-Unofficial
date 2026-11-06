@@ -8,7 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -79,7 +79,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
         .addElement(
             'c',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel))))
+                .use(activeBlocks(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel))))
         .addElement(
             'l',
             buildHatchAdder(MTEOilCracker.class)
