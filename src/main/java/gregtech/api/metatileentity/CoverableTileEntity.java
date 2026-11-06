@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -54,6 +55,7 @@ import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverChest;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -306,10 +308,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public ItemStack detachCover(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
+        final ItemStack droppedCover = cover.asItemStack();
         cover.onCoverRemoval();
         synchronizeCover(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
-        return GTOreDictUnificator.get(true, cover.asItemStack());
+        return GTOreDictUnificator.get(true, droppedCover);
     }
 
     @Override
@@ -614,6 +617,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                         "GT5U.interface.coverTabs.cover_on",
                         StatCollector.translateToLocal(FACES[sideValue]),
                         coverStack.getDisplayName()));
+                if (cover instanceof CoverChest) {
+                    CoverChest.addContentsTooltip(tNBT, aList, KeyboardUtil.isShiftKeyDown());
+                }
             }
         }
 
