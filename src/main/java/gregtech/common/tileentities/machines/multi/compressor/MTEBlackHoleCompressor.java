@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -47,7 +46,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -94,22 +92,6 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
-
-    private static final int CIRCUIT_COMPRESSOR = 20;
-    private static final int CIRCUIT_NEUTRONIUM = 21;
-    private static final int PARALLELS_PER_TIER = 8;
-    private static final double SPEED_BONUS = 0.2D;
-    private static final double EU_MODIFIER = 0.7D;
-    private static final int MAX_STABILITY = 100;
-    private static final float STABILITY_DECAY_PER_SECOND = 1F;
-    private static final int UNSTABLE_STABILITY = 0;
-    private static final int CLOSING_STABILITY = -900;
-    private static final int SPACETIME_BASE_COST = 1;
-    private static final int SPACETIME_COST_DOUBLING_SECONDS = 30;
-    private static final int LOW_STABILITY = 50;
-    private static final int CRITICAL_STABILITY = 20;
-    private static final int LOW_STABILITY_PARALLEL_MULTIPLIER = 2;
-    private static final int SUPERSTABLE_PARALLEL_MULTIPLIER = 4;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -175,19 +157,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private boolean isNotBlackHoleRecipe;
     private int catalyzingCounter = 0;
-    private float blackHoleStability = MAX_STABILITY;
+    private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
     private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
-     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable
+     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable 5: On, supermassive
      */
     private byte blackHoleStatus = 1;
 
     @SideOnly(Side.CLIENT)
     private SoundLoopAnyBlock blackholeSoundLoop;
 
-    private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(SPACETIME_BASE_COST);
+    private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(1);
     private int catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {
@@ -349,7 +331,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IIconContainer MAIN_OVERLAY;
         IIconContainer GLOW_OVERLAY;
         switch (blackHoleStatus) {
-            case 2, 4 -> {
+            case 2, 4, 5 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
             }
@@ -385,26 +367,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.black_hole_compressor"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "black-hole-compressor"),
-                ImmutableMap.<String, Object>builder()
-                    .put("max_stability", MAX_STABILITY)
-                    .put("decay", formatNumber(STABILITY_DECAY_PER_SECOND))
-                    .put("unstable", UNSTABLE_STABILITY)
-                    .put("closing_minutes", formatNumber((UNSTABLE_STABILITY - CLOSING_STABILITY) / STABILITY_DECAY_PER_SECOND / 60))
-                    .put("spacetime_cost", SPACETIME_BASE_COST)
-                    .put("doubling_seconds", SPACETIME_COST_DOUBLING_SECONDS)
-                    .put("superstable_multiplier", SUPERSTABLE_PARALLEL_MULTIPLIER)
-                    .put("low_multiplier", LOW_STABILITY_PARALLEL_MULTIPLIER)
-                    .put("critical_multiplier", LOW_STABILITY_PARALLEL_MULTIPLIER * LOW_STABILITY_PARALLEL_MULTIPLIER)
-                    .put("low_stability", LOW_STABILITY)
-                    .put("critical_stability", CRITICAL_STABILITY)
-                    .put("circuit_compressor", CIRCUIT_COMPRESSOR)
-                    .put("circuit_neutronium", CIRCUIT_NEUTRONIUM)
-                    .put("parallels", PARALLELS_PER_TIER)
-                    .put("speed", Math.round(100 / SPEED_BONUS))
-                    .put("eu", Math.round(EU_MODIFIER * 100))
-                    .build())
+            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"))
             .addSupportAny()
             .beginStructureBlock(33, 35, 35, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_of_structure_6th_layer"))
@@ -512,9 +475,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         for (ItemStack j : t) {
             if (j.getItem() == GTUtility.getIntegratedCircuit(0)
                 .getItem()) {
-                if (j.getItemDamage() == CIRCUIT_COMPRESSOR) {
+                if (j.getItemDamage() == 20) {
                     return MACHINEMODE_COMPRESSOR;
-                } else if (j.getItemDamage() <= CIRCUIT_NEUTRONIUM) {
+                } else if (j.getItemDamage() <= 21) {
                     return MACHINEMODE_BLACKHOLE;
                 }
             }
@@ -532,7 +495,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack[] catalysts = new ItemStack[] {
             ItemList.Black_Hole_Opener.get(1),
             ItemList.Black_Hole_Closer.get(1),
-            ItemList.Black_Hole_Stabilizer.get(1)
+            ItemList.Black_Hole_Stabilizer.get(1),
+            ItemList.Supermassive_Black_Hole_Opener.get(1)
         };
         //spotless:on
 
@@ -551,6 +515,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
+                    createRenderBlock();
+                } else if (ItemList.Supermassive_Black_Hole_Opener.isStackEqual(removed) && blackHoleStatus == 1) {
+                    blackHoleStatus = 5;
+                    catalyzingCostModifier = 64;
                     createRenderBlock();
                 }
                 return;
@@ -619,8 +587,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(EU_MODIFIER)
-            .setSpeedBonus(SPEED_BONUS);
+            .setEuModifier(0.7D)
+            .setSpeedBonus(0.2D);
     }
 
     @Override
@@ -694,12 +662,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         // Base 1 loss
-        float stabilityDecrease = STABILITY_DECAY_PER_SECOND;
+        float stabilityDecrease = 1F;
 
         boolean didDrain = false;
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
-        if (blackHoleStability > UNSTABLE_STABILITY) {
+        if (blackHoleStability > 0) {
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
@@ -711,7 +679,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     drain(hatch, totalCost, true);
                     catalyzingCounter += 1;
                     stabilityDecrease = 0;
-                    if (catalyzingCounter >= SPACETIME_COST_DOUBLING_SECONDS) {
+                    if (catalyzingCounter >= 30) {
                         // Hidden cap at 1B per tick so we don't integer overflow
                         if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
                         catalyzingCounter = 0;
@@ -731,15 +699,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         blackHoleStability -= stabilityDecrease;
 
-        if (blackHoleStability <= UNSTABLE_STABILITY) blackHoleStatus = 3;
+        if (blackHoleStability <= 0) blackHoleStatus = 3;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
-        if (blackHoleStability <= CLOSING_STABILITY) closeBlackHole();
+        if (blackHoleStability <= -900) closeBlackHole();
     }
 
     private void closeBlackHole() {
         blackHoleStatus = 1;
-        blackHoleStability = MAX_STABILITY;
+        blackHoleStability = 100;
         catalyzingCostModifier = 1;
         catalyzingCounter = 0;
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
@@ -751,15 +719,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public int getMaxParallelRecipes() {
-        int parallels = (PARALLELS_PER_TIER * GTUtility.getTierExtended(this.getMaxInputEu()));
+        int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
         if (blackHoleStatus == 4) {
             if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
-            parallels *= SUPERSTABLE_PARALLEL_MULTIPLIER;
-        } else if (blackHoleStability < LOW_STABILITY) {
-            parallels *= LOW_STABILITY_PARALLEL_MULTIPLIER;
-            if (blackHoleStability < CRITICAL_STABILITY) {
-                if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
-                parallels *= LOW_STABILITY_PARALLEL_MULTIPLIER;
+            parallels *= 4;
+        } else {
+            if (blackHoleStatus == 5) parallels *= 4;
+            if (blackHoleStability < 50) {
+                parallels *= 2;
+                if (blackHoleStability < 20) {
+                    if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+                    parallels *= 2;
+                }
             }
         }
         return parallels;

@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -71,6 +72,18 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     public MTETeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
+    }
+
+    @Override
+    public String getLocalName() {
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.machine.tt.tesla.small.name";
+            case 9 -> "gt.blockmachines.machine.tt.tesla.large.name";
+            case 16 -> "gt.blockmachines.machine.tt.tesla.huge.name";
+            default -> null;
+        };
+        String tierName = super.getLocalName();
+        return nameKey == null ? tierName : translateToLocalFormatted(nameKey, tierName);
     }
 
     @Override

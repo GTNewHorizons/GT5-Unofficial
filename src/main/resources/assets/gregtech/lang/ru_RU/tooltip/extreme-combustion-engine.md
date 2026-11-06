@@ -1,5 +1,5 @@
-Для работы подавайте {blue:высокоэнергетическое топливо} и {white:{var:lubricant} {var:fluid_unit}/ч} {white:смазки}
-Можно подавать {white:{var:oxygen} {var:fluid_unit}/с} {white:жидкого кислорода} для усиления выработки
-{gold:Обычный режим}: вырабатывает {aqua:{var:default_output} EU/t} при {green:{var:default_eff}%} эффективности топлива
-{gold:Усиленный режим}: вырабатывает {aqua:{var:boosted_output} EU/t} при {green:{var:boosted_eff}%} эффективности топлива
-Выдаёт полную мощность при {green:{var:wait_power}%} эффективности механизма
+Для работы подавайте {blue:высокоэнергетическое топливо} и {white:{var:lubricant} {L}/ч} {white:смазки}
+Можно подавать {dark_aqua:{var:oxygen} {L}/с} {dark_aqua:жидкого кислорода} для усиления выработки
+{color_mode:Обычный режим}: вырабатывает {color_eu_usage:{var:default_output}} {color_tier:{EU/t}} при {color_amount:{var:default_eff}%} эффективности топлива
+{color_mode:Усиленный режим}: вырабатывает {color_eu_usage:{var:boosted_output}} {color_tier:{EU/t}} при {color_amount:{var:boosted_eff}%} эффективности топлива
+Выдаёт полную мощность при {color_amount:{var:wait_power}%} эффективности механизма

@@ -53,6 +53,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
@@ -584,7 +585,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Plasma Forge, DTPF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_forge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "plasma-forge"),
                 ImmutableMap.<String, Object>builder()
@@ -595,14 +596,14 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
-            .addController("Middle of the structure, 3rd layer")
-            .addCasing("2121", "Dimensionally Transcendent Casing", false)
-            .addCasing("2112", "Heating Coil", true)
-            .addCasing("1250-1270", "Dimensional Injection Casing", false)
-            .addCasing("120", "Dimensional Bridge", false)
-            .addEnergyHatch("1-2", "Any injection casing", 1)
-            .addInputAny("1+", "Any injection casing", 1)
-            .addOutputAny("1+", "Any injection casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_3rd_layer"))
+            .addCasing("2121", Casings.DimensionallyTranscendentCasing.getLocalizedName(), false)
+            .addCasing("2112", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), true)
+            .addCasing("1250-1270", Casings.DimensionalInjectionCasing.getLocalizedName(), false)
+            .addCasing("120", Casings.DimensionalBridge.getLocalizedName(), false)
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();

@@ -65,7 +65,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -188,15 +187,15 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             .addMarkdown(
                 new ResourceLocation("gregtech", "fusion-computer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(GTValues.V[tier()] / MAX_ENERGY_HATCHES))
-                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(tier()))
-                    .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
-                    .put("time_per_oc", formatNumber(fod.getDurationDecreasePerOC()))
+                    .put("power", GTValues.V[tier()] / MAX_ENERGY_HATCHES)
+                    .put("capacity", capableStartupCanonical() / MAX_ENERGY_HATCHES)
+                    .put("tier", tier())
+                    .put("eu_per_oc", fod.getEUtIncreasePerOC())
+                    .put("time_per_oc", fod.getDurationDecreasePerOC())
                     .build())
             .beginStructureBlock(15, 3, 15, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_2nd_layer"))
-            .addCasing("79-123",  new ItemStack(getCasing(), 1, getCasingMeta()).getDisplayName(), false)
+            .addCasing("79-123", new ItemStack(getCasing(), 1, getCasingMeta()).getDisplayName(), false)
             .addCasing("32", new ItemStack(getFusionCoil(), 1, getFusionCoilMeta()).getDisplayName(), false)
             .addEnergyHatch("1-16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
             .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_casings_on_each_top_or_bottom"), 1)
