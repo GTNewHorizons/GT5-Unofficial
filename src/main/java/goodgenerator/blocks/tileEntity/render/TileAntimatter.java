@@ -114,6 +114,7 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setCoreSize(float diameter) {
+        if (coreScale == diameter) return;
         coreScaleSnapshot = coreScale;
         coreScale = diameter;
         timeSnapshot = this.getWorldObj()
@@ -160,7 +161,11 @@ public class TileAntimatter extends TileEntity {
         AxisAngle4f rotationVector = new AxisAngle4f();
         rotationMatrix.getRotation(rotationVector);
 
-        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        float newRotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        if (newRotationAngle == rotationAngle && rotationVector.x == rotX
+            && rotationVector.y == rotY
+            && rotationVector.z == rotZ) return;
+        rotationAngle = newRotationAngle;
         rotX = rotationVector.x;
         rotY = rotationVector.y;
         rotZ = rotationVector.z;
