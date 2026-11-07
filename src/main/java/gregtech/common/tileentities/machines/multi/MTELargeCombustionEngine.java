@@ -122,7 +122,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.large_combustion_engine.machine_type"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-combustion-engine"),
                 ImmutableMap.<String, Object>builder()

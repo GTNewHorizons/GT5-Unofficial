@@ -91,7 +91,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -174,12 +173,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     private EIGMode mode = EIGModes.Normal;
     private boolean isCheckingDirtWater = false;
-    // TODO: Remove after 2.9
-    private boolean isOldStructure = false;
-
-    public boolean isOldStructure() {
-        return this.isOldStructure;
-    }
 
     public int getSetupPhase() {
         return this.setupPhase;
@@ -216,8 +209,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_H = 3;
     private static final int OFFSET_V = 6;
     private static final int OFFSET_D = 0;
-    private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
-    private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
     private static final String[][] STRUCTURE_MAIN = transpose(
         new String[][] { // spotless:off
             {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
@@ -229,20 +220,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
         } // spotless:on
     );
-    private static final String[][] STRUCTURE_MAIN_OLD = transpose(
-        new String[][] { // spotless:off
-            { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-            { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
-            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-            { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
-            { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
-        } // spotless:on
-    );
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(STRUCTURE_PIECE_MAIN, STRUCTURE_MAIN)
-        .addShape(STRUCTURE_PIECE_MAIN_OLD, STRUCTURE_MAIN_OLD)
         .addElement(
             'a',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
@@ -261,13 +241,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
         .addElement('w', ofChain(ofAnyWater(false), isAir()))
-        .addElement(
-            'c',
-            buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
-                .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
-                .casingIndex(CASING_OLD.textureId)
-                .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement())))
         .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
@@ -283,9 +256,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         glassTier = -1;
         isCheckingDirtWater = false;
         if (debug) glassTier = 13;
-
-        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
             isCheckingDirtWater = GTStructureUtility.hasWaterAtStructurePosition(
                 iGregTechTileEntity,
                 getExtendedFacing(),
@@ -318,15 +289,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        if (isOldStructure) buildPiece(STRUCTURE_PIECE_MAIN_OLD, itemStack, b, 2, 5, 0);
-        else buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_H, OFFSET_V, OFFSET_D);
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_H, OFFSET_V, OFFSET_D);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (isOldStructure)
-            return survivalBuildPiece(STRUCTURE_PIECE_MAIN_OLD, stackSize, 2, 5, 0, elementBudget, env, true);
-        else return survivalBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             OFFSET_H,
@@ -507,8 +475,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.dropTracker.intersect(this.guiDropTracker)
                 .save());
         aNBT.setTag("buckets", bucketListNBT);
-        // TODO: Remove after 2.9
-        aNBT.setBoolean("isOldStructure", this.isOldStructure);
     }
 
     private static class EIGMigrationHolder {
@@ -556,8 +522,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
             this.toMigrate = toMigrate.values();
         } else {
-            if (revision == 1) isOldStructure = true;
-            else isOldStructure = aNBT.getBoolean("isOldStructure");
             this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
             this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
@@ -573,20 +537,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public byte getUpdateData() {
-        return isOldStructure ? (byte) 1 : (byte) 0;
+        return 0;
     }
 
     @Override
-    public void receiveClientEvent(byte eventID, byte value) {
-        if (eventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
-            isOldStructure = value == 0b1;
-        }
-    }
+    public void receiveClientEvent(byte eventID, byte value) {}
 
     @SideOnly(Side.CLIENT)
-    public void spawnVisualCrops(World world, int x, int y, int z, ExtendedFacing facing, int age,
-        boolean isOldStructure) {
-        CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
+    public void spawnVisualCrops(World world, int x, int y, int z, ExtendedFacing facing, int age) {
+        CropRenderer crop = new CropRenderer(world, x, y, z, facing, age);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
     }
 
@@ -600,24 +559,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide()) {
             if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
-                int[] abc = new int[] { 0, -2, isOldStructure ? 2 : 1 };
+                int[] abc = new int[] { 0, -2, 1 };
                 int[] xyz = new int[] { 0, 0, 0 };
                 this.getExtendedFacing()
                     .getWorldOffset(abc, xyz);
                 xyz[0] += aBaseMetaTileEntity.getXCoord();
                 xyz[1] += aBaseMetaTileEntity.getYCoord();
                 xyz[2] += aBaseMetaTileEntity.getZCoord();
-                spawnVisualCrops(
-                    aBaseMetaTileEntity.getWorld(),
-                    xyz[0],
-                    xyz[1],
-                    xyz[2],
-                    this.getExtendedFacing(),
-                    40,
-                    isOldStructure);
+                spawnVisualCrops(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], this.getExtendedFacing(), 40);
             }
         } else {
-            if (!isOldStructure && isCheckingDirtWater && aTick % 20 == 0) {
+            if (isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
                 int didPlace = 0;
                 // try to till the dirt and place the water
@@ -995,7 +947,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public ITexture getCasingTexture() {
-        return isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
+        return CASING.getCasingTexture();
     }
 
     @Override

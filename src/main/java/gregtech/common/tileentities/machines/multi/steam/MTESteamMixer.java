@@ -85,10 +85,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         return StatCollector.translateToLocal("gt.mbtt.machine_type.mixer");
     }
 
-    // TODO: remove old structure after 2.9/next release cycle
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_OLD = "old";
 
     private IStructureDefinition<MTESteamMixer> STRUCTURE_DEFINITION = null;
 
@@ -98,13 +95,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         {"  A  ","     ","A C A","     ","  A  "},
         {" A~A ","A D A","ADBDA","A D A"," AAA "},
         {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "}};
-    private final String[][] shape_old = new String[][]{
-        {"       ","   A   ","   A   "," AAAAA ","   A   ","   A   ","       "},
-        {"   A   ","   A   ","       ","AA B AA","       ","   A   ","   A   "},
-        {"   A   ","       ","       ","A  C  A","       ","       ","   A   "},
-        {" AAAAA ","A     A","A     A","A  C  A","A     A","A     A"," AAAAA "},
-        {" AA~AA ","AE   EA","A E E A","A  B  A","A E E A","AE   EA"," AAAAA "},
-        {" AAAAA ","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA"," AAAAA "}};
     //spotless:on
 
     private static final int HORIZONTAL_OFFSET = 2;
@@ -211,7 +201,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMixer>builder()
 
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addShape(STRUCTURE_PIECE_OLD, transpose(shape_old))
                 .addElement(
                     'B',
                     ofBlocksTiered(
@@ -278,14 +267,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
                 HORIZONTAL_OFFSET,
                 VERTICAL_OFFSET,
                 DEPTH_OFFSET);
-        } else {
-            this.buildPiece(
-                STRUCTURE_PIECE_OLD,
-                stackSize,
-                hintsOnly,
-                HORIZONTAL_OFFSET_OLD,
-                VERTICAL_OFFSET_OLD,
-                DEPTH_OFFSET_OLD);
         }
     }
 
@@ -303,18 +284,8 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
                 env,
                 false,
                 true);
-        } else {
-            return this.survivalBuildPiece(
-                STRUCTURE_PIECE_OLD,
-                stackSize,
-                HORIZONTAL_OFFSET_OLD,
-                VERTICAL_OFFSET_OLD,
-                DEPTH_OFFSET_OLD,
-                elementBudget,
-                env,
-                false,
-                true);
         }
+        return -1;
     }
 
     @Override
@@ -324,9 +295,8 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         tierFrame = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!(revision >= 1 ? checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)
-            : checkPiece(STRUCTURE_PIECE_OLD, HORIZONTAL_OFFSET_OLD, VERTICAL_OFFSET_OLD, DEPTH_OFFSET_OLD, errors)))
-            return;
+        if (!(revision >= 1
+            && checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors))) return;
         if (tierMachineCasing >= 1 && tierMachineCasing == tierGearBoxCasing
             && tierMachineCasing == tierPipeCasing
             && tierMachineCasing == tierFrame) {

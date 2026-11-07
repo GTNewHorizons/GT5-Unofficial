@@ -42,13 +42,7 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaOilCrackerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
@@ -213,11 +207,9 @@ public class ItemRegistry {
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
     public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
-    public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack vat;
     public static ItemStack compressedHatch;
@@ -254,10 +246,6 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new MTEElectricImplosionCompressorLegacy(
-            LegacyElectricImplosionCompressor.ID,
-            "ElectricImplosionCompressor",
-            "Electric Implosion Compressor").getStackForm(1L);
 
         // EIC depend on neutronium block to pass on structure updates
         int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
@@ -336,14 +324,6 @@ public class ItemRegistry {
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnaceLegacy(
-            LegacyMegaBlastFurnace.ID,
-            "MegaBlastFurnace",
-            StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
-            LegacyMegaVacuumFreezer.ID,
-            "MegaVacuumFreezer",
-            StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
         ItemRegistry.cal = new MTECircuitAssemblyLine(
             CircuitAssemblyLine.ID,
             "CircuitAssemblyLine",
@@ -360,18 +340,6 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
-            LegacyMegaDistillationTower.ID,
-            "MegaDistillationTower",
-            "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
-            LegacyMegaChemicalReactor.ID,
-            "MegaChemicalReactor",
-            "Mega Chemical Reactor").getStackForm(1L);
-        ItemRegistry.megaMachines[4] = new MTEMegaOilCrackerLegacy(
-            LegacyMegaOilCracker.ID,
-            "MegaOilCracker",
-            "Mega Oil Cracker").getStackForm(1L);
 
         ItemRegistry.voidminer[2] = new MTEVoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);

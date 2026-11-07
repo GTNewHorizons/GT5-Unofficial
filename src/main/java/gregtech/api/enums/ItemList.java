@@ -699,6 +699,7 @@ public enum ItemList implements IItemContainer {
 
     Spray_Color_Remover_Empty,
 
+    // region begin unused
     Armor_Cheat,
     Armor_Cloaking,
     Armor_Lamp,
@@ -712,6 +713,7 @@ public enum ItemList implements IItemContainer {
     Component_Turbine_Magnalium,
     Component_Turbine_TungstenSteel,
     Component_Turbine_Carbon,
+    // region end unused
     Component_LavaFilter,
     Component_Sawblade_Diamond,
     T1Sawblade,
@@ -1149,10 +1151,6 @@ public enum ItemList implements IItemContainer {
     Locker_UV,
     Locker_MAX,
 
-    Machine_Multi_LargeBoiler_Bronze,
-    Machine_Multi_LargeBoiler_Steel,
-    Machine_Multi_LargeBoiler_Titanium,
-    Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
     Machine_Multi_PlasmaForge,
     Machine_Multi_ImplosionCompressor,
@@ -1625,7 +1623,6 @@ public enum ItemList implements IItemContainer {
 
     Distillation_Tower,
     Energy_LapotronicOrb2,
-    Ore_Processor,
     ZPM6,
     ZPM5,
     ZPM4,
@@ -1683,11 +1680,6 @@ public enum ItemList implements IItemContainer {
     Cover_RedstoneReceiver,
     Cover_WirelessController,
     Cover_AdvancedWirelessController,
-
-    LargeSteamTurbine,
-    LargeGasTurbine,
-    LargeHPSteamTurbine,
-    LargePlasmaTurbine,
 
     Ingot_Heavy1,
     Ingot_Heavy2,
@@ -1803,14 +1795,12 @@ public enum ItemList implements IItemContainer {
     OilDrill3,
 
     OilDrill4,
-    OilDrillInfinite,
     ConcreteBackfiller1,
     ConcreteBackfiller2,
     OreDrill1,
     OreDrill2,
     OreDrill3,
     OreDrill4,
-    PyrolyseOven,
     OilCracker,
     SolarFactory,
     NanoForge,
@@ -1843,8 +1833,6 @@ public enum ItemList implements IItemContainer {
     ItemFilter_Import,
     CuringOven,
     Machine_Multi_Assemblyline,
-    Machine_Multi_DieselEngine,
-    Machine_Multi_ExtremeDieselEngine,
     QuantumEye,
     QuantumStar,
     Gravistar,
@@ -2186,7 +2174,6 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_TranscendentPlasmaMixer,
     Cover_Metrics_Transmitter,
     NC_AdvancedSensorCard,
-    Machine_Multi_DroneCentre,
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,
@@ -2801,7 +2788,6 @@ public enum ItemList implements IItemContainer {
     NaniteFramework,
     NaniteShieldingGlass,
 
-    PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,

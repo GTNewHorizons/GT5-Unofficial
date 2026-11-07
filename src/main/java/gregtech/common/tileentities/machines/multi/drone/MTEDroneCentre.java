@@ -49,7 +49,6 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -231,9 +230,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre");
-        if (getBaseMetaTileEntity().getMetaTileID() == MetaTileEntityIDs.Drone_Centre.ID) {
-            tt.addStructureDeprecatedLine();
-        }
         tt.addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
             .addInfo("Monitors multiblock machines in range")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module")

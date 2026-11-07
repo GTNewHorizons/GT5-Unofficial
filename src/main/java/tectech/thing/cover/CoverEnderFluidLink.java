@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -38,9 +37,6 @@ public class CoverEnderFluidLink extends Cover {
     private boolean privateChannel;
     private String frequency = "";
     private boolean checkedLegacyBinding;
-    // TODO: REMOVE AFTER 2.9
-    private static final int IMPORT_EXPORT_MASK = 0b0001;
-    private static final int PUBLIC_PRIVATE_MASK = 0b0010;
 
     public CoverEnderFluidLink(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context, coverFGTexture);
@@ -159,23 +155,12 @@ public class CoverEnderFluidLink extends Cover {
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        if (nbt instanceof NBTTagInt nbtInt) {
-            readLegacyDataFromNbt(nbtInt);
-            return;
-        }
         NBTTagCompound tag = (NBTTagCompound) nbt;
         this.export = tag.getBoolean("export");
         this.privateChannel = tag.getBoolean("privateChannel");
         this.frequency = tag.getString("frequency");
         // covers saved before the channel moved into the cover still have it in the world saved data
         this.checkedLegacyBinding = tag.hasKey("frequency");
-    }
-
-    private void readLegacyDataFromNbt(NBTTagInt nbtInt) {
-        int data = nbtInt.func_150287_d();
-        this.export = !testBit(data, IMPORT_EXPORT_MASK);
-        this.privateChannel = testBit(data, PUBLIC_PRIVATE_MASK);
-        this.checkedLegacyBinding = false;
     }
 
     @Override
