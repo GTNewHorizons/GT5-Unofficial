@@ -1234,8 +1234,9 @@ tt.keyphrase.Hint_Details=Hint Details
 
 #debug boom
 tt.keyword.BOOM=BOOM!
-tt.keyword.Destination=Output Hatch ID
-tt.keyword.Weight=Output Hatch Weight
+tt.keyword.Hatch=Hatch %s
+tt.keyword.Id=ID
+tt.keyword.Weight=Weight
 tt.keyword.Source=Source
 tt.keyword.Progress=Progress
 tt.keyword.Computation=Computation
