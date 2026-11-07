@@ -168,9 +168,9 @@ public class AchievementHandler {
             11,
             8,
             GregtechItemList.Neptunium238Dust.get(1),
-            "multi.cyclo",
+            "multi.abs",
             false);
-        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.cyclo", false);
+        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.abs", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -362,10 +362,6 @@ public class AchievementHandler {
                 // PSS
                 else if (aUnlocalName.equals(aStartsWith + "substation.01.input.single")) {
                     this.issueAchievement(aPlayer, "multi.pss");
-                }
-                // Cyclotron
-                else if (aUnlocalName.startsWith(aStartsWith + "cyclotron.tier.single")) {
-                    this.issueAchievement(aPlayer, "multi.cyclo");
                 }
                 // Sifter
                 else if (aUnlocalName.equals(aStartsWith + "industrialsifter.controller.tier.single")) {
