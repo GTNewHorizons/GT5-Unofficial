@@ -2285,6 +2285,14 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .nonOpaque()
         .build();
+
+    public static final UITexture BW_PICTURE_STORED_EU_FRAME = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/picture/stored_eu_frame")
+        .imageSize(118, 7)
+        .adaptable(2)
+        .canApplyTheme()
+        .build();
+
     // endregion picture
 
     // region machine modes

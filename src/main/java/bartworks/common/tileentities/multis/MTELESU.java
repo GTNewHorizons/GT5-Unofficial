@@ -15,7 +15,6 @@ package bartworks.common.tileentities.multis;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,21 +32,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
-import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.loaders.ItemRegistry;
@@ -56,7 +42,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -67,7 +52,10 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.multiblock.MTELESUGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELESU extends MTEMultiBlockBase {
@@ -87,10 +75,16 @@ public class MTELESU extends MTEMultiBlockBase {
         public int getSlotLimit(int slot) {
             return 1;
         }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack != null && stack.getItem()
+                .equals(
+                    GTUtility.getIntegratedCircuit(0)
+                        .getItem());
+        }
     };
     private long mStorage;
-
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTELESU(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -99,6 +93,18 @@ public class MTELESU extends MTEMultiBlockBase {
 
     public MTELESU(String aName) {
         super(aName);
+    }
+
+    public ItemStackHandler getCircuitsInventoryHandler() {
+        return circuitsInventoryHandler;
+    }
+
+    public long getStorage() {
+        return mStorage;
+    }
+
+    public void setStorage(long mStorage) {
+        this.mStorage = mStorage;
     }
 
     @Override
@@ -297,14 +303,8 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-
-        return switch (index) {
-            case 0, 1 -> true;
-            default -> stack != null && stack.getItem()
-                .equals(
-                    GTUtility.getIntegratedCircuit(0)
-                        .getItem());
-        };
+        return rechargerSlotStartIndex() <= index && index <= dechargerSlotStartIndex()
+            && GTModHandler.isElectricItem(stack, GTUtility.getTier(maxEUInput()));
     }
 
     @Override
@@ -333,6 +333,7 @@ public class MTELESU extends MTEMultiBlockBase {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            mStartUpCheck--;
             this.mMaxProgresstime = 1;
             if (aTick % 20 == 0) this.checkStructure(true, aBaseMetaTileEntity);
         }
@@ -432,161 +433,6 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(105, 51));
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(118, 67))
-            .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 1) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }).setBackground(
-                this.getGUITextureSet()
-                    .getItemSlot(),
-                GTUITextures.OVERLAY_SLOT_IN)
-                .setPos(127, 13))
-            .widget(new SlotWidget(new BaseSlot(this.inventoryHandler, 0) {
-
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-            }).setBackground(
-                this.getGUITextureSet()
-                    .getItemSlot(),
-                GTUITextures.OVERLAY_SLOT_CHARGER)
-                .setPos(127, 49));
-        for (int i = 0; i < 4; i++) {
-            builder.widget(
-                new SlotWidget(this.circuitsInventoryHandler, i).setBackground(
-                    this.getGUITextureSet()
-                        .getItemSlot(),
-                    GTUITextures.OVERLAY_SLOT_INT_CIRCUIT)
-                    .setPos(151, 4 + i * 18));
-        }
-
-        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        this.drawTexts(screenElements);
-        builder.widget(screenElements);
-
-        builder.widget(
-            new DrawableWidget().setDrawable(BWUITextures.PICTURE_STORED_EU_FRAME)
-                .setPos(7, 72)
-                .setSize(118, 7))
-            .widget(
-                new ProgressBar().setProgress(
-                    () -> (float) this.getBaseMetaTileEntity()
-                        .getStoredEU() / this.getBaseMetaTileEntity()
-                            .getEUCapacity())
-                    .setDirection(ProgressBar.Direction.RIGHT)
-                    .setTexture(BWUITextures.PROGRESSBAR_STORED_EU_116, 116)
-                    .setPos(8, 73)
-                    .setSize(116, 5));
-    }
-
-    private long clientEU;
-    private long clientMaxEU;
-    private long clientMaxIn;
-    private long clientMaxOut;
-    private long clientAmps;
-
-    private void drawTexts(DynamicPositionedColumn screenElements) {
-        screenElements.setSpace(0)
-            .setPos(11, 8);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("BW.gui.text.lesu.eu", numberFormat.format(this.clientEU)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .getStoredEU(),
-                    val -> clientEU = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("BW.gui.text.lesu.max", numberFormat.format(clientMaxEU)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .isActive()
-                            ? this.getBaseMetaTileEntity()
-                                .getOutputVoltage() * Configuration.multiblocks.energyPerCell
-                            : 0,
-                    val -> clientMaxEU = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("BW.gui.text.lesu.max_in", numberFormat.format(clientMaxIn)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .getInputVoltage(),
-                    val -> clientMaxIn = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("BW.gui.text.lesu.eu_out", numberFormat.format(clientMaxOut)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .getOutputVoltage(),
-                    val -> clientMaxOut = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector
-                            .translateToLocalFormatted("BW.gui.text.lesu.amp_io", numberFormat.format(clientAmps)))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.getBaseMetaTileEntity()
-                        .getInputAmperage(),
-                    val -> clientAmps = val))
-            .widget(
-                new TextWidget(Text.localised("tooltip.LESU.0.name")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(Color.YELLOW.getRGB())
-                    .setEnabled(widget -> this.maxEUStore() >= Long.MAX_VALUE - 1))
-            .widget(
-                new TextWidget(Text.localised("tooltip.LESU.1.name")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(Color.RED.getRGB())
-                    .setEnabled(
-                        widget -> !this.getBaseMetaTileEntity()
-                            .isActive()));
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -594,5 +440,25 @@ public class MTELESU extends MTEMultiBlockBase {
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELESUGui(this);
     }
 }
