@@ -4,7 +4,6 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +39,6 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
-        registerDroneCenterTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -324,24 +322,5 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
-    }
-
-    private static void registerDroneCenterTransformer() {
-        // idk which one is better
-        TileEntityReplacementManager
-            .tileEntityTransformer("gregtech:gt.blockmachines", ((nbtTagCompound, world, chunk) -> {
-                int mID = nbtTagCompound.getInteger("mID");
-                if (mID == 15568) {
-                    nbtTagCompound.setInteger("mID", 9400);
-                    return new BlockInfo(Block.getBlockFromItem(ItemList.DroneCentre.getItem()), 9400);
-                }
-                return null;
-            }));
-        // or
-        BlockReplacementManager.addSimpleReplacement(
-            "gregtech:gt.blockmachines",
-            15568,
-            Block.getBlockFromItem(ItemList.DroneCentre.getItem()),
-            9400);
     }
 }

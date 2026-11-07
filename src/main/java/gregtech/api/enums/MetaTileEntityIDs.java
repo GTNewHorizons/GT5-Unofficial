@@ -851,7 +851,10 @@ public enum MetaTileEntityIDs {
     RECIPE_FILTER_UV(9338),
     RECIPE_FILTER_UHV(9339),
     INDUSTRIAL_APIARY(9399),
-    DroneCentre(9400),
+    // UNUSED(9400),
+    /**
+     * @see {@link MetaTileEntityIDs#DroneCentre}
+     */
     DroneDownLink(9401),
     PURIFICATION_PLANT_CONTROLLER(9402),
     PURIFICATION_UNIT_CLARIFIER(9403),
@@ -1823,7 +1826,7 @@ public enum MetaTileEntityIDs {
     CryogenicFreezer(15565),
     IndustrialMixer(15566),
     InfiniteFluidDrillingRig(15567),
-    // UNUSED(15568),
+    DroneCentre(15568),
     MegaOilCracker(15569),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),

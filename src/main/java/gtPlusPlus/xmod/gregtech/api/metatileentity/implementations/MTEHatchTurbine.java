@@ -42,7 +42,7 @@ public class MTEHatchTurbine extends MTEHatch {
     private boolean mHasTurbine;
 
     public MTEHatchTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 16, "Turbine Rotor holder for XL Turbines");
+        super(aID, aName, aNameRegional, aTier, 16, "Turbine Rotor holder");
     }
 
     public MTEHatchTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -53,7 +53,6 @@ public class MTEHatchTurbine extends MTEHatch {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Right Click with a soldering iron to reset controller link",
             "Right Click with a wrench to remove turbine",
             "Right Click with a screwdriver for technical information",
             "Sneak + Right Click with a wrench to rotate",
