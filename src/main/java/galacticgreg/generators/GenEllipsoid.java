@@ -80,16 +80,16 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
 
     @Override
     public void calculate() {
-        int Xmin = (int) (_mEllipsoidCenter.xCoord - _mSizeA);
-        int Xmax = (int) (_mEllipsoidCenter.xCoord + _mSizeA);
-        int Ymin = (int) (_mEllipsoidCenter.yCoord - _mSizeB);
-        int Ymax = (int) (_mEllipsoidCenter.yCoord + _mSizeB);
-        int Zmin = (int) (_mEllipsoidCenter.zCoord - _mSizeC);
-        int Zmax = (int) (_mEllipsoidCenter.zCoord + _mSizeC);
+        int xMin = (int) (_mEllipsoidCenter.xCoord - _mSizeA);
+        int xMax = (int) (_mEllipsoidCenter.xCoord + _mSizeA);
+        int yMin = (int) (_mEllipsoidCenter.yCoord - _mSizeB);
+        int yMax = (int) (_mEllipsoidCenter.yCoord + _mSizeB);
+        int zMin = (int) (_mEllipsoidCenter.zCoord - _mSizeC);
+        int zMax = (int) (_mEllipsoidCenter.zCoord + _mSizeC);
 
-        for (int iX = Xmin; iX <= Xmax; iX++) {
-            for (int iY = Ymin; iY <= Ymax; iY++) {
-                for (int iZ = Zmin; iZ <= Zmax; iZ++) {
+        for (int iX = xMin; iX <= xMax; iX++) {
+            for (int iY = yMin; iY <= yMax; iY++) {
+                for (int iZ = zMin; iZ <= zMax; iZ++) {
                     double dx = _mEllipsoidCenter.xCoord - iX;
                     double dy = _mEllipsoidCenter.yCoord - iY;
                     double dz = _mEllipsoidCenter.zCoord - iZ;

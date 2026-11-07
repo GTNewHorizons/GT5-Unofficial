@@ -128,7 +128,7 @@ public class PlasmaForgeRecipes implements Runnable {
         // Quantum anomaly recipe bypass for UEV+. Avoids RNG.
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemStandarParticleBase, 1, 24),
+                new ItemStack(ModItems.itemStandardParticleBase, 1, 24),
                 getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 0),
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(1 * INGOTS))

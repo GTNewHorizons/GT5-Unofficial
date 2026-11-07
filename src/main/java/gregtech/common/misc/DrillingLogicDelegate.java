@@ -45,7 +45,7 @@ public class DrillingLogicDelegate {
         this.owner = owner;
     }
 
-    /** Descents a pipe tip one plock deeper. */
+    /** Descents a pipe tip one block deeper. */
     public boolean descent(IGregTechTileEntity te) {
         if (!te.isAllowedToWork()) {
             return false;
@@ -178,7 +178,7 @@ public class DrillingLogicDelegate {
 
         long seed = rng.getSeed();
 
-        // See if we can store all of the outputs
+        // See if we can store all the outputs
         List<ItemStack> drops = OreManager
             .mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
 
@@ -222,9 +222,10 @@ public class DrillingLogicDelegate {
     }
 
     /**
-     * Creates and provides the Fake Player for owners. todo maybe will provide player owner uuid? im sure some servers
-     * not allow to fakers, in griefing reasons.
+     * Creates and provides the Fake Player for owners.
      */
+    // TODO: maybe will provide player owner uuid? I'm sure some servers do not allow Fake Players, for griefing
+    // reasons.
     public FakePlayer getFakePlayer(IGregTechTileEntity te) {
         if (mFakePlayer == null) {
             mFakePlayer = GTUtility.getFakePlayer(te);

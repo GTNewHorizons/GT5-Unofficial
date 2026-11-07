@@ -199,12 +199,12 @@ public enum Element {
     }
 
     /**
-     * A companion object to workaround java limitations
+     * A companion object to work around java limitations
      */
     private static final class Companion {
 
         /**
-         * Why is this a separate map and populated by enum constructor instead of a Map prepoluated with values()?
+         * Why is this a separate map and populated by enum constructor instead of a Map prepopulated with values()?
          * Because apparently there are people hacking into this enum via EnumHelper.
          */
         private static final Map<String, Element> VALUES = new HashMap<>();

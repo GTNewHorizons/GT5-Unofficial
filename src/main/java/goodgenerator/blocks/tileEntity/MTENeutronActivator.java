@@ -105,7 +105,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
         .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronActivator_Off_GLOW");
 
-    protected final String NA_BOTTOM = mName + "buttom";
+    protected final String NA_BOTTOM = mName + "bottom";
     protected final String NA_MID = mName + "mid";
     protected final String NA_TOP = mName + "top";
 
@@ -345,7 +345,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        return (int) Math.clamp(batchSetting.get(), 1.0D, 128.0D);
     }
 
     @Override

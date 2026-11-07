@@ -212,7 +212,7 @@ public class LineChartWidget extends Widget<LineChartWidget> {
         double lineWidth = (double) (getArea().width - (lineMarginLeft + lineMarginRight)) / data.size();
         // First vertex drawn twice (once here and once in the loop) so it's, well, a line
         double x = lineMarginLeft;
-        double y = getPointY(data.get(0), minValue, maxValue);
+        double y = getPointY(data.getFirst(), minValue, maxValue);
         tessellator.addVertex(x, y, 0);
 
         for (int i = 0; i < data.size(); i++) {

@@ -26,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
  * This implementation is for some reason slower than the Recursive Check.... For ~3400 blocks this takes 8ms, the
  * Recursive Check 5ms.
  */
+@Deprecated
 public class ConnectedBlocksCheckerIteration {
 
     public final HashSet<Coords> hashset = new HashSet<>(2048);

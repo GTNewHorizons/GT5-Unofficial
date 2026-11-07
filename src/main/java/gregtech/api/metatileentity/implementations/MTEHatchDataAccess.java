@@ -205,7 +205,7 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
         lines.sort(String::compareTo);
 
-        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
+        lines.addFirst(translate("tt.keyphrase.AL_Recipe_Header"));
 
         return lines.toArray(new String[lines.size()]);
     }

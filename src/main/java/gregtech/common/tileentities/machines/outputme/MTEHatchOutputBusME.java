@@ -109,7 +109,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     EntityPlayer lastClickedPlayer = null;
 
-    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this) {};
+    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<>(this) {};
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -192,7 +192,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public IMEInventory<IAEItemStack> getNetworkInvtory() throws GridAccessException {
+    public IMEInventory<IAEItemStack> getNetworkInventory() throws GridAccessException {
         return getProxy().getStorage()
             .getItemInventory();
     }

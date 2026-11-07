@@ -508,7 +508,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         int recipeRelativeMouseY = mousePos.y - gui.guiTop - recipePos.y;
 
         if (stacktraceHoverArea.contains(recipeRelativeMouseX, recipeRelativeMouseY)) {
-            currentTip.addAll(cachedRecipe.mRecipe.stackTraces.get(0));
+            currentTip.addAll(cachedRecipe.mRecipe.stackTraces.getFirst());
         }
 
         return currentTip;
@@ -621,13 +621,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSizes, int x,
-            int y, boolean aUnificate) {
-            this(recipe, object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, aUnificate, false);
+            int y, boolean unify) {
+            this(recipe, object, renderRealStackSizes, x, y, PositionedStack.CHANCE_FULL, unify, false);
         }
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSize, int x,
-            int y, int aChance, boolean aUnificate, boolean aIsInput) {
-            super(aUnificate ? GTOreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
+            int y, int aChance, boolean unify, boolean aIsInput) {
+            super(unify ? GTOreDictUnificator.getNonUnifiedStacks(object) : object, x, y, true);
             this.recipe = recipe;
             this.chance = aChance;
             this.mIsInput = aIsInput;
@@ -679,7 +679,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             FluidStack fluidStack = StackInfo.getFluid(item);
             if (fluidStack == null || fluidStack.amount <= 0) return;
 
-            // L is used intentionally, because it takes less space than mB
+            // L is used intentionally because it takes less space than mB
             String amountString;
             if (fluidStack.amount < 10_000) {
                 amountString = fluidStack.amount + "L";

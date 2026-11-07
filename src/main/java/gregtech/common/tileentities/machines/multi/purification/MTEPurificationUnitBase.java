@@ -175,7 +175,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             // Technically, this entire efficiency stat is a bit useless for purification units, since
             // their power draw does not actually depend on it, but it's nice to keep around for consistency with other
             // multiblocks. This way, you still gradually see the efficiency go down when it powers down.
-            mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+            mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, getMaxEfficiency(mInventory[1]));
         }
     }
 

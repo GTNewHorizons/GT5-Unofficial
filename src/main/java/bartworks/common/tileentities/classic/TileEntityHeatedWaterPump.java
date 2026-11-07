@@ -99,7 +99,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
         return (this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0;
     }
 
-    private void fixUnderlflow() {
+    private void fixUnderflow() {
         if (this.fuel < 0) this.fuel = 0;
     }
 
@@ -149,7 +149,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
         this.fakestack.setStackDisplayName(this.outputstack.amount + "L Water");
         if (this.checkPreUpdate()) return;
 
-        this.fixUnderlflow();
+        this.fixUnderflow();
         this.handleRefuel();
         this.handleWaterGeneration();
         this.causePollution();
@@ -221,11 +221,11 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int ammount) {
-        if (slot != TileEntityHeatedWaterPump.FUELSLOT || this.fuelstack == null || ammount > this.fuelstack.stackSize)
+    public ItemStack decrStackSize(int slot, int amount) {
+        if (slot != TileEntityHeatedWaterPump.FUELSLOT || this.fuelstack == null || amount > this.fuelstack.stackSize)
             return null;
 
-        return this.fuelstack.splitStack(ammount);
+        return this.fuelstack.splitStack(amount);
     }
 
     @Override
@@ -297,12 +297,11 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
 
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        int actualdrain = maxDrain;
-        if (actualdrain > this.outputstack.amount) actualdrain = this.outputstack.amount;
-        FluidStack ret = new FluidStack(TileEntityHeatedWaterPump.WATER, actualdrain);
+        int actualDrain = Math.min(maxDrain, this.outputstack.amount);
+        FluidStack ret = new FluidStack(TileEntityHeatedWaterPump.WATER, actualDrain);
         if (ret.amount == 0) ret = null;
         if (doDrain) {
-            this.outputstack.amount -= actualdrain;
+            this.outputstack.amount -= actualDrain;
             FluidEvent.fireEvent(
                 new FluidEvent.FluidDrainingEvent(
                     this.outputstack,
@@ -311,7 +310,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
                     this.yCoord,
                     this.zCoord,
                     this,
-                    actualdrain));
+                    actualDrain));
         }
         return ret;
     }

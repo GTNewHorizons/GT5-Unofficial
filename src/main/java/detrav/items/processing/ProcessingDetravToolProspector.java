@@ -40,9 +40,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerLV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellSaltWater")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.LV), 'X', ItemList.Sensor_LV });
         GTModHandler.addCraftingRecipe(
@@ -50,9 +50,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerMV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellSulfuricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellSaltWater")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.MV), 'X', ItemList.Sensor_MV });
 
@@ -61,9 +61,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerHV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.HV), 'X', ItemList.Sensor_HV });
         GTModHandler.addCraftingRecipe(
@@ -71,9 +71,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerEV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.EV), 'X', ItemList.Sensor_EV });
         GTModHandler.addCraftingRecipe(
@@ -81,9 +81,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerIV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellNitricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellSodiumPersulfate")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.IV), 'X', ItemList.Sensor_IV });
 
@@ -92,9 +92,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerLuV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.LuV), 'X', ItemList.Sensor_LuV });
         GTModHandler.addCraftingRecipe(
@@ -102,9 +102,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerZPM.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.ZPM), 'X', ItemList.Sensor_ZPM });
         GTModHandler.addCraftingRecipe(
@@ -112,9 +112,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerUV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.UV), 'X', ItemList.Sensor_UV });
 
@@ -123,9 +123,9 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                 .getToolWithStats(ProspectorScannerUHV.ID, 1, material, Materials.Steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E', OreDictionary.getOres("cellHydrofluoricAcid")
-                .get(0), 'S',
+                .getFirst(), 'S',
                 OreDictionary.getOres("cellHydrogenPeroxide")
-                    .get(0),
+                    .getFirst(),
                 'H', OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                 OrePrefixes.circuit.get(Materials.UHV), 'X', ItemList.Sensor_UHV });
 

@@ -97,7 +97,7 @@ public class GTPostLoad {
                     .getInputs()
                     .size() == 1 && e.getKey()
                         .getInputs()
-                        .get(0)
+                        .getFirst()
                         .isItemEqual(iridiumOre))
             .findAny()
             .ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));

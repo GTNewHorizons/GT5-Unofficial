@@ -9731,7 +9731,7 @@ public class MaterialsInit {
         Materials.Air = loadAir();
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
-        Materials.Alumite = loadAlumite();
+        Materials.Alumite = loadObzinite();
         Materials.Alunite = loadAlunite();
         Materials.Amethyst = loadAmethyst();
         Materials.Apatite = loadApatite();
@@ -9868,7 +9868,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadAlumite() {
+    private static Materials loadObzinite() {
         return new MaterialBuilder().setName("Alumite")
             .setDefaultLocalName("Obzinite")
             .setIconSet(TextureSet.SET_METALLIC)
@@ -14069,7 +14069,7 @@ public class MaterialsInit {
             .addMaterial(Materials.CallistoIce, 1)
             .addAspect(TCAspects.HUMANUS, 2)
             .addSubTag(SubTag.SOFT)
-            .removeOrePrefix(OrePrefixes.cell) // non molten cell is useless
+            .removeOrePrefix(OrePrefixes.cell) // non-molten cell is useless
             .constructMaterial()
             .setGasTemperature(12_406);
     }
@@ -15052,7 +15052,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadAcetylene() {
-        // TODO: Add to JUPITER Athmosphere and Enceladus and to moon of Saturn
+        // TODO: Add to JUPITER atmosphere and Enceladus and to moon of Saturn
         return new MaterialBuilder().setName("Acetylene")
             .setDefaultLocalName("Acetylene")
             .setIconSet(TextureSet.SET_FLUID)

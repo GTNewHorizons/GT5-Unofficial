@@ -61,7 +61,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 /**
  * Responsible for recipe addition / search for recipemap.
  * <p>
- * In order to bind custom backend to recipemap, use {@link RecipeMapBuilder#of(String, BackendCreator)}.
+ * To bind custom backend to recipemap, use {@link RecipeMapBuilder#of(String, BackendCreator)}.
  */
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
@@ -324,14 +324,14 @@ public class RecipeMapBackend {
         recipeLookupState = GTRecipeLookupBuilder.newLookupState();
     }
 
-    private void rebuildLookupStructures(boolean reUnificate) {
+    private void rebuildLookupStructures(boolean unify) {
         meaningfulItems.clear();
         meaningfulFluids.clear();
         Arrays.fill(cacheMap, null);
 
         GTRecipeLookupBuilder lookupBuilder = new GTRecipeLookupBuilder();
         for (GTRecipe recipe : allRecipes()) {
-            if (reUnificate) {
+            if (unify) {
                 GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
                 GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
             }
@@ -415,15 +415,16 @@ public class RecipeMapBackend {
      *                            {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
      *                            Alternatively overriding {@link #filterFindRecipe} will also work.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
-     * @param notUnificated       If this is set to true, item inputs will be unificated.
-     * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount for the
+     * @param notUnified          If this is set to true, item inputs will be unificated.
+     * @param dontCheckStackSizes If this is set to true, this method won't check the item count and fluid amount for
+     *                            the
      *                            matched recipe.
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
      */
     Stream<GTRecipe> matchRecipeStream(@Nullable ItemStack @NotNull [] rawItems,
         @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
-        boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        boolean notUnified, boolean dontCheckStackSizes, boolean forCollisionCheck) {
         if (doesOverwriteFindRecipe()) {
             return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
@@ -456,7 +457,7 @@ public class RecipeMapBackend {
 
         ItemStack[] items;
         // Unification happens here in case the item input isn't already unificated.
-        if (notUnificated) {
+        if (notUnified) {
             items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
         } else {
             items = rawItems;

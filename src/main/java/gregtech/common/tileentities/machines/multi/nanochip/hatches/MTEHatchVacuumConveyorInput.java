@@ -103,7 +103,7 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
                 IVacuumStorage[] outputs = this.getNetwork()
                     .getComponents(IVacuumStorage.class)
                     .toArray(new IVacuumStorage[0]);
-                // only one output per input and they have to be on the same nac (the if check)
+                // only one output per input, and they have to be on the same nac (the if check)
                 if (outputs.length != 1) {
                     return;
                 }

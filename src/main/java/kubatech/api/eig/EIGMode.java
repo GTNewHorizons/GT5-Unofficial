@@ -104,7 +104,7 @@ public abstract class EIGMode {
      * @see IEIGBucketFactory#tryCreateBucket(MTEExtremeIndustrialGreenhouse, ItemStack)
      * @param greenhouse The {@link MTEExtremeIndustrialGreenhouse} that will contain the seed.
      * @param input      The {@link ItemStack} for the input item.
-     * @param maxConsume The maximum amount of items to consume.
+     * @param maxConsume The maximum number of items to consume.
      * @param simulate   Whether to actually consume the seed.
      * @return Null if no bucket could be created from the item.
      */

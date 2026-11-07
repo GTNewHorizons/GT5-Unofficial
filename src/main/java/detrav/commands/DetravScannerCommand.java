@@ -41,7 +41,7 @@ public class DetravScannerCommand extends GTBaseCommand {
             }
 
             for (i++; i < args.length; i++) {
-                String temp = strs.get(strs.size() - 1);
+                String temp = strs.getLast();
                 temp = temp + " " + args[i];
                 temp = temp.replace("\"", "");
                 strs.set(strs.size() - 1, temp);

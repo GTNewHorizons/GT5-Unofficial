@@ -145,7 +145,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public long maxEUOutput() {
-        return Math.min(Math.max(this.mStorage / Configuration.multiblocks.energyPerCell, 1L), 32768L);
+        return Math.clamp(this.mStorage / Configuration.multiblocks.energyPerCell, 1L, 32768L);
     }
 
     @Override
@@ -369,14 +369,14 @@ public class MTELESU extends MTEMultiBlockBase {
         List<StructureError> errors) {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
-        this.connectedcells.get_connected(
+        this.connectedcells.getConnected(
             aBaseMetaTileEntity.getWorld(),
             aBaseMetaTileEntity.getXCoord(),
             aBaseMetaTileEntity.getYCoord(),
             aBaseMetaTileEntity.getZCoord(),
             ItemRegistry.BW_BLOCKS[1]);
 
-        if (this.connectedcells.get_meta_of_sideblocks(
+        if (this.connectedcells.getMetaOfSideBlocks(
             aBaseMetaTileEntity.getWorld(),
             this.getBaseMetaTileEntity()
                 .getMetaTileID(),

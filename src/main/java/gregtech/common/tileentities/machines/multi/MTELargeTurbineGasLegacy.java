@@ -130,8 +130,9 @@ public class MTELargeTurbineGasLegacy extends MTELargeTurbineLegacy {
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
-                                                                          // Doesn't matter which one. Ignore the rest!
+            FluidStack firstFuelType = new FluidStack(aFluids.getFirst(), 0); // Identify a SINGLE type of fluid to
+                                                                              // process.
+            // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             if (fuelValue <= 0) {
                 return 0;

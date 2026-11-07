@@ -54,7 +54,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.common.items.ItemStonageRotors;
+import bartworks.common.items.ItemStoneAgeRotors;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
 import gregtech.api.interfaces.ITexture;
@@ -393,9 +393,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
 
             @Override
-            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {
-                return;
-            }
+            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {}
         };
     }
 
@@ -557,7 +555,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     public void setRotorDamage(TileEntityRotorBlock rotorBlock, int damage) {
         ItemStack stack = rotorBlock.rotorSlot.get();
-        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
+        if (stack == null || !(stack.getItem() instanceof ItemStoneAgeRotors rotor)) {
             rotorBlock.rotorSlot.damage(damage, false);
             return;
         }

@@ -40,18 +40,18 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
      * there's no reason to do this) - If the first entry doesn't have Metadata, ALL subtypes of this block will be
      * handled through the special case. The metadata is sourced from the ItemStack defined in the
      * {@link #convertSlabRecipe(ItemStack)} method call. The ItemStack metadata will also be used for the second entry,
-     * UNLESS it defines it's own metadata, in which case that will be used instead. - If the first entry has Metadata,
+     * UNLESS it defines its own metadata, in which case that will be used instead. - If the first entry has Metadata,
      * ONLY that specific block subtype will be handled through the special case. This Metadata will be copied into the
-     * second entry, UNLESS it defines it's own metadata, in which case that will be used instead. Additionaly, if the
+     * second entry, UNLESS it defines its own metadata, in which case that will be used instead. Additionally, if the
      * second entry is null, then creation of the slab recipes will be skipped entirely, even if an OreDict recipe
      * exists. The standard slab recipes (be they from OreDict or not) will still be removed, however.
      * <p>
-     * Some examples of Mods which need special handling, as well as the reasons why:
+     * Some examples of Mods that need special handling, as well as the reasons why:
      * <p>
      * Witchery: The mod forgot to add the "standard" Plank -> Slab recipes, so we need to manually assign them. In most
      * cases this should instead be fixed in the original mod, but we all know this ain't happening for Witchery.
      * <p>
-     * Amun-Ra: Needs it because the Planks metadatas are completely different from the Slab metadatas. In this case we
+     * Amun-Ra: Needs it because the Plank's metadata is completely different from the Slab's metadata. In this case we
      * match each block subtype individually.
      * <p>
      * Et Futurum Requiem: ETF's Slab recipes _are_ OreDict recipes, meaning they receive the same priority as Forge's
@@ -63,7 +63,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
 
     /**
-     * set of keys provided by {@link ProcessingUtils#itemStackKey(ItemStack)} that will cause the recipe removal of
+     * Set of keys provided by {@link ProcessingUtils#itemStackKey(ItemStack)} that will cause the recipe removal of
      * slab recipes to be skipped. The complete blacklist is completed with witchery's witchwood planks, but that has
      * its own test, see {@link #isSlabRecipeRemovalBlacklisted(ItemStack)}.
      */

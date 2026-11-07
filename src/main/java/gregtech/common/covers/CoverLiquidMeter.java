@@ -31,7 +31,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * TODO: Implement overlay rendering only with {@link Cover#getOverlayTexture()}
  */
-public class CoverLiquidMeter extends Cover implements Invertable {
+public class CoverLiquidMeter extends Cover implements Invertible {
 
     private boolean inverted;
     /**

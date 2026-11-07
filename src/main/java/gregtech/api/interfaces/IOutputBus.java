@@ -32,7 +32,7 @@ public interface IOutputBus {
     boolean storePartial(ItemStack stack, boolean simulate);
 
     /**
-     * Creates a transaction from this output bus. The transaction copies this bus' state (inventory, etc) when
+     * Creates a transaction from this output bus. The transaction copies this bus' state (inventory, etc.) when
      * created, and subsequent calls on the transaction modify the copy of this bus. The transaction does not modify
      * this bus' state unless {@link IOutputBusTransaction#commit()} is called.
      */

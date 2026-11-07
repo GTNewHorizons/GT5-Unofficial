@@ -107,8 +107,8 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
             tList2.add(new ChunkPosition(0, -1, 0));
         } else return false;
         while (!tList2.isEmpty()) {
-            ChunkPosition tPos = tList2.get(0);
-            tList2.remove(0);
+            ChunkPosition tPos = tList2.getFirst();
+            tList2.removeFirst();
             if (!checkAllBlockSides(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ, tList1, tList2)) {
                 return false;
             }

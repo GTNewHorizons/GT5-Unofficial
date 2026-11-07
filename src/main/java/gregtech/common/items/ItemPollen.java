@@ -72,7 +72,7 @@ public class ItemPollen extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(PollenType.values().length - 1, stack.getItemDamage()));
+        int meta = Math.clamp(stack.getItemDamage(), 0, PollenType.values().length - 1);
         int colour = PollenType.values()[meta].getColours()[0];
 
         if (pass >= 1) {

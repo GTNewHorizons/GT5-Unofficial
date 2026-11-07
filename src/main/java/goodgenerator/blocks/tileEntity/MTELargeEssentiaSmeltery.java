@@ -459,9 +459,9 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         this.nodeIncrease = aNBT.getInteger("nodeIncrease");
 
         this.mOutputAspects.aspects.clear();
-        NBTTagList tlist = aNBT.getTagList("Aspects", 10);
-        for (int j = 0; j < tlist.tagCount(); ++j) {
-            NBTTagCompound rs = tlist.getCompoundTagAt(j);
+        NBTTagList tagList = aNBT.getTagList("Aspects", 10);
+        for (int j = 0; j < tagList.tagCount(); ++j) {
+            NBTTagCompound rs = tagList.getCompoundTagAt(j);
             if (rs.hasKey("key"))
                 this.mOutputAspects.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
         }

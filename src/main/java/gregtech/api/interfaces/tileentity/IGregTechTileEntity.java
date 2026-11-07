@@ -31,7 +31,7 @@ import io.netty.buffer.ByteBuf;
  * It can cause Problems to include this Interface!
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IFluidHandler, ITurnable,
-    IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
+    IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdatable,
     IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
 
     /**
@@ -45,13 +45,13 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     int setMetaTileID(short aID);
 
     /**
-     * @return the MetaTileEntity which is belonging to this, or null if it doesnt has one.
+     * @return the MetaTileEntity which belongs to this, or null if it doesn't have one.
      */
     IMetaTileEntity getMetaTileEntity();
 
     /**
      * Sets the MetaTileEntity. Even though this uses the Universal Interface, certain BaseMetaTileEntities only accept
-     * one kind of MetaTileEntity so only use this if you are sure its the correct one or you will get a Class cast
+     * one kind of MetaTileEntity so only use this if you are sure it's the correct one, or you will get a Class cast
      * Error.
      *
      * @param aMetaTileEntity a MetaTileEntity
@@ -128,12 +128,12 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     void setInitialValuesAsNBT(NBTTagCompound aNBT, short aID);
 
     /**
-     * Called when leftclicking the TileEntity
+     * Called when left-clicking the TileEntity
      */
     void onLeftclick(EntityPlayer aPlayer);
 
     /**
-     * Called when rightclicking the TileEntity
+     * Called when right-clicking the TileEntity
      */
     boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 

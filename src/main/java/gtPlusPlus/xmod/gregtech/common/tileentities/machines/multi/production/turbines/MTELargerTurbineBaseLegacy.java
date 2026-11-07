@@ -318,8 +318,8 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));
         }
-        Materials aBaseMat = aTurbineMats.get(0);
-        int aBaseSize = aTurbineSizes.get(0);
+        Materials aBaseMat = aTurbineMats.getFirst();
+        int aBaseSize = aTurbineSizes.getFirst();
         for (int aSize : aTurbineSizes) {
             if (aBaseSize != aSize) {
                 return false;
@@ -426,7 +426,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
-            ItemStack aStack = getFullTurbineAssemblies().get(0)
+            ItemStack aStack = getFullTurbineAssemblies().getFirst()
                 .getTurbine();
 
             TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);

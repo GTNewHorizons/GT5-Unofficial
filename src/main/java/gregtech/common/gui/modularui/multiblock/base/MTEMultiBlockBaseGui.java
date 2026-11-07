@@ -496,7 +496,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 (long) item.stackSize,
                 Long::sum);
         }
-        // a and b comparison swapped for stacksize on purpose to get descending order
+        // a and b comparison swapped for stack size on purpose to get descending order
         List<Map.Entry<ItemDisplayKey, Long>> sortedEntries = itemDisplayMap.entrySet()
             .stream()
             .sorted((a, b) -> {
@@ -540,7 +540,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         Flow column = Flow.column()
             .coverChildren(0);
 
-        // create merged map of fluidstack to total amount in recipe
+        // create merged map of fluid stack to total amount in recipe
         final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
@@ -548,8 +548,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (fluidStack == null) {
                 continue;
             }
-            long amount = (long) fluidStack.amount;
-            // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
+            long amount = fluidStack.amount;
+            // map.merge requires the objects to be the same. fluid stacks with different stack sizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
             fluidStack.amount = 1;
             fluidDisplayMap.merge(fluidStack, amount, Long::sum);
@@ -589,7 +589,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
-        // Second argument is stacksize, don't care about it
+        // Second argument is stack size, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
 
@@ -603,7 +603,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private IWidget createHoverableTextForItem(ItemDisplayKey key, long amount, PanelSyncManager syncManager) {
-        // Second argument is stacksize, don't care about it
+        // Second argument is stack size, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
@@ -1156,7 +1156,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         return new ToggleButton().syncHandler("structureUpdateButton")
             .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
-            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.structure_update")));
     }
 
     protected ToggleButton createPowerSwitchButton() {
@@ -1314,14 +1314,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
-            int maintIsuses = 0;
-            maintIsuses += multiblock.mCrowbar ? 0 : 1;
-            maintIsuses += multiblock.mHardHammer ? 0 : 1;
-            maintIsuses += multiblock.mScrewdriver ? 0 : 1;
-            maintIsuses += multiblock.mSoftMallet ? 0 : 1;
-            maintIsuses += multiblock.mSolderingTool ? 0 : 1;
-            maintIsuses += multiblock.mWrench ? 0 : 1;
-            return maintIsuses;
+            int maintIssues = 0;
+            maintIssues += multiblock.mCrowbar ? 0 : 1;
+            maintIssues += multiblock.mHardHammer ? 0 : 1;
+            maintIssues += multiblock.mScrewdriver ? 0 : 1;
+            maintIssues += multiblock.mSoftMallet ? 0 : 1;
+            maintIssues += multiblock.mSolderingTool ? 0 : 1;
+            maintIssues += multiblock.mWrench ? 0 : 1;
+            return maintIssues;
         });
 
         syncManager.syncValue("maintCount", maintSyncer);

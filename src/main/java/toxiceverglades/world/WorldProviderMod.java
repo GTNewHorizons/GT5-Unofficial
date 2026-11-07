@@ -17,7 +17,7 @@ public class WorldProviderMod extends WorldProvider {
         this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.AMPLIFIED);
         this.isHellWorld = false;
         this.hasNoSky = false;
-        this.dimensionId = DimensionEverglades.DIMID;
+        this.dimensionId = DimensionEverglades.DIM_ID;
     }
 
     @Override

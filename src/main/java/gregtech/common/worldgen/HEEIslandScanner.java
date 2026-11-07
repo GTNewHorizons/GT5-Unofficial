@@ -5,7 +5,6 @@ import java.util.BitSet;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.LRUCache;
 import gregtech.mixin.interfaces.accessors.HEEChunkProviderAccessor;
 import gregtech.mixin.interfaces.accessors.MapGenIslandAccessor;
@@ -41,10 +40,10 @@ public class HEEIslandScanner {
             if (minX < chunkX && minZ < chunkZ && maxX >= chunkX + REGION_WIDTH && maxZ >= chunkZ + REGION_WIDTH)
                 return false;
 
-            minX = GTUtility.clamp(minX - chunkX, 0, REGION_WIDTH - 1);
-            maxX = GTUtility.clamp(maxX - chunkX, 0, REGION_WIDTH - 1);
-            minZ = GTUtility.clamp(minZ - chunkZ, 0, REGION_WIDTH - 1);
-            maxZ = GTUtility.clamp(maxZ - chunkZ, 0, REGION_WIDTH - 1);
+            minX = Math.clamp(minX - chunkX, 0, REGION_WIDTH - 1);
+            maxX = Math.clamp(maxX - chunkX, 0, REGION_WIDTH - 1);
+            minZ = Math.clamp(minZ - chunkZ, 0, REGION_WIDTH - 1);
+            maxZ = Math.clamp(maxZ - chunkZ, 0, REGION_WIDTH - 1);
 
             for (int z = minZ; z <= maxZ; z++) {
                 int start = getIndex(minX, z);
@@ -83,7 +82,7 @@ public class HEEIslandScanner {
         for (int z = 0; z < 32; z++) {
             for (int x = 0; x < 32; x++) {
                 // x/z are centred, but the seed isn't, so we offset the seed coords by the radius of the island.
-                // This isn't perfect since islands can generate off-centre but it works well enough
+                // This isn't perfect since islands can generate off-center, but it works well enough
                 int seedX = x + info.chunkX - ISLAND_RADIUS;
                 int seedZ = z + info.chunkZ - ISLAND_RADIUS;
 

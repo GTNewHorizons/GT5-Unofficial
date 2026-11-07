@@ -201,7 +201,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
         mCachedRecipe = aRecipe;
     }
 
-    // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
+    // let's make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean canBeMadeFrom(ItemStack from, ItemStack to) {
         List<ItemStack> results = getItemsForChiseling(from);
         for (ItemStack s : results) {
@@ -212,7 +212,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
         return false;
     }
 
-    // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
+    // Let's make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
         return !results.isEmpty();

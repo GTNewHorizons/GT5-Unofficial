@@ -597,7 +597,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
-        // max overclocks is ehatch tier - recipe tier
+        // max number of overclocks is ehatch tier - recipe tier
         // can only overclock if machine has a remaining overclock,
         // duration when overclocked won't go below 5 seconds
         // and recipe eu/t after overclock is less than available eu/t

@@ -10,8 +10,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 /**
  * Just a simple Class to be able to add special Tags for Materials.
  * <p/>
- * The Tags should be added in preload and before I do my own preload to the Materials. In order to make yourself a new
- * SubTag, just create one new instance of SubTag using getNewSubTag and use that one instance on all Materials you want
+ * The Tags should be added in preload, and before I do my own preload to the Materials. In order to make yourself a new
+ * SubTag, create one new instance of SubTag using getNewSubTag and use that one instance on all Materials you want
  * to add those Tags to.
  * <p/>
  * You should look at this File whenever you update, maybe there are some new Tags you could use.
@@ -29,7 +29,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     public final String mName;
     /**
      * Add this to your Material if you want to have its Ore Calcite heated in a Blast Furnace for more output. Already
-     * listed are: Iron, Pyrite, PigIron, DeepIron, ShadowIron, CastIron and MeteoricIron.
+     * listed are: Iron, Pyrite, PigIron, DeepIron, ShadowIron, CastIron, and MeteoricIron.
      */
     public static final SubTag BLASTFURNACE_CALCITE_DOUBLE = getNewSubTag("BLASTFURNACE_CALCITE_DOUBLE"),
         BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");
@@ -47,12 +47,12 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     public static final SubTag INDUCTIONSMELTING_LOW_OUTPUT = getNewSubTag("INDUCTIONSMELTING_LOW_OUTPUT");
     /**
      * Add this to your Material if you want to have its Ore Sodium Persulfate washed. Already listed are: Zinc, Nickel,
-     * Copper, Cobalt, Cobaltite and Tetrahedrite.
+     * Copper, Cobalt, Cobaltite, and Tetrahedrite.
      */
     public static final SubTag WASHING_SODIUMPERSULFATE = getNewSubTag("WASHING_SODIUMPERSULFATE");
     /**
      * Add this to your Material if you want to have its Ore Mercury washed. Already listed are: Gold, Osmium, Mithril,
-     * Platinum, Midasium, Cooperite and AstralSilver.
+     * Platinum, Midasium, Cooperite, and AstralSilver.
      */
     public static final SubTag WASHING_MERCURY = getNewSubTag("WASHING_MERCURY");
     /**
@@ -79,7 +79,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag PULVERIZING_CINNABAR = getNewSubTag("PULVERIZING_CINNABAR");
     /**
-     * This Material cannot be worked by any other means, than smashing or smelting. This is used for coated Materials.
+     * This Material cannot be worked by any other means than smashing or smelting. This is used for coated Materials.
      */
     public static final SubTag NO_WORKING = getNewSubTag("NO_WORKING");
     /**
@@ -141,9 +141,9 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag QUARTZ = getNewSubTag("QUARTZ");
     /**
-     * If this Material is Crystallisable
+     * If this Material is Crystallizable
      */
-    public static final SubTag CRYSTALLISABLE = getNewSubTag("CRYSTALLISABLE");
+    public static final SubTag CRYSTALLIZABLE = getNewSubTag("CRYSTALLISABLE");
     /**
      * If this Material is some kind of Crystal
      */
@@ -209,19 +209,19 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag SOLDERING_MATERIAL = getNewSubTag("SOLDERING_MATERIAL");
     /**
-     * If this Material is has extra Costs for Soldering, requires the Tag "SOLDERING_MATERIAL" too
+     * If this Material has extra Costs for Soldering, requires the Tag "SOLDERING_MATERIAL" too
      */
     public static final SubTag SOLDERING_MATERIAL_BAD = getNewSubTag("SOLDERING_MATERIAL_BAD");
     /**
-     * If this Material is has a discount for Soldering, requires the Tag "SOLDERING_MATERIAL" too
+     * If this Material has a discount for Soldering, requires the Tag "SOLDERING_MATERIAL" too
      */
     public static final SubTag SOLDERING_MATERIAL_GOOD = getNewSubTag("SOLDERING_MATERIAL_GOOD");
     /**
-     * Energy Tag for Electricity Primary = Voltage Secondary = Amperage
+     * Energy Tag for Electricity, Primary = Voltage, Secondary = Amperage
      */
     public static final SubTag ENERGY_ELECTRICITY = getNewSubTag("ENERGY_ELECTRICITY");
     /**
-     * Energy Tag for Rotating Power Primary = Speed Secondary = Power
+     * Energy Tag for Rotating Power, Primary = Speed, Secondary = Power
      */
     public static final SubTag ENERGY_ROTATIONAL = getNewSubTag("ENERGY_ROTATIONAL");
     /**
@@ -229,15 +229,15 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag ENERGY_STEAM = getNewSubTag("ENERGY_STEAM");
     /**
-     * Energy Tag for Air Pressure Power Primary = Pressure Secondary = unused (always 1)
+     * Energy Tag for Air Pressure Power, Primary = Pressure, Secondary = unused (always 1)
      */
     public static final SubTag ENERGY_AIR = getNewSubTag("ENERGY_AIR");
     /**
-     * Energy Tag for Heat Primary = Temperature Secondary = unused (always 1)
+     * Energy Tag for Heat, Primary = Temperature, Secondary = unused (always 1)
      */
     public static final SubTag ENERGY_HEAT = getNewSubTag("ENERGY_HEAT");
     /**
-     * Energy Tag for RedstoneFlux Primary = unused (always 1) Secondary = RF
+     * Energy Tag for RedstoneFlux, Primary = unused (always 1), Secondary = RF
      */
     public static final SubTag ENERGY_REDSTONE_FLUX = getNewSubTag("ENERGY_REDSTONE_FLUX");
     /**

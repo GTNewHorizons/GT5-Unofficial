@@ -132,7 +132,7 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
         EnumSyncValue<WorkState, ?> workStateSyncer = syncManager
             .findSyncHandler("drillerWorkState", EnumSyncValue.class);
         return new ButtonWidget<>()
-            .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> { multiblock.abortDrilling(); }))
+            .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> { multiblock.abortDrilling(); }))
             .overlay(
                 new DynamicDrawable(
                     () -> workStateSyncer.getValue() == WorkState.ABORT ? new DrawableStack(

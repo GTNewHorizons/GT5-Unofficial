@@ -165,7 +165,7 @@ public class ChunkProviderModded implements IChunkProvider {
 
                         for (int i3 = 0; i3 < 4; ++i3) {
                             int j3 = i3 + k * 4 << 12 | 0 + j1 * 4 << 8 | k2 * 8 + l2;
-                            short short1 = 256; // TODO - wots dis do
+                            short short1 = 256; // TODO - what does this do?
                             j3 -= short1;
                             double d14 = 0.25D;
                             double d16 = (d11 - d10) * d14;
@@ -241,7 +241,7 @@ public class ChunkProviderModded implements IChunkProvider {
     }
 
     /**
-     * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
+     * Will return a chunk if it doesn't exist, and it's not an MP client, it will generate all the blocks for the
      * specified chunk from the map seed and chunk seed
      */
     @Override
@@ -403,7 +403,7 @@ public class ChunkProviderModded implements IChunkProvider {
     }
 
     /**
-     * Populates chunk with ores etc etc
+     * Populates chunk with ores etc.
      */
     @Override
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {

@@ -16,8 +16,4 @@ public class TFBlocks {
         blockFluidCryotheum.preInit();
         blockFluidEnder.preInit();
     }
-
-    public static void init() {}
-
-    public static void postInit() {}
 }

@@ -248,7 +248,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt((-1D / y * (x - y) * (x - y) + y) / y * z);
-        return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
+        return Math.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
     @Override
@@ -343,7 +343,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     public FluidStack getStoredFluidOutputs() {
         // Only one output Hatch, enforced in checkMachine.
-        return this.mOutputHatches.get(0)
+        return this.mOutputHatches.getFirst()
             .getFluid();
     }
 
@@ -385,7 +385,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
         int offsetY_U, int offsetZ_U) {
         int height = this.reCalculateHeight();
-        if (this.mFluid != null && height > 1 && this.reCalculateFluidAmmount() > 0) {
+        if (this.mFluid != null && height > 1 && this.reCalculateFluidAmount() > 0) {
             for (int x = offsetX_L; x <= offsetX_U; x++) {
                 for (int y = offsetY_L; y <= offsetY_U; y++) {
                     for (int z = offsetZ_L; z <= offsetZ_U; z++) {
@@ -480,7 +480,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         this.isVisibleFluid = true;
         this.height = this.reCalculateHeight();
-        if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) {
+        if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmount() > 0) {
             for (int x = offsetX_L; x <= offsetX_U; x++) {
                 for (int y = offsetY_L; y <= offsetY_U; y++) {
                     for (int z = offsetZ_L; z <= offsetZ_U; z++) {
@@ -532,7 +532,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         }
     }
 
-    private int reCalculateFluidAmmount() {
+    private int reCalculateFluidAmount() {
         return this.getStoredFluids()
             .stream()
             .mapToInt(fluidStack -> fluidStack.amount)
@@ -540,8 +540,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     }
 
     private int reCalculateHeight() {
-        return this.reCalculateFluidAmmount() > this.getCapacity() / 4 - 1
-            ? this.reCalculateFluidAmmount() >= this.getCapacity() / 2 ? 3 : 2
+        return this.reCalculateFluidAmount() > this.getCapacity() / 4 - 1
+            ? this.reCalculateFluidAmount() >= this.getCapacity() / 2 ? 3 : 2
             : 1;
     }
 
@@ -585,7 +585,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 }
 
                 this.height = this.reCalculateHeight();
-                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmmount() <= 0) {
+                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmount() <= 0) {
                     return;
                 }
                 if (BWUtil.areStacksEqualOrNull(aStack, this.mStack)
@@ -656,7 +656,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mRadHatches.size() == 1) {
-                this.mSievert = this.mRadHatches.get(0)
+                this.mSievert = this.mRadHatches.getFirst()
                     .getSievert();
             } else {
                 this.mSievert = 0;

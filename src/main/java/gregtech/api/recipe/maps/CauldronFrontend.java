@@ -33,7 +33,7 @@ public class CauldronFrontend extends RecipeMapFrontend {
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
         return Arrays.asList(
             UIHelper.getItemInputPositions(2)
-                .get(0));
+                .getFirst());
     }
 
     @Override

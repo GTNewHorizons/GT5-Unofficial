@@ -9,6 +9,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -106,7 +108,7 @@ public class WorldgenCommand implements ICommand {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NotNull Object o) {
         return 0;
     }
 

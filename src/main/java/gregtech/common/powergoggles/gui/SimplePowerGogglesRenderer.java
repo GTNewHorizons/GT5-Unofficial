@@ -189,7 +189,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private double clampPercentage(double percentage) {
-        return Math.max(0, Math.min(1, percentage));
+        return Math.clamp(percentage, 0, 1);
     }
 
     private int getTextColor(BigInteger measurement) {

@@ -221,7 +221,7 @@ public class AchievementHandler {
      * A generic handler that will give an achievement for an item. Useful to only write this once, then call it from
      * all handlers.
      *
-     * @param aStack  - The Itemstack to check for achievements.
+     * @param aStack  - The item stack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */
     private void handleAchievement(ItemStack aStack, EntityPlayer aPlayer) {
@@ -335,11 +335,11 @@ public class AchievementHandler {
                 else if (aUnlocalName.startsWith(aStartsWith + "electricboiler.")) {
                     this.issueAchievement(aPlayer, "advancedsteam");
                 }
-                // Scrubers
+                // Scrubbers
                 else if (aUnlocalName.startsWith(aStartsWith + "pollutioncleaner.01.tier.")) {
                     this.issueAchievement(aPlayer, "pollutionremoval");
                 }
-                // High-amp xformers
+                // High-amp transformers
                 else if (aUnlocalName.startsWith(aStartsWith + "transformer.ha.tier.")) {
                     this.issueAchievement(aPlayer, "hiampxform");
                 }
@@ -403,7 +403,7 @@ public class AchievementHandler {
     }
 
     /*
-     * Handle achievements for all vanilla types of obtianment.
+     * Handle achievements for all vanilla types of obtainment.
      */
 
     @SubscribeEvent

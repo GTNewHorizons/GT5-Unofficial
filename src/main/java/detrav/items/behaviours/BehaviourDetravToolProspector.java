@@ -45,7 +45,7 @@ import gregtech.common.pollution.Pollution;
  */
 public class BehaviourDetravToolProspector extends BehaviourNone {
 
-    static final int[] DISTANCEINTS = new int[] { 0, 4, 25, 64 };
+    static final int[] DISTANCE_INTS = new int[] { 0, 4, 25, 64 };
     int distTextIndex;
 
     // Found ores by item id and meta, one map per distance index
@@ -127,8 +127,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 aZ = bZ + z * 16;
                 int dist = x * x + z * z;
 
-                for (distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++) {
-                    if (dist <= DISTANCEINTS[distTextIndex]) {
+                for (distTextIndex = 0; distTextIndex < DISTANCE_INTS.length; distTextIndex++) {
+                    if (dist <= DISTANCE_INTS[distTextIndex]) {
                         break;
                     }
                 }
@@ -336,7 +336,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     /** Returns one empty ore map per distance group, from next to you to far away. */
     static List<Map<String, ItemStack>> newOreMaps() {
         List<Map<String, ItemStack>> maps = new ArrayList<>();
-        for (int i = 0; i <= DISTANCEINTS.length; i++) maps.add(new HashMap<>());
+        for (int i = 0; i <= DISTANCE_INTS.length; i++) maps.add(new HashMap<>());
         return maps;
     }
 

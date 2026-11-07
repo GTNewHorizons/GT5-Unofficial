@@ -113,7 +113,7 @@ public class CoverFluidLimiter extends Cover {
         long tMax;
         long tUsed;
         if (tankInfo != null) {
-            // 0 Because we acces first slot only
+            // 0, because we only access the first slot
             FluidTankInfo inputSlot = tankInfo[0];
             if (inputSlot.fluid != null) {
                 tMax = inputSlot.capacity;

@@ -15,7 +15,7 @@ public class AlloySmelter implements Runnable {
     public void run() {
         final MetaItemCraftingComponent craftingItem = MetaItemCraftingComponent.getInstance();
 
-        // YSZ Cermic Plate
+        // YSZ Ceramic Plate
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 3),

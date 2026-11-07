@@ -609,7 +609,7 @@ public enum Mods implements IMod {
         public static final String CRAFT_PRESENCE = "craftpresence";
         public static final String EXTRA_UTILITIES = "ExtraUtilities";
         public static final String GRAVI_SUITE = "GraviSuite";
-        // "Healer" - Don't know what this is or where it comes from but it's in the list
+        // "Healer" - Don't know what this is or where it comes from, but it's in the list
         public static final String HUNGER_OVERHAUL = "HungerOverhaul";
         public static final String INDUSTRIAL_CRAFT2 = "IC2";
         // JourneyMap Server
@@ -630,7 +630,7 @@ public enum Mods implements IMod {
         // Minecraft :)
         public static final String MINECRAFT = "minecraft";
 
-        // Misc, should eventually be removed
+        // Misc should eventually be removed
         public static final String AROMA1997_CORE = "Aroma1997Core";
         public static final String EXTRA_CELLS2 = "extracells";
         public static final String MC_FRAMES = "MCFrames";

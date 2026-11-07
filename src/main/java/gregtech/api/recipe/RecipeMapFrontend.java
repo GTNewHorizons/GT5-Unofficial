@@ -44,7 +44,7 @@ import gregtech.nei.RecipeDisplayInfo;
  * Responsible for managing GUI tied to recipemap. It has two property objects, {@link NEIRecipeProperties} and
  * {@link BasicUIProperties}. The former is only for NEI display, while the latter is for both NEI and basic machine.
  * <p>
- * In order to bind custom frontend to recipemap, use {@link RecipeMapBuilder#frontend}.
+ * To bind custom frontend to recipemap, use {@link RecipeMapBuilder#frontend}.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -252,7 +252,7 @@ public class RecipeMapFrontend {
                 recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
                         "GT5U.recipes.recipe_by.original",
-                        recipe.owners.get(0)
+                        recipe.owners.getFirst()
                             .getName()));
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
@@ -265,7 +265,7 @@ public class RecipeMapFrontend {
                 recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
                         "GT5U.recipes.recipe_by",
-                        recipe.owners.get(0)
+                        recipe.owners.getFirst()
                             .getName()));
             }
         }

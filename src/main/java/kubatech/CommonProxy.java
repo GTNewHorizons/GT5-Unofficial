@@ -68,7 +68,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
-        RecipeLoader.registerMTEs(); // crashes in preinit because EIG references some blocks from other mods.
+        RecipeLoader.registerMTEs(); // crashes in preInit because EIG references some blocks from other mods.
         if (MineTweaker.isModLoaded()) {
             MTLoader.init();
         }

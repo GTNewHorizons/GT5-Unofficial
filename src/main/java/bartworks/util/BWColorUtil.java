@@ -32,7 +32,7 @@ public class BWColorUtil {
     }
 
     public static Dyes getDyeFromColor(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
+        rgba = correctColorArray(rgba);
         if (isGrayScale(rgba, 2)) {
             switch (getDarknessFromColor(rgba, 0)) {
                 case 0:
@@ -80,7 +80,7 @@ public class BWColorUtil {
                 }
                 return Dyes.dyePink;
             }
-            if (isGrenScale(tmp)) {
+            if (isGreenScale(tmp)) {
                 if (isCyanScale(tmp)) {
                     if (rgba[2] + 40 < rgba[1]) switch (getDarknessFromColor(rgba, 0)) {
                         case 0:
@@ -141,7 +141,7 @@ public class BWColorUtil {
     }
 
     public static boolean isPurpleScale(short[] rgba) {
-        return !isGrenScale(rgba);
+        return !isGreenScale(rgba);
     }
 
     public static boolean isYellowScale(short[] rgba) {
@@ -149,39 +149,39 @@ public class BWColorUtil {
     }
 
     public static boolean isBlueScale(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
+        rgba = correctColorArray(rgba);
         return rgba[2] * 2 >= rgba[1] + rgba[0];
     }
 
-    public static boolean isGrenScale(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
+    public static boolean isGreenScale(short[] rgba) {
+        rgba = correctColorArray(rgba);
         return rgba[1] * 2 >= rgba[0] + rgba[2];
     }
 
     public static boolean isRedScale(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
+        rgba = correctColorArray(rgba);
         return rgba[0] * 2 >= rgba[1] + rgba[2];
     }
 
-    public static boolean isGrayScale(short[] rgba, int magin) {
-        rgba = correctCorlorArray(rgba);
-        return rgba[0] >> magin == rgba[1] >> magin && rgba[1] >> magin == rgba[2] >> magin;
+    public static boolean isGrayScale(short[] rgba, int margin) {
+        rgba = correctColorArray(rgba);
+        return rgba[0] >> margin == rgba[1] >> margin && rgba[1] >> margin == rgba[2] >> margin;
     }
 
-    public static short[] roundColor(short[] rgba, int magin) {
+    public static short[] roundColor(short[] rgba, int margin) {
         short[] tmp = Arrays.copyOf(rgba, 4);
-        tmp[0] = (short) (rgba[0] >> magin);
-        tmp[1] = (short) (rgba[1] >> magin);
-        tmp[2] = (short) (rgba[2] >> magin);
+        tmp[0] = (short) (rgba[0] >> margin);
+        tmp[1] = (short) (rgba[1] >> margin);
+        tmp[2] = (short) (rgba[2] >> margin);
         return tmp;
     }
 
     public static boolean isGrayScale(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
+        rgba = correctColorArray(rgba);
         return rgba[0] == rgba[1] && rgba[1] == rgba[2];
     }
 
-    public static short[] correctCorlorArray(short[] rgba) {
+    public static short[] correctColorArray(short[] rgba) {
         if (rgba.length > 4) {
             rgba = Arrays.copyOfRange(rgba, 0, 4);
         }

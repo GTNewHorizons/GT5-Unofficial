@@ -313,9 +313,6 @@ public class ProspectingPacket extends DetravPacket {
                     .map(e -> e.getValue().name)
                     .sorted()
                     .collect(Collectors.toList());
-                if (allKeys.size() > 1) {
-                    allKeys.addFirst(StatCollector.translateToLocal("gui.detrav.scanner.all"));
-                }
                 return allKeys;
             }
             case DetravMetaGeneratedTool01.MODE_POLLUTION -> {

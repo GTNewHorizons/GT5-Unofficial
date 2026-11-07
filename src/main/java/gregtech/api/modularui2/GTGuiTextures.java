@@ -2289,107 +2289,107 @@ public final class GTGuiTextures {
 
     // region machine modes
 
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_DEFAULT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_CHEMBATH = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_chembath");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_WASHPLANT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_washplant");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_SIMPLEWASHER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_simplewasher");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_PACKAGER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_packager");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_UNPACKAGER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_unpackager");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_SEPARATOR = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_separator");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_POLARIZER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_polarizer");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lpf_fluid");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_LPF_METAL = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_BENDING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_ACCELERATOR = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lhc_accelerator");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COLLIDER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_COLLIDER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lhc_collider");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_MASS_FABRICATING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_mass_fabrication");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_DISTILLING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_distilling");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_DISTILLATION_TOWER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_tower");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SCANNER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_SCANNER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_scanner");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ARC = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_ARC = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_arc");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_PLASMA_ARC = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_plasma_arc");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RESEARCH = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_RESEARCH = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_research");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RECYCLING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_RECYCLING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_recycling");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_SLICING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_CUTTING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_cutting");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_SINGULARITY = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_singularity");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
 
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_FORGE = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_FORGE = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_forge");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_MACERATOR = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_macerator");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_WASHER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_washer");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_SIFTER = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_sifter");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_THERMAL = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_THERMAL = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_thermal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_CENTRIFUGE = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_centrifuge");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_IOF_BATH = fullImage(
+    public static final UITexture OVERLAY_BUTTON_MACHINE_MODE_IOF_BATH = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_iof_bath");
 

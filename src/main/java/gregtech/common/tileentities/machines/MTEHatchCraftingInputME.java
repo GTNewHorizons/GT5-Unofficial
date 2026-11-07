@@ -271,12 +271,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
                 for (IAEStack<?> singleInput : list) {
                     switch (singleInput) {
-                        case null -> {
-                            continue;
-                        }
                         case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
                         case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
-                        default -> {
+                        case null, default -> {
                         }
                     }
                 }
@@ -435,14 +432,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
                 switch (aes) {
-                    case null -> {
-                        continue;
-                    }
                     case IAEFluidStack ifs ->  // insert fluid
                         insertFluid(ifs);
                     case IAEItemStack ais ->  // insert item
                         insertItem(ais);
-                    default -> {
+                    case null, default -> {
                     }
                 }
 
@@ -1509,7 +1503,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         if (index < SLOT_CIRCUIT) {
-            // if its a pattern slot, only accept patterns
+            // if it's a pattern slot, only accept patterns
             return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
                 && super.isItemValidForSlot(index, itemStack);
         }

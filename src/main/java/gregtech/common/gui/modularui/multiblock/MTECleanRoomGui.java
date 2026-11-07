@@ -23,12 +23,12 @@ public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IntSyncValue efficency = syncManager.findSyncHandler("efficiency", IntSyncValue.class);
+        IntSyncValue efficiency = syncManager.findSyncHandler("efficiency", IntSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                     + ": "
-                    + formatNumber(efficency.getValue() / 100D)
+                    + formatNumber(efficiency.getValue() / 100D)
                     + "%"
             // enabled if active
             )
@@ -41,7 +41,7 @@ public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        IntSyncValue efficencySync = new IntSyncValue(multiblock::getCleanness);
-        syncManager.syncValue("efficiency", efficencySync);
+        IntSyncValue efficiencySync = new IntSyncValue(multiblock::getCleanness);
+        syncManager.syncValue("efficiency", efficiencySync);
     }
 }

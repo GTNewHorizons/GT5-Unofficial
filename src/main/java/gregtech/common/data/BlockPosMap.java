@@ -77,7 +77,7 @@ public class BlockPosMap<V> extends Long2ObjectOpenHashMap<V> {
          *
          * This default implementation just delegates to {@link #forEach(Consumer)}.
          *
-         * @param consumer a consumer that will by applied to the entries of this set; the entries might be
+         * @param consumer a consumer that will be applied to the entries of this set; the entries might be
          *                 represented by the same entry instance, suitably mutated.
          * @since 8.1.0
          */

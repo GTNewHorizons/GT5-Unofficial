@@ -235,10 +235,10 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             if (this.heliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED) {
                 for (FluidStack fluidStack : this.getStoredFluids()) {
                     if (fluidStack.isFluidEqual(Materials.Helium.getGas(1))) {
-                        int toget = Math
+                        int toGet = Math
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
-                        fluidStack.amount -= toget;
-                        this.heliumSupply += toget;
+                        fluidStack.amount -= toGet;
+                        this.heliumSupply += toGet;
                     }
                 }
             }
@@ -248,10 +248,10 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     if (GTUtility.areStacksEqual(
                         itemStack,
                         new ItemStack(THTRMaterials.aTHTR_Materials, 1, THTRMaterials.MATERIAL_FUEL_INDEX))) {
-                        int toget = Math.min(MAX_CAPACITY - this.fuelSupply, itemStack.stackSize);
-                        if (toget == 0) continue;
-                        itemStack.stackSize -= toget;
-                        this.fuelSupply += toget;
+                        int toGet = Math.min(MAX_CAPACITY - this.fuelSupply, itemStack.stackSize);
+                        if (toGet == 0) continue;
+                        itemStack.stackSize -= toGet;
+                        this.fuelSupply += toGet;
                     }
                 }
                 this.endRecipeProcessing();
@@ -316,20 +316,20 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
         if (!super.onRunningTick(aStack)) return false;
 
-        int takecoolant = this.coolingPerTick;
-        int drainedamount = 0;
+        int takeCoolant = this.coolingPerTick;
+        int drainedAmount = 0;
 
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
-                FluidStack drained = tHatch.drain(takecoolant, true);
-                takecoolant -= drained.amount;
-                drainedamount += drained.amount;
-                if (takecoolant <= 0) break;
+                FluidStack drained = tHatch.drain(takeCoolant, true);
+                takeCoolant -= drained.amount;
+                drainedAmount += drained.amount;
+                if (takeCoolant <= 0) break;
             }
         }
 
-        if (drainedamount > 0) this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+        if (drainedAmount > 0) this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", drainedAmount));
 
         this.updateSlots();
 

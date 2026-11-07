@@ -265,7 +265,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         depth = 0;
 
         // return early if no input busses are present, the first bus is invalid or the TE is not on a space station
-        if (mInputBusses.isEmpty() || !mInputBusses.get(0)
+        if (mInputBusses.isEmpty() || !mInputBusses.getFirst()
             .isValid()) {
             resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
@@ -285,7 +285,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        MTEHatchInputBus bus = mInputBusses.get(0);
+        MTEHatchInputBus bus = mInputBusses.getFirst();
         int numPipes = 0;
 
         // count mining pipes, get depth
@@ -386,7 +386,6 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
      *
      * @param aBaseMetaTileEntity MTE of this controller
      * @param stack               Item in the controller
-     * @return True if machine is valid, else false
      */
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack, List<StructureError> errors) {

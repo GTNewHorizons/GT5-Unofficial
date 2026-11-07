@@ -631,7 +631,8 @@ public class GTStructureUtility {
      * Heating coil structure element.
      *
      * @param aHeatingCoilSetter Notify the controller of this new coil. Got called exactly once per coil. Might be
-     *                           called less times if structure test fails. If the setter returns false then it assumes
+     *                           called fewer times if the structure test fails. If the setter returns false, then it
+     *                           assumes
      *                           the coil is rejected.
      * @param aHeatingCoilGetter Get the current heating level. Null means no coil recorded yet.
      */
@@ -684,7 +685,7 @@ public class GTStructureUtility {
 
             private HeatingCoilLevel getHeatFromHint(ItemStack trigger) {
                 return HeatingCoilLevel
-                    .getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1)));
+                    .getFromTier((byte) Math.clamp(trigger.stackSize - 1, 0, HeatingCoilLevel.getMaxTier()));
             }
 
             @Override
@@ -749,7 +750,8 @@ public class GTStructureUtility {
      * Solenoid coil structure element.
      *
      * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid.
-     *                            Might be called less times if structure test fails. If the setter returns false then
+     *                            Might be called fewer times if the structure test fails. If the setter returns false,
+     *                            then
      *                            it assumes the solenoid is rejected.
      * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
      */
@@ -797,7 +799,7 @@ public class GTStructureUtility {
             }
 
             private int getMetaFromHint(ItemStack trigger) {
-                return Math.min(Math.max(trigger.stackSize - 1, 0), 10);
+                return Math.clamp(trigger.stackSize - 1, 0, 10);
             }
 
             @Override
@@ -862,7 +864,7 @@ public class GTStructureUtility {
      *
      * @param list
      * @param blacklist
-     * @return predicate of all multis of same type as hatchelement, with blacklist omitted
+     * @return predicate of all multis of the same type as hatch element, with blacklist omitted
      */
     @Nonnull
     public static Predicate<ItemStack> filterByMTEClassWithBlacklist(

@@ -69,7 +69,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IDamageableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 import gregtech.api.items.MetaBaseItem;
@@ -572,7 +572,7 @@ public class GTModHandler {
 
     /**
      * This is simply allowed because who knows what side effects there are if we just switch the
-     * {@link #stopBufferingCraftingRecipes()} from end of postinit to end of load complete. So to
+     * {@link #stopBufferingCraftingRecipes()} from end of postinit to the end of load complete. So to
      * play safe, we restart the buffer to catch all the calls to delayed removals happening after
      * GT5U's post init. If later it is proven that it is safe to move the {@link #stopBufferingCraftingRecipes()}
      * to load complete, then feel free to remove this dirty hack.
@@ -2056,7 +2056,7 @@ public class GTModHandler {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                 if (!aIgnoreLimit && tTier >= 0)
-                    aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
+                    aCharge = (int) Math.min(aCharge, V[Math.clamp(tTier, 0, V.length - 1)]);
                 if (aCharge > 0) {
                     int rCharge = (int) Math
                         .max(0.0, ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
@@ -2080,7 +2080,7 @@ public class GTModHandler {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                 if (!aIgnoreLimit && tTier >= 0) {
-                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    int tier = Math.clamp(tTier, 0, V.length - 1);
                     aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
                 }
                 if (aCharge > 0) {
@@ -2133,8 +2133,8 @@ public class GTModHandler {
     public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
         if (GTUtility.isStackInvalid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return false;
         if (aPlayer instanceof EntityPlayer && ((EntityPlayer) aPlayer).capabilities.isCreativeMode) return true;
-        if (aStack.getItem() instanceof IDamagableItem) {
-            return ((IDamagableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
+        if (aStack.getItem() instanceof IDamageableItem) {
+            return ((IDamageableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
         } else if (GTModHandler.isElectricItem(aStack)) {
             if (canUseElectricItem(aStack, aDecharge)) {
                 if (aPlayer instanceof EntityPlayer) {

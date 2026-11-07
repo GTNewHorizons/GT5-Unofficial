@@ -1134,7 +1134,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
-    /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
+    /** @deprecated This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) */
     @Deprecated
     public static Collection<Materials> VALUES = new LinkedHashSet<>();
 
@@ -1315,7 +1315,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         } else if (element != null) {
             mChemicalFormula = element.toString();
         } else if (materialList.size() == 1) {
-            mChemicalFormula = materialList.get(0)
+            mChemicalFormula = materialList.getFirst()
                 .toString(true);
         } else if (materialList.size() > 1) {
             mChemicalFormula = materialList.stream()
@@ -1749,7 +1749,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      */
     public static Materials[] values() {
@@ -1809,7 +1809,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     /**
-     * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
+     * This is for keeping compatibility with addon mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
      *
      * @deprecated Use {@link Materials#getName()} instead, but realistically you should never even need the name.
@@ -1904,7 +1904,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         final String aChemicalFormula = getChemicalFormula();
         if (!aShowQuestionMarks && aChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
-            return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
+            return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.getFirst().mAmount == 1))
                 ? aChemicalFormula
                 : "(" + aChemicalFormula + ")") + aMultiplier;
         }

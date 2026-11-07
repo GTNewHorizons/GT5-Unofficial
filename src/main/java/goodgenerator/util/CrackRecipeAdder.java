@@ -134,7 +134,7 @@ public class CrackRecipeAdder {
         }
     }
 
-    public static void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
+    public static void addUniversalDistillationRecipeWithCircuit(FluidStack aInput, ItemStack[] aCircuit,
         FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, long aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GTRecipeBuilder buildDistillation = GTValues.RA.stdBuilder()

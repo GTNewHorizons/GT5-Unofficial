@@ -19,7 +19,8 @@ public class NanochipCCDisplayWidget extends Widget<NanochipCCDisplayWidget> imp
         this.item = ccItem;
     }
 
-    // just a plain override for the widget that allows it to supply a certain stack to NEI based on if its a PC or not.
+    // just a plain override for the widget that allows it to supply a certain stack to NEI based on if it's a PC or
+    // not.
     @Override
     public @Nullable ItemStack getStackForRecipeViewer() {
         ItemStack realStack = CircuitComponent.tryGetRealStack(item);

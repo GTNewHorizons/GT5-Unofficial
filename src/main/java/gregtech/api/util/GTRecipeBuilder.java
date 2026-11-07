@@ -49,7 +49,7 @@ public class GTRecipeBuilder {
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     public static final boolean PANIC_MODE_COLLISION;
 
-    // This should only be enabled in non stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
+    // This should only be enabled in non-stable instances only with -Dgt.recipebuilder.recipe_collision_check=true
     public static final boolean ENABLE_COLLISION_CHECK;
 
     public static final int WILDCARD = 32767;
@@ -519,7 +519,7 @@ public class GTRecipeBuilder {
         List<FluidStack[]> altFluidList = new ArrayList<>();
 
         for (Object obj : fluids) {
-            // man i wish we could use switch statements here, and specially in the itemInputs()
+            // man I wish we could use switch statements here, and specially in the itemInputs()
             if (obj instanceof SubstituteFluidStack group) {
                 FluidStack[] alts = group.fluidStacks.toArray(new FluidStack[0]);
                 FluidStack main = (alts.length > 0) ? alts[0] : null;
@@ -1068,7 +1068,7 @@ public class GTRecipeBuilder {
     // endregion
 
     /**
-     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap, use {@link #addTo}
+     * Builds a new recipe, without custom behavior of recipemaps. For adding recipe to recipemap, use {@link #addTo}
      * instead.
      *
      * @return Built recipe. Returns empty if failed to build.

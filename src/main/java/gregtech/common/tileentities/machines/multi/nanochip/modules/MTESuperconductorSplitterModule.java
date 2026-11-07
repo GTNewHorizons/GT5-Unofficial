@@ -133,7 +133,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     private void findCoolantHatch(List<StructureError> errors) {
         if (!mInputHatches.isEmpty()) {
-            coolantInputHatch = mInputHatches.get(0);
+            coolantInputHatch = mInputHatches.getFirst();
             if (mInputHatches.size() > 1) {
                 errors.add(
                     StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.InputHatch, mInputHatches.size(), 1));

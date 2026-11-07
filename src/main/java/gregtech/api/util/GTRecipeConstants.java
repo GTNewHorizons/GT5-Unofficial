@@ -723,8 +723,8 @@ public class GTRecipeConstants {
     });
 
     /**
-     * Just like any normal assembler recipe, however it accepts one input item to be oredicted. Pass in the item to
-     * oredict via {@link #OREDICT_INPUT}. It will be used along all other item inputs as input of this recipe.
+     * Just like any normal assembler recipe, however, it accepts one input item to be oredicted. Pass in the item to
+     * oredict via {@link #OREDICT_INPUT}. It will be used along with all other item inputs as input of this recipe.
      */
     public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();

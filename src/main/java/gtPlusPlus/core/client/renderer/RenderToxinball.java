@@ -26,8 +26,8 @@ public class RenderToxinball extends Render {
 
     /**
      * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
+     * handing it off to a worker function which does the actual work. In all probability, the class Render is generic
+     * (Render<T extends Entity), and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     public void doRender(EntityToxinball entity, double p_76986_2_, double p_76986_4_, double p_76986_6_) {
@@ -69,8 +69,8 @@ public class RenderToxinball extends Render {
 
     /**
      * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
+     * handing it off to a worker function which does the actual work. In all probability, the class Render is generic
+     * (Render<T extends Entity), and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
     @Override

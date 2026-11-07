@@ -399,7 +399,7 @@ public class GTPreLoad {
         GTMod.proxy.mPollutionVegetationLimit = PollutionConfig.pollutionVegetationLimit;
         GTMod.proxy.mPollutionSourRainLimit = PollutionConfig.pollutionSourRainLimit;
         GTMod.proxy.mPollutionOnExplosion = PollutionConfig.pollutionOnExplosion;
-        GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond = PollutionConfig.pollutionPrimitveBlastFurnacePerSecond;
+        GTMod.proxy.mPollutionPrimitiveBlastFurnacePerSecond = PollutionConfig.pollutionPrimitveBlastFurnacePerSecond;
         GTMod.proxy.mPollutionCharcoalPitPerSecond = PollutionConfig.pollutionCharcoalPitPerSecond;
         GTMod.proxy.mPollutionEBFPerSecond = PollutionConfig.pollutionEBFPerSecond;
         GTMod.proxy.mPollutionLargeCombustionEnginePerSecond = PollutionConfig.pollutionLargeCombustionEnginePerSecond;
@@ -458,7 +458,7 @@ public class GTPreLoad {
         GTMod.proxy.oreDropSystem = Gregtech.oreDropBehavior.setting;
 
         // features
-        GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
+        GTMod.proxy.mUpgradeCount = Math.clamp(Gregtech.features.upgradeStackSize, 1, 64);
 
         GTRecipeBuilder.onConfigLoad();
     }

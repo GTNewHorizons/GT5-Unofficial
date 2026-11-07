@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorState;
@@ -53,7 +52,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
                 state.speedBoostMulti -= SPEED_INCREMENT;
             }
 
-        state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
+        state.speedBoostMulti = Math.clamp(state.speedBoostMulti, 1, speedMaxMulti);
 
         if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
             ChatComponentTranslation chatComponent = new ChatComponentTranslation(

@@ -28,7 +28,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import gtnhlanth.common.register.LanthItemList;
@@ -392,7 +391,7 @@ public enum Casings implements ICasing {
 
         @Override
         public <T> int getTextureId(T t, CasingElementContext<T> context) {
-            int tier = GTUtility.clamp(context.getInstance(t).getCasingTier(context.getGroup(), 0), 0, 2);
+            int tier = Math.clamp(context.getInstance(t).getCasingTier(context.getGroup(), 0), 0, 2);
 
             return switch (tier) {
                 case 1 -> gt(16, 80 + 11);
@@ -444,7 +443,7 @@ public enum Casings implements ICasing {
 
         @Override
         public <T> ITexture getCasingTexture(T t, CasingElementContext<T> context) {
-            int tier = GTUtility.clamp(context.getInstance(t).getCasingTier(context.getGroup(), 0), 0, 1);
+            int tier = Math.clamp(context.getInstance(t).getCasingTier(context.getGroup(), 0), 0, 1);
 
             return TextureFactory.of(this.getBlock(), tier == 0 ? 9 : 3);
         }

@@ -462,7 +462,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
                 ).addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
                 .addElement('k', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-                // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
+                // Adder overridden due to ExoticEnergy originally calling its own adder, giving false positives
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
@@ -606,7 +606,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        FluidStack fluidCoolant = fluidList.get(0);
+        FluidStack fluidCoolant = fluidList.getFirst();
 
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;

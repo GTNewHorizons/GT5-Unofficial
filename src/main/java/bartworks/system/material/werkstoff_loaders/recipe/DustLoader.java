@@ -200,7 +200,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
                                 fluidComponents.isEmpty() ? new FluidStack[0]
-                                    : new FluidStack[] { fluidComponents.get(0) })
+                                    : new FluidStack[] { fluidComponents.getFirst() })
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -227,7 +227,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
                                 fluidComponents.isEmpty() ? new FluidStack[0]
-                                    : new FluidStack[] { fluidComponents.get(0) })
+                                    : new FluidStack[] { fluidComponents.getFirst() })
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -282,7 +282,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(werkstoffDust)
                             .fluidInputs(
                                 fluidComponents.isEmpty() ? new FluidStack[0]
-                                    : new FluidStack[] { fluidComponents.get(0) })
+                                    : new FluidStack[] { fluidComponents.getFirst() })
                             .duration(
                                 (int) Math.max(
                                     1L,

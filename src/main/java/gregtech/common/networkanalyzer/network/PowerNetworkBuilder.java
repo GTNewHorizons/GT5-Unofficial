@@ -157,7 +157,7 @@ public class PowerNetworkBuilder {
             .toList();
         if (consumers.isEmpty()) return;
 
-        processNode(consumers.get(0));
+        processNode(consumers.getFirst());
 
         for (ConsumerNode cNode : consumers) {
             final EnergyResult consumerStats = getPotentialConsumerStats(cNode);
@@ -297,7 +297,7 @@ public class PowerNetworkBuilder {
         edge.path.add(toTile);
         this.visited.add(toTile);
 
-        edge.metrics.actualAmperage = (long) path.getAmperage();
+        edge.metrics.actualAmperage = path.getAmperage();
         edge.metrics.maxAmperage = path.getMaxAmperage();
         edge.metrics.maxVoltage = path.getMaxVoltage();
         edge.metrics.actualLoss = path.getLoss();

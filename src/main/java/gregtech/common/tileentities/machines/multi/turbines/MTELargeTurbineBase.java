@@ -371,7 +371,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + IGregTechDeviceInformation.decode("GT5U.turbine.running.false")
                 + EnumChatFormatting.RESET;
-        String tMaintainance = getIdealStatus() == getRepairStatus()
+        String tMaintenance = getIdealStatus() == getRepairStatus()
             ? EnumChatFormatting.GREEN + IGregTechDeviceInformation.decode("GT5U.turbine.maintenance.false")
                 + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + IGregTechDeviceInformation.decode("GT5U.turbine.maintenance.true")
@@ -398,7 +398,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                 "GT5U.infodata.turbine.output",
                 tRunning,
                 EnumChatFormatting.RED + formatNumber(lEUt) + EnumChatFormatting.RESET),
-            tMaintainance,
+            tMaintenance,
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.turbine.efficiency",
                 EnumChatFormatting.YELLOW + "" + (mEfficiency / 100F) + EnumChatFormatting.RESET),

@@ -132,7 +132,7 @@ public class GTplusplus {
      * executes successfully. {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to inject recipe generation after
      * Gregtech and all other mods are entirely loaded and initialized.
      *
-     * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s
+     * @param event - The {@link EventHandler} object passed through from FML to {@link GTplusplus}'s
      *              {@link #instance}.
      */
     @EventHandler
