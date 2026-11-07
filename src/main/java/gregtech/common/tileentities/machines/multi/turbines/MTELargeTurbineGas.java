@@ -86,6 +86,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
         tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.gas_turbine", "LGT"))
             .addMarkdown(new ResourceLocation("gregtech", "large-gas-turbine"))
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(3, 3, 6, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
@@ -98,7 +99,6 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_3x3_in_front_of_controller"))
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

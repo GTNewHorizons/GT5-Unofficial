@@ -135,6 +135,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     .put("wait_power", formatNumber(WAIT_POWER_PERCENT))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(8, 3, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("21", "PTFE Frame Box", false)
@@ -148,7 +149,6 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInputHatch("1+", "Any titanium machine casing next to a gearbox", 1)
             .addAir("4x2 area in front of the engine intake casings")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         // spotless:on
         return tt;
