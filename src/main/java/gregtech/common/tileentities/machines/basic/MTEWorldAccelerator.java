@@ -441,7 +441,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
             return true;
         }
 
-        for (String tS : GTValues.blacklistedTileEntiyClassNamesForWA) {
+        for (String tS : GTValues.blacklistedTileEntityClassNamesForWA) {
             if (tCanonicalName.equalsIgnoreCase(tS)) {
                 return true;
             }

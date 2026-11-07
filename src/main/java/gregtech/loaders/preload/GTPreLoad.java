@@ -373,7 +373,7 @@ public class GTPreLoad {
 
         // machines
         GTValues.ticksBetweenSounds = Gregtech.machines.ticksBetweenSounds;
-        GTValues.blacklistedTileEntiyClassNamesForWA = Gregtech.machines.blacklistedTileEntiyClassNamesForWA;
+        GTValues.blacklistedTileEntityClassNamesForWA = Gregtech.machines.blacklistedTileEntiyClassNamesForWA;
         GTValues.cleanroomGlass = Gregtech.machines.cleanroomGlass;
         GTValues.enableChunkloaders = Gregtech.machines.enableChunkloaders;
         GTValues.alwaysReloadChunkloaders = Gregtech.machines.alwaysReloadChunkloaders;

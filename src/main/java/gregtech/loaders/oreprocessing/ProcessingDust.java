@@ -266,7 +266,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         }
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)
+                if (aMaterial.contains(SubTag.CRYSTALLIZABLE)
                     && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -447,7 +447,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(electroMagneticSeparatorRecipes);
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)
+                if (aMaterial.contains(SubTag.CRYSTALLIZABLE)
                     && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))

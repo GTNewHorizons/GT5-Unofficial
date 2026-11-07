@@ -1839,7 +1839,7 @@ public class WerkstoffLoader {
             }
             if (W.hasItemType(gem)) {
                 W.add(SubTag.CRYSTAL);
-                W.add(SubTag.CRYSTALLISABLE);
+                W.add(SubTag.CRYSTALLIZABLE);
             }
         }
     }
