@@ -178,8 +178,8 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     }
 
     @Override
-    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
-        EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+    public void addSpecialDebugChatInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
+        ArrayList<IChatComponent> aList) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
@@ -202,8 +202,6 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                         mTargetPos.posY,
                         mTargetPos.posZ)));
         }
-
-        return aList;
     }
 
     // What meta should the pipes for this pipeline have

@@ -315,10 +315,9 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aLogLevel) {
-        final ArrayList<IChatComponent> tList = new ArrayList<>();
+    public void addDebugChatInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         if (aLogLevel > 3) {
-            tList.add(
+            aList.add(
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.meta_id.v2",
                     GTUtility.styledComp(new ChatComponentText(String.valueOf(mID)), EnumChatFormatting.BLUE),
@@ -329,18 +328,17 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         : new ChatComponentText(""))));
         }
         if (aLogLevel > 1) {
-            addProfilingInformation(tList);
+            addProfilingInformation(aList);
             if (mMetaTileEntity != null) {
-                tList.add(
+                aList.add(
                     new ChatComponentTranslation(
                         mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
                             : "GT5U.scanner.debug.not_accessible"));
             }
         }
-        if (joinedIc2Enet) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
+        if (joinedIc2Enet) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
 
-        return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfoChat(this, aPlayer, aLogLevel, tList)
-            : new ArrayList<>();
+        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugChatInfo(this, aPlayer, aLogLevel, aList);
     }
 
     @Override

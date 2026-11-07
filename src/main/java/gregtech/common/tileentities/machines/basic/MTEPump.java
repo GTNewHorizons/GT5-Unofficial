@@ -843,8 +843,8 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
-        EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+    public void addSpecialDebugChatInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
+        ArrayList<IChatComponent> aList) {
         aList.addAll(
             Arrays.asList(
                 new ChatComponentTranslation("GT5U.machines.pump")
@@ -868,7 +868,6 @@ public class MTEPump extends MTEBasicMachine {
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.entity_timer",
                     getBaseMetaTileEntity().getTimer())));
-        return aList;
     }
 
     private FakePlayer mFakePlayer = null;
