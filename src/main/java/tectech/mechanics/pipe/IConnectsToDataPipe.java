@@ -14,4 +14,8 @@ public interface IConnectsToDataPipe {
     boolean isDataInputFacing(ForgeDirection side);
 
     byte getColorization();
+
+    default boolean canClear() {
+        return false;
+    }
 }
