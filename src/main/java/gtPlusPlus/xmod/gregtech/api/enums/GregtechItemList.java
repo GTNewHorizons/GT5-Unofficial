@@ -52,9 +52,14 @@ public enum GregtechItemList implements IItemContainer {
 
     // RTG Fuels
     // TODO: add new crafting recipes. Old ones were removed because they were COMET/Cyclotron recipes
+    // Suggested ideas for e.g. beam crafting are above the entries
+    // U238 deuteron radiation, Np237 / Am neutron radiation, direct Pu238 Pellet craft
     Pellet_RTG_PU238,
+    // U233 / U235 / Pu239 neutron radiation
     Pellet_RTG_SR90,
+    // Bi209 neutron radiation
     Pellet_RTG_PO210,
+    // direct Am Pellet craft
     Pellet_RTG_AM241,
 
     // Computer Cube
