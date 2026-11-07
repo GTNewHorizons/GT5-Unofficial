@@ -307,7 +307,7 @@ public class ScannerHelper {
         try {
             if (block instanceof IDebugableBlock debugableBlock) {
                 final ArrayList<IChatComponent> temp = new ArrayList<>();
-                debugableBlock.addDebugChatInfo(player, x, y, z, 3, temp);
+                debugableBlock.addDebugInfoComp(player, x, y, z, 3, temp);
                 if (temp != null && !temp.isEmpty()) {
                     list.add(addTitleComp("title_debug_info"));
                     list.addAll(temp);

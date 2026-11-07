@@ -17,7 +17,7 @@ public interface IDebugableTileEntity {
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      *
      * @deprecated This function returns a String directly, preventing the text from being translated on the client.
-     *             Please use {@link addDebugChatInfo} instead.
+     *             Please use {@link addDebugInfoComp} instead.
      */
     @Deprecated
     default ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
@@ -32,7 +32,7 @@ public interface IDebugableTileEntity {
      *                  visible to more advanced Scanners 3 = Debug ONLY
      * @param aList     the list to which debug information should be added
      */
-    default void addDebugChatInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+    default void addDebugInfoComp(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         ArrayList<String> chats = this.getDebugInfo(aPlayer, aLogLevel);
         if (chats == null) return;
         for (String chat : chats) {

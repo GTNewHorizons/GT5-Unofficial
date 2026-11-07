@@ -705,11 +705,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     }
 
     @Override
-    public void addDebugChatInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel,
+    public void addDebugInfoComp(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel,
         ArrayList<IChatComponent> aList) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IDebugableTileEntity) {
-            ((IDebugableTileEntity) tTileEntity).addDebugChatInfo(aPlayer, aLogLevel, aList);
+            ((IDebugableTileEntity) tTileEntity).addDebugInfoComp(aPlayer, aLogLevel, aList);
         }
     }
 

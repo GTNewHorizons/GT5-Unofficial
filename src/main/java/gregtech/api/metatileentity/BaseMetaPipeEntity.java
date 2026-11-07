@@ -315,7 +315,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void addDebugChatInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+    public void addDebugInfoComp(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         if (aLogLevel > 3) {
             aList.add(
                 new ChatComponentTranslation(
@@ -337,8 +337,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
         }
         if (joinedIc2Enet) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
-
-        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugChatInfo(this, aPlayer, aLogLevel, aList);
+        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugInfoComp(this, aPlayer, aLogLevel, aList);
     }
 
     @Override

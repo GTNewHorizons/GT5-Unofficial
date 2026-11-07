@@ -757,7 +757,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void addDebugChatInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+    public void addDebugInfoComp(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         if (aLogLevel > 2) {
             aList.add(
                 new ChatComponentTranslation(
@@ -794,7 +794,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (!mHasEnoughEnergy) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
         }
         if (joinedIc2Enet) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
-        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugChatInfo(this, aPlayer, aLogLevel, aList);
+        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugInfoComp(this, aPlayer, aLogLevel, aList);
     }
 
     @Override

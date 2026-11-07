@@ -366,7 +366,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * returns the DebugLog
      *
      * @deprecated This function returns a String directly, preventing the text from being translated on the client.
-     *             Please use {@link addSpecialDebugChatInfo} instead.
+     *             Please use {@link addSpecialDebugInfoComp} instead.
      */
     @Deprecated
     default ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
@@ -377,7 +377,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Add special debug information to the provided list of chat components.
      */
-    default void addSpecialDebugChatInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
+    default void addSpecialDebugInfoComp(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
         ArrayList<IChatComponent> aList) {
         ArrayList<String> chats = new ArrayList<>();
         chats = this.getSpecialDebugInfo(aBaseMetaTileEntity, aPlayer, aLogLevel, chats);
