@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
@@ -704,10 +705,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+    public ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IDebugableTileEntity) {
-            return ((IDebugableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
+            return ((IDebugableTileEntity) tTileEntity).getDebugInfoChat(aPlayer, aLogLevel);
         }
         return new ArrayList<>();
     }

@@ -17,6 +17,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -361,10 +363,31 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean doTickProfilingMessageDuringThisTick();
 
     /**
+     * Deprecated. This function returns a String directly, preventing the text from being translated on the client.
+     * Please use {@link getSpecialDebugInfoChat} instead.
+     * <br>
      * returns the DebugLog
      */
-    ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
-        ArrayList<String> aList);
+    @Deprecated
+    default ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
+        int aLogLevel, ArrayList<String> aList) {
+        return aList;
+    }
+
+    /**
+     * returns the DebugLog
+     */
+    default ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
+        EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
+        ArrayList<String> chats = new ArrayList<>();
+        chats = this.getSpecialDebugInfo(aBaseMetaTileEntity, aPlayer, aLogLevel, chats);
+        if (chats == null) return aList;
+        aList.addAll(
+            chats.stream()
+                .map(ChatComponentText::new)
+                .toList());
+        return aList;
+    }
 
     /**
      * Get the description for the TileEntity.
