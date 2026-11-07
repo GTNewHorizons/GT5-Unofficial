@@ -1926,6 +1926,7 @@ GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
 GT5U.MBTT.Minimum=(Minimum)
 GT5U.MBTT.Tiered=§b(Tiered)
+GT5U.MBTT.TieredMixed=§b(Tiered, can be mixed)
 GT5U.MBTT.EnergyHatch=Energy Hatch
 GT5U.MBTT.DynamoHatch=Dynamo Hatch
 GT5U.MBTT.MultiampEnergyHatch=Multi-Amp Energy Hatch
@@ -2118,7 +2119,7 @@ gt.mbtt.structure.any_unit_casing=Any unit casing
 gt.mbtt.structure.neutron_accelerator=Neutron Accelerator
 gt.mbtt.structure.neutron_sensor=Neutron Sensor
 gt.mbtt.structure.yot_hatch=YOTHatch
-gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers=No air gaps allowed, but the fluid cell blocks can be different tiers
+gt.mbtt.structure.no_air_gaps=No air gaps allowed
 gt.mbtt.structure.front_center_3rd_layer=Front center, 3rd layer
 gt.mbtt.structure.front_center_8th_layer=Front center, 8th layer
 gt.mbtt.structure.any_casing_around_controller=Any casing around controller
@@ -5397,7 +5398,7 @@ gt.item.book.written.03.name=Book
 
 ## Schematic
 gt.item.schematic.empty.name=Schematic
-gt.item.schematic.empty.tooltip=EMPTY
+gt.item.schematic.empty.tooltip=Blank
 gt.item.schematic.crafting.name=Schematic (Crafting)
 gt.item.schematic.crafting.tooltip=Crafts the Programmed Recipe
 gt.item.schematic.1x1.name=Schematic (1x1)
