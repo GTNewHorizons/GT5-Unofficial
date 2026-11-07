@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -27,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -48,6 +50,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchEleme
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDuplicator>
     implements ISurvivalConstructable {
 
@@ -70,7 +73,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     public String getMachineType() {
-        return "Replicator";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.replicator");
     }
 
     @Override
@@ -78,31 +81,29 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Produces raw elements from UU-Matter")
+            .addMarkdown(new ResourceLocation("gregtech", "elemental-duplicator"))
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x Data Orb Repository")
-            .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top center, 6th layer")
-            .addCasing("120-139", "Elemental Confinement Shell", false)
-            .addCasing("24", "Particle Containment Casing", false)
-            .addCasing("24", "Matter Fabricator Casing", false)
-            .addCasing("24", "Matter Generation Coil", false)
-            .addCasing("24", "Resonance Chamber III", false)
-            .addCasing("20", "High Voltage Current Capacitor", false)
-            .addCasing("16", "Modulator III", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_6th_layer"))
+            .addCasing("120-139", Casings.ElementalConfinementShell.getLocalizedName(), false)
+            .addCasing("24", Casings.ParticleContainmentCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.MatterFabricatorCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.MatterGenerationCoil.getLocalizedName(), false)
+            .addCasing("24", new ItemStack(getCasingBlock3(), 1, getCasingMeta4()).getDisplayName(), false)
+            .addCasing("20", Casings.HighVoltageCurrentCapacitor.getLocalizedName(), false)
+            .addCasing("16", new ItemStack(getCasingBlock3(), 1, getCasingMeta5()).getDisplayName(), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Any confinement shell",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"),
                 1)
-            .addEnergyHatch("1+", "Any confinement shell", 1)
-            .addMaintenanceHatch("1", "Any confinement shell", 1)
-            .addMufflerHatch("1", "Any confinement shell", 1)
-            .addInputHatch("1+", "Any confinement shell", 1)
-            .addOutputAny("1+", "Any confinement shell", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
             .toolTipFinisher();
         return tt;
     }
