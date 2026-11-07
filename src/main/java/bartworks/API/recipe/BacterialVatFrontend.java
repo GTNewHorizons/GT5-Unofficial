@@ -66,8 +66,8 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         long duration = recipeInfo.recipe.mDuration;
         int glassTier = recipeInfo.recipe.getMetadataOrDefault(GLASS, 3);
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
-        int sievert = data.sievert;
-        boolean isExact = data.isExact;
+        int sievert = data.sievert();
+        boolean isExact = data.isExact();
         recipeInfo
             .drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
         recipeInfo.drawText(

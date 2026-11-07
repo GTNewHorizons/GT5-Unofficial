@@ -619,15 +619,15 @@ public class GTRecipeConstants {
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(fluidInput, true, false);
         }
         Scanning scanningData = builder.getMetadataOrDefault(SCANNING, new Scanning(0, 0));
-        tPersistentHash = tPersistentHash * 31 + scanningData.time;
-        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage;
+        tPersistentHash = tPersistentHash * 31 + scanningData.time();
+        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage();
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
         GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
-            scanningData.time,
-            (int) scanningData.voltage,
+            scanningData.time(),
+            (int) scanningData.voltage(),
             r.mInputs,
             r.mFluidInputs,
             aOutput,
@@ -643,8 +643,8 @@ public class GTRecipeConstants {
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
                 .special(tRecipe.newDataStickForNEI("Writes Research result", 1))
-                .duration(scanningData.time)
-                .eut(scanningData.voltage)
+                .duration(scanningData.time())
+                .eut(scanningData.voltage())
                 .specialValue(-201) // means it's scanned
                 .ignoreCollision()
                 .fake()

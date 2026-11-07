@@ -14,9 +14,7 @@ public class BiomesOPlentyHandler {
         if (Mods.BiomesOPlenty.isModLoaded()) {
             if (BOPCItems.misc != null) {
                 ItemStack pinecone = new ItemStack(BOPCItems.misc, 1, 13);
-                if (pinecone != null) {
-                    OreDictionary.registerOre("pinecone", pinecone);
-                }
+                OreDictionary.registerOre("pinecone", pinecone);
             }
         }
     }

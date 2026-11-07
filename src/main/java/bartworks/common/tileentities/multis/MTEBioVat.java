@@ -259,8 +259,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, defaultSievertData);
-                int sievert = data.sievert;
-                boolean isExact = data.isExact;
+                int sievert = data.sievert();
+                boolean isExact = data.isExact();
                 int glass = recipe.getMetadataOrDefault(GLASS, 0);
                 if (!BWUtil.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, MTEBioVat.this.getControllerSlot()))
                     return CheckRecipeResultRegistry.NO_RECIPE;
