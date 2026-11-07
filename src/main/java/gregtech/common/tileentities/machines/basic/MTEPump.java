@@ -847,12 +847,6 @@ public class MTEPump extends MTEBasicMachine {
         ArrayList<IChatComponent> aList) {
         aList.addAll(
             Arrays.asList(
-                new ChatComponentTranslation("GT5U.machines.pump")
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)),
-                new ChatComponentTranslation(
-                    "GT5U.machines.workarea.s",
-                    GTUtility.styledComp(radiusConfig * 2 + 1, EnumChatFormatting.GREEN),
-                    new ChatComponentTranslation("GT5U.machines.blocks")),
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.primary",
                     (this.mPrimaryPumpedBlock != null ? new ChatComponentBlockName(this.mPrimaryPumpedBlock)
