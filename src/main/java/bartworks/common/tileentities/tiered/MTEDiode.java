@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.tiered;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
@@ -182,7 +183,8 @@ public class MTEDiode extends MTEBasicHull {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocal("tile.diode.name") + " " + this.maxAmps + "A " + GTValues.VN[this.mTier];
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.diode.name", GTValues.VN[mTier], formatNumber(maxAmps));
     }
 
     @Override

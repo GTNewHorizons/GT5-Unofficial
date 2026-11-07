@@ -559,7 +559,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        return true;
+        return MTEHatchOutputMEBase.WailaHelper.hasWailaAdvancedBody(accessor);
     }
 
     @Override
