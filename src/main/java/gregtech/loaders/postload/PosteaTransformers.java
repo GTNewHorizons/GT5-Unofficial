@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,13 +34,13 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
-        registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerDroneCenterTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -146,14 +147,6 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
-    }
-
-    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
-    private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -318,6 +311,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -330,6 +324,24 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
+    }
 
+    private static void registerDroneCenterTransformer() {
+        // idk which one is better
+        TileEntityReplacementManager
+            .tileEntityTransformer("gregtech:gt.blockmachines", ((nbtTagCompound, world, chunk) -> {
+                int mID = nbtTagCompound.getInteger("mID");
+                if (mID == 15568) {
+                    nbtTagCompound.setInteger("mID", 9400);
+                    return new BlockInfo(Block.getBlockFromItem(ItemList.DroneCentre.getItem()), 9400);
+                }
+                return null;
+            }));
+        // or
+        BlockReplacementManager.addSimpleReplacement(
+            "gregtech:gt.blockmachines",
+            15568,
+            Block.getBlockFromItem(ItemList.DroneCentre.getItem()),
+            9400);
     }
 }
