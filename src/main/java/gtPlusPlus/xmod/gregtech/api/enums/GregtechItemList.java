@@ -51,6 +51,7 @@ public enum GregtechItemList implements IItemContainer {
     KLEIN_BOTTLE,
 
     // RTG Fuels
+    // TODO: add new crafting recipes. Old ones were removed because they were COMET/Cyclotron recipes
     Pellet_RTG_PU238,
     Pellet_RTG_SR90,
     Pellet_RTG_PO210,
