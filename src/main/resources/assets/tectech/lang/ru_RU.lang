@@ -466,8 +466,8 @@ gt.blockmachines.multimachine.em.computer.machinetype=Квантовый ком�
 gt.blockmachines.multimachine.em.computer.desc=Гораздо лучше простого калькулятора
 gt.blockmachines.multimachine.em.computer.cfgi.0=Коэффициент разгона
 gt.blockmachines.multimachine.em.computer.cfgi.1=Коэффициент избытка вольтажа
-gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев
-gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений
+gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=Банк данных
 
