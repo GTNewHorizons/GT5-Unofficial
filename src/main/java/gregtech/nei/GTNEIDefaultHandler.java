@@ -29,6 +29,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.Range;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
@@ -43,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.item.ItemFluidDisplay;
 import codechicken.nei.recipe.Badge;
@@ -412,7 +414,20 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     @Override
     public void drawBackground(int recipe) {
         this.currentRecipe = (CachedDefaultRecipe) this.arecipes.get(recipe);
+        updateScrollAreaDrag(this.currentRecipe, recipe);
         drawUI(modularWindow);
+    }
+
+    // NEI does not report drags to handlers, so the scroll bar is polled before the stacks are drawn
+    private static void updateScrollAreaDrag(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
+        List<NEIScrollArea> scrollAreas = cachedRecipe.getScrollAreas();
+        if (scrollAreas.isEmpty() || !(NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui)) return;
+
+        Point mouse = gui.getRecipeMousePosition(recipeIndex);
+        boolean leftButtonDown = Mouse.isButtonDown(0);
+        for (NEIScrollArea scrollArea : scrollAreas) {
+            scrollArea.updateDrag(mouse.x, mouse.y, leftButtonDown);
+        }
     }
 
     @Override
@@ -520,6 +535,43 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         drawDescription(cachedRecipe, recipeIndex);
         frontend.drawNEIOverlays(cachedRecipe);
+        drawScrollAreas(cachedRecipe, recipeIndex);
+    }
+
+    private static void drawScrollAreas(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
+        List<NEIScrollArea> scrollAreas = cachedRecipe.getScrollAreas();
+        if (scrollAreas.isEmpty() || !(NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui)) return;
+
+        Point mouse = gui.getRecipeMousePosition(recipeIndex);
+        for (NEIScrollArea scrollArea : scrollAreas) {
+            scrollArea.draw(mouse.x, mouse.y);
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(GuiRecipe<?> gui, int button, int recipe) {
+        if (arecipes.get(recipe) instanceof CachedDefaultRecipe cachedRecipe && !cachedRecipe.getScrollAreas()
+            .isEmpty()) {
+            Point mouse = gui.getRecipeMousePosition(recipe);
+            for (NEIScrollArea scrollArea : cachedRecipe.getScrollAreas()) {
+                if (scrollArea.onMouseClicked(mouse.x, mouse.y, button)) return true;
+            }
+        }
+
+        return super.mouseClicked(gui, button, recipe);
+    }
+
+    @Override
+    public boolean mouseScrolled(GuiRecipe<?> gui, int scroll, int recipe) {
+        if (arecipes.get(recipe) instanceof CachedDefaultRecipe cachedRecipe && !cachedRecipe.getScrollAreas()
+            .isEmpty()) {
+            Point mouse = gui.getRecipeMousePosition(recipe);
+            for (NEIScrollArea scrollArea : cachedRecipe.getScrollAreas()) {
+                if (scrollArea.onMouseWheel(scroll, mouse.x, mouse.y)) return true;
+            }
+        }
+
+        return super.mouseScrolled(gui, scroll, recipe);
     }
 
     private void drawDescription(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
@@ -732,6 +784,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public OverclockCalculator calculator;
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
+        private final List<NEIScrollArea> scrollAreas = new ArrayList<>();
 
         public CachedDefaultRecipe(GTRecipe aRecipe) {
             this.mRecipe = aRecipe;
@@ -917,6 +970,14 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 aRecipe.mFluidOutputs.length,
                 TieredVariant.STANDARD,
                 WINDOW_OFFSET);
+        }
+
+        public void addScrollArea(NEIScrollArea scrollArea) {
+            this.scrollAreas.add(scrollArea);
+        }
+
+        public List<NEIScrollArea> getScrollAreas() {
+            return Collections.unmodifiableList(this.scrollAreas);
         }
 
         @Override
