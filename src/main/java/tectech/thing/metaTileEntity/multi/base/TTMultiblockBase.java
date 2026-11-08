@@ -1556,8 +1556,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) return eUncertainHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) return eEnergyMulti.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) return eDynamoMulti.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) return eInputData.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) return eOutputData.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
+            hatch.addWatcher(this);
+            return eInputData.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
+            hatch.addWatcher(this);
+            return eOutputData.add(hatch);
+        }
 
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
@@ -1616,9 +1622,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 return eUncertainHatches.add(mteHatchUncertainty);
             }
             case MTEHatchDataInput mteHatchDataInput -> {
+                mteHatchDataInput.addWatcher(this);
                 return eInputData.add(mteHatchDataInput);
             }
             case MTEHatchDataOutput mteHatchDataOutput -> {
+                mteHatchDataOutput.addWatcher(this);
                 return eOutputData.add(mteHatchDataOutput);
             }
             default -> {
@@ -1918,7 +1926,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
-            addIfSmartInput(hatch);
+            hatch.addWatcher(this);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return eInputData.add(hatch);
@@ -1938,6 +1946,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
+            hatch.addWatcher(this);
             return eOutputData.add(hatch);
         }
         return false;
