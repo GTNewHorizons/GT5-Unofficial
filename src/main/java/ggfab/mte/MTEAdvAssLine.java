@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -107,6 +108,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
@@ -201,7 +203,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private long baseEUt;
     private boolean stuck;
 
-    private final List<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
+    private final List<IALRecipeInputHatch> recipeInputHatches = new ArrayList<>();
     private Map<GTUtility.ItemId, ItemStack> curBatchItemsFromME;
     private Map<Fluid, FluidStack> curBatchFluidsFromME;
     private int currentInputLength;
@@ -225,16 +227,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
+        if (aMetaTileEntity instanceof IALRecipeInputHatch recipeInputHatch) {
             addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
+            return recipeInputHatches.add(recipeInputHatch);
         }
         return false;
     }
 
     private boolean checkMachine(List<StructureError> errors) {
-        mDataAccessHatches.clear();
+        recipeInputHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0, errors)) return false;
         int recognizedLayers = checkMachine(true, errors);
         // If the l2r structure is already formed, we early exit
@@ -263,7 +265,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // Output layer found. Check machine requirements
-                if (mDataAccessHatches.size() > 1) {
+                if (recipeInputHatches.size() > 1) {
                     errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
                 checkHasAnyEnergy(errors);
@@ -498,7 +500,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
-        mDataAccessHatches.clear();
+        recipeInputHatches.clear();
     }
 
     @Override
@@ -601,15 +603,15 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
             return false;
         }
-        for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
-            hatch_dataAccess.setActive(true);
+
+        for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
+            recipeInputHatch.setActive(true);
         }
 
         if (mInputBusses.size() < currentInputLength) {
             criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
             return false;
         }
-        boolean oStuck = stuck;
         stuck = false;
 
         for (int i = slices.length - 1; i >= 0; i--) {
@@ -725,14 +727,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         clearCurrentRecipe();
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
-        ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+        HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
 
         if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
             availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
         }
 
-        for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
-            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
+        for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
+            if (!recipeInputHatch.isValid()) continue;
+
+            availableRecipes.addAll(recipeInputHatch.getAssemblyLineRecipes().contents);
         }
 
         if (availableRecipes.isEmpty()) {
@@ -1102,7 +1106,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
         @Override
         public long count(MTEAdvAssLine t) {
-            return t.mDataAccessHatches.size();
+            return t.recipeInputHatches.size();
         }
 
         @Override

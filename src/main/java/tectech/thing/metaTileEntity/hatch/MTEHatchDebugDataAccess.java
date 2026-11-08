@@ -1,31 +1,43 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
+
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
+import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDebugDataAccess extends MTEHatchDataAccess {
+public class MTEHatchDebugDataAccess extends MTEHatchDataBase implements IALRecipeInputHatch {
 
     public MTEHatchDebugDataAccess(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.0"),
+                translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.2") });
     }
 
     public MTEHatchDebugDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
@@ -34,52 +46,41 @@ public class MTEHatchDebugDataAccess extends MTEHatchDataAccess {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return true;
+    public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
+        return new ALRecipeDataPacket(ImmutableList.copyOf(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes));
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
+    public void setActive(boolean active) {
+        // do nothing
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        return null;
-    }
-
-    @Override
-    public boolean shouldDropItemAt(int index) {
-        return false;
-    }
-
-    @Override
-    public List<GTRecipe.RecipeAssemblyLine> getAssemblyLineRecipes() {
-        return GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.0"),
-            translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.1"),
-            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.2") };
+    protected String getWailaDataKey() {
+        return "tt.keyphrase.AL_Recipe_Receiving";
     }
 
     @Override
     public String[] getInfoData() {
         return new String[] { translateToLocal("tt.keyphrase.AL_Recipe_Header"),
-            translateToLocalFormatted("tt.keyphrase.AL_Recipe_All", getAssemblyLineRecipes().size()) };
+            translateToLocalFormatted("tt.keyphrase.AL_Recipe_All", getAssemblyLineRecipes().contents.size()) };
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(
+                MTEHatchDataConnector.EM_D_ACTIVE,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(MTEHatchDataConnector.EM_D_CONN) };
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(
+                MTEHatchDataConnector.EM_D_SIDES,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(MTEHatchDataConnector.EM_D_CONN) };
     }
 }

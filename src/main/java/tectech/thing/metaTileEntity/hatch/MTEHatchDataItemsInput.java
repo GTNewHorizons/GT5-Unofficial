@@ -6,43 +6,54 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
+import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
+/// The AL recipe input hatch that receives its recipes from a databack (via a [MTEHatchDataItemsOutput] + data pipe
+/// chain).
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
+public class MTEHatchDataItemsInput extends MTEHatchDataBase
+    implements ISmartInputHatch, IALRecipeInputHatch, IConnectsToDataPipe {
 
     public boolean delDelay = true;
-    private List<RecipeAssemblyLine> recipes;
+    protected ALRecipeDataPacket cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") });
     }
 
     public MTEHatchDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
@@ -66,38 +77,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        return null;
-    }
-
-    @Override
-    public boolean shouldDropItemAt(int index) {
-        return false;
-    }
-
-    @Override
     public boolean isInputFacing(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
@@ -117,48 +96,52 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         return null;
     }
 
-    public void setContents(ALRecipeDataPacket iIn) {
-        List<RecipeAssemblyLine> oldRecipes = recipes;
-        if (iIn == null) {
-            recipes = null;
+    public void setContents(@NotNull ALRecipeDataPacket newRecipes) {
+        ALRecipeDataPacket oldRecipes = this.cachedRecipes;
+
+        if (newRecipes.isEmpty()) {
+            this.cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
         } else {
-            if (iIn.getContent().length > 0) {
-                recipes = new ArrayList<>(Arrays.asList(iIn.getContent()));
-                delDelay = true;
-            } else {
-                recipes = null;
-            }
+            this.cachedRecipes = newRecipes;
+            this.delDelay = true;
         }
+
         // The upstream re-pushes the packet every cycle as a keep-alive, so only notify when the available recipe set
         // actually changed - compared by content (not just count) so a same-size data-stick swap still fires.
-        if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
+        if (recipesChanged(oldRecipes, this.cachedRecipes)) notifyWatchers();
     }
 
     @Override
-    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
-        if (recipes == null) return Collections.emptyList();
+    public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
+        return cachedRecipes;
+    }
 
-        return recipes;
+    @Override
+    public void setActive(boolean active) {
+        // do nothing
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagCompound stacksTag = new NBTTagCompound();
-        if (recipes != null) {
-            stacksTag.setInteger("count", recipes.size());
-            for (int i = 0; i < recipes.size(); i++) {
-                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(recipes.get(i)));
-            }
+
+        int count = cachedRecipes.contents.size();
+        stacksTag.setInteger("count", count);
+        for (int i = 0; i < count; i++) {
+            stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(cachedRecipes.contents.get(i)));
         }
+
         aNBT.setTag("data_stacks", stacksTag);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
         int count = stacksTag.getInteger("count");
+
         if (count > 0) {
             LinkedHashSet<RecipeAssemblyLine> loaded = new LinkedHashSet<>();
 
@@ -166,7 +149,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                 loaded.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
             }
 
-            recipes = loaded.isEmpty() ? null : new ArrayList<>(loaded);
+            this.cachedRecipes = new ALRecipeDataPacket(ImmutableList.copyOf(loaded));
         }
     }
 
@@ -174,24 +157,17 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (CommonValues.MOVE_AT == aTick % 20) {
-            if (recipes == null) {
+            if (this.cachedRecipes.isEmpty()) {
                 getBaseMetaTileEntity().setActive(false);
             } else {
                 getBaseMetaTileEntity().setActive(true);
                 if (delDelay) {
                     delDelay = false;
                 } else {
-                    setContents(null);
+                    setContents(ALRecipeDataPacket.EMPTY_PACKET);
                 }
             }
         }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
-            translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
-            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
     }
 
     @Override
@@ -200,7 +176,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    protected String getWailaDataI18nKey() {
+    protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Receiving";
     }
 }

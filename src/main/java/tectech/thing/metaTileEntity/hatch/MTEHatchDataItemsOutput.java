@@ -1,32 +1,31 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import java.util.ArrayList;
-import java.util.List;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
+import gregtech.api.render.TextureFactory;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
+import tectech.util.CommonValues;
 
-public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
+public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALRecipeOutputHatch, IConnectsToDataPipe {
 
-    private ALRecipeDataPacket previousPacket;
+    private ALRecipeDataPacket previousPacket = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -34,13 +33,14 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
             aName,
             aNameRegional,
             aTier,
+            0,
             new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
@@ -59,8 +59,39 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    protected ALRecipeDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
-        return new ALRecipeDataPacket(nbt);
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(
+                MTEHatchDataConnector.EM_D_ACTIVE,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(MTEHatchDataConnector.EM_D_CONN) };
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(
+                MTEHatchDataConnector.EM_D_SIDES,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(MTEHatchDataConnector.EM_D_CONN) };
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+
+        if (!this.previousPacket.isEmpty()) {
+            aNBT.setTag("eDATA", this.previousPacket.toNBT());
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+
+        if (aNBT.hasKey("eDATA")) {
+            this.previousPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
+        }
     }
 
     @Override
@@ -69,24 +100,42 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
+    public byte getColorization() {
+        return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isOutputFacing(side);
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            aTick = MinecraftServer.getServer()
+                .getTickCounter();
+            if (CommonValues.MOVE_AT == aTick % 20) {
+                if (previousPacket.isEmpty()) {
+                    getBaseMetaTileEntity().setActive(false);
+                } else {
+                    getBaseMetaTileEntity().setActive(true);
+                    moveAround();
+                }
+            }
+        }
+    }
+
+    public void moveAround() {
         IConnectsToDataPipe current = this, source = this, next;
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
             if (next instanceof MTEHatchDataItemsInput) {
-                ((MTEHatchDataItemsInput) next).setContents(q);
+                ((MTEHatchDataItemsInput) next).setContents(previousPacket);
                 break;
             }
             source = current;
             current = next;
         }
-        previousPacket = q;
-        q = null;
     }
 
     @Override
@@ -114,38 +163,17 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("recipeCount", previousPacket == null ? 0 : previousPacket.getContent().length);
+    protected String getWailaDataKey() {
+        return "tt.keyphrase.AL_Recipe_Transmitting";
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(translate("tt.keyphrase.AL_Recipe_Transmitting", tag.getInteger("recipeCount")));
+    public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
+        return previousPacket == null ? ALRecipeDataPacket.EMPTY_PACKET : previousPacket;
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> lines = new ArrayList<>();
-
-        if (previousPacket != null) {
-            for (RecipeAssemblyLine recipe : previousPacket.getContent()) {
-                lines.add(
-                    IGregTechDeviceInformation.encode("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
-            }
-        } else {
-            lines.add("tt.keyphrase.AL_Recipe_None");
-        }
-
-        lines.sort(String::compareTo);
-
-        lines.add(0, "tt.keyphrase.AL_Recipe_Header");
-
-        return lines.toArray(new String[0]);
+    public void setAssemblyLineRecipes(ALRecipeDataPacket packet) {
+        this.previousPacket = packet;
     }
 }

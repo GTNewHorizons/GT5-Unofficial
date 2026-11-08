@@ -6,35 +6,41 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
+import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
+public class MTEHatchWirelessDataItemsInput extends MTEHatchDataBase implements IALRecipeInputHatch {
 
-    private List<RecipeAssemblyLine> recipes = null;
+    @NotNull
+    protected ALRecipeDataPacket cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), });
     }
 
     public MTEHatchWirelessDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
@@ -58,49 +64,6 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        return null;
-    }
-
-    @Override
-    public boolean shouldDropItemAt(int index) {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
@@ -110,22 +73,35 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                boolean isFirstDownload = recipes == null;
-                this.recipes = wirelessDataStore.downloadData(aTick);
-                if (isFirstDownload || wirelessDataStore.hasNewData(aTick)) notifyWatchers();
+
+                ALRecipeDataPacket oldRecipes = this.cachedRecipes;
+
+                this.cachedRecipes = wirelessDataStore.downloadData();
+
+                // Only notify when the available recipe set changed (by content, not count, so a same-size swap of
+                // wireless data sticks still fires), to avoid re-checking every download cycle.
+                if (recipesChanged(oldRecipes, this.cachedRecipes)) notifyWatchers();
             }
         }
     }
 
     @Override
-    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
-        if (recipes == null) return Collections.emptyList();
-
-        return recipes;
+    public void setActive(boolean active) {
+        // do nothing
     }
 
     @Override
-    protected String getWailaDataI18nKey() {
+    public boolean isInputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
+        return cachedRecipes;
+    }
+
+    @Override
+    protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Receiving";
     }
 }

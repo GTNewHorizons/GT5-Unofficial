@@ -2,22 +2,20 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -30,15 +28,16 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
+/// The AL recipe input hatch that pulls its recipes from data sticks.
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
+public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputHatch, IALRecipeInputHatch {
 
     private int timeout = 4;
 
-    private List<RecipeAssemblyLine> cachedRecipes = null;
+    protected ALRecipeDataPacket cachedRecipes = null;
 
     public MTEHatchDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -47,17 +46,11 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
             aNameRegional,
             aTier,
             16,
-            new String[] { "Data Access for Multiblocks",
-                "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
+            GTSplit.splitLocalizedFormatted("gt.blockmachines.hatch.dataaccess.desc", aTier == 4 ? 4 : 16));
     }
 
     public MTEHatchDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
-    }
-
-    @Override
-    public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.hatch.dataaccess.desc", mTier == 4 ? 4 : 16);
     }
 
     @Override
@@ -118,6 +111,7 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
         }
     }
 
+    @Override
     public void setActive(boolean mActive) {
         getBaseMetaTileEntity().setActive(mActive);
         timeout = mActive ? 4 : 0;
@@ -132,28 +126,25 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
         notifyWatchers();
     }
 
-    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        cachedRecipes = null;
+    }
+
+    @Override
+    public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
         if (cachedRecipes == null) {
-            cachedRecipes = new ArrayList<>();
+            LinkedHashSet<RecipeAssemblyLine> recipes = new LinkedHashSet<>();
 
             for (int i = 0; i < getSizeInventory(); i++) {
-                cachedRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
+                recipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
+
+            this.cachedRecipes = new ALRecipeDataPacket(ImmutableList.copyOf(recipes));
         }
 
         return cachedRecipes;
-    }
-
-    /**
-     * @return whether the available recipe set changed between two snapshots, compared by content rather than count so
-     *         a same-size data-stick swap is still detected. Data input hatches call this to decide when to notify.
-     */
-    protected static boolean recipesChanged(List<RecipeAssemblyLine> a, List<RecipeAssemblyLine> b) {
-        int aSize = a == null ? 0 : a.size();
-        int bSize = b == null ? 0 : b.size();
-        if (aSize != bSize) return true;
-        if (aSize == 0) return false;
-        return !new HashSet<>(a).equals(new HashSet<>(b));
     }
 
     @Override
@@ -167,47 +158,8 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("recipeCount", getAssemblyLineRecipes().size());
-    }
-
-    protected String getWailaDataI18nKey() {
+    protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Providing";
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(translate(getWailaDataI18nKey(), tag.getInteger("recipeCount")));
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        ArrayList<String> lines = new ArrayList<>();
-
-        if (!getAssemblyLineRecipes().isEmpty()) {
-            for (RecipeAssemblyLine recipe : getAssemblyLineRecipes()) {
-                lines.add(translate("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
-            }
-        } else {
-            lines.add(translate("tt.keyphrase.AL_Recipe_None"));
-        }
-
-        lines.sort(String::compareTo);
-
-        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
-
-        return lines.toArray(new String[lines.size()]);
     }
 
     @Override

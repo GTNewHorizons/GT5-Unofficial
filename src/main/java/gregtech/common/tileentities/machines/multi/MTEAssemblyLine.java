@@ -16,10 +16,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,12 +70,13 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.misc.GTStructureChannels;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    public ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
+    public ArrayList<IALRecipeInputHatch> recipeInputHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -213,14 +214,16 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         }
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
-        ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+        HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
 
         if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
             availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
         }
 
-        for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
-            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
+        for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
+            if (!recipeInputHatch.isValid()) continue;
+
+            availableRecipes.addAll(recipeInputHatch.getAssemblyLineRecipes().contents);
         }
 
         if (availableRecipes.isEmpty()) {
@@ -398,8 +401,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
-            hatch_dataAccess.setActive(true);
+        for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
+            recipeInputHatch.setActive(true);
         }
         return super.onRunningTick(aStack);
     }
@@ -411,7 +414,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mDataAccessHatches.clear();
+        recipeInputHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0, errors)) return;
         int recognizedLayers = checkMachine(true, errors);
         // If the l2r structure is already formed, we early exit
@@ -439,7 +442,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // Output layer found, check machine conditions
-                if (mDataAccessHatches.size() > 1) {
+                if (recipeInputHatches.size() > 1) {
                     errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
                 checkHasEnergyHatch(errors);
@@ -455,10 +458,10 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
+        if (aMetaTileEntity instanceof IALRecipeInputHatch recipeInputHatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             addIfSmartInput(aMetaTileEntity);
-            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
+            return recipeInputHatches.add(recipeInputHatch);
         }
         return false;
     }
@@ -527,7 +530,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
         @Override
         public long count(MTEAssemblyLine t) {
-            return t.mDataAccessHatches.size();
+            return t.recipeInputHatches.size();
         }
 
         @Override
