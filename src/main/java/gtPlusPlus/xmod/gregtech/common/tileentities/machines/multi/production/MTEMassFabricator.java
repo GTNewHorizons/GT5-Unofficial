@@ -67,9 +67,13 @@ public class MTEMassFabricator extends MTEExtendedPowerMultiBlockBase<MTEMassFab
     private static final int MODE_SCRAP = 1;
 
     private int casingAmount;
-    private static final String[][] structure = { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-        { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" }, { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+    // spotless:off
+    private static final String[][] structure = {
+        { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+        { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+        { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
         { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, };
+    // spotless:on
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
