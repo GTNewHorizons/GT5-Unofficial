@@ -1,4 +1,3 @@
-Connects to another {gold:{item:gregtech:gt.blockmachines:15481}}.
-Connectors must face each other.
-Opaque blocks prevent connections.
-The maximum distance between two connectors is {color_range:{var:range}} blocks.
+Connects the Observation Array to IO Nodes without any BEC conduits inbetween
+Connectors must face each other and be no farther than {color_range:{var:range}} blocks apart
+Opaque blocks prevent connections

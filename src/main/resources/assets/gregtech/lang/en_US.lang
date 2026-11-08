@@ -9886,6 +9886,7 @@ gt.block.longdistancepipe.0.name=Long Distance Fluid Pipeline Pipe
 gt.block.longdistancepipe.1.name=Long Distance Item Pipeline Pipe
 
 # Concretes
+gt.blockconcretes.any=Any GregTech Concrete
 gt.blockconcretes.0.name=Dark Concrete
 gt.blockconcretes.1.name=Dark Concrete Cobblestone
 gt.blockconcretes.2.name=Mossy Dark Concrete Cobblestone
