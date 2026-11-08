@@ -60,8 +60,13 @@ public class NEIScrollArea {
         return stack.rely != HIDDEN_POSITION;
     }
 
-    private boolean isScrollable() {
+    public boolean isScrollable() {
         return totalRows > visibleRows;
+    }
+
+    public boolean isDragging() {
+        return container.getVerticalScroll()
+            .isMouseDragged();
     }
 
     private boolean contains(int mouseX, int mouseY) {
@@ -85,11 +90,9 @@ public class NEIScrollArea {
         return true;
     }
 
-    /** NEI does not forward drags to recipe handlers, so this is called every frame. */
+    /** NEI does not forward drags to recipe handlers, so this is called every frame while {@link #isDragging()}. */
     public void updateDrag(int mouseX, int mouseY, boolean leftButtonDown) {
         ScrollBar bar = container.getVerticalScroll();
-        if (!bar.isMouseDragged()) return;
-
         if (leftButtonDown) {
             bar.onMouseDragged(container, mouseX, mouseY, 0, 0L);
             syncFromContainer();
@@ -99,8 +102,6 @@ public class NEIScrollArea {
     }
 
     public void draw(int mouseX, int mouseY) {
-        if (!isScrollable()) return;
-
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_LIGHTING_BIT);
         container.getVerticalScroll()
             .draw(container, mouseX, mouseY, 1f);

@@ -420,13 +420,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     // NEI does not report drags to handlers, so the scroll bar is polled before the stacks are drawn
     private static void updateScrollAreaDrag(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
-        List<NEIScrollArea> scrollAreas = cachedRecipe.getScrollAreas();
-        if (scrollAreas.isEmpty() || !(NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui)) return;
-
-        Point mouse = gui.getRecipeMousePosition(recipeIndex);
-        boolean leftButtonDown = Mouse.isButtonDown(0);
-        for (NEIScrollArea scrollArea : scrollAreas) {
-            scrollArea.updateDrag(mouse.x, mouse.y, leftButtonDown);
+        for (NEIScrollArea scrollArea : cachedRecipe.getScrollAreas()) {
+            if (scrollArea.isDragging() && NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui) {
+                Point mouse = gui.getRecipeMousePosition(recipeIndex);
+                scrollArea.updateDrag(mouse.x, mouse.y, Mouse.isButtonDown(0));
+            }
         }
     }
 
@@ -539,12 +537,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     }
 
     private static void drawScrollAreas(CachedDefaultRecipe cachedRecipe, int recipeIndex) {
-        List<NEIScrollArea> scrollAreas = cachedRecipe.getScrollAreas();
-        if (scrollAreas.isEmpty() || !(NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui)) return;
-
-        Point mouse = gui.getRecipeMousePosition(recipeIndex);
-        for (NEIScrollArea scrollArea : scrollAreas) {
-            scrollArea.draw(mouse.x, mouse.y);
+        for (NEIScrollArea scrollArea : cachedRecipe.getScrollAreas()) {
+            if (scrollArea.isScrollable() && NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>gui) {
+                Point mouse = gui.getRecipeMousePosition(recipeIndex);
+                scrollArea.draw(mouse.x, mouse.y);
+            }
         }
     }
 
@@ -724,6 +721,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public void draw(int mousex, int mousey) {
+            if (!NEIScrollArea.isShown(this)) return;
+
             super.draw(mousex, mousey);
 
             if (!isFluid()) return;
