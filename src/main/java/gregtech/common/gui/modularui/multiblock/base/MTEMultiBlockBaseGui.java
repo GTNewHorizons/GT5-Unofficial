@@ -1072,7 +1072,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         if (maintSyncer.getValue() == 0) {
-            t.addLine(IKey.lang("GT5U.gui.text.multi.no_maintenance_issue"));
+            t.addLine(IKey.lang("GT5U.gui.text.multi.no_maintenance_issue").style(EnumChatFormatting.GREEN));
             return;
         }
         if (!multiblock.mCrowbar) t.add(
