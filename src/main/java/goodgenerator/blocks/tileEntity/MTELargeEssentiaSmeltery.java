@@ -350,7 +350,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
                 break;
             } else {
                 this.mOutputAspects.add(getEssentia(fluidStack, p));
-                fluidStack.amount -= p;
+                fluidStack.amount -= p * 1000;
                 break;
             }
         }
