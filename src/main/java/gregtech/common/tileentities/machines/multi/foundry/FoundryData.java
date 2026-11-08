@@ -34,7 +34,7 @@ public class FoundryData {
 
     public int extraOverclocks = 0;
 
-    public boolean UIVRecipesEnabled = false;
+    public boolean moduleOnlyRecipesEnabled = false;
     public boolean hypercoolerPresent = false;
     public boolean universalCollapserPresent = false;
     public boolean effOCPresent = false;
@@ -60,7 +60,7 @@ public class FoundryData {
         parallelScaleMultiplier = 1.0F;
 
         hypercoolerPresent = false;
-        UIVRecipesEnabled = false;
+        moduleOnlyRecipesEnabled = false;
         universalCollapserPresent = false;
         effOCPresent = false;
         allowEternity = false;

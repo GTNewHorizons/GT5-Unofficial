@@ -567,7 +567,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
                     return false; // If exotics are already being used, disallow non-exotics
 
                 hatchNormal.updateTexture(aBaseCasingIndex);
-                hatchNormal.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatchNormal.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mEnergyHatches.add(hatchNormal);
             } else if (aMetaTileEntity instanceof MTEHatch hatchExotic
                 && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
@@ -577,7 +577,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
                                                          // exotics
 
                     hatchExotic.updateTexture(aBaseCasingIndex);
-                    hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
+                    hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                     return mExoticEnergyHatches.add(hatchExotic);
                 } else return false; // Not an energy hatch
         } else return false; // Not a hatch of any kind

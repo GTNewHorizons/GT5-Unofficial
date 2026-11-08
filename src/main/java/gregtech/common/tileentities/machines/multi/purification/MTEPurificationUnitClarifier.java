@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -35,7 +35,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -51,6 +54,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPurificationUnitClarifier>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -169,47 +173,28 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit, CPU")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work")
-            .addInfo(
-                "Every cycle, has a " + EnumChatFormatting.RED
-                    + formatNumber(FILTER_DAMAGE_RATE)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_clarifier"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-clarifier"),
+                ImmutableMap.of(
+                    "tier",
+                    getWaterTier(),
+                    "filter",
+                    ItemList.ActivatedCarbonFilterMesh.get(1)
+                        .getDisplayName(),
+                    "filter_chance",
+                    FILTER_DAMAGE_RATE))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("123-128", "Reinforced Sterile Water Plant Casing", false)
-            .addCasing("21", "Filter Machine Casing", false)
-            .addCasing("12", "Iridium Frame Box", false)
-            .addCasing("12", "Damascus Steel Frame Box", false)
-            .addCasing("3", "PTFE Pipe Casing", false)
-            .addInputBus("1+", "Any center side casing", 1)
-            .addInputHatch("1+", "Any center side casing", 1)
-            .addOutputBus("0+", "Any center side casing", 1)
-            .addOutputHatch("1+", "Any center side casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("123-128", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("21", Casings.FilterMachineCasing.getLocalizedName(), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Iridium), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
+            .addCasing("3", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
