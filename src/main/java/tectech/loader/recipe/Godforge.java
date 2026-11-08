@@ -92,7 +92,7 @@ public class Godforge implements Runnable {
     private static void addExoticModuleRecipes() {
         List<Plasma> quarkGluon = new ArrayList<>();
         exoticModulePlasmaItemMap
-            .forEach((item, weight) -> addPlasma(quarkGluon, plasmaOfDust(item, INGOTS), weight, true));
+            .forEach((item, weight) -> addPlasma(quarkGluon, plasmaOfDust(item, 9 * INGOTS), weight, true));
         exoticModulePlasmaFluidMap
             .forEach((fluid, weight) -> addPlasma(quarkGluon, plasmaOfFluid(fluid, 1000), weight, false));
         addExoticModuleRecipe(Materials.QuarkGluonPlasma.getFluid(1_000), quarkGluon, true);
