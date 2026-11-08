@@ -86,6 +86,7 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(7, 9, 7, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
@@ -93,11 +94,7 @@ public class MTEVoidMiners {
                 .addCasing("12-17", Casings.MiningOsmiridiumCasing.getLocalizedName(), false)
                 .addCasing("6", Casings.BoltedOsmiridiumCasing.getLocalizedName(), false)
                 .addCasing("6", Casings.ReboltedOsmiridiumCasing.getLocalizedName(), false)
-                .addEnergyHatch(
-                    "1+",
-                    StatCollector
-                        .translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]),
-                    1)
+                .addEnergyHatch("1+",StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
                 .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
@@ -105,6 +102,7 @@ public class MTEVoidMiners {
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 
@@ -202,6 +200,7 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 13, 8, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
@@ -210,11 +209,7 @@ public class MTEVoidMiners {
                 .addCasing("20", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
                 .addCasing("10", Casings.BoltedNaquadahAlloyCasing.getLocalizedName(), false)
                 .addCasing("9", Casings.ReboltedNaquadahAlloyCasing.getLocalizedName(), false)
-                .addEnergyHatch(
-                    "1+",
-                    StatCollector
-                        .translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]),
-                    1)
+                .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
                 .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
@@ -222,6 +217,7 @@ public class MTEVoidMiners {
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 
@@ -314,6 +310,7 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 16, 9, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
@@ -322,11 +319,7 @@ public class MTEVoidMiners {
                 .addCasing("36", Casings.ReboltedIridiumCasing.getLocalizedName(), false)
                 .addCasing("20", Casings.BoltedIridiumCasing.getLocalizedName(), false)
                 .addCasing("8", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
-                .addEnergyHatch(
-                    "1+",
-                    StatCollector
-                        .translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]),
-                    1)
+                .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
                 .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
@@ -334,6 +327,7 @@ public class MTEVoidMiners {
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 
