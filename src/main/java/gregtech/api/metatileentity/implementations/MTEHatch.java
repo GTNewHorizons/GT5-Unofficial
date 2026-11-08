@@ -215,10 +215,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
-     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
-     * machine list.
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
      */
+    @Deprecated
     public final void updateCraftingIcon(ItemStack icon) {
+        // The icon gets no owner, so clearHatches never drops it.
         updateCraftingIcon(icon, null);
     }
 

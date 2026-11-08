@@ -74,6 +74,7 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
@@ -104,6 +105,7 @@ import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
+import appeng.util.TunnelPatternExpander;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
@@ -259,7 +261,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             if (patternDetails != null) {
-                for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
+                List<IAEStack<?>> list;
+                try {
+                    final CraftingGridCache cc = this.parentMTE.getProxy().getGrid().getCache(ICraftingGrid.class);
+                    list = TunnelPatternExpander.expandInputs(patternDetails.getAEInputs(), cc, null);
+                } catch (Exception ignored) {
+                    list = List.of(patternDetails.getAEInputs());
+                }
+
+                for (IAEStack<?> singleInput : list) {
                     switch (singleInput) {
                         case null -> {
                             continue;

@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enchants.EnchantmentRadioactivity;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -49,6 +50,15 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     .setBlastFurnaceTemp(stats.getMeltingPoint())
                     .setBlastFurnaceRequired(stats.isBlastFurnace())
                     .constructMaterial();
+            }
+        }
+
+        // Link during init so GT's postInit scanner/replicator recipe generation sees the element.
+        if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+            Element element = Element.get(werkstoff.getFormulaTooltip());
+            if (element != Element._NULL && element.mLinkedMaterials.isEmpty()) {
+                werkstoffBridgeMaterial.mElement = element;
+                element.mLinkedMaterials.add(werkstoffBridgeMaterial);
             }
         }
 
