@@ -342,8 +342,8 @@ gt.blockmachines.multimachine.em.computer.name=量子计算机
 gt.blockmachines.multimachine.em.computer.desc=你需要它来处理上面的这串数字
 gt.blockmachines.multimachine.em.computer.cfgi.0=超频比
 gt.blockmachines.multimachine.em.computer.cfgi.1=过压比
-gt.blockmachines.multimachine.em.computer.cfgo.0=当前最大热量
-gt.blockmachines.multimachine.em.computer.cfgo.1=生成算力
+gt.blockmachines.multimachine.em.computer.cfgo.0=当前最大热量: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=生成算力: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=数据库
 
