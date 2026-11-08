@@ -5,6 +5,7 @@ import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
+import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipe.setItemStacks;
@@ -542,6 +543,10 @@ public class GTMod {
         if (Forestry.isModLoaded()) {
             GTForestryCompat.transferCentrifugeRecipes();
             GTForestryCompat.transferSqueezerRecipes();
+        }
+
+        if (ExtraBees.isModLoaded()) {
+            GTForestryCompat.registerExtraBeesMutatorItems();
         }
 
         AE2Compat.onPostInit();
