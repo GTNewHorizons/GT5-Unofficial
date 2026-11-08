@@ -220,6 +220,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        return aTick % 20 == 0;
+    }
+
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.proxy.mPollutionCharcoalPitPerSecond;
     }

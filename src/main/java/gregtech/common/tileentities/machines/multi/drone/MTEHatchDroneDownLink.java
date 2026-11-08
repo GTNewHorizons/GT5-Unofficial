@@ -402,6 +402,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
                 "z",
                 centre.getCoords()
                     .get2());
+            // A T4 centre can be linked across dimensions, where the distance between both means nothing
+            if (isInSameDimension(centre, world)) {
+                tag.setInteger("distance", getDistanceTo(centre, x, y, z));
+                tag.setInteger("range", centre.getRange());
+                tag.setBoolean("inRange", isInRange(centre, x, y, z));
+            }
 
             int i = 0;
             for (DroneConnection connection : connections) {
@@ -414,7 +420,70 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
                 }
                 i++;
             }
+        } else {
+            MTEDroneCentre nearest = findNearestCentre(world, x, y, z);
+            if (nearest != null) {
+                tag.setInteger(
+                    "nearestX",
+                    nearest.getCoords()
+                        .get0());
+                tag.setInteger(
+                    "nearestY",
+                    nearest.getCoords()
+                        .get1());
+                tag.setInteger(
+                    "nearestZ",
+                    nearest.getCoords()
+                        .get2());
+                tag.setInteger("nearestDistance", getDistanceTo(nearest, x, y, z));
+                tag.setInteger("nearestRange", nearest.getRange());
+                tag.setBoolean("nearestInRange", isInRange(nearest, x, y, z));
+            }
         }
+    }
+
+    /** Nearest loaded centre in the same dimension, ignoring its range. Null when none is loaded. */
+    private @Nullable MTEDroneCentre findNearestCentre(World world, int x, int y, int z) {
+        return MTEDroneCentre.getCentreMap()
+            .get(world.provider.dimensionId)
+            .stream()
+            .filter(MTEDroneCentre::isValid)
+            .min(Comparator.comparingDouble(target -> distanceSqTo(target, x, y, z)))
+            .orElse(null);
+    }
+
+    private static double distanceSqTo(MTEDroneCentre target, int x, int y, int z) {
+        return target.getCoords()
+            .distanceSq(x, y, z, false);
+    }
+
+    private static int getDistanceTo(MTEDroneCentre target, int x, int y, int z) {
+        return (int) Math.sqrt(distanceSqTo(target, x, y, z));
+    }
+
+    // Same test as the one deciding whether a centre can be linked, so the tooltip never contradicts it
+    private static boolean isInRange(MTEDroneCentre target, int x, int y, int z) {
+        int range = target.getRange();
+        return distanceSqTo(target, x, y, z) < (double) range * range;
+    }
+
+    /** Distance line with the distance itself green when the centre can reach this module and red when it cannot. */
+    private static String formatDistance(NBTTagCompound tag, String distanceKey, String rangeKey, String inRangeKey) {
+        EnumChatFormatting distanceColor = tag.getBoolean(inRangeKey) ? EnumChatFormatting.GREEN
+            : EnumChatFormatting.RED;
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.waila.drone_downlink.distance",
+            colored(distanceColor, tag.getInteger(distanceKey)),
+            colored(EnumChatFormatting.YELLOW, tag.getInteger(rangeKey)));
+    }
+
+    private static String colored(EnumChatFormatting color, int value) {
+        return color + String.valueOf(value) + EnumChatFormatting.RESET;
+    }
+
+    private static boolean isInSameDimension(MTEDroneCentre target, World world) {
+        IGregTechTileEntity base = target.getBaseMetaTileEntity();
+        return base != null && base.getWorld().provider.dimensionId == world.provider.dimensionId;
     }
 
     @Override
@@ -428,6 +497,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
                     tag.getInteger("x"),
                     tag.getInteger("y"),
                     tag.getInteger("z")));
+            if (tag.hasKey("distance")) currenttip.add(formatDistance(tag, "distance", "range", "inRange"));
 
             if (tag.hasKey("name0")) {
                 int i = 0;
@@ -441,6 +511,21 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         } else {
             currenttip
                 .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
+            if (tag.hasKey("nearestDistance")) {
+                currenttip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.drone_downlink.nearestCentre",
+                        colored(EnumChatFormatting.YELLOW, tag.getInteger("nearestX")),
+                        colored(EnumChatFormatting.YELLOW, tag.getInteger("nearestY")),
+                        colored(EnumChatFormatting.YELLOW, tag.getInteger("nearestZ"))));
+                if (tag.getInteger("nearestRange") == 0) {
+                    currenttip.add(StatCollector.translateToLocal("GT5U.waila.drone_downlink.nearestCentreNoDrone"));
+                } else {
+                    currenttip.add(formatDistance(tag, "nearestDistance", "nearestRange", "nearestInRange"));
+                }
+            } else {
+                currenttip.add(StatCollector.translateToLocal("GT5U.waila.drone_downlink.noCentreLoaded"));
+            }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

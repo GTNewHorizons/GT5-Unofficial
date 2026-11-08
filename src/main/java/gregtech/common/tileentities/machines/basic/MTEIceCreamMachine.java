@@ -335,7 +335,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                     syncManager.syncValue("icecreamRepair" + idx, repairSyncer);
                     errorMap.put(
                         repairSyncer,
-                        machine.mTooltipCache.getData("gt.icecreammachine.repair." + idx + ".tooltip"));
+                        () -> machine.mTooltipCache.getData("gt.icecreammachine.repair." + idx + ".tooltip"));
                 }
                 for (int i = 0; i < BROKEN_TOOLTIP_COUNT; i++) {
                     final int idx = i;
@@ -345,7 +345,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
                     syncManager.syncValue("icecreamBrokenNoRepair" + idx, brokenNoRepairSyncer);
                     errorMap.put(
                         brokenNoRepairSyncer,
-                        machine.mTooltipCache.getData("gt.icecreammachine.broken." + idx + ".tooltip"));
+                        () -> machine.mTooltipCache.getData("gt.icecreammachine.broken." + idx + ".tooltip"));
                 }
             }
 

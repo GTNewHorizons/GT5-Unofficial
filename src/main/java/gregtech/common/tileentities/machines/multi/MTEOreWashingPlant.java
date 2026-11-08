@@ -23,6 +23,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,6 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -60,6 +63,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -108,21 +112,21 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Washer, Simple Washer, OWP")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_washing_plant"))
             .addBulkMachineInfo(4, 5f, 1f)
-            .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
+            .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("70-85", "Wash Plant Casing", false)
-            .addCasing("15", "Steel Frame Box", false)
-            .addCasing("7", "Steel Gear Box Casing", false)
-            .addEnergyHatch("1+", "Any wash plant casing", 1)
-            .addMaintenanceHatch("1", "Any wash plant casing", 1)
-            .addMufflerHatch("1", "Any wash plant casing", 1)
-            .addInputBus("1+", "Any wash plant casing", 1)
-            .addInputHatch("1+", "Any wash plant casing", 1)
-            .addOutputBus("1+", "Any wash plant casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("70-85", Casings.WashPlantCasing.getLocalizedName(), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("7", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
