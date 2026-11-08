@@ -312,7 +312,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             .floatValue();
         float overVoltageRatio = overvoltParameter.getValue()
             .floatValue();
-        if (Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
+        if (Float.isNaN(overClockRatio) || Float.isNaN(overVoltageRatio)) {
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
         if (overClockRatio != lastOverClockRatio || overVoltageRatio != lastOverVoltageRatio) {
