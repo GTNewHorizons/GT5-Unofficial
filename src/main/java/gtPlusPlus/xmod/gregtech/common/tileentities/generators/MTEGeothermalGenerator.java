@@ -6,16 +6,19 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     public MTEGeothermalGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -29,12 +32,11 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        String aPollution = "Causes " + addFormattedString(String.valueOf(this.getPollution()))
-            + " Pollution per second";
         return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Generates power at " + addFormattedString(String.valueOf(this.getEfficiency())) + "%% Efficiency per tick",
-            aPollution,
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.advancedgenerator.geothermalfuel.desc",
+                this.getEfficiency(),
+                this.getPollution()),
             GTPPCore.GT_Tooltip.get());
     }
 

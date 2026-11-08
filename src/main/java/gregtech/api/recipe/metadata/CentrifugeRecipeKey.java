@@ -2,6 +2,8 @@ package gregtech.api.recipe.metadata;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -16,6 +18,6 @@ public class CentrifugeRecipeKey extends RecipeMetadataKey<Boolean> {
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         boolean required = cast(value, false);
-        recipeInfo.drawText("Heavy Mode Required");
+        recipeInfo.drawText(StatCollector.translateToLocal("GT5U.nei.display.require_heavy_mode"));
     }
 }

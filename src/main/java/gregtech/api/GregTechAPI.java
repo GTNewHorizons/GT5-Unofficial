@@ -206,9 +206,8 @@ public class GregTechAPI {
     /**
      * Getting assigned by the Mod loading
      */
-    public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
-        sFullLoadFinished = false;
+    public static boolean sPreloadStarted = false, sPreloadFinished = false, sLoadStarted = false,
+        sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false, sFullLoadFinished = false;
 
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];

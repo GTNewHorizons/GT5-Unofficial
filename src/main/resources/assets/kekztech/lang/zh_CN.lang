@@ -16,7 +16,6 @@ mbdesc.addOutputBus.OutputBus=输出总线
 mbdesc.addOutputHatch.OutputHatch=输出仓
 mbdesc.signAndFinalize.Hold=按住
 mbdesc.signAndFinalize.todisplay=以显示结构指导
-mbdesc.signAndFinalize.createdby=添加者:
 
 # -------- Fuel Cell: Structure Blocks
 tile.kekztech_gdcceramicelectrolyteunit_block.name=钆铈陶瓷电解质单元
@@ -95,3 +94,8 @@ achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=捡起这个物品�
 achievement.tile.kekztech_lapotronicenergyunit_block.5=终极电容(UHV)
 
 kekztech.structure.glass_incompatible=玻璃不兼容
+
+# Multiblocks
+gt.blockmachines.multimachine.fuelcellmk1.name=固体氧化物燃料电池 MK-I
+gt.blockmachines.multimachine.fuelcellmk2.name=固体氧化物燃料电池 MK-II
+gt.blockmachines.multimachine.supercapacitor.name=兰波顿超级电容库

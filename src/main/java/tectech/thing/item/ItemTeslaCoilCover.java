@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemTeslaCoilCover extends Item {
 
@@ -32,7 +31,6 @@ public final class ItemTeslaCoilCover extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         switch (aStack.getItemDamage()) {
             case 0:
                 aList.add(translateToLocal("item.tm.teslaCover.desc.0")); // Tesla-Enables Machines!

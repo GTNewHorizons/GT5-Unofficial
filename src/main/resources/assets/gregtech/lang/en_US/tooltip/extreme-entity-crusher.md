@@ -1,25 +1,20 @@
 Spawns and kills monsters for you!
-Produces §a120 Liquid XP§7 per operation
-Powered Spawner goes in Controller Slot
-Base energy usage: §b1920§7 EU/t
-Supports §dperfect OC!
-{gray:{hr}}
-Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x
+Produces {green:{var:xp_per_op} Liquid XP} per operation
+{color_key:Powered Spawner} goes in the Controller Slot
+{hr}
+Has a minimum recipe time of {color_amount:{var:min_time}} ticks, further overclocks multiply outputs by {color_amount:{var:oc_mult}x}
 Recipe time is based on mob health
 You can additionally put a weapon inside the GUI
-It will speed up the process and apply the looting level from the weapon (maximum 4 levels)
-Enable Weapon Preservation to prevent the weapon from breaking on it's last hit
-Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output
-§cEnchanting the spikes inside the structure does nothing!
-{gray:{hr}}
-If the mob spawns §cinfernal§7, it will drain 8 times more power!
-You can prevent §cinfernal§7 spawns by shift clicking with a screwdriver
-Mobs who are always §cinfernal§7 will ignore this factor
-{gray:{hr}}
-You can enable ritual mode with a screwdriver
-When in ritual mode, can link to above Well of Suffering rituals
-The Ritual must be built directly centered above the machine
-When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar
-{gray:{hr}}
-You can disable mob animation with a soldering iron
-You can enable batch mode with wire cutters. Providing §916x Time, Output, Weapon Damage
+It will speed up the process and apply the looting level from the weapon (maximum {green:{var:max_looting}} levels)
+{color_danger:Enchanting the spikes inside the structure does nothing!}
+{hr}
+If a mob spawns as {color_danger:Infernal}, it will drain {color_amount:{var:infernal_mult}x} more power!
+{hr}
+{color_mode:Ritual Mode} links to a {color_name:Well of Suffering} ritual built above
+The master ritual stone must be centered directly above, within {color_range:10} blocks vertically and {color_range:5} blocks horizontally of the {color_name:Blood Altar}
+When linked, ritual duration is locked and blood is added to the linked altar
+{hr}
+Right-click the controller with a {color_name:Screwdriver} to toggle {color_mode:Ritual Mode}
+Shift-right-click the controller with a {color_name:Screwdriver} to toggle {color_mode:Infernal Spawns}
+Right-click the controller with a {color_name:Soldering Iron} to toggle {color_mode:Mob Animations}
+{color_mechanic:Performs 4/4 Perfect Overclocks}

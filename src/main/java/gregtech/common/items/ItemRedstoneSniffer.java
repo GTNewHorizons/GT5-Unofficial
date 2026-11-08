@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,11 +26,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
-    }
-
-    @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add("Author: §9Frosty§4Fire1");
     }
 
     @Override

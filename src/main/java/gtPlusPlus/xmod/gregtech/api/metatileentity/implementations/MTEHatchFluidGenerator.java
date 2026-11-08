@@ -61,11 +61,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public boolean isValidSlot(final int aIndex) {
-        return false;
-    }
-
-    @Override
     public abstract MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity);
 
     @Override

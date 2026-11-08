@@ -54,8 +54,12 @@ public class ExoticEnergyInputHelper {
     public static long getTotalEuMulti(Collection<? extends MTEHatch> hatches) {
         long rEU = 0L;
         for (MTEHatch tHatch : validMTEList(hatches)) {
-            rEU += tHatch.getBaseMetaTileEntity()
-                .getInputVoltage() * tHatch.maxWorkingAmperesIn();
+            rEU = GTUtility.addSafe(
+                rEU,
+                GTUtility.mulSafe(
+                    tHatch.getBaseMetaTileEntity()
+                        .getInputVoltage(),
+                    tHatch.maxWorkingAmperesIn()));
         }
         return rEU;
     }

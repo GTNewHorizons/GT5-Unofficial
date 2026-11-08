@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,10 +24,10 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -38,6 +39,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -64,6 +66,15 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             aTier,
             3,
             new String[] { "gt.blockmachines.basicmachine.microtransmitter.tooltip" });
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicmachine.microtransmitter.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     public String[] getDescription() {
@@ -228,34 +239,34 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                         }
                     }
                     int tDistance = distanceCalculation();
-                    if (tTile != null) {
-                        if (tTile instanceof IEnergyConnected) {
-                            long packetSize = V[mTier];
-                            if (tTile instanceof IGregTechTileEntity) {
-                                IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if (mte instanceof BaseMetaTileEntity) {
-                                    packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
-                                }
-                            }
-                            long energyUse = 10;
-                            if (mMaxLossDistance != 0) {
-                                energyUse = GTUtility
-                                    .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
-                            }
-                            energyUse = packetSize + ((V[mTier] * energyUse) / 100);
-                            if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
-                                    > 0) {
-                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
-                                }
-                            }
-                        }
-                    }
+                    tryTransferEnergy(tDistance);
                 }
                 getBaseMetaTileEntity().setActive(true);
             } else {
                 getBaseMetaTileEntity().setActive(false);
             }
+        }
+    }
+
+    private void tryTransferEnergy(int tDistance) {
+        if (tTile == null) return;
+
+        boolean isCrossDimensional = this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        if (isCrossDimensional && !isDimensionalTeleportAvailable()) return;
+
+        if (!(tTile instanceof BaseMetaTileEntity targetMTE)) return;
+
+        long packetSize = targetMTE.getMaxSafeInput();
+        long energyUse = 10;
+        if (mMaxLossDistance != 0) {
+            energyUse = GTUtility.safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+        }
+        energyUse = packetSize + ((V[mTier] * energyUse) / 100);
+
+        if (!getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) return;
+
+        if (targetMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1) > 0) {
+            getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
         }
     }
 

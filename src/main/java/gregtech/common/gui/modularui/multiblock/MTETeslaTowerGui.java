@@ -216,7 +216,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .asWidget()
                     .marginRight(4))
             .child(
-                new TextFieldWidget()
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(1, Integer.MAX_VALUE)
                     .value(
                         new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints)
                             .allowC2S())
@@ -236,7 +237,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .asWidget()
                     .marginRight(4))
             .child(
-                new TextFieldWidget()
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(1, Integer.MAX_VALUE)
                     .value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize).allowC2S())
                     .size(25, 12)
                     .marginRight(4))

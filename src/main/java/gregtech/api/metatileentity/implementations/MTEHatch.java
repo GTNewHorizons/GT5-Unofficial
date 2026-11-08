@@ -9,12 +9,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -23,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
@@ -39,6 +39,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     private int textureIndex = 0;
 
     private ItemStack ae2CraftingIcon;
+    private ChunkCoordinates ae2CraftingIconOwner;
 
     /**
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
@@ -148,6 +149,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture getCasingTexture() {
         if (texturePage > 0 || textureIndex > 0) {
             return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
@@ -182,6 +188,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
         texturePage = newTexturePage;
         textureIndex = newTextureIndex;
+        clearInventoryTextureCache();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
@@ -193,26 +200,43 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
-
-        data.setInteger("texturePage", texturePage);
-        data.setInteger("textureIndex", textureIndex);
-
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(texturePage);
+        buffer.writeInt(textureIndex);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        texturePage = data.getInteger("texturePage");
-        textureIndex = data.getInteger("textureIndex");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        texturePage = buffer.readInt();
+        textureIndex = buffer.readInt();
+        clearInventoryTextureCache();
     }
 
     /**
-     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
-     * machine list
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
      */
+    @Deprecated
     public final void updateCraftingIcon(ItemStack icon) {
+        // The icon gets no owner, so clearHatches never drops it.
+        updateCraftingIcon(icon, null);
+    }
+
+    /**
+     * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
+     */
+    public final void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner) {
+        final ChunkCoordinates ownerCoords = owner == null ? null : owner.getCoords();
+        if (icon == null) {
+            // A hatch can belong to two multiblocks at once, and the one that set the icon is the only one that
+            // knows whether it is still valid. Anything else leaves it alone.
+            if (ae2CraftingIconOwner == null || !ae2CraftingIconOwner.equals(ownerCoords)) return;
+            this.ae2CraftingIconOwner = null;
+        } else {
+            this.ae2CraftingIconOwner = ownerCoords;
+        }
         this.ae2CraftingIcon = icon;
     }
 
@@ -274,33 +298,23 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
-    }
-
-    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
-        int amp, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(amp * GTValues.V[tier])));
         additionalTooltips.add(
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips
             .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        if (author != null) {
-            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
-        }
         final String[] suffixs = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
             return GTSplit.splitLocalizedWithSuffix(key, suffixs);

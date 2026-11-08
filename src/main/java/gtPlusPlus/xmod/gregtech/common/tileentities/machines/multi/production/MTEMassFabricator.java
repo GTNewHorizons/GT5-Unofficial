@@ -251,7 +251,7 @@ public class MTEMassFabricator extends MTEExtendedPowerMultiBlockBase<MTEMassFab
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8F)
+        }.setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
