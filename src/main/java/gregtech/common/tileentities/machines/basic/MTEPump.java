@@ -15,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
@@ -843,9 +842,9 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public void addSpecialDebugInfoComp(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
-        ArrayList<IChatComponent> aList) {
-        aList.addAll(
+    public void addSpecialDebugInfoComp(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, int logLevel,
+        ArrayList<IChatComponent> list) {
+        list.addAll(
             Arrays.asList(
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.primary",

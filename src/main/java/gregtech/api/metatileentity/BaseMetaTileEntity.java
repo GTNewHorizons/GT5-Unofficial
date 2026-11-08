@@ -757,9 +757,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void addDebugInfoComp(EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
-        if (aLogLevel > 2) {
-            aList.add(
+    public void addDebugInfoComp(EntityPlayer player, int logLevel, ArrayList<IChatComponent> list) {
+        if (logLevel > 2) {
+            list.add(
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.meta_id.v2",
                     GTUtility.styledComp(new ChatComponentText(String.valueOf(mID)), EnumChatFormatting.AQUA),
@@ -769,13 +769,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
                         : new ChatComponentText("")));
         }
-        if (aLogLevel > 1 && mMetaTileEntity != null) {
-            addProfilingInformation(aList);
-            aList.add(
+        if (logLevel > 1 && mMetaTileEntity != null) {
+            addProfilingInformation(list);
+            list.add(
                 new ChatComponentTranslation(
-                    mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
+                    mMetaTileEntity.isAccessAllowed(player) ? "GT5U.scanner.debug.accessible"
                         : "GT5U.scanner.debug.not_accessible"));
-            aList.add(
+            list.add(
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.sound_requests",
                     GTUtility.styledComp(mMetaTileEntity.mSoundRequests, EnumChatFormatting.GOLD),
@@ -783,18 +783,18 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
         }
-        if (aLogLevel > 0) {
-            aList.add(
+        if (logLevel > 0) {
+            list.add(
                 new ChatComponentTranslation(
                     mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
-            aList.add(
+            list.add(
                 new ChatComponentTranslation(
                     isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
                         : "GT5U.scanner.debug.machine_not_allowed_to_work"));
-            if (!mHasEnoughEnergy) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
+            if (!mHasEnoughEnergy) list.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) aList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
-        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugInfoComp(this, aPlayer, aLogLevel, aList);
+        if (joinedIc2Enet) list.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
+        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugInfoComp(this, player, logLevel, list);
     }
 
     @Override
