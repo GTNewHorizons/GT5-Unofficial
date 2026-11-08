@@ -40,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -167,7 +166,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.DEFusionCrafter.footer"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
-            .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -35,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -124,7 +124,9 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 new ResourceLocation("gregtech", "nuclear-reactor"),
                 ImmutableMap.<String, Object>builder()
                     .put("warmup", formatNumber(WARMUP_SECONDS))
-                    .put("unit", getFluidUnit())
+                    .put("tier1", GTUtility.getColoredTierNameFromTier((byte) VoltageIndex.EV))
+                    .put("tier2", GTUtility.getColoredTierNameFromTier((byte) VoltageIndex.IV))
+                    .put("tier3", GTUtility.getColoredTierNameFromTier((byte) VoltageIndex.LuV))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)

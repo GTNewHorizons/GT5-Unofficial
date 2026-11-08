@@ -31,7 +31,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -50,7 +49,6 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -195,30 +193,28 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_exh"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
                 new ResourceLocation("gregtech", "exothermic-hearth"),
                 ImmutableMap.<String, Object>builder()
-                    .put("discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD))
-                    .put("heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER))
-                    .put("start_tier", GTValues.VN[MTEElectricBlastFurnace.HEAT_BONUS_START_TIER])
-                    .put("perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD))
-                    .put("max_multiplier", formatNumber(MAX_PARALLEL_MULTIPLIER))
-                    .put("heatup_minutes", formatNumber(HEATUP_MINUTES))
-                    .put("pyrotheum", formatFluid(PYROTHEUM_DRAIN_BASE))
-                    .put("pyrotheum_speedup", formatNumber(PYROTHEUM_HEATUP_SPEEDUP))
+                    .put("discount_heat", OverclockCalculator.HEAT_DISCOUNT_THRESHOLD)
+                    .put("heat_per_tier", MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER)
+                    .put("start_tier", MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE)
+                    .put("perfect_oc_heat", OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
+                    .put("max_multiplier", MAX_PARALLEL_MULTIPLIER)
+                    .put("heatup_minutes", HEATUP_MINUTES)
+                    .put("pyrotheum", PYROTHEUM_DRAIN_BASE)
+                    .put("max_pyrotheum", PYROTHEUM_DRAIN_BASE * MAX_PARALLEL_MULTIPLIER)
+                    .put("pyrotheum_speedup", PYROTHEUM_HEATUP_SPEEDUP)
+                    .put("eu_discount_percent", OverclockCalculator.DEFAULT_HEAT_DISCOUNT_PERCENT_FOR_TOOLTIPS)
                     .build())
-            .addSeparator()
-            .addSupportAny()
-            .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.exothermic_hearth"))
             .beginStructureBlock(23, 43, 23, true)
             .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("1800-1904", Casings.HearthCasing.getLocalizedName(), false)
             .addCasing("937", Casings.HeatProofMachineCasing.getLocalizedName(), false)
@@ -238,9 +234,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -494,8 +488,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat() + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER
-                * (GTUtility.getTierExtended(this.getMaxInputEu()) - MTEElectricBlastFurnace.HEAT_BONUS_START_TIER);
+            this.heatingCapacity = (int) getCoilLevel().getHeat()
+                + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER * (GTUtility.getTierExtended(this.getMaxInputEu())
+                    - MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE);
         }
     }
 

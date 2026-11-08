@@ -7,8 +7,8 @@ Each item slot in a recipe has an associated Nanite Tier.
 For the teleportation node to progress through an item slot, it must receive a nanite with the same or higher tier.
 Excess nanites linearly increase the speed at which recipes are crafted.
 Providing a higher tier nanite than is requested slows progress by {italic:2^(provided tier - requested tier)} times.
-This multiblock's EU/t remains constant even when it is paused, stalled, or slowed down.
-Each recipe crafted in parallel increases the EU/t consumed linearly.
+This multiblock's {EU/t} remains constant even when it is paused, stalled, or slowed down.
+Each recipe crafted in parallel increases the {EU/t} consumed linearly.
 This multiblock does not overclock.
 {dark_gray:{hr}}
 The min and max parallels can be configured in the parameters to guarantee exact recipe timings.

@@ -180,6 +180,7 @@ public enum IDMetaItem01 {
     Black_Hole_Opener(418),
     Black_Hole_Closer(419),
     Black_Hole_Stabilizer(420),
+    Supermassive_Black_Hole_Opener(421),
     StableAdhesive(427),
     SuperconductorComposite(428),
     NaquadriaSupersolid(429),

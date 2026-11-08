@@ -466,8 +466,8 @@ gt.blockmachines.multimachine.em.computer.machinetype=Квантовый ком�
 gt.blockmachines.multimachine.em.computer.desc=Гораздо лучше простого калькулятора
 gt.blockmachines.multimachine.em.computer.cfgi.0=Коэффициент разгона
 gt.blockmachines.multimachine.em.computer.cfgi.1=Коэффициент избытка вольтажа
-gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев
-gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений
+gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=Банк данных
 
@@ -1623,12 +1623,6 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Анти
 tt.keyword.Weird=*
-
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Проект Godforge
 
 tt.chat.debug.generator=Режим лазера: %s
 

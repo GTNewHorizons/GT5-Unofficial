@@ -341,7 +341,6 @@ ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
 ig.structure.specialThanks=Special Thanks to
-ig.structure.author=Added by
 ig.structure.and= and
 
 ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
@@ -442,6 +441,7 @@ ig.infodata.dyson_swarm.modules.fmt=Modules: §e%s§r
 ig.infodata.dyson_swarm.power_factor.fmt=Power Factor: %s
 ig.infodata.dyson_swarm.theoretical_output.fmt=Theoretical Output: §e%s§r EU/t
 ig.infodata.dyson_swarm.current_output.fmt=Current Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.modules_lost.fmt=Modules consumed this cycle: §e%s§r
 ig.infodata.dyson_swarm.computation.fmt=Computation required: §e%s§r/t
 ig.infodata.gas_siphon.depth.fmt=Depth: §e%s§r
 ig.infodata.gas_siphon.fluid.fmt=Fluid: §e%s§rL/s §9%s§r
