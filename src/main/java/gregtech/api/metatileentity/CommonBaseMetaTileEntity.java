@@ -60,9 +60,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     private boolean mIgnoreNextUnload = false;
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
-    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
     // oldUpdateData: One byte of data that is supplied by MTE and synced with client
-    protected byte oldRedstoneData = 63, oldUpdateData = 0;
+    protected byte oldUpdateData = 0;
 
     private byte mColor = 0;
 
@@ -296,18 +295,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
         oldUpdateData = updateData;
         sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
-    }
-
-    /**
-     * Handles sided Redstone changing
-     */
-    protected final void handleSidedRedstoneChangeServer() {
-        byte redstone = getSidedRedstoneMask();
-        if (redstone == oldRedstoneData) {
-            return;
-        }
-        oldRedstoneData = redstone;
-        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
     }
 
     protected abstract void onTickFail();

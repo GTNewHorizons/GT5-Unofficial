@@ -11,7 +11,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.common.blocks.ItemCasings;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -24,11 +23,6 @@ public class ItemCasingsTT extends ItemCasings {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
-        if (aStack.getItemDamage() < 15) {
-            tooltip.add(CommonValues.TEC_MARK_EM);
-        } else {
-            tooltip.add(CommonValues.COSMIC_MARK);
-        }
         switch (aStack.getItemDamage()) {
             case 0: // "High Power Casing"
                 tooltip.add(translateToLocal("gt.blockcasingsTT.0.desc.0")); // Well suited for high power applications.
