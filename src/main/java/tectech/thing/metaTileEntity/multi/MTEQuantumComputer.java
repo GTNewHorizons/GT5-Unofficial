@@ -66,6 +66,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
@@ -91,6 +92,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     private final ArrayList<MTEHatchRack> eRacks = new ArrayList<>();
 
     private final ArrayList<MTEHatchWirelessComputationOutput> eWirelessComputationOutputs = new ArrayList<>();
+    private boolean dirty = false;
 
     private static IIconContainer ScreenOFF;
     private static IIconContainer ScreenON;
@@ -359,20 +361,27 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (!eOutputData.isEmpty()) {
-            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData);
-            if (pendingPacket != null) {
-                pack = pack.unifyPacketWith(pendingPacket);
-                if (pack == null) {
-                    return;
-                }
-            }
-            long packetSize = pack.getContent() / eOutputData.size();
+        if (!this.dirty) return;
 
-            for (MTEHatchDataOutput o : eOutputData) {
-                o.providePacket(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
+        if (eOutputData.isEmpty()) {
+            return;
+        }
+
+        QuantumDataPacket pack = new QuantumDataPacket(eAvailableData);
+        if (pendingPacket != null) {
+            pack = pack.unifyPacketWith(pendingPacket);
+            if (pack == null) {
+                return;
             }
         }
+        long packetSize = pack.getContent() / eOutputData.size();
+        var packet = new QuantumDataPacket(packetSize).unifyTraceWith(pack);
+        for (MTEHatchDataOutput o : eOutputData) {
+            o.q = packet;
+            o.moveAround(o.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
+        }
+
+        this.dirty = false;
     }
 
     @Override
@@ -451,6 +460,12 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
+    public void scheduleRecipeCheckImmediate() {
+        // super.scheduleRecipeCheckImmediate();
+        this.dirty = true;
+    }
+
+    @Override
     protected long getAvailableData_EM() {
         return eAvailableData;
     }
@@ -482,9 +497,10 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchRack) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eRacks.add((MTEHatchRack) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchRack rack) {
+            rack.updateTexture(aBaseCasingIndex);
+            rack.addWatcher(this);
+            return eRacks.add(rack);
         }
         return false;
     }

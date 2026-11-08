@@ -47,6 +47,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -388,9 +389,11 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             if (pendingComputation <= 0) break;
 
             long toConsume = Math.min(pendingComputation, output.requestedComputation);
+            QuantumDataPacket packet = new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket);
             pendingComputation -= toConsume;
 
-            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
+            output.q = packet;
+            output.moveAround(output.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         wastedComputation = pendingComputation;

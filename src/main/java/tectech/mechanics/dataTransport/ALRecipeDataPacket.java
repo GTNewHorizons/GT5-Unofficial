@@ -51,11 +51,6 @@ public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
     }
 
     @Override
-    public boolean extraCheck() {
-        return true;
-    }
-
-    @Override
     protected RecipeAssemblyLine[] unifyContentWith(RecipeAssemblyLine[] content) {
         throw new NoSuchMethodError("Unavailable to unify item stack data packet");
     }

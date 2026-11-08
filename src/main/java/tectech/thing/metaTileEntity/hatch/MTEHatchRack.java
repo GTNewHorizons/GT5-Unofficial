@@ -182,6 +182,8 @@ public class MTEHatchRack extends MTEHatch {
 
     private int getComputationPower(float overclock, float overvolt, boolean tickingComponents) {
         float computation = 0, heat = 0;
+        float calc = (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt));
+        float heatingFactor = overclock * overvolt * overvolt;
         for (int i = 0; i < mInventory.length; i++) {
             if (mInventory[i] == null || mInventory[i].stackSize != 1) {
                 continue;
@@ -190,21 +192,21 @@ public class MTEHatchRack extends MTEHatch {
             if (comp == null) {
                 continue;
             }
+            float compCompute = comp.computation * calc;
             if (tickingComponents) {
                 if (this.heat > comp.maxHeat) {
                     mInventory[i] = null;
+                    notifyWatchers();
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coolConstant * this.heat / 100000f)
-                        * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
+                        * (comp.heatConstant > 0 ? comp.heatConstant * heatingFactor : -10f);
 
                     if (overvolt > TecTech.RANDOM.nextFloat()) {
-                        computation += comp.computation * (1 + overclock * overclock)
-                            / (1 + (overclock - overvolt) * (overclock - overvolt));
+                        computation += compCompute;
                     }
                 }
             } else {
-                computation += comp.computation * (1 + overclock * overclock)
-                    / (1 + (overclock - overvolt) * (overclock - overvolt)); // For getInfoData()
+                computation += compCompute; // For getInfoData()
             }
         }
         if (tickingComponents) {
@@ -235,6 +237,7 @@ public class MTEHatchRack extends MTEHatch {
                         }
                         if (heat - 20 > comp.maxHeat) {
                             mInventory[i] = null;
+                            notifyWatchers();
                         } else if (comp.heatConstant < 0) {
                             heatC += comp.heatConstant * (heat / 10000f);
                         }

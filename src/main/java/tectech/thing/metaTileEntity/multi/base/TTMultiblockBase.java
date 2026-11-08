@@ -33,9 +33,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -199,7 +199,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     /** Index of the energy hatch {@link #powerInput()} drains first on the next tick */
     private int powerInputRotation = 0;
 
-    private Vec3Impl pos;
+    private long pos;
 
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
@@ -482,10 +482,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected long getAvailableData_EM() {
         long result = 0;
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        Vec3Impl pos = new Vec3Impl(
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord());
+        long pos = CoordinatePacker
+            .pack(baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(), baseMetaTileEntity.getZCoord());
         for (MTEHatchDataInput in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -869,10 +867,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        pos = new Vec3Impl(
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
+        pos = CoordinatePacker
+            .pack(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -1275,7 +1271,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return super.getRepairStatus() + (eCertainStatus == 0 ? 1 : 0) + (eParameters ? 1 : 0);
     }
 
-    public Vec3Impl getPos() {
+    public long getPos() {
         return pos;
     }
 

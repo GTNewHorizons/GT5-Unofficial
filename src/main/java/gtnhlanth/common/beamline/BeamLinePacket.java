@@ -38,11 +38,6 @@ public class BeamLinePacket extends DataPacket<BeamInformation> {
     }
 
     @Override
-    public boolean extraCheck() {
-        return true;
-    }
-
-    @Override
     protected BeamInformation unifyContentWith(BeamInformation arg0) {
         throw new NoSuchMethodError("Unavailable to unify beam info data packet");
     }
