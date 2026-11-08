@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
+
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.maps.ScrollableOutputFrontend;
@@ -66,9 +68,15 @@ public class VoidMinerFrontend extends ScrollableOutputFrontend {
             currentTip.add(
                 EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                     "GT5U.nei.voidminer.chance",
-                    formatNumber(100 * weights.getChance(ore))));
+                    formatChance(100 * weights.getChance(ore))));
         }
         return currentTip;
+    }
+
+    /** Three significant digits */
+    private static String formatChance(float percent) {
+        int decimalPlaces = percent > 0 ? Math.max(0, 2 - (int) Math.floor(Math.log10(percent))) : 0;
+        return formatNumber(percent, new FormatOptions().setDecimalPlaces(decimalPlaces));
     }
 
     private static VoidMinerRecipes.Weights getWeights(GTNEIDefaultHandler.FixedPositionedStack pStack) {
