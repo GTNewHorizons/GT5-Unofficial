@@ -996,6 +996,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return SoundResource.GT_MACHINES_NANOCHIP;
     }
 
+    @Override
+    protected float getSoundRadiusMultiplier() {
+        return 6f;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     protected void doActivitySound(SoundResource activitySound) {

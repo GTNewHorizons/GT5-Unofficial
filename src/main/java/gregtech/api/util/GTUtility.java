@@ -117,6 +117,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -691,8 +692,39 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
@@ -1043,6 +1075,11 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
+     * <p>
+     * Only one fluid type is moved per call. If the fluid the source offers first cannot be moved (dest refuses it or
+     * the filter rejects it), the other fluids reported by the source's tank info are tried in order. Multi-tank
+     * handlers are free to keep offering the same tank from an unspecified drain, so without this fallback a full or
+     * unwilling dest would stall the transfer even though the source holds fluids dest would accept.
      *
      * @param source    tank to drain from. method become noop if this is null
      * @param dest      tank to fill to. method become noop if this is null
@@ -1060,7 +1097,36 @@ public class GTUtility {
         liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
             dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+            return;
         }
+
+        FluidTankInfo[] tanks = source.getTankInfo(drainSide);
+        if (tanks == null || tanks.length < 2) return;
+        for (int i = 0; i < tanks.length; i++) {
+            if (!isFluidCandidate(tanks[i]) || tanks[i].fluid.isFluidEqual(liquid) || isFluidInEarlierTank(tanks, i))
+                continue;
+            FluidStack request = tanks[i].fluid.copy();
+            request.amount = maxAmount;
+            FluidStack candidate = source.drain(drainSide, request, false);
+            if (candidate == null || candidate.amount <= 0) continue;
+            candidate = candidate.copy();
+            candidate.amount = dest.fill(fillSide, candidate, false);
+            if (candidate.amount > 0 && (allowMove == null || allowMove.test(candidate))) {
+                dest.fill(fillSide, source.drain(drainSide, candidate, true), true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isFluidCandidate(FluidTankInfo tank) {
+        return tank != null && tank.fluid != null && tank.fluid.amount > 0;
+    }
+
+    private static boolean isFluidInEarlierTank(FluidTankInfo[] tanks, int index) {
+        for (int j = 0; j < index; j++) {
+            if (isFluidCandidate(tanks[j]) && tanks[j].fluid.isFluidEqual(tanks[index].fluid)) return true;
+        }
+        return false;
     }
 
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
@@ -2258,14 +2324,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2277,7 +2343,7 @@ public class GTUtility {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 
@@ -4156,6 +4222,25 @@ public class GTUtility {
             return String.format("%d%c", (long) shortened, suffix);
         } else {
             return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    /**
+     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
+     *
+     * @param ticks The number of ticks
+     * @return A localized string
+     */
+    public static String formatTime(int ticks) {
+        if (ticks < 20) {
+            return translateToLocalFormatted(
+                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(ticks));
+        } else {
+            double seconds = ticks / 20.0;
+            return translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
         }
     }
 

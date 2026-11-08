@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
@@ -95,13 +94,13 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
-            .addCasing("0-26", Casings.CokeOvenBricks.getLocalizedName(), false)
+            .addCasing("0-25", Casings.CokeOvenBricks.getLocalizedName(), false)
             .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_coke_oven_brick"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_1"))
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_2"))
-            .toolTipFinisher(AuthorJulia);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

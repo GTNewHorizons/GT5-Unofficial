@@ -16,7 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -41,7 +43,6 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -74,16 +75,16 @@ public final class ItemParametrizerMemoryCard extends Item {
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
                 if (!hasIdenticalParameterList("paramList", parameterList, tNBT)) {
-                    String reason;
+                    IChatComponent reason;
                     if (!tNBT.hasKey("controller")) {
-                        reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
+                        reason = new ChatComponentTranslation("item.em.parametrizerMemoryCard.noConfig");
                     } else {
-                        reason = translateToLocalFormatted(
+                        reason = new ChatComponentTranslation(
                             "item.em.parametrizerMemoryCard.controllerMismatch",
                             tNBT.getString("controller"),
-                            controller.getLocalName());
+                            new ChatComponentTranslation(controller.getLocalNameKey()));
                     }
-                    GTUtility.sendChatToPlayer(aPlayer, reason);
+                    GTUtility.sendChatComp(aPlayer, reason);
 
                     return true;
                 }
@@ -173,7 +174,6 @@ public final class ItemParametrizerMemoryCard extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0")); // Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
