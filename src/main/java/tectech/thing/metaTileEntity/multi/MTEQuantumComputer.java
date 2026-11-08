@@ -355,7 +355,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             maxHeat = maxTemp;
-            availableData.set(eAvailableData);
             return SimpleCheckRecipeResult.ofSuccess("computing");
         } else {
             pendingPacket = null;
@@ -365,7 +364,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             maxHeat = maxTemp;
-            availableData.set(eAvailableData);
+            this.dirty = true;
             return SimpleCheckRecipeResult.ofSuccess("no_computing");
         }
 
@@ -520,7 +519,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void scheduleRecipeCheckImmediate() {
-        // super.scheduleRecipeCheckImmediate();
+        super.scheduleRecipeCheckImmediate();
         this.compChanged = true;
     }
 
