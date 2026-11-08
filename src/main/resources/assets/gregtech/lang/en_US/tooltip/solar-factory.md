@@ -11,5 +11,6 @@ The recipes shown in {color_name:NEI} display the minimum Wafer Tier required
 {green:Supports Multi-Amp Energy Hatches}
 {hr}
 {white:{bold:Tier {aqua:{bold:3}}:}}
+{green:Supports Laser Energy Hatches}
 {VNF:t3_min_tier}-{VNF:t3_max_tier} Solar Panels can be made without the previous panel, but at a higher cost
 Bonus per increased {color_name:Wafer} Tier is raised to {color_amount:{var:high_output_mult}%}

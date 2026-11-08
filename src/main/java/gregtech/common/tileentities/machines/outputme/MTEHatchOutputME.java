@@ -319,7 +319,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        return true;
+        return MTEHatchOutputMEBase.WailaHelper.hasWailaAdvancedBody(accessor);
     }
 
     @Override
