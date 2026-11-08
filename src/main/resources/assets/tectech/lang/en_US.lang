@@ -464,8 +464,8 @@ gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
 gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
-gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
-gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
+gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
