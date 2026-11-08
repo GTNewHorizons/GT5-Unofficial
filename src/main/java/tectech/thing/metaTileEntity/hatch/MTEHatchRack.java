@@ -57,7 +57,7 @@ public class MTEHatchRack extends MTEHatch {
     private static IIconContainer EM_R;
     private static IIconContainer EM_R_ACTIVE;
     private int heat = 0;
-    private float overClock = 1, overVolt = 1;
+    private float overClock = 1, overVolt = 1, calc = Float.NaN, heatFactor = Float.NaN;
     private static final Map<String, RackComponent> componentBinds = new HashMap<>();
     public static final List<ItemStack> validRackItems = new ArrayList<>();
 
@@ -180,10 +180,12 @@ public class MTEHatchRack extends MTEHatch {
         return true;
     }
 
-    private int getComputationPower(float overclock, float overvolt, boolean tickingComponents) {
+    private int getComputationPower(float overclock, float overvolt, boolean tickingComponents, boolean heatOnly) {
         float computation = 0, heat = 0;
-        float calc = (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt));
-        float heatingFactor = overclock * overvolt * overvolt;
+        if (overclock != this.overClock && overvolt != this.overVolt) {
+            calc = (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt));
+            heatFactor = overclock * overvolt * overvolt;
+        }
         for (int i = 0; i < mInventory.length; i++) {
             if (mInventory[i] == null || mInventory[i].stackSize != 1) {
                 continue;
@@ -199,9 +201,9 @@ public class MTEHatchRack extends MTEHatch {
                     notifyWatchers();
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coolConstant * this.heat / 100000f)
-                        * (comp.heatConstant > 0 ? comp.heatConstant * heatingFactor : -10f);
+                        * (comp.heatConstant > 0 ? comp.heatConstant * heatFactor : -10f);
 
-                    if (overvolt > TecTech.RANDOM.nextFloat()) {
+                    if (!heatOnly && overvolt > TecTech.RANDOM.nextFloat()) {
                         computation += compCompute;
                     }
                 }
@@ -218,7 +220,17 @@ public class MTEHatchRack extends MTEHatch {
     public int tickComponents(float oc, float ov) {
         overClock = oc;
         overVolt = ov;
-        return getComputationPower(overClock, overVolt, true);
+        return getComputationPower(overClock, overVolt, true, false);
+    }
+
+    /**
+     * Applies component heating and burnout without rolling computation. Used on recipe checks where the controller's
+     * computation is still cached.
+     */
+    public void tickHeat(float oc, float ov) {
+        overClock = oc;
+        overVolt = ov;
+        getComputationPower(overClock, overVolt, true, true);
     }
 
     @Override
@@ -258,7 +270,7 @@ public class MTEHatchRack extends MTEHatch {
     public String[] getInfoData() {
         return new String[] {
             IGregTechDeviceInformation
-                .encode("tt.infodata.rack.base_computation", getComputationPower(overClock, overVolt, false)),
+                .encode("tt.infodata.rack.base_computation", getComputationPower(overClock, overVolt, false, false)),
             IGregTechDeviceInformation.encode("tt.infodata.rack.heat_accumulated", heat) };
     }
 

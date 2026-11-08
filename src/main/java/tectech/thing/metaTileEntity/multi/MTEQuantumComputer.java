@@ -92,7 +92,12 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     private final ArrayList<MTEHatchRack> eRacks = new ArrayList<>();
 
     private final ArrayList<MTEHatchWirelessComputationOutput> eWirelessComputationOutputs = new ArrayList<>();
+    private boolean compChanged = false;
     private boolean dirty = false;
+    private long cachedComputation = 0;
+    private short cachedSources = 0;
+    private @Nullable QuantumDataPacket cachedPacket;
+    private float lastOverClockRatio = Float.NaN, lastOverVoltageRatio = Float.NaN;
 
     private static IIconContainer ScreenOFF;
     private static IIconContainer ScreenON;
@@ -129,7 +134,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     // region parameters
 
-    // TODO remove after 2.9
+    // TODO remove after 2.9/10
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
@@ -208,6 +213,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
+            rack.removeWatcher(this);
         }
         eRacks.clear();
         if (!checkPiece("front", 1, 2, 0, errors)) return;
@@ -237,6 +243,14 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
+    }
+
+    @Override
+    public void clearHatches() {
+        for (MTEHatchDataInput input : validMTEList(eInputData)) {
+            input.removeWatcher(this);
+        }
+        super.clearHatches();
     }
 
     @Override
@@ -292,60 +306,56 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     protected CheckRecipeResult checkProcessing_EM() {
         parametrization.setToDefaults(false, true);
         eAvailableData = 0;
-        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
-        if (pendingPacket == null) {
-            return SimpleCheckRecipeResult.ofFailure("no_routing");
-        }
+        pendingPacket = null;
         double maxTemp = 0;
-        double overClockRatio = overclockParameter.getValue();
-        double overVoltageRatio = overvoltParameter.getValue();
+        float overClockRatio = overclockParameter.getValue()
+            .floatValue();
+        float overVoltageRatio = overvoltParameter.getValue()
+            .floatValue();
         if (Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
-        float eut = Math.max(V[6], V[7] * (float) overClockRatio * (float) overVoltageRatio);
+        if (overClockRatio != lastOverClockRatio || overVoltageRatio != lastOverVoltageRatio) {
+            lastOverClockRatio = overClockRatio;
+            lastOverVoltageRatio = overVoltageRatio;
+            compChanged = true;
+        }
+
+        float eut = Math.max(V[6], V[7] * overClockRatio * overVoltageRatio);
         if (eut < Integer.MAX_VALUE - 7) {
             mEUt = -(int) eut;
         } else {
             mEUt = -(int) V[7];
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
-        short thingsActive = 0;
-        int rackComputation;
+        if (compChanged) {
+            CheckRecipeResult recalculationFailure = recalculateComputation(overClockRatio, overVoltageRatio);
+            if (recalculationFailure != null) {
+                return recalculationFailure;
+            }
+        } else {
+            for (MTEHatchRack rack : validMTEList(eRacks)) {
+                rack.tickHeat(overClockRatio, overVoltageRatio);
+            }
+        }
 
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             if (rack.getHeat() > maxTemp) {
                 maxTemp = rack.getHeat();
             }
-            rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
-            if (rackComputation > 0) {
-                eAvailableData += rackComputation;
-                thingsActive += 4;
-            }
             rack.getBaseMetaTileEntity()
                 .setActive(true);
         }
 
-        for (MTEHatchDataInput di : eInputData) {
-            if (di.q != null) // ok for power losses
-            {
-                thingsActive++;
-                if (di.q.contains(getPos())) {
-                    return SimpleCheckRecipeResult.ofFailure("no_routing");
-                }
-                pendingPacket = pendingPacket.unifyPacketWith(di.q);
-                if (pendingPacket == null) {
-                    return SimpleCheckRecipeResult.ofFailure("no_routing");
-                }
-                di.setContents(null);
-            }
-        }
-
-        if (thingsActive > 0 && eCertainStatus == 0) {
-            thingsActive += eOutputData.size();
+        if (cachedSources > 0 && eCertainStatus == 0) {
+            eAvailableData = cachedComputation;
+            pendingPacket = cachedPacket;
+            short thingsActive = (short) (cachedSources + eOutputData.size());
             eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             maxHeat = maxTemp;
+            availableData.set(eAvailableData);
             return SimpleCheckRecipeResult.ofSuccess("computing");
         } else {
             pendingPacket = null;
@@ -355,8 +365,57 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             maxHeat = maxTemp;
+            availableData.set(eAvailableData);
             return SimpleCheckRecipeResult.ofSuccess("no_computing");
         }
+
+    }
+
+    /**
+     * Recalculates the rack computation and the routed data packet. Only runs while the controller is dirty, so data
+     * inputs are consumed only when something actually changed. Racks heat up on every check, see {@code tickHeat}.
+     *
+     * @return a failure result, or {@code null} if the recalculation succeeded
+     */
+    @Nullable
+    private CheckRecipeResult recalculateComputation(double overClockRatio, double overVoltageRatio) {
+        compChanged = false;
+        QuantumDataPacket packet = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (packet == null) {
+            compChanged = true;
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
+        long computation = 0;
+        short sources = 0;
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
+            int rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
+            if (rackComputation > 0) {
+                computation += rackComputation;
+                sources += 4;
+            }
+        }
+
+        for (MTEHatchDataInput di : eInputData) {
+            if (di.q != null) // ok for power losses
+            {
+                sources++;
+                if (di.q.contains(getPos())) {
+                    compChanged = true;
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                packet = packet.unifyPacketWith(di.q);
+                if (packet == null) {
+                    compChanged = true;
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+            }
+        }
+
+        cachedComputation = computation;
+        cachedSources = sources;
+        cachedPacket = packet;
+        dirty = true;
+        return null;
     }
 
     @Override
@@ -462,7 +521,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void scheduleRecipeCheckImmediate() {
         // super.scheduleRecipeCheckImmediate();
-        this.dirty = true;
+        this.compChanged = true;
     }
 
     @Override
