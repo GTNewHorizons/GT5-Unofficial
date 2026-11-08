@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -109,15 +108,15 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(getMachineType())
-            .addMarkdown(
-                new ResourceLocation("gregtech", "volcanus"),
-                ImmutableMap.of(
-                    "pyrotheum", formatFluid(PYROTHEUM_PER_SECOND),
-                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
-                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addStaticParallelInfo(8)
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.9f)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "volcanus"),
+                ImmutableMap.of(
+                    "pyrotheum", formatNumber(PYROTHEUM_PER_SECOND),
+                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
+                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

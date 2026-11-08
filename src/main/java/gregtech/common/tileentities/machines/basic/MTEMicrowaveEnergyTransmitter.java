@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,6 +24,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,6 +39,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
@@ -63,6 +66,15 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
             aTier,
             3,
             new String[] { "gt.blockmachines.basicmachine.microtransmitter.tooltip" });
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicmachine.microtransmitter.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     public String[] getDescription() {

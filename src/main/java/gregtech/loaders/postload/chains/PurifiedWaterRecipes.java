@@ -38,6 +38,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitOzonation;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import gtPlusPlus.core.material.Particle;
 
@@ -118,7 +119,7 @@ public class PurifiedWaterRecipes {
                 .duration(duration)
                 .ignoreCollision()
                 .eut(TierEU.RECIPE_LuV)
-                .metadata(BASE_CHANCE, tier * 20.0f)
+                .metadata(BASE_CHANCE, tier * MTEPurificationUnitOzonation.SUCCESS_PER_OZONE_DOUBLING)
                 .addTo(purificationOzonationRecipes);
         }
 

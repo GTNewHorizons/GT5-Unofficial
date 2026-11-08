@@ -36,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -51,6 +50,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
@@ -70,6 +70,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
     private static final int TOP_CASING_AMOUNT = 28;
+    private static ITexture casingTexture;
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -146,7 +147,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
-            .toolTipFinisher(GTAuthors.AuthorNoc.get());
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
@@ -183,7 +184,12 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public ITexture getCasingTexture() {
-        return Casings.InconelReinforcedCasing.getCasingTexture();
+        // FlotationCellCasings.textureId points at Cyclotron Coil, so build the texture from the block itself
+        if (casingTexture == null) {
+            casingTexture = TextureFactory
+                .of(Casings.FlotationCellCasings.getBlock(), Casings.FlotationCellCasings.getBlockMeta());
+        }
+        return casingTexture;
     }
 
     @Override

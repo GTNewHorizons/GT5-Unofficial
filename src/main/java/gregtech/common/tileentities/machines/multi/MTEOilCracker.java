@@ -20,10 +20,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -32,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
@@ -51,14 +55,19 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int HYDRO_H2_SAVING_PERCENT = 20;
+    private static final int HYDRO_OUTPUT_BONUS_PERCENT = 25;
+    private static final int STEAM_OUTPUT_BONUS_PERCENT = 50;
+    private static final int EU_USAGE_REDUCTION_PERCENT = 10;
+    private static final int MAX_DISCOUNT_PERCENT = 50;
 
     private static final byte CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -124,30 +133,33 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker, OCU")
-            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
-            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " EU discount")
-            .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
-            .addInfo("More efficient than the Chemical Reactor")
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
-            .addInfo("Steam - Outputs 50% more cracked fluid")
-            .addInfo("(Values compared to cracking in the Chemical Reactor)")
-            .addInfo("Place the appropriate circuit in the controller or an input bus")
+        // spotless:off
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.oil_cracker"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "oil-cracker"),
+                ImmutableMap.<String, Object>builder()
+                    .put("eu_usage_percent", EU_USAGE_REDUCTION_PERCENT)
+                    .put("max_discount_percent", MAX_DISCOUNT_PERCENT)
+                    .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
+                    .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
+                    .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
+                    .build())
             .beginStructureBlock(5, 3, 3, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("18-20", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("16", "Heating Coil", true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("18-20", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addStructureHint("GT5U.cracker.io_side")
-            .addEnergyHatch("1+", "Any casing", 1, 2, 3)
-            .addMaintenanceHatch("1", "Any casing", 1, 2, 3)
-            .addInputBus("0+", "Any middle casing", 1)
-            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 1, 2, 3)
-            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 3)
-            .addAir("Interior of the structure")
+            .addEnergyHatch("1+", anyCasing, 1, 2, 3)
+            .addMaintenanceHatch("1", anyCasing, 1, 2, 3)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_middle_casing"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_input_hatches"), 1, 2, 3)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_output_hatch"), 2, 3)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -194,7 +206,9 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     }
 
     public double getEuModifier() {
-        return 1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F);
+        double discountPerTier = EU_USAGE_REDUCTION_PERCENT / 100.0;
+        double maxDiscount = MAX_DISCOUNT_PERCENT / 100.0;
+        return 1.0 - Math.min(discountPerTier * (heatLevel.getTier() + 1), maxDiscount);
     }
 
     private boolean addMiddleInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -1,3 +1,4 @@
+{hr}
 工业级先进高炉
 运行时每秒消耗{var:pyrotheum}{fluid:pyrotheum}
 搭建方式与普通工业高炉完全相同
