@@ -204,7 +204,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (mTickTimer > 10) {
                     syncConnectionToClient();
                     handleUpdateDataChangeServer();
-                    handleSidedRedstoneChangeServer();
                 }
 
                 if (mNeedsBlockUpdate) {

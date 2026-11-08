@@ -53,6 +53,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
@@ -70,6 +71,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
     private static final int TOP_CASING_AMOUNT = 28;
+    private static ITexture casingTexture;
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -175,7 +177,12 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public ITexture getCasingTexture() {
-        return Casings.InconelReinforcedCasing.getCasingTexture();
+        // FlotationCellCasings.textureId points at Cyclotron Coil, so build the texture from the block itself
+        if (casingTexture == null) {
+            casingTexture = TextureFactory
+                .of(Casings.FlotationCellCasings.getBlock(), Casings.FlotationCellCasings.getBlockMeta());
+        }
+        return casingTexture;
     }
 
     @Override
