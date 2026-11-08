@@ -34,21 +34,21 @@ public interface IDebugableBlock {
     /**
      * Adds debug chat information for a generic DebugItem Blocks have to implement this interface NOT TileEntities!
      *
-     * @param player   the Player, who right-clicked with his Debug Item
-     * @param x        Block-Coordinate
-     * @param y        Block-Coordinate
-     * @param z        Block-Coordinate
-     * @param logLevel the Log Level of the Debug Item. 0 = Obvious 1 = Visible for the regular Scanner 2 = Only
-     *                 visible to more advanced Scanners 3 = Debug ONLY
-     * @param list     the list to which debug information should be added
+     * @param player     the Player, who right-clicked with his Debug Item
+     * @param x          Block-Coordinate
+     * @param y          Block-Coordinate
+     * @param z          Block-Coordinate
+     * @param logLevel   the Log Level of the Debug Item. 0 = Obvious 1 = Visible for the regular Scanner 2 = Only
+     *                   visible to more advanced Scanners 3 = Debug ONLY
+     * @param components the list to which debug information should be added
      */
     default void addDebugInfoComp(EntityPlayer player, int x, int y, int z, int logLevel,
-        ArrayList<IChatComponent> list) {
+        ArrayList<IChatComponent> components) {
         // Fall back to the old method if this method is not overridden.
         ArrayList<String> chats = this.getDebugInfo(player, x, y, z, logLevel);
         if (chats == null) return;
         for (String chat : chats) {
-            list.add(new ChatComponentText(chat));
+            components.add(new ChatComponentText(chat));
         }
     }
 }

@@ -843,8 +843,8 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public void addSpecialDebugInfoComp(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, int logLevel,
-        ArrayList<IChatComponent> list) {
-        list.addAll(
+        ArrayList<IChatComponent> components) {
+        components.addAll(
             Arrays.asList(
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.primary",

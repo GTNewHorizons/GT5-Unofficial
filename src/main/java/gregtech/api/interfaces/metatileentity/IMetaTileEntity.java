@@ -379,12 +379,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Add special debug information to the provided list of chat components.
      */
     default void addSpecialDebugInfoComp(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, int logLevel,
-        ArrayList<IChatComponent> list) {
+        ArrayList<IChatComponent> components) {
         ArrayList<String> chats = new ArrayList<>();
         chats = this.getSpecialDebugInfo(baseMetaTileEntity, player, logLevel, chats);
         if (chats == null) return;
         for (String chat : chats) {
-            list.add(new ChatComponentText(chat));
+            components.add(new ChatComponentText(chat));
         }
     }
 

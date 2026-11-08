@@ -179,10 +179,10 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public void addSpecialDebugInfoComp(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, int logLevel,
-        ArrayList<IChatComponent> list) {
+        ArrayList<IChatComponent> components) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
-            list.addAll(
+            components.addAll(
                 Arrays.asList(
                     new ChatComponentTranslation("GT5U.scanner.debug.long_distance_pipeline.output"),
                     new ChatComponentTranslation(
@@ -191,7 +191,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                         coords.posY,
                         coords.posZ)));
         } else {
-            list.addAll(
+            components.addAll(
                 Arrays.asList(
                     new ChatComponentTranslation(
                         checkTarget() ? "GT5U.scanner.debug.long_distance_pipeline.connected"

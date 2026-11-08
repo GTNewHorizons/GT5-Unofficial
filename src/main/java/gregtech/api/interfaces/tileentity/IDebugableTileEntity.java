@@ -28,16 +28,16 @@ public interface IDebugableTileEntity {
     /**
      * Add Debug Messages, for a generic DebugItem
      *
-     * @param player   the Player, who right-clicked with his Debug Item
-     * @param logLevel the Log Level of the Debug Item. 0 = Obvious 1 = Visible for the regular Scanner 2 = Only
-     *                 visible to more advanced Scanners 3 = Debug ONLY
-     * @param list     the list to which debug information should be added
+     * @param player     the Player, who right-clicked with his Debug Item
+     * @param logLevel   the Log Level of the Debug Item. 0 = Obvious 1 = Visible for the regular Scanner 2 = Only
+     *                   visible to more advanced Scanners 3 = Debug ONLY
+     * @param components the list to which debug information should be added
      */
-    default void addDebugInfoComp(EntityPlayer player, int logLevel, ArrayList<IChatComponent> list) {
+    default void addDebugInfoComp(EntityPlayer player, int logLevel, ArrayList<IChatComponent> components) {
         ArrayList<String> chats = this.getDebugInfo(player, logLevel);
         if (chats == null) return;
         for (String chat : chats) {
-            list.add(new ChatComponentText(chat));
+            components.add(new ChatComponentText(chat));
         }
     }
 }
