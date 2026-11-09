@@ -244,7 +244,8 @@ public class MTEBoilerLava extends MTEBoiler {
         // Try to place in inventory, if not, spawn in world
         if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropPlayerItemWithRandomChoice(stack, false);
-        } else if (player instanceof EntityPlayerMP) {
+        }
+        if (player instanceof EntityPlayerMP) {
             ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         }
     }
