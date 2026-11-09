@@ -77,13 +77,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
         itemCount = amount;
     }
 
-    public boolean hasChanged() {
-        return changed;
-    }
-
-    public void unmarkChanged() {
-        changed = false;
-    }
 
     public boolean isOutputSlotLocked() {
         return isOutputSlotLocked;
