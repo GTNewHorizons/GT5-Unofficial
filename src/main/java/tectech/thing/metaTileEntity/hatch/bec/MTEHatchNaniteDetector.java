@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -131,8 +130,15 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
-    @Nullable
-    public NaniteTier getRequiredTier() {
+    public void refreshOutput() {
+        if (comparison == ComparisonWithAnalog.ANALOG) {
+            setOutput(requiredTier == -1 ? 0 : requiredTier);
+        } else {
+            setOutput(requiredTier != -1 && comparison.test(requiredTier, configuredTier));
+        }
+    }
+
+    public int getRequiredTier() {
         return requiredTier;
     }
 

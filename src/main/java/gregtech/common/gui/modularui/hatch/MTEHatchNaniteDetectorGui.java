@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 
 import gregtech.api.enums.ComparisonWithAnalog;
 import gregtech.api.enums.NaniteTier;
-import gregtech.api.util.GTDataUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.DisableableTextFieldWidget;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
@@ -27,7 +26,10 @@ public class MTEHatchNaniteDetectorGui extends MTEHatchBaseGui<MTEHatchNaniteDet
         EnumSyncValue<ComparisonWithAnalog, ?> comparisonSyncer = new EnumSyncValue<>(
             ComparisonWithAnalog.class,
             machine::getComparison,
-            machine::setComparison).allowC2S();
+            val -> {
+                machine.setComparison(val);
+                machine.refreshOutput();
+            }).allowC2S();
 
         return super.createContentSection(panel, syncManager).child(
             SettingsPanel.builder()
@@ -38,6 +40,7 @@ public class MTEHatchNaniteDetectorGui extends MTEHatchBaseGui<MTEHatchNaniteDet
                 .addIntEditor(IKey.lang("GT5U.gui.text.bec-threshold"), machine::getConfiguredTier, i -> {
                     if (comparisonSyncer.getValue() != ComparisonWithAnalog.ANALOG) {
                         machine.setConfiguredTier(i);
+                        machine.refreshOutput();
                     }
                 },
                     i -> Math.clamp(
@@ -52,17 +55,12 @@ public class MTEHatchNaniteDetectorGui extends MTEHatchBaseGui<MTEHatchNaniteDet
                     DisableableTextFieldWidget::new)
                 .addReadout(
                     IKey.lang("GT5U.gui.text.bec-current"),
-                    new IntSyncValue(
-                        () -> machine.getRequiredTier() == null ? -1
-                            : machine.getRequiredTier()
-                                .ordinal()),
+                    new IntSyncValue(machine::getRequiredTier),
                     nanite -> {
-                        NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
-
-                        if (tier == null) {
+                        if (nanite == null) {
                             return IKey.lang("GT5U.gui.text.nil");
                         } else {
-                            return IKey.lang("GT5U.gui.text.nanite-detector-tier", tier.tier);
+                            return IKey.lang("GT5U.gui.text.nanite-detector-tier", nanite);
                         }
                     })
                 .build(panel, syncManager, getContentHolderHeight())
