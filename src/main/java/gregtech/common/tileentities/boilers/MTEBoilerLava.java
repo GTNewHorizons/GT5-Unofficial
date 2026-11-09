@@ -244,15 +244,7 @@ public class MTEBoilerLava extends MTEBoiler {
         }
         // Try to place in inventory, if not, spawn in world
         if (!player.inventory.addItemStackToInventory(stack)) {
-            aBaseMetaTileEntity.getWorld()
-                .spawnEntityInWorld(
-                    new EntityItem(
-                        aBaseMetaTileEntity.getWorld(),
-                        (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
-                        (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
-                        (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                        stack));
-            // sync inventory
+            player.dropPlayerItemWithRandomChoice(stack, false);
         } else if (player instanceof EntityPlayerMP) {
             ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         }
