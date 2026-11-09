@@ -720,8 +720,16 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Brick.getIngots(1))
             .itemOutputs(Materials.Brick.getDustSmall(1))
-            .duration(20 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.brick_block, 1, 0))
+            .itemOutputs(Materials.Brick.getDust(1))
+            .duration(10 * SECONDS)
+            .eut(2)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
