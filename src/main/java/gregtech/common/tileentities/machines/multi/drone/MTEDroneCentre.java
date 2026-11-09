@@ -346,7 +346,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
-        sortMode = DroneCentreGuiUtil.SortMode.valueOf(aNBT.getString("sort"));
+        sortMode = DroneCentreGuiUtil.SortMode.fromNBT(aNBT.getString("sort"));
         productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
         int size = GroupNBT.getInteger("size");
