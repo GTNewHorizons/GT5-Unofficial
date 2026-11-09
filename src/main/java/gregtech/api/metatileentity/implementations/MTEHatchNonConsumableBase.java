@@ -77,7 +77,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
         itemCount = amount;
     }
 
-
     public boolean isOutputSlotLocked() {
         return isOutputSlotLocked;
     }
