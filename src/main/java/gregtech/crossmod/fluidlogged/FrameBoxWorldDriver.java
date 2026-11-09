@@ -2,7 +2,6 @@ package gregtech.crossmod.fluidlogged;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +18,7 @@ public class FrameBoxWorldDriver implements WorldDriver {
 
     @Override
     public boolean canBeFluidLogged(@NotNull Block block, int meta, @NotNull Fluid fluid) {
-        return fluid == FluidRegistry.WATER && isFrameBox(block);
+        return isFrameBox(block);
     }
 
     private static boolean isFrameBox(Block block) {
