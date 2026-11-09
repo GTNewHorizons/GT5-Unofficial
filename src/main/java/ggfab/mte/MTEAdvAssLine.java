@@ -376,7 +376,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setString("lastStop", lastStopReason);
         // we need to check for active here.
         // if machine was turned off via soft mallet it will not call checkRecipe() on recipe end
         // in that case we don't have a current recipe, so this should be ignored
@@ -400,7 +399,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        lastStopReason = aNBT.getString("lastStop");
 
         if (aNBT.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT_ARRAY)) {
             int[] arr = aNBT.getIntArray(TAG_KEY_PROGRESS_TIMES);
@@ -478,7 +476,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (oMaxProgresstime > 0) {
             if (getBaseMetaTileEntity().getWorld() != null) sendSound(INTERRUPT_SOUND_INDEX);
             getBaseMetaTileEntity().setShutdownStatus(true);
-            lastStopReason = reason;
         }
     }
 
