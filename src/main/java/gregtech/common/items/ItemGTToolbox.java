@@ -213,6 +213,10 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public ItemStack onItemRightClick(final ItemStack toolbox, final World world, final EntityPlayer player) {
         if (canOpenInventoryGui(toolbox, world)) {
+            sendChangeToolPacket(
+                player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem
+                    : Backhand.getOffhandSlot(player),
+                NO_TOOL_SELECTED);
             if (toolbox == Backhand.getOffhandItem(player)) {
                 GuiFactories.playerInventory()
                     .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
