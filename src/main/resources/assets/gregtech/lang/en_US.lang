@@ -12,7 +12,7 @@ itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
 # Enchantments
-enchantment.damage.endermen=Disjunction
+enchantment.damage.endermen=Disjunction/
 enchantment.damage.radioactivity=Radioactivity
 enchantment.protection.hazmat=Hazmat
 
@@ -8648,10 +8648,10 @@ GT5U.infodata.hatch.crafting_input_slave.not_linked_to=This bus is not linked to
 GT5U.infodata.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.infodata.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
 GT5U.infodata.hatch.output_bus_me.empty=The bus has no cached items
-GT5U.infodata.hatch.output_bus_me.contains=The bus contains %s cached stacks:
+GT5U.infodata.hatch.output_bus_me.contains=The bus contains %s cached stack%s:
 GT5U.infodata.hatch.output_me.cache_capacity=Fluid cache capacity: %s
-GT5U.infodata.hatch.output_me.empty=The bus has no cached fluids
-GT5U.infodata.hatch.output_me.contains=The hatch contains %s cached fluids:
+GT5U.infodata.hatch.output_me.empty=The hatch has no cached fluids
+GT5U.infodata.hatch.output_me.contains=The hatch contains %s cached fluid%s:
 
 GT5U.infodata.juke_box.uuid=Jukebox UUID: %s
 GT5U.infodata.juke_box.uuid.unset=unset

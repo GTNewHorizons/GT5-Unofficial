@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -576,7 +577,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             getAEDiagnostics(),
             "GT5U.infodata.hatch.output_bus_me",
             (IAEItemStack s) -> s.getItem()
-                .getItemStackDisplayName(s.getItemStack()));
+                .getItemStackDisplayName(s.getItemStack()),
+            NumberFormatUtil::formatNumber);
     }
 
     @Override

@@ -95,7 +95,7 @@ public interface IGregTechDeviceInformation {
      */
     static IChatComponent toComponent(String encoded) {
         if (encoded == null) return new ChatComponentTranslation("");
-        String[] parts = encoded.split("\\\\\\\\");
+        String[] parts = encoded.split("\\\\\\\\", -1);
         parts[0] = parts[0].replace("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
         Object[] args = new Object[parts.length - 1];
@@ -120,7 +120,7 @@ public interface IGregTechDeviceInformation {
      */
     static String decode(String data) {
         if (data == null) return "";
-        String[] parts = data.split("\\\\\\\\");
+        String[] parts = data.split("\\\\\\\\", -1);
         String translated = StatCollector.translateToLocal(parts[0]);
         if (parts.length == 1) return translated;
         Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
