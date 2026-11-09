@@ -166,7 +166,7 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    protected void fillFluid(IGregTechTileEntity aBaseMetaTileEntity, FluidStack equippedContainerFluidStack,
+    protected void fillFluid(FluidStack equippedContainerFluidStack,
         ItemStack equippedItemStack, IFluidTank tank, EntityPlayer aPlayer) {
         final ItemStack itemToDrain = equippedItemStack.copy();
         itemToDrain.stackSize = 1;
@@ -186,7 +186,7 @@ public class MTEBoilerLava extends MTEBoiler {
 
                 // 3fill boiler
                 tank.fill(drained, true);
-                replaceEquippedItemStack(aBaseMetaTileEntity, equippedItemStack, itemToDrain, aPlayer);
+                replaceEquippedItemStack(equippedItemStack, itemToDrain, aPlayer);
             }
         } else {
             // if freespace is less than the capacity of the cell/bucket do nothing
@@ -196,7 +196,7 @@ public class MTEBoilerLava extends MTEBoiler {
             // fill boiler with cell/bucket
             ItemStack emptyContainer = GTUtility.getContainerForFilledItem(itemToDrain, false);
             tank.fill(fluidToDrain, true);
-            replaceEquippedItemStack(aBaseMetaTileEntity, equippedItemStack, emptyContainer, aPlayer);
+            replaceEquippedItemStack(equippedItemStack, emptyContainer, aPlayer);
 
         }
     }
@@ -211,10 +211,10 @@ public class MTEBoilerLava extends MTEBoiler {
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
             tank = this;
-            fillFluid(aBaseMetaTileEntity, equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
+            fillFluid(equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
             tank = lavaTank;
-            fillFluid(aBaseMetaTileEntity, equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
+            fillFluid(equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
         } else {
             openGui(aPlayer);
             return true;
@@ -222,8 +222,7 @@ public class MTEBoilerLava extends MTEBoiler {
         return true;
     }
 
-    protected static void replaceEquippedItemStack(IGregTechTileEntity aBaseMetaTileEntity, ItemStack heldItemStack,
-        ItemStack returnedContainer, EntityPlayer aPlayer) {
+    protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer, EntityPlayer aPlayer) {
         heldItemStack.stackSize -= 1;
         // if held item stack is now zero, set held item to empty container
         if (heldItemStack.stackSize <= 0) {
@@ -231,13 +230,13 @@ public class MTEBoilerLava extends MTEBoiler {
             aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, returnedContainer);
         } else {
             // if held stack is 1 or great try and put empty container in inven
-            addItemToPlayerInventory(aBaseMetaTileEntity, aPlayer, returnedContainer);
+            addItemToPlayerInventory(aPlayer, returnedContainer);
             // it's the same held item stack, but we need to sync changed stack size
             aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, heldItemStack);
         }
     }
 
-    protected static void addItemToPlayerInventory(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer player,
+    protected static void addItemToPlayerInventory(EntityPlayer player,
         ItemStack stack) {
         if (stack == null) {
             return;
