@@ -110,6 +110,7 @@ import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
+import gregtech.crossmod.fluidlogged.FrameBoxWorldDriver;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
@@ -386,6 +387,10 @@ public class GTMod {
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
         DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
+
+        if (Mods.FluidLogged.isModLoaded()) {
+            FrameBoxWorldDriver.register();
+        }
 
         if (GregTechAPI.sLoadStarted) {
             return;

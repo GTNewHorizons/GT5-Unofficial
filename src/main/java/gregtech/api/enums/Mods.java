@@ -89,6 +89,7 @@ public enum Mods implements IMod {
     Fether(ModIDs.FETHER),
     FindIt(ModIDs.FIND_IT),
     FloodLights(ModIDs.FLOOD_LIGHTS),
+    FluidLogged(ModIDs.FLUID_LOGGED),
     ForbiddenMagic(ModIDs.FORBIDDEN_MAGIC),
     Forestry(ModIDs.FORESTRY),
     ForgeMicroblocks(ModIDs.FORGE_MICROBLOCKS),
@@ -433,6 +434,7 @@ public enum Mods implements IMod {
         public static final String FETHER = "fether";
         public static final String FIND_IT = "findit";
         public static final String FLOOD_LIGHTS = "FloodLights";
+        public static final String FLUID_LOGGED = "fluidlogged";
         public static final String FORBIDDEN_MAGIC = "ForbiddenMagic";
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
