@@ -21,7 +21,6 @@ import it.unimi.dsi.fastutil.Pair;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
-import tectech.util.CommonValues;
 
 public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactoryElement {
 
@@ -30,8 +29,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
             aID,
             aName,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
     }

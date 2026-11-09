@@ -31,7 +31,6 @@ import gregtech.common.gui.modularui.hatch.MTEHatchCapacitorGui;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
 /**
@@ -50,7 +49,7 @@ public class MTEHatchCapacitor extends MTEHatch {
             aNameRegional,
             aTier,
             16,
-            new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
     }
 

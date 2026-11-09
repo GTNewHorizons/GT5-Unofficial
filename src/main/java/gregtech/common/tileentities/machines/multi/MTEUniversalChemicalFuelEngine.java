@@ -171,6 +171,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                     .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
                     .build())
             .addSupportAny()
+            .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
@@ -184,7 +185,6 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
         // spotless:on
         return tt;

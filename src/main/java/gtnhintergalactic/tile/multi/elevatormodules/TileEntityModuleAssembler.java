@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
@@ -330,7 +332,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -412,7 +415,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -494,7 +498,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
