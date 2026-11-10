@@ -284,6 +284,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private void applyCover(@NotNull Cover cover, ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
+            if (cover == CoverRegistry.NO_COVER) {
+                isCoverOpen[side.ordinal()] = false;
+            }
 
             validCoversMask &= (byte) ~side.flag;
             if (cover.isValid()) {

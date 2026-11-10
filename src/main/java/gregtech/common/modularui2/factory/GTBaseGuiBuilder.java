@@ -5,7 +5,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -230,7 +232,30 @@ public final class GTBaseGuiBuilder {
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
                 .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
-                .child(ButtonWidget.panelCloseButton()));
+                .child(panelCloseButton(coverable, side)));
+    }
+
+    private static ButtonWidget<?> panelCloseButton(ICoverable coverable, ForgeDirection side) { // implementation of
+                                                                                                 // panelCloseButton
+                                                                                                 // that updates cover
+                                                                                                 // open state
+        if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) {
+            return ButtonWidget.panelCloseButton();
+        }
+        ButtonWidget<?> buttonWidget = new ButtonWidget<>();
+        return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
+            .top(4)
+            .right(4)
+            .overlay(GuiTextures.CROSS_TINY)
+            .onMousePressed(mouseButton -> {
+                if (mouseButton == 0 || mouseButton == 1) {
+                    buttonWidget.getPanel()
+                        .closeIfOpen();
+                    coverableTileEntity.isCoverOpen[side.ordinal()] = false;
+                    return true;
+                }
+                return false;
+            });
     }
 
     private IWidget createGhostCircuitSlot() {
