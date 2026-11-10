@@ -386,9 +386,11 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         }
 
         if (source.isUnblockable()) return new ArmorProperties(0, 0, 0);
+        
         if (context.hasBehavior(BehaviorName.InfiniteEnergy)) {
             return new ArmorProperties(0, getDamageReduction(armor), Integer.MAX_VALUE);
         }
+        
         int max = context.getArmorState().charge < damage * 100 ? 0 : Integer.MAX_VALUE;
         return new ArmorProperties(0, getDamageReduction(armor), max);
     }
