@@ -44,6 +44,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -54,6 +55,7 @@ import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.crossmod.liquidlogged.WaterlogHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -247,6 +249,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 oldCover.onCoverRemoval();
             }
             synchronizeCover(cover, side);
+            if (worldObj != null && !worldObj.isRemote && Mods.LiquidLogged.isModLoaded()) {
+                WaterlogHelper.revalidate(worldObj, xCoord, yCoord, zCoord);
+            }
         }
     }
 

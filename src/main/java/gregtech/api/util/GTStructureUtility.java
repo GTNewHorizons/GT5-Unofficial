@@ -80,7 +80,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.crossmod.fluidlogged.WaterlogHelper;
+import gregtech.crossmod.liquidlogged.WaterlogHelper;
 import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -197,7 +197,7 @@ public class GTStructureUtility {
                 }
             }
         }
-        if (allFilled && Mods.FluidLogged.isModLoaded()) {
+        if (allFilled && Mods.LiquidLogged.isModLoaded()) {
             waterlogBlocksNextToWater(tile, facing, structure, offsetX, offsetY, offsetZ, waterChar);
         }
         return allFilled;
