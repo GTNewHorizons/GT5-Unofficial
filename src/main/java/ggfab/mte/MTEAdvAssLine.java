@@ -433,12 +433,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             baseEUt = aNBT.getLong("baseEU");
             currentRecipeParallel = aNBT.getInteger("currentParallel");
             if (inputVoltage <= 0 || inputEUt <= 0 || baseEUt >= 0) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.load.energy");
+                criticalStopAssLine();
                 recipe = null;
             }
             if (recipe != null && aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
                 if (aNBT.getInteger(TAG_KEY_RECIPE_HASH) != recipe.getPersistentHash()) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.load.recipe");
+                    criticalStopAssLine();
                     recipe = null;
                 }
             }
@@ -469,7 +469,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
      * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not loaded.
      * also supports setting a stop reason
      */
-    private void criticalStopMachine(String reason) {
+    private void criticalStopAssLine() {
         int oMaxProgresstime = mMaxProgresstime;
         stopMachine(ShutDownReasonRegistry.NONE);
         // don't do these at all if the machine wasn't working before anyway
@@ -500,7 +500,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             mEnergyHatches.forEach(this::recordEnergySupplier);
             mExoticEnergyHatches.forEach(this::recordEnergySupplier);
             if (mMaxProgresstime > 0 && (oV != inputVoltage || oEut != inputEUt)) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.structure");
+                criticalStopAssLine();
             }
         } else {
             inputVoltage = V[0];
@@ -551,7 +551,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (currentRecipe == null) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
+            criticalStopAssLine();
             return false;
         }
         for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
@@ -559,7 +559,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
+            criticalStopAssLine();
             return false;
         }
         boolean oStuck = stuck;
@@ -599,7 +599,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             lEUt = Long.MIN_VALUE;
             for (int i = 0; i < working; i++) {
                 if (!drainEnergyInput(-baseEUt)) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.energy");
+                    criticalStopAssLine();
                     return false;
                 }
             }
