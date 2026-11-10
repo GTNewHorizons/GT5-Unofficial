@@ -35,6 +35,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -59,6 +60,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public static final int MAX_NANITES = 2048 * 15;
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
+    private List<MTEBECIONode> ioNodes;
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
@@ -241,12 +243,19 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public List<MTEBECIONode> getIONodes() {
-        return losHatches.stream()
+        boolean isValid = ioNodes != null && ioNodes.stream()
+            .allMatch(MetaTileEntity::isValid);
+
+        if (isValid) return ioNodes;
+
+        ioNodes = losHatches.stream()
             .map(MTEHatchLoS::getConnectedHatch)
             .filter(Objects::nonNull)
             .map(los -> los.getOwner() instanceof MTEBECIONode node ? node : null)
             .filter(Objects::nonNull)
             .toList();
+
+        return ioNodes;
     }
 
     @Override
@@ -395,6 +404,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
+                    self.ioNodes = null;
                     self.losHatches.add(hatch);
 
                     return true;
