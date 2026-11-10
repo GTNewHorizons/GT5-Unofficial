@@ -283,7 +283,7 @@ gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE IN
 gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
 gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
 gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling\nand adjust the slot refresh timer.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
-gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid Shaper§r\nCapacity: %s L
+gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eMass Solidifier§r\nCapacity: %s L
 gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
 gt.blockmachines.output_hatch_antimatter.desc=Fluid Output for Multiblocks\nStores Antimatter\nAntimatter can be inserted from any side\nFront face input can be toggled with a screwdriver\nCapacity: 16,384,000L
@@ -9898,6 +9898,7 @@ gt.block.longdistancepipe.0.name=Long Distance Fluid Pipeline Pipe
 gt.block.longdistancepipe.1.name=Long Distance Item Pipeline Pipe
 
 # Concretes
+gt.blockconcretes.any=Any GregTech Concrete
 gt.blockconcretes.0.name=Dark Concrete
 gt.blockconcretes.1.name=Dark Concrete Cobblestone
 gt.blockconcretes.2.name=Mossy Dark Concrete Cobblestone
@@ -10219,7 +10220,7 @@ gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
 gt.blockmachines.hatch.nanite-detector.name=Nanite Tier Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
-gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
+gt.blockmachines.hatch.line-of-sight-connector.name=Line-of-Sight Connector Hatch
 
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
