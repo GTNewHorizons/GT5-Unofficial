@@ -244,8 +244,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public List<MTEBECIONode> getIONodes() {
-        boolean isValid = ioNodes != null && ioNodes.stream()
-            .allMatch(MetaTileEntity::isValid);
+        return getIONodes(false);
+    }
+
+    public List<MTEBECIONode> getIONodes(boolean skipCache) {
+        boolean isValid = !skipCache && ioNodes != null
+            && ioNodes.stream()
+                .allMatch(MetaTileEntity::isValid);
 
         if (isValid) return ioNodes;
 
@@ -405,7 +410,6 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
-                    self.ioNodes = null;
                     self.losHatches.add(hatch);
 
                     return true;

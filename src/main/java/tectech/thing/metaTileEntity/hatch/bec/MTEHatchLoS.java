@@ -37,6 +37,7 @@ import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
 public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, ISmartInputHatch {
@@ -109,6 +110,10 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
             .setActive(false);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
+
+        if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
+            assembler.getIONodes(true);
+        }
     }
 
     public void connectImpl(MTEHatchLoS other) {
@@ -120,6 +125,10 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
         notifyWatchers();
+
+        if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
+            assembler.getIONodes(true);
+        }
     }
 
     public boolean hasOwner() {
