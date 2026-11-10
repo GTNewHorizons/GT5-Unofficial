@@ -28,7 +28,7 @@ public class MTEHatchNaniteDetectorGui extends MTEHatchBaseGui<MTEHatchNaniteDet
             machine::getComparison,
             val -> {
                 machine.setComparison(val);
-                machine.refreshOutput(); // might need to be put behind isServer check
+                if (!syncManager.isClient()) machine.refreshOutput();
             }).allowC2S();
 
         return super.createContentSection(panel, syncManager).child(
@@ -40,7 +40,7 @@ public class MTEHatchNaniteDetectorGui extends MTEHatchBaseGui<MTEHatchNaniteDet
                 .addIntEditor(IKey.lang("GT5U.gui.text.bec-threshold"), machine::getConfiguredTier, i -> {
                     if (comparisonSyncer.getValue() != ComparisonWithAnalog.ANALOG) {
                         machine.setConfiguredTier(i);
-                        machine.refreshOutput(); // might need to be put behind isServer check
+                        if (!syncManager.isClient()) machine.refreshOutput();
                     }
                 },
                     i -> Math.clamp(
