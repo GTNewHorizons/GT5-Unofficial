@@ -13,22 +13,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.ByteSyncValue;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
@@ -38,22 +27,18 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
-import gregtech.common.modularui2.sync.LinkedBoolValue;
-import gregtech.common.modularui2.widget.SelectButton;
+import gregtech.common.gui.modularui.hatch.MTEHatchIONodeControllerGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchIONodeController extends MTEHatchConfigurableBase implements IConfigurationCircuitSupport {
 
-    private static final int PHYSICAL_CIRCUIT_SLOT = 0;
-    private static final int GHOST_CIRCUIT_SLOT = 1;
+    public static final int PHYSICAL_CIRCUIT_SLOT = 0;
+    public static final int GHOST_CIRCUIT_SLOT = 1;
 
     private Lazy<List<String>> tooltip = null;
 
@@ -136,8 +121,16 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
         return control;
     }
 
+    public void setControl(Control control) {
+        this.control = control;
+    }
+
     public PauseMode getPauseMode() {
         return pauseMode;
+    }
+
+    public void setPauseMode(PauseMode pauseMode) {
+        this.pauseMode = pauseMode;
     }
 
     public boolean receivingSignal() {
@@ -146,6 +139,10 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
 
     public byte signalReceived() {
         return getBaseMetaTileEntity().getStrongestRedstone();
+    }
+
+    public byte getBaseParallel() {
+        return baseParallel;
     }
 
     public int getParallel() {
@@ -256,126 +253,11 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchIONodeControllerGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
-    }
-
-    private class Gui extends MTEHatchBaseGui<MTEHatchIONodeController> {
-
-        public Gui() {
-            super(MTEHatchIONodeController.this);
-        }
-
-        protected EnumSyncValue<Control, ?> getControlSync(PanelSyncManager syncManager) {
-            return syncManager.getOrCreateSyncHandler(
-                "control",
-                EnumSyncValue.class,
-                () -> new EnumSyncValue<>(Control.class, () -> control, value -> control = value).allowC2S());
-        }
-
-        @Override
-        protected int getBasePanelHeight() {
-            return super.getBasePanelHeight() + SLOT_SIZE / 2;
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            var controlSync = getControlSync(syncManager);
-
-            Flow tabButtons = Flow.row()
-                .coverChildren()
-                .childPadding(2)
-                .horizontalCenter()
-                .child(
-                    new SelectButton().value(LinkedBoolValue.of(controlSync, Control.PAUSE))
-                        .size(78, 18)
-                        .overlay(IKey.lang("GT5U.gui.text.control-pause"))
-                        .tooltip(new RichTooltip().add(Control.PAUSE.getTooltip())))
-                .child(
-                    new SelectButton().value(LinkedBoolValue.of(controlSync, Control.PARALLEL))
-                        .size(78, 18)
-                        .overlay(IKey.lang("GT5U.gui.text.control-parallel"))
-                        .tooltip(new RichTooltip().add(Control.PARALLEL.getTooltip())));
-
-            Flow pages = Flow.column()
-                .fullWidth()
-                .coverChildrenHeight()
-                .childPadding(4)
-                .collapseDisabledChild()
-                .child(tabButtons)
-                .child(
-                    createPauseControlPage(panel, syncManager)
-                        .setEnabledIf(widget -> controlSync.getValue() == Control.PAUSE))
-                .child(
-                    createParallelControlPage(panel, syncManager)
-                        .setEnabledIf(widget -> controlSync.getValue() == Control.PARALLEL));
-
-            return super.createContentSection(panel, syncManager)
-                .child(pages);
-            // spotless:on
-        }
-
-        private ParentWidget<?> createPauseControlPage(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return new ParentWidget<>().fullWidth()
-                .child(SettingsPanel.builder()
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-mode"),
-                        PauseMode.class,
-                        () -> pauseMode,
-                        value -> pauseMode = value,
-                        (_, _, button) -> button.tooltip(
-                            (PauseMode pauseMode) -> new RichTooltip().add(pauseMode.getTooltip())))
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
-
-        private ParentWidget<?> createParallelControlPage(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return new ParentWidget<>().fullWidth()
-                .child(SettingsPanel.builder()
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.control-parallel.base"),
-                        new ByteSyncValue(() -> baseParallel),
-                        amount -> IKey.str(NumberFormatUtil.formatNumber(amount)))
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.control-parallel.multiplier"),
-                        new IntSyncValue(() -> 1 + signalReceived()),
-                        amount -> IKey.lang("GT5U.gui.text.control-parallel.multiplier.value", amount))
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.control-parallel.parallel"),
-                        new IntSyncValue(MTEHatchIONodeController.this::getParallel),
-                        amount -> IKey.str(NumberFormatUtil.formatNumber(amount))
-                    )
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
-
-        @Override
-        protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createBottomLeftCornerFlow(panel, syncManager)
-                .child(
-                    new ItemSlot()
-                        .slot(
-                            new ModularSlot(MTEHatchIONodeController.this.inventoryHandler, PHYSICAL_CIRCUIT_SLOT))
-                        .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CIRCUIT)
-                        .setEnabledIf(widget -> getControlSync(syncManager).getValue() == Control.PARALLEL)
-                );
-            // spotless:on
-        }
-
-        @Override
-        protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
-            return super.createCircuitSlot(syncManager)
-                .setEnabledIf(widget -> getControlSync(syncManager).getValue() == Control.PARALLEL);
-        }
     }
 }
