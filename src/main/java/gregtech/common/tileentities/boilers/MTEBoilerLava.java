@@ -16,7 +16,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -166,8 +165,8 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    protected void fillFluid(FluidStack equippedContainerFluidStack,
-        ItemStack equippedItemStack, IFluidTank tank, EntityPlayer aPlayer) {
+    protected void fillFluid(FluidStack equippedContainerFluidStack, ItemStack equippedItemStack, IFluidTank tank,
+        EntityPlayer aPlayer) {
         final ItemStack itemToDrain = equippedItemStack.copy();
         itemToDrain.stackSize = 1;
         final FluidStack fluidToDrain = GTUtility.getFluidForFilledItem(itemToDrain, true);
@@ -219,7 +218,8 @@ public class MTEBoilerLava extends MTEBoiler {
         return true;
     }
 
-    protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer, EntityPlayer aPlayer) {
+    protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
+        EntityPlayer aPlayer) {
         heldItemStack.stackSize -= 1;
         // if held item stack is now zero, set held item to empty container
         if (heldItemStack.stackSize <= 0) {
@@ -233,8 +233,7 @@ public class MTEBoilerLava extends MTEBoiler {
         }
     }
 
-    protected static void addItemToPlayerInventory(EntityPlayer player,
-        ItemStack stack) {
+    protected static void addItemToPlayerInventory(EntityPlayer player, ItemStack stack) {
         if (stack == null) {
             return;
         }
