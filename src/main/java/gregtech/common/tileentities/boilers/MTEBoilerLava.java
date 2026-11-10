@@ -207,14 +207,11 @@ public class MTEBoilerLava extends MTEBoiler {
 
         final ItemStack equippedItemStack = aPlayer.getCurrentEquippedItem();
         final FluidStack equippedContainerFluidStack = GTUtility.getFluidForFilledItem(equippedItemStack, true);
-        final IFluidTank tank;
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
-            tank = this;
-            fillFluid(equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
+            fillFluid(equippedContainerFluidStack, equippedItemStack, this, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
-            tank = lavaTank;
-            fillFluid(equippedContainerFluidStack, equippedItemStack, tank, aPlayer);
+            fillFluid(equippedContainerFluidStack, equippedItemStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
             return true;
