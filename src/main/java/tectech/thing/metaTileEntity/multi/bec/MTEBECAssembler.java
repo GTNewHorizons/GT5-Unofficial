@@ -153,6 +153,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         this.losHatches.clear();
         clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
+        this.ioNodes = null;
     }
 
     @Override
