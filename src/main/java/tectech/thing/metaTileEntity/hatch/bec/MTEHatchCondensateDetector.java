@@ -12,15 +12,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.Comparison;
 import gregtech.api.enums.GTValues;
@@ -34,8 +30,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
+import gregtech.common.gui.modularui.hatch.MTEHatchCondensateDetectorGui;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 import tectech.thing.metaTileEntity.multi.bec.MTEBECStorage;
@@ -57,6 +52,34 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         super(prototype);
 
         tooltip = prototype.tooltip;
+    }
+
+    public Fluid getCondensateFilter() {
+        return condensateFilter;
+    }
+
+    public void setCondensateFilter(Fluid condensateFilter) {
+        this.condensateFilter = condensateFilter;
+    }
+
+    public long getRequestedAmount() {
+        return requestedAmount;
+    }
+
+    public void setRequestedAmount(long requestedAmount) {
+        this.requestedAmount = requestedAmount;
+    }
+
+    public long getActualAmount() {
+        return actualAmount;
+    }
+
+    public Comparison getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(Comparison comparison) {
+        this.comparison = comparison;
     }
 
     @Override
@@ -157,7 +180,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchCondensateDetectorGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -165,58 +188,4 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 
-    private class Gui extends MTEHatchBaseGui<MTEHatchCondensateDetector> {
-
-        public Gui() {
-            super(MTEHatchCondensateDetector.this);
-        }
-
-        @Override
-        protected boolean supportsBottomRowOverlap() {
-            return true;
-        }
-
-        @Override
-        protected int getBasePanelHeight() {
-            return super.getBasePanelHeight() + SLOT_SIZE / 2;
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createContentSection(panel, syncManager)
-                .child(SettingsPanel.builder()
-                    .addPhantomFluidSlot(
-                        IKey.lang("GT5U.gui.text.bec-filter"),
-                        () -> condensateFilter,
-                        f -> {
-                            condensateFilter = f;
-                            refreshOutput();
-                        },
-                        null)
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-operation"),
-                        Comparison.class,
-                        () -> comparison,
-                        v -> {
-                            comparison = v;
-                            refreshOutput();
-                        })
-                    .addLongEditor(
-                        IKey.lang("GT5U.gui.text.bec-threshold"),
-                        () -> requestedAmount,
-                        l -> {
-                            requestedAmount = l;
-                            refreshOutput();
-                        },
-                        l -> Math.clamp(l, 1L, Long.MAX_VALUE))
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.bec-current"),
-                        new LongSyncValue(() -> actualAmount),
-                        amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
-    }
 }
