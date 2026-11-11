@@ -104,7 +104,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
             if (CommonValues.MOVE_AT == aTick % TICKS_ONE_SECOND) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
-                    resetHistory();
                 } else {
                     getBaseMetaTileEntity().setActive(true);
                     moveAround(aBaseMetaTileEntity, CheckState.NEW_DATA);
@@ -158,7 +157,7 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
             current = next;
         }
 
-        if (connected == null) {
+        if (connected == null || connected != oldConnected) {
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContents(null);
                 case MTEHatchDataItemsInput dataItemsInput -> dataItemsInput.setContents(null);
@@ -168,10 +167,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
             result = CheckState.DISCONNECTED;
         }
         return result;
-    }
-
-    protected void resetHistory() {
-
     }
 
     @Override

@@ -117,11 +117,6 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
     }
 
     @Override
-    protected void resetHistory() {
-        computation = 0;
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);

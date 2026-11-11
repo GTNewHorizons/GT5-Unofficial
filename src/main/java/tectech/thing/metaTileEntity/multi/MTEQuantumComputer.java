@@ -419,6 +419,10 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void outputAfterRecipe_EM() {
+        updateDataOutputs();
+    }
+
+    private void updateDataOutputs() {
         if (!this.dirty) return;
 
         if (eOutputData.isEmpty()) {
@@ -503,6 +507,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void onRemoval() {
         super.onRemoval();
+        eAvailableData = 0;
+        updateDataOutputs();
         for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
@@ -515,6 +521,12 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             tTileEntity.getBaseMetaTileEntity()
                 .doExplosion(V[8]);
         }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        super.onEnableWorking();
+        this.dirty = true;
     }
 
     @Override

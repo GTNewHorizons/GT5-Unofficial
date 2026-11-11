@@ -86,28 +86,19 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     public void setContents(QuantumDataPacket qIn) {
-        Long old = this.q == null ? null : this.q.getContent();
+        long old = computation;
 
         if (qIn == null) {
-            this.q = null;
+            computation = 0;
         } else {
             if (qIn.getContent() > 0) {
-                this.q = qIn;
+                computation = qIn.getContent();
                 delDelay = true;
             } else {
-                this.q = null;
+                computation = 0;
             }
-
-            computation = q == null ? 0 : q.getContent();
         }
-
-        Long now = this.q == null ? null : this.q.getContent();
-        if (now != null && !now.equals(old)) notifyWatchers();
-    }
-
-    @Override
-    protected void resetHistory() {
-        computation = 0;
+        if (computation != old) notifyWatchers();
     }
 
     @Override

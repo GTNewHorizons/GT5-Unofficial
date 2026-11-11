@@ -182,9 +182,11 @@ public class MTEHatchRack extends MTEHatch {
 
     private int getComputationPower(float overclock, float overvolt, boolean tickingComponents, boolean heatOnly) {
         float computation = 0, heat = 0;
-        if (overclock != this.overClock && overvolt != this.overVolt || Float.isNaN(calc) || Float.isNaN(heatFactor)) {
+        if (overclock != this.overClock || overvolt != this.overVolt || Float.isNaN(calc) || Float.isNaN(heatFactor)) {
             calc = (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt));
             heatFactor = overclock * overvolt * overvolt;
+            this.overClock = overclock;
+            this.overVolt = overvolt;
         }
         for (int i = 0; i < mInventory.length; i++) {
             if (mInventory[i] == null || mInventory[i].stackSize != 1) {
@@ -218,9 +220,7 @@ public class MTEHatchRack extends MTEHatch {
     }
 
     public int tickComponents(float oc, float ov) {
-        overClock = oc;
-        overVolt = ov;
-        return getComputationPower(overClock, overVolt, true, false);
+        return getComputationPower(oc, ov, true, false);
     }
 
     /**
@@ -228,9 +228,7 @@ public class MTEHatchRack extends MTEHatch {
      * computation is still cached.
      */
     public void tickHeat(float oc, float ov) {
-        overClock = oc;
-        overVolt = ov;
-        getComputationPower(overClock, overVolt, true, true);
+        getComputationPower(oc, ov, true, true);
     }
 
     @Override

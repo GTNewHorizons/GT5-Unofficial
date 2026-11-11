@@ -732,6 +732,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
+            data.moveAround(data.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         eAvailableData = 0;
@@ -745,6 +746,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
+            data.moveAround(data.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         mOutputItems = null;
