@@ -845,7 +845,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) slots[tag.getInteger("index")] = slot;

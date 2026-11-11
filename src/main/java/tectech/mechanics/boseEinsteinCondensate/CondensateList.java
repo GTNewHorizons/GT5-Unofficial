@@ -42,7 +42,7 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
         clear();
 
         // noinspection unchecked
-        for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
+        for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) (Set<?>) tag.tagMap.entrySet()) {
             Fluid fluid = FluidRegistry.getFluid(e.getKey());
 
             if (fluid == null) continue;
