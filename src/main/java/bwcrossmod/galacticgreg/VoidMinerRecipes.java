@@ -46,10 +46,6 @@ public final class VoidMinerRecipes {
         public float getWeight(ItemStack ore) {
             return weights.getOrDefault(GTUtility.ItemId.createNoCopy(ore), 0f);
         }
-
-        public float getChance(ItemStack ore) {
-            return totalWeight > 0 ? getWeight(ore) / totalWeight : 0f;
-        }
     }
 
     public static void register() {

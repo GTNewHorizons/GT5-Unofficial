@@ -4858,7 +4858,6 @@ GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
 GT5U.nei.voidminer.total_weight=Total Weight: %s
 GT5U.nei.voidminer.weight=Weight: %s
-GT5U.nei.voidminer.chance=Chance per mined ore: %s%%
 GT5U.nei.start_eu=Start: %s EU (Mk-%s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Density: %s EU/%s
