@@ -2877,6 +2877,7 @@ gt.recipe.flotationcell=Flotation Cell
 gt.recipe.treefarm=Tree Growth Simulator
 gt.recipe.algae_pond=Algae Pond
 gt.recipe.multiblockrockbreaker=Boldarnator
+gt.recipe.voidminer=Void Miner
 gt.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
 
 # NEI keys
@@ -4855,6 +4856,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 GT5U.nei.heat_capacity=Heat: %s K
 GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
+GT5U.nei.voidminer.total_weight=Total Weight: %s
+GT5U.nei.voidminer.weight=Weight: %s
 GT5U.nei.start_eu=Start: %s EU (Mk-%s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Density: %s EU/%s
@@ -9896,6 +9899,7 @@ gt.block.longdistancepipe.0.name=Long Distance Fluid Pipeline Pipe
 gt.block.longdistancepipe.1.name=Long Distance Item Pipeline Pipe
 
 # Concretes
+gt.blockconcretes.any=Any GregTech Concrete
 gt.blockconcretes.0.name=Dark Concrete
 gt.blockconcretes.1.name=Dark Concrete Cobblestone
 gt.blockconcretes.2.name=Mossy Dark Concrete Cobblestone
@@ -10217,7 +10221,7 @@ gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
 gt.blockmachines.hatch.nanite-detector.name=Nanite Tier Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
-gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
+gt.blockmachines.hatch.line-of-sight-connector.name=Line-of-Sight Connector Hatch
 
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field

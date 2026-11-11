@@ -24,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
@@ -157,36 +158,42 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public void onEdgeAdded(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeAdded(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeRemoved(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeRemoved(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeChanged(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeChanged(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     protected void checkConnections() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null || base.isDead()) return;
+
         mCheckConnections = false;
         mConnections = 0;
 
-        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.getColorization() != -1) {
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+                if (igte.getColorization() != base.getColorization()) continue;
+                if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+                if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+                mConnections |= dir.flag;
+            }
+        }
 
-        if (base == null || base.isDead() || base.getColorization() == -1) return;
-
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
-            if (igte.getColorization() != base.getColorization()) continue;
-            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
-            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
-            mConnections |= dir.flag;
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
         }
 
     }
