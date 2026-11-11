@@ -47,6 +47,9 @@ public class NEIScrollArea {
     public NEIScrollArea setStacks(Collection<? extends PositionedStack> newStacks) {
         stacks.clear();
         stacks.addAll(newStacks);
+        for (PositionedStack stack : stacks) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) fixed.scrollManaged = true;
+        }
         totalRows = (stacks.size() + columns - 1) / columns;
         container.setActualHeight(totalRows * SLOT_SIZE);
         firstRow = 0;
