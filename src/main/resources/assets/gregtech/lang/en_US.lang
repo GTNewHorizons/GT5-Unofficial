@@ -2850,6 +2850,7 @@ gt.recipe.flotationcell=Flotation Cell
 gt.recipe.treefarm=Tree Growth Simulator
 gt.recipe.algae_pond=Algae Pond
 gt.recipe.multiblockrockbreaker=Boldarnator
+gt.recipe.voidminer=Void Miner
 gt.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
 
 # NEI keys
@@ -4824,6 +4825,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 GT5U.nei.heat_capacity=Heat: %s K
 GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
+GT5U.nei.voidminer.total_weight=Total Weight: %s
+GT5U.nei.voidminer.weight=Weight: %s
 GT5U.nei.start_eu=Start: %s EU (Mk-%s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Density: %s EU/%s

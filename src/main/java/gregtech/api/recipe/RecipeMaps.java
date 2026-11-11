@@ -51,6 +51,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
+import bwcrossmod.galacticgreg.VoidMinerFrontend;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -2212,6 +2213,17 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> voidMinerRecipes = RecipeMapBuilder.of("gt.recipe.voidminer")
+        .maxIO(1, VoidMinerFrontend.MAX_ITEM_OUTPUTS, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBarPos(75, 26)
+        .logoPos(10, 10)
+        .neiHandlerInfo(
+            builder -> builder.setHeight(240)
+                .setMultipleWidgetsAllowed(false))
+        .frontend(VoidMinerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gt.recipe.multiblockrockbreaker")
