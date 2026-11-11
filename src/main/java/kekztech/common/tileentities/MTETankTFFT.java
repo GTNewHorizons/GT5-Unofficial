@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -110,12 +111,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
 
     private enum TFFTMultiHatch implements IHatchElement<MTETankTFFT> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.TFFTHatch");
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        TFFTMultiHatch(Class<? extends IMetaTileEntity>... mteClasses) {
+        TFFTMultiHatch(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Arrays.asList(mteClasses);
         }
 
@@ -132,6 +135,16 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
         @Override
         public long count(MTETankTFFT t) {
             return t.tfftHatch == null ? 0 : 1;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -351,8 +364,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addMarkdown(new ResourceLocation("gregtech", "tfft-fluid-tank"))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
-            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addEnergyHatch("0+", anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2)
             .addMiscHatch(
                 "0-1",
                 StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.multi_io_hatch"),

@@ -194,11 +194,11 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
-gt.blockmachines.multimachine.ig.siphon.desc0=Every coil tier gives a §a+%s%%§7 speed bonus per coil tier
+gt.blockmachines.multimachine.ig.siphon.desc0=Every Coil Tier gives a §a+%s%%§7 speed bonus per Coil Tier
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
-gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on planet tier and depth. See NEI page for more details.
+gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on Planet Tier and depth. See NEI page for more details.
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
@@ -307,9 +307,13 @@ ig.nei.elevatorpump.eut=EU/t
 ig.nei.elevatorpump.see_all=See All
 ig.nei.spaceproject.name=Space Projects
 ig.nei.spaceproject.stages=Stages:
+ig.nei.siphon.baserate=Rate
 ig.nei.siphon.name=Planetary Gas Siphon
 ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
+nei.options.tools.dump.ig=GTNH Intergalactic
+nei.options.tools.dump.ig.asteroid=Space Miner Asteroids
+nei.options.tools.dump.ig.asteroids=Space Miner Asteroids
 
 # Structure and Tooltip
 ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer
@@ -337,7 +341,6 @@ ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
 ig.structure.specialThanks=Special Thanks to
-ig.structure.author=Added by
 ig.structure.and= and
 
 ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
@@ -438,6 +441,7 @@ ig.infodata.dyson_swarm.modules.fmt=Modules: §e%s§r
 ig.infodata.dyson_swarm.power_factor.fmt=Power Factor: %s
 ig.infodata.dyson_swarm.theoretical_output.fmt=Theoretical Output: §e%s§r EU/t
 ig.infodata.dyson_swarm.current_output.fmt=Current Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.modules_lost.fmt=Modules consumed this cycle: §e%s§r
 ig.infodata.dyson_swarm.computation.fmt=Computation required: §e%s§r/t
 ig.infodata.gas_siphon.depth.fmt=Depth: §e%s§r
 ig.infodata.gas_siphon.fluid.fmt=Fluid: §e%s§rL/s §9%s§r

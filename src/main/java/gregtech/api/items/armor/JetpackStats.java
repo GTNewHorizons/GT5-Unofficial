@@ -6,7 +6,7 @@ import gregtech.api.enums.ParticleFX;
 
 public enum JetpackStats {
 
-    JETPACK(2.5f, 1.3f, 0.34f, 0.03f, 0.13f, 0.48f, 0.14f, 2.0f, ParticleFX.CLOUD),
+    JETPACK(2.5f, 1.3f, 0.34f, 0f, 0.13f, 0.48f, 0.14f, 2.0f, ParticleFX.CLOUD),
     VECTORED_JETPACK(2.5f, 1.3f, 0.4f, 0f, 0.16f, 0.6f, 0.14f, 2.0f, ParticleFX.CLOUD);
 
     private final float sprintEnergyMod;

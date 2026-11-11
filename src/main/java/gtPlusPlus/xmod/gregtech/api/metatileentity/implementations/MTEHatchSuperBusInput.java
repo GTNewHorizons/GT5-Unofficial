@@ -14,7 +14,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.GTSplit;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -60,7 +61,10 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.input_bus_super.desc", getSlots(this.mTier));
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.input_bus_super.desc",
+            GTPPCore.GT_Tooltip.get(),
+            getSlots(this.mTier));
     }
 
     @Override

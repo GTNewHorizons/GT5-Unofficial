@@ -16,7 +16,6 @@ mbdesc.addOutputBus.OutputBus=Output Bus/ses
 mbdesc.addOutputHatch.OutputHatch=Output Hatch/es
 mbdesc.signAndFinalize.Hold=Hold
 mbdesc.signAndFinalize.todisplay=to display structure guidelines
-mbdesc.signAndFinalize.createdby=Created by
 
 # -------- Fuel Cell: Structure Blocks
 tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit

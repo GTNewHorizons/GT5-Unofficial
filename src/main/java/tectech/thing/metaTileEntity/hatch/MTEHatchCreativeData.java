@@ -45,7 +45,7 @@ public class MTEHatchCreativeData extends MTEHatchDataInput {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.debug.tt.data.desc.0"),
             translateToLocal("gt.blockmachines.debug.tt.data.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.data.desc.2") };
     }

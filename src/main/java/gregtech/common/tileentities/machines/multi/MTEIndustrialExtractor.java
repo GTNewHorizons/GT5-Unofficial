@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,6 +44,7 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtractor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -138,19 +141,19 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Extractor")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.extractor"))
             .addDynamicParallelInfo(8, TooltipTier.ITEM_PIPE_CASING)
             .addStaticSpeedInfo(3F)
             .addStaticEuEffInfo(0.85F)
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front bottom center")
-            .addCasing("45-57", "Stainless Steel Machine Casing", false)
-            .addCasing("19", "Item Pipe Casing", true)
-            .addCasing("8", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any machine casing", 1)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addInputBus("1+", "Any machine casing", 1)
-            .addOutputBus("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("45-57", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("19", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -190,9 +193,9 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
+            .setSpeedBonus(1.0D / 3.0D)
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.85F);
+            .setEuModifier(0.85D);
     }
 
     @Override

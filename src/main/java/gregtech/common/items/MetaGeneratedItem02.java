@@ -48,7 +48,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Potato_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Purple_Drink;
 import static gregtech.common.items.IDMetaItem02.Bottle_Reed_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Rum;
-import static gregtech.common.items.IDMetaItem02.Bottle_Salty_Water;
+import static gregtech.common.items.IDMetaItem02.Bottle_Salt_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Scotch;
 import static gregtech.common.items.IDMetaItem02.Bottle_Snitches_Glitch_Sauce;
 import static gregtech.common.items.IDMetaItem02.Bottle_Vinegar;
@@ -156,7 +156,7 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_MasterOfDreams;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_MatchaSnake;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Meat;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_MintChip;
-import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadaNutSwirl;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadahNutSwirl;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadriaPlasmaParfait;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Neapolitan;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_NetherStarNutCrunch;
@@ -298,6 +298,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
@@ -330,6 +331,8 @@ import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;
 public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     public static MetaGeneratedItem02 INSTANCE;
+    /** NBT tag holding the lang key that replaces the default name of a {@link ItemList#Display_ITS_FREE} stack. */
+    public static final String DISPLAY_NAME_KEY_TAG = "displayNameKey";
     private static final String aTextCover = "Usable as Cover";
 
     public MetaGeneratedItem02() {
@@ -795,12 +798,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-        ItemList.Bottle_Salty_Water.set(
+        ItemList.Bottle_Salt_Water.set(
             addItemWithLocalizationKeys(
-                Bottle_Salty_Water.ID,
-                "gt.item.bottle.salty_water.name",
-                "gt.item.bottle.salty_water.tooltip",
-                SubTag.INVISIBLE,
+                Bottle_Salt_Water.ID,
+                "gt.item.bottle.salt_water.name",
+                "gt.item.bottle.salt_water.tooltip",
+                OrePrefixes.bottle.get(Materials.SaltWater),
                 new GTFoodStat(
                     1,
                     0.0F,
@@ -2780,11 +2783,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "gt.item.food.icecream_lunarlander.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 600, 2, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
-        ItemList.Ice_Cream_NaquadaNutSwirl.set(
+        ItemList.Ice_Cream_NaquadahNutSwirl.set(
             addItemWithLocalizationKeys(
-                Food_IceCream_NaquadaNutSwirl.ID,
-                "gt.item.food.icecream_naquadanutswirl.name",
-                "gt.item.food.icecream_naquadanutswirl.tooltip",
+                Food_IceCream_NaquadahNutSwirl.ID,
+                "gt.item.food.icecream_naquadahnutswirl.name",
+                "gt.item.food.icecream_naquadahnutswirl.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 400, 1, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_NaquadriaPlasmaParfait.set(
@@ -3471,10 +3474,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
         ItemList.Display_ITS_FREE.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Display_ITS_FREE.ID,
-                "gt.item.display.its_free.name",
-                "gt.item.display.its_free.tooltip",
+                stack -> StatCollector.translateToLocal(
+                    stack.hasTagCompound() && stack.getTagCompound()
+                        .hasKey(DISPLAY_NAME_KEY_TAG) ? stack.getTagCompound()
+                            .getString(DISPLAY_NAME_KEY_TAG) : "gt.item.display.its_free.name"),
+                $ -> StatCollector.translateToLocal("gt.item.display.its_free.tooltip"),
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer.set(

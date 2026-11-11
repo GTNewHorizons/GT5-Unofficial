@@ -14,7 +14,6 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -111,7 +110,6 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .addMufflerHatch("1", "Any casing", 1)
             .addInputBus("1+", "Any casing", 1)
             .addOutputBus("1+", "Any casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
             .toolTipFinisher();
         return tt;
     }
@@ -185,7 +183,7 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
+            .setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
