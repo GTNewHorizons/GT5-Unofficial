@@ -338,7 +338,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     .put("francium_hydroxide_eff", FRANCIUM_HYDROXIDE_EFF * 100)
                     .put("francium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / FRANCIUM_HYDROXIDE_TICKS)
                     .put("nbutyllithium_eff", NBUTYLLITHIUM_EFF * 100)
-                    .put("nbutyllithium_rate", TOOLTIP_RATE_DIVIDER / NBUTYLLITHIUM_TICKS)
+                    .put("nbutyllithium_rate", TOOLTIP_RATE_DIVIDER / NBUTYLLITHIUM_TICKS * 1000)
                     .put("residue_rand_min", RANDOM_MIN / 1000.0)
                     .put("residue_rand_max", RANDOM_MAX / 1000.0)
                     .put("tier1_decay", TIER1_DECAY)
