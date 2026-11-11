@@ -23,7 +23,7 @@ import gtneioreplugin.util.DimensionHelper;
 
 /**
  * One NEI recipe per void-mineable dimension: the planet marker as input, every ore the Void Miner can produce there as
- * output. The stack size of an ore is its weight rounded; {@link Weights} keeps the exact values.
+ * output with its chance of being mined as the output chance; {@link Weights} keeps the exact weights.
  */
 public final class VoidMinerRecipes {
 
@@ -67,6 +67,7 @@ public final class VoidMinerRecipes {
             markerStack.stackSize = 0;
 
             List<ItemStack> ores = new ArrayList<>(weights.weights.size());
+            List<Integer> chances = new ArrayList<>(weights.weights.size());
             weights.weights.entrySet()
                 .stream()
                 .sorted(
@@ -81,13 +82,18 @@ public final class VoidMinerRecipes {
                 .forEach(entry -> {
                     ItemStack ore = entry.getKey()
                         .getItemStack();
-                    ore.stackSize = Math.max(1, Math.round(entry.getValue()));
                     ores.add(ore);
+                    // In units of 0.01%
+                    chances.add(Math.max(1, Math.round(10_000 * entry.getValue() / weights.totalWeight)));
                 });
 
             GTValues.RA.stdBuilder()
                 .itemInputs(markerStack)
                 .itemOutputs(ores.toArray(new ItemStack[0]))
+                .outputChances(
+                    chances.stream()
+                        .mapToInt(Integer::intValue)
+                        .toArray())
                 .duration(1)
                 .eut(0)
                 .special(weights)
