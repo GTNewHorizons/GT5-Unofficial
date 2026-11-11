@@ -29,6 +29,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -218,10 +220,15 @@ public class ScannerHelper {
         list.add(
             transComp("base_info_1", goldComp(formatNumber(x)), goldComp(formatNumber(y)), goldComp(formatNumber(z))));
         try {
-            IChatComponent nameComp = ((tileEntity instanceof IInventory inv)
-                ? new ChatComponentTranslation(inv.getInventoryName())
-                : new ChatComponentTranslation(block.getUnlocalizedName() + ".name"))
-                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+            String nameKey = null;
+            if (tileEntity instanceof IInventory inv) {
+                nameKey = inv.getInventoryName();
+            }
+            if (StringUtils.isEmpty(nameKey)) {
+                nameKey = block.getUnlocalizedName() + ".name";
+            }
+            IChatComponent nameComp = new ChatComponentTranslation(nameKey)
+                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
             int meta = world.getBlockMetadata(x, y, z);
             float hardness = block.getBlockHardness(world, x, y, z);
             float explosionResist = block

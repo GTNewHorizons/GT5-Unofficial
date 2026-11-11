@@ -38,6 +38,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
+import gregtech.nei.NEIScrollArea;
 import gregtech.nei.RecipeDisplayInfo;
 
 /**
@@ -269,13 +270,6 @@ public class RecipeMapFrontend {
                             .getName()));
             }
         }
-        if (recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
-            recipeInfo.drawText("stackTrace:");
-            // todo: good way to show all stacktraces
-            for (String stackTrace : recipe.stackTraces.get(0)) {
-                recipeInfo.drawText(stackTrace);
-            }
-        }
     }
 
     public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
@@ -304,7 +298,8 @@ public class RecipeMapFrontend {
         ItemStack stack) {
         FixedPositionedStack firstMatch = null;
         for (PositionedStack pStack : stacks) {
-            if (!(pStack instanceof FixedPositionedStack fixed) || !fixed.containsWithNBT(stack)) continue;
+            if (!(pStack instanceof FixedPositionedStack fixed) || !NEIScrollArea.isShown(fixed)
+                || !fixed.containsWithNBT(stack)) continue;
             if (gui != null && gui.isMouseOver(fixed, 0)) return fixed;
             if (firstMatch == null) firstMatch = fixed;
         }

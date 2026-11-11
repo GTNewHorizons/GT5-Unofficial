@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -18,7 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,13 +25,16 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -48,6 +50,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPurificationUnitOzonation>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -73,6 +76,11 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
      * If the player inserts more ozone gas than this amount, the multi will explode.
      */
     public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) GTUtility.powInt(2, 10);
+
+    /**
+     * Success chance bonus in percent for each doubling of ozone in the recipe.
+     */
+    public static final float SUCCESS_PER_OZONE_DOUBLING = 20.0f;
 
     private int casingCount = 0;
     private static final int MIN_CASING = 96;
@@ -167,52 +175,34 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit, OPU")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
-                    + MAX_OZONE_GAS_FOR_EXPLOSION
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Ozone Gas")
-            .addInfo(
-                "Receives a " + EnumChatFormatting.RED
-                    + "20%"
-                    + EnumChatFormatting.GRAY
-                    + " bonus to success chance for every doubling of "
-                    + EnumChatFormatting.WHITE
-                    + "Ozone Gas")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The second step in water purification is ozonation, which involves injecting large quantities of small")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "bubbles of highly reactive ozone gas into the water. This removes trace element contaminants like")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ozonation"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-ozonation"),
+                ImmutableMap.of(
+                    "tier",
+                    getWaterTier(),
+                    "max_ozone",
+                    MAX_OZONE_GAS_FOR_EXPLOSION,
+                    "bonus",
+                    SUCCESS_PER_OZONE_DOUBLING,
+                    "ozone",
+                    Materials.Ozone.getGas(1)
+                        .getLocalizedName()))
             .beginStructureBlock(9, 10, 5, true)
-            .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-99", "Inert Filtration Casing", false)
-            .addCasing("27", "Reactive Gas Containment Casing", false)
-            .addCasing("9", "Tinted Industrial Glass (any color)", false)
-            .addCasing("6", "Tungstensteel Frame Box", false)
-            .addCasing("3", "PTFE Pipe Casing", false)
-            .addInputHatch("2+", "End of reactive gas chamber (ozone), any filtration casing (water)", 1, 2)
-            .addOutputBus("0+", "Any filtration Casing", 1)
-            .addOutputHatch("1+", "Any filtration casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASING + "-99", Casings.InertFiltrationCasing.getLocalizedName(), false)
+            .addCasing("27", Casings.ReactiveGasContainmentCasing.getLocalizedName(), false)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
+                false)
+            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing("3", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.ozonation_input_hatch"), 1, 2)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_filtration_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_filtration_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();

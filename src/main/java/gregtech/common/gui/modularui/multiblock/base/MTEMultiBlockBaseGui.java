@@ -986,20 +986,15 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
-        IntSyncValue maxParallelSyncer = new IntSyncValue(
-            multiblock::getMaxParallelRecipes,
-            multiblock::setMaxParallelForPanel);
+        IntSyncValue maxParallelSyncer = new IntSyncValue(() -> Math.max(multiblock.getMaxParallelRecipes(), 1));
         BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
             multiblock::isAlwaysMaxParallel,
             multiblock::setAlwaysMaxParallel).allowC2S();
         syncManager.syncValue("maxParallel", maxParallelSyncer);
         syncManager.syncValue("alwaysMaxParallel", alwaysMaxParallelSyncer);
 
-        // The PanelSyncManager seems to belong to absolutely nothing?
-        // Not sure how that works but trying to use .syncHandler instead of .value causes a crash because
-        // This PanelSyncManager has no panel and the widget tries to get a syncHandler from "powerPanel"
         IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
-            multiblock::getPowerPanelMaxParallel,
+            multiblock::getTrueParallel,
             multiblock::setPowerPanelMaxParallel).allowC2S();
         return Flow.row()
             .fullWidth()
@@ -1077,7 +1072,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         if (maintSyncer.getValue() == 0) {
-            t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
+            t.addLine(
+                IKey.lang("GT5U.gui.text.multi.no_maintenance_issue")
+                    .style(EnumChatFormatting.GREEN));
             return;
         }
         if (!multiblock.mCrowbar) t.add(

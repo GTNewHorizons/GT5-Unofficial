@@ -7,6 +7,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.HashMap;
 import java.util.List;
@@ -184,8 +185,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addDynamoHatch("0+", anyCasingText(), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

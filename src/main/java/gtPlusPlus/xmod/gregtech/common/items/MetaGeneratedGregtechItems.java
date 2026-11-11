@@ -40,6 +40,8 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Transmi
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_ZPM;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -297,7 +299,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                     IDs[tier - 1],
                     TRANSMISSION_COMPONENT_NAME_KEY,
                     new Object[] { GTValues.VN[tier] },
-                    "",
+                    EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
                     new TC_AspectStack(TCAspects.ELECTRUM, tier),
                     new TC_AspectStack(TCAspects.MACHINA, tier),
                     new TC_AspectStack(TCAspects.MAGNETO, tier)));

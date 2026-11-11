@@ -20,6 +20,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+
 import gregtech.api.render.ISBRInventoryContext;
 
 /**
@@ -33,8 +35,24 @@ import gregtech.api.render.ISBRInventoryContext;
 public final class SBRInventoryContext extends SBRContextBase implements ISBRInventoryContext {
 
     private int meta;
+    private final InventoryRenderBatch inventoryBatch = new InventoryRenderBatch();
 
     private SBRInventoryContext() {}
+
+    boolean beginInventoryBatch() {
+        final Tessellator tessellator = Tessellator.instance;
+        if (TessellatorManager.isCurrentlyCapturing() || TessellatorManager.shouldInterceptDraw(tessellator))
+            return false;
+        return inventoryBatch.begin(tessellator);
+    }
+
+    void prepareInventoryBatch() {
+        inventoryBatch.prepare(hasBrightnessOverride);
+    }
+
+    void endInventoryBatch() {
+        inventoryBatch.end();
+    }
 
     /**
      * @return a new {@link ISBRInventoryContext} instance

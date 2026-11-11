@@ -4,8 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.UUID;
 
-import net.minecraftforge.fluids.IFluidHandler;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -16,12 +14,9 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
-import tectech.mechanics.enderStorage.EnderLinkTag;
-import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.thing.cover.CoverEnderFluidLink;
 
 public class EnderFluidLinkUIFactory extends CoverUIFactory<CoverEnderFluidLink> {
@@ -47,26 +42,20 @@ public class EnderFluidLinkUIFactory extends CoverUIFactory<CoverEnderFluidLink>
     protected void addUIWidgets(ModularWindow.Builder builder) {
         TextFieldWidget frequencyField = new TextFieldWidget();
         builder.widget(frequencyField.setGetter(() -> {
-            ICoverable te = getUIBuildContext().getTile();
-            if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te);
+            CoverEnderFluidLink cover = getCover();
 
-                return tag == null ? "" : tag.getFrequency();
-            }
-            return "";
+            return cover == null ? "" : cover.getFrequency();
         })
             .setSetter(val -> {
-                if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
-                    UUID uuid = null;
+                if (frequencyField.isClient()) return;
 
-                    CoverEnderFluidLink cover = getCover();
-                    if (cover != null && cover.isPrivateChannel()) {
-                        uuid = getUUID();
-                        if (!uuid.equals(CoverEnderFluidLink.getOwner(tank))) return;
-                    }
+                CoverEnderFluidLink cover = getCover();
+                if (cover == null) return;
 
-                    EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
-                }
+                if (cover.isPrivateChannel()
+                    && !getUUID().equals(CoverEnderFluidLink.getOwner(getUIBuildContext().getTile()))) return;
+
+                cover.setFrequency(val);
             })
             .setTextColor(Color.WHITE.dark(1))
             .setTextAlignment(Alignment.CenterLeft)

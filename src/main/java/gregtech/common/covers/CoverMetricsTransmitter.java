@@ -98,16 +98,13 @@ public class CoverMetricsTransmitter extends Cover {
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
                 payload = metricsExporter.reportMetrics();
             } else {
+                // Stays encoded: ItemAdvancedSensorCard decodes it on the client in the reader's language.
                 final List<String> infoList = new ArrayList<>();
                 for (String info : baseMTE.getInfoData()) {
                     infoList.add(info);
                 }
                 baseMTE.getExtraInfoData(infoList);
-                final ImmutableList.Builder<String> builder = ImmutableList.builder();
-                for (String info : infoList) {
-                    builder.add(IGregTechDeviceInformation.decode(info));
-                }
-                payload = builder.build();
+                payload = infoList;
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
