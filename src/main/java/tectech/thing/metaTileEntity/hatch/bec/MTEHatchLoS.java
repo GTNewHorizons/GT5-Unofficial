@@ -110,10 +110,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
             .setActive(false);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
-
-        if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
-            assembler.getIONodes(true);
-        }
+        onConnectionChange();
     }
 
     public void connectImpl(MTEHatchLoS other) {
@@ -125,7 +122,10 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
         notifyWatchers();
+        onConnectionChange();
+    }
 
+    public void onConnectionChange() {
         if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
             assembler.getIONodes(true);
         }
