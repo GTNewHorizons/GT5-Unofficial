@@ -8,6 +8,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMAT
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.NUMBER_OF_INPUTS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -161,8 +162,9 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             // The magmatter recipe asks for a single plasma
             int inputs = isQuarkGluonRecipe(recipeInfo.recipe) ? NUMBER_OF_INPUTS : 1;
-            return Collections
-                .singletonList(StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.picks", inputs));
+            return Arrays.asList(
+                StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.picks", inputs),
+                StatCollector.translateToLocal("tt.nei.fog_exotic.rules"));
         }
     }
 }

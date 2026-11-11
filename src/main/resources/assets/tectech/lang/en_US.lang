@@ -1178,6 +1178,7 @@ tt.nei.fog_exotic.weight=Weight: %s
 tt.nei.fog_exotic.chance=Request chance: %s%%
 tt.nei.fog_exotic.random_amount=Random amount: %s-%s L
 tt.nei.fog_exotic.picks=Requests %s random plasma
+tt.nei.fog_exotic.rules=See the controller for details
 tt.nei.research.max_eu=Max EU: %s EU
 tt.nei.research.computation=Computation: %s
 tt.nei.research.min_computation=Min Computation: %s /s
