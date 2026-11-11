@@ -1531,32 +1531,31 @@ public class GTRecipe implements Comparable<GTRecipe> {
             return null;
         }
 
-        public ArrayList<ItemStack> getAltRepresentativeFluidInput(int aIndex) {
-            if (aIndex < 0) return null;
-            if (mFluidInputs == null || aIndex >= mFluidInputs.length) return null;
+        public ArrayList<FluidStack> getAltRepresentativeFluidInput(int index) {
+            if (index < 0) return null;
+            if (mFluidInputs == null || index >= mFluidInputs.length) return null;
 
-            FluidStack mainFluid = mFluidInputs[aIndex];
+            FluidStack mainFluid = mFluidInputs[index];
+            ArrayList<FluidStack> fluids = new ArrayList<>();
 
-            ArrayList<ItemStack> display = new ArrayList<>();
-
-            if (mAltFluidInputs != null && aIndex < mAltFluidInputs.length) {
-                FluidStack[] alts = mAltFluidInputs[aIndex];
-                if (alts != null) {
-                    for (FluidStack alt : alts) {
-                        if (alt != null && alt.getFluid() != null) {
-                            display.add(GTUtility.getFluidDisplayStack(alt, true));
+            if (mAltFluidInputs != null && index < mAltFluidInputs.length) {
+                FluidStack[] alternatives = mAltFluidInputs[index];
+                if (alternatives != null) {
+                    for (FluidStack alternative : alternatives) {
+                        if (alternative != null && alternative.getFluid() != null) {
+                            fluids.add(alternative);
                         }
                     }
                 }
             }
 
             // fallback
-            if (display.isEmpty()) {
+            if (fluids.isEmpty()) {
                 if (mainFluid.getFluid() == null) return null;
-                display.add(GTUtility.getFluidDisplayStack(mainFluid, true));
+                fluids.add(mainFluid);
             }
 
-            return display;
+            return fluids;
         }
 
         @Override

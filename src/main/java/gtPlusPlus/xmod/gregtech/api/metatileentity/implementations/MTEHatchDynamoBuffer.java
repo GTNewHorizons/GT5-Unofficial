@@ -11,7 +11,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.GTSplit;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 @Deprecated // Remove in 2.10
@@ -61,8 +62,9 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
     @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
-            Utils.splitLocalizedFormattedWithAlkalus(
+            GTSplit.splitLocalizedFormattedWithSuffix(
                 "gt.blockmachines.dynamo_hatch_buffer.desc",
+                GTPPCore.GT_Tooltip.get(),
                 this.maxEUOutput() * this.maxAmperesIn()),
             StatCollector.translateToLocalFormatted(
                 "GT5U.MBTT.Deprecated",

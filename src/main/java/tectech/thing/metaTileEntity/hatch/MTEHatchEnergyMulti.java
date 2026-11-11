@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -168,18 +167,15 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
         currenttip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(
+                formatNumber(
                     accessor.getNBTData()
-                        .getLong("amperage") * V[mTier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t"));
+                        .getLong("amperage") * V[mTier])));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocalFormatted(
-            "gt.tileentity.throughput",
-            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
+        return new String[] {
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(Amperes * V[mTier])) };
     }
 
     @Override

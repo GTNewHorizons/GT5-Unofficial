@@ -1,6 +1,5 @@
 package tectech.loader.thing;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.MetaTileEntityIDs.ActiveTransformer;
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedTeslaTransceiver1by1;
@@ -570,7 +569,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.factory.test.TestFactoryHatch;
@@ -1347,35 +1345,20 @@ public class MachineLoader implements Runnable {
         Machine_Multi_ForgeOfGods.set(
             new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
                 .getStackForm(1L));
-        addItemTooltip(
-            Machine_Multi_ForgeOfGods.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_SmeltingModule.set(
             new MTESmeltingModule(HelioflarePowerForge.ID, "multimachine.em.smelting_module", "Helioflare Power Forge")
                 .getStackForm(1L));
-        addItemTooltip(
-            Machine_Multi_SmeltingModule.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_MoltenModule.set(
             new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
                 .getStackForm(1L));
-        addItemTooltip(
-            Machine_Multi_MoltenModule.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_PlasmaModule.set(
             new MTEPlasmaModule(
                 HeliothermalPlasmaFabricator.ID,
                 "multimachine.em.plasma_module",
                 "Heliothermal Plasma Fabricator").getStackForm(1L));
-        addItemTooltip(
-            Machine_Multi_PlasmaModule.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_QuarkGluonPlasmaModule.set(
             new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
                 .getStackForm(1L));
-        addItemTooltip(
-            Machine_Multi_QuarkGluonPlasmaModule.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
 
         registerBECMachines();
 
@@ -1391,24 +1374,28 @@ public class MachineLoader implements Runnable {
         dataIn_Hatch.set(
             new MTEHatchDataInput(OpticalSlaveConnector.ID, "hatch.datain.tier.07", "Optical Reception Connector", 7)
                 .getStackForm(1L));
+        API.setAliases(dataIn_Hatch.get(1L), "gt.alias.fibre");
         dataOut_Hatch.set(
             new MTEHatchDataOutput(
                 OpticalMasterConnector.ID,
                 "hatch.dataout.tier.07",
                 "Optical Transmission Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataOut_Hatch.get(1L), "gt.alias.fibre");
         dataInAss_Hatch.set(
             new MTEHatchDataItemsInput(
                 AssemblylineSlaveConnector.ID,
                 "hatch.datainass.tier.07",
                 "Assembly Line Reception Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre");
         dataOutAss_Hatch.set(
             new MTEHatchDataItemsOutput(
                 DataBankMasterConnector.ID,
                 "hatch.dataoutass.tier.07",
                 "Data Bank Transmission Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataOutAss_Hatch.get(1L), "gt.alias.fibre");
         dataOut_Wireless_Hatch.set(
             new MTEHatchWirelessComputationOutput(
                 CloudComputationServerHatch.ID,
@@ -1447,7 +1434,7 @@ public class MachineLoader implements Runnable {
         LASERpipeSmart.set(
             new MTEPipeLaserMirror(LaserVacuumMirror.ID, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
-
+        API.setAliases(DATApipe.get(1L), "gt.alias.fibre");
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test").getStackForm(1));
             TestHatch.set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", 7).getStackForm(1));
@@ -1459,7 +1446,7 @@ public class MachineLoader implements Runnable {
         DATApipeBlock.set(
             new MTEPipeBlockData(OpticalFiberCableCasing.ID, "pipe.datastream.block", "Optical Fiber Cable Casing")
                 .getStackForm(1L));
-
+        API.setAliases(DATApipeBlock.get(1L), "gt.alias.fibre");
         // ===================================================================================================
         // Single Blocks
         // ===================================================================================================

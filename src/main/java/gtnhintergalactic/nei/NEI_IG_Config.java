@@ -32,6 +32,8 @@ public class NEI_IG_Config implements IConfigureNEI {
         }
         API.addRecipeCatalyst(ItemList.PlanetarySiphon.get(1), "gtnhintergalactic.nei.GasSiphonRecipeHandler");
 
+        API.addOption(new AsteroidDumper());
+
         executed = true;
     }
 

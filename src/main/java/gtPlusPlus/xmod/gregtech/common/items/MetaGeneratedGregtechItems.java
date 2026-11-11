@@ -40,6 +40,8 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Transmi
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_ZPM;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -140,36 +142,40 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
         // RTG Pellet
         GregtechItemList.Pellet_RTG_PU238.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_PU238.ID,
-                StringUtils.superscript("238") + "Pu Pellet",
+                "MU-metaitem.01.rtg_pellet_pu238.name",
+                new Object[] { StringUtils.superscript("238") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_SR90.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_SR90.ID,
-                StringUtils.superscript("90") + "Sr Pellet",
+                "MU-metaitem.01.rtg_pellet_sr90.name",
+                new Object[] { StringUtils.superscript("90") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_PO210.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_PO210.ID,
-                StringUtils.superscript("210") + "Po Pellet",
+                "MU-metaitem.01.rtg_pellet_po210.name",
+                new Object[] { StringUtils.superscript("210") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_AM241.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_AM241.ID,
-                StringUtils.superscript("241") + "Am Pellet",
+                "MU-metaitem.01.rtg_pellet_am241.name",
+                new Object[] { StringUtils.superscript("241") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
@@ -293,7 +299,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                     IDs[tier - 1],
                     TRANSMISSION_COMPONENT_NAME_KEY,
                     new Object[] { GTValues.VN[tier] },
-                    "",
+                    EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
                     new TC_AspectStack(TCAspects.ELECTRUM, tier),
                     new TC_AspectStack(TCAspects.MACHINA, tier),
                     new TC_AspectStack(TCAspects.MAGNETO, tier)));

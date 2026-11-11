@@ -7030,7 +7030,8 @@ public class MaterialsInit {
 
     private static Materials loadPolycaprolactam() {
         return new MaterialBuilder().setName("Polycaprolactam")
-            .setDefaultLocalName("Polycaprolactam (PCL)")
+            .setDefaultLocalName("Polycaprolactam")
+            .setAliasKey("gt.alias.pcl")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00323232)
@@ -7067,7 +7068,8 @@ public class MaterialsInit {
 
     private static Materials loadPolyethylene() {
         return new MaterialBuilder().setName("Plastic")
-            .setDefaultLocalName("Polyethylene (PE)")
+            .setDefaultLocalName("Polyethylene")
+            .setAliasKey("gt.alias.pe")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00c8c8c8)
@@ -7090,7 +7092,8 @@ public class MaterialsInit {
 
     private static Materials loadPolytetrafluoroethylene() {
         return new MaterialBuilder().setName("Polytetrafluoroethylene")
-            .setDefaultLocalName("Polytetrafluoroethylene (PTFE)")
+            .setDefaultLocalName("Polytetrafluoroethylene")
+            .setAliasKey("gt.alias.ptfe")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeWhite)
             .setARGB(0x00646464)
@@ -8596,7 +8599,8 @@ public class MaterialsInit {
 
     private static Materials loadPolyphenyleneSulfide() {
         return new MaterialBuilder().setName("PolyphenyleneSulfide")
-            .setDefaultLocalName("Polyphenylene Sulfide (PPS)")
+            .setDefaultLocalName("Polyphenylene Sulfide")
+            .setAliasKey("gt.alias.pps")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00aa8800)
@@ -8617,7 +8621,8 @@ public class MaterialsInit {
 
     private static Materials loadPolystyrene() {
         return new MaterialBuilder().setName("Polystyrene")
-            .setDefaultLocalName("Polystyrene (PS)")
+            .setDefaultLocalName("Polystyrene")
+            .setAliasKey("gt.alias.ps")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00beb4aa)
@@ -8654,7 +8659,8 @@ public class MaterialsInit {
 
     private static Materials loadPolyvinylChloride() {
         return new MaterialBuilder().setName("PolyvinylChloride")
-            .setDefaultLocalName("Polyvinyl Chloride (PVC)")
+            .setDefaultLocalName("Polyvinyl Chloride")
+            .setAliasKey("gt.alias.pvc")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00d7e6e6)
@@ -8789,7 +8795,8 @@ public class MaterialsInit {
 
     private static Materials loadStyreneButadieneRubber() {
         return new MaterialBuilder().setName("StyreneButadieneRubber")
-            .setDefaultLocalName("Styrene-Butadiene Rubber (SBR)")
+            .setDefaultLocalName("Styrene-Butadiene Rubber")
+            .setAliasKey("gt.alias.sbr")
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x00211a18)
@@ -12721,7 +12728,8 @@ public class MaterialsInit {
 
     private static Materials loadPolybenzimidazole() {
         return new MaterialBuilder().setName("Polybenzimidazole")
-            .setDefaultLocalName("Polybenzimidazole (PBI)")
+            .setDefaultLocalName("Polybenzimidazole")
+            .setAliasKey("gt.alias.pbi")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeBlack)
             .setARGB(0x002d2d2d)
@@ -15254,7 +15262,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadCalciumCarbide() {
-        return new MaterialBuilder().setName("CacliumCarbide")
+        return new MaterialBuilder().setName("CalciumCarbide")
             .setDefaultLocalName("Calcium Carbide")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)
@@ -15932,7 +15940,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_SPACETIME)
             .setARGB(0x00ffffff)
             .setMeltingPoint(0)
-            .setTool(10_485_760, 25, 320.0f)
+            .setTool(10_485_760, 24, 320.0f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -15983,6 +15991,7 @@ public class MaterialsInit {
                     + CustomGlyphs.ARROW_CORNER_NORTH_WEST
                     + "⇱")
             .setFlavorText("Stabilised core of a dead star")
+            .setAliasKey("gt.alias.mhdcsm")
             .setIconSet(TextureSet.SET_MHDCSM)
             .setARGB(0x00ffffff)
             .setMeltingPoint(0)
@@ -16032,6 +16041,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_WHITE_DWARF_MATTER)
             .setColor(Dyes.dyePurple)
             .setMeltingPoint(0)
+            .setTool(10_485_760, 28, 1f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -16039,6 +16049,7 @@ public class MaterialsInit {
             .addFluid()
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
+            .addSubTag(SubTag.METAL)
             .addOrePrefix(OrePrefixes.nanite)
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
@@ -16054,6 +16065,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyePurple)
             .setARGB(0xff000000)
             .setMeltingPoint(0)
+            .setTool(10_485_760, 30, 1f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -16102,7 +16114,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_UNIVERSIUM)
             .setARGB(0xff263145)
             .setMeltingPoint(0)
-            .setTool(10_485_760, 30, 1.0f)
+            .setTool(10_485_760, 32, 1.0f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -16124,14 +16136,13 @@ public class MaterialsInit {
             .setChemicalFormula("En⦼")
             .setFlavorText("\u7121\u6975")
             .setIconSet(TextureSet.SET_ETERNITY)
-            .setTool(20_971_520, 26, 1.0f)
+            .setTool(20_971_520, 28, 1.0f)
             .setMeltingPoint(0)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
             .addGearItems()
             .setBlastFurnaceTemp(14_000)
-            .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addAspect(TCAspects.AQUA, 1)
@@ -16162,7 +16173,7 @@ public class MaterialsInit {
             .setChemicalFormula("M⎋")
             .setFlavorText("Magnetic monopole matter")
             .setIconSet(TextureSet.SET_MAGMATTER)
-            .setTool(167_772_160, 26, 1.0f)
+            .setTool(167_772_160, 30, 1.0f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -16236,7 +16247,7 @@ public class MaterialsInit {
             .setFlavorText("Mixture of copper variants from archaic FTB mods")
             .setIconSet(TextureSet.SET_SHINY)
             .setARGB(0x00ff7814)
-            .setTool(20_971_520, 26, 1.0f)
+            .setTool(20_971_520, 24, 1.0f)
             .addDustItems()
             .addMetalItems()
             .addPlasma()
@@ -16248,6 +16259,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .setAutoGeneratedVacuumFreezerRecipe(false)
             .addAspect(TCAspects.ITER, 1)
+            .addSubTag(SubTag.METAL)
             .addOrePrefix(OrePrefixes.nanite)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
@@ -16263,7 +16275,7 @@ public class MaterialsInit {
                     + "₁₃?₁₃")
             .setIconSet(TextureSet.SET_SHINY)
             .setARGB(0x003c0505)
-            .setTool(20_971_520, 26, 1.0f)
+            .setTool(20_971_520, 24, 1.0f)
             .addDustItems()
             .addMetalItems()
             .addToolHeadItems()
@@ -16285,7 +16297,7 @@ public class MaterialsInit {
             .setChemicalFormula("⸎")
             .setIconSet(TextureSet.SET_SHINY)
             .setARGB(0x00460046)
-            .setTool(20_971_520, 26, 1.0f)
+            .setTool(20_971_520, 24, 1.0f)
             .addDustItems()
             .addMetalItems()
             .addPlasma()
@@ -16850,7 +16862,7 @@ public class MaterialsInit {
             .addDustItems()
             .addMetalItems()
             .addGearItems()
-            .setBlastFurnaceTemp(7400)
+            .setBlastFurnaceTemp(9_400)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
@@ -16875,7 +16887,7 @@ public class MaterialsInit {
             .addDustItems()
             .addMetalItems()
             .addGearItems()
-            .setBlastFurnaceTemp(7400)
+            .setBlastFurnaceTemp(10_400)
             .setBlastFurnaceRequired(true)
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)

@@ -62,26 +62,22 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                         w -> baseMetaTileEntity.isActive() && workStateSync.getValue() == WorkState.AT_BOTTOM))
             .child(
                 IKey.dynamic(
-                    () -> EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.pump_rate.1",
-                            EnumChatFormatting.AQUA + formatNumber(flowPerTickSync.getValue()))
-                        + EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
+                    () -> StatCollector
+                        .translateToLocalFormatted("GT5U.gui.text.pump_rate", formatNumber(flowPerTickSync.getValue())))
                     .asWidget()
+                    // Widget color instead of a GRAY prefix, so the lang's §r falls back to gray.
+                    .color(0xFFAAAAAA)
                     .fullWidth()
                     .marginBottom(2)
                     .setEnabledIf(
                         w -> baseMetaTileEntity.isActive() && workStateSync.getValue() == WorkState.AT_BOTTOM))
             .child(
                 IKey.dynamic(
-                    () -> EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.pump_recovery.1",
-                            EnumChatFormatting.AQUA + formatNumber(flowPerOpSync.getValue()))
-                        + EnumChatFormatting.GRAY
-                        + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.pump_recovery",
+                        formatNumber(flowPerOpSync.getValue())))
                     .asWidget()
+                    .color(0xFFAAAAAA)
                     .fullWidth()
                     .marginBottom(2)
                     .setEnabledIf(

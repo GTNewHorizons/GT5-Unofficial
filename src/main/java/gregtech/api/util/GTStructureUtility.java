@@ -199,7 +199,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
-        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        if (material == null) throw new IllegalArgumentException("material for sheet metal cannot be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
 
             @Override
@@ -218,7 +218,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
-        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal cannot be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
 
             @Override
@@ -1353,6 +1353,16 @@ public class GTStructureUtility {
         @Override
         public String getDisplayName() {
             return proxiedHatch.getDisplayName();
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return proxiedHatch.getDescriptionLangKey();
+        }
+
+        @Override
+        public List<String> getDescriptionLangKeys() {
+            return proxiedHatch.getDescriptionLangKeys();
         }
 
         @Override
