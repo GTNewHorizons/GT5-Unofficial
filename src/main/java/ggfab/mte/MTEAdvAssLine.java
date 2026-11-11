@@ -45,7 +45,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -59,16 +58,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import ggfab.ConfigurationHandler;
-import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -205,7 +198,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private Map<GTUtility.ItemId, ItemStack> curBatchItemsFromME;
     private Map<Fluid, FluidStack> curBatchFluidsFromME;
     private int currentInputLength;
-    private String lastStopReason = "";
+    private String lastStopReason = ""; // unused?
     private int currentRecipeParallel = 1;
 
     public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
@@ -383,7 +376,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setString("lastStop", lastStopReason);
         // we need to check for active here.
         // if machine was turned off via soft mallet it will not call checkRecipe() on recipe end
         // in that case we don't have a current recipe, so this should be ignored
@@ -407,7 +399,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        lastStopReason = aNBT.getString("lastStop");
 
         if (aNBT.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT_ARRAY)) {
             int[] arr = aNBT.getIntArray(TAG_KEY_PROGRESS_TIMES);
@@ -442,12 +433,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             baseEUt = aNBT.getLong("baseEU");
             currentRecipeParallel = aNBT.getInteger("currentParallel");
             if (inputVoltage <= 0 || inputEUt <= 0 || baseEUt >= 0) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.load.energy");
+                criticalStopAssLine();
                 recipe = null;
             }
             if (recipe != null && aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
                 if (aNBT.getInteger(TAG_KEY_RECIPE_HASH) != recipe.getPersistentHash()) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.load.recipe");
+                    criticalStopAssLine();
                     recipe = null;
                 }
             }
@@ -478,14 +469,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
      * Does a critical shutdown of the machine, but does not attempt to send a halting sound if the world is not loaded.
      * Also supports setting a stop reason
      */
-    private void criticalStopMachine(String reason) {
+    private void criticalStopAssLine() {
         int oMaxProgresstime = mMaxProgresstime;
         stopMachine(ShutDownReasonRegistry.NONE);
         // don't do these at all if the machine wasn't working before anyway
         if (oMaxProgresstime > 0) {
             if (getBaseMetaTileEntity().getWorld() != null) sendSound(INTERRUPT_SOUND_INDEX);
             getBaseMetaTileEntity().setShutdownStatus(true);
-            lastStopReason = reason;
         }
     }
 
@@ -510,7 +500,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             mEnergyHatches.forEach(this::recordEnergySupplier);
             mExoticEnergyHatches.forEach(this::recordEnergySupplier);
             if (mMaxProgresstime > 0 && (oV != inputVoltage || oEut != inputEUt)) {
-                criticalStopMachine("ggfab.gui.advassline.shutdown.structure");
+                criticalStopAssLine();
             }
         } else {
             inputVoltage = V[0];
@@ -554,43 +544,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        /*
-         * SliceStatusWidget[] arr =
-         * Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
-         * screenElements.widgets(arr); screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength,
-         * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
-         */
-        screenElements.widget(
-            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
-                .setTextAlignment(Alignment.CenterLeft)
-                .attachSyncer(
-                    new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
-                    screenElements)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new ClickableTextWidget(
-                Text.localised("ggfab.gui.advassline.shutdown_clear")
-                    .alignment(Alignment.CenterLeft)).setMarginInLines(0)
-                        .setOnClick((d, w) -> lastStopReason = "")
-                        .setSize(36, 20)
-                        .setEnabled(this::hasAbnormalStopReason));
-    }
-
-    private Boolean hasAbnormalStopReason(Widget w) {
-        return !StringUtils.isNullOrEmpty(lastStopReason);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.assemblylineVisualRecipes;
     }
@@ -598,7 +551,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (currentRecipe == null) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.recipe_null");
+            criticalStopAssLine();
             return false;
         }
         for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
@@ -606,7 +559,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
+            criticalStopAssLine();
             return false;
         }
         boolean oStuck = stuck;
@@ -646,7 +599,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             lEUt = Long.MIN_VALUE;
             for (int i = 0; i < working; i++) {
                 if (!drainEnergyInput(-baseEUt)) {
-                    criticalStopMachine("ggfab.gui.advassline.shutdown.energy");
+                    criticalStopAssLine();
                     return false;
                 }
             }
