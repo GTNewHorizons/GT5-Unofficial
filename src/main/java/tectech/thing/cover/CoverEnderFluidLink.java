@@ -53,10 +53,6 @@ public class CoverEnderFluidLink extends Cover {
         }
     }
 
-    private static boolean testBit(int coverData, int bitMask) {
-        return (coverData & bitMask) != 0;
-    }
-
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();

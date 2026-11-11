@@ -248,12 +248,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         tierFrame = -1;
         casingAmount = 0;
 
-        // Try new structure
-        tierMachineCasing = -1;
-        tierGearboxCasing = -1;
-        tierFrame = -1;
-        casingAmount = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
         checkCasingMin(errors, casingAmount, 14);

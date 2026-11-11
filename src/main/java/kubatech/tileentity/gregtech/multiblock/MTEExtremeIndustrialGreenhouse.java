@@ -241,7 +241,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
         .addElement('w', ofChain(ofAnyWater(false), isAir()))
-        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
     @Override

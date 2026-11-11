@@ -1559,7 +1559,6 @@ gt.blockmachines.multimachine.purificationunitplasmaheater.name=极端温度波�
 gt.blockmachines.multimachine.purificationunituvtreatment.name=高能激光净化单元
 gt.blockmachines.multimachine.pyro.name=热解炉
 gt.blockmachines.multimachine.solarfactory.name=太阳能板制造厂
-gt.blockmachines.multimachine.solidifier.name=流体塑形机
 gt.blockmachines.multimachine.spinmatron.name=离心中枢-2737
 gt.blockmachines.multimachine.transcendentplasmamixer.name=超维度等离子搅拌机
 gt.blockmachines.multimachine.vacuumfreezer.name=真空冷冻机

@@ -3286,7 +3286,6 @@ item.BasicGenericChemItem.15.name=无尽突变催化剂
 
 # Multiblocks
 gt.blockmachines.chemicalplant.controller.tier.single.name=埃克森美孚化工厂
-gt.blockmachines.cyclotron.tier.single.name=COMET-紧凑式回旋加速器
 gt.blockmachines.fusioncomputer.tier.09.name=核聚变反应堆控制电脑 Mk-IV
 gt.blockmachines.fusioncomputer.tier.10.name=核聚变反应堆控制电脑 Mk-V
 gt.blockmachines.gtplusplus.autocrafter.multi.name=大规模自动装配机v1.01
@@ -3297,11 +3296,9 @@ gt.blockmachines.gtpp.multimachine.semifluidgenerator.name=大型半流质发电
 gt.blockmachines.industrialalloysmelter.controller.tier.single.name=工业合金炉
 gt.blockmachines.industrialfluidheater.controller.tier.single.name=工业流体加热器
 gt.blockmachines.industrialmassfab.controller.tier.single.name=物质发生器CPU
-gt.blockmachines.industrialplatepress.controller.tier.single.name=工业辊压机
 gt.blockmachines.industrialrefinery.controller.tier.single.name=反应堆燃料加工厂
 gt.blockmachines.industrialsalloyamelter.controller.tier.mega.name=巨型合金冶炼炉
 gt.blockmachines.industrialsalloyamelter.controller.tier.single.name=合金冶炼炉
-gt.blockmachines.industrialwashplant.controller.tier.single.name=工业洗矿厂
 gt.blockmachines.lftr.controller.single.name=液态氟钍反应堆
 gt.blockmachines.multimachine.adv.blastfurnace.name=炽焱高炉
 gt.blockmachines.multimachine.adv.distillationtower.name=丹格特蒸馏厂
