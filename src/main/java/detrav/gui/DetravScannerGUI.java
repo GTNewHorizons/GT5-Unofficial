@@ -24,7 +24,6 @@ import detrav.client.DetravOreMarker;
 import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -81,13 +80,9 @@ public class DetravScannerGUI extends GuiScreen {
 
         // size the list column to the longest entry, clamped to keep the GUI sane
         int names = 100;
-        for (var e : map.packet.objects.short2ObjectEntrySet()) {
-            names = Math.max(
-                names,
-                mc.fontRenderer.getStringWidth(
-                    e.getValue()
-                        .left())
-                    + 24);
+        for (var e : map.packet.basicInfo()
+            .short2ObjectEntrySet()) {
+            names = Math.max(names, mc.fontRenderer.getStringWidth(e.getValue().name) + 24);
         }
         listW = Math.min(names, 220);
 
@@ -165,6 +160,7 @@ public class DetravScannerGUI extends GuiScreen {
     private static final int ORE_SEARCH_RADIUS = 5;
     private int nearestOreX, nearestOreZ;
 
+    // Only for ores
     private boolean findNearestOre(int mx, int my) {
         if (map == null) return false;
 
@@ -398,11 +394,10 @@ public class DetravScannerGUI extends GuiScreen {
                 int amount = map.packet.getAmount(cX, cZ);
 
                 if (objectId != -1 && amount > 0) {
-                    var object = map.packet.objects.get(objectId);
+                    var object = map.packet.fluids.get(objectId);
 
                     info.add(
-                        StatCollector
-                            .translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_name", object.left()));
+                        StatCollector.translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_name", object.name));
                     info.add(
                         StatCollector.translateToLocalFormatted(
                             "gui.detrav.scanner.tooltip.fluid_amount",
@@ -425,7 +420,8 @@ public class DetravScannerGUI extends GuiScreen {
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
                             + formatNumber(amount)
-                            + GTUtility.trans("203", " gibbl"));
+                            + " "
+                            + StatCollector.translateToLocal("gui.detrav.scanner.gibbl"));
                 }
 
                 func_146283_a(info, x, y);

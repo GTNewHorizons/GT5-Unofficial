@@ -1,24 +1,31 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.mutable.MutableLong;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -34,6 +40,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -71,7 +78,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     @Override
     public IStructureDefinition<MTEBECGenerator> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
@@ -90,7 +97,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_generator"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
 
@@ -98,24 +106,21 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-generator.controller-pos"))
             .addCasing("236", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("232", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("216", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("216", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("184", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("136-158", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("148", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("101", CondensateTransformativeCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
             .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"),
-                2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        // spotless:on
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return ElectromagneticallyIsolatedCasing.getCasingTexture();
     }
 
@@ -167,65 +172,152 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
-        MutableLong euQuota = new MutableLong(getMaxInputEu());
+        long maxPower = getMaxInputEu();
 
-        long startingQuota = euQuota.longValue();
+        Map<Fluid, Long> combinedFluids = new HashMap<>();
+        for (FluidStack input : getStoredFluids()) {
+            if (input != null && input.amount > 0) {
+                combinedFluids.merge(input.getFluid(), (long) input.amount, Long::sum);
+            }
+        }
+        if (combinedFluids.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        List<FluidCandidate> fluidCandidates = new ArrayList<>();
+        for (Map.Entry<Fluid, Long> entry : combinedFluids.entrySet()) {
+            Fluid fluid = entry.getKey();
+            long totalAmountLong = entry.getValue();
+
+            GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
+                .fluids(new FluidStack(fluid, (int) Math.min(totalAmountLong, Integer.MAX_VALUE)))
+                .find();
+            if (recipe == null) continue;
+
+            if (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) continue;
+            int perParallel = recipe.mFluidInputs[0].amount;
+            if (perParallel <= 0) continue;
+
+            double recipeAccepts = recipe.maxParallelCalculatedByInputs(
+                1,
+                new FluidStack[] { new FluidStack(fluid, perParallel) },
+                GTValues.emptyItemStackArray);
+            if (recipeAccepts <= 0) continue;
+
+            long maxParallelsByInput = totalAmountLong / perParallel;
+            if (maxParallelsByInput > Integer.MAX_VALUE) {
+                maxParallelsByInput = Integer.MAX_VALUE;
+            }
+
+            fluidCandidates.add(new FluidCandidate(recipe, (int) maxParallelsByInput, fluid));
+        }
+        if (fluidCandidates.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        int maxDuration = fluidCandidates.stream()
+            .mapToInt(c -> c.recipe.mDuration)
+            .max()
+            .orElse(0);
+        if (maxDuration <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        double remainingPower = maxPower;
+        fluidCandidates.sort(Comparator.comparingDouble(c -> c.maxParallelsByInput * (double) c.recipe.mEUt));
+
+        for (int i = 0; i < fluidCandidates.size(); i++) {
+            FluidCandidate c = fluidCandidates.get(i);
+            double share = remainingPower / (fluidCandidates.size() - i);
+            c.parallels = (int) Math.min(c.maxParallelsByInput, share / c.recipe.mEUt);
+            remainingPower -= c.parallels * (double) c.recipe.mEUt;
+        }
+
+        for (FluidCandidate c : fluidCandidates) {
+            int added = (int) Math.min(c.maxParallelsByInput - c.parallels, remainingPower / c.recipe.mEUt);
+            if (added > 0) {
+                c.parallels += added;
+                remainingPower -= added * (double) c.recipe.mEUt;
+            }
+        }
 
         CondensateList outputs = new CondensateList();
+        boolean anySuccess = false;
 
-        // Clear the recipe time here. It's mutated in tryDrainFluid.
-        mMaxProgresstime = 0;
+        for (FluidCandidate candidate : fluidCandidates) {
+            int plannedParallels = candidate.parallels;
+            if (plannedParallels <= 0) continue;
 
-        for (FluidStack input : getStoredFluids()) {
-            tryDrainFluid(outputs, euQuota, input);
+            int perParallel = candidate.recipe.mFluidInputs[0].amount;
+            long plannedDrain = (long) plannedParallels * perParallel;
+
+            long drained = drainInputHatches(mInputHatches, plannedDrain, candidate.fluid, true);
+            int actualParallels = (int) Math.min(drained / perParallel, Integer.MAX_VALUE);
+            candidate.parallels = actualParallels;
+
+            if (actualParallels <= 0) continue;
+            drainInputHatches(mInputHatches, (long) actualParallels * perParallel, candidate.fluid, false);
+
+            outputs.addTo(
+                candidate.recipe.mFluidOutputs[0].getFluid(),
+                candidate.recipe.mFluidOutputs[0].amount * (long) actualParallels);
+            anySuccess = true;
         }
 
-        if (outputs.isEmpty()) {
+        if (!anySuccess) {
             return CheckRecipeResultRegistry.NO_RECIPE;
-        } else {
-            mOutputFluids = outputs.toFluidStacks()
-                .toArray(GTValues.emptyFluidStackArray);
-            mEfficiency = 10_000;
-            useLongPower = true;
-            lEUt = -(startingQuota - euQuota.longValue()) / mMaxProgresstime;
-
-            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
+
+        int actualMaxDuration = 0;
+        for (FluidCandidate candidate : fluidCandidates) {
+            if (candidate.parallels > 0) {
+                actualMaxDuration = Math.max(actualMaxDuration, candidate.recipe.mDuration);
+            }
+        }
+        if (actualMaxDuration <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        mMaxProgresstime = actualMaxDuration;
+
+        mOutputFluids = outputs.toFluidStacks()
+            .toArray(GTValues.emptyFluidStackArray);
+        mEfficiency = 10_000;
+        useLongPower = true;
+
+        double actualPowerDouble = 0;
+        for (FluidCandidate candidate : fluidCandidates) {
+            if (candidate.parallels <= 0) continue;
+            actualPowerDouble += candidate.parallels * (double) candidate.recipe.mEUt;
+        }
+
+        long actualPower = (long) Math.ceil(actualPowerDouble);
+        lEUt = -actualPower;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private void tryDrainFluid(CondensateList outputs, MutableLong euQuota, FluidStack fluidStack) {
-        GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
-            .fluids(new FluidStack(fluidStack.getFluid(), fluidStack.amount))
-            .find();
-
-        if (recipe == null) {
-            return;
+    private static long drainInputHatches(List<MTEHatchInput> hatches, long amount, Fluid fluid, boolean simulate) {
+        long drained = 0;
+        for (MTEHatchInput hatch : validMTEList(hatches)) {
+            if (drained >= amount) break;
+            int chunk = (int) Math.min(amount - drained, Integer.MAX_VALUE);
+            FluidStack result = hatch.drain(ForgeDirection.UNKNOWN, new FluidStack(fluid, chunk), !simulate);
+            if (result == null || result.getFluid() != fluid) continue;
+            drained += result.amount;
         }
+        return drained;
+    }
 
-        // double -> int cast clamps to upper int limit when overflowing (though this will never happen in practice)
-        int parallels = (int) recipe.maxParallelCalculatedByInputs(
-            Integer.MAX_VALUE,
-            new FluidStack[] { fluidStack },
-            GTValues.emptyItemStackArray);
+    private static class FluidCandidate {
 
-        // Safe to cast to int here because `parallels` will never be more than int max
-        parallels = (int) Math.min(parallels, euQuota.longValue() / recipe.mEUt);
+        final GTRecipe recipe;
+        final int maxParallelsByInput;
+        final Fluid fluid;
+        int parallels;
 
-        if (parallels <= 0) {
-            return;
+        FluidCandidate(GTRecipe recipe, int maxParallelsByInput, Fluid fluid) {
+            this.recipe = recipe;
+            this.maxParallelsByInput = maxParallelsByInput;
+            this.fluid = fluid;
         }
-
-        FluidStack toDrain = fluidStack.copy();
-        toDrain.amount = parallels * recipe.mFluidInputs[0].amount;
-
-        if (!depleteInput(toDrain)) {
-            return;
-        }
-
-        euQuota.subtract(toDrain.amount / recipe.mFluidInputs[0].amount * (long) recipe.mEUt);
-
-        outputs.addTo(recipe.mFluidOutputs[0].getFluid(), recipe.mFluidOutputs[0].amount * (long) parallels);
-
-        this.mMaxProgresstime = Math.max(this.mMaxProgresstime, recipe.mDuration);
     }
 }

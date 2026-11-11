@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -26,7 +27,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -43,7 +43,7 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
             aNameRegional,
             aTier,
             1,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
     }
 
@@ -55,8 +55,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER");
     }
 
     @Override

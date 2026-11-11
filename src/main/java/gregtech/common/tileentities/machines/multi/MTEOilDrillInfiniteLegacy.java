@@ -82,7 +82,7 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
             .addInfo("If total circuit # is greater than output per operation, the machine will halt.") // doesn't
             // work
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo("Minimum Energy Hatch Tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")

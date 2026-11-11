@@ -14,11 +14,13 @@ import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
 
-    public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.ADVANCED);
+    public static final JetpackBehavior JETPACK = new JetpackBehavior(JetpackStats.JETPACK);
+    public static final JetpackBehavior VECTORED_JETPACK = new JetpackBehavior(JetpackStats.VECTORED_JETPACK);
+
     private final JetpackStats jetpackStats;
 
-    protected JetpackBehavior(JetpackStats stats) {
-        jetpackStats = stats;
+    protected JetpackBehavior(JetpackStats jetpackStats) {
+        this.jetpackStats = jetpackStats;
     }
 
     @Override
@@ -78,10 +80,7 @@ public class JetpackBehavior implements IArmorBehavior {
                 } else if (descend && !isGuiOpen) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math.min(
-                        player.motionY + currentAccel,
-                        context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
-                            : -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
                     : jetpackStats.getSidewaysSpeed());

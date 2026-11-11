@@ -45,7 +45,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -62,7 +61,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -285,7 +283,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         // Hatches are allowed in the module base slots, but the elevator ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(TileEntitySpaceElevator tileEntity) {
@@ -293,14 +291,17 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TileEntitySpaceElevator> adder;
 
         @SafeVarargs
-        ElevatorHatchElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
+        ElevatorHatchElement(String name, IGTHatchAdder<TileEntitySpaceElevator> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -311,6 +312,16 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -664,19 +675,27 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
                 // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
-                    if (!mProjectModuleHatches.isEmpty()) {
-                        long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
-                        for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
-                            if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect(this);
-                                long tAvailableEnergy = getEUVar();
-                                if (tAvailableEnergy > 0) {
-                                    setEUVar(
-                                        Math.max(
-                                            0,
-                                            tAvailableEnergy
-                                                - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
-                                }
+                    List<TileEntityModuleBase> chargeableModules = new ArrayList<>();
+                    for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
+                        if (projectModule.getNeededMotorTier() > motorTier) {
+                            continue;
+                        }
+                        // Unformed modules still need to be connected so they can run their own structure check
+                        projectModule.connect(this);
+                        if (projectModule.mMachine) {
+                            chargeableModules.add(projectModule);
+                        }
+                    }
+                    if (!chargeableModules.isEmpty()) {
+                        long tEnergy = getEUVar() / chargeableModules.size() * MODULE_CHARGE_INTERVAL;
+                        for (TileEntityModuleBase projectModule : chargeableModules) {
+                            long tAvailableEnergy = getEUVar();
+                            if (tAvailableEnergy > 0) {
+                                setEUVar(
+                                    Math.max(
+                                        0,
+                                        tAvailableEnergy
+                                            - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
                             }
                         }
                     }
@@ -761,7 +780,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SwitchToExtended"))
             .addSubChannel(GTStructureChannels.SE_MOTOR)
-            .toolTipFinisher(GTAuthors.Authorminecraft7771);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
@@ -844,7 +863,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

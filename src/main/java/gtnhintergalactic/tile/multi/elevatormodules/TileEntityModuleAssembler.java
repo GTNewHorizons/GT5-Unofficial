@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +15,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -228,7 +232,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -328,12 +332,13 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -410,12 +415,13 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -492,12 +498,13 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"),
+                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();

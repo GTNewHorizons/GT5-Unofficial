@@ -21,6 +21,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.util.shutdown.ShutDownReason;
+import io.netty.buffer.ByteBuf;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -73,8 +74,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      * Causes the machine to send a tile entity description packet to the client. Only has an effect on the server.
      * Also sends initial data and covers.
      *
-     * @see IMetaTileEntity#getDescriptionData()
-     * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)
+     * @see IMetaTileEntity#writeToStream(ByteBuf)
+     * @see IMetaTileEntity#readFromStream(ByteBuf)
      * @see TileEntity#getDescriptionPacket()
      * @see TileEntity#onDataPacket(NetworkManager, S35PacketUpdateTileEntity)
      * @see net.minecraft.world.World#markBlockForUpdate(int, int, int)
@@ -166,6 +167,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     default void setShutdownStatus(boolean newStatus) {}
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
+
+    boolean isTickDisabled();
 
     void enableTicking();
 

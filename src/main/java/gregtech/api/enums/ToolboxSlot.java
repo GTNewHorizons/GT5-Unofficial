@@ -130,7 +130,11 @@ public enum ToolboxSlot {
     }
 
     public void registerIcon(final IIconRegister iconRegister) {
-        icon = iconRegister.registerIcon(GregTech.getID() + ":" + overlay.location.getResourcePath());
+        String resourcePath = overlay.location.getResourcePath();
+        resourcePath = resourcePath.substring(0, resourcePath.lastIndexOf(".png"))
+            .replace("textures/items/", "");
+
+        icon = iconRegister.registerIcon(GregTech.getID() + ":" + resourcePath);
     }
 
     public Optional<IIcon> getIcon() {

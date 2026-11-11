@@ -23,6 +23,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -78,7 +80,7 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, ABS")
             .addInfo("Allows Complex alloys to be created")
-            .addInfo("Recipe Tier is limited to Hatch Tier")
+            .addInfo("Recipe tier is limited to hatch tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
@@ -145,8 +147,9 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
         checkHasOutputHatch(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 

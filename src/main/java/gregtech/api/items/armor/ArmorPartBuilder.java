@@ -24,6 +24,8 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     private Collection<IArmorBehavior> providedBehaviors = Collections.emptyList();
     /// The behaviors that are required for this part to be installed
     private Collection<BehaviorName> requiredBehaviors = Collections.emptyList();
+    /// At least one of these behaviors is required for this part to be installed
+    private Collection<BehaviorName> requiredBehaviorsOr = Collections.emptyList();
     /// The behaviors that prevent this part from being installed
     private Collection<BehaviorName> incompatibleBehaviors = Collections.emptyList();
     /// The armor types this part can fit into
@@ -86,6 +88,10 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return requiredBehaviors;
     }
 
+    public Collection<BehaviorName> getRequiredBehaviorsOr() {
+        return requiredBehaviorsOr;
+    }
+
     public Collection<BehaviorName> getIncompatibleBehaviors() {
         return incompatibleBehaviors;
     }
@@ -103,6 +109,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     public Self requiresBehaviors(Collection<BehaviorName> behaviors) {
         onMutated();
         this.requiredBehaviors = Collections.unmodifiableCollection(behaviors);
+        return (Self) this;
+    }
+
+    public Self requiresOr(Collection<BehaviorName> behaviors) {
+        onMutated();
+        this.requiredBehaviorsOr = Collections.unmodifiableCollection(behaviors);
         return (Self) this;
     }
 
@@ -127,6 +139,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     public Self requiresBehaviors(BehaviorName... behaviors) {
         onMutated();
         this.requiredBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
+        return (Self) this;
+    }
+
+    public Self requiresOr(BehaviorName... behaviors) {
+        onMutated();
+        this.requiredBehaviorsOr = Collections.unmodifiableCollection(Arrays.asList(behaviors));
         return (Self) this;
     }
 

@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
@@ -35,8 +37,8 @@ import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
     // Interface fields
@@ -73,9 +75,22 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     }
 
     @Override
+    public String getLocalName() {
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.machine.tt.tesla.small.name";
+            case 9 -> "gt.blockmachines.machine.tt.tesla.large.name";
+            case 16 -> "gt.blockmachines.machine.tt.tesla.huge.name";
+            default -> null;
+        };
+        String tierName = super.getLocalName();
+        return nameKey == null ? tierName : translateToLocalFormatted(nameKey, tierName);
+    }
+
+    @Override
     public String[] getDescription() {
-        String[] jargon = new String[] { CommonValues.THETA_MOVEMENT,
-            translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
+        String[] jargon = new String[] { translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O
+                                                                                                       // machine of
+                                                                                                       // choice
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning
                                                                                                    // stoves for the
                                                                                                    // rich
@@ -267,17 +282,19 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0) {
+        if (sparkCount <= 0) {
             sparkCount = 20;
             if (!sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(
-                    new RendererMessage.RendererData(sparkList),
-                    new NetworkRegistry.TargetPoint(
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256));
+                if (ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
+                }
                 sparkList.clear();
             }
         }

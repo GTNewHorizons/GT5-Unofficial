@@ -674,7 +674,6 @@ public final class PlatinumSludgeRecipes {
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .circuit(2)
             .itemOutputs(ReRh.get(dust))
             .fluidInputs(RHFilterCakeSolution.getFluidOrGas(1_000))
             .duration(15 * SECONDS)
