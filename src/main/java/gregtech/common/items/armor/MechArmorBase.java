@@ -578,8 +578,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     // EnderIO Compat
     @Override
     public boolean isActive(EntityPlayer ep, ItemStack stack) {
-        ArmorContext context = load((EntityLivingBase) null, stack);
         if (ep == null || stack == null) return false;
+        ArmorContext context = load((EntityLivingBase) null, stack);
 
         boolean worn = false;
         for (int i = 0; i < 4; i++) {
@@ -605,58 +605,46 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public int canExtractInternal(ItemStack stack, int powerUse) {
-        ArmorContext context = load((EntityLivingBase) null, stack);
-        if (context.getArmorState().core != null && context.getArmorState().core.getTier() == 4) {
-            return -1;
-        }
-
-        if (context.getArmorState().charge >= powerUse) {
-            return powerUse;
-        }
-        return 0;
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return -1;
+        return state.canDrainEnergy(powerUse) ? powerUse : 0;
     }
 
     @Override
     public void extractInternal(ItemStack stack, int powerUse) {
         ArmorContext context = load((EntityLivingBase) null, stack);
-        boolean isAdvanced = context.hasBehavior(BehaviorName.TeleportationStaff);
-
-        if (!isAdvanced || (context.getArmorState().core == null || context.getArmorState().core.getTier() != 4)) {
-            if (context.drainEnergy(powerUse)) {
-                context.save();
-            }
+        if (context.drainEnergy(powerUse)) {
+            context.save();
         }
     }
 
     @Override
     public int getEnergyStored(ItemStack stack) {
-        ArmorContext context = load((EntityLivingBase) null, stack);
-        if (context.getArmorState().core != null && context.getArmorState().core.getTier() == 4) {
-            return Integer.MAX_VALUE;
-        }
-
-        return (int) context.getArmorState().charge;
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return Integer.MAX_VALUE;
+        return (int) Math.max(0, Math.min(state.charge, Integer.MAX_VALUE));
     }
 
     @Override
     public int getMaxEnergyStored(ItemStack stack) {
-        ArmorContext context = load((EntityLivingBase) null, stack);
-
-        if (context.getArmorState().core != null && context.getArmorState().core.getTier() == 4) {
-            return Integer.MAX_VALUE;
-        }
-
-        return context.getArmorState().core != null ? context.getArmorState().core.getChargeMax() : 0;
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return Integer.MAX_VALUE;
+        return state.core != null ? state.core.getChargeMax() : 0;
     }
 
     @Override
-    public int receiveEnergy(ItemStack itemStack, int maxReceive, boolean simulate) {
+    public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
         return 0;
     }
 
     @Override
-    public int extractEnergy(ItemStack itemStack, int maxExtract, boolean simulate) {
+    public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate) {
         return 0;
+    }
+
+    @Override
+    public boolean isTeleportStaff(EntityPlayer player, ItemStack stack) {
+        return load((EntityLivingBase) null, stack).hasBehavior(BehaviorName.TeleportationStaff);
     }
 
 }
