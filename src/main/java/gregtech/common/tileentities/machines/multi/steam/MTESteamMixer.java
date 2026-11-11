@@ -26,7 +26,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -67,6 +66,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> implements ISurvivalConstructable {
 
+    public static final int CASING_MIN = 25;
+
     public MTESteamMixer(String aName) {
         super(aName);
     }
@@ -100,11 +101,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     private static final int HORIZONTAL_OFFSET = 2;
     private static final int VERTICAL_OFFSET = 2;
     private static final int DEPTH_OFFSET = 0;
-    private static final int HORIZONTAL_OFFSET_OLD = 3;
-    private static final int VERTICAL_OFFSET_OLD = 4;
-    private static final int DEPTH_OFFSET_OLD = 0;
-
-    private int revision = 1;
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
@@ -259,33 +255,22 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (revision >= 1) {
-            this.buildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                hintsOnly,
-                HORIZONTAL_OFFSET,
-                VERTICAL_OFFSET,
-                DEPTH_OFFSET);
-        }
+        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        if (revision >= 1) {
-            return this.survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                HORIZONTAL_OFFSET,
-                VERTICAL_OFFSET,
-                DEPTH_OFFSET,
-                elementBudget,
-                env,
-                false,
-                true);
-        }
-        return -1;
+        return this.survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
@@ -295,8 +280,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         tierFrame = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!(revision >= 1
-            && checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors))) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         if (tierMachineCasing >= 1 && tierMachineCasing == tierGearBoxCasing
             && tierMachineCasing == tierPipeCasing
             && tierMachineCasing == tierFrame) {
@@ -306,8 +290,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
             return;
         }
-        int casingMin = revision >= 1 ? 25 : 90;
-        checkCasingMin(errors, tCountCasing, casingMin);
+        checkCasingMin(errors, tCountCasing, CASING_MIN);
         checkHasSteamInput(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
@@ -419,7 +402,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("tierMachineCasing", tierMachineCasing);
-        aNBT.setInteger("revision", revision);
     }
 
     @Override
@@ -427,7 +409,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
-        revision = aNBT.hasKey("revision", NBT.TAG_INT) ? aNBT.getInteger("revision") : 0;
     }
 
     @SideOnly(Side.CLIENT)
