@@ -1,5 +1,6 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_IV;
@@ -37,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -108,6 +110,12 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "BO ", "OP ", "  P", 'O',
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1L), 'B',
                 ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
+
+        // GT glass tubes carry no ItemData, so declare the tube part's glass composition
+        // explicitly (3 tubes at 1 ingot of molten glass each). It must be registered before
+        // the recipes below so the motor and pump inherit the glass through their own recipes.
+        GTOreDictUnificator
+            .addItemData(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), new ItemData(Materials.Glass, M * 3));
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), // tube
