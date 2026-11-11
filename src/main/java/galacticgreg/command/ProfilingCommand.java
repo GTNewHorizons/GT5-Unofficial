@@ -10,8 +10,7 @@ import gregtech.commands.GTBaseCommand;
 
 /**
  * In-game command to get the average oregen time(s) for the active dimensions Doesn't need to be changed when adding
- * new
- * planets/mods
+ * new planets/mods
  */
 public class ProfilingCommand extends GTBaseCommand {
 

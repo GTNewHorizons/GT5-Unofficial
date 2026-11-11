@@ -20,8 +20,7 @@ import gregtech.commands.GTBaseCommand;
 
 /**
  * This command allows exporting any structure that has been stored inside a spatial storage cell to an XML file that
- * can
- * later be enabled for spawning in dimensions.
+ * can later be enabled for spawning in dimensions.
  */
 public class AEStorageCommand extends GTBaseCommand {
 
