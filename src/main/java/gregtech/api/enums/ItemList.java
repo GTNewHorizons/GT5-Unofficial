@@ -701,7 +701,7 @@ public enum ItemList implements IItemContainer {
 
     Spray_Color_Remover_Empty,
 
-    // region begin unused
+    // region unused
     Armor_Cheat,
     Armor_Cloaking,
     Armor_Lamp,
