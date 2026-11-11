@@ -25,7 +25,6 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.WirelessTeamData;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
@@ -98,8 +97,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
     }
 

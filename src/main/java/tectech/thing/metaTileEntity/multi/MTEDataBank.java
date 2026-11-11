@@ -21,6 +21,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -114,40 +116,24 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
-                                                                                              // Bank, DB
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
-                                                                                           // the Data Bank
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
-                                                                                           // Assembling Lines
-            // with more Data Sticks
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines
-                                                                                           // access to
-                                                                                           // the same Data
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
-                                                                                           // toggle
-                                                                                           // wireless mode
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type"))
+            .addMarkdown(new ResourceLocation("gregtech", "data-bank"))
             .addSupportAny()
-            .beginStructureBlock(3, 5, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("18", "Computer Heat Vent", false)
-            .addCasing("3-16", "Computer Casing", false)
-            .addCasing("0-6", "High Power Casing", false)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                "Any computer casing",
-                2)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
-                "Any computer casing",
-                2)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .beginStructureBlock(5, 3, 3, false)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("18", translateToLocal("gt.blockcasingsTT.2.name"), false)
+            .addCasing("3-16", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-6", translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -190,6 +176,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             mEfficiencyIncrease = 10000;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");
         }
+        this.lEUt = this.mEUt;
         return SimpleCheckRecipeResult.ofFailure("no_data");
     }
 
@@ -387,28 +374,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick(MTEHatchDataAccess.class) {
+        DataStick("GT5U.MBTT.DataAccessHatch", MTEHatchDataAccess.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        OutboundConnector(MTEHatchDataItemsOutput.class) {
+        OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eStacksDataOutputs.size();
             }
         },
-        InboundConnector(MTEHatchDataItemsInput.class) {
+        InboundConnector("GT5U.MBTT.AssemblyLineReception", MTEHatchDataItemsInput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        WirelessOutboundConnector(MTEHatchWirelessDataItemsOutput.class) {
+        WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
@@ -416,10 +403,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
         };
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        DataBankHatches(Class<? extends IMetaTileEntity>... mteClasses) {
+        DataBankHatches(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         }
 
@@ -431,6 +420,16 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         @Override
         public IGTHatchAdder<? super MTEDataBank> adder() {
             return MTEDataBank::addDataBankHatchToMachineList;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

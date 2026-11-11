@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,7 +30,6 @@ import gregtech.common.misc.WirelessNetworkManager;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
-import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
@@ -43,9 +43,8 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_EM,
-                GTUtility.translate("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
-                GTUtility.translate("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
