@@ -16,6 +16,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
 
+// powerpass is now enabled by default, remove after 2.10
+@Deprecated
 public final class ItemPowerPassUpgradeCover extends Item {
 
     public static ItemPowerPassUpgradeCover INSTANCE;
@@ -36,6 +38,7 @@ public final class ItemPowerPassUpgradeCover extends Item {
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.powerpassupgradecover.desc.2")); // Chain them up
                                                                                                        // like Christmas
                                                                                                        // lights!
+        aList.add(EnumChatFormatting.RED + translateToLocal("item.tm.powerpassupgradecover.desc.3"));
     }
 
     public static void run() {

@@ -10,6 +10,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+// powerpass is now enabled by default, remove after 2.10
+@Deprecated
 public class CoverPowerPassUpgrade extends Cover {
 
     public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
