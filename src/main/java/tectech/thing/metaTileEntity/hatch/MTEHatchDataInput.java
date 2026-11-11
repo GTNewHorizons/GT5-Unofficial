@@ -102,16 +102,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
-    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
-        if (delDelay) {
-            delDelay = false;
-        } else {
-            setContents(null);
-        }
-        return CheckState.UNKNOWN;
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
