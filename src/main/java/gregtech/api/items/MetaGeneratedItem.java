@@ -147,15 +147,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 boolean tUseOreDict = true;
                 if (tRandomData instanceof IFoodStat) {
                     setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
-
                     if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
-
-                        FoodRecipeLoader.GT_FOOD_QUEUE
-                            .add(new FoodRecipeLoader.GTFoodStatEntry(rStack.copy(), (IFoodStat) tRandomData));
+                        FoodRecipeLoader.queueFood(rStack, (IFoodStat) tRandomData);
                     }
-
                     tUseOreDict = false;
                 }
+
                 if (tRandomData instanceof IItemBehaviour) {
                     // The cast below from is not safe. If you know how to make it safe, please do.
                     // noinspection unchecked

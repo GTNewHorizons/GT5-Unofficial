@@ -335,7 +335,6 @@ public class BenderRecipes implements Runnable {
                 .addTo(benderRecipes);
         }
 
-
         // From ProcessingFood - foodDough (remove furnace smelting)
         for (net.minecraft.item.ItemStack stack : OreDictionary.getOres("foodDough")) {
             GTModHandler.removeFurnaceSmelting(stack);

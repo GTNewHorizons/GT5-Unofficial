@@ -20,14 +20,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IFoodStat;
-import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
 public class FoodRecipeLoader implements Runnable {
 
-    public static final List<GTFoodStatEntry> GT_FOOD_QUEUE = new ArrayList<>();
+    private static final List<GTFoodStatEntry> GT_FOOD_QUEUE = new ArrayList<>();
+    private static boolean hasRun = false;
 
     public static class GTFoodStatEntry {
 
@@ -40,20 +39,26 @@ public class FoodRecipeLoader implements Runnable {
         }
     }
 
+    public static void queueFood(ItemStack foodStack, IFoodStat foodStat) {
+        if (hasRun) {
+            GT_FML_LOGGER.warn(
+                "Food item {} was registered after FoodRecipeLoader ran, no canning recipe will be added",
+                foodStack.getDisplayName());
+            return;
+        }
+        GT_FOOD_QUEUE.add(new GTFoodStatEntry(foodStack.copy(), foodStat));
+    }
+
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Adding Food Recipes to the Automatic Canning Machine.");
 
-        final Set<Item> SpoiledFood = new HashSet<>(
-            Arrays.asList(
-                Items.rotten_flesh,
-                Items.spider_eye,
-                Items.chicken,
-                Items.porkchop,
-                Items.beef,
-                Items.fermented_spider_eye,
-                Items.poisonous_potato));
+        addSpecialRecipes();
+        addQueuedGTFoodRecipes();
+        addRegistryFoodRecipes();
+    }
 
+    private void addSpecialRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.FoodCanEmpty.get(12L))
             .itemOutputs(ItemList.FoodCanFilled.get(12L))
@@ -67,68 +72,61 @@ public class FoodRecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(1)
             .addTo(cannerRecipes);
+    }
 
+    private void addQueuedGTFoodRecipes() {
         for (GTFoodStatEntry entry : GT_FOOD_QUEUE) {
-            Item metaItemInstance = entry.stack.getItem();
+            MetaBaseItem metaItem = (MetaBaseItem) entry.stack.getItem();
+            int foodValue = entry.stat.getFoodLevel(metaItem, entry.stack, null);
+            if (foodValue <= 0) continue;
 
-            int tFoodValue = entry.stat.getFoodLevel((MetaBaseItem) metaItemInstance, entry.stack, null);
+            ItemStack filledCans = entry.stat.isRotten(metaItem, entry.stack, null)
+                ? ItemList.FoodCanSpoiled.get(foodValue)
+                : ItemList.FoodCanFilled.get(foodValue);
 
-            if (tFoodValue > 0) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(entry.stack, ItemList.FoodCanEmpty.get(tFoodValue))
-                    .itemOutputs(
-                        entry.stat.isRotten((MetaBaseItem) metaItemInstance, entry.stack, null)
-                            ? ItemList.FoodCanSpoiled.get(tFoodValue)
-                            : ItemList.FoodCanFilled.get(tFoodValue))
-                    .duration(tFoodValue * 5 * SECONDS)
-                    .eut(1)
-                    .addTo(cannerRecipes);
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(entry.stack, ItemList.FoodCanEmpty.get(foodValue))
+                .itemOutputs(filledCans)
+                .duration(foodValue * 5 * SECONDS)
+                .eut(1)
+                .addTo(cannerRecipes);
         }
 
         GT_FOOD_QUEUE.clear();
+        hasRun = true;
+    }
 
-        // Adding non gt food
-        for (Object o : Item.itemRegistry) {
+    private void addRegistryFoodRecipes() {
+        final Set<Item> spoiledFoods = new HashSet<>(
+            Arrays.asList(
+                Items.rotten_flesh,
+                Items.spider_eye,
+                Items.chicken,
+                Items.porkchop,
+                Items.beef,
+                Items.fermented_spider_eye,
+                Items.poisonous_potato));
 
-            if (!(o instanceof Item)) continue;
-            Item tItem = (Item) o;
+        for (Object registryEntry : Item.itemRegistry) {
+            if (!(registryEntry instanceof ItemFood foodItem)) continue;
+            if (foodItem.getUnlocalizedName() == null) continue;
 
-            if (tItem.getUnlocalizedName() == null) continue;
+            ItemStack sampleStack = new ItemStack(foodItem, 1, 0);
+            int foodValue = foodItem.func_150905_g(sampleStack);
+            if (foodValue <= 0) continue;
 
-            if (tItem instanceof GTGenericItem) continue;
+            ItemStack filledCans = spoiledFoods.contains(foodItem) ? ItemList.FoodCanSpoiled.get(foodValue)
+                : ItemList.FoodCanFilled.get(foodValue);
+            ItemStack containerItem = GTUtility.getContainerItem(sampleStack, true);
+            ItemStack[] outputs = containerItem == null ? new ItemStack[] { filledCans }
+                : new ItemStack[] { filledCans, containerItem };
 
-            if (((tItem instanceof ItemFood) && (tItem != ItemList.FoodCanFilled.getItem())
-                && (tItem != ItemList.FoodCanSpoiled.getItem()))) {
-
-                int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
-
-                if (tFoodValue > 0) {
-                    GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.FoodCanEmpty.get(tFoodValue));
-
-                    if (SpoiledFood.contains(tItem)) {
-                        if (GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
-                            recipeBuilder.itemOutputs(ItemList.FoodCanSpoiled.get(tFoodValue));
-                        } else {
-                            recipeBuilder.itemOutputs(
-                                ItemList.FoodCanSpoiled.get(tFoodValue),
-                                GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true));
-                        }
-                    } else {
-                        if (GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
-                            recipeBuilder.itemOutputs(ItemList.FoodCanFilled.get(tFoodValue));
-                        } else {
-                            recipeBuilder.itemOutputs(
-                                ItemList.FoodCanFilled.get(tFoodValue),
-                                GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true));
-                        }
-                    }
-                    recipeBuilder.duration(tFoodValue * 5 * SECONDS)
-                        .eut(1)
-                        .addTo(cannerRecipes);
-                }
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(foodItem, 1, WILDCARD), ItemList.FoodCanEmpty.get(foodValue))
+                .itemOutputs(outputs)
+                .duration(foodValue * 5 * SECONDS)
+                .eut(1)
+                .addTo(cannerRecipes);
         }
     }
 }
