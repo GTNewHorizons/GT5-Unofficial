@@ -80,7 +80,7 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, ABS")
             .addInfo("Allows Complex alloys to be created")
-            .addInfo("Recipe tier is limited to hatch tier")
+            .addInfo("Recipe Tier is limited to Hatch Tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
