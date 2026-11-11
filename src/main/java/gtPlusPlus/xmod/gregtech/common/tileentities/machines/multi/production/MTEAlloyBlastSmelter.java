@@ -14,7 +14,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,8 +50,13 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
     private int casingAmount;
-    private static final String[][] structure = { { "AAA", "AAA", "AAA" }, { "BBB", "B-B", "BBB" },
-        { "BBB", "B-B", "BBB" }, { "A~A", "AAA", "AAA" } };
+    // spotless:off
+    private static final String[][] structure = {
+        { "AAA", "AAA", "AAA" },
+        { "BBB", "B-B", "BBB" },
+        { "BBB", "B-B", "BBB" },
+        { "A~A", "AAA", "AAA" } };
+    // spotless:on
     private static IStructureDefinition<MTEAlloyBlastSmelter> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -74,7 +78,7 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, ABS")
             .addInfo("Allows Complex alloys to be created")
-            .addInfo("Recipe tier is limited to hatch tier")
+            .addInfo("Recipe Tier is limited to Hatch Tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
@@ -191,11 +195,6 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 
