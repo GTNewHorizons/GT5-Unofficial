@@ -83,7 +83,9 @@ public class CoverBaseGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      */
     protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
-        ModularPanel panel = new ModularPanel(getGuiId() + "." + data.getSide()) { //closeifOpen cannot be overriden as it is called upon machine ui closing
+        ModularPanel panel = new ModularPanel(getGuiId() + "." + data.getSide()) { // closeifOpen cannot be overriden as
+                                                                                   // it is called upon machine ui
+                                                                                   // closing
 
             @Override
             public void onOpen(ModularScreen screen) {
