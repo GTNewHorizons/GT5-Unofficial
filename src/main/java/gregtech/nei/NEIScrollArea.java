@@ -55,6 +55,20 @@ public class NEIScrollArea {
         return this;
     }
 
+    /** Makes the item outputs of the recipe scroll if there are more than the slots of the grid can show. */
+    public static void scrollItemOutputs(GTNEIDefaultHandler.CachedDefaultRecipe recipe, int x, int y, int columns,
+        int rows) {
+        List<PositionedStack> itemOutputs = new ArrayList<>();
+        for (PositionedStack stack : recipe.mOutputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && !fixed.isFluid()) {
+                itemOutputs.add(stack);
+            }
+        }
+        if (itemOutputs.size() > columns * rows) {
+            recipe.addScrollArea(new NEIScrollArea(x, y, columns, rows).setStacks(itemOutputs));
+        }
+    }
+
     /** Whether the stack is not hidden by a scroll area. */
     public static boolean isShown(PositionedStack stack) {
         return stack.rely != HIDDEN_POSITION;
