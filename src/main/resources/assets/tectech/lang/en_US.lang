@@ -1918,7 +1918,6 @@ EOH.Recipe.EU.Out=EU Output: %s EU
 EOH.Recipe.EU.In=EU Input: %s EU
 EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
 EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
-EOH.Recipe.Warning=§4§lWarning§r: Not all items displayed.
 
 gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
 gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
