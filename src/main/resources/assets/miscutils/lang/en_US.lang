@@ -3417,7 +3417,6 @@ item.LiquidHydrogen.name=Liquid Hydrogen Cell [LOH]
 # Added 24/8/19
 # Debug Labels
 tile.blockDoorAlloy.name=Reinforced Door
-tile.blockInhibitorObelisk.name=Inhibitor Obelisk
 tile.Battlesign.name=Battlesign
 tile.blockMagicBox.name=Magic Box
 tile.blockManaPod.name=Mana Pod Stem
