@@ -790,7 +790,6 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
         .maxIO(2, 6, 1, 1)
-        .frontend(CentrifugeFrontend::new)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return null;
@@ -819,6 +818,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
+        .frontend(CentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
