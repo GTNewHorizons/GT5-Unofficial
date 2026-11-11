@@ -331,6 +331,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (compChanged) {
             CheckRecipeResult recalculationFailure = recalculateComputation(overClockRatio, overVoltageRatio);
             if (recalculationFailure != null) {
+                cachedComputation = 0;
+                cachedSources = 0;
                 return recalculationFailure;
             }
         } else {
@@ -379,10 +381,12 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Nullable
     private CheckRecipeResult recalculateComputation(double overClockRatio, double overVoltageRatio) {
         compChanged = false;
-        QuantumDataPacket packet = new QuantumDataPacket(0L).unifyTraceWith(getPos());
-        if (packet == null) {
+        QuantumDataPacket packet = pendingPacket;
+        if (packet != null && pendingPacket.contains(getPos())) {
             compChanged = true;
             return SimpleCheckRecipeResult.ofFailure("no_routing");
+        } else {
+            packet = new QuantumDataPacket(0L).unifyTraceWith(getPos());
         }
         long computation = 0;
         short sources = 0;
@@ -430,8 +434,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         }
 
         QuantumDataPacket pack = new QuantumDataPacket(eAvailableData);
-        if (pendingPacket != null) {
-            pack = pack.unifyPacketWith(pendingPacket);
+        if (cachedPacket != null) {
+            pack = pack.unifyPacketWith(cachedPacket);
             if (pack == null) {
                 return;
             }

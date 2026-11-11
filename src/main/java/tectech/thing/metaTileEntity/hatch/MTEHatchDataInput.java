@@ -90,6 +90,7 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
         if (qIn == null) {
             computation = 0;
+            q = new QuantumDataPacket(0L).unifyTraceWith(q);
         } else {
             if (qIn.getContent() > 0) {
                 computation = qIn.getContent();
@@ -97,6 +98,7 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
             } else {
                 computation = 0;
             }
+            q = qIn;
         }
         if (computation != old) notifyWatchers();
     }
