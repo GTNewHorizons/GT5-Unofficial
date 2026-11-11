@@ -162,6 +162,7 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContents(null);
                 case MTEHatchDataItemsInput dataItemsInput -> dataItemsInput.setContents(null);
+                case null -> {}
                 default -> {}
             }
             result = CheckState.DISCONNECTED;

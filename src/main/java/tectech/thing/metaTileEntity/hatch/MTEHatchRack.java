@@ -182,7 +182,7 @@ public class MTEHatchRack extends MTEHatch {
 
     private int getComputationPower(float overclock, float overvolt, boolean tickingComponents, boolean heatOnly) {
         float computation = 0, heat = 0;
-        if (overclock != this.overClock && overvolt != this.overVolt) {
+        if (overclock != this.overClock && overvolt != this.overVolt || Float.isNaN(calc) || Float.isNaN(heatFactor)) {
             calc = (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt));
             heatFactor = overclock * overvolt * overvolt;
         }
