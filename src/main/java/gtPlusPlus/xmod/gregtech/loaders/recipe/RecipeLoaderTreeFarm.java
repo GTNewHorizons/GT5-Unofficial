@@ -92,6 +92,10 @@ public class RecipeLoaderTreeFarm {
             new ItemStack(Blocks.leaves2, 1, 1),
             new ItemStack(Items.apple, 1, 0));
 
+        if (!Mods.EtFuturumRequiem.isModLoaded()) {
+            return;
+        }
+
         registerTreeProducts( // Brown Mushroom
             new ItemStack(Blocks.brown_mushroom, 1, 0),
             new ItemStack(Blocks.brown_mushroom_block, 1, 0),
