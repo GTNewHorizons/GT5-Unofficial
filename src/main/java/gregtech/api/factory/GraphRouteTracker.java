@@ -21,6 +21,7 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
     private final TRouteInfo zero;
 
     private boolean networkChanged = false;
+    private int version;
 
     public GraphRouteTracker(Class<TNotable> notableType, TRouteInfo zero) {
         this.notableType = notableType;
@@ -29,6 +30,12 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
 
     public void invalidateRoutes() {
         networkChanged = true;
+        version++;
+    }
+
+    /// Changes every time the routes are invalidated.
+    public int getVersion() {
+        return version;
     }
 
     public void clear() {
