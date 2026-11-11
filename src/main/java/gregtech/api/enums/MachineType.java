@@ -3,6 +3,8 @@ package gregtech.api.enums;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+
 public enum MachineType {
 
     ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "gt.recipe.alloysmelter"),
@@ -130,7 +132,7 @@ public enum MachineType {
     public String[] tooltipDescription() {
         return new String[] { description(),
             StatCollector.translateToLocal(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
+                + TooltipHelper.MACHINE_TYPE_COLOR
                 + type()
                 + EnumChatFormatting.RESET };
     }

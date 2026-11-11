@@ -1,3 +1,2 @@
-Refines {gold:Fluorides} and {gold:Uranium} into nuclear fuel for the {white:LFTR}
-{white:LFTR Fuel 2} and {white:LFTR Fuel 3} have alternative, much more efficient recipes
-{yellow:Recipes in this multi take a very long time}
+Refines {color_name:Fluorides} and {color_name:Uranium} into {color_key:Molten Salts} for the {color_name:LFTR}
+{color_key:LFTR Fuel 2} and {color_key:LFTR Fuel 3} have alternative, much more efficient recipes

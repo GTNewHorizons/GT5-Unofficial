@@ -2,10 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
@@ -83,15 +80,5 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
             };
         }
         return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final IBlockAccess world, final int x, final int y, final int z, final int side) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta != 0) {
-            return getIcon(side, meta);
-        }
-        return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
     }
 }

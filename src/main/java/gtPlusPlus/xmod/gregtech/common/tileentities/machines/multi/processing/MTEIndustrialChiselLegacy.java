@@ -343,8 +343,8 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
                 return GTStreamUtil.ofNullable(getRecipe());
             }
         }.noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
+            .setSpeedBonus(1D / 3D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

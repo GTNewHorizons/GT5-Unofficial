@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import com.cleanroommc.modularui.integration.recipeviewer.RecipeViewerIngredientProvider;
 import com.cleanroommc.modularui.widget.Widget;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 
 public class NanochipCCDisplayWidget extends Widget<NanochipCCDisplayWidget> implements RecipeViewerIngredientProvider {
@@ -22,7 +23,13 @@ public class NanochipCCDisplayWidget extends Widget<NanochipCCDisplayWidget> imp
     @Override
     public @Nullable ItemStack getStackForRecipeViewer() {
         ItemStack realStack = CircuitComponent.tryGetRealStack(item);
-        return realStack == null ? item : realStack;
+        if (realStack == null) return item;
+
+        String displayName = GTUtility.getStackCustomName(item);
+        if (displayName == null) return realStack;
+        ItemStack retStack = realStack.copy();
+        retStack.setStackDisplayName(displayName);
+        return retStack;
     }
 
 }

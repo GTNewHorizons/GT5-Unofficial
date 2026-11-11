@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -173,9 +174,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
             .addCasing("0-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addMaintenanceHatch("1", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2)
             .toolTipFinisher();
         // spotless:on
         return tt;

@@ -148,27 +148,4 @@ public class ItemLabParts extends SimpleSubItemClass {
             return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
         return super.getUnlocalizedName(itemStack);
     }
-
-    private static String getTooltip(int meta, ItemStack stack) {
-        return StatCollector
-            .translateToLocalFormatted("tooltip.labparts." + meta + ".name", getLocalizedBioName(stack));
-    }
-
-    private static String getLocalizedBioName(ItemStack stack) {
-        final String name = stack.getTagCompound()
-            .getString("Name");
-        if (name == null || name.isEmpty()) {
-            return "";
-        }
-        final String key = "bw.bioname." + name.toLowerCase()
-            .replace(" ", "_");
-        final String keyLatin = key + ".latin";
-        if (StatCollector.canTranslate(keyLatin)) {
-            return StatCollector.translateToLocalFormatted(
-                "bw.bioname.latin.format",
-                StatCollector.translateToLocal(key),
-                StatCollector.translateToLocal(keyLatin));
-        }
-        return StatCollector.translateToLocal(key);
-    }
 }

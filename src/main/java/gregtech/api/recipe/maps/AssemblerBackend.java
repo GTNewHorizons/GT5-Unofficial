@@ -28,6 +28,7 @@ public class AssemblerBackend extends RecipeMapBackend {
                 recipe = recipe.copy();
                 recipe.mCanBeBuffered = false;
                 recipe.mOutputs[0].setTagCompound(item.getTagCompound());
+                break;
             }
         }
         return recipe;

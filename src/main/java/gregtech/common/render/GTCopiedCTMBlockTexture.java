@@ -41,9 +41,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     public void renderYNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
-        ctx.reset().setupColor(ForgeDirection.DOWN, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.setupColor(ForgeDirection.DOWN, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -52,9 +53,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     public void renderYPos(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
-        ctx.reset().setupColor(ForgeDirection.UP, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.setupColor(ForgeDirection.UP, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -63,10 +65,11 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     public void renderZNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
         renderBlocks.field_152631_f = true;
-        ctx.reset().setupColor(ForgeDirection.NORTH, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.setupColor(ForgeDirection.NORTH, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;
@@ -76,9 +79,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     public void renderZPos(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
-        ctx.reset().setupColor(ForgeDirection.SOUTH, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.setupColor(ForgeDirection.SOUTH, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -87,9 +91,10 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
     public void renderXNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
-        ctx.reset().setupColor(ForgeDirection.WEST, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.setupColor(ForgeDirection.WEST, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -100,8 +105,9 @@ class GTCopiedCTMBlockTexture extends GTTextureBase implements IBlockContainer {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx.getX(), ctx.getY(), ctx.getZ(), renderBlocks);
         renderBlocks.field_152631_f = true;
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
-        ctx.reset().setupColor(ForgeDirection.EAST, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 1.0f, 0.0f, 0.0f);
+        ctx.setupColor(ForgeDirection.EAST, mBlock.colorMultiplier(getBlockAccess(renderBlocks), ctx.getX(), ctx.getY(), ctx.getZ()));
         renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;

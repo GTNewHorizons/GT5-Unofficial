@@ -38,7 +38,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -56,10 +55,10 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
-    public static final List<ItemStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
     private FluidStack[] convertToFluid(ItemStack[] items) {
@@ -670,18 +669,17 @@ public class Godforge implements Runnable {
 
         // For NEI
         for (FluidStack fluid : exoticModulePlasmaFluidMap.keySet()) {
-            fluid.amount = getRandomIntInRange(1, 64);
-            quarkGluonFluidItemsForNEI.add(GTUtility.getFluidDisplayStack(fluid, true));
+            FluidStack displayFluid = fluid.copy();
+            displayFluid.amount = getRandomIntInRange(1, 64);
+            quarkGluonFluidItemsForNEI.add(displayFluid);
         }
         for (ItemStack item : exoticModulePlasmaItemMap.keySet()) {
             item.stackSize = getRandomIntInRange(1, 7);
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI
-                .add(GTUtility.getFluidDisplayStack(Materials.Time.getMolten(getRandomIntInRange(1, 50)), true));
-            magmatterSpaceFluidItemsForNEI
-                .add(GTUtility.getFluidDisplayStack(Materials.Space.getMolten(getRandomIntInRange(51, 100)), true));
+            magmatterTimeFluidItemsForNEI.add(Materials.Time.getMolten(getRandomIntInRange(1, 50)));
+            magmatterSpaceFluidItemsForNEI.add(Materials.Space.getMolten(getRandomIntInRange(51, 100)));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 

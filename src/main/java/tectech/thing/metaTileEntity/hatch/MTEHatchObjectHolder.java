@@ -27,7 +27,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -44,7 +43,7 @@ public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
             aNameRegional,
             aTier,
             1,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
     }
 

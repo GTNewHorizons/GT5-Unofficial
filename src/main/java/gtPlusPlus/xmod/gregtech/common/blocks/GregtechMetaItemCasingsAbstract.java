@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -25,6 +26,12 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
     @Override
     public String getUnlocalizedName(final ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
+    }
+
+    @Override
+    public String getItemStackDisplayName(final ItemStack aStack) {
+        if (aStack.getItemDamage() == WILDCARD) return translateToLocal("gt.block.any_sub_block");
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

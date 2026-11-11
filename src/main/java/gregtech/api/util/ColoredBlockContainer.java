@@ -37,6 +37,7 @@ import codechicken.multipart.TileMultipart;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
+import mrtjp.projectred.transmission.IBundledCablePart;
 import mrtjp.projectred.transmission.IInsulatedRedwirePart;
 
 /**
@@ -132,9 +133,10 @@ public abstract class ColoredBlockContainer {
                         final List<TMultiPart> parts = multipart.jPartList();
                         if (index >= 0 && index < parts.size()) {
                             final TMultiPart part = parts.get(index);
-                            if (part instanceof IInsulatedRedwirePart wire && part instanceof TSlottedPart slotted) {
-                                return new ProjectRedInsulatedWireContainer(
-                                    wire,
+                            if ((part instanceof IInsulatedRedwirePart || part instanceof IBundledCablePart)
+                                && part instanceof TSlottedPart slotted) {
+                                return new ProjectRedWireContainer(
+                                    part,
                                     Integer.numberOfTrailingZeros(slotted.getSlotMask()));
                             }
                         }
@@ -356,12 +358,12 @@ public abstract class ColoredBlockContainer {
         }
     }
 
-    private static class ProjectRedInsulatedWireContainer extends ColoredBlockContainer {
+    private static class ProjectRedWireContainer extends ColoredBlockContainer {
 
-        private final IInsulatedRedwirePart wire;
+        private final TMultiPart wire;
         private final int slot;
 
-        private ProjectRedInsulatedWireContainer(IInsulatedRedwirePart wire, int slot) {
+        private ProjectRedWireContainer(TMultiPart wire, int slot) {
             this.wire = wire;
             this.slot = slot;
         }
@@ -370,26 +372,35 @@ public abstract class ColoredBlockContainer {
         public ColoredBlockContainer getChainInstance(EntityPlayer player, int x, int y, int z, ForgeDirection side) {
             final TileEntity tileEntity = player.getEntityWorld()
                 .getTileEntity(x, y, z);
-            if (tileEntity instanceof TileMultipart multipart
-                && multipart.partMap(slot) instanceof IInsulatedRedwirePart nextWire) {
-                return new ProjectRedInsulatedWireContainer(nextWire, slot);
+            if (tileEntity instanceof TileMultipart multipart) {
+                final TMultiPart nextWire = multipart.partMap(slot);
+                if (nextWire != null && wire.getType()
+                    .equals(nextWire.getType())) {
+                    return new ProjectRedWireContainer(nextWire, slot);
+                }
             }
             return NULL_INSTANCE;
         }
 
         @Override
         public boolean setColor(int newColor) {
-            return wire.recolour(Dyes.transformDyeIndex(newColor));
+            final int color = Dyes.transformDyeIndex(newColor);
+            if (wire instanceof IInsulatedRedwirePart insulated) {
+                return insulated.recolour(color);
+            }
+            return ((IBundledCablePart) wire).recolour(color);
         }
 
         @Override
         public boolean removeColor() {
-            return false;
+            return wire instanceof IBundledCablePart bundled && bundled.recolour(-1);
         }
 
         @Override
         public Optional<Integer> getColor() {
-            return Optional.of(Dyes.transformDyeIndex(wire.getInsulatedColour()));
+            final int color = wire instanceof IInsulatedRedwirePart insulated ? insulated.getInsulatedColour()
+                : ((IBundledCablePart) wire).getBundledColour();
+            return color == -1 ? Optional.empty() : Optional.of(Dyes.transformDyeIndex(color));
         }
     }
 
