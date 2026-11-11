@@ -1,10 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
@@ -13,6 +10,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,6 +30,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -46,13 +47,13 @@ import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -69,9 +70,11 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse> implements
     ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor, ICasingTextureProvider {
 
@@ -206,37 +209,29 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Decay Warehouse")
-            .addInfo("Stores a single type of radioactive isotope and allows it to decay over time")
-            .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster)")
-            .addInfo("Isotopes decay regardless of whether the warehouse is on or powered")
-            .addSeparator()
-            .addInfo(
-                "The warehouse's capacity equals the super chest's capacity divided by " + BLUE
-                    + CAPACITY_DIVISOR
-                    + GRAY
-                    + ".")
-            .addInfo("The warehouse will pull in up to " + BLUE + "N / " + EU_PER_IO + GRAY + " items per second,")
-            .addInfo("where " + BLUE + "N" + GRAY + " is the warehouse's EU input (standard energy hatch rules)")
-            .addSeparator()
-            .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
-            .addInfo("Right click the controller with a plunger to empty it")
-            .addInfo(
-                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.decay_warehouse"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "decay-warehouse"),
+                ImmutableMap.<String, Object>builder()
+                    .put("capacity_divisor", formatNumber(CAPACITY_DIVISOR))
+                    .put("eu_per_io", formatNumber(EU_PER_IO))
+                    .build())
             .beginStructureBlock(5, 3, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("48-52", "Radiation Proof Machine Casing", false)
-            .addCasing("17", "Water", false)
-            .addCasing("1", "Super/Quantum Chest", true)
-            .addEnergyHatch("1", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1", "Any casing", 1)
-            .addOutputBus("1", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("48-52", Casings.RadiationProofMachineCasing.getLocalizedName(), false)
+            .addCasing("17", StatCollector.translateToLocal("tile.water.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("GT5U.MBTT.SuperChest"), true)
+            .addEnergyHatch("1", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputBus("1", anyCasingText(), 1)
+            .addOutputBus("1", anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
-            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_water_place_manually"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_no_isotopes_in_chest"))
             .addSubChannel(GTStructureChannels.SUPER_CHEST)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -282,12 +277,6 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
     }
 
     @Override
@@ -405,6 +394,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         }
 
         return super.onRightclick(base, player, side, aX, aY, aZ);
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     private int getWarehouseCapacity() {
@@ -628,5 +625,12 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         info.add("Capacity: " + BLUE + getWarehouseCapacity());
 
         return info.toArray(new String[0]);
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return super.getGui().withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
     }
 }

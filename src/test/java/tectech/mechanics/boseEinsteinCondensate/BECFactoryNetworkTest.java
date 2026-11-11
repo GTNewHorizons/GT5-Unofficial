@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.factory.RoutedNode;
+import gregtech.api.factory.routing.VisitorResult;
 import it.unimi.dsi.fastutil.Pair;
 
 class BECFactoryNetworkTest {
@@ -53,6 +56,20 @@ class BECFactoryNetworkTest {
             return routedNeighbors.stream()
                 .map(e -> new RoutedNode<NotableBECFactoryElement, BECRouteInfo>(e, new BECRouteInfo(1)))
                 .toList();
+        }
+    }
+
+    static class StubFilter extends StubGenerator {
+
+        private final Fluid allowed;
+
+        StubFilter(Fluid allowed) {
+            this.allowed = allowed;
+        }
+
+        @Override
+        public boolean allowsCondensateThrough(Fluid condensate) {
+            return condensate == allowed;
         }
     }
 
@@ -364,6 +381,50 @@ class BECFactoryNetworkTest {
         assertDoesNotThrow(() -> network.injectCondensate(generator, fluidStack));
         // No BECInventory reachable → inventories empty → early return → stack unchanged
         assertEquals(100L, fluidStack.getStackSize(), "no storage in cycle → condensate should be unchanged");
+    }
+
+    @Test
+    void routeTraversalVisitsEachNodeOnceAcrossConvergingPaths() {
+        StubGenerator left = new StubGenerator();
+        StubGenerator right = new StubGenerator();
+        generator.routedNeighbors = List.of(left, right);
+        left.routedNeighbors = List.of(storage);
+        right.routedNeighbors = List.of(storage);
+        network.addElement(generator);
+        network.addElement(left);
+        network.addElement(right);
+        network.addElement(storage);
+
+        Set<NotableBECFactoryElement> visited = new HashSet<>();
+        network.routeTracker.iterateNetworkBFS(generator, step -> {
+            assertTrue(visited.add(step.node()), "a converging route must not visit the same node twice");
+            return VisitorResult.Continue;
+        });
+
+        assertEquals(4, visited.size());
+    }
+
+    @Test
+    void differentFiltersOnConvergingPathsRemainReachableFromDownstreamView() {
+        Fluid fluidA = mock(Fluid.class);
+        Fluid fluidB = mock(Fluid.class);
+        StubGenerator downstreamViewer = new StubGenerator();
+        StubFilter pathA = new StubFilter(fluidA);
+        StubFilter pathB = new StubFilter(fluidB);
+        downstreamViewer.routedNeighbors = List.of(pathA, pathB);
+        pathA.routedNeighbors = List.of(storage);
+        pathB.routedNeighbors = List.of(storage);
+        storage.contents.put(fluidA, 300L);
+        storage.contents.put(fluidB, 500L);
+        network.addElement(downstreamViewer);
+        network.addElement(pathA);
+        network.addElement(pathB);
+        network.addElement(storage);
+
+        CondensateList result = network.getStoredCondensate(downstreamViewer);
+
+        assertEquals(300L, result.getLong(fluidA));
+        assertEquals(500L, result.getLong(fluidB));
     }
 
     @Test

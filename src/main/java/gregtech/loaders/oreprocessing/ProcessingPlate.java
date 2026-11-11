@@ -15,7 +15,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -97,7 +96,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GTModHandler.removeRecipeDelayed(aStack);
+        // The only plate that has a valid recipe to remove
+        if (aMaterial == Materials.Wood) GTModHandler.removeRecipeDelayed(aStack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
@@ -132,7 +132,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (aMaterial == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(2, aStack),
-                    BUFFERED,
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
             }
         }
@@ -395,7 +395,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (aMaterial.mStandardMoltenFluid != null) {
+        if (aMaterial.mStandardMoltenFluid != null
+            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L))
@@ -501,13 +502,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         switch (aOreDictName) {
             case "plateAlloyCarbon" -> {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, aStack))
-                    .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-                    .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ULV)
-                    .addTo(assemblerRecipes);
-
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))

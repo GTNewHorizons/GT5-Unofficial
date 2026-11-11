@@ -46,22 +46,22 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (tinyDust != null && normalDust != null) {
             GTModHandler.addCraftingRecipe(
                 normalDust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
                 M.getTinyDust(9),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
             GTModHandler.addCraftingRecipe(
                 normalDust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
                 M.getSmallDust(4),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
     }

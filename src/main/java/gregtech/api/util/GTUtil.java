@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -26,11 +27,9 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class GTUtil {
 
@@ -156,8 +155,8 @@ public class GTUtil {
             world.getBlockMetadata(x, 0, z);
             aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
-                GTLog.err.println(
-                    "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
+                GT_FML_LOGGER
+                    .error("Some important Chunk does not exist for some reason at Coordinates X: {} and Z: {}", x, z);
                 return false;
             }
         }
@@ -205,16 +204,9 @@ public class GTUtil {
         if (list == null) return false;
         newTag.setTag("mOutputBusses", list);
         count += list.tagCount();
-
-        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
-        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
-            if (outputHatch instanceof MTEHatchOutputME hatch) {
-                meOutputHatches.add(hatch);
-            }
-        }
-        list = saveConfigurationToDataStick(player, meOutputHatches);
+        list = saveConfigurationToDataStick(player, controller.mOutputHatches);
         if (list == null) return false;
-        newTag.setTag("mMEOutputHatches", list);
+        newTag.setTag("mOutputHatches", list);
         count += list.tagCount();
 
         // For Crafting Input Proxy
@@ -228,8 +220,6 @@ public class GTUtil {
         if (list == null) return false;
         newTag.setTag("mDualInputHatches", list);
         count += list.tagCount();
-
-        // Output hatch config currently cannot be copied, so we omit this part for now
 
         dataOrb.setTagCompound(newTag);
         BehaviourDataOrb.setDataTitle(dataOrb, "Multiblock Hatch Configuration");
@@ -278,22 +268,14 @@ public class GTUtil {
                 player,
                 controller.mOutputBusses)) return false;
         }
-
-        // for ME output hatches (normal output hatches are not implemented)
-        ArrayList<MTEHatch> meOutputHatches = new ArrayList<>();
-        for (MTEHatchOutput outputHatch : controller.mOutputHatches) {
-            if (outputHatch instanceof MTEHatchOutputME hatch) {
-                meOutputHatches.add(hatch);
-            }
-        }
         if (checkCanLoadConfigurationFromDataStick(
-            tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+            tag.getTagList("mOutputHatches", Constants.NBT.TAG_COMPOUND),
             player,
-            meOutputHatches)) {
+            controller.mOutputHatches)) {
             if (!loadConfigurationFromDataStick(
-                tag.getTagList("mMEOutputHatches", Constants.NBT.TAG_COMPOUND),
+                tag.getTagList("mOutputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                meOutputHatches)) return false;
+                controller.mOutputHatches)) return false;
         }
 
         // For Crafting Input Proxy
@@ -365,7 +347,7 @@ public class GTUtil {
 
     /**
      * Set the direction of a vanilla large chest. return false when the new direction is invalid
-     * 
+     *
      * @param dryRun pass in true to prevent actually setting block metadata
      */
     public static boolean setVanillaChestDirection(World world, int x, int y, int z, int newSide, Block currentBlock,

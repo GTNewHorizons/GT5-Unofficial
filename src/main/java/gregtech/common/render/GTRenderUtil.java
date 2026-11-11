@@ -1,6 +1,6 @@
 package gregtech.common.render;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

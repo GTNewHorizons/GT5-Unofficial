@@ -28,7 +28,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTracerModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int WIRE_OFFSET_X = 3;
     protected static final int WIRE_OFFSET_Y = 5;
     protected static final int WIRE_OFFSET_Z = 0;

@@ -8,6 +8,9 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.RECYCLE;
 import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -505,6 +508,14 @@ public class ArcFurnaceRecipes implements Runnable {
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.chainmail_boots, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1))
+            .duration(Materials.Steel.getMass() * TICKS)
+            .eut(TierEU.RECIPE_LV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
 

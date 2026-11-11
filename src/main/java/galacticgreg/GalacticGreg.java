@@ -41,7 +41,7 @@ public class GalacticGreg {
 
     public static final String VERSION = GT_Version.VERSION;
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger(GalacticGreg.MODNAME);
     public static ProfilingStorage Profiler = new ProfilingStorage();
     public static SpaceSchematicHandler SchematicHandler;
 

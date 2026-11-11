@@ -1,22 +1,25 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ResourceLocation;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
-import gregtech.api.enums.Comparison;
+import gregtech.api.enums.ComparisonWithAnalog;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -26,16 +29,17 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.common.gui.modularui.hatch.MTEHatchNaniteDetectorGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     private int configuredTier;
-    private @Nullable NaniteTier requiredTier;
-    private Comparison comparison = Comparison.EQ;
+    private int requiredTier = -1;
+    private ComparisonWithAnalog comparison = ComparisonWithAnalog.EQ;
+
+    private Lazy<List<String>> tooltip = null;
 
     public MTEHatchNaniteDetector(int aID, String aName) {
         super(aID, aName, VoltageIndex.UIV, null);
@@ -43,6 +47,24 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     protected MTEHatchNaniteDetector(MTEHatchNaniteDetector prototype) {
         super(prototype);
+
+        tooltip = prototype.tooltip;
+    }
+
+    public int getConfiguredTier() {
+        return configuredTier;
+    }
+
+    public void setConfiguredTier(int configuredTier) {
+        this.configuredTier = configuredTier;
+    }
+
+    public ComparisonWithAnalog getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(ComparisonWithAnalog comparison) {
+        this.comparison = comparison;
     }
 
     @Override
@@ -59,7 +81,35 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     @Override
     protected void loadConfig(@Nullable NBTTagCompound tag) {
         configuredTier = tag == null ? 0 : tag.getInteger("configuredTier");
-        comparison = Comparison.values()[tag == null ? 0 : tag.getInteger("op")];
+        comparison = ComparisonWithAnalog.values()[tag == null ? 0 : tag.getInteger("op")];
+        refreshOutput();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        tag.setInteger("requiredTier", requiredTier);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound tag) {
+        // Load required tier before config load to avoid triggering unnecessary redstone updates
+        requiredTier = tag.hasKey("requiredTier") ? tag.getInteger("requiredTier") : -1;
+        super.loadNBTData(tag);
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "nanite-detector-hatch"),
+                    new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override
@@ -80,15 +130,30 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
+    public void refreshOutput() {
+        if (comparison == ComparisonWithAnalog.ANALOG) {
+            setOutput(requiredTier == -1 ? 0 : requiredTier);
+        } else {
+            setOutput(requiredTier != -1 && comparison.test(requiredTier, configuredTier));
+        }
+    }
+
+    public int getRequiredTier() {
+        return requiredTier;
+    }
+
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
-        this.requiredTier = requiredTier;
+        this.requiredTier = requiredTier == null ? -1 : requiredTier.tier;
+        refreshOutput();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        if (baseMetaTileEntity.isServerSide() && tick > 1) {
+            baseMetaTileEntity.tryDisableTicking();
+        }
     }
 
     @Override
@@ -98,46 +163,11 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchNaniteDetectorGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
-    }
-
-    private class Gui extends MTEHatchBaseGui<MTEHatchNaniteDetector> {
-
-        public Gui() {
-            super(MTEHatchNaniteDetector.this);
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createContentSection(panel, syncManager)
-                .child(SettingsPanel.builder()
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-operation"),
-                        Comparison.class,
-                        () -> comparison,
-                        v -> comparison = v)
-                    .addIntEditor(
-                        IKey.lang("GT5U.gui.text.bec-threshold"),
-                        () -> configuredTier,
-                        i -> configuredTier = i,
-                    i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()))
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.bec-current"),
-                        new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
-                        nanite -> {
-                            NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
-
-                            return IKey.str(tier == null ? StatCollector.translateToLocal("GT5U.gui.text.nil") : tier.describe());
-                        })
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
     }
 }

@@ -16,7 +16,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.config.Gregtech;
 
 /**
@@ -71,7 +71,7 @@ public final class CooperativeScheduler {
             try {
                 future.run();
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error(
+                GTLoggers.GT_FML_LOGGER.error(
                     "Caught error while running task; it will be cancelled ({} {})",
                     future.name,
                     future.task,
@@ -87,7 +87,7 @@ public final class CooperativeScheduler {
             if (end == 0) end = System.nanoTime();
 
             if (Gregtech.general.schedulerProfileLevel >= 2) {
-                GTMod.GT_FML_LOGGER.info(
+                GTLoggers.GT_FML_LOGGER.info(
                     "Task {} {} took {} microseconds",
                     future.name,
                     future.task,
@@ -100,7 +100,7 @@ public final class CooperativeScheduler {
         }
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
-            GTMod.GT_FML_LOGGER
+            GTLoggers.GT_FML_LOGGER
                 .info("Task scheduler took {} microseconds", formatNumber((System.nanoTime() - start) / 1e3));
         }
 

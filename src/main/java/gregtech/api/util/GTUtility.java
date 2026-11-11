@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
@@ -105,6 +105,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -116,6 +117,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -147,6 +149,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
@@ -259,7 +262,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return rField;
     }
@@ -270,7 +273,7 @@ public class GTUtility {
             field.setAccessible(true);
             return field;
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -285,7 +288,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField;
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -300,7 +303,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -341,7 +344,7 @@ public class GTUtility {
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -354,17 +357,17 @@ public class GTUtility {
                     try {
                         return tConstructor.newInstance(aParameters);
                     } catch (Exception e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                        if (D1) GT_FML_LOGGER.error(e);
                     }
                 }
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         }
         return aReplacementObject;
@@ -465,6 +468,14 @@ public class GTUtility {
         return ceilDiv(voltage, GTValues.V[tier]);
     }
 
+    public static double getExactAmperageForTier(long voltage, byte tier) {
+        if (GTValues.V[tier] <= 0) {
+            return 0.0D;
+        }
+
+        return (double) voltage / (double) GTValues.V[tier];
+    }
+
     /**
      * Rounds up partial voltage that exceeds tiered voltage, e.g. 4,096 -> 8,192(IV)
      */
@@ -473,6 +484,16 @@ public class GTUtility {
             return voltage;
         }
         return V[GTUtility.getTier(voltage)];
+    }
+
+    private static final String[] ROMAN_NUMERALS = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+
+    /**
+     * Roman numeral of a number from 1 to 10, used by machine families numbered that way. Anything outside that range
+     * is returned as digits.
+     */
+    public static String getRomanNumeral(int number) {
+        return number >= 1 && number <= ROMAN_NUMERALS.length ? ROMAN_NUMERALS[number - 1] : String.valueOf(number);
     }
 
     public static String getColoredTierNameFromVoltage(long voltage) {
@@ -671,8 +692,39 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
@@ -1023,6 +1075,11 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
+     * <p>
+     * Only one fluid type is moved per call. If the fluid the source offers first cannot be moved (dest refuses it or
+     * the filter rejects it), the other fluids reported by the source's tank info are tried in order. Multi-tank
+     * handlers are free to keep offering the same tank from an unspecified drain, so without this fallback a full or
+     * unwilling dest would stall the transfer even though the source holds fluids dest would accept.
      *
      * @param source    tank to drain from. method become noop if this is null
      * @param dest      tank to fill to. method become noop if this is null
@@ -1040,7 +1097,36 @@ public class GTUtility {
         liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
             dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+            return;
         }
+
+        FluidTankInfo[] tanks = source.getTankInfo(drainSide);
+        if (tanks == null || tanks.length < 2) return;
+        for (int i = 0; i < tanks.length; i++) {
+            if (!isFluidCandidate(tanks[i]) || tanks[i].fluid.isFluidEqual(liquid) || isFluidInEarlierTank(tanks, i))
+                continue;
+            FluidStack request = tanks[i].fluid.copy();
+            request.amount = maxAmount;
+            FluidStack candidate = source.drain(drainSide, request, false);
+            if (candidate == null || candidate.amount <= 0) continue;
+            candidate = candidate.copy();
+            candidate.amount = dest.fill(fillSide, candidate, false);
+            if (candidate.amount > 0 && (allowMove == null || allowMove.test(candidate))) {
+                dest.fill(fillSide, source.drain(drainSide, candidate, true), true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isFluidCandidate(FluidTankInfo tank) {
+        return tank != null && tank.fluid != null && tank.fluid.amount > 0;
+    }
+
+    private static boolean isFluidInEarlierTank(FluidTankInfo[] tanks, int index) {
+        for (int j = 0; j < index; j++) {
+            if (isFluidCandidate(tanks[j]) && tanks[j].fluid.isFluidEqual(tanks[index].fluid)) return true;
+        }
+        return false;
     }
 
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
@@ -1244,15 +1330,13 @@ public class GTUtility {
     }
 
     public static FluidStack getFluidFromDisplayStack(ItemStack aDisplayStack) {
-        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()
-            || !aDisplayStack.hasTagCompound()) return null;
-        Fluid tFluid = FluidRegistry.getFluid(
+        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()) return null;
+        final NBTTagCompound tNBT = aDisplayStack.getTagCompound();
+        final Fluid tFluid = FluidRegistry.getFluid(
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
-        return new FluidStack(
-            tFluid,
-            (int) aDisplayStack.getTagCompound()
-                .getLong("mFluidDisplayAmount"));
+
+        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
@@ -1488,9 +1572,9 @@ public class GTUtility {
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
-                else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
+                else GT_FML_LOGGER.error("WARNING: String for written Book too long! -> {}", aPages[i]);
             } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
+                GT_FML_LOGGER.error("WARNING: Too much Pages for written Book! -> {}", aTitle);
                 break;
             }
         }
@@ -1498,13 +1582,11 @@ public class GTUtility {
             new NBTTagString(StatCollector.translateToLocalFormatted("gt.book.credits", aAuthor, sBookCount)));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GTLog.out.println(
-            "GTMod: Added Book to Book List  -  Mapping: '" + aMapping
-                + "'  -  Name: '"
-                + aTitle
-                + "'  -  Author: '"
-                + aAuthor
-                + "'");
+        GT_FML_LOGGER.debug(
+            "GTMod: Added Book to Book List  -  Mapping: '{}'  -  Name: '{}'  -  Author: '{}'",
+            aMapping,
+            aTitle,
+            aAuthor);
         GregTechAPI.sBookList.put(aMapping, rStack);
         return copyOrNull(rStack);
     }
@@ -1978,7 +2060,7 @@ public class GTUtility {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+                GTLoggers.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
         return false;
@@ -2242,14 +2324,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2261,7 +2343,7 @@ public class GTUtility {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 
@@ -3640,6 +3722,19 @@ public class GTUtility {
         }
     }
 
+    /// Multiplies two longs, clamping to the min/max for a long if the result overflows.
+    public static long mulSafe(long a, long b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Long.MAX_VALUE;
+            } else {
+                return Long.MIN_VALUE;
+            }
+        }
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
@@ -4130,6 +4225,25 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
+     *
+     * @param ticks The number of ticks
+     * @return A localized string
+     */
+    public static String formatTime(int ticks) {
+        if (ticks < 20) {
+            return translateToLocalFormatted(
+                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(ticks));
+        } else {
+            double seconds = ticks / 20.0;
+            return translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
+        }
+    }
+
     public static String truncateText(String text, int limit) {
         if (limit < 0) limit = 1;
         if (text == null) {
@@ -4345,6 +4459,53 @@ public class GTUtility {
             result[i] = tmp;
             amount -= a;
         }
+        return result;
+    }
+
+    public static String getStackCustomName(ItemStack stack) {
+        if (stack == null) return null;
+        if (stack.stackTagCompound == null) return null;
+        NBTTagCompound subTag = stack.stackTagCompound.getCompoundTag("display");
+        if (subTag == null) return null;
+        if (!subTag.hasKey("Name", Constants.NBT.TAG_STRING)) return null;
+        return subTag.getString("Name");
+    }
+
+    public static List<ItemStack> mergeAndSortItemStacks(List<ItemStack> inputItems) {
+        List<ItemStack> result = new ArrayList<>();
+        Map<ItemId, Integer> itemCounts = new HashMap<>();
+
+        for (ItemStack item : inputItems) {
+            if (item == null) {
+                continue;
+            }
+
+            ItemId id = ItemId.create(item);
+
+            int currentCount = itemCounts.getOrDefault(id, 0);
+            itemCounts.put(id, currentCount + item.stackSize);
+        }
+
+        for (Map.Entry<ItemId, Integer> entry : itemCounts.entrySet()) {
+            ItemId id = entry.getKey();
+            int totalCount = entry.getValue();
+            int maxStack = id.getItemStack()
+                .getMaxStackSize();
+
+            while (totalCount > maxStack) {
+                ItemStack stack = id.getItemStack(maxStack);
+                result.add(stack);
+                totalCount -= maxStack;
+            }
+
+            if (totalCount > 0) {
+                ItemStack stack = id.getItemStack(totalCount);
+                result.add(stack);
+            }
+        }
+
+        result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
+
         return result;
     }
 }

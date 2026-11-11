@@ -79,15 +79,12 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
         } else if (Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
             type = WIND;
         }
-        info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
         info.add(
             StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
                 + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
                 + "/"
                 + this.getMaxDamageEx() / 100);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);
+
         if (type != null) {
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type)));
         }
@@ -121,14 +118,6 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     @Override
     public boolean isAcceptedType(ItemStack itemStack, IKineticRotor.GearboxType gearboxType) {
         return gearboxType.equals(this.type);
-    }
-
-    public int getSpeed() {
-        return this.speed;
-    }
-
-    public float getmRotor() {
-        return this.mRotor;
     }
 
     public void setDamageForStack(ItemStack stack, int advDmg) {

@@ -1,7 +1,7 @@
 package gregtech.common.render.shader;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static gregtech.GTLoggers.GT_SHADER_LOGGER;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GLContext;
@@ -15,8 +15,6 @@ public enum ShaderProfile {
 
     LEGACY(""),
     ANGELICA_CORE(".330"); // 3.3 core + GLSM caching
-
-    static final Logger LOG = LogManager.getLogger("ShaderAPI");
 
     /* Force rendering through the 120 variants. */
     private static final String FORCE_LEGACY = "gt.render.forceLegacy";
@@ -39,7 +37,7 @@ public enum ShaderProfile {
     public static void init() {
         if (preferred != null) return;
         preferred = choose();
-        LOG.info("Preferred shader profile: {}", preferred);
+        GT_SHADER_LOGGER.info("Preferred shader profile: {}", preferred);
     }
 
     public static ShaderProfile preferred() {
@@ -49,17 +47,17 @@ public enum ShaderProfile {
 
     private static ShaderProfile choose() {
         if (Boolean.getBoolean(FORCE_LEGACY)) {
-            LOG.info("Core profile disabled by jvm option");
+            GT_SHADER_LOGGER.info("Core profile disabled by jvm option");
             return LEGACY;
         }
         if (!angelicaSupported()) return LEGACY;
         if (!GLContext.getCapabilities().OpenGL32) {
-            LOG.info("Core profile unavailable: driver reports < GL 3.2");
+            GT_SHADER_LOGGER.info("Core profile unavailable: driver reports < GL 3.2");
             return LEGACY;
         }
         final int mask = GL11.glGetInteger(GL32.GL_CONTEXT_PROFILE_MASK);
         if ((mask & GL32.GL_CONTEXT_CORE_PROFILE_BIT) == 0) {
-            LOG.info("Core profile unavailable - compatibility context detected");
+            GT_SHADER_LOGGER.info("Core profile unavailable - compatibility context detected");
             return LEGACY;
         }
         return ANGELICA_CORE;
@@ -72,7 +70,7 @@ public enum ShaderProfile {
 
     private static boolean checkAngelica() {
         if (!Mods.Angelica.isModLoaded()) {
-            LOG.info("Angelica is not loaded");
+            GT_SHADER_LOGGER.info("Angelica is not loaded");
             return false;
         }
         final ArtifactVersion found = Loader.instance()
@@ -80,7 +78,7 @@ public enum ShaderProfile {
             .get(Mods.ModIDs.ANGELICA)
             .getProcessedVersion();
         if (found.compareTo(new DefaultArtifactVersion(MIN_ANGELICA)) < 0) {
-            LOG.info("Angelica {} version lower than required {}", found.getVersionString(), MIN_ANGELICA);
+            GT_SHADER_LOGGER.info("Angelica {} version lower than required {}", found.getVersionString(), MIN_ANGELICA);
             return false;
         }
         return true;
