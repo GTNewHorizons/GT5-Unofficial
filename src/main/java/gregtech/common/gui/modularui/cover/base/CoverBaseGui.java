@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -17,6 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -81,11 +83,23 @@ public class CoverBaseGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      */
     protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
-        ModularPanel panel = new ModularPanel(getGuiId() + "." + data.getSide());
+        ModularPanel panel = new ModularPanel(getGuiId() + "." + data.getSide()) {
+
+            @Override
+            public void onOpen(ModularScreen screen) {
+                super.onOpen(screen);
+                if (!(cover.getTile() instanceof CoverableTileEntity coverableTileEntity)) return;
+                coverableTileEntity.isCoverOpen[cover.getSide()
+                    .ordinal()] = true;
+            }
+        };
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
                     .markDirty();
+                if (!(cover.getTile() instanceof CoverableTileEntity coverableTileEntity)) return;
+                coverableTileEntity.isCoverOpen[cover.getSide()
+                    .ordinal()] = false;
             }
         });
         final Flow mainColumn = Flow.column()

@@ -5,9 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -191,24 +189,6 @@ public final class GTBaseGuiBuilder {
                     togglePanel();
                 }
             }
-
-            @Override
-            public void togglePanel() {
-                if (panel == null) return;
-                boolean panelOpen; // Need this to update coverableTileEntity, cannot use isPanelOpen() because when the
-                                   // panel is opened, the data is sent to server and isPanelOpen() isn't updated
-                                   // accurately at the moment.
-                if (panel.isPanelOpen()) {
-                    panel.closePanel();
-                    panelOpen = false;
-                } else {
-                    panel.openPanel();
-                    panelOpen = true;
-                }
-                if (!Client.iface.autoOpenCovers) return;
-                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return;
-                coverableTileEntity.isCoverOpen[side.ordinal()] = panelOpen;
-            }
         };
         button.setPanel(getCoverPanel(button, coverable, side));
         return button;
@@ -232,30 +212,7 @@ public final class GTBaseGuiBuilder {
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
                 .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
-                .child(panelCloseButton(coverable, side)));
-    }
-
-    private static ButtonWidget<?> panelCloseButton(ICoverable coverable, ForgeDirection side) { // implementation of
-                                                                                                 // panelCloseButton
-                                                                                                 // that updates cover
-                                                                                                 // open state
-        if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) {
-            return ButtonWidget.panelCloseButton();
-        }
-        ButtonWidget<?> buttonWidget = new ButtonWidget<>();
-        return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
-            .top(4)
-            .right(4)
-            .overlay(GuiTextures.CROSS_TINY)
-            .onMousePressed(mouseButton -> {
-                if (mouseButton == 0 || mouseButton == 1) {
-                    buttonWidget.getPanel()
-                        .closeIfOpen();
-                    coverableTileEntity.isCoverOpen[side.ordinal()] = false;
-                    return true;
-                }
-                return false;
-            });
+                .child(ButtonWidget.panelCloseButton()));
     }
 
     private IWidget createGhostCircuitSlot() {
