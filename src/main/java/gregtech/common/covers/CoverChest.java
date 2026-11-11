@@ -171,19 +171,22 @@ public class CoverChest extends Cover {
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
         if (items.getSlots() != slots) {
-            if (items.getSlots() > slots) {
-                for (int i = slots; i < items.getSlots(); i++) {
-                    ItemStack item = items.getStackInSlot(i);
+            LegacyLimitingItemStackHandler oldItems = items;
+            if (oldItems.getSlots() > slots) {
+                for (int i = slots; i < oldItems.getSlots(); i++) {
+                    ItemStack item = oldItems.getStackInSlot(i);
                     if (item != null) {
                         dropItem(coverable, coverSide, item);
                     }
                 }
             }
-            this.items = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
-            int toCopy = Math.min(items.getSlots(), items.getSlots());
+            LegacyLimitingItemStackHandler resizedItems = new LegacyLimitingItemStackHandler(slots, stackSizeLimit);
+            int toCopy = Math.min(oldItems.getSlots(), resizedItems.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                items.setStackInSlot(i, items.getStackInSlot(i));
+                ItemStack item = oldItems.getStackInSlot(i);
+                resizedItems.setStackInSlot(i, item == null ? null : item.copy());
             }
+            this.items = resizedItems;
         }
         firstTick = false;
     }
