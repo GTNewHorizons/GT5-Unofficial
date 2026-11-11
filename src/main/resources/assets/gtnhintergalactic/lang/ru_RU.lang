@@ -190,8 +190,7 @@ gt.blockmachines.multimachine.ig.siphon.type=Помпа
 gt.blockmachines.multimachine.ig.siphon.lore0=333:Космическая добыча выходит на новый уровень!
 gt.blockmachines.multimachine.ig.siphon.lore1=333:Пришло время SUCC!
 gt.blockmachines.multimachine.ig.siphon.lore2=333:Торговля EU -> Жидкости
-gt.blockmachines.mult
-machine.ig.siphon.lore3=Название неверно по определению...
+gt.blockmachines.multimachine.ig.siphon.lore3=Название неверно по определению...
 
 # Dyson Swarm
 gt.blockmachines.multimachine.ig.dyson.name=Ядро группы роя Дайсона
