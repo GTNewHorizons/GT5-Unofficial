@@ -23,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -248,8 +249,19 @@ public enum StoneType implements IStoneType {
         OrePrefixes basePrefix = small ? OrePrefixes.oreSmall : OrePrefixes.ore;
         if (this == Stone) return basePrefix.getLocalizedNameForItem(material);
 
+        final String prefixKey = basePrefix.getOreprefixKey(material) + ".with_stone";
+        // The shared lookup in OrePrefixes has no stone in its key, so per-stone overrides are checked here.
+        final String overrideKey = prefixKey + "."
+            + name().toLowerCase(Locale.ROOT)
+            + "."
+            + material.getInternalName()
+                .toLowerCase(Locale.ROOT);
+        if (StatCollector.canTranslate(overrideKey)) {
+            return StatCollector.translateToLocal(overrideKey);
+        }
+
         return OrePrefixes.getLocalizedNameForItemWithInflection(
-            basePrefix.getOreprefixKey(material) + ".with_stone",
+            prefixKey,
             material,
             material.getLocalizedNameKey(),
             "gt.ore.stone." + name().toLowerCase(Locale.ROOT));
