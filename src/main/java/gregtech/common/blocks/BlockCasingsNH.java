@@ -31,7 +31,7 @@ public class BlockCasingsNH extends BlockCasingsAbstract {
         register(11, ItemList.Casing_UIV);
         register(12, ItemList.Casing_UMV);
         register(13, ItemList.Casing_UXV);
-        register(14, ItemList.Casing_MAXV);
+        register(14, ItemList.Casing_MAX);
     }
 
     @Override

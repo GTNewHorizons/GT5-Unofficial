@@ -2220,7 +2220,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "", 6).getStackForm(1L));
         ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "", 7).getStackForm(1L));
         ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "", 8).getStackForm(1L));
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hull_UHV.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
 
         ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "", 10).getStackForm(1L));
 
@@ -2230,7 +2230,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
+        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerTransformer() {
