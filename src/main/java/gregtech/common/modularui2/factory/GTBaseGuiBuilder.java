@@ -209,35 +209,23 @@ public final class GTBaseGuiBuilder {
             posGuiData.getZ(),
             side,
             true);
+        ButtonWidget<?> buttonWidget= ButtonWidget.panelCloseButton();
+        buttonWidget.onMousePressed(mouseButton -> {
+            if (mouseButton == 0 || mouseButton == 1) {
+                buttonWidget.getPanel()
+                    .closeIfOpen();
+                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return true;
+                coverableTileEntity.isCoverOpen[side.ordinal()] = false;
+                return true;
+            }
+            return false;
+        });
         return syncManager.syncedPanel(
             panelKey,
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
                 .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
-                .child(panelCloseButton(coverable, side)));
-    }
-
-    private static ButtonWidget<?> panelCloseButton(ICoverable coverable, ForgeDirection side) { // implementation of
-        // panelCloseButton
-        // that updates cover
-        // open state
-        if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) {
-            return ButtonWidget.panelCloseButton();
-        }
-        ButtonWidget<?> buttonWidget = new ButtonWidget<>();
-        return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
-            .top(4)
-            .right(4)
-            .overlay(GuiTextures.CROSS_TINY)
-            .onMousePressed(mouseButton -> {
-                if (mouseButton == 0 || mouseButton == 1) {
-                    buttonWidget.getPanel()
-                        .closeIfOpen();
-                    coverableTileEntity.isCoverOpen[side.ordinal()] = false;
-                    return true;
-                }
-                return false;
-            });
+                .child(buttonWidget));
     }
 
     private IWidget createGhostCircuitSlot() {
