@@ -5,6 +5,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMAT
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MAX_TIME;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MIN_SPACE;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MIN_TIME;
+import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.NUMBER_OF_INPUTS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -158,11 +159,10 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
 
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
-            List<String> result = new ArrayList<>();
-            if (isQuarkGluonRecipe(recipeInfo.recipe)) {
-                result.add(StatCollector.translateToLocal("tt.nei.fog_exotic.picks_qgp"));
-            }
-            return result;
+            // The magmatter recipe asks for a single plasma
+            int inputs = isQuarkGluonRecipe(recipeInfo.recipe) ? NUMBER_OF_INPUTS : 1;
+            return Collections
+                .singletonList(StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.picks", inputs));
         }
     }
 }
