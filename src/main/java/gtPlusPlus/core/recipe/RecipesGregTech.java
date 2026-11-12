@@ -66,6 +66,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -915,6 +916,19 @@ public class RecipesGregTech {
     }
 
     private static void blastSmelterRecipes() {
+        // Steel. Defined by hand so the circuit is 3 (iron, carbon, oxygen) instead of the 11 inherited from the
+        // matching EBF recipe. RecipeGenBlastSmelterGTNH skips EBF recipes that already have a matching entry.
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.Iron.getDust(1),
+                new OreDictItemStack(OrePrefixes.dust.getName() + Materials.AnyCarbon.getName(), 1))
+            .circuit(3)
+            .fluidInputs(Materials.Oxygen.getGas(1_000))
+            .fluidOutputs(Materials.Steel.getMolten(1 * INGOTS))
+            .eut(TierEU.RECIPE_MV)
+            .duration(20 * SECONDS)
+            .addTo(alloyBlastSmelterRecipes);
+
         // Enderium
         GTValues.RA.stdBuilder()
             .itemInputs(
