@@ -48,7 +48,7 @@ public class RecipesSeleniumProcessing {
         // Make Selenium
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().CARBON.getDust(16))
-            .circuit(14)
+            .circuit(3)
             .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(2 * INGOTS + 1 * QUARTER_INGOTS),

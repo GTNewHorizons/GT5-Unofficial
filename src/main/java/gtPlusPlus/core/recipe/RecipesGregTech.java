@@ -1009,7 +1009,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1),
                 Materials.Carbon.getDust(4))
-            .circuit(15)
+            .circuit(3)
             .fluidInputs(Materials.SulfuricAcid.getFluid(250))
             .fluidOutputs(MaterialsElements.getInstance().GERMANIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
@@ -1021,7 +1021,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Scheelite, 1),
                 Materials.Carbon.getDust(4))
-            .circuit(20)
+            .circuit(3)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_250))
             .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * EIGHTH_INGOTS))
             .eut(4_000)
@@ -1032,7 +1032,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Molybdenite, 1),
                 Materials.Carbon.getDust(8))
-            .circuit(20)
+            .circuit(3)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_875))
             .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
@@ -1043,7 +1043,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Molybdenum, 1),
                 Materials.Carbon.getDust(4))
-            .circuit(20)
+            .circuit(3)
             .fluidInputs(Materials.SulfuricAcid.getFluid(625))
             .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
@@ -1056,7 +1056,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Zinc, 3),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrite, 4),
                 Materials.Carbon.getDust(16))
-            .circuit(21)
+            .circuit(4)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_250))
             .fluidOutputs(MaterialsElements.getInstance().THALLIUM.getFluidStack(2 * INGOTS))
             .eut(TierEU.RECIPE_IV)
@@ -1066,7 +1066,7 @@ public class RecipesGregTech {
         // Strontium processing
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialMisc.STRONTIUM_OXIDE.getDust(8), Materials.Aluminium.getDust(8))
-            .circuit(21)
+            .circuit(2)
             .fluidOutputs(
                 Materials.Oxygen.getGas(8_000),
                 Materials.Aluminium.getMolten(8 * INGOTS),
