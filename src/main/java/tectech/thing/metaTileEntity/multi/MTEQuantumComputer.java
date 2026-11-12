@@ -70,6 +70,10 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationOutput;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
@@ -85,9 +89,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     // region variables
     private final ArrayList<MTEHatchRack> eRacks = new ArrayList<>();
+
     private final ArrayList<MTEHatchWirelessComputationOutput> eWirelessComputationOutputs = new ArrayList<>();
-    private @Nullable QuantumDataPacket pendingPacket;
-    private double maxHeat;
+
     private static IIconContainer ScreenOFF;
     private static IIconContainer ScreenON;
     // endregion
@@ -119,9 +123,42 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             RackHatchElement.INSTANCE
                 .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 3, 2, TTCasingsContainer.sBlockCasingsTT, 3))
         .build();
+    // endregion
 
     // region parameters
+
+    // TODO remove after 2.10
+    protected Parameters.Group.ParameterIn overclock, overvolt;
+    protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
+
+    private @Nullable QuantumDataPacket pendingPacket;
+
+    private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
+    private static final INameFunction<MTEQuantumComputer> OV_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
+    private static final INameFunction<MTEQuantumComputer> MAX_TEMP_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
+    private static final INameFunction<MTEQuantumComputer> COMPUTE_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
+    private static final IStatusFunction<MTEQuantumComputer> OC_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
+    private static final IStatusFunction<MTEQuantumComputer> OV_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
+    private static final IStatusFunction<MTEQuantumComputer> MAX_TEMP_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 2000, 8000, 10000);
+    private static final IStatusFunction<MTEQuantumComputer> COMPUTE_STATUS = (base, p) -> {
+        if (base.eAvailableData < 0) {
+            return LedStatus.STATUS_TOO_LOW;
+        }
+        if (base.eAvailableData == 0) {
+            return LedStatus.STATUS_NEUTRAL;
+        }
+        return LedStatus.STATUS_OK;
+    };
+
     private DoubleParameter overclockParameter, overvoltParameter;
+    private double maxHeat;
     // endregion
 
     public MTEQuantumComputer(int aID, String aName, String aNameRegional) {
@@ -152,6 +189,15 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEQuantumComputer(mName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0 = parametrization.getGroup(0);
+        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
+        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
+        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
+        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
     }
 
     @Override
@@ -534,7 +580,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {}
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        overclockParameter.setValue(oldParams.getDouble(String.valueOf(0)));
+        overvoltParameter.setValue(oldParams.getDouble(String.valueOf(10)));
+    }
 
     @Override
     public List<Parameter<?, ?>> getParameters() {
