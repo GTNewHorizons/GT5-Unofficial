@@ -6,7 +6,6 @@ import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +14,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -28,9 +37,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.tileentities.machines.multi.MTECokeOven;
+import gregtech.common.gui.modularui.hatch.MTEHatchCokeOvenGui;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -39,24 +47,19 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     private enum Mode {
 
-        Input((byte) 0, "Input"),
-        OutputItem((byte) 1, "Output Items"),
-        OutputFluid((byte) 2, "Output Fluids");
+        Input((byte) 0),
+        OutputItem((byte) 1),
+        OutputFluid((byte) 2);
 
         private final byte index;
-        private final String name;
 
-        Mode(byte index, String name) {
+        Mode(byte index) {
             this.index = index;
-            this.name = name;
         }
 
-        private Mode next() {
-            return switch (this) {
-                case Input -> OutputItem;
-                case OutputItem -> OutputFluid;
-                case OutputFluid -> Input;
-            };
+        private Mode next(boolean reverse) {
+            Mode[] modes = values();
+            return modes[(index + (reverse ? modes.length - 1 : 1)) % modes.length];
         }
 
         private static Mode fromIndex(byte index) {
@@ -64,7 +67,7 @@ public class MTEHatchCokeOven extends MTEHatch {
                 case 0 -> Input;
                 case 1 -> OutputItem;
                 case 2 -> OutputFluid;
-                default -> throw new IllegalArgumentException("Invalid Mode index: " + index);
+                default -> Input;
             };
         }
 
@@ -111,11 +114,41 @@ public class MTEHatchCokeOven extends MTEHatch {
     /** Fluid transfer rate in liters per second. */
     private static final int FLUID_TRANSFER_RATE = 1_000;
 
+    public static final int ITEM_SLOTS = 1;
+    public static final int FLUID_CAPACITY = 8_000;
+
     private Mode mode = Mode.Input;
-    private int controllerIndex = 0;
-    private MTECokeOven activeController;
-    private final ArrayList<MTECokeOven> controllers = new ArrayList<>();
-    private boolean destroyed = false;
+
+    private final IItemHandlerModifiable bufferedInventory = new InvWrapper(this) {
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return mode == Mode.OutputItem && isValidSlot(slot) && amount > 0
+                ? super.extractItem(slot, amount, simulate)
+                : null;
+        }
+    };
+
+    private final FluidStackTank outputTank = new FluidStackTank(
+        this::getDrainableStack,
+        this::setDrainableStack,
+        this::getCapacity) {
+
+        @Override
+        public int fill(FluidStack resource, boolean doFill) {
+            return 0;
+        }
+
+        @Override
+        public FluidStack drain(int maxDrain, boolean doDrain) {
+            return MTEHatchCokeOven.this.drain(maxDrain, doDrain);
+        }
+
+        @Override
+        public int getCanFillAmount() {
+            return 0;
+        }
+    };
 
     public MTEHatchCokeOven(int ID, String name, String nameRegional) {
         super(
@@ -123,7 +156,7 @@ public class MTEHatchCokeOven extends MTEHatch {
             name,
             nameRegional,
             0,
-            0,
+            ITEM_SLOTS,
             new String[] { "Hatch for automating the Coke Oven",
                 EnumChatFormatting.STRIKETHROUGH + "------------------------------",
                 EnumChatFormatting.GREEN + "Modes" + EnumChatFormatting.GRAY + ": Input, Output, Output (Fluids)",
@@ -131,7 +164,7 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     public MTEHatchCokeOven(String name, int tier, String[] description, ITexture[][][] textures) {
-        super(name, tier, 0, description, textures);
+        super(name, tier, ITEM_SLOTS, description, textures);
     }
 
     @Override
@@ -142,6 +175,22 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public byte getTileEntityBaseType() {
         return HarvestTool.PickaxeLevel0.toTileEntityBaseType();
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        openGui(player);
+        return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchCokeOvenGui(this).build(guiData, syncManager, uiSettings);
     }
 
     @Override
@@ -169,71 +218,65 @@ public class MTEHatchCokeOven extends MTEHatch {
     }
 
     @Override
-    public void onBlockDestroyed() {
-        destroyed = true;
-        super.onBlockDestroyed();
-    }
-
-    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.mode", mode.getLocalizedName()));
     }
 
-    /**
-     * Executes the active controller’s action once per second and cycles to the next.
-     * Transfers items or fluids forward depending on mode.
-     */
+    /** Exports the hatch's fluid once per second. Item output requires external extraction. */
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide()) return;
-        if (tick % 20 != 0) return;
-        if (nextActiveController()) return;
-
+        if (baseMetaTileEntity.isClientSide() || tick % 20 != 0) return;
+        if (mode != Mode.OutputFluid || !baseMetaTileEntity.isAllowedToWork()) return;
         final ForgeDirection sideFront = baseMetaTileEntity.getFrontFacing();
-        final ForgeDirection sideBack = baseMetaTileEntity.getBackFacing();
-
-        switch (mode) {
-            case Input -> {}
-            case OutputItem -> {
-                GTItemTransfer transfer = new GTItemTransfer();
-
-                transfer.outOfMachine(this, sideFront);
-
-                transfer.transfer();
-            }
-            case OutputFluid -> {
-                final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
-                if (target == null) return;
-                GTUtility.moveFluid(activeController, target, ForgeDirection.UNKNOWN, FLUID_TRANSFER_RATE, null);
-            }
+        final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
+        if (target != null) {
+            GTUtility.moveFluid(baseMetaTileEntity, target, sideFront, FLUID_TRANSFER_RATE, null);
         }
     }
 
-    /** Adds a controller the hatch is a part of. */
-    public void addController(MTECokeOven controller) {
-        if (controllers.contains(controller)) return;
-        controllers.add(controller);
+    public boolean isInput() {
+        return mode == Mode.Input && isValid();
     }
 
-    /** Sets the next active controller and removes dead controllers. */
-    private boolean nextActiveController() {
-        if (controllerIndex >= controllers.size()) {
-            controllerIndex = 0;
-            return true;
+    public boolean isFluidOutput() {
+        return mode == Mode.OutputFluid;
+    }
+
+    /** Stores as much oven output as fits, returning the accepted count without changing the supplied stack. */
+    public int storeItemOutput(ItemStack stack) {
+        if (mode != Mode.OutputItem || !isValid() || stack == null || stack.stackSize <= 0) return 0;
+        int remaining = stack.stackSize;
+        for (int slot = 0; slot < ITEM_SLOTS && remaining > 0; slot++) {
+            ItemStack stored = mInventory[slot];
+            if (stored != null && !GTUtility.areStacksEqual(stored, stack)) continue;
+            int accepted = Math.min(
+                remaining,
+                Math.min(getInventoryStackLimit(), stack.getMaxStackSize()) - (stored == null ? 0 : stored.stackSize));
+            if (accepted <= 0) continue;
+            ItemStack updated = stack.copy();
+            updated.stackSize = (stored == null ? 0 : stored.stackSize) + accepted;
+            setInventorySlotContents(slot, updated);
+            remaining -= accepted;
         }
+        return stack.stackSize - remaining;
+    }
 
-        activeController = controllers.get(controllerIndex);
-
-        if (activeController == null || !activeController.isValid()) {
-            controllers.remove(controllerIndex);
-            activeController = null;
-            return true;
+    /** Stores oven fluid internally; pipes and containers cannot fill this output hatch. */
+    public int storeFluidOutput(FluidStack stack) {
+        if (mode != Mode.OutputFluid || !isValid() || stack == null || stack.amount <= 0) return 0;
+        if (mFluid != null && !mFluid.isFluidEqual(stack)) return 0;
+        int accepted = Math.min(stack.amount, FLUID_CAPACITY - (mFluid == null ? 0 : mFluid.amount));
+        if (accepted <= 0) return 0;
+        if (mFluid == null) {
+            mFluid = stack.copy();
+            mFluid.amount = accepted;
+        } else {
+            mFluid.amount += accepted;
         }
-
-        controllerIndex = (controllerIndex + 1) % controllers.size();
-        return false;
+        markDirty();
+        return accepted;
     }
 
     @Override
@@ -243,51 +286,106 @@ public class MTEHatchCokeOven extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return mode == Mode.OutputFluid ? MTECokeOven.FLUID_CAPACITY : 0;
+        return FLUID_CAPACITY;
+    }
+
+    /** A drain-only view of the hatch-owned output tank. */
+    @Override
+    public FluidStackTank getFluidTank() {
+        return outputTank;
     }
 
     @Override
-    public int getSizeInventory() {
-        if (destroyed) return 0;
-        return activeController != null ? 2 : 0;
+    public boolean isLiquidInput(ForgeDirection side) {
+        return false;
     }
 
     @Override
-    public @Nullable ItemStack getStackInSlot(int index) {
-        if (activeController == null) return null;
-        return activeController.getStackInSlot(index);
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return mode == Mode.OutputFluid && getBaseMetaTileEntity() != null
+            && side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean canTankBeEmptied() {
+        return mode == Mode.OutputFluid;
+    }
+
+    @Override
+    public int fill(FluidStack fluid, boolean doFill) {
+        return 0;
+    }
+
+    @Override
+    public FluidStack setDrainableStack(FluidStack fluid) {
+        mFluid = fluid;
+        markDirty();
+        return fluid;
+    }
+
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        return maxDrain > 0 ? super.drain(maxDrain, doDrain) : null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
+        return side == ForgeDirection.UNKNOWN || isLiquidOutput(side) ? drain(maxDrain, doDrain) : null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
+        FluidStack stored = getFluid();
+        return stored != null && stored.isFluidEqual(fluid) ? drain(side, amount, doDrain) : null;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection side, Fluid fluid) {
+        FluidStack stored = getFluid();
+        return canTankBeEmptied() && (side == ForgeDirection.UNKNOWN || isLiquidOutput(side))
+            && stored != null
+            && stored.amount > 0
+            && (fluid == null || stored.getFluid() == fluid);
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        return canTankBeEmptied() && (side == ForgeDirection.UNKNOWN || isLiquidOutput(side))
+            ? new FluidTankInfo[] { getInfo() }
+            : GTValues.emptyFluidTankInfo;
+    }
+
+    @Override
+    public IItemHandlerModifiable getInventoryHandler() {
+        return bufferedInventory;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return mode == Mode.Input && isValidSlot(index) && stack != null;
+    }
+
+    @Override
+    public boolean isValidSlot(int index) {
+        return index >= 0 && index < ITEM_SLOTS;
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return switch (mode) {
-            case Input -> new int[] { MTECokeOven.INPUT_SLOT };
-            case OutputItem -> new int[] { MTECokeOven.OUTPUT_SLOT };
-            default -> GTValues.emptyIntArray;
-        };
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        return mode != Mode.OutputFluid && base != null
+            && ordinalSide == base.getFrontFacing()
+                .ordinal() ? super.getAccessibleSlotsFromSide(ordinalSide) : GTValues.emptyIntArray;
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        if (activeController == null) return;
-        activeController.setInventorySlotContents(index, stack);
+    public boolean allowPutStack(IGregTechTileEntity base, int index, ForgeDirection side, ItemStack stack) {
+        return mode == Mode.Input && isValidSlot(index) && base != null && side == base.getFrontFacing();
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
-        if (mode != Mode.Input) return false;
-        if (activeController == null) return false;
-        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        if (baseMetaTileEntity == null) return false;
-        final ForgeDirection facing = baseMetaTileEntity.getFrontFacing();
-        if (facing.ordinal() != ordinalSide) return false;
-        return activeController.canInsertItem(index, itemStack, ForgeDirection.UNKNOWN.ordinal());
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
-        if (activeController == null) return false;
-        return activeController.canExtractItem(index, itemStack, ordinalSide);
+    public boolean allowPullStack(IGregTechTileEntity base, int index, ForgeDirection side, ItemStack stack) {
+        return mode == Mode.OutputItem && isValidSlot(index) && base != null && side == base.getFrontFacing();
     }
 
     @Override
@@ -296,42 +394,49 @@ public class MTEHatchCokeOven extends MTEHatch {
         final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         if (baseMetaTileEntity == null) return;
         if (baseMetaTileEntity.isClientSide()) return;
-        mode = mode.next();
+        if (!baseMetaTileEntity.getCoverAtSide(side)
+            .isGUIClickable()) return;
+        ForgeDirection front = baseMetaTileEntity.getFrontFacing();
+        for (int slot = 0; slot < mInventory.length; slot++) {
+            ItemStack stack = mInventory[slot];
+            if (stack == null) continue;
+            GTUtility.dropItemToBlockPos(
+                baseMetaTileEntity.getWorld(),
+                baseMetaTileEntity.getXCoord() + front.offsetX,
+                baseMetaTileEntity.getYCoord() + front.offsetY,
+                baseMetaTileEntity.getZCoord() + front.offsetZ,
+                stack);
+            setInventorySlotContents(slot, null);
+        }
+        mFluid = null;
+        mode = mode.next(player.isSneaking());
+        markDirty();
+        clearInventoryTextureCache();
         baseMetaTileEntity.issueTileUpdate();
         GTUtility.sendChatTrans(player, mode.getUnlocalizedString());
     }
 
-    private static final ITexture TEXTURE_CASING = Textures.BlockIcons
-        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0));
-    private static final ITexture[] TEXTURE_OUT = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    private static final ITexture[] TEXTURE_OUT_INDICATOR = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT),
-        TextureFactory.of(ITEM_OUT_SIGN) };
-    private static final ITexture[] TEXTURE_IN = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_IN) };
-    private static final ITexture[] TEXTURE_IN_INDICATOR = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_IN),
-        TextureFactory.of(ITEM_IN_SIGN) };
-    private static final ITexture[] TEXTURE_OUT_FLUID = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    private static final ITexture[] TEXTURE_OUT_FLUID_INDICATOR = { TEXTURE_CASING, TextureFactory.of(OVERLAY_PIPE_OUT),
-        TextureFactory.of(FLUID_OUT_SIGN) };
-
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side != facing) return new ITexture[] { TEXTURE_CASING };
-
-        return switch (mode) {
-            case Input -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_IN_INDICATOR : TEXTURE_IN;
-            case OutputItem -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_INDICATOR : TEXTURE_OUT;
-            case OutputFluid -> GTMod.proxy.mRenderIndicatorsOnHatch ? TEXTURE_OUT_FLUID_INDICATOR : TEXTURE_OUT_FLUID;
-        };
+    public ITexture getCasingTexture() {
+        ITexture casing = super.getCasingTexture();
+        return casing != null ? casing
+            : Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0));
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
-        return null;
+        ITexture pipe = TextureFactory.of(mode == Mode.Input ? OVERLAY_PIPE_IN : OVERLAY_PIPE_OUT);
+        if (!GTMod.proxy.mRenderIndicatorsOnHatch) return new ITexture[] { baseTexture, pipe };
+        return new ITexture[] { baseTexture, pipe, TextureFactory.of(switch (mode) {
+                case Input -> ITEM_IN_SIGN;
+                case OutputItem -> ITEM_OUT_SIGN;
+                case OutputFluid -> FLUID_OUT_SIGN;
+            }) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return null;
+        return getTexturesActive(baseTexture);
     }
 }

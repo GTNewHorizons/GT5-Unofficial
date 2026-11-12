@@ -120,7 +120,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         .addElement(
             'C',
             buildHatchAdder(MTECokeOven.class).atLeast(CokeHatchElement.CokeHatch)
-                .casingIndex(1)
+                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0))
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
         .build();
@@ -153,11 +153,16 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
-        if (side != ForgeDirection.UNKNOWN) return null;
+        if (side != ForgeDirection.UNKNOWN || maxDrain <= 0) return null;
         if (fluid == null || fluid.amount <= 0) return null;
         final int toDrain = Math.min(fluid.amount, maxDrain);
-        if (doDrain) fluid.amount -= toDrain;
-        return GTUtility.copyAmount(toDrain, fluid);
+        FluidStack drained = GTUtility.copyAmount(toDrain, fluid);
+        if (doDrain) {
+            fluid.amount -= toDrain;
+            if (fluid.amount == 0) fluid = null;
+            markDirty();
+        }
+        return drained;
     }
 
     @Override
@@ -344,51 +349,89 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
     }
 
+    @Override
+    public ArrayList<ItemStack> getStoredInputs() {
+        ArrayList<ItemStack> inputs = new ArrayList<>();
+        if (mInventory[INPUT_SLOT] != null) inputs.add(mInventory[INPUT_SLOT]);
+        for (MTEHatchCokeOven hatch : hatches) {
+            if (!hatch.isInput()) continue;
+            for (int slot = 0; slot < hatch.getSizeInventory(); slot++) {
+                ItemStack stack = hatch.getStackInSlot(slot);
+                if (stack != null) inputs.add(stack);
+            }
+        }
+        return inputs;
+    }
+
+    /** The controller remains a staging buffer, so shared output hatches cannot steal reserved output space. */
+    private void flushHatchOutputs() {
+        for (MTEHatchCokeOven hatch : hatches) {
+            int items = hatch.storeItemOutput(mInventory[OUTPUT_SLOT]);
+            if (items > 0) decrStackSize(OUTPUT_SLOT, items);
+            int fluidAmount = hatch.storeFluidOutput(fluid);
+            if (fluidAmount > 0) drain(ForgeDirection.UNKNOWN, fluidAmount, true);
+        }
+    }
+
+    private boolean canStoreOutputs(ItemStack itemOutput, FluidStack fluidOutput) {
+        ItemStack stored = mInventory[OUTPUT_SLOT];
+        if (itemOutput != null) {
+            if (itemOutput.stackSize > Math.min(getInventoryStackLimit(), itemOutput.getMaxStackSize())) return false;
+            if (stored != null
+                && (!GTUtility.areStacksEqual(stored, itemOutput) || (long) stored.stackSize + itemOutput.stackSize
+                    > Math.min(getInventoryStackLimit(), stored.getMaxStackSize())))
+                return false;
+        }
+        return fluidOutput == null
+            || (fluidOutput.amount <= FLUID_CAPACITY && (fluid == null || (GTUtility.areFluidsEqual(fluid, fluidOutput)
+                && (long) fluid.amount + fluidOutput.amount <= FLUID_CAPACITY)));
+    }
+
     private void checkRecipeProgress(IGregTechTileEntity baseMetaTileEntity) {
         if (!mMachine) return;
+        flushHatchOutputs();
 
-        if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-            addOutput();
-            addOutputFluid();
-            mOutputItems = null;
-            mOutputFluids = null;
-            mProgresstime = 0;
-            mMaxProgresstime = 0;
-            recipesDone++;
-            mLastWorkingTick = mTotalRunTime;
+        if (mMaxProgresstime > 0) {
+            if (mProgresstime < mMaxProgresstime) mProgresstime++;
+            if (mProgresstime >= mMaxProgresstime) {
+                ItemStack itemOutput = mOutputItems == null || mOutputItems.length == 0 ? null : mOutputItems[0];
+                FluidStack fluidOutput = mOutputFluids == null || mOutputFluids.length == 0 ? null : mOutputFluids[0];
+                // Manual insertion can fill the controller while a recipe is running. Keep its pending outputs intact.
+                if (!canStoreOutputs(itemOutput, fluidOutput)) return;
+                addOutput();
+                addOutputFluid();
+                mOutputItems = null;
+                mOutputFluids = null;
+                mProgresstime = 0;
+                mMaxProgresstime = 0;
+                recipesDone++;
+                mLastWorkingTick = mTotalRunTime;
+                markDirty();
+                flushHatchOutputs();
+            }
         }
 
         if (mMaxProgresstime == 0 && baseMetaTileEntity.isAllowedToWork()) {
-            final ItemStack input = mInventory[INPUT_SLOT];
-            final ItemStack output = mInventory[OUTPUT_SLOT];
-
+            final ItemStack[] inputs = getStoredInputs().toArray(new ItemStack[0]);
             final GTRecipe recipe = getRecipeMap().findRecipeQuery()
-                .items(input)
+                .items(inputs)
                 .find();
+            if (recipe == null || !canStoreOutputs(recipe.getOutput(0), recipe.getFluidOutput(0))) return;
+            if (!recipe.isRecipeInputEqual(true, null, inputs)) return;
 
-            if (recipe == null) return;
-
-            // Check if there is enough space for the output.
-            final ItemStack recipeOutput = recipe.getOutput(0);
-            if (output != null && recipeOutput != null) {
-                if (output.stackSize + recipeOutput.stackSize > output.getMaxStackSize()) return;
-                if (!GTUtility.areStacksEqual(output, recipeOutput)) return;
+            if (mInventory[INPUT_SLOT] != null && mInventory[INPUT_SLOT].stackSize <= 0) mInventory[INPUT_SLOT] = null;
+            for (MTEHatchCokeOven hatch : hatches) {
+                if (!hatch.isInput()) continue;
+                for (int slot = 0; slot < hatch.getSizeInventory(); slot++) {
+                    ItemStack stack = hatch.getStackInSlot(slot);
+                    if (stack != null && stack.stackSize <= 0) hatch.setInventorySlotContents(slot, null);
+                }
+                hatch.markDirty();
             }
-
-            // Check if there is enough space for the fluid.
-            final FluidStack recipeFluid = recipe.getFluidOutput(0);
-            if (fluid != null && recipeFluid != null) {
-                if (fluid.amount + recipeFluid.amount > FLUID_CAPACITY) return;
-                if (!GTUtility.areFluidsEqual(fluid, recipeFluid)) return;
-            }
-
-            // Check if input quantity matches. If it is reduced to zero, remove the item stack.
-            if (!recipe.isRecipeInputEqual(true, null, input)) return;
-            if (input != null && input.stackSize == 0) mInventory[INPUT_SLOT] = null;
-
             mMaxProgresstime = recipe.mDuration;
             mOutputItems = recipe.mOutputs;
             mOutputFluids = recipe.mFluidOutputs;
+            markDirty();
         }
     }
 
@@ -434,6 +477,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
+        markDirty();
     }
 
     private enum CokeHatchElement implements IHatchElement<MTECokeOven> {
@@ -518,9 +562,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
         if (metaTileEntity instanceof MTEHatchCokeOven hatch && !hatches.contains(hatch)) {
-            hatch.addController(this);
+            hatch.updateTexture(baseCasingIndex);
             return hatches.add(hatch);
         }
         return false;
     }
+
 }
