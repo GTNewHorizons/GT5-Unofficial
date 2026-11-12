@@ -111,8 +111,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         }
     }
 
-    /** Fluid transfer rate in liters per second. */
-    private static final int FLUID_TRANSFER_RATE = 1_000;
+    private static final int FLUID_OUTPUT_LITERS_PER_SECOND = 1_000;
 
     public static final int ITEM_SLOTS = 1;
     public static final int FLUID_CAPACITY = 8_000;
@@ -129,7 +128,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         }
     };
 
-    private final FluidStackTank outputTank = new FluidStackTank(
+    private final FluidStackTank drainOnlyOutputTank = new FluidStackTank(
         this::getDrainableStack,
         this::setDrainableStack,
         this::getCapacity) {
@@ -224,7 +223,6 @@ public class MTEHatchCokeOven extends MTEHatch {
         currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.mode", mode.getLocalizedName()));
     }
 
-    /** Exports the hatch's fluid once per second. Item output requires external extraction. */
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isClientSide() || tick % 20 != 0) return;
@@ -232,7 +230,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         final ForgeDirection sideFront = baseMetaTileEntity.getFrontFacing();
         final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
         if (target != null) {
-            GTUtility.moveFluid(baseMetaTileEntity, target, sideFront, FLUID_TRANSFER_RATE, null);
+            GTUtility.moveFluid(baseMetaTileEntity, target, sideFront, FLUID_OUTPUT_LITERS_PER_SECOND, null);
         }
     }
 
@@ -244,7 +242,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         return mode == Mode.OutputFluid;
     }
 
-    /** Stores as much oven output as fits, returning the accepted count without changing the supplied stack. */
+    /** Returns the number stored without modifying {@code stack}. */
     public int storeItemOutput(ItemStack stack) {
         if (mode != Mode.OutputItem || !isValid() || stack == null || stack.stackSize <= 0) return 0;
         int remaining = stack.stackSize;
@@ -263,7 +261,6 @@ public class MTEHatchCokeOven extends MTEHatch {
         return stack.stackSize - remaining;
     }
 
-    /** Stores oven fluid internally; pipes and containers cannot fill this output hatch. */
     public int storeFluidOutput(FluidStack stack) {
         if (mode != Mode.OutputFluid || !isValid() || stack == null || stack.amount <= 0) return 0;
         if (mFluid != null && !mFluid.isFluidEqual(stack)) return 0;
@@ -289,10 +286,9 @@ public class MTEHatchCokeOven extends MTEHatch {
         return FLUID_CAPACITY;
     }
 
-    /** A drain-only view of the hatch-owned output tank. */
     @Override
     public FluidStackTank getFluidTank() {
-        return outputTank;
+        return drainOnlyOutputTank;
     }
 
     @Override
@@ -309,11 +305,6 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     public boolean canTankBeEmptied() {
         return mode == Mode.OutputFluid;
-    }
-
-    @Override
-    public int fill(FluidStack fluid, boolean doFill) {
-        return 0;
     }
 
     @Override

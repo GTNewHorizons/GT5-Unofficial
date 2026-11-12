@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -71,6 +70,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     public final static int INPUT_SLOT = 0;
     public final static int OUTPUT_SLOT = 1;
     public final static int FLUID_CAPACITY = 64_000;
+
+    private static final int INCOMPLETE_STRUCTURE_ERROR = 64;
 
     private FluidStack fluid;
     private final ArrayList<MTEHatchCokeOven> hatches = new ArrayList<>();
@@ -209,7 +210,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     @Override
     public boolean allowPutStack(IGregTechTileEntity baseMetaTileEntity, int index, ForgeDirection side,
         ItemStack stack) {
-        // Only allow putting stacks through hatches which set the direction to `UNKNOWN`
         if (side != ForgeDirection.UNKNOWN) return false;
         return super.allowPutStack(baseMetaTileEntity, index, side, stack);
     }
@@ -243,12 +243,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         return IAlignmentLimits.UPRIGHT;
     }
 
-    /**
-     * Draws random flames and smoke particles in front of Primitive Blast Furnace when active
-     * Copied from {@link MTEBrickedBlastFurnace}.
-     *
-     * @param baseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
-     */
     @SideOnly(Side.CLIENT)
     @Override
     public void onRandomDisplayTick(IGregTechTileEntity baseMetaTileEntity) {
@@ -268,31 +262,31 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
                 final double x = oX + horizontal;
                 final double y = oY + vertical;
                 final double z = oZ - offset;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case SOUTH -> {
                 final double x = oX + horizontal;
                 final double y = oY + vertical;
                 final double z = oZ + offset;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case WEST -> {
                 final double x = oX - offset;
                 final double y = oY + vertical;
                 final double z = oZ + horizontal;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case EAST -> {
                 final double x = oX + offset;
                 final double y = oY + vertical;
                 final double z = oZ + horizontal;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             default -> throw new IllegalStateException("Unexpected facing: " + frontFacing);
         }
     }
 
-    private void createParticles(IGregTechTileEntity baseMetaTileEntity, double x, double y, double z) {
+    private void spawnFlameAndSmokeParticles(IGregTechTileEntity baseMetaTileEntity, double x, double y, double z) {
         WorldSpawnedEventBuilder.ParticleEventBuilder particleEventBuilder = new WorldSpawnedEventBuilder.ParticleEventBuilder()
             .setMotion(0, 0, 0)
             .setPosition(x, y, z)
@@ -334,12 +328,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         mTotalRunTime++;
         checkRecipeProgress(baseMetaTileEntity);
 
-        // Polling updates.
         if (tick % 20 == 0) {
             mMachine = checkStructure(true, baseMetaTileEntity);
 
-            // Sets "Incomplete Structure" text in WAILA
-            setErrorDisplayID(mMachine ? 0 : 64);
+            setErrorDisplayID(mMachine ? 0 : INCOMPLETE_STRUCTURE_ERROR);
 
             if (baseMetaTileEntity.isActive()) {
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
@@ -363,7 +355,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         return inputs;
     }
 
-    /** The controller remains a staging buffer, so shared output hatches cannot steal reserved output space. */
     private void flushHatchOutputs() {
         for (MTEHatchCokeOven hatch : hatches) {
             int items = hatch.storeItemOutput(mInventory[OUTPUT_SLOT]);
@@ -373,7 +364,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         }
     }
 
-    private boolean canStoreOutputs(ItemStack itemOutput, FluidStack fluidOutput) {
+    // Shared hatch space cannot be reserved for a running recipe.
+    private boolean canFitOutputsInController(ItemStack itemOutput, FluidStack fluidOutput) {
         ItemStack stored = mInventory[OUTPUT_SLOT];
         if (itemOutput != null) {
             if (itemOutput.stackSize > Math.min(getInventoryStackLimit(), itemOutput.getMaxStackSize())) return false;
@@ -394,10 +386,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         if (mMaxProgresstime > 0) {
             if (mProgresstime < mMaxProgresstime) mProgresstime++;
             if (mProgresstime >= mMaxProgresstime) {
-                ItemStack itemOutput = mOutputItems == null || mOutputItems.length == 0 ? null : mOutputItems[0];
-                FluidStack fluidOutput = mOutputFluids == null || mOutputFluids.length == 0 ? null : mOutputFluids[0];
-                // Manual insertion can fill the controller while a recipe is running. Keep its pending outputs intact.
-                if (!canStoreOutputs(itemOutput, fluidOutput)) return;
+                ItemStack pendingItemOutput = mOutputItems == null || mOutputItems.length == 0 ? null : mOutputItems[0];
+                FluidStack pendingFluidOutput = mOutputFluids == null || mOutputFluids.length == 0 ? null
+                    : mOutputFluids[0];
+                if (!canFitOutputsInController(pendingItemOutput, pendingFluidOutput)) return;
                 addOutput();
                 addOutputFluid();
                 mOutputItems = null;
@@ -416,7 +408,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             final GTRecipe recipe = getRecipeMap().findRecipeQuery()
                 .items(inputs)
                 .find();
-            if (recipe == null || !canStoreOutputs(recipe.getOutput(0), recipe.getFluidOutput(0))) return;
+            if (recipe == null || !canFitOutputsInController(recipe.getOutput(0), recipe.getFluidOutput(0))) return;
             if (!recipe.isRecipeInputEqual(true, null, inputs)) return;
 
             if (mInventory[INPUT_SLOT] != null && mInventory[INPUT_SLOT].stackSize <= 0) mInventory[INPUT_SLOT] = null;
