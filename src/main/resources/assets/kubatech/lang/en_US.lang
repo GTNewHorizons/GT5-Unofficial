@@ -36,7 +36,7 @@ GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
 GT5U.gui.text.recipe_result.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.recipe_result.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.recipe_result.EIG_missingwater=No water!
-GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+GT5U.gui.text.EIG_ic2glass=Insufficient Glass Tier!
 
 GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
 GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
@@ -125,6 +125,13 @@ kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual
 kubatech.chat.eec.ritual_mode_error=Can't connect to ritual!
 kubatech.chat.eec.infernal_drops_enabled=Mobs can spawn infernal
 kubatech.chat.eec.infernal_drops_disabled=Mobs will be prevented from spawning infernal
+
+kubatech.chat.mia.primary_mode.input=Changed primary mode to: Input mode
+kubatech.chat.mia.primary_mode.output=Changed primary mode to: Output mode
+kubatech.chat.mia.primary_mode.operating=Changed primary mode to: Operating mode
+kubatech.chat.mia.secondary_mode.normal=Changed secondary mode to: Normal mode
+kubatech.chat.mia.secondary_mode.swarmer=Changed secondary mode to: Swarmer mode
+kubatech.chat.mia.not_empty=§cCan't swap between Swarmer/Normal mode while Bees are present!
 
 # info data
 ## general
@@ -244,10 +251,10 @@ item.arc_furnace_electrode.tip.durability=Durability: %s/%s
 item.arc_furnace_electrode.tip.speed=Speed: %s
 item.arc_furnace_electrode.tip.parallel_limit=Parallels: %s
 item.arc_furnace_electrode.tip.parallel_limit_none=None
-item.arc_furnace_electrode.tip.oc=OC: %s%s
-item.arc_furnace_electrode.tip.eu_modifier=EU Modifier: %s
+item.arc_furnace_electrode.tip.overclock=Overclock: %s/%s
+item.arc_furnace_electrode.tip.eu_usage=EU Usage: %s
 item.arc_furnace_electrode.tip.startup_penalty=Startup Penalty: %s
-item.arc_furnace_electrode.tip.startup_amperage=Startup Amperage: %s A
+item.arc_furnace_electrode.tip.startup_amperage=Startup Amperage: %sA
 
 item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup penalty
 item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup penalty

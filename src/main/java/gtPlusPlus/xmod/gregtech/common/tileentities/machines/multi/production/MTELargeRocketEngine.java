@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -22,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -134,18 +135,17 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     .put("warmup_max", formatNumber(WARMUP_MAX_SECONDS))
                     .put("pollution", formatNumber(POLLUTION_PER_EUT))
                     .put("pollution_unit", formatNumber(POLLUTION_EUT_UNIT))
-                    .put("unit", getFluidUnit())
                     .build())
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("62-76", "Turbodyne Casing", false)
-            .addCasing("8", "Inconel Reinforced Casing", false)
-            .addMiscHatch("1+", "Air Intake Hatch", "Any center casing", 1, 2)
-            .addDynamoHatch("1+", "Any top center casing", 2)
-            .addMaintenanceHatch("1", "Any center casing", 1, 2)
-            .addMufflerHatch("1", "Back center casing", 3)
-            .addInputHatch("1+", "Any side or bottom center casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("62-76", Casings.TurbodyneCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.AirIntakeHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 3)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_or_bottom_center_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -528,7 +528,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public String getMachineType() {
-        return "Rocket Engine";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.rocket_engine");
     }
 
     @Override

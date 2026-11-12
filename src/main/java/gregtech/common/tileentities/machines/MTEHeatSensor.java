@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -15,7 +17,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -27,7 +31,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
-public class MTEHeatSensor extends MTEHatch {
+public class MTEHeatSensor extends MTEHatch implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "heatSensor";
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -79,8 +85,39 @@ public class MTEHeatSensor extends MTEHatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        openGui(aPlayer);
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.loaded"));
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        dataStick.setStackDisplayName("Heat Sensor Hatch Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.saved"));
     }
 
     @Override
@@ -155,6 +192,28 @@ public class MTEHeatSensor extends MTEHatch {
 
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setDouble("threshold", getThreshold());
+        tag.setBoolean("inverted", isInverted());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setThreshold(nbt.getDouble("threshold"));
+        setInverted(nbt.getBoolean("inverted"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 
     @Override

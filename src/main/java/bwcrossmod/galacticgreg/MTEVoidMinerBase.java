@@ -25,6 +25,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,6 +62,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -154,7 +159,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     protected void setElectricityStats() {
         batchMultiplier = batchMode ? BATCH_MULTIPLIER : 1;
-        this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
+        this.mEUt = -Math.abs(Math.toIntExact(GTValues.VP[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
         this.mMaxProgresstime = RECIPE_DURATION_TICKS * batchMultiplier;
@@ -172,11 +177,11 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Miner, VM")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.miner"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "void-miner"),
                 ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(GTValues.V[this.getMinTier()]))
+                    .put("power", formatNumber(GTValues.VP[this.getMinTier()]))
                     .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
                     .put("neon_boost", NEON_BOOST)
                     .put("krypton_boost", KRYPTON_BOOST)
@@ -300,15 +305,24 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
-
         if (canVoidMine) {
-            final ItemStack output = this.nextOre();
-            output.stackSize = multiplier * batchMultiplier;
+            ItemStack[] outputs = new ItemStack[batchMultiplier];
 
-            boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+            for (int i = 0; i < batchMultiplier; i++) {
+                outputs[i] = this.nextOre();
+            }
 
-            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist != matchesFilter)) {
-                this.addOutputPartial(output);
+            for (ItemStack output : outputs) {
+                if (output != null) {
+                    output.stackSize = multiplier;
+
+                    boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+
+                    if ((isSelectedEmpty() && inputOres.isEmpty())
+                        || (this.blacklist ? !matchesFilter : matchesFilter)) {
+                        this.addOutputPartial(output);
+                    }
+                }
             }
         }
 
@@ -463,5 +477,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Collections.singletonList(RecipeMaps.voidMinerRecipes);
     }
 }

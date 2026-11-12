@@ -63,8 +63,6 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         if (type == ItemRenderType.INVENTORY) {
-            RenderHelper.enableGUIStandardItemLighting();
-
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 

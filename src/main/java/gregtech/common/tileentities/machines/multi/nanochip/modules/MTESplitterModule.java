@@ -326,6 +326,11 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return new MTESplitterModuleGui(this);
     }
 
+    @Override
+    public boolean supportsInputSeparation() {
+        return false;
+    }
+
     public static final String COPIED_DATA_IDENTIFIER = "nacSplitter";
 
     @Override

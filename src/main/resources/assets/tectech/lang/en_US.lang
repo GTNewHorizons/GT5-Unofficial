@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Explodes, but not as much...
 
 gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
 gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+gt.stabilisation_field_generator.name=Stabilisation Field Generator
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -463,8 +464,8 @@ gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
 gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
-gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
-gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
+gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
@@ -1077,15 +1078,7 @@ gt.blockmachines.machine.tt.datareader.desc.0=Reads Data Sticks and Orbs
 gt.blockmachines.machine.tt.datareader.desc.1=Power it up and
 gt.blockmachines.machine.tt.datareader.desc.2=Put the data storage in
 
-gt.blockmachines.machine.tt.buck.05.name=Insane Buck Converter
-gt.blockmachines.machine.tt.buck.06.name=Ludicrous Buck Converter
-gt.blockmachines.machine.tt.buck.07.name=ZPM Voltage Buck Converter
-gt.blockmachines.machine.tt.buck.08.name=Ultimate Power Buck Converter
-gt.blockmachines.machine.tt.buck.09.name=Highly Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.10.name=Extremely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.11.name=Insanely Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.12.name=Mega Ultimate Buck Converter
-gt.blockmachines.machine.tt.buck.13.name=Extended Mega Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.name=%1$s Buck Converter
 gt.blockmachines.machine.tt.buck.desc.0=Electronic voltage regulator
 gt.blockmachines.machine.tt.buck.desc.1=Adjustable step down transformer
 gt.blockmachines.machine.tt.buck.desc.2=Switching power supply...
@@ -1095,6 +1088,9 @@ gt.blockmachines.machine.tt.tesla.02.name=Advanced Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.03.name=Epyc Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.04.name=Ultimate Power Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.05.name=Insane Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.small.name=Small %s
+gt.blockmachines.machine.tt.tesla.large.name=Large %s
+gt.blockmachines.machine.tt.tesla.huge.name=Huge %s
 gt.blockmachines.machine.tt.tesla.desc.0=Your Tesla I/O machine of choice
 gt.blockmachines.machine.tt.tesla.desc.1=Lightning stoves for the rich
 
@@ -1145,7 +1141,7 @@ GT5U.gui.text.recipe_result.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.recipe_result.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.recipe_result.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.recipe_result.invalid_current_setting=§7Invalid current setting
-GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary winding tier is too low!
+GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary Winding Tier is too low!
 GT5U.gui.text.recipe_result.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Insufficient power
@@ -1178,6 +1174,11 @@ gt.recipe.condensate=Bose-Einstein Condensate
 tt.nei.eoh.total_items=Total Items: %s
 tt.nei.eoh.solid_mass=Percentage of Solid Mass: %s%%
 tt.nei.eoh.item_count=Item Count: %s
+tt.nei.fog_exotic.weight=Weight: %s
+tt.nei.fog_exotic.chance=Request chance: %s%%
+tt.nei.fog_exotic.random_amount=Random amount: %s-%s L
+tt.nei.fog_exotic.picks=Requests %s random plasma
+tt.nei.fog_exotic.rules=See the controller for details
 tt.nei.research.max_eu=Max EU: %s EU
 tt.nei.research.computation=Computation: %s
 tt.nei.research.min_computation=Min Computation: %s /s
@@ -1698,12 +1699,6 @@ tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
 
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Project Godforge
-
 tt.chat.debug.generator=Laser mode: %s
 
 GT5U.gui.config.general.debug=Debug
@@ -1774,7 +1769,7 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
-tt.infodata.active_transformer.min_hatch_tier=Min hatch tier: %s
+tt.infodata.active_transformer.min_hatch_tier=Min Hatch Tier: %s
 tt.infodata.active_transformer.last_5s=Last 5 seconds: %s EU/t
 tt.infodata.active_transformer.last_30s=Last 30 seconds: %s EU/t
 tt.infodata.active_transformer.last_1min=Last minute: %s EU/t
@@ -1868,6 +1863,16 @@ tt.spaceminer.calculator.asteroidChance= %s
 tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
 tt.spaceminer.filter.noValidInputs=No valid inputs!
 tt.spaceminer.filter.addOre=Click to add this ore to the filter
+# Space Pump
+tt.spacepump.batchslider=Modifies the current batch recipe time (in s)
+tt.spacepump.rate=Pumps %s/s
+tt.spacepump.ratemax=Up to %s/s per recipe
+tt.spacepump.pendingqueue=Confirm or modify selected recipes:
+tt.spacepump.planettier=Tier %d:
+tt.spacepump.utilityapply=&aApply&r & &4overwrite&r existing recipes\n&eEmpty slots will unset running recipes!
+tt.spacepump.utilityremove=Click to remove selected fluid
+tt.spacepump.utilityselected=Selected: &c%s
+tt.spacepump.utilitypanelButtonTooltip=Open Space Pump Quick Picker\n - &6Click&r any &3fluid&r to add it to list (&aallows multiple&r)\n - &6Click&r on the preview slots at the bottom to free the slot\n - &6Click&r on the &2Apply&r button to change the &3pumps&r config
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
@@ -1879,7 +1884,7 @@ tt.gui.parameter.header=Parameters
 
 tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
-tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
+tt.gui.tooltip.plasma_module.debug_window.fusion_tier=Fusion Tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 tt.gui.tooltip.uncertainty.value_assist=Color vision assist: overlay the value of each of the 16 cells
 
@@ -1918,7 +1923,6 @@ EOH.Recipe.EU.Out=EU Output: %s EU
 EOH.Recipe.EU.In=EU Input: %s EU
 EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
 EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
-EOH.Recipe.Warning=§4§lWarning§r: Not all items displayed.
 
 gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
 gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.

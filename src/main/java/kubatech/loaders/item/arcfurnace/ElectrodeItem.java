@@ -13,6 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import kubatech.loaders.ArcFurnaceElectrode;
@@ -20,7 +22,6 @@ import kubatech.loaders.ArcFurnaceElectrode;
 public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer {
 
     private static final String DURABILITY_TAG = "durability";
-    private IIcon electrodeIcon;
 
     public ElectrodeItem() {
         super();
@@ -69,13 +70,11 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     }
 
     @Override
-    public void registerIcons(IIconRegister register) {
-        electrodeIcon = register.registerIcon("kubatech:arcfurnace/electrode");
-    }
+    public void registerIcons(IIconRegister register) {}
 
     @Override
     public IIcon getIconFromDamage(int meta) {
-        return electrodeIcon;
+        return getIcon(meta, 0);
     }
 
     @Override
@@ -125,7 +124,11 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
 
     @Override
     public IIcon getIcon(int aMetaData, int pass) {
-        return electrodeIcon;
+        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
+        if (electrode == null) return null;
+        TextureSet set = electrode.associatedMaterial.getTextureSet();
+        if (set == null) return null;
+        return set.mTextures[OrePrefixes.electrode.getTextureIndex()].getIcon();
     }
 
     @Override

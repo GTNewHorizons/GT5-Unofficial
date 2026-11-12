@@ -23,21 +23,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -63,6 +66,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialElectromagneticSeparator
     extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -193,40 +197,29 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo(
-                "Insert an " + EnumChatFormatting.AQUA
-                    + "Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + " into the electromagnet housing to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA
-                    + "Electromagnets"
-                    + EnumChatFormatting.GRAY
-                    + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Tengam Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electromagnetic_separator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-electromagnetic-separator"),
+                ImmutableMap.<String, Object>builder().build())
             .beginStructureBlock(7, 6, 7, true)
-            .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
-            .addCasing("37", "Magnetic Neodymium Frame Box", false)
-            .addCasing("12", "Any Tiered Glass", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASING + "-73", Casings.MagTechCasing.getLocalizedName(), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NeodymiumMagnetic), false)
+            .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
-                "One block above/behind controller",
+                StatCollector.translateToLocal("gt.mbtt.structure.one_block_above_behind_controller"),
                 2)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.authorBaps);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -21,6 +21,8 @@ public class BlockCasings14 extends BlockCasingsAbstract {
         register(3, ItemList.CasingHearth);
         register(4, ItemList.CasingFridge);
         register(5, ItemList.CasingNaquadahReinforcedDistillation);
+        register(6, ItemList.ExtruderMachineCasing);
+        register(7, ItemList.TensionResistantMachineCasing);
     }
 
     @Override
@@ -38,6 +40,8 @@ public class BlockCasings14 extends BlockCasingsAbstract {
                 yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_SIDE.getIcon();
             }
             case 5 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION.getIcon();
+            case 6 -> Textures.BlockIcons.EXTRUDER_MACHINE_CASING.getIcon();
+            case 7 -> Textures.BlockIcons.TENSION_RESISTANT_MACHINE_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

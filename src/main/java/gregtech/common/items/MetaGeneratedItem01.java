@@ -442,6 +442,7 @@ import static gregtech.common.items.IDMetaItem01.Steam_Valve_IV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_LV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_MV;
 import static gregtech.common.items.IDMetaItem01.SuperconductorComposite;
+import static gregtech.common.items.IDMetaItem01.Supermassive_Black_Hole_Opener;
 import static gregtech.common.items.IDMetaItem01.T1Sawblade;
 import static gregtech.common.items.IDMetaItem01.T2Sawblade;
 import static gregtech.common.items.IDMetaItem01.T3Sawblade;
@@ -3735,6 +3736,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.black_hole.stabilizer.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
+        ItemList.Supermassive_Black_Hole_Opener.set(
+            addItemWithLocalizationKeys(
+                Supermassive_Black_Hole_Opener.ID,
+                "gt.item.black_hole.supermassive_seed.name",
+                "gt.item.black_hole.supermassive_seed.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
@@ -4025,7 +4033,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
 
-        return false;
+        return super.onItemUse(oldItemStack, player, world, x, y, z, ordinalSide, hitX, hitY, hitZ);
     }
 
     /**

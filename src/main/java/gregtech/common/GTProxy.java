@@ -383,7 +383,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("dustSodium", 400);
         oreDictBurnTimes.put("dustSmallCoal", 400);
         oreDictBurnTimes.put("dustSmallCharcoal", 400);
-        oreDictBurnTimes.put("dustTinyLithium", 888);
+        oreDictBurnTimes.put("dustTinyLithium", 666);
         oreDictBurnTimes.put("dustTinyCaesium", 888);
         oreDictBurnTimes.put("gemLignite", 1200);
         oreDictBurnTimes.put("crushedLignite", 1200);
@@ -398,7 +398,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("crushedCharcoal", 1600);
         oreDictBurnTimes.put("dustImpureCharcoal", 1600);
         oreDictBurnTimes.put("dustCharcoal", 1600);
-        oreDictBurnTimes.put("dustSmallLithium", 2000);
+        oreDictBurnTimes.put("dustSmallLithium", 1500);
         oreDictBurnTimes.put("dustSmallCaesium", 2000);
         oreDictBurnTimes.put("gemSodium", 4000);
         oreDictBurnTimes.put("crushedSodium", 4000);
@@ -542,11 +542,6 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
-        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
-        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
-        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
-        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
-        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
         ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
         ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
@@ -962,6 +957,7 @@ public class GTProxy implements IFuelHandler {
 
         VacuumFactoryGrid.onServerClosed();
         BECFactoryGrid.onServerClosed();
+        WirelessDataStore.onServerClosed();
     }
 
     /**

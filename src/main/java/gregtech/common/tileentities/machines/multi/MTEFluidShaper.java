@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -181,9 +180,9 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
@@ -196,7 +195,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorOmdaCZ);
+            .toolTipFinisher();
         return tt;
     }
 
