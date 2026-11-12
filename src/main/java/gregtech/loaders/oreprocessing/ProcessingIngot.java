@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -73,15 +74,24 @@ public class ProcessingIngot implements PartRecipeGenerator {
                 {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, false);
-                    GTRecipeRegistrator.registerReverseMacerating(
-                        stack,
-                        material,
-                        prefix.getMaterialAmount(),
-                        null,
-                        null,
-                        null,
-                        false,
-                        false);
+                    if (material == Materials.Zirconium) {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(stack)
+                            .itemOutputs(MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dust, 1))
+                            .duration(5 * SECONDS)
+                            .eut(2)
+                            .addTo(maceratorRecipes);
+                    } else {
+                        GTRecipeRegistrator.registerReverseMacerating(
+                            stack,
+                            material,
+                            prefix.getMaterialAmount(),
+                            null,
+                            null,
+                            null,
+                            false,
+                            false);
+                    }
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(material)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, stack),
