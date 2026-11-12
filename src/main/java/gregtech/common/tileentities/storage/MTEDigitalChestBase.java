@@ -156,6 +156,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isPrioritized(IAEItemStack iaeItemStack) {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null || !base.canAccessData()) return false;
         ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
         if (isMatterCluster(stack)) {
             ItemStack targetItem = getMatterClusterTargetItem();
@@ -166,6 +168,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean canAccept(IAEItemStack iaeItemStack) {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null || !base.canAccessData()) return false;
         ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
         if (isMatterCluster(stack)) {
             return getMatterClusterEntry(stack, getMatterClusterTargetItem()) != null;
