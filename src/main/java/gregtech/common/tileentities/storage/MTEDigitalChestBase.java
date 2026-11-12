@@ -156,8 +156,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isPrioritized(IAEItemStack iaeItemStack) {
-        final IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base == null || !base.canAccessData()) return false;
+        if (!isAccessible()) return false;
         ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
         if (isMatterCluster(stack)) {
             ItemStack targetItem = getMatterClusterTargetItem();
@@ -168,8 +167,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean canAccept(IAEItemStack iaeItemStack) {
-        final IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base == null || !base.canAccessData()) return false;
+        if (!isAccessible()) return false;
         ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
         if (isMatterCluster(stack)) {
             return getMatterClusterEntry(stack, getMatterClusterTargetItem()) != null;
@@ -229,11 +227,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
-        final IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base == null || !base.canAccessData()) return input;
+        if (!isAccessible()) return input;
 
         if (isMatterCluster(input.getItemStack())) {
-
             int previousCount = getItemCount();
             long remaining = insertMatterClusters(
                 input.getItemStack(),
@@ -731,6 +727,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
 
+    }
+
+    private boolean isAccessible() {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        return base != null && base.canAccessData();
     }
 
     class ItemIOImpl extends SimpleItemIO {
