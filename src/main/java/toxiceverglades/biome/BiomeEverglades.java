@@ -42,7 +42,7 @@ public class BiomeEverglades {
             this.setHeight(new BiomeGenBase.Height(0.3F, 0.5F));
             this.heightVariation = 0.4F;
             this.waterColorMultiplier = 0x17290A;
-            this.rootHeight = -0.25f;
+            this.rootHeight = -0.25f; // Ground level
 
             this.spawnableMonsterList.clear();
             this.spawnableCreatureList.clear();

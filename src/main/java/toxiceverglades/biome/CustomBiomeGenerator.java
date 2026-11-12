@@ -80,7 +80,7 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         this.sandPerChunk2 = 3;
         this.clayPerChunk = 1;
 
-        this.generateLakes = false;
+        this.generateLakes = true;
     }
 
     @Override
@@ -291,6 +291,9 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));
     }
 
+    /**
+     * Standard ore generation helper. Generates most ores.
+     */
     @Override
     protected void genStandardOre1(int p_76795_1_, WorldGenerator p_76795_2_, int p_76795_3_, int p_76795_4_) {
         for (int l = 0; l < p_76795_1_; ++l) {
@@ -301,6 +304,9 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         }
     }
 
+    /**
+     * Standard ore generation helper. Generates Lapis Lazuli.
+     */
     @Override
     protected void genStandardOre2(int p_76793_1_, WorldGenerator p_76793_2_, int p_76793_3_, int p_76793_4_) {
         for (int l = 0; l < p_76793_1_; ++l) {
@@ -312,6 +318,9 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         }
     }
 
+    /**
+     * Generates ores in the current chunk
+     */
     @Override
     protected void generateOres() {
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(currentWorld, randomGenerator, chunk_X, chunk_Z));
