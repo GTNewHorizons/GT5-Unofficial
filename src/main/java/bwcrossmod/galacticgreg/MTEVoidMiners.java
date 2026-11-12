@@ -157,7 +157,6 @@ public class MTEVoidMiners {
     public static class VMZPM extends MTEVoidMinerBase<VMZPM> {
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
-        private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMZPM> STRUCTURE_DEFINITION = StructureDefinition.<VMZPM>builder()
             // spotless:off
