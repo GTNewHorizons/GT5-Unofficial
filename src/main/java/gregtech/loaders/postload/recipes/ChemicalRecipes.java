@@ -3979,6 +3979,54 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
+        // Single block only: monomer in cells + oxygen/air as a fluid. The single block
+        // chemical reactor has a single fluid input, so the fluid/fluid variant cannot
+        // exist there; the LCR already has it through UniversalChemical's cell-to-fluid
+        // conversion. One monomer cell holds 1,000 L, so oxygen use and polymer output
+        // follow the cell-oxygen recipes above (1,000 L oxygen and 1.5x polymer per
+        // 144 L monomer, scaled up). Skipped for monomers without a cell form.
+        if (getFilledCellFromFluidName(aBasicMaterial, 1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(getFilledCellFromFluidName(aBasicMaterial, 1))
+                .circuit(1)
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(Materials.Air.getGas(7_000))
+                .fluidOutputs(new FluidStack(aPolymer, 1_000))
+                .duration(56 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(chemicalReactorRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(getFilledCellFromFluidName(aBasicMaterial, 1))
+                .circuit(1)
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(Materials.Oxygen.getGas(7_000))
+                .fluidOutputs(new FluidStack(aPolymer, 1_500))
+                .duration(56 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(chemicalReactorRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(getFilledCellFromFluidName(aBasicMaterial, 8))
+                .circuit(9)
+                .itemOutputs(Materials.Empty.getCells(8))
+                .fluidInputs(Materials.Air.getGas(56_000))
+                .fluidOutputs(new FluidStack(aPolymer, 8_000))
+                .duration(392 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(chemicalReactorRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(getFilledCellFromFluidName(aBasicMaterial, 8))
+                .circuit(9)
+                .itemOutputs(Materials.Empty.getCells(8))
+                .fluidInputs(Materials.Oxygen.getGas(56_000))
+                .fluidOutputs(new FluidStack(aPolymer, 12_000))
+                .duration(392 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(chemicalReactorRecipes);
+        }
+
         GTValues.RA.stdBuilder()
             .circuit(2)
             .fluidInputs(
