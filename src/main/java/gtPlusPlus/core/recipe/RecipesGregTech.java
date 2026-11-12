@@ -916,8 +916,7 @@ public class RecipesGregTech {
     }
 
     private static void blastSmelterRecipes() {
-        // Steel. Defined by hand so the circuit is 3 (iron, carbon, oxygen) instead of the 11 inherited from the
-        // matching EBF recipe. RecipeGenBlastSmelterGTNH skips EBF recipes that already have a matching entry.
+        // Steel. 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Iron.getDust(1),
