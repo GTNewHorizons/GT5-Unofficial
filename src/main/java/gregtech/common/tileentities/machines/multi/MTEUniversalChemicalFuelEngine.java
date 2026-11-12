@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.activeBlocks;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -128,7 +129,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                             .hint(1)
                             .build(),
                         onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
-                .addElement('C', Casings.TitaniumFireboxCasing.asElement())
+                .addElement('C', activeBlocks(Casings.TitaniumFireboxCasing.asElement()))
                 .addElement('D', Casings.EngineIntakeCasing.asElement())
                 .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
                 .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
