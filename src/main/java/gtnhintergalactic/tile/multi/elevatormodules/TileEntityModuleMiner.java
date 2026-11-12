@@ -645,7 +645,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         // T3: 0.125
         // T4: 0.296
         // T5: 0.578
-        // The whole chance is multiplied by 2 - overdrive setting
         return Math.min((int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000)), BONUS_STACK_MAX_CHANCE);
     }
 
@@ -727,7 +726,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * @return Boosted recipe time
      */
     protected int getRecipeTime(int unboostedTime, int plasmaTier) {
-        // Reduce recipe time by 10% for every plasma tier above T1 and divide recipe time by the overdrive value
+        // Reduce recipe time by 10% for every plasma tier above T1
         return plasmaTier > 0
             ? (int) ((double) unboostedTime * Math.max((1D - 0.1D * (plasmaTier - 1)), MIN_RECIPE_TIME_MODIFIER))
             : unboostedTime;

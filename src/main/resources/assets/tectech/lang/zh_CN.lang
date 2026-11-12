@@ -317,11 +317,8 @@ gt.blockmachines.multimachine.tm.teslaCoil.name=特斯拉电塔
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=迟滞低设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=迟滞高设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=特斯拉电塔传输半径设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3=特斯拉收发器传输半径设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4=加强特斯拉线圈帽传输半径设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5=输出电压设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6=输出电流设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7=最小扫描时间设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8=过载设置
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机

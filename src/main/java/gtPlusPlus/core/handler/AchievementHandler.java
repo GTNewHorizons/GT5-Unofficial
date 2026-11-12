@@ -52,13 +52,6 @@ public class AchievementHandler {
             "",
             true);
 
-        this.registerAchievement(
-            "hatch.dynamo.buffered",
-            2,
-            -2,
-            GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1),
-            aBaseAchievementName,
-            false);
         // First multi anyone really needs
         this.registerAchievement(
             "multi.abs",
@@ -341,10 +334,6 @@ public class AchievementHandler {
                 // High-amp xformers
                 else if (aUnlocalName.startsWith(aStartsWith + "transformer.ha.tier.")) {
                     this.issueAchievement(aPlayer, "hiampxform");
-                }
-                // Buffered Dynamos
-                else if (aUnlocalName.startsWith(aStartsWith + "hatch.dynamo.buffer.tier.")) {
-                    this.issueAchievement(aPlayer, "hatch.dynamo.buffered");
                 }
                 // Control Core Hatch
                 else if (aUnlocalName.startsWith(aStartsWith + "hatch.control.adv")) {

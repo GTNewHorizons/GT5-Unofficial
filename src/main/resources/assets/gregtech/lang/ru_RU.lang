@@ -218,7 +218,6 @@ gt.blockmachines.long_distance_item_pipeline.desc=Переносит предм�
 gt.blockmachines.long_distance_fluid_pipeline.desc=Переносит жидкости на большие расстояния
 gt.blockmachines.long_distance_pipeline.desc=Только один вход и выход разрешён для трубы\nТолько вход и выход должны быть прогружены\nСкорость передачи ограничивается только скорость ввода\nМинимальное расстояние: %s блока
 gt.blockmachines.dynamo_hatch.desc=Выход электроэнергии из мультиблока\nВыдаёт до 1 Ампера
-gt.blockmachines.dynamo_hatch_buffer.desc=Энерговывод с внутренним хранилищем и дополнительной ёмкостью\nНе принимает больше, чем %sEU/t на входе
 gt.blockmachines.energy_hatch.desc=Вход энергии для мультиблоков\nПринимает до 2 ампер
 gt.blockmachines.energy_hatch_wireless.desc=§7Хранит энергию в мировой сети, до 2^(2^31) EU.\n§7Не подключается к проводам. Этот блок выводит EU из сети.
 gt.blockmachines.energy_hatch_debug.desc=§7Хранит EU внутри\n§7Настройте амперы и вольтаж в интерфейсе\n§o/gt global_energy_set Develo-... больше не нужен!
