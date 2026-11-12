@@ -115,7 +115,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             'A',
             buildHatchAdder(MTECZPuller.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                 .buildAndChain(onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 3))
@@ -128,7 +128,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             'E',
             buildHatchAdder(MTECZPuller.class).atLeast(InputBus)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement('F', ofFrame(Materials.TengamAttuned))
         .addElement('G', ofFrame(Materials.NaquadahEnriched))
@@ -136,21 +136,21 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             'H',
             buildHatchAdder(MTECZPuller.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
                 .buildAndChain(onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings9, 11))))
         .addElement(
             'J',
             buildHatchAdder(MTECZPuller.class).atLeast(InputBus)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .addElement(
             'Z',
             buildHatchAdder(MTECZPuller.class).hatchClass(MTEHatchInputBus.class)
                 .adder(MTECZPuller::addSeedBusToMachineList)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .build();
 

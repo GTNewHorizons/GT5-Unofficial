@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -14,11 +13,11 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTECZPuller;
 
-public class MTECZPullerGui extends MTEMultiBlockBaseGui {
+public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
 
     private final MTECZPuller base;
 
@@ -67,19 +66,9 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
         ParentWidget<?> infoPage = new ParentWidget<>()
-            .child(
-                new TextWidget(IKey.dynamic(() -> String.format("Heat: %d%%", heatSyncer.getValue()))).pos(5, 30)
-                    .size(164, 10)
-                    .alignment(Alignment.TopLeft))
-            .child(
-                new TextWidget(IKey.dynamic(() -> String.format("Material type: %s", typeSyncer.getValue()))).pos(5, 40)
-                    .size(164, 10)
-                    .alignment(Alignment.TopLeft))
-            .child(
-                new TextWidget(IKey.dynamic(() -> String.format("Material amount: %d", amountSyncer.getValue())))
-                    .pos(5, 50)
-                    .size(164, 10)
-                    .alignment(Alignment.TopLeft));
+            .child(new TextWidget<>(IKey.dynamic(() -> String.format("Heat: %d%%", heatSyncer.getValue()))))
+            .child(new TextWidget<>(IKey.dynamic(() -> String.format("Material type: %s", typeSyncer.getValue()))))
+            .child(new TextWidget<>(IKey.dynamic(() -> String.format("Material amount: %d", amountSyncer.getValue()))));
         infoPage.sizeRel(1.0f);
         return ui.child(
             pagedWidget.addPage(infoPage)
