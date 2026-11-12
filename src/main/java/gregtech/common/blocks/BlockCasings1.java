@@ -1,18 +1,36 @@
 package gregtech.common.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReferenceArray;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
+import gregtech.api.interfaces.IBlockWithClientMeta;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.render.GTRendererBlock;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
-public class BlockCasings1 extends BlockCasingsAbstract {
+public class BlockCasings1 extends BlockCasingsAbstract
+    implements IBlockWithActiveOffset, IBlockWithClientMeta, IBlockWithTextures {
 
     /**
      * Texture Index Information Textures.BlockIcons.casingTexturePages[0][0-63] - Gregtech
@@ -25,22 +43,22 @@ public class BlockCasings1 extends BlockCasingsAbstract {
     public BlockCasings1() {
         super(ItemCasings.class, "gt.blockcasings", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_ULV, "ULV Machine Casing");
-        register(1, ItemList.Casing_LV, "LV Machine Casing");
-        register(2, ItemList.Casing_MV, "MV Machine Casing");
-        register(3, ItemList.Casing_HV, "HV Machine Casing");
-        register(4, ItemList.Casing_EV, "EV Machine Casing");
-        register(5, ItemList.Casing_IV, "IV Machine Casing");
-        register(6, ItemList.Casing_LuV, "LuV Machine Casing");
-        register(7, ItemList.Casing_ZPM, "ZPM Machine Casing");
-        register(8, ItemList.Casing_UV, "UV Machine Casing");
-        register(9, ItemList.Casing_MAX, "UHV Machine Casing");
-        register(10, ItemList.Casing_BronzePlatedBricks, "Bronze Plated Bricks");
-        register(11, ItemList.Casing_HeatProof, "Heat Proof Machine Casing");
-        register(12, ItemList.Casing_Dim_Trans, "Dimensionally Transcendent Casing");
-        register(13, ItemList.Casing_Dim_Injector, "Dimensional Injection Casing");
-        register(14, ItemList.Casing_Dim_Bridge, "Dimensional Bridge");
-        register(15, ItemList.Casing_Coil_Superconductor, "Superconducting Coil Block");
+        register(0, ItemList.Casing_ULV);
+        register(1, ItemList.Casing_LV);
+        register(2, ItemList.Casing_MV);
+        register(3, ItemList.Casing_HV);
+        register(4, ItemList.Casing_EV);
+        register(5, ItemList.Casing_IV);
+        register(6, ItemList.Casing_LuV);
+        register(7, ItemList.Casing_ZPM);
+        register(8, ItemList.Casing_UV);
+        register(9, ItemList.Casing_MAX);
+        register(10, ItemList.Casing_BronzePlatedBricks);
+        register(11, ItemList.Casing_HeatProof);
+        register(12, ItemList.Casing_Dim_Trans);
+        register(13, ItemList.Casing_Dim_Injector);
+        register(14, ItemList.Casing_Dim_Bridge);
+        register(15, ItemList.Casing_Coil_Superconductor);
 
         for (int i = 0; i < 10; i++) {
             GTStructureChannels.TIER_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
@@ -49,13 +67,14 @@ public class BlockCasings1 extends BlockCasingsAbstract {
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return aMeta;
+        return aMeta % ACTIVE_OFFSET;
     }
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
+        int meta = aMeta % ACTIVE_OFFSET;
+        if (meta >= 0) {
+            switch (meta % ACTIVE_OFFSET) {
                 case 10 -> {
                     return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
                 }
@@ -76,12 +95,12 @@ public class BlockCasings1 extends BlockCasingsAbstract {
                 }
             }
             if (ordinalSide == 0) {
-                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
+                return Textures.BlockIcons.MACHINECASINGS_BOTTOM[meta].getIcon();
             }
             if (ordinalSide == 1) {
-                return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
+                return Textures.BlockIcons.MACHINECASINGS_TOP[meta].getIcon();
             }
-            return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
+            return Textures.BlockIcons.MACHINECASINGS_SIDE[meta].getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
@@ -94,4 +113,115 @@ public class BlockCasings1 extends BlockCasingsAbstract {
 
         return super.colorMultiplier(aWorld, aX, aY, aZ);
     }
+
+    private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 2);
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int metadata) {
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0);
+        ITexture[][] cached = textureCache.get(cacheIndex);
+        if (cached != null) return cached;
+
+        List<ITexture> textures = new ArrayList<>();
+        List<ITexture> topTextures = new ArrayList<>();
+        List<ITexture> botTextures = new ArrayList<>();
+        int meta = metadata % ACTIVE_OFFSET;
+        IIconContainer texture = switch (meta) {
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> Textures.BlockIcons.MACHINECASINGS_SIDE[meta];
+            case 10 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+            case 11 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+            case 12 -> Textures.BlockIcons.MACHINE_DIM_TRANS_CASING;
+            case 13 -> Textures.BlockIcons.MACHINE_DIM_INJECTOR;
+            case 14 -> Textures.BlockIcons.MACHINE_DIM_BRIDGE;
+            case 15 -> Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+        };
+        textures.add(TextureFactory.of(texture));
+
+        IIconContainer topTexture = switch (meta) {
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> Textures.BlockIcons.MACHINECASINGS_TOP[meta];
+            case 10 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+            case 11 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+            case 12 -> Textures.BlockIcons.MACHINE_DIM_TRANS_CASING;
+            case 13 -> Textures.BlockIcons.MACHINE_DIM_INJECTOR;
+            case 14 -> Textures.BlockIcons.MACHINE_DIM_BRIDGE;
+            case 15 -> Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+        };
+        topTextures.add(TextureFactory.of(topTexture));
+
+        IIconContainer botTexture = switch (meta) {
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> Textures.BlockIcons.MACHINECASINGS_BOTTOM[meta];
+            case 10 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS;
+            case 11 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING;
+            case 12 -> Textures.BlockIcons.MACHINE_DIM_TRANS_CASING;
+            case 13 -> Textures.BlockIcons.MACHINE_DIM_INJECTOR;
+            case 14 -> Textures.BlockIcons.MACHINE_DIM_BRIDGE;
+            case 15 -> Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL;
+        };
+        botTextures.add(TextureFactory.of(botTexture));
+
+        if (metadata >= ACTIVE_OFFSET) {
+            if (metadata % ACTIVE_OFFSET == 14) {
+
+                botTextures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
+                        .build());
+
+                topTextures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
+                        .build());
+
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
+                        .build());
+
+            }
+        }
+
+        ITexture[] standardLayers = textures.toArray(new ITexture[0]);
+        ITexture[] topLayers = topTextures.toArray(new ITexture[0]);
+        ITexture[] botLayers = botTextures.toArray(new ITexture[0]);
+        cached = new ITexture[][] { botLayers, topLayers, standardLayers, standardLayers, standardLayers,
+            standardLayers };
+        if (textureCache.compareAndSet(cacheIndex, null, cached)) return cached;
+        return textureCache.get(cacheIndex);
+    }
+
+    @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if ((meta == 14) && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+        return meta;
+    }
+
+    @Override
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return super.damageDropped(metadata) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
+    }
+
 }

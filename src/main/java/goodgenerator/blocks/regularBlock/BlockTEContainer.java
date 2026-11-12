@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -101,8 +100,7 @@ public class BlockTEContainer extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < this.textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -167,8 +165,7 @@ public class BlockTEContainer extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
-                        GTUtility
-                            .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                        GTUtility.sendChatTrans(player, "essentiaoutputhatch.chat.0");
                     }
                     return true;
                 } else return false;

@@ -8,7 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.common.render.GTRenderUtil;
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 public class WireFrameTesseractRenderer implements IItemRenderer {
 
@@ -36,7 +36,7 @@ public class WireFrameTesseractRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
 
-        GTRenderUtil.undoStandardItemTransform(type);
+        ItemRenderUtil.undoStandardItemTransform(type);
 
         // Transform based on context
         final float lineWidth;

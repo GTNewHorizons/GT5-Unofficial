@@ -14,42 +14,57 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
-
-import net.minecraft.item.ItemStack;
+import static gregtech.api.enums.OrePrefixes.plateSuperdense;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
-            RecipeMaps.benderRecipes.add(
-                new GTRecipe(
-                    true,
-                    new ItemStack[] { werkstoff.get(ingot, 2), GTUtility.getIntegratedCircuit(2) },
-                    new ItemStack[] { werkstoff.get(plateDouble) },
-                    null,
-                    null,
-                    null,
-                    null,
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 2))
+                .circuit(2)
+                .itemOutputs(werkstoff.get(plateDouble))
+                .duration(
                     (int) Math.max(
                         werkstoff.getStats()
                             .getMass() * 2,
-                        1L),
-                    60,
-                    0));
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 96))
+                .addTo(benderRecipes);
+
+            int compressionTier = (werkstoff.getStats()
+                .getProcessingMaterialTierEU() >= TierEU.RECIPE_UEV || werkstoff.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 64))
+                .itemOutputs(werkstoff.get(plateSuperdense))
+                .metadata(COMPRESSION_TIER, compressionTier)
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 32,
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 96))
+                .addTo(compressorRecipes);
+
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plateDouble),
-                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false));
+                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA()));
         }
     }
 }

@@ -9,9 +9,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -27,6 +29,7 @@ public class RecipeRemover implements Runnable {
         removeCrafting();
         removeSmelting();
         removeIC2Recipes();
+        removeAdvSolarPanelRecipes();
     }
 
     public void removeCrafting() {
@@ -57,7 +60,7 @@ public class RecipeRemover implements Runnable {
                 new ItemStack(Blocks.gravel),
                 Recipes.oreWashing.getRecipes(),
                 GTValues.NI);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         GTUtility.removeIC2BottleRecipe(
             ItemList.IC2_Fuel_Rod_Empty.get(1),
             ItemList.IC2_Uranium_Fuel.get(1),
@@ -99,19 +102,6 @@ public class RecipeRemover implements Runnable {
             GTModHandler.getCompressorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
 
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_BobsYerUncleRanks.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Ferru.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-        GTUtility.removeSimpleIC2MachineRecipe(
-            ItemList.Crop_Drop_Aurelia.get(1L),
-            GTModHandler.getExtractorRecipeList(),
-            null);
-
         try {
             Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidCooldownManager
                 .getHeatExchangeProperties();
@@ -126,7 +116,7 @@ public class RecipeRemover implements Runnable {
                     Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /* Do nothing */
         }
 
@@ -144,10 +134,16 @@ public class RecipeRemover implements Runnable {
                     Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /* Do nothing */
         }
 
+    }
+
+    public void removeAdvSolarPanelRecipes() {
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+            GTModHandler.removeRecipeByOutputDelayed(new ItemStack(AdvancedSolarPanel.blockMolecularTransformer));
+        }
     }
 
     public void removeSmelting() {

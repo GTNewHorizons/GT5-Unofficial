@@ -19,8 +19,8 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.redstone.CoverWirelessMaintenenceDetectorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessMaintenenceDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessMaintenanceDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -193,7 +193,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverWirelessMaintenenceDetectorGui(this);
     }
 }

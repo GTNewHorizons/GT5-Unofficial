@@ -12,34 +12,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchCapacitorGui;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
+public class MTEHatchCapacitor extends MTEHatch {
 
-    private static Textures.BlockIcons.CustomIcon TM_H;
-    private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
-    private static final Map<String, MTEHatchCapacitor.CapacitorComponent> componentBinds = new HashMap<>();
+    private static IIconContainer TM_H;
+    private static IIconContainer TM_H_ACTIVE;
+    public static final Map<String, MTEHatchCapacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
     public MTEHatchCapacitor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -48,7 +49,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             aNameRegional,
             aTier,
             16,
-            new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
     }
 
@@ -65,8 +66,8 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        TM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS_ACTIVE");
-        TM_H = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_CAPS");
+        TM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/TM_TESLA_CAPS");
     }
 
     @Override
@@ -113,6 +114,16 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchCapacitorGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
     public int getSizeInventory() {
         return getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
@@ -152,29 +163,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
         return new long[] { tier, tCurrent, tEnergyMax };
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
-
-                    @Override
-                    public boolean isEnabled() {
-                        return !getBaseMetaTileEntity().isActive();
-                    }
-                })
-                .background(getGUITextureSet().getItemSlot())
-                .build()
-                .setPos(52, 7));
-    }
-
     public static void run() {
         new MTEHatchCapacitor.CapacitorComponent(Reference.MODID + ":item.tm.teslaCoilCapacitor.0", 0, 1, V[1] * 512); // LV
                                                                                                                        // Capacitor
@@ -197,10 +185,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
         private final String unlocalizedName;
         private final long tier, current, energyMax;
 
-        CapacitorComponent(ItemStack is, long tier, long current, long energyMax) {
-            this(TTUtility.getUniqueIdentifier(is), tier, current, energyMax);
-        }
-
         CapacitorComponent(String is, long tier, long current, long energyMax) {
             unlocalizedName = is;
             this.tier = tier;
@@ -208,7 +192,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             this.energyMax = energyMax;
             componentBinds.put(unlocalizedName, this);
             if (ConfigHandler.debug.DEBUG_MODE) {
-                TecTech.LOGGER.info("Tesla Capacitor registered: " + unlocalizedName);
+                TecTech.LOGGER.info("Tesla Capacitor registered: {}", unlocalizedName);
             }
         }
 
@@ -224,5 +208,11 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             }
             return false;
         }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

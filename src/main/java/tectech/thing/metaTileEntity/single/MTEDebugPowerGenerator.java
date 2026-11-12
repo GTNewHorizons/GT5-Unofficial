@@ -1,43 +1,35 @@
 package tectech.thing.metaTileEntity.single;
 
-import static gregtech.api.enums.GTValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
-import java.util.function.Consumer;
-import java.util.function.IntConsumer;
-import java.util.function.IntSupplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
+import tectech.thing.gui.MTEDebugPowerGeneratorGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
@@ -46,14 +38,15 @@ import tectech.util.CommonValues;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class MTEDebugPowerGenerator extends MTETieredMachineBlock
-    implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
+public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements IConnectsToEnergyTunnel {
 
     public static ITexture GENNY;
     private boolean LASER = false;
-    public int EUT = 0, AMP = 0;
-    public boolean producing = true;
-    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    private boolean isProducing = true;
+    private int voltage = 8;
+    private byte voltageTier = 0;
+    private boolean isUsingTiers = true;
+    private int amperage = 1;
 
     public MTEDebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -62,7 +55,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
@@ -80,15 +73,18 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        LASER = !LASER;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
+        toggleLaser();
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "tt.chat.debug.generator",
+            new ChatComponentTranslation("GT5U.gui.circuit.generic.data_display." + (LASER ? "on" : "off")));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
+        GENNY = TextureFactory.of(Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GENNY"));
     }
 
     @Override
@@ -97,9 +93,9 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             side != facing
                 ? LASER
-                    ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1]
+                    ? (isProducing ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1]
                         : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1])
-                    : (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1]
+                    : (isProducing ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1]
                         : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1])
                 : GENNY };
     }
@@ -123,33 +119,44 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("eEUT", EUT);
-        aNBT.setInteger("eAMP", AMP);
+        aNBT.setInteger("eVoltage", voltage);
+        aNBT.setByte("eVoltageTier", voltageTier);
+        aNBT.setInteger("eAmperage", amperage);
+        aNBT.setBoolean("eUsingTiers", isUsingTiers);
+        aNBT.setBoolean("eProducing", isProducing);
         aNBT.setBoolean("eLaser", LASER);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        EUT = aNBT.getInteger("eEUT");
-        AMP = aNBT.getInteger("eAMP");
+        voltage = aNBT.getInteger("eVoltage");
+        voltageTier = aNBT.getByte("eVoltageTier");
+        amperage = aNBT.getInteger("eAmperage");
+        isUsingTiers = aNBT.getBoolean("eUsingTiers");
+        isProducing = aNBT.getBoolean("eProducing");
         LASER = aNBT.getBoolean("eLaser");
-        producing = (long) AMP * EUT >= 0;
-        getBaseMetaTileEntity().setActive(producing);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            updateNeighbours(base);
+        }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            aBaseMetaTileEntity.setActive(producing);
+        if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
             if (!LASER) {
-                if (aBaseMetaTileEntity.isActive()) {
+                if (isProducing) {
                     setEUVar(maxEUStore());
                 } else {
                     setEUVar(0);
                 }
             } else {
                 byte Tick = (byte) (aTick % 20);
-                if (aBaseMetaTileEntity.isActive() && CommonValues.TRANSFER_AT == Tick) {
+                if (isProducing && CommonValues.TRANSFER_AT == Tick) {
                     setEUVar(maxEUStore());
                     moveAround(aBaseMetaTileEntity);
                 } else if (CommonValues.TRANSFER_AT == Tick) {
@@ -182,42 +189,52 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public boolean isInputFacing(ForgeDirection side) {
-        return !producing && side != getBaseMetaTileEntity().getFrontFacing();
+        return !isProducing && side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return producing && side != getBaseMetaTileEntity().getFrontFacing();
+        return isProducing && side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public long maxAmperesIn() {
-        return producing ? 0 : Math.abs(AMP);
+        return isProducing ? 0 : amperage;
     }
 
     @Override
     public long maxAmperesOut() {
-        return producing ? Math.abs(AMP) : 0;
+        return isProducing ? amperage : 0;
     }
 
     @Override
     public long maxEUInput() {
-        return producing ? 0 : Integer.MAX_VALUE;
+        // could be set to Long.MAX_VALUE to avoid exploding
+        return isProducing ? 0 : getActualVoltage();
     }
 
     @Override
     public long maxEUOutput() {
-        return producing ? Math.abs(EUT) : 0;
+        return isProducing ? getActualVoltage() : 0;
     }
 
     @Override
     public long maxEUStore() {
-        return LASER ? Math.abs((long) EUT * AMP * 24) : Math.abs((long) EUT * AMP) << 2;
+        long eut = getActualVoltage() * amperage;
+        try {
+            if (LASER) {
+                return Math.multiplyExact(eut, 24L);
+            } else {
+                return Math.multiplyExact(eut, 4L);
+            }
+        } catch (ArithmeticException e) {
+            return Long.MAX_VALUE;
+        }
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return Math.abs((long) EUT * AMP);
+        return getActualVoltage() * amperage;
     }
 
     @Override
@@ -230,25 +247,97 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 
-    public int getEUT() {
-        return EUT;
+    public int getVoltage() {
+        return voltage;
     }
 
-    public void setEUT(int EUT) {
-        this.EUT = EUT;
+    public void setVoltage(int voltage) {
+        this.voltage = voltage;
     }
 
-    public int getAMP() {
-        return AMP;
+    public byte getVoltageTier() {
+        return voltageTier;
     }
 
-    public void setAMP(int AMP) {
-        this.AMP = AMP;
+    public void setVoltageTier(byte voltageTier) {
+        this.voltageTier = voltageTier;
+    }
+
+    public boolean isUsingTiers() {
+        return isUsingTiers;
+    }
+
+    public void setUsingTiers(boolean usingTiers) {
+        isUsingTiers = usingTiers;
+    }
+
+    public int getAmperage() {
+        return amperage;
+    }
+
+    public void setAmperage(int amperage) {
+        this.amperage = amperage;
+    }
+
+    public boolean isLASER() {
+        return LASER;
+    }
+
+    public void setLASER(boolean LASER) {
+        this.LASER = LASER;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+        if (base.isServerSide()) {
+            updateNeighbours(base);
+            base.issueTileUpdate();
+        } else {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buf) {
+        super.writeToStream(buf);
+        buf.writeBoolean(LASER);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buf) {
+        super.readFromStream(buf);
+        LASER = buf.readBoolean();
+    }
+
+    public void toggleLaser() {
+        setLASER(!isLASER());
+    }
+
+    public boolean isProducing() {
+        return isProducing;
+    }
+
+    public void setProducing(boolean producing) {
+        isProducing = producing;
+        getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    public long getActualVoltage() {
+        return (isUsingTiers ? GTValues.V[voltageTier] : voltage);
     }
 
     @Override
     public boolean canConnect(ForgeDirection side) {
         return LASER && side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    public void updateNeighbours(IGregTechTileEntity base) {
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
+            if (igte == null) continue;
+            IMetaTileEntity imte = igte.getMetaTileEntity();
+            if (imte instanceof MTEPipeLaser laser) {
+                laser.updateNetwork(true);
+            }
+        }
     }
 
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -282,7 +371,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                         aMetaTileEntity.doExplosion(maxEUOutput());
                     } else {
                         long diff = Math.min(
-                            AMP * 20L * maxEUOutput(),
+                            amperage * 20L * maxEUOutput(),
                             Math.min(
                                 ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
                                     - aMetaTileEntity.getBaseMetaTileEntity()
@@ -306,94 +395,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY)
-                .setSize(17, 17)
-                .setPos(113, 56));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocalFormatted("tt.gui.text.debug.tier", VN[GTUtility.getTier(Math.abs(EUT))]))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 22))
-
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocalFormatted("tt.gui.text.debug.sum", numberFormat.format((long) AMP * EUT)))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 46));
-
-        addLabelledIntegerTextField(
-            builder,
-            translateToLocal("tt.gui.text.debug.eut") + " ",
-            24,
-            this::getEUT,
-            this::setEUT,
-            46,
-            8);
-        addLabelledIntegerTextField(
-            builder,
-            translateToLocal("tt.gui.text.debug.amp") + " ",
-            24,
-            this::getAMP,
-            this::setAMP,
-            46,
-            34);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP -= val, 512, 64, 7, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP /= val, 512, 64, 7, 58);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT -= val, 16, 1, 25, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT /= val, 16, 2, 25, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP -= val, 16, 1, 25, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP /= val, 16, 2, 25, 58);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT += val, 16, 1, 133, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT *= val, 16, 2, 133, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP += val, 16, 1, 133, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP *= val, 16, 2, 133, 58);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT += val, 512, 64, 151, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT *= val, 512, 64, 151, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP += val, 512, 64, 151, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
-    }
-
-    private void addLabelledIntegerTextField(ModularWindow.Builder builder, String label, int labelWidth,
-        IntSupplier getter, IntConsumer setter, int xPos, int yPos) {
-        builder.widget(
-            new TextWidget(label).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setPos(xPos, yPos))
-            .widget(
-                new NumericWidget().setGetter(getter::getAsInt)
-                    .setSetter(val -> setter.accept((int) val))
-                    .setTextColor(COLOR_TEXT_WHITE.get())
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(xPos + labelWidth, yPos - 1)
-                    .setSize(56, 10));
-    }
-
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int changeNumberShift, int changeNumber, int xPos, int yPos) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            setter.accept(clickData.shift ? changeNumberShift : changeNumber);
-            producing = (long) AMP * EUT >= 0;
-        })
-            .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-            .setSize(18, 18)
-            .setPos(xPos, yPos));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEDebugPowerGeneratorGui(this).build(data, syncManager, uiSettings);
     }
 }

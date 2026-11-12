@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -65,43 +64,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
-            .fluidOutputs(getFluidStack("indigo", 1 * INGOTS))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
-            .outputChances(1000)
-            .fluidOutputs(Materials.Milk.getFluid(150L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_OilBerry.get(1L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_UUMBerry.get(1L))
-            .fluidOutputs(Materials.UUMatter.getFluid(4L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_UUABerry.get(1L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(4L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.fish, 1, 0))
             .fluidOutputs(Materials.FishOil.getFluid(40L))
             .duration(16 * TICKS)
@@ -135,7 +97,7 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.WoodTar.getFluid(100L))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -167,26 +129,26 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Monazite, 1L))
             .fluidOutputs(Materials.Helium.getGas(200L))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(1 * INGOTS))
+            .itemInputs(ItemList.ReinforcedGlass.get(1L))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(1 * HALF_INGOTS))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassPlate", 1L, 0))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * HALF_INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense", 1L, 0))
-            .fluidOutputs(Materials.ReinforceGlass.getMolten(54))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense", 1L, 0))
+            .fluidOutputs(Materials.ReinforcedGlass.getMolten(54))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
@@ -506,13 +468,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Rape.get(1))
-            .fluidOutputs(Materials.SeedOil.getFluid(125))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(2)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.snowball, 1, 0))
             .fluidOutputs(Materials.Water.getFluid(250))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -575,6 +530,14 @@ public class FluidExtractorRecipes implements Runnable {
             .fluidOutputs(Materials.Aluminium.getMolten(1 * NUGGETS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.chainmail_boots, 1))
+            .fluidOutputs(Materials.Steel.getMolten(1 * INGOTS))
+            .duration(1 * SECONDS + 4 * TICKS)
+            .eut(60)
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
             .addTo(fluidExtractionRecipes);
 
         if (Forestry.isModLoaded()) {

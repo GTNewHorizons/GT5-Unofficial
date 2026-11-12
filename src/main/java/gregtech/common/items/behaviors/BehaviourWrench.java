@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -16,11 +17,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import appeng.api.parts.IPartHost;
 import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.BlockRubWood;
@@ -28,8 +29,6 @@ import ic2.core.block.BlockRubWood;
 public class BehaviourWrench extends BehaviourNone {
 
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public BehaviourWrench(int aCosts) {
         this.mCosts = aCosts;
@@ -63,8 +62,8 @@ public class BehaviourWrench extends BehaviourNone {
 
         try {
             return handler.handle() && !aWorld.isRemote;
-        } catch (Throwable e) {
-            GTMod.GT_FML_LOGGER.error("Error wrenching", e);
+        } catch (Exception e) {
+            GTLoggers.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;
     }
@@ -165,8 +164,14 @@ public class BehaviourWrench extends BehaviourNone {
 
             // blocks like chests and furnaces have only four directions
             if (isVanillaCantFaceAxisY(block)) {
-                if (targetSideOrdinal > 1) return setBlockMeta(costs, targetSideOrdinal);
-                else return false;
+                if (direction.offsetY != 0) return false;
+                if (isVanillaChest(block)) {
+                    // large chests needs special handling
+                    return doWrenchOperation(
+                        costs,
+                        () -> GTUtil.setVanillaChestDirection(world, x, y, z, targetSideOrdinal, block, false));
+                }
+                return setBlockMeta(costs, targetSideOrdinal);
             }
             if (tileEntity instanceof IPartHost) return false;
 
@@ -230,11 +235,16 @@ public class BehaviourWrench extends BehaviourNone {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
                     item.doDamage(stack, damage);
-                    GTUtility.sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x, y, z);
+                    GTUtility
+                        .sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x + .5, y + .5, z + .5);
                     return true;
                 }
             }
             return false;
+        }
+
+        Block getBlockAtSide(ForgeDirection side) {
+            return world.getBlock(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
         }
 
         boolean setBlockMeta(int damage, int newMeta) {
@@ -271,13 +281,17 @@ public class BehaviourWrench extends BehaviourNone {
             Blocks.ender_chest);
     }
 
+    public static boolean isVanillaChest(Block block) {
+        return GTUtility.arrayContains(block, Blocks.chest, Blocks.trapped_chest);
+    }
+
     public static boolean isVanillaAllSideRotatable(Block block) {
         return GTUtility.arrayContains(block, Blocks.piston, Blocks.sticky_piston, Blocks.dispenser, Blocks.dropper);
     }
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.wrench"));
         return aList;
     }
 }

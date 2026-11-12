@@ -2,7 +2,7 @@ package gregtech.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -12,20 +12,27 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
-import com.github.bsideup.jabel.Desugar;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
+import gregtech.client.renderer.BillboardRenderHelper;
+import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.GTPowerfailTracker.Powerfail;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTPowerfailRenderer {
 
     public IIcon powerfailIcon;
 
-    public final Long2ObjectOpenHashMap<GTPowerfailTracker.Powerfail> powerfails = new Long2ObjectOpenHashMap<>();
+    public final Int2ObjectOpenHashMap<Long2ObjectOpenHashMap<Powerfail>> powerfails = new Int2ObjectOpenHashMap<>();
+
+    public Powerfail addPowerfail(Powerfail powerfail) {
+        return this.powerfails.computeIfAbsent(powerfail.dim, ignored -> new Long2ObjectOpenHashMap<>())
+            .put(powerfail.getCoord(), powerfail);
+    }
 
     @SubscribeEvent
     public void onTextureDiscover(TextureStitchEvent.Pre event) {
@@ -46,19 +53,39 @@ public class GTPowerfailRenderer {
         if (powerfails.isEmpty()) return;
         if (!Client.render.renderPowerfailNotifications) return;
 
-        Tessellator tessellator = Tessellator.instance;
-
-        tessellator.startDrawingQuads();
-
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityLivingBase player = Minecraft.getMinecraft().renderViewEntity;
 
         Vec3 pos2 = player.getPosition(event.partialTicks);
         Vector3d pos = new Vector3d(pos2.xCoord, pos2.yCoord, pos2.zCoord);
         Vector3d temp = new Vector3d();
 
-        tessellator.setTranslation(0, 0, 0);
-
         long now = System.currentTimeMillis();
+
+        int dimId = player.worldObj.provider.dimensionId;
+
+        Long2ObjectOpenHashMap<Powerfail> powerfails = this.powerfails.get(dimId);
+
+        if (powerfails == null) return;
+
+        GL11.glBindTexture(
+            GL11.GL_TEXTURE_2D,
+            Minecraft.getMinecraft()
+                .getTextureMapBlocks()
+                .getGlTextureId());
+
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(0xFFFFFF);
+
+        tessellator.setTranslation(0, 0, 0);
 
         for (GTPowerfailTracker.Powerfail p : powerfails.values()) {
             if (Client.render.powerfailNotificationTimeout > 0) {
@@ -67,21 +94,18 @@ public class GTPowerfailRenderer {
                 if (elapsed > Client.render.powerfailNotificationTimeout * 1000L) continue;
             }
 
-            if (player.dimension != p.dim) continue;
-
             double x = p.x + 0.5d;
             double y = p.y + 0.5d;
             double z = p.z + 0.5d;
 
             double dist = pos.distance(x, y, z);
 
-            if (dist < 4 || dist > 512) continue;
+            if (dist > 512) continue;
 
-            double size = dist * 0.25;
+            double size = dist * 0.25 * Client.render.powerfailIconSize;
 
             if (dist < 16d) {
-                // Fade to zero when the player is less than 4 blocks away
-                size *= GTUtility.linearCurve(dist, 8d, 0d, 16d, 1d);
+                size *= Math.max(0.25d, GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d));
             }
 
             if (dist > 48) {
@@ -90,56 +114,11 @@ public class GTPowerfailRenderer {
             }
 
             Plane plane = Plane.lookingAt(temp.set(x, y, z), pos);
-
-            plane.get(0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMaxV());
-
-            plane.get(0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMinV());
-
-            plane.get(-0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMinV());
-
-            plane.get(-0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMaxV());
+            BillboardRenderHelper.addTexturedQuad(tessellator, plane, powerfailIcon, 0.5 * size, temp);
         }
 
-        GL11.glBindTexture(
-            GL11.GL_TEXTURE_2D,
-            Minecraft.getMinecraft()
-                .getTextureMapBlocks()
-                .getGlTextureId());
-
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_ALPHA);
         tessellator.draw();
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-    }
 
-    @Desugar
-    private record Plane(Vector3d centre, Vector3d s, Vector3d t) {
-
-        public static Plane lookingAt(Vector3d centre, Vector3d pos) {
-            Vector3d normal = new Vector3d();
-            Vector3d relCentre = new Vector3d();
-
-            relCentre.set(centre)
-                .sub(pos);
-            relCentre.normalize(normal);
-
-            double radians = Math.atan2(normal.x, normal.z) + Math.PI / 2;
-
-            Vector3d s = new Vector3d(0, 0, -1).rotateY(radians);
-
-            Vector3d t = normal.cross(s, new Vector3d());
-
-            return new Plane(relCentre, s, t);
-        }
-
-        public void get(double sk, double tk, Vector3d dest) {
-            dest.x = centre.x + s.x * sk + t.x * tk;
-            dest.y = centre.y + s.y * sk + t.y * tk;
-            dest.z = centre.z + s.z * sk + t.z * tk;
-        }
+        GL11.glPopAttrib();
     }
 }

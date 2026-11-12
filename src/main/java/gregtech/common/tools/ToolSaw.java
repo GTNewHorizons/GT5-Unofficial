@@ -15,8 +15,9 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.enums.MaterialIconRegistry;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -26,11 +27,6 @@ public class ToolSaw extends GTTool {
     @Override
     public int getToolDamagePerBlockBreak() {
         return 50;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
     }
 
     @Override
@@ -54,6 +50,11 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
+    public boolean isSaw() {
+        return true;
+    }
+
+    @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
@@ -66,13 +67,7 @@ public class ToolSaw extends GTTool {
                 aEvent.dropChance = 1.0F;
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
-            && (aDrops.isEmpty())) {
-                aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
-                aEvent.dropChance = 1.0F;
-                return 1;
-            }
+        }
         return 0;
     }
 
@@ -93,9 +88,9 @@ public class ToolSaw extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_SAW;
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSaw.getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.HANDLE_SAW
+                .ordinal()];
     }
 
     @Override

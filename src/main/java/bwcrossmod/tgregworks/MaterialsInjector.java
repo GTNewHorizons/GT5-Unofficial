@@ -2,8 +2,6 @@ package bwcrossmod.tgregworks;
 
 import static gregtech.api.enums.Mods.TinkersGregworks;
 
-import net.minecraftforge.common.config.Property;
-
 import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.Mod;
@@ -45,20 +43,21 @@ public class MaterialsInjector {
             .map(Werkstoff::getBridgeMaterial)
             .filter(x -> x.mMetaItemSubID == -1)
             .filter(x -> x.mDurability != 0)
-            .forEach(m -> {
-                setConfigProps(m);
-                registerParts(m);
-            });
-
-        TGregworks.registry.configProps.clear();
-        TGregworks.registry.configIDs.clear();
+            .forEach(MaterialsInjector::registerParts);
 
         ItemTGregPart.toolMaterialNames = TGregworks.registry.toolMaterialNames;
     }
 
     private static void registerParts(Materials m) {
-        TGregworks.registry.toolMaterialNames.add(m.mDefaultLocalName);
+        if (!TGregworks.config.get(Config.Category.Enable, m.mName, true)
+            .getBoolean(true)) {
+            return;
+        }
+
         int matID = TGregworks.registry.getMaterialID(m);
+
+        TGregworks.registry.toolMaterials.add(m);
+        TGregworks.registry.toolMaterialNames.add(m.mDefaultLocalName);
 
         TGregworks.registry.addToolMaterial(matID, m);
         TGregworks.registry.addBowMaterial(matID, m);
@@ -66,16 +65,5 @@ public class MaterialsInjector {
 
         TGregworks.registry.matIDs.put(m, matID);
         TGregworks.registry.materialIDMap.put(matID, m);
-    }
-
-    private static void setConfigProps(Materials m) {
-        if (TGregworks.config.get(Config.Category.Enable, m.mName, true)
-            .getBoolean(true)) {
-            TGregworks.registry.toolMaterials.add(m);
-            Property configProp = TGregworks.config
-                .get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
-            TGregworks.registry.configProps.put(m, configProp);
-            TGregworks.registry.configIDs.add(configProp.getInt());
-        }
     }
 }

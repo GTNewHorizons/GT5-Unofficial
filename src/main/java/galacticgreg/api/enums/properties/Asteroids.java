@@ -2,72 +2,60 @@ package galacticgreg.api.enums.properties;
 
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.ModContainers;
+import gregtech.common.config.Worldgen;
 
 public enum Asteroids {
 
-    // spotless : off
-    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(200)
-        .sizeRange(5, 15)
+    // spotless:off
+    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder()
+        .probability(Worldgen.endAsteroids.EndAsteroidProbability)
+        .sizeRange(Worldgen.endAsteroids.EndAsteroidMinSize, Worldgen.endAsteroids.EndAsteroidMaxSize)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(0.5f)
+        .smallOreChance(10)
+        .negativeEllipsoids(0)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(200)
+    Asteroids(ModContainers.GalacticraftMars, DimensionDef.Asteroids, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(0.5f)
+        .smallOreChance(10)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(200)
+    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(0.75f)
+        .smallOreChance(10)
+        .asteroidYBounds(50, 200)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    Asteroids(ModContainers.GalacticraftMars, DimensionDef.Asteroids, new AsteroidPropertyBuilder().probability(200)
+    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(1f)
+        .smallOreChance(10)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
                 .lootChestTable(3)
-                .isLootItemCountRandomized(true))),;
+                .isLootItemCountRandomized(true))),
+    ;
+    // spotless:on
 
-    // spotless : on
-
-    public ModContainers modContainers;
-    public DimensionDef dimensionDef;
-    public AsteroidPropertyBuilder asteroidPropertyBuilder;
+    public final ModContainers modContainers;
+    public final DimensionDef dimensionDef;
+    public final AsteroidPropertyBuilder asteroidPropertyBuilder;
 
     Asteroids(ModContainers modContainers, DimensionDef dimensionDef, AsteroidPropertyBuilder asteroidPropertyBuilder) {
         this.modContainers = modContainers;

@@ -56,7 +56,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
@@ -67,9 +67,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
+        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false, true);
+            .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
@@ -81,10 +81,10 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(calculateRecipeEU(aMaterial, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aMaterial != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "sI ", 'I', OrePrefixes.ingot.get(aMaterial) });
             }
         }

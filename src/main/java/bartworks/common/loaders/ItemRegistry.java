@@ -13,116 +13,7 @@
 
 package bartworks.common.loaders;
 
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorEV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorHV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorLV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorMV;
-import static gregtech.api.enums.MetaTileEntityIDs.CircuitAssemblyLine;
-import static gregtech.api.enums.MetaTileEntityIDs.CompressedFluidHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.DeepEarthHeatingPump;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.ElectricImplosionCompressor;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.GiantOutputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.HighTemperatureGasCooledReactor;
-import static gregtech.api.enums.MetaTileEntityIDs.HumongousInputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaDistillationTower;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaOilCracker;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaVacuumFreezer;
-import static gregtech.api.enums.MetaTileEntityIDs.ThoriumHighTemperatureReactor;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -148,23 +39,22 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.common.tileentities.classic.TileEntityHeatedWaterPump;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
 import bartworks.common.tileentities.debug.MTECreativeScanner;
+import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
-import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
+import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
+import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
+import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
+import bartworks.common.tileentities.multis.mega.MTEMegaOilCrackerLegacy;
+import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
 import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
-import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
@@ -176,6 +66,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class ItemRegistry {
 
@@ -253,51 +144,53 @@ public class ItemRegistry {
     public static final Item PUMPPARTS = new SimpleSubItemClass("BWrawtube", "BWmotor");
 
     public static final Block bw_realglas = new BWBlocksGlass(
+        "BW_TieredGlass",
+        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlock", },
+
+        MainMod.BIO_TAB);
+
+    public static final Block bw_realglas2 = new BWBlocksGlass2(
+        "BW_ExtraGlass",
+        new String[] { MainMod.MOD_ID + ":ThoriumYttriumGlass",
+            MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":HexaniteReinforcedBoronSilicateGlassBlockTransparent",
+            MainMod.MOD_ID + ":UniversiumReinforcedBoronSilicateGlassBlockTransparent", },
+
+        MainMod.BIO_TAB);
+
+    public static final Block bw_deprecatedglass = new BWBlocksGlass(
         "BW_GlasBlocks",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
             MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
-        new short[][] { Materials.BorosilicateGlass.getRGBA(), Materials.Titanium.getRGBA(),
-            Materials.TungstenSteel.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(),
-            Materials.Osmium.getRGBA(), new short[] { 0xff, 0, 0 }, new short[] { 0, 0xff, 0 },
-            new short[] { 0x80, 0, 0xff }, new short[] { 0xff, 0xff, 0 }, new short[] { 0, 0xff, 0x80 },
-            new short[] { 0x80, 0x33, 0 }, WerkstoffLoader.YttriumOxide.getRGBA(), Materials.Neutronium.getRGBA(),
-            Materials.CosmicNeutronium.getRGBA(), new short[] { 0xda, 0xeb, 0xff }, },
-        MainMod.BIO_TAB,
-        true,
-        false);
-    public static final Block bw_realglas2 = new BWBlocksGlass2(
+        MainMod.BIO_TAB);
+    public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
         new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
-        new short[][] { new short[] { 50, 50, 50 } },
-        MainMod.BIO_TAB,
-        true,
-        false);
+        MainMod.BIO_TAB);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
-    public static final Block bw_fake_glasses = new BWBlocksGlass(
-        "BW_GlasBlocks",
-        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
-        null,
-        null,
-        true,
-        true);
-    public static final Block bw_fake_glasses2 = new BWBlocksGlass2(
-        "BW_GlasBlocks2",
-        new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlockRandlos" },
-        null,
-        null,
-        true,
-        true);
     public static final Block[] BW_BLOCKS = {
         new BWBlocks(
             "BW_ItemBlocks",
@@ -318,22 +211,20 @@ public class ItemRegistry {
     public static ItemStack[] diode12A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] diode16A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
-    public static ItemStack[] acidGens = new ItemStack[3];
+    public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
     public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack HTGR;
     public static ItemStack eic;
     public static ItemStack cal;
+    public static ItemStack vat;
     public static ItemStack compressedHatch;
     public static ItemStack giantOutputHatch;
     public static ItemStack humongousInputHatch;
 
     public static void run() {
-        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
-        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
 
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
@@ -363,8 +254,8 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new MTEElectricImplosionCompressor(
-            ElectricImplosionCompressor.ID,
+        ItemRegistry.eic = new MTEElectricImplosionCompressorLegacy(
+            LegacyElectricImplosionCompressor.ID,
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
 
@@ -387,10 +278,6 @@ public class ItemRegistry {
             "THTR",
             "Thorium High Temperature Reactor").getStackForm(1L);
         MTEThoriumHighTempReactor.THTRMaterials.registeraTHR_Materials();
-        ItemRegistry.HTGR = new MTEHighTempGasCooledReactor(
-            HighTemperatureGasCooledReactor.ID,
-            "HTGR",
-            "High Temperature Gas-cooled Reactor").getStackForm(1L);
         MTEHighTempGasCooledReactor.HTGRMaterials.registeraTHR_Materials();
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
@@ -422,68 +309,39 @@ public class ItemRegistry {
             EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GTValues.VN.length - 1; i++) {
-            ItemRegistry.diode2A[i] = new MTEDiode(
-                Diode2A[i],
-                "diode" + "2A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode4A[i] = new MTEDiode(
-                Diode4A[i],
-                "diode" + "4A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode8A[i] = new MTEDiode(
-                Diode8A[i],
-                "diode" + "8A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode12A[i] = new MTEDiode(
-                Diode12A[i],
-                "diode" + "12A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode16A[i] = new MTEDiode(
-                Diode16A[i],
-                "diode" + "16A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
-                i).getStackForm(1L);
+            ItemRegistry.diode2A[i] = new MTEDiode(Diode2A[i], "diode" + "2A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode4A[i] = new MTEDiode(Diode4A[i], "diode" + "4A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode8A[i] = new MTEDiode(Diode8A[i], "diode" + "8A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode12A[i] = new MTEDiode(Diode12A[i], "diode" + "12A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
+            ItemRegistry.diode16A[i] = new MTEDiode(Diode16A[i], "diode" + "16A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
 
-        ItemRegistry.acidGens[0] = new MTEAcidGenerator(
-            AcidGeneratorMV.ID,
-            "acidgenerator" + GTValues.VN[2],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
-            2).getStackForm(1);
-        ItemRegistry.acidGens[1] = new MTEAcidGenerator(
-            AcidGeneratorHV.ID,
-            "acidgenerator" + GTValues.VN[3],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
-            3).getStackForm(1);
-        ItemRegistry.acidGens[2] = new MTEAcidGenerator(
-            AcidGeneratorEV.ID,
-            "acidgenerator" + GTValues.VN[4],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
-            4).getStackForm(1);
-
-        ItemRegistry.acidGensLV = new MTEAcidGenerator(
-            AcidGeneratorLV.ID,
-            "acidgenerator" + GTValues.VN[1],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
-            +1).getStackForm(1L);
+        ItemRegistry.acidGens[0] = new MTEAcidGenerator(AcidGeneratorMV.ID, "acidgenerator" + GTValues.VN[2], "", 2, 94)
+            .getStackForm(1);
+        ItemRegistry.acidGens[1] = new MTEAcidGenerator(AcidGeneratorHV.ID, "acidgenerator" + GTValues.VN[3], "", 3, 91)
+            .getStackForm(1);
+        ItemRegistry.acidGens[2] = new MTEAcidGenerator(AcidGeneratorEV.ID, "acidgenerator" + GTValues.VN[4], "", 4, 88)
+            .getStackForm(1);
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(AcidGeneratorIV.ID, "acidgenerator" + GTValues.VN[5], "", 5, 50)
+            .getStackForm(1);
+        ItemRegistry.acidGensLV = new MTEAcidGenerator(AcidGeneratorLV.ID, "acidgenerator" + GTValues.VN[1], "", 1, 97)
+            .getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
-            MegaBlastFurnace.ID,
+        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnaceLegacy(
+            LegacyMegaBlastFurnace.ID,
             "MegaBlastFurnace",
             StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezer(
-            MegaVacuumFreezer.ID,
+        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
+            LegacyMegaVacuumFreezer.ID,
             "MegaVacuumFreezer",
             StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
         ItemRegistry.cal = new MTECircuitAssemblyLine(
@@ -502,22 +360,27 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTower(
-            MegaDistillationTower.ID,
+        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
+            LegacyMegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactor(
-            MegaChemicalReactor.ID,
+        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
+            LegacyMegaChemicalReactor.ID,
             "MegaChemicalReactor",
             "Mega Chemical Reactor").getStackForm(1L);
-        ItemRegistry.megaMachines[4] = new MTEMegaOilCracker(MegaOilCracker.ID, "MegaOilCracker", "Mega Oil Cracker")
-            .getStackForm(1L);
+        ItemRegistry.megaMachines[4] = new MTEMegaOilCrackerLegacy(
+            LegacyMegaOilCracker.ID,
+            "MegaOilCracker",
+            "Mega Oil Cracker").getStackForm(1L);
 
         ItemRegistry.voidminer[2] = new MTEVoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);
         ItemRegistry.voidminer[1] = new MTEVoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
             .getStackForm(1L);
         ItemRegistry.voidminer[0] = new MTEVoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+            .getStackForm(1L);
+
+        ItemRegistry.vat = new MTEBioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name"))
             .getStackForm(1L);
     }
 }

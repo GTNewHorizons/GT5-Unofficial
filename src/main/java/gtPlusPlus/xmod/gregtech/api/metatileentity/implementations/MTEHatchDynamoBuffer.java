@@ -1,13 +1,22 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.StatCollector;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.util.GTSplit;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
+@Deprecated // Remove in 2.10
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     public MTEHatchDynamoBuffer(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -17,6 +26,12 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
     public MTEHatchDynamoBuffer(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.dynamo.buffer.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -46,12 +61,14 @@ public class MTEHatchDynamoBuffer extends MTEHatchDynamo {
 
     @Override
     public String[] getDescription() {
-        String[] g;
-        g = new String[] { "Dynamo with internal storage and additional Amp capacity",
-            "Does not accept more than " + (this.maxEUOutput() * this.maxAmperesIn()) + "EU/t as input",
-            GTPPCore.GT_Tooltip.get() };
-
-        return g;
+        return ArrayUtils.addAll(
+            GTSplit.splitLocalizedFormattedWithSuffix(
+                "gt.blockmachines.dynamo_hatch_buffer.desc",
+                GTPPCore.GT_Tooltip.get(),
+                this.maxEUOutput() * this.maxAmperesIn()),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.MBTT.Deprecated",
+                StatCollector.translateToLocal("GT5U.MBTT.Deprecated.RemovalMachine")));
     }
 
     @Override

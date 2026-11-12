@@ -50,8 +50,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public MetaGeneratedItemX01(String aUnlocalized, OrePrefixes aGeneratedPrefix, int aIconSetIndex) {
         super(aUnlocalized, (short) 32000, (short) 766);
         mPrefix = aGeneratedPrefix;
-        mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex
-            : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
+        mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex : Math.max(aGeneratedPrefix.getTextureIndex(), 0);
 
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             OrePrefixes tPrefix = mPrefix;
@@ -66,11 +65,11 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
-                if (tPrefix != null && tPrefix.mIsUnificatable) {
-                    GTOreDictUnificator.set(tPrefix, OrePrefixes.getMaterial(tOreName, tPrefix), tStack);
+                if (tPrefix != null && tPrefix.isUnifiable()) {
+                    GTOreDictUnificator.add(tPrefix, OrePrefixes.getMaterial(tOreName, tPrefix), tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tOreName, tStack);
                 }
@@ -129,7 +128,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         int aDamage = aStack.getItemDamage();
-        if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
+        if (Materials.isMaterialItem(aDamage)) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
         return aName;
     }
 
@@ -189,7 +188,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
-        return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.mDefaultStackSize)
+        return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.getDefaultStackSize())
             : super.getItemStackLimit(aStack);
     }
 

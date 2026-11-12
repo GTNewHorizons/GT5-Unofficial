@@ -10,8 +10,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -21,22 +23,22 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.render.TextureFactory;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
     // Interface fields
@@ -64,8 +66,6 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     private final long outputVoltage = V[mTier];
     private boolean overdriveToggle = false;
 
-    private String clientLocale = "en_US";
-
     public MTETeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "", aSlotCount);
     }
@@ -75,9 +75,22 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     }
 
     @Override
+    public String getLocalName() {
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.machine.tt.tesla.small.name";
+            case 9 -> "gt.blockmachines.machine.tt.tesla.large.name";
+            case 16 -> "gt.blockmachines.machine.tt.tesla.huge.name";
+            default -> null;
+        };
+        String tierName = super.getLocalName();
+        return nameKey == null ? tierName : translateToLocalFormatted(nameKey, tierName);
+    }
+
+    @Override
     public String[] getDescription() {
-        String[] jargon = new String[] { CommonValues.THETA_MOVEMENT,
-            translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
+        String[] jargon = new String[] { translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O
+                                                                                                       // machine of
+                                                                                                       // choice
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning
                                                                                                    // stoves for the
                                                                                                    // rich
@@ -92,12 +105,16 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         float aX, float aY, float aZ, ItemStack aTool) {
         if (overdriveToggle) {
             overdriveToggle = false;
-            PlayerChatHelper
-                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
+
+            if (aPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(new ChatComponentTranslation("tt.keyphrase.Overdrive_disengaged"));
+            }
         } else {
             overdriveToggle = true;
-            PlayerChatHelper
-                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
+
+            if (aPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(new ChatComponentTranslation("tt.keyphrase.Overdrive_engaged"));
+            }
         }
         return true;
     }
@@ -112,11 +129,11 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
                 histSettingHigh = histSettingLow + 1;
             }
             histHigh = (float) histSettingHigh / histSteps;
-            PlayerChatHelper.SendInfo(
-                aPlayer,
-                translateToLocalFormatted("tt.keyphrase.Hysteresis_high_set_to", clientLocale) + " "
-                    + round(histHigh * 100F)
-                    + "%");
+
+            if (aPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(
+                    new ChatComponentTranslation("tt.keyphrase.Hysteresis_high_set_to", round(histHigh * 100F)));
+            }
         } else {
             if (histSettingLow > histLowLimit) {
                 histSettingLow--;
@@ -124,11 +141,11 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
                 histSettingLow = histSettingHigh - 1;
             }
             histLow = (float) histSettingLow / histSteps;
-            PlayerChatHelper.SendInfo(
-                aPlayer,
-                translateToLocalFormatted("tt.keyphrase.Hysteresis_low_set_to", clientLocale) + " "
-                    + round(histLow * 100F)
-                    + "%");
+
+            if (aPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(
+                    new ChatComponentTranslation("tt.keyphrase.Hysteresis_low_set_to", round(histLow * 100F)));
+            }
         }
     }
 
@@ -144,9 +161,10 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
                 transferRadius++;
             }
         }
-        PlayerChatHelper.SendInfo(
-            aPlayer,
-            translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
+
+        if (aPlayer instanceof EntityPlayerMP playerMP) {
+            playerMP.addChatMessage(new ChatComponentTranslation("tt.keyphrase.Tesla_radius_set_to", transferRadius));
+        }
         return false;
     }
 
@@ -173,8 +191,8 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         }
 
         // And after this cheeky-ness, toss the string XD
-        return powerPassToggle ? translateToLocalFormatted("tt.keyphrase.Sending_power", clientLocale) + "!"
-            : translateToLocalFormatted("tt.keyphrase.Receiving_power", clientLocale) + "!";
+        return powerPassToggle ? translateToLocal("tt.keyphrase.Sending_power")
+            : translateToLocal("tt.keyphrase.Receiving_power");
     }
 
     @Override
@@ -264,30 +282,22 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0) {
+        if (sparkCount <= 0) {
             sparkCount = 20;
             if (!sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(
-                    new RendererMessage.RendererData(sparkList),
-                    aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                    aBaseMetaTileEntity.getXCoord(),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getZCoord(),
-                    256);
+                if (ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
+                }
                 sparkList.clear();
             }
         }
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (aPlayer instanceof EntityPlayerMPAccessor) {
-                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-            }
-            openGui(aPlayer);
-        }
-        return true;
     }
 
     @Override

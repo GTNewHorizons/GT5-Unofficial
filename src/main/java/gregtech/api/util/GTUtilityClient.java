@@ -38,7 +38,7 @@ public class GTUtilityClient {
             }
             return tooltip;
         } catch (RuntimeException e) {
-            // Collections.singletonList() can not be added to. we don't want that
+            // Collections.singletonList() cannot be added to. we don't want that
             if (aGuiStyle) return Lists.newArrayList(
                 (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor
                     + aStack.getDisplayName());
@@ -125,6 +125,7 @@ public class GTUtilityClient {
                 tABCCoord[0] = -1;
                 tABCCoord[1]++;
             }
+            ctx.finishLighting();
         }
 
         ctx.getRenderBlocks().field_152631_f = false;

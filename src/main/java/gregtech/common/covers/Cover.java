@@ -11,13 +11,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -44,7 +44,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
@@ -305,17 +305,17 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @return UI panel to show
      */
     public final ModularPanel buildPopUpUI(CoverGuiData guiData, String panelName, PanelSyncManager syncManager,
-        UISettings uiSettings) {
-        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings, guiData);
+        UISettings uiSettings, IWidget parent) {
+        return getCoverGui().createPopUpPanel(syncManager, uiSettings, guiData, parent);
     }
 
     /**
      * Override this method to provide a different GUI implementation for your cover in MUI2.
      *
-     * @return The variant of CoverGui that can build a GUI for this cover
+     * @return The variant of CoverBaseGui that can build a GUI for this cover
      */
-    protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverGui<>(this);
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverBaseGui<>(this);
     }
 
     // endregion
@@ -449,9 +449,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocalFormatted("gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted()));
+        GTUtility
+            .sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate", getCurrentTickRateFormatted().toChatComponent());
     }
 
     /**

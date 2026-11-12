@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.WaterPump;
 
+import gregtech.common.tileentities.machines.multi.steam.MTESteamWaterPump;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWaterPump;
 
 public class GregtechWaterPump {
 

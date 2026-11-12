@@ -6,5 +6,5 @@ import gregtech.api.factory.IFactoryElement;
 
 public interface TestFactoryElement extends IFactoryElement<TestFactoryElement, TestFactoryNetwork, TestFactoryGrid> {
 
-    public boolean canConnectOnSide(ForgeDirection side);
+    boolean canConnectOnSide(ForgeDirection side);
 }

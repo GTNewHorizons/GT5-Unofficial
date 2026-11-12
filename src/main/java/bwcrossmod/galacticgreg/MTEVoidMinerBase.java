@@ -13,6 +13,7 @@
 
 package bwcrossmod.galacticgreg;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -24,56 +25,85 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEVoidMinerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
+import gtneioreplugin.util.DimensionHelper;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IDataCopyable {
 
-    private VoidMinerUtility.DropMap dropMap = null;
-    private VoidMinerUtility.DropMap extraDropMap = null;
+    public static final String COPIED_DATA_IDENTIFIER = "voidMiner";
+
+    private static final int MIN_TIER_OFFSET = 5;
+    private static final int BASE_ORE_OUTPUT_PER_SECOND = 2;
+    private static final int BATCH_MULTIPLIER = 16;
+    private static final int RECIPE_DURATION_TICKS = 10;
+    private static final int NEON_BOOST = 4;
+    private static final int KRYPTON_BOOST = 8;
+    private static final int XENON_BOOST = 16;
+    private static final int OGANESSON_BOOST = 64;
+    private static final int NOBLE_GAS_CONSUMPTION_PER_TIER = 2;
+
+    private ModDimensionDef dimensionDef;
+    private boolean canVoidMine = true;
+    public VoidMinerUtility.DropMap dropMap = null;
+    public VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
+
     private int multiplier = 1;
     protected final byte TIER_MULTIPLIER;
 
-    private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
+    public ItemStackHandler selected = new ItemStackHandler();
+    public boolean blacklist = false;
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -84,13 +114,15 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mBlacklist", this.mBlacklist);
+        aNBT.setBoolean("mBlacklist", this.blacklist);
+        aNBT.setTag("selected", selected.serializeNBT());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mBlacklist = aNBT.getBoolean("mBlacklist");
+        this.blacklist = aNBT.getBoolean("mBlacklist");
+        this.selected.deserializeNBT(aNBT.getCompoundTag("selected"));
     }
 
     public MTEVoidMinerBase(String aName, int tier) {
@@ -102,41 +134,38 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @NotNull
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
-        if (working()) {
-            return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
-        } else {
-            return SimpleCheckRecipeResult.ofFailure("drill_extracting_ores_failed");
+
+        if (!canVoidMine) {
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_wrong_dim");
         }
+
+        if (this.totalWeight == 0.f) {
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_no_ores");
+        }
+
+        this.handleFluidConsumption();
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
+        return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
     }
 
     protected int getMinTier() {
-        return this.TIER_MULTIPLIER + 5; // min tier = LuV
+        return this.TIER_MULTIPLIER + MIN_TIER_OFFSET;
     }
 
     int batchMultiplier = 1;
 
     protected void setElectricityStats() {
-        batchMultiplier = batchMode ? 16 : 1;
-        this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
+        batchMultiplier = batchMode ? BATCH_MULTIPLIER : 1;
+        this.mEUt = -Math.abs(Math.toIntExact(GTValues.VP[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10 * batchMultiplier;
+        this.mMaxProgresstime = RECIPE_DURATION_TICKS * batchMultiplier;
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
-    }
-
-    protected boolean working() {
-        // if the dropMap has never been initialised or if the dropMap is empty
-        if (this.dropMap == null || this.totalWeight == 0) this.calculateDropMap();
-
-        if (this.totalWeight != 0.f) {
-            this.handleFluidConsumption();
-            return true;
-        } else {
-            this.stopMachine(ShutDownReasonRegistry.NONE);
-            return false;
-        }
     }
 
     @Override
@@ -146,34 +175,34 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Miner")
-            .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
-            .addInfo(
-                "Can be supplied with " + EnumChatFormatting.AQUA
-                    + "2 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of Noble gases to boost "
-                    + EnumChatFormatting.GOLD
-                    + "output")
-            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
-            .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
-            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
-            .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
-            .addInfo(
-                "Will output " + 2 * this.TIER_MULTIPLIER
-                    + " Ores per Second depending on the Dimension it is build in")
-
-            .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-            .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
-            .addInfo(
-                "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                    + "VOIDED"
-                    + EnumChatFormatting.RESET
-                    + ".")
-            .toolTipFinisher();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.miner"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "void-miner"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(GTValues.VP[this.getMinTier()]))
+                    .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
+                    .put("neon_boost", NEON_BOOST)
+                    .put("krypton_boost", KRYPTON_BOOST)
+                    .put("xenon_boost", XENON_BOOST)
+                    .put("oganesson_boost", OGANESSON_BOOST)
+                    .put("ores_per_second", BASE_ORE_OUTPUT_PER_SECOND * this.TIER_MULTIPLIER)
+                    .build());
+        // spotless:on
         return tt;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        if (!canVoidMine) {
+            String dimensionName = dimensionDef == null ? "unknown"
+                : DimensionHelper.getDimLocalizedName(dimensionDef.getDimensionName());
+            String text = I18n.format("GT5U.gui.text.no_void_mining", dimensionName);
+            screenElements.addChild(new TextWidget(text).setTextAlignment(Alignment.TopLeft));
+        }
     }
 
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
@@ -233,43 +262,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         if (storedNobleGas == null || !this.consumeNobleGas(storedNobleGas)) this.multiplier = this.TIER_MULTIPLIER;
     }
 
-    /**
-     * Handles the ores added manually with {@link VoidMinerUtility#addMaterialToDimensionList}
-     *
-     * @param id the specified dim id
-     */
-    private void handleExtraDrops(int id) {
-        this.extraDropMap = new VoidMinerUtility.DropMap();
-
-        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
-            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
-        }
-    }
-
-    /**
-     * Gets the DropMap of the dim for the specified dim id
-     *
-     * @param id the dim number
-     */
-    private void handleModDimDef(int id) {
-        if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
-            this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
-            return;
-        } else {
-            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
-                .getWorld()
-                .getChunkProvider()).currentChunkProvider.getClass()
-                    .getName();
-
-            if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
-                this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
-                return;
-            }
-        }
-        // If this dimension doesn't have any default DropMap add it to dropMapsByDimId
-        // It is possible that another mod added ores to this dimension via extraDropMaps
-        this.dropMap = new VoidMinerUtility.DropMap();
-        VoidMinerUtility.dropMapsByDimId.put(id, this.dropMap);
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        calculateDropMap();
+        if (this.dropMap == null) return;
+        int size = dropMap.getOres().length;
+        if (selected.getSlots() != size) selected.setSize(size);
     }
 
     /**
@@ -277,12 +276,25 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
-        this.handleModDimDef(id);
-        this.handleExtraDrops(id);
+        this.dropMap = null;
+        this.extraDropMap = null;
+        this.totalWeight = 0;
+        this.canVoidMine = false;
+
+        dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
+
+        if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
+
+        this.canVoidMine = true;
+
+        this.dropMap = VoidMinerUtility.dropMapsByDimName
+            .getOrDefault(dimensionDef.getDimensionName(), new VoidMinerUtility.DropMap());
+        this.extraDropMap = VoidMinerUtility.extraDropsByDimName
+            .getOrDefault(dimensionDef.getDimensionName(), new VoidMinerUtility.DropMap());
+
         this.dropMap.isDistributionCached(this.extraDropMap);
-        this.totalWeight = dropMap.getTotalWeight();
+
+        this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
     /**
@@ -293,29 +305,111 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
-        final ItemStack output = this.nextOre();
-        output.stackSize = multiplier * batchMultiplier;
-        if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
-            .noneMatch(is -> GTUtility.areStacksEqual(is, output))
-            || !this.mBlacklist && inputOres.stream()
-                .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
-            this.addOutputPartial(output);
+        if (canVoidMine) {
+            ItemStack[] outputs = new ItemStack[batchMultiplier];
+
+            for (int i = 0; i < batchMultiplier; i++) {
+                outputs[i] = this.nextOre();
+            }
+
+            for (ItemStack output : outputs) {
+                if (output != null) {
+                    output.stackSize = multiplier;
+
+                    boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+
+                    if ((isSelectedEmpty() && inputOres.isEmpty())
+                        || (this.blacklist ? !matchesFilter : matchesFilter)) {
+                        this.addOutputPartial(output);
+                    }
+                }
+            }
+        }
+
         this.updateSlots();
+    }
+
+    private static boolean contains(List<ItemStack> list, ItemStack stack) {
+        for (ItemStack cursor : list) {
+            if (GTUtility.areStacksEqual(cursor, stack)) return true;
+        }
+
+        return false;
+    }
+
+    private boolean isSelectedEmpty() {
+        for (ItemStack stack : selected.getStacks()) {
+            if (stack != null) return false;
+        }
+        return true;
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        this.mBlacklist = !this.mBlacklist;
-        GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+        this.blacklist = !this.blacklist;
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.blacklist ? "GT5U.chat.void_miner.mode.black_list" : "GT5U.chat.void_miner.mode.white_list");
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.batchMode = !this.batchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
+        if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("Void Miner Filter Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setString("dimension", dimensionDef.getDimIdentifier());
+        tag.setTag("selected", selected.serializeNBT());
+        tag.setBoolean("blacklist", blacklist);
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !(nbt.getString("type")
+            .equals(COPIED_DATA_IDENTIFIER))) return false;
+        if (!nbt.getString("dimension")
+            .equals(dimensionDef.getDimIdentifier())) return false;
+        this.selected.deserializeNBT(nbt.getCompoundTag("selected"));
+        this.blacklist = nbt.getBoolean("blacklist");
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEVoidMinerBaseGui(this);
     }
 
     @Override
@@ -349,10 +443,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
 
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
+    @Override
     public abstract int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env);
 
     protected abstract int getControllerTextureIndex();
@@ -377,14 +474,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return false;
     }
 
-    protected String createGasString(EnumChatFormatting color, String gas, int boost) {
-        return String.format(
-            "%s%s%s : %s%dx%s",
-            color,
-            gas,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GOLD,
-            boost,
-            EnumChatFormatting.GRAY);
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Collections.singletonList(RecipeMaps.voidMinerRecipes);
     }
 }

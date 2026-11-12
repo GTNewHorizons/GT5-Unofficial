@@ -3,18 +3,19 @@ package gtPlusPlus.core.item.chemistry;
 import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
+import static gregtech.api.recipe.RecipeMaps.flotationCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import biomesoplenty.api.content.BOPCBlocks;
 import biomesoplenty.api.content.BOPCItems;
@@ -24,7 +25,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
@@ -40,7 +40,7 @@ public class RecipeLoaderMilling {
 
     private static void addVacuumFurnaceRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
@@ -57,7 +57,7 @@ public class RecipeLoaderMilling {
             .addTo(vacuumFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
@@ -110,7 +110,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 22),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 36),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 20),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 20),
                 MaterialsElements.getInstance().HAFNIUM.getDust(10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), Materials.Water.getFluid(2_000))
@@ -395,7 +395,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
             .fluidInputs(Materials.NefariousOil.getFluid(8_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 8_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(flotationCellRecipes);
@@ -419,22 +419,19 @@ public class RecipeLoaderMilling {
 
             ItemStack forestryLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
             if (forestryLeaves != null) {
-                NBTTagCompound tag = forestryLeaves.getTagCompound();
-                if (tag == null) {
-                    forestryLeaves.setTagCompound(tag = new NBTTagCompound());
-                }
-                tag.setString("species", "forestry.treePine"); // Set to Pine
+                ItemStackNBT.setString(forestryLeaves, "species", "forestry.treePine"); // Set to Pine
                 addPineLeafRecipe(forestryLeaves);
             }
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CrushedPineMaterials.get(64))
+            .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
+            .circuit(16)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5))
+                Materials.AshDark.getDustTiny(5),
+                Materials.AshDark.getDustTiny(5))
             .fluidInputs(Materials.Steam.getGas(5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
@@ -443,12 +440,13 @@ public class RecipeLoaderMilling {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), GregtechItemList.CrushedPineMaterials.get(64))
+            .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
+            .circuit(18)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5),
-                Materials.DarkAsh.getDustTiny(5))
+                Materials.AshDark.getDustTiny(5),
+                Materials.AshDark.getDustTiny(5))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1_500))
             .duration(45 * SECONDS)
@@ -459,7 +457,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineLogRecipe(ItemStack log) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), log)
+            .itemInputs(log)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(64))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -469,7 +468,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineLeafRecipe(ItemStack leaf) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), leaf)
+            .itemInputs(leaf)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(8))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -479,7 +479,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineSaplingRecipe(ItemStack sapling) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), sapling)
+            .itemInputs(sapling)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(16))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -489,7 +490,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineconeRecipe(ItemStack cone) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), cone)
+            .itemInputs(cone)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)

@@ -1,13 +1,16 @@
 package galacticgreg.auxiliary;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import galacticgreg.GalacticGreg;
-import galacticgreg.api.BlockMetaComb;
 
 public class GalacticGregConfig extends ConfigManager {
 
@@ -18,23 +21,20 @@ public class GalacticGregConfig extends ConfigManager {
 
     public boolean ProfileOreGen;
     public boolean ReportOreGenFailures;
-    public boolean PrintDebugMessagesToFMLLog;
-    public boolean PrintTraceMessagesToFMLLog;
 
     public boolean LootChestsEnabled;
     public boolean EnableAEExportCommand;
     public boolean SchematicsEnabled;
     public String LootChestItemOverride;
-    public boolean QuietMode;
 
-    public BlockMetaComb CustomLootChest;
+    public int ChaosIslandExclusionRadius;
+
+    public ImmutableBlockMeta CustomLootChest;
 
     @Override
     protected void PreInit() {
         ProfileOreGen = false;
         ReportOreGenFailures = false;
-        PrintDebugMessagesToFMLLog = false;
-        PrintTraceMessagesToFMLLog = false;
 
         LootChestsEnabled = true;
 
@@ -43,7 +43,8 @@ public class GalacticGregConfig extends ConfigManager {
         SchematicsEnabled = false;
 
         LootChestItemOverride = "";
-        QuietMode = false;
+
+        ChaosIslandExclusionRadius = 200;
     }
 
     @Override
@@ -58,22 +59,6 @@ public class GalacticGregConfig extends ConfigManager {
             "Debug",
             ReportOreGenFailures,
             "Report if a ore tileentity could not be placed");
-        PrintDebugMessagesToFMLLog = _mainConfig.getBoolean(
-            "PrintDebugMessagesToFMLLog",
-            "Debug",
-            PrintDebugMessagesToFMLLog,
-            "Enable debug output, not recommended for servers");
-        PrintTraceMessagesToFMLLog = _mainConfig.getBoolean(
-            "PrintTraceMessagesToFMLLog",
-            "Debug",
-            PrintTraceMessagesToFMLLog,
-            "Enable trace output. Warning: This will produce gazillions of log entries");
-        QuietMode = _mainConfig.getBoolean(
-            "QuietMode",
-            "Debug",
-            QuietMode,
-            "In quiet-mode only errors, warnings and fatals will be printed to the logfile/console");
-
         LootChestsEnabled = _mainConfig.getBoolean(
             "LootChestsEnabled",
             "Extras",
@@ -94,10 +79,13 @@ public class GalacticGregConfig extends ConfigManager {
             "Extras",
             LootChestItemOverride,
             "Define the chest you wish to use as LootChest. use the <ModID>:<Name>:<meta> format or leave empty for the default Minecraft Chest");
-
-        GalacticGreg.Logger.setDebugOutput(PrintDebugMessagesToFMLLog);
-        GalacticGreg.Logger.setTraceOutput(PrintTraceMessagesToFMLLog);
-        GalacticGreg.Logger.setQuietMode(QuietMode);
+        ChaosIslandExclusionRadius = _mainConfig.getInt(
+            "ChaosIslandExclusionRadius",
+            "Extras",
+            ChaosIslandExclusionRadius,
+            0,
+            500,
+            "Radius in blocks around a Draconic Evolution chaos island within which GalaxySpace asteroids will not generate. Set to 0 to disable.");
     }
 
     @Override
@@ -106,7 +94,7 @@ public class GalacticGregConfig extends ConfigManager {
     }
 
     public boolean serverPostInit() {
-        CustomLootChest = new BlockMetaComb(Blocks.chest);
+        CustomLootChest = new BlockMeta(Blocks.chest);
         try {
             if (LootChestItemOverride != null && !LootChestItemOverride.isEmpty()) {
                 String[] args = LootChestItemOverride.split(":");
@@ -122,19 +110,18 @@ public class GalacticGregConfig extends ConfigManager {
 
                     Block tBlock = GameRegistry.findBlock(tMod, tName);
                     if (tBlock != null) {
-                        GalacticGreg.Logger
-                            .debug("Found valid ChestOverride: %s. LootChest replaced", LootChestItemOverride);
-                        CustomLootChest = new BlockMetaComb(tBlock, tMeta);
+                        LOGGER.debug("Found valid ChestOverride: {}. LootChest replaced", LootChestItemOverride);
+                        CustomLootChest = new BlockMeta(tBlock, tMeta);
                     }
                 }
             }
 
             return true;
         } catch (Exception e) {
-            GalacticGreg.Logger.error(
-                "Unable to find custom chest override %s. Make sure item exists. Defaulting to Minecraft:chest",
+            LOGGER.error(
+                "Unable to find custom chest override {}. Make sure item exists. Defaulting to Minecraft:chest",
                 LootChestItemOverride);
-            e.printStackTrace();
+            LOGGER.error(e);
             return false;
         }
     }

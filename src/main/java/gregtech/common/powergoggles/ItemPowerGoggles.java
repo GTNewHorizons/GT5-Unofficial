@@ -4,15 +4,16 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -22,6 +23,7 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
+import gregtech.api.util.GTUtility;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
@@ -44,8 +46,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (!PowerGogglesUtil.isLSC(tileEntity)) {
-            player
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
+            GTUtility.sendChatTrans(player, "GT5U.power_goggles.link_fail");
             return true;
         }
 
@@ -55,17 +56,19 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     private void linkGoggles(ItemStack stack, int x, int y, int z, EntityPlayer player, TileEntity tileEntity) {
+        ItemStack oldStack = stack.copy();
+
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         tag.setInteger("dim", player.dimension);
         tag.setString("dimName", ((IGregTechTileEntity) tileEntity).getWorld().provider.getDimensionName());
-        NW.sendToServer(new GTPacketUpdateItem(tag));
         stack.setTagCompound(tag);
+        setEnchantmentData(oldStack, stack);
+        NW.sendToServer(new GTPacketUpdateItem(tag));
 
-        player.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
+        GTUtility.sendChatTrans(player, "GT5U.power_goggles.link_lsc", x, y, z);
     }
 
     @Override
@@ -85,13 +88,29 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     private void unlinkGoggles(ItemStack stack, EntityPlayer player) {
+        ItemStack oldStack = stack.copy();
         stack.setTagCompound(new NBTTagCompound());
-        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
+        setEnchantmentData(oldStack, stack);
+        GTUtility.sendChatTrans(player, "GT5U.power_goggles.unlink");
+    }
+
+    private void setEnchantmentData(ItemStack oldStack, ItemStack newStack) {
+        var enchantments = EnchantmentHelper.getEnchantments(oldStack);
+        if (!enchantments.isEmpty()) {
+            EnchantmentHelper.setEnchantments(enchantments, newStack);
+            if (oldStack.getTagCompound()
+                .hasKey("RepairCost", Constants.NBT.TAG_INT)) {
+                newStack.getTagCompound()
+                    .setInteger(
+                        "RepairCost",
+                        oldStack.getTagCompound()
+                            .getInteger("RepairCost"));
+            }
+        }
     }
 
     private ItemStack equipHeldGoggles(EntityPlayer player, ItemStack stack) {
         InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-
         if (canEquip(stack, player)) {
             return equipIntoFreeSlot(stack, baubles, player);
         }

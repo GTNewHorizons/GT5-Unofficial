@@ -3,7 +3,6 @@ package gregtech.common.blocks;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,7 @@ import org.mockito.MockedStatic;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,7 +36,7 @@ import gregtech.api.util.GTModHandler;
 public class BlockMachinesSubclassTest {
 
     @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-    private static class MyBlockMachines extends BlockMachines implements ITileEntityProvider {
+    private static class MyBlockMachines extends BlockMachines {
 
         public MyBlockMachines() {
             super(ItemBlock.class, "modid.machines", Material.wood);
@@ -87,7 +87,7 @@ public class BlockMachinesSubclassTest {
 
         @Override
         public byte getTileEntityBaseType() {
-            return 0;
+            return HarvestTool.WrenchLevel0.toTileEntityBaseType();
         }
 
         @Override

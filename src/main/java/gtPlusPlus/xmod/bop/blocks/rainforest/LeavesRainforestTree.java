@@ -12,7 +12,7 @@ import gtPlusPlus.xmod.bop.blocks.base.LeavesBase;
 public class LeavesRainforestTree extends LeavesBase {
 
     public LeavesRainforestTree() {
-        super("Rainforest Oak", "rainforestoak", new ItemStack[] { new ItemStack(Items.apple) });
+        super("Rainforest Oak", new ItemStack[] { new ItemStack(Items.apple) });
         this.treeType = new String[] { "rainforest" };
         this.leafType = new String[][] { { "rainforest" }, { "rainforest_opaque" } };
     }

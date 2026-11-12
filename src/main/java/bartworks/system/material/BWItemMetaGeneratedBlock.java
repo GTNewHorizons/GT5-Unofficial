@@ -40,7 +40,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
             int aMetaData = aStack.getItemDamage();
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return metaBlock.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
@@ -56,10 +56,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if (werkstoff != null) {
-            String tooltip = werkstoff.getLocalizedToolTip();
-            if (!tooltip.isEmpty()) {
-                aList.add(tooltip);
-            }
+            werkstoff.addTooltips(aList);
         }
     }
 

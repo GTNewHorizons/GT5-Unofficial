@@ -49,6 +49,7 @@ public class TileEntityGTDataServer extends TileEntity
     private final ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
 
+    @Override
     @Optional.Method(modid = Mods.ModIDs.OPEN_COMPUTERS)
     public String getComponentName() {
         return "GT-Data Server";
@@ -172,7 +173,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "gt.tile.data_server.name";
     }
 
     @Override

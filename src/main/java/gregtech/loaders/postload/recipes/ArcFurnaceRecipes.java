@@ -8,12 +8,15 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.RECYCLE;
 import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 
@@ -500,12 +503,31 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.SpaceTime, 9L),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SpaceTime, 9L),
                 MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.chainmail_boots, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1))
+            .duration(Materials.Steel.getMass() * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        for (final OrePrefixes ironPrefix : new OrePrefixes[] { OrePrefixes.dust, OrePrefixes.ingot }) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    Materials.Iron.getPart(ironPrefix, 3),
+                    new OreDictItemStack(OrePrefixes.dust.getName() + Materials.AnyCarbon.getName(), 1))
+                .itemOutputs(Materials.CastIron.getIngots(3))
+                .duration(9 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(arcFurnaceRecipes);
+        }
     }
 }

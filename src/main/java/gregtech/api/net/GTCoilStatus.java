@@ -6,8 +6,7 @@ import net.minecraft.world.World;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
-import gregtech.api.GregTechAPI;
-import gregtech.common.blocks.BlockCasings5;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongCollection;
@@ -71,11 +70,11 @@ public class GTCoilStatus extends GTPacket {
             int y = CoordinatePacker.unpackY(coil);
             int z = CoordinatePacker.unpackZ(coil);
 
-            if (world.getBlock(x, y, z) == GregTechAPI.sBlockCasings5) {
+            if (world.getBlock(x, y, z) instanceof IBlockWithActiveOffset offset) {
                 int meta = world.getBlockMetadata(x, y, z);
 
-                meta %= BlockCasings5.ACTIVE_OFFSET;
-                if (isActive) meta += BlockCasings5.ACTIVE_OFFSET;
+                meta %= offset.getActiveOffset();
+                if (isActive) meta += offset.getActiveOffset();
 
                 world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             }

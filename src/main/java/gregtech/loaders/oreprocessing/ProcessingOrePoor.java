@@ -10,6 +10,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -27,17 +28,17 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         int aMultiplier = 1;
-        switch (aPrefix) {
-            case oreSmall:
+        switch (aPrefix.getName()) {
+            case "oreSmall":
                 aMultiplier = 1;
                 break;
-            case orePoor:
+            case "orePoor":
                 aMultiplier = 2;
                 break;
-            case oreNormal:
+            case "oreNormal":
                 aMultiplier = 3;
                 break;
-            case oreRich:
+            case "oreRich":
                 aMultiplier = 4;
             default:
                 break;
@@ -51,7 +52,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
                 .duration(10)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()

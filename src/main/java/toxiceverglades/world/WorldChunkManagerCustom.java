@@ -76,7 +76,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
                 }
 
                 listToReuse[i1] = f;
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("DownfallBlock");
                 crashreportcategory.addCrashSection("biome id", i1);
@@ -121,7 +121,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
             }
 
             return par1ArrayOfBiomeGenBase;
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("RawBiomeBlock");
             crashreportcategory.addCrashSection("biomes[] size", par1ArrayOfBiomeGenBase.length);
@@ -172,8 +172,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      * checks given Chunk's Biomes against List of allowed ones
      */
     @Override
-    @SuppressWarnings("rawtypes")
-    public boolean areBiomesViable(int x, int y, int z, List par4List) {
+    public boolean areBiomesViable(int x, int y, int z, List<BiomeGenBase> par4List) {
         IntCache.resetIntCache();
         int l = x - z >> 2;
         int i1 = y - z >> 2;
@@ -193,7 +192,7 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
             }
 
             return true;
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Layer");
             crashreportcategory.addCrashSection("Layer", this.genBiomes.toString());
@@ -210,9 +209,8 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
      * Strongly favors positive y positions.
      */
     @Override
-    @SuppressWarnings("rawtypes")
-    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_,
-        Random p_150795_5_) {
+    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_,
+        List<BiomeGenBase> p_150795_4_, Random p_150795_5_) {
         IntCache.resetIntCache();
         int l = p_150795_1_ - p_150795_3_ >> 2;
         int i1 = p_150795_2_ - p_150795_3_ >> 2;

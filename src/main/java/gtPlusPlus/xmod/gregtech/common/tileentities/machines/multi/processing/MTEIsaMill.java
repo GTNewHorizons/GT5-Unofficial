@@ -6,53 +6,57 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.RenderOverlay;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -64,12 +68,24 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 
 public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvivalConstructable {
 
-    protected boolean boostEu = false;
     private int mCasing;
     private static IStructureDefinition<MTEIsaMill> STRUCTURE_DEFINITION = null;
 
+    private static final Set<GTUtility.ItemId> MILLING_BALLS = new HashSet<>();
+
     private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
     private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
+    private static final IIconContainer[] faceOverlay = new IIconContainer[9];
+    private static final IIconContainer[] faceOverlayActive = new IIconContainer[9];
+
+    static {
+        for (int i = 0; i < 9; i++) {
+            faceOverlay[i] = new CustomIcon("iconsets/Grinder/GRINDER" + (i + 1));
+            faceOverlayActive[i] = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE" + (i + 1));
+        }
+    }
+
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
 
     private final ArrayList<MTEHatchMillingBalls> mMillingBallBuses = new ArrayList<>();
     private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
@@ -91,16 +107,16 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front Center")
-            .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
-            .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
-            .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-            .addOtherStructurePart("Ball Housing", "Any Casing")
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController("Front center, 2nd layer")
+            .addCasing("40-43", "IsaMill Exterior Casing", false)
+            .addCasing("8", "IsaMill Piping", false)
+            .addCasing("5", "IsaMill Gearbox", false)
+            .addMiscHatch("1", "Ball Housing", "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -119,15 +135,15 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                     'C',
                     ofChain(
                         buildHatchAdder(MTEIsaMill.class).adder(MTEIsaMill::addMillingBallsHatch)
-                            .hatchClass(MTEHatchMillingBalls.class)
+                            .hatchId(MetaTileEntityIDs.Bus_Milling_Balls.ID)
                             .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
                             .casingIndex(getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEIsaMill.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
+                            .atLeast(InputBus, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))
@@ -149,15 +165,24 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mMillingBallBuses.clear();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
-    }
-
-    @Override
-    public boolean checkHatch() {
-        return super.checkHatch() && mMillingBallBuses.size() == 1;
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        if (mMillingBallBuses.size() != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Bus_Milling_Balls.get(1),
+                    mMillingBallBuses.size(),
+                    1));
+        }
+        checkCasingMin(errors, mCasing, 40);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -185,8 +210,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-                return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchMillingBalls hatch) {
+                return addToMachineListInternal(mMillingBallBuses, hatch, aBaseCasingIndex);
             }
         }
         return false;
@@ -199,16 +224,15 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchMillingBalls) {
-            log("Found MTEHatchMillingBalls");
-            return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatchMillingBalls hatch) {
+            return addToMachineListInternal(mMillingBallBuses, hatch, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.millingRecipes;
+        return RecipeMaps.millingRecipes;
     }
 
     @Override
@@ -217,11 +241,49 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mMillingBallBuses.clear();
             }
-        }
-        if (aTick % 20 == 0 && isMachineRunning()) {
-            checkForEntities(aBaseMetaTileEntity, aTick);
+            if (aTick % 20 == 0 && isMachineRunning()) {
+                checkForEntities(aBaseMetaTileEntity, aTick);
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    private void updateFaceOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile == null || tile.isServerSide()) return;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tile.isActive() ? faceOverlayActive : faceOverlay,
+            overlayTickets);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void setExtendedFacing(ExtendedFacing newFacing) {
+        boolean changed = newFacing != getExtendedFacing();
+        super.setExtendedFacing(newFacing);
+        if (changed) updateFaceOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     private final ArrayList<BlockPos> mFrontBlockPosCache = new ArrayList<>();
@@ -369,16 +431,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 1;
     }
@@ -389,84 +441,56 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
-    }
-
-    @Override
     public String getMachineType() {
         return "Grinding Machine, IGM";
-    }
-
-    /*
-     * Milling Ball Handling
-     */
-
-    @Override
-    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
-        ArrayList<ItemStack> tItems = super.getStoredInputsForColor(color);
-        for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
-            byte busColor = tHatch.getBaseMetaTileEntity()
-                .getColorization();
-            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
-            ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
-            if (!aHatchContent.isEmpty()) {
-                tItems.addAll(aHatchContent);
-            }
-        }
-        return tItems;
     }
 
     public int getMaxBallDurability(ItemStack aStack) {
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
 
-    public static boolean isMillingBall(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
-            return true;
-        }
-        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+    public static void registerMillingBall(ItemStack stack) {
+        if (stack == null) return;
+        MILLING_BALLS.add(GTUtility.ItemId.createWithoutNBT(stack));
     }
 
-    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
-        if (mMillingBallBuses.size() != 1) return null;
+    public static boolean isMillingBall(ItemStack aStack) {
+        return aStack != null && MILLING_BALLS.contains(GTUtility.ItemId.createWithoutNBT(aStack));
+    }
+
+    static {
+        registerMillingBall(GregtechItemList.Milling_Ball_Alumina.get(1));
+        registerMillingBall(GregtechItemList.Milling_Ball_Soapstone.get(1));
+    }
+
+    @NotNull
+    private ItemStack[] getAvailableMillingBalls() {
+        if (mMillingBallBuses.size() != 1) return new ItemStack[0];
 
         MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
 
-        if (aBus == null) return null;
+        if (aBus == null) return new ItemStack[0];
+        @NotNull
+        ArrayList<ItemStack> availableItems = aBus.getContentUsageSlots();
+        return availableItems.toArray(new ItemStack[0]);
 
-        ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
+    }
 
-        if (aAvailableItems.isEmpty()) return null;
-
+    private ItemStack searchForMillingBall(ItemStack[] aItemInputs, ItemStack millingBallType) {
         for (final ItemStack aInput : aItemInputs) {
-            if (!isMillingBall(aInput)) continue;
-
-            for (ItemStack aBall : aAvailableItems) {
-                if (!GTUtility.areStacksEqual(aBall, aInput, true)) continue;
-
-                Logger.INFO("Found a valid milling ball to use.");
-                return aBall;
-            }
-
+            if (GTUtility.areStacksEqual(millingBallType, aInput, true)) return aInput;
         }
-
         return null;
     }
 
     private void damageMillingBall(ItemStack aStack) {
         if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * 1))) {
             int damage = getMillingBallDamage(aStack) + 1;
-            log("damage milling ball " + damage);
             if (damage >= getMaxBallDurability(aStack)) {
-                log("consuming milling ball");
                 aStack.stackSize -= 1;
             } else {
                 setDamage(aStack, damage);
             }
-        } else {
-            log("not damaging milling ball");
         }
     }
 
@@ -484,25 +508,51 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
             ItemStack millingBall;
 
+            @Override
+            public CheckRecipeResult process() {
+                if (getAvailableMillingBalls().length == 0) return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                return super.process();
+            }
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                millingBall = findMillingBall(inputItems);
-                if (millingBall == null) {
-                    return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                ItemStack typeOfBall = null;
+                for (ItemStack item : recipe.mInputs) {
+                    if (isMillingBall(item)) {
+                        typeOfBall = item;
+                        break;
+                    }
+                }
+
+                if (typeOfBall != null) {
+                    millingBall = searchForMillingBall(getAvailableMillingBalls(), typeOfBall);
+                    if (millingBall == null) {
+                        return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                    }
+                } else {
+                    millingBall = null;
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) {
+            public ItemStack[] prepareCatalyst(ItemStack[] inputs) {
+                return ArrayUtils.addAll(inputs, getAvailableMillingBalls());
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
+                if (GTUtility.isStackValid(millingBall)) {
                     damageMillingBall(millingBall);
                 }
-                return result;
+                millingBall = null;
+                return super.onRecipeStart(recipe);
             }
+
         }.enablePerfectOverclock();
     }
 }

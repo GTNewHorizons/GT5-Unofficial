@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.modularui2.GTWidgetThemes;
@@ -25,7 +25,7 @@ public class GTPopUpPanel extends ModularPanel {
     }
 
     @Override
-    public WidgetTheme getWidgetThemeInternal(ITheme theme) {
+    public WidgetThemeEntry<?> getWidgetThemeInternal(ITheme theme) {
         return theme.getWidgetTheme(GTWidgetThemes.BACKGROUND_POPUP);
     }
 

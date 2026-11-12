@@ -65,11 +65,6 @@ public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
     }
 
     @Override
-    public float calculateCelestialAngle(long par1, float par3) {
-        return super.calculateCelestialAngle(par1, par3);
-    }
-
-    @Override
     public Vector3 getSkyColor() {
         float red = 200 / 255f;
         float green = 120 / 255f;

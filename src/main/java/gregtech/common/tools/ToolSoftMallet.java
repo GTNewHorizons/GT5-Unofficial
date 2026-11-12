@@ -8,11 +8,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourSoftMallet;
+import gregtech.common.items.behaviors.BehaviourSwitchMode;
 
 public class ToolSoftMallet extends GTTool {
 
@@ -79,10 +81,10 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadMallet.mTextureIndex]
-            : MetaGeneratedTool.getSecondaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.handleMallet.mTextureIndex];
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadMallet
+                .getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.handleMallet
+                .getTextureIndex()];
     }
 
     @Override
@@ -94,6 +96,7 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourSoftMallet(100));
+        aItem.addItemBehavior(aID, new BehaviourSwitchMode());
     }
 
     @Override
@@ -106,4 +109,15 @@ public class ToolSoftMallet extends GTTool {
                 + aPlayer.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
     }
+
+    @Override
+    public byte getMaxMode() {
+        return 3;
+    }
+
+    @Override
+    public String getToolTypeName() {
+        return "softmallet";
+    }
+
 }

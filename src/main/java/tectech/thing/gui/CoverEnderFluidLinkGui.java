@@ -3,7 +3,6 @@ package tectech.thing.gui;
 import java.util.UUID;
 
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -16,14 +15,12 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
-import tectech.mechanics.enderStorage.EnderLinkTag;
-import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.thing.cover.CoverEnderFluidLink;
 
-public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
+public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
 
     public CoverEnderFluidLinkGui(CoverEnderFluidLink cover) {
         super(cover);
@@ -39,7 +36,7 @@ public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
     private Flow createFrequencyRow(PanelSyncManager syncManager) {
         StringSyncValue frequencySyncer = new StringSyncValue(
             this::getFrequency,
-            val -> this.setFrequency(val, syncManager));
+            val -> this.setFrequency(val, syncManager)).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -53,31 +50,25 @@ public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
     }
 
     private String getFrequency() {
-        if (!(cover.getTile() instanceof IFluidHandler teTank)) {
-            return "";
-        }
-
-        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
-        return tag == null ? "" : tag.getFrequency();
+        return cover.getFrequency();
     }
 
     private void setFrequency(String val, PanelSyncManager syncManager) {
-        if (!(cover.getTile() instanceof IFluidHandler tank)) {
-            return;
-        }
-        UUID uuid = null;
+        if (cover.getTile()
+            .isClientSide()) return;
 
         if (cover.isPrivateChannel()) {
-            uuid = syncManager.getPlayer()
+            UUID uuid = syncManager.getPlayer()
                 .getUniqueID();
-            if (!uuid.equals(CoverEnderFluidLink.getOwner(tank))) return;
+            if (!uuid.equals(CoverEnderFluidLink.getOwner(cover.getTile()))) return;
         }
 
-        EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
+        cover.setFrequency(val);
     }
 
     private Flow createChannelModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel);
+        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel)
+            .allowC2S();
         syncManager.syncValue("privateChannel", privateChannelSyncer);
 
         return Flow.row()
@@ -100,7 +91,7 @@ public class CoverEnderFluidLinkGui extends CoverGui<CoverEnderFluidLink> {
     }
 
     private Flow createTransferModeRow(PanelSyncManager syncManager) {
-        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport);
+        BooleanSyncValue exportSyncer = new BooleanSyncValue(cover::isExport, cover::setExport).allowC2S();
         syncManager.syncValue("export", exportSyncer);
 
         return Flow.row()

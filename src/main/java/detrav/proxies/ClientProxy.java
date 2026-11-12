@@ -2,10 +2,12 @@ package detrav.proxies;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 
 import detrav.DetravScannerMod;
-import detrav.enums.Textures01;
+import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.DetravScannerGUI;
+import detrav.items.tools.DetravToolElectricProspectorBase;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -14,7 +16,7 @@ public class ClientProxy extends CommonProxy {
 
     public ClientProxy() {
         // if removed, textures are somehow not loaded in the game.
-        int test = Textures01.mTextures.length;
+        int test = DetravToolElectricProspectorBase.mProspectorTextures.length;
     }
 
     @Override
@@ -25,8 +27,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onLoad() {
         super.onLoad();
+        MinecraftForge.EVENT_BUS.register(new DetravOreMarkerRenderer());
     }
 
+    @Override
     public void openProspectorGUI() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(

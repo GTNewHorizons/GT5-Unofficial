@@ -1,5 +1,7 @@
 package gregtech.nei.formatter;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -26,8 +27,8 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         int voltage = recipeInfo.recipe.mEUt;
         int tier = getFusionTier(euToStart, voltage);
 
-        return Collections.singletonList(
-            StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GTUtility.formatNumbers(euToStart), tier));
+        return Collections
+            .singletonList(StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", formatNumber(euToStart), tier));
     }
 
     public static int getFusionTier(long startupPower, long voltage) {

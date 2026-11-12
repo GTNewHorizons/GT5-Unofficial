@@ -3,6 +3,9 @@ package gregtech.common.gui.mui1.cover;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -87,11 +90,11 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
                 new TextWidget(getIssuesCount(5)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_low"))
+                TextWidget.localised("gt.interact.desc.issue_rotor_low")
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_dead"))
+                TextWidget.localised("gt.interact.desc.issue_rotor_dead")
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
             .widget(
@@ -121,10 +124,14 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
 
     // TODO make this private when MUI1 cover UIs are removed
     public static String getMaintenanceIssuesCount(int count, boolean inverted) {
-        return translateToLocalFormatted(
+        return getMaintenanceIssuesCountChat(count, inverted).getFormattedText();
+    }
+
+    public static IChatComponent getMaintenanceIssuesCountChat(int count, boolean inverted) {
+        return new ChatComponentTranslation(
             "gt.interact.desc.need_maint_count",
             count,
-            inverted ? translateToLocal("gt.interact.desc.inverted_b") : "");
+            inverted ? new ChatComponentTranslation("gt.interact.desc.inverted_b") : "");
     }
 
     private static String getIssuesCount(int count) {

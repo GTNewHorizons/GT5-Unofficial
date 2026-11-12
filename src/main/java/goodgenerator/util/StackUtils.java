@@ -15,7 +15,6 @@ import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.util.GTUtility;
 
 public class StackUtils {
@@ -114,7 +113,7 @@ public class StackUtils {
             case 11: // UIV
                 return GGMaterial.metastableOganesson.getMolten(aAmount);
             case 12: // UMV
-                return MaterialsUEVplus.SpaceTime.getMolten(aAmount);
+                return Materials.SpaceTime.getMolten(aAmount);
             default:
                 return GGMaterial.shirabon.getMolten(aAmount);
         }

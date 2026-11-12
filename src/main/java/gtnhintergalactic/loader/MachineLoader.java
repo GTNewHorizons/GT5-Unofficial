@@ -2,6 +2,7 @@ package gtnhintergalactic.loader;
 
 import static gregtech.api.enums.MetaTileEntityIDs.DysonSwarmController;
 import static gregtech.api.enums.MetaTileEntityIDs.PlanetaryGasSiphonController;
+import static gregtech.api.enums.MetaTileEntityIDs.PlanetarySiphon;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorController;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleAssemblerT1;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleAssemblerT2;
@@ -16,11 +17,12 @@ import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModulePumpT3;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleResearch;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTUtility;
+import gtnhintergalactic.tile.multi.MTEPlanetaryGasSiphon;
 import gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
-import gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
+import gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphonLegacy;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleAssembler;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleManager;
@@ -43,88 +45,98 @@ public class MachineLoader implements Runnable {
 
         ItemStack stack;
 
-        stack = new TileEntityPlanetaryGasSiphon(
+        stack = new TileEntityPlanetaryGasSiphonLegacy(
             PlanetaryGasSiphonController.ID,
             "PlanetaryGasSiphon",
-            GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
         ItemList.PlanetaryGasSiphonController.set(stack);
+
+        stack = new MTEPlanetaryGasSiphon(
+            PlanetarySiphon.ID,
+            "PlanetaryGasSiphon",
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
+        ItemList.PlanetarySiphon.set(stack);
 
         stack = new TileEntityDysonSwarm(
             DysonSwarmController.ID,
             "DysonSwarm",
-            GTUtility.translate("gt.blockmachines.multimachine.ig.dyson.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.name")).getStackForm(1);
         ItemList.DysonSwarmController.set(stack);
 
         stack = new TileEntitySpaceElevator(
             SpaceElevatorController.ID,
             "SpaceElevator",
-            GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name")).getStackForm(1);
         ItemList.SpaceElevatorController.set(stack);
 
         stack = new TileEntityModuleAssembler.TileEntityModuleAssemblerT1(
             SpaceElevatorModuleAssemblerT1.ID,
             "ProjectModuleAssemblerT1",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t1.name"))
+                .getStackForm(1);
         ItemList.SpaceElevatorModuleAssemblerT1.set(stack);
 
         stack = new TileEntityModuleAssembler.TileEntityModuleAssemblerT2(
             SpaceElevatorModuleAssemblerT2.ID,
             "ProjectModuleAssemblerT2",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t2.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t2.name"))
+                .getStackForm(1);
         ItemList.SpaceElevatorModuleAssemblerT2.set(stack);
 
         stack = new TileEntityModuleAssembler.TileEntityModuleAssemblerT3(
             SpaceElevatorModuleAssemblerT3.ID,
             "ProjectModuleAssemblerT3",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t3.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t3.name"))
+                .getStackForm(1);
         ItemList.SpaceElevatorModuleAssemblerT3.set(stack);
 
         stack = new TileEntityModuleMiner.TileEntityModuleMinerT1(
             SpaceElevatorModuleMinerT1.ID,
             "ProjectModuleMinerT1",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t1.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.name")).getStackForm(1);
         ItemList.SpaceElevatorModuleMinerT1.set(stack);
 
         stack = new TileEntityModuleMiner.TileEntityModuleMinerT2(
             SpaceElevatorModuleMinerT2.ID,
             "ProjectModuleMinerT2",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t2.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.name")).getStackForm(1);
         ItemList.SpaceElevatorModuleMinerT2.set(stack);
 
         stack = new TileEntityModuleMiner.TileEntityModuleMinerT3(
             SpaceElevatorModuleMinerT3.ID,
             "ProjectModuleMinerT3",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t3.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.name")).getStackForm(1);
         ItemList.SpaceElevatorModuleMinerT3.set(stack);
 
         stack = new TileEntityModulePump.TileEntityModulePumpT1(
             SpaceElevatorModulePumpT1.ID,
             "ProjectModulePumpT1",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t1.name")).getStackForm(1);
         ItemList.SpaceElevatorModulePumpT1.set(stack);
 
         stack = new TileEntityModulePump.TileEntityModulePumpT2(
             SpaceElevatorModulePumpT2.ID,
             "ProjectModulePumpT2",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t2.name")).getStackForm(1);
         ItemList.SpaceElevatorModulePumpT2.set(stack);
 
         stack = new TileEntityModulePump.TileEntityModulePumpT3(
             SpaceElevatorModulePumpT3.ID,
             "ProjectModulePumpT3",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t3.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.t3.name")).getStackForm(1);
         ItemList.SpaceElevatorModulePumpT3.set(stack);
 
         stack = new TileEntityModuleManager(
             SpaceElevatorModuleManager.ID,
             "ProjectModuleManager",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.manager.t1.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.manager.t1.name")).getStackForm(1);
         ItemList.SpaceElevatorModuleManager.set(stack);
 
         stack = new TileEntityModuleResearch(
             SpaceElevatorModuleResearch.ID,
             "ProjectModuleResearch",
-            GTUtility.translate("gt.blockmachines.multimachine.project.ig.research.t1.name")).getStackForm(1);
+            StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.research.t1.name"))
+                .getStackForm(1);
         ItemList.SpaceElevatorModuleResearch.set(stack);
     }
 }

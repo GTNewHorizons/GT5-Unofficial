@@ -1,6 +1,6 @@
 package gtneioreplugin.util;
 
-import java.util.Map;
+import java.util.Set;
 
 public class Oremix implements Comparable<Oremix> {
 
@@ -26,9 +26,9 @@ public class Oremix implements Comparable<Oremix> {
 
     private static final int sizeData = 10; // hors dims
 
-    private Map<String, Boolean> dimensions;
+    private Set<String> dimensions;
 
-    public void setDims(Map<String, Boolean> dims) {
+    public void setDims(Set<String> dims) {
         this.dimensions = dims;
     }
 
@@ -82,7 +82,10 @@ public class Oremix implements Comparable<Oremix> {
     }
 
     public static String getCsvHeader() {
-        String[] headers = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
+        int dimCount = DimensionHelper.getAllDim()
+            .size();
+        String[] headers = new String[sizeData + dimCount];
+
         headers[0] = "Ore Mix Name";
         headers[1] = "Primary Ore";
         headers[2] = "Secondary Ore";
@@ -93,14 +96,21 @@ public class Oremix implements Comparable<Oremix> {
         headers[7] = "Density";
         headers[8] = "Size";
         headers[9] = "Weight";
-        for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
-            headers[sizeData + i] = DimensionHelper.getFullName(DimensionHelper.DimNameDisplayed[i]);
+
+        int i = 0;
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
+            headers[sizeData + i] = DimensionHelper.getFullName(record.abbr());
+            i++;
         }
+
         return String.join(",", headers);
     }
 
     public String getCsvEntry() {
-        String[] values = new String[sizeData + DimensionHelper.DimNameDisplayed.length];
+        int dimCount = DimensionHelper.getAllDim()
+            .size();
+        String[] values = new String[sizeData + dimCount];
+
         values[0] = oreMixName;
         values[1] = primary;
         values[2] = secondary;
@@ -111,10 +121,13 @@ public class Oremix implements Comparable<Oremix> {
         values[7] = Integer.toString(density);
         values[8] = Integer.toString(size);
         values[9] = Integer.toString(weight);
-        for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean
-                .toString(dimensions.getOrDefault(DimensionHelper.DimNameDisplayed[i], false));
+
+        int i = 0;
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
+            values[sizeData + i] = Boolean.toString(dimensions.contains(record.abbr()));
+            i++;
         }
+
         return String.join(",", values);
     }
 }

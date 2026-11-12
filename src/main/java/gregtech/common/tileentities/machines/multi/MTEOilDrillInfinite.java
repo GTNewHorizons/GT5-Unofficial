@@ -1,17 +1,167 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GTValues.VN;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilDrillInfinite extends MTEOilDrillBase {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int OFFSET_X = 4;
+    private static final int OFFSET_Y = 13;
+    private static final int OFFSET_Z = 0;
+    private int casingAmount;
+    private static final int parallels = 2;
+
+    private static IStructureDefinition<MTEOilDrillInfinite> STRUCTURE_DEFINITION = null;
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEOilDrillInfinite>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] {
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "         ",
+                            "         ", "         ", "         ", "         ", "         ", "         ", "  BB~BB  " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "         ",
+                            "         ", "         ", "         ", "         ", "  B   B  ", " GB   BG ", " BBFFFBB " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    G    ",
+                            "    G    ", "   GBG   ", "   B B   ", "  GB BG  ", " BB   BB ", " BB   BB ", "BBBCCCBBB" },
+                        { "         ", "         ", "         ", "    G    ", "    G    ", "   GBG   ", "   BBB   ",
+                            "   BBB   ", "  GBABG  ", "  B A B  ", "  B A B  ", "    A    ", "    A    ", "BFCDDDCFB" },
+                        { "    G    ", "    G    ", "    B    ", "   GBG   ", "   GBG   ", "   BHB   ", "  GBHBG  ",
+                            "  GBHBG  ", "  BAHAB  ", "   AHA   ", "   AHA   ", "   AHA   ", "   AHA   ", "BFCDDDCFB" },
+                        { "         ", "         ", "         ", "    G    ", "    G    ", "   GBG   ", "   BBB   ",
+                            "   BBB   ", "  GBABG  ", "  B A B  ", "  B A B  ", "    A    ", "    A    ", "BFCDDDCFB" },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    G    ",
+                            "    G    ", "   GBG   ", "   B B   ", "  GB BG  ", " BB   BB ", " BB   BB ", "BBBCCCBBB" },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "         ",
+                            "         ", "         ", "         ", "         ", "  B   B  ", " GB   BG ", " BBFFFBB " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "         ",
+                            "         ", "         ", "         ", "         ", "         ", "         ",
+                            "  BBBBB  " } })
+                .addElement('A', chainAllGlasses())
+                .addElement(
+                    'B',
+                    buildHatchAdder(MTEOilDrillInfinite.class).atLeast(InputBus, OutputHatch, Maintenance, Energy)
+                        .casingIndex(Casings.MiningNeutroniumCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(
+                            onElementPass(x -> ++x.casingAmount, Casings.MiningNeutroniumCasing.asElement())))
+                .addElement('C', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
+                .addElement('D', Casings.PBIPipeCasing.asElement())
+                .addElement('F', Casings.AdvancedComputerCasing.asElement())
+                .addElement('G', ofFrame(Materials.Neutronium))
+                .addElement('H', ofSheetMetal(Materials.Infinity))
+                .build();
+        }
+        return (IStructureDefinition<MTEDrillerBase>) (IStructureDefinition<?>) STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
+
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_drilling_rig"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "infinite-oil-drill"),
+                ImmutableMap.<String, Object>builder()
+                    .put("range", getRangeInChunks())
+                    .put("cycle_time", cycleTimeDisplay)
+                    .put("parallels", parallels)
+                    .put("min_tier", getMinTier())
+                    .build())
+            .beginStructureBlock(9, 14, 9, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("90-103", Casings.MiningNeutroniumCasing.getLocalizedName(), false)
+            .addCasing("38", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
+            .addCasing("20", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("12", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.AdvancedComputerCasing.getLocalizedName(), false)
+            .addCasing("9", Casings.PBIPipeCasing.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Infinity), false)
+            .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_mining_casing_min_tier", GTValues.VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
+            .addInputBus("0-1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        updateCoordinates();
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 90);
+        checkHatches(errors);
+        if (!mEnergyHatches.isEmpty()) {
+            if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
+                errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
+            }
+        }
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
 
     public MTEOilDrillInfinite(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -19,29 +169,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     public MTEOilDrillInfinite(String aName) {
         super(aName);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
-
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Pump, FDR")
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo("Base cycle time: 1 tick")
-            .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override
@@ -53,6 +180,16 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     protected FluidStack pumpOil(float speed, boolean simulate) {
         // always simulate to not deplete vein
         return super.pumpOil(speed, true);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    protected boolean requiresMiningPipes() {
+        return false;
     }
 
     @Override
@@ -83,5 +220,18 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     @Override
     protected int getMinTier() {
         return 9;
+    }
+
+    @Override
+    protected FluidStack adjustPumpedOil(FluidStack pumpedOil) {
+        if (pumpedOil == null) {
+            return null;
+        }
+        pumpedOil.amount *= getParallelCount();
+        return pumpedOil;
+    }
+
+    protected int getParallelCount() {
+        return (GTUtility.getTier(getMaxInputVoltage()) - getMinTier()) * parallels + 1;
     }
 }

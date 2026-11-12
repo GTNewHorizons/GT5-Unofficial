@@ -4,7 +4,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.ITickableSound;
 import net.minecraft.util.ResourceLocation;
 
-public class ElectricJukeboxSound implements ISound, ISeekingSound, ITickableSound {
+public class ElectricJukeboxSound implements ISeekingSound, ITickableSound {
 
     public final ResourceLocation soundResource;
     public float volume = 1.0F;

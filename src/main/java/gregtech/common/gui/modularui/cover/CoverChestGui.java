@@ -1,0 +1,61 @@
+package gregtech.common.gui.modularui.cover;
+
+import java.util.Arrays;
+
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+
+import gregtech.api.modularui2.CoverGuiData;
+import gregtech.common.covers.CoverChest;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+
+public class CoverChestGui extends CoverBaseGui<CoverChest> {
+
+    private static final String SLOT_GROUP_NAME = "cover_chest_items";
+
+    public CoverChestGui(CoverChest cover) {
+        super(cover);
+    }
+
+    @Override
+    protected String getGuiId() {
+        return "cover.chest";
+    }
+
+    @Override
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
+        int rows = cover.getSlotCount() / 3;
+        String[] matrix = new String[rows];
+        Arrays.fill(matrix, "xxx");
+
+        IItemHandlerModifiable handler = cover.getItems();
+
+        syncManager.registerSlotGroup(SLOT_GROUP_NAME, 3, 200);
+
+        column.horizontalCenter()
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix(matrix)
+                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup(SLOT_GROUP_NAME)))
+                    .build());
+    }
+
+    @Override
+    protected boolean doesBindPlayerInventory() {
+        return true;
+    }
+
+    @Override
+    protected boolean positionRelativeToCoverButton() {
+        return true;
+    }
+
+    @Override
+    protected boolean shouldIncludeTitleInPopUp() {
+        return false;
+    }
+}

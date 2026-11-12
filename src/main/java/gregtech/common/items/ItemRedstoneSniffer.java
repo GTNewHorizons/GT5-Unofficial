@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import java.io.IOException;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,41 +12,34 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiData;
-import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiFactory;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
+import gregtech.common.gui.modularui.item.RedstoneSnifferGui;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);;
+        super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
-    }
-
-    @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add("Author: §9Frosty§4Fire1");
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
         if (!world.isRemote) {
-            GuiFactories.item()
-                .open(player);
-
+            PlayerInventoryGuiFactory.INSTANCE.openFromMainHand(player);
         }
         return super.onItemRightClick(stack, world, player);
     }
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager, UISettings uiSettings) {
-        return new RedstoneSnifferGuiBuilder(guiData, guiSyncManager).build();
+        return new RedstoneSnifferGui(guiData, guiSyncManager).build();
     }
 
     public static class SnifferEntry {

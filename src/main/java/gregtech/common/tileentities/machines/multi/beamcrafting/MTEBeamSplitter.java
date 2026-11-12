@@ -1,0 +1,218 @@
+package gregtech.common.tileentities.machines.multi.beamcrafting;
+
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.TickTime;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.Particle;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId(); // Shielded
+                                                                                                            // Acc.
+
+    private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEBeamSplitter>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            // spotless:off
+            new String[][]{{
+                "   EEE   ",
+                "   ECE   ",
+                "   E~E   "
+            },{
+                "    B    ",
+                "   B B   ",
+                "    B    "
+            },{
+                "    B    ",
+                "   A A   ",
+                "    B    "
+            },{
+                "    B    ",
+                "   A A   ",
+                "    B    "
+            },{
+                "    B    ",
+                "   B B   ",
+                "    B    "
+            },{
+                "   BAB   ",
+                "  B   B  ",
+                "   BBB   "
+            },{
+                "   BAB   ",
+                " BB   BB ",
+                "   BBB   "
+            },{
+                "  BAAAB  ",
+                "BB     BB",
+                "  BBBBB  "
+            },{
+                "EEEEEEEEE",
+                "EDBDBDBDE",
+                "EEEEEEEEE"
+            }})
+        //spotless:on
+        .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
+        .addElement('A', chainAllGlasses())
+        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 1))
+        .addElement(
+            'D',
+            buildAdvancedBeamlineOutputHatch(
+                MTEBeamSplitter.class,
+                ShieldedAccCasingTextureID,
+                2,
+                FundamentalForce.All))
+        .addElement('E', Casings.GrateMachineCasing.asElement())
+        .build();
+
+    public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEBeamSplitter(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IStructureDefinition<MTEBeamSplitter> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEBeamSplitter(this.mName);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_BEAM_SPLITTER)
+                        .extFacing()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
+        }
+        return rTexture;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        int randomInt = (int) (Math.random() * 101);
+        String beanOrBeamSplitter = StatCollector.translateToLocal("gt.mbtt.machine_type.beam_splitter");
+        if (randomInt == 69) {
+            beanOrBeamSplitter = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake");
+        }
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(beanOrBeamSplitter)
+            .addMarkdown(new ResourceLocation("gregtech", "beam-splitter"))
+            .beginStructureBlock(9, 3, 9, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("42", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
+            .addCasing("27", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"), false)
+            .addCasing("9", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.above_controller"), 1)
+            .addMiscHatch("4", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"), StatCollector.translateToLocal("gt.mbtt.structure.opposite_controller"), 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 2, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        this.mMaxProgresstime = TickTime.SECOND;
+        BeamInformation inputInfo = this.getNthInputParticle(0);
+
+        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        outputPacketAfterRecipe(inputInfo);
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private void outputPacketAfterRecipe(BeamInformation inputInfo) {
+        int numValidOutputs = 0;
+        if (!this.mAdvancedOutputBeamline.isEmpty()) {
+            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+                if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)) {
+                    numValidOutputs++;
+                }
+            }
+            if (numValidOutputs > 0) {
+                for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+                    if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(inputInfo.getParticleId()), false)) {
+                        BeamInformation outputInfo = new BeamInformation(
+                            inputInfo.getEnergy(),
+                            inputInfo.getRate() / numValidOutputs,
+                            inputInfo.getParticleId(),
+                            inputInfo.getFocus());
+                        o.dataPacket = new BeamLinePacket(outputInfo);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -74,7 +74,7 @@ public class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBa
             new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                 .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.ItemTHR"))
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.ItemThreshold"))
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Item_Detector.DetectSlot"))

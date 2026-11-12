@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -15,7 +14,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     private final static int BASE_PYLON_RANGE = 16;
@@ -27,17 +28,16 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private int range = -1;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Grants creative flight to those wearing a MagLev Harness.",
-                "Range is a cube centered on the pylon.",
-                String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
-                String.format("Powered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, true)),
-                String.format("Cost: %s%d EU/t if tethered", EnumChatFormatting.WHITE, getPylonPowerCost(aTier)), });
+        super(aID, aName, aNameRegional, aTier, 0, new String[] { "gt.blockmachines.basicmachine.maglev.tooltip" });
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.basicmachine.maglev.tooltip",
+            getPylonRange(mTier, false),
+            getPylonRange(mTier, true),
+            getPylonPowerCost(mTier));
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {

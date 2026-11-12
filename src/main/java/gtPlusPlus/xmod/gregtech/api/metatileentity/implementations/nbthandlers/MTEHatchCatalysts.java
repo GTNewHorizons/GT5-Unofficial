@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,11 +15,11 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.ch
 public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
 
     public MTEHatchCatalysts(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage", false);
+        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage");
     }
 
     public MTEHatchCatalysts(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, 16, aDescription, false, aTextures);
+        super(aName, 0, 16, aDescription, aTextures);
     }
 
     @Override
@@ -61,17 +59,7 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public String getNameGUI() {
-        return "Catalyst Container";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
         return MTEChemicalPlant.isCatalyst(aStack);
     }
 

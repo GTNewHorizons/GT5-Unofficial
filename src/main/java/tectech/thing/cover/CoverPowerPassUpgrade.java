@@ -45,6 +45,7 @@ public class CoverPowerPassUpgrade extends Cover {
         }
     }
 
+    @Override
     @Deprecated
     public int getMinimumTickRate() {
         return 0;

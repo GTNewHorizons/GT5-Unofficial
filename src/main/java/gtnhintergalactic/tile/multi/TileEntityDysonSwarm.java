@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -8,8 +9,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static net.minecraft.util.EnumChatFormatting.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
 
@@ -17,13 +16,19 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,24 +41,32 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final Map<Locale, DecimalFormat> DECIMAL_FORMATTERS = new HashMap<>();
@@ -154,7 +167,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             'e',
             buildHatchAdder(TileEntityDysonSwarm.class).atLeast(Dynamo, DynamoMulti)
                 .casingIndex(IGTextures.CASING_INDEX_RECEIVER)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 0))) // Receiver Base Casing
         .addElement('f', ofFrame(Materials.HSSS))
         .addElement('g', ofFrame(Materials.Titanium))
@@ -164,17 +177,17 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputBus, InputHatch)
                 .casingIndex(IGTextures.CASING_INDEX_LAUNCH)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
-        .addElement('k', ofFrame(Materials.Longasssuperconductornameforuhvwire))
+        .addElement('k', ofFrame(Materials.SuperconductorUHVBase))
         .addElement('m', ofBlock(GregTechAPI.sBlockCasingsDyson, 4)) // Deployment Unit Superconducting Magnet
         .addElement(
             'o',
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
-                .dot(4)
+                .hint(3)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
         .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
         .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings
@@ -189,6 +202,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     private long euPerTick = 0;
     private double powerFactor = 0.0;
     private int moduleCount = 0;
+    private int modulesConsumedThisCycle = 0;
 
     public TileEntityDysonSwarm(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -213,7 +227,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      *************/
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 10, 18, 3);
     }
 
     @Override
@@ -228,11 +242,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -265,7 +284,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         if (moduleCount > 0 && depleteInput(IGConfig.dysonSwarm.getCoolantStack())) {
             // With a certain chance (configurable), the size of the ItemStack(s) is reduced.
             // This has the effect that the player must constantly replace "broken" Modules.
+            final int modulesBeforeDestruction = moduleCount;
             destroyModules();
+            modulesConsumedThisCycle = modulesBeforeDestruction - moduleCount;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 72000;
             return true;
@@ -394,15 +415,24 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE), TextureFactory.builder()
-                        .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER), TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -412,71 +442,109 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
+        tt.addMachineType(translate("gt.blockmachines.multimachine.ig.dyson.type"));
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc2",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc3",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc5",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-                    IGConfig.dysonSwarm.getCoolantStack()
-                        .getLocalizedName()))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
-            .addTecTechHatchInfo()
+        final Map<String, Object> vars = Map.of(
+            "euPerModule",
+            getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
+            "destroyModuleChance",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+            "destroyModuleA",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+            "destroyModuleB",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
+            "coolantConsumption",
+            getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+            "coolantName",
+            IGConfig.dysonSwarm.getCoolantStack()
+                .getLocalizedName());
+        tt.addMarkdown(new ResourceLocation("gregtech", "dyson-swarm"), vars)
+            .addSupportAny()
             .beginStructureBlock(16, 20, 16, false)
-            .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
-            .addInputBus("1 - 11", 2)
-            .addInputHatch("1 - 11", 2)
-            .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4)
-            .addStructureInfo("")
-            .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.receiver.dish"), 81, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.deployment.base"), 62, 72, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.core"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.magnet"), 32, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.control.base"), 115, 138, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.primary"), 20, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.secondary"), 12, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.toroid"), 128, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.floor"), 256, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.coil"), 9, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.hermetic"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameTitanium"), 16, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameHSSS"), 23, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameUHVBase"), 64, false)
+            .addController(StatCollector.translateToLocal("ig.dyson.structure.controller"))
+            .addCasing("256", StatCollector.translateToLocal("ig.dyson.structure.base.floor"), false)
+            .addCasing("115-138", StatCollector.translateToLocal("ig.dyson.structure.control.base"), false)
+            .addCasing("128", StatCollector.translateToLocal("ig.dyson.structure.control.toroid"), false)
+            .addCasing("81", StatCollector.translateToLocal("ig.dyson.structure.receiver.dish"), false)
+            .addCasing("62-72", StatCollector.translateToLocal("ig.dyson.structure.deployment.base"), false)
+            .addCasing("64", StatCollector.translateToLocal("ig.dyson.structure.base.frameUHVBase"), false)
+            .addCasing("53-64", StatCollector.translateToLocal("ig.dyson.structure.receiver.base"), false)
+            .addCasing("32", StatCollector.translateToLocal("ig.dyson.structure.deployment.magnet"), false)
+            .addCasing("23", StatCollector.translateToLocal("ig.dyson.structure.base.frameHSSS"), false)
+            .addCasing("20", StatCollector.translateToLocal("ig.dyson.structure.control.primary"), false)
+            .addCasing("16", StatCollector.translateToLocal("ig.dyson.structure.base.frameTitanium"), false)
+            .addCasing("12", StatCollector.translateToLocal("ig.dyson.structure.control.secondary"), false)
+            .addCasing("9", StatCollector.translateToLocal("ig.dyson.structure.base.coil"), false)
+            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.deployment.core"), false)
+            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.base.hermetic"), false)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.tier.07.name"),
+                StatCollector.translateToLocal("ig.dyson.structure.control.any_casing"),
+                3)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                StatCollector.translateToLocal("ig.dyson.structure.receiver.any_casing"),
+                1)
+            .addInputBus("1+", StatCollector.translateToLocal("ig.dyson.structure.deployment.any_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("ig.dyson.structure.deployment.any_casing"), 2)
+            .addAir(StatCollector.translateToLocal("ig.dyson.structure.air"))
             .toolTipFinisher();
         return tt;
     }
 
+    private long getCurrentOutput() {
+        return mMaxProgresstime > 0 ? euPerTick : 0;
+    }
+
     @Override
     public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + GTUtility.formatNumbers(powerFactor * 100.0)
-                + "%"
-                + RESET,
-            "Theoretical Output: " + YELLOW
-                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-                + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
+        return new String[] { "ig.infodata.hdr.operational_data",
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.modules.fmt", formatNumber(moduleCount)),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.power_factor.fmt",
+                (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.theoretical_output.fmt",
+                formatNumber(
+                    (long) (moduleCount + (mMaxProgresstime > 0 ? modulesConsumedThisCycle : 0))
+                        * IGConfig.dysonSwarm.euPerModule
+                        * powerFactor)),
+            IGregTechDeviceInformation
+                .encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(getCurrentOutput())),
+            IGregTechDeviceInformation
+                .encode("ig.infodata.dyson_swarm.modules_lost.fmt", formatNumber(modulesConsumedThisCycle)),
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("euPerTick", getCurrentOutput());
+        tag.setInteger("modulesLost", modulesConsumedThisCycle);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.current_output.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getLong("euPerTick"))));
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.modules_lost.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getInteger("modulesLost"))));
     }
 
     /******************
@@ -486,16 +554,21 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         WorldProvider provider = this.getBaseMetaTileEntity()
             .getWorld().provider;
 
+        if (!Mods.GalacticraftCore.isModLoaded()) {
+            return 1.0D;
+        }
+
         if (provider instanceof IOrbitDimension orbitDimension) {
             return IGConfig.dysonSwarm.getPowerFactor(orbitDimension.getPlanetToOrbit());
         }
 
         String className = provider.getClass()
             .getName();
-        return switch (className) {
-            case "me.eigenraven.personalspace.world.PersonalWorldProvider" -> IGConfig.dysonSwarm.getPowerFactor("PS");
-            default -> IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
-        };
+        if (className.equals("me.eigenraven.personalspace.world.PersonalWorldProvider")) {
+            return IGConfig.dysonSwarm.getPowerFactor("PS");
+        }
+        return IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
+
     }
 
     private static DecimalFormat getDecimalFormat() {
@@ -516,6 +589,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         super.loadNBTData(aNBT);
         moduleCount = aNBT.getInteger("moduleCount");
         euPerTick = aNBT.getLong("euPerTick");
+        modulesConsumedThisCycle = aNBT.getInteger("modulesConsumedThisCycle");
     }
 
     @Override
@@ -523,6 +597,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         super.saveNBTData(aNBT);
         aNBT.setInteger("moduleCount", moduleCount);
         aNBT.setLong("euPerTick", euPerTick);
+        aNBT.setInteger("modulesConsumedThisCycle", modulesConsumedThisCycle);
     }
 
     @Override
@@ -532,6 +607,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

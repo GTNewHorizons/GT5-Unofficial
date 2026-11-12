@@ -1,30 +1,22 @@
 package toxiceverglades;
 
-import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
 
-import bwcrossmod.galacticgreg.VoidMinerUtility;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialsOres;
 import toxiceverglades.biome.BiomeEverglades;
 import toxiceverglades.block.DarkWorldContentLoader;
 import toxiceverglades.dimension.DimensionEverglades;
-import toxiceverglades.gen.WorldGenEvergladesBase;
-import toxiceverglades.gen.WorldGenEvergladesOreLayer;
-import toxiceverglades.gen.WorldGenEvergladesOres;
 
 @Mod(
     modid = Mods.ModIDs.G_T_PLUS_PLUS_EVERGLADES,
@@ -47,7 +39,6 @@ public class GTPPEverglades {
     // Pre-Init
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        Logger.INFO("Loading " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Setup
         setVars(event);
@@ -62,13 +53,10 @@ public class GTPPEverglades {
 
     @EventHandler
     public void load(final FMLInitializationEvent e) {
-        Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Load World and Biome
-        GameRegistry.registerWorldGenerator(new WorldGenEvergladesBase(), Short.MAX_VALUE);
         getEvergladesBiome().load();
         Everglades_Dimension.load();
-        addToVoidMinerDrops();
     }
 
     public static synchronized void GenerateOreMaterials() {
@@ -118,43 +106,44 @@ public class GTPPEverglades {
         MaterialGenerator.generateOreMaterial(MaterialsOres.RADIOBARITE);
         MaterialGenerator.generateOreMaterial(MaterialsOres.DEEP_EARTH_REACTOR_FUEL_DEPOSIT);
 
+        GenerateRareEarthOreMaterials();
+    }
+
+    public static synchronized void GenerateRareEarthOreMaterials() {
+
+        // Set Material Tiers correctly
+        MaterialsOres.GREENOCKITE.tier = 1;
+        RARE_EARTH_LOW.tier = 1;
+        RARE_EARTH_MID.tier = 3;
+        RARE_EARTH_HIGH.tier = 5;
+
+        // Set Material Voltages correctly
+        MaterialsOres.GREENOCKITE.voltageMultiplier = 30;
+        RARE_EARTH_LOW.voltageMultiplier = 30;
+        RARE_EARTH_MID.voltageMultiplier = 480;
+        RARE_EARTH_HIGH.voltageMultiplier = 7680;
+
+        // Set Material Tooltips to be shorter
+        RARE_EARTH_LOW.chemicalFormula = "??????";
+        RARE_EARTH_MID.chemicalFormula = "??????";
+        RARE_EARTH_HIGH.chemicalFormula = "??????";
+
+        // Set Material Tooltips to be shorter
+        RARE_EARTH_LOW.chemicalSymbol = "??";
+        RARE_EARTH_MID.chemicalSymbol = "??";
+        RARE_EARTH_HIGH.chemicalSymbol = "??";
+
+        // Generate Ore Materials
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_LOW);
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_MID);
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_HIGH);
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {
         if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIMID)) {
             DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
         }
-
-        /*
-         * Set World Generation Values
-         */
-        WorldGenEvergladesOres.generateValidOreVeins();
-        WorldGenEvergladesBase.oreveinPercentage = 64;
-        WorldGenEvergladesBase.oreveinAttempts = 16;
-        WorldGenEvergladesBase.oreveinMaxPlacementAttempts = 4;
-        if (ASMConfiguration.debug.debugMode || GTPPCore.DEVENV) {
-            WorldGenEvergladesBase.debugWorldGen = true;
-        }
         DarkWorldContentLoader.run();
-    }
-
-    public void addToVoidMinerDrops() {
-        for (WorldGenEvergladesOreLayer t : WorldGenEvergladesOres.validOreveins.values()) {
-            addVMDrop(t.mPrimaryMeta, 0, t.mWeight);
-            addVMDrop(t.mSecondaryMeta, 0, t.mWeight);
-            addVMDrop(t.mBetweenMeta, 0, t.mWeight / 8f);
-            addVMDrop(t.mSporadicMeta, 0, t.mWeight / 8f);
-        }
-    }
-
-    public void addVMDrop(Block block, int meta, float weight) {
-        VoidMinerUtility
-            .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
-    }
-
-    @EventHandler
-    public static void postInit(final FMLPostInitializationEvent e) {
-        Logger.INFO("Finished loading Everglades plugin for GT++.");
     }
 
     public static synchronized BiomeEverglades getEvergladesBiome() {

@@ -68,7 +68,7 @@ public class ServerEventHandler {
                                 toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                 break loop;
                             }
-                            for (String s : e.getADDITIONAL_OREDICT()) {
+                            for (String s : e.getAdditionalOredict()) {
                                 if (oreDictName.contains(s)) {
                                     String prefix = oreDictName.replace(s, "");
                                     OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);

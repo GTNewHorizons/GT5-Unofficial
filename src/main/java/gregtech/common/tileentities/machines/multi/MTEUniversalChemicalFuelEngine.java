@@ -1,0 +1,408 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.maps.FuelBackend;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int OFFSET_X = 3;
+    private static final int OFFSET_Y = 4;
+    private static final int OFFSET_Z = 0;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
+    private static final double EFFICIENCY_CEILING = 1.5D;
+    private static final int HEATING_TIMER = TickTime.SECOND * 10;
+
+    private long tEff;
+    private int heatingTicks;
+    private boolean isStoppingSafe;
+    private int casingAmount;
+
+    private IStructureDefinition<MTEUniversalChemicalFuelEngine> STRUCTURE_DEFINITION = null;
+
+    public MTEUniversalChemicalFuelEngine(String name) {
+        super(name);
+        super.useLongPower = true;
+    }
+
+    public MTEUniversalChemicalFuelEngine(int id, String name, String nameRegional) {
+        super(id, name, nameRegional);
+        super.useLongPower = true;
+    }
+
+    @Override
+    public IStructureDefinition<MTEUniversalChemicalFuelEngine> getStructure_EM() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEUniversalChemicalFuelEngine>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] {
+                        // spotless:off
+                        { "       ", "       ", "       ", "  BBB  ", "  B~B  ", "  BBB  ", "       " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
+                        { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
+                        { "       ", "       ", "       ", "  BBB  ", "  BGB  ", "  BBB  ", "       " }}
+                        //spotless:on
+                )
+                .addElement('A', Casings.TitaniumPipeCasing.asElement())
+                .addElement(
+                    'B',
+                    ofChain(
+                        buildHatchAdder(MTEUniversalChemicalFuelEngine.class).atLeast(InputHatch, Muffler, Maintenance)
+                            .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
+                            .hint(1)
+                            .build(),
+                        onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
+                .addElement('C', Casings.TitaniumFireboxCasing.asElement())
+                .addElement('D', Casings.EngineIntakeCasing.asElement())
+                .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
+                .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
+                .addElement('G', Dynamo.newAny(Casings.StableTitaniumMachineCasing.textureId, 2))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 100);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return (int) Math.sqrt(this.getPowerFlow());
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("efficiency_ceiling", formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1)))
+                    .put("gas_coefficient", formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .build())
+            .addSupportAny()
+            .addUnlimitedTierSkips()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 7, 13, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.TitaniumFireboxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
+
+        ArrayList<FluidStack> tFluids = getStoredFluids();
+
+        long PromoterAmount = findLiquidAmount(getPromoter(), tFluids);
+
+        CheckRecipeResult result;
+
+        result = processFuel(tFluids, RecipeMaps.dieselFuels, PromoterAmount, DIESEL_EFFICIENCY_COEFFICIENT, 1);
+        if (result.wasSuccessful()) return result;
+
+        result = processFuel(tFluids, RecipeMaps.gasTurbineFuels, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT, 1);
+        if (result.wasSuccessful()) return result;
+
+        result = processFuel(tFluids, RecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
+        if (result.wasSuccessful()) return result;
+
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    protected CheckRecipeResult processFuel(ArrayList<FluidStack> tFluids, RecipeMap<FuelBackend> recipeMap,
+        long PromoterAmount, double efficiencyCoefficient, double FuelsValueBonus) {
+        for (GTRecipe recipe : recipeMap.getAllRecipes()) {
+            FluidStack tFuel = findFuel(recipe);
+            if (tFuel == null) continue;
+            long FuelAmount = findLiquidAmount(tFuel, tFluids);
+            if (FuelAmount == 0) continue;
+            calculateEfficiency(FuelAmount, PromoterAmount, efficiencyCoefficient);
+            consumeAllLiquid(tFuel, tFluids);
+            consumeAllLiquid(getPromoter(), tFluids);
+            this.setPowerFlow((long) (FuelAmount * recipe.mSpecialValue * FuelsValueBonus / 20.0D));
+            this.mMaxProgresstime = 20;
+            this.updateSlots();
+            return CheckRecipeResultRegistry.GENERATING;
+        }
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        // Reset the counter for heating, so that it works again when the machine restarts
+        heatingTicks = 0;
+        super.stopMachine(reason);
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack stack) {
+        super.onRunningTick(stack);
+        // Counts ticks up to the defined timer (200 ticks, 10 seconds)
+        // The multiblock will not stop due to excess energy during this time
+        // Machine used to explode in the past, this timer was first made to prevent that
+        if (heatingTicks < HEATING_TIMER) {
+            heatingTicks++;
+            isStoppingSafe = true;
+        } else if (isStoppingSafe) isStoppingSafe = false;
+
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
+            addAutoEnergy();
+        }
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] info = super.getInfoData();
+        info[4] = IGregTechDeviceInformation.encode(
+            "gg.scanner.info.generator.generates",
+            EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000) + EnumChatFormatting.RESET);
+        info[6] = IGregTechDeviceInformation.encode(
+            "GT5U.multiblock.problems.efficiency.fmt",
+            this.getIdealStatus() - this.getRepairStatus(),
+            formatNumber(tEff / 100D) + " %");
+        return info;
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+
+        // we produce power, so we need to apply a unary minus to the power
+        // for waila to display it correctly since:
+        // https://github.com/GTNewHorizons/GT5-Unofficial/blob/39af6c67/src/main/java/gregtech/api/metatileentity/implementations/GT_MetaTileEntity_MultiBlockBase.java#L1251-L1253
+        tag.setLong("energyUsage", -this.getPowerFlow() * (tEff / 10000));
+        tag.setFloat("efficiency", tEff / 100F);
+        if (!mDynamoHatches.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                mDynamoHatches.get(0)
+                    .maxEUOutput()));
+        if (!eDynamoMulti.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                eDynamoMulti.get(0)
+                    .maxEUOutput()));
+    }
+
+    void addAutoEnergy() {
+        long exEU = this.getPowerFlow() * tEff / 10000;
+        if (!mDynamoHatches.isEmpty()) {
+            MTEHatchDynamo tHatch = mDynamoHatches.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + exEU));
+            } else if (!isStoppingSafe) {
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
+            }
+        }
+        if (!eDynamoMulti.isEmpty()) {
+            MTEHatchDynamoMulti tHatch = eDynamoMulti.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
+                tHatch.setEUVar(
+                    Math.min(
+                        tHatch.maxEUStore(),
+                        tHatch.getBaseMetaTileEntity()
+                            .getStoredEU() + exEU));
+            } else if (!isStoppingSafe) {
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
+            }
+        }
+    }
+
+    public FluidStack getPromoter() {
+        return FluidRegistry.getFluidStack("combustionpromotor", 1);
+    }
+
+    public FluidStack findFuel(GTRecipe aFuel) {
+        if (aFuel.mInputs != null && aFuel.mInputs.length > 0)
+            return GTUtility.getFluidForFilledItem(aFuel.mInputs[0], true);
+        else return aFuel.mFluidInputs[0];
+    }
+
+    public void calculateEfficiency(long aFuel, long aPromoter, double coefficient) {
+        if (aPromoter == 0) {
+            this.tEff = 0;
+            return;
+        }
+        this.tEff = (int) (Math.exp(-coefficient * (double) aFuel / (double) aPromoter) * EFFICIENCY_CEILING * 10000);
+    }
+
+    public long findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
+        long cnt = 0;
+        for (FluidStack fluid : input) {
+            if (fluid.isFluidEqual(liquid)) {
+                cnt += fluid.amount;
+            }
+        }
+        if (cnt < 0) cnt = 0;
+        return cnt;
+    }
+
+    public void consumeAllLiquid(FluidStack liquid, List<FluidStack> input) {
+        for (FluidStack fluid : input) {
+            if (fluid.isFluidEqual(liquid)) fluid.amount = 0;
+        }
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DIESEL_ENGINE,
+            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.StableTitaniumMachineCasing.getCasingTexture();
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEUniversalChemicalFuelEngine(STRUCTURE_PIECE_MAIN);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -2;
+    }
+}

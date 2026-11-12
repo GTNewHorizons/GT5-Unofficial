@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -27,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtil;
@@ -234,7 +234,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.mTextureIndex];
+            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.getTextureIndex()];
             INSTANCE.iconContainerMap.put(cellType, iconContainer);
         }
     }
@@ -289,10 +289,10 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         FluidContainerRegistry
             .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
-                + cellType.prefix.mLocalizedMaterialPost);
+        String prefixKey = cellType.prefix.getOreprefixKey();
+        mNameLocalizationFunctions.put(
+            (short) id,
+            stack -> StatCollector.translateToLocalFormatted(prefixKey, fluid.getLocalizedName(fluidStack)));
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);

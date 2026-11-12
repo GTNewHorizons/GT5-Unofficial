@@ -1,0 +1,241 @@
+package gregtech.common.tileentities.machines.multi.nanochip.modules;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gtnhlanth.common.register.LanthItemList;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
+
+public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtchingArrayModule> {
+
+    protected static final int ETCHING_OFFSET_X = 3;
+    protected static final int ETCHING_OFFSET_Y = 4;
+    protected static final int ETCHING_OFFSET_Z = 0;
+    protected static final String[][] ETCHING_STRUCTURE = new String[][] {
+        { "  EEE  ", " EBBBE ", " EBHBE ", " BBBBB " }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
+        { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
+        { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " BCCCB ", " BCCCB ", "BBCCCBB" },
+        { "  EEE  ", " EAEAE ", " EAEAE ", " BAEAB " } };
+
+    private MTEHatchDynamoTunnel laserSource = null;
+    private int laserAmps = 0;
+    private int laserTier = 0;
+
+    public static final IStructureDefinition<MTEEtchingArrayModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEEtchingArrayModule>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, ETCHING_STRUCTURE)
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
+        // Shielded Accelerator Casing
+        .addElement('C', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+        // Enriched Holmium Frame box
+        .addElement('E', ofFrame(Materials.EnrichedHolmium))
+        // Non-Photonic Matter Exclusion Glass
+        .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
+        // Nanochip Glass
+        .addElement('G', Casings.NanochipComplexGlass.asElement())
+        // Laser Source hatch
+        .addElement(
+            'H',
+            buildHatchAdder(MTEEtchingArrayModule.class).anyOf(HatchElement.LaserSource)
+                .adder(MTEEtchingArrayModule::addLaserSource)
+                .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
+                .hint(4)
+                .build())
+        .build();
+
+    private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof MTEHatchDynamoTunnel laser) {
+                laserSource = laser;
+                laserSource.updateTexture(aBaseCasingIndex);
+                laserAmps = (int) laserSource.maxAmperesOut();
+                laserTier = (int) laserSource.getOutputTier();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ETCHING_ARRAY,
+            OVERLAY_FRONT_ETCHING_ARRAY_GLOW,
+            OVERLAY_FRONT_ETCHING_ARRAY_ACTIVE,
+            OVERLAY_FRONT_ETCHING_ARRAY_ACTIVE_GLOW);
+    }
+
+    public MTEEtchingArrayModule(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    protected MTEEtchingArrayModule(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.EtchingArray;
+    }
+
+    @Override
+    public IStructureDefinition<MTEEtchingArrayModule> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public int structureOffsetX() {
+        return ETCHING_OFFSET_X;
+    }
+
+    @Override
+    public int structureOffsetY() {
+        return ETCHING_OFFSET_Y;
+    }
+
+    @Override
+    public int structureOffsetZ() {
+        return ETCHING_OFFSET_Z;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        if (laserSource == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.etching_array_no_laser"));
+        }
+    }
+
+    @Override
+    protected float getEUDiscountModifier(GTRecipe recipe) {
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3 + (baseMulti.crystalT3Active ? 1 : 0));
+    }
+
+    @Override
+    protected float getModuleDurationModifier() {
+        return 1f / (Math.max(1, laserTier - 9 + (baseMulti.crystalT3Active ? 1 : 0)));
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
+            .addSeparator()
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
+            .addSeparator()
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
+            .beginStructureBlock(7, 7, 7, false)
+            .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
+            // Nanochip Reinforcement Casing
+            .addCasing("28", translateToLocal("gt.blockcasings12.2.name"), false)
+            // Nanochip Mesh Interface Casing
+            .addCasing("24", translateToLocal("gt.blockcasings12.1.name"), false)
+            // Enriched Holmium Frame Box
+            .addCasing("17", "Enriched Holmium Frame Box", false)
+            // Nanochip Complex Glass
+            .addCasing("13", translateToLocal("gt.blockglass1.8.name"), false)
+            // Shielded Accelerator Casing
+            .addCasing("9", translateToLocal("casing.shielded_accelerator.name"), false)
+            // Non-Photonic Matter Exclusion Glass
+            .addCasing("4", translateToLocal("gt.blockglass1.3.name"), false)
+            // Laser Source Hatch
+            .addMiscHatch("1", translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Front center casing", 4)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
+            .toolTipFinisher();
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setBoolean("installed", laserSource != null);
+        tag.setInteger("laserAmps", laserAmps);
+        tag.setInteger("laserTier", laserTier);
+    }
+
+    @Override
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        if (tag.getBoolean("installed")) {
+            list.add(
+                EnumChatFormatting.LIGHT_PURPLE + translateToLocal("GT5U.tooltip.nac.module.etching_array.installed")
+                    + ": "
+                    + tag.getInteger("laserAmps")
+                    + "A "
+                    + GTValues.VN[tag.getInteger("laserTier")]);
+        }
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEEtchingArrayModule(this.mName);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.nanochipEtchingArray;
+    }
+}

@@ -142,15 +142,9 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
             new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
             1);
-
-        GTLanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
-        GTLanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
-        GTLanguageManager.addStringLocalization("tc.aspect.electrum", "Electricity, Lightning");
-        GTLanguageManager.addStringLocalization("tc.aspect.magneto", "Magnetism, Attraction");
-        GTLanguageManager.addStringLocalization("tc.aspect.radio", "Radiation");
     }
 
-    public class LocalizedCustomAspectName extends Aspect {
+    public static class LocalizedCustomAspectName extends Aspect {
 
         public LocalizedCustomAspectName(String tag, int color, Aspect[] components, ResourceLocation image,
             int blend) {
@@ -314,6 +308,12 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
             return true;
         }
+
+        if (!ThaumcraftApi.exists(aStack.getItem(), aStack.getItemDamage())) {
+            ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
+            return true;
+        }
+
         AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
         if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
             ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));

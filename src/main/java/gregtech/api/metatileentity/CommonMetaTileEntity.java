@@ -25,15 +25,20 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.InventoryItemSource;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.implementation.items.GTItemSink;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,7 +49,6 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -53,6 +57,8 @@ import gregtech.common.covers.Cover;
  * ({@link MetaPipeEntity}).
  */
 public abstract class CommonMetaTileEntity implements IMetaTileEntity {
+
+    private volatile ITexture[][] inventoryTextureCache;
 
     /**
      * Inventory of this block.
@@ -76,7 +82,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     public long mSoundRequests = 0;
 
-    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
+    protected CommonMetaTileEntity(int id, String basicName, int invSlotCount) {
         if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
         if (GregTechAPI.METATILEENTITIES[id] == null) {
@@ -95,7 +101,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
             .toLowerCase(Locale.ENGLISH);
-        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
     }
 
     protected CommonMetaTileEntity(String name, int invSlotCount) {
@@ -109,6 +114,28 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Nullable
     @Override
     public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ItemSink.class) {
+            return capability.cast(getItemSink(side));
+        }
+        if (capability == ItemSource.class) {
+            return capability.cast(getItemSource(side));
+        }
+        if (capability == ItemIO.class) {
+            return capability.cast(getItemIO(side));
+        }
+
+        return null;
+    }
+
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return getSizeInventory() == 0 ? null : new GTItemSink(this, side);
+    }
+
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return getSizeInventory() == 0 ? null : new InventoryItemSource(this, side);
+    }
+
+    protected ItemIO getItemIO(ForgeDirection side) {
         return null;
     }
 
@@ -134,20 +161,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-            /*
-             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
-             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
-             * work and network traffic on different ticks, until it reaches 0.
-             */
-            baseMetaTileEntity.issueTextureUpdate();
-        }
-    }
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
@@ -202,6 +227,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         }
     }
 
+    @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().isMuffled()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
@@ -377,7 +403,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalNameKey();
         }
         return "";
     }
@@ -414,6 +440,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final TIntList tList = new TIntArrayList();
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        if (tTileEntity == null || tTileEntity.isDead()) return GTValues.emptyIntArray;
         final Cover tileCover = tTileEntity.getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
         final boolean tSkip = tileCover.letsItemsIn(-2) || tileCover.letsItemsOut(-2);
         for (int i = 0; i < getSizeInventory(); i++) {
@@ -459,8 +486,16 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+    }
+
+    /**
+     * Type-aware drain with an overridden amount. Avoids allocating a new {@link FluidStack} per call when the caller
+     * needs to drain a different amount than {@code fluidStack.amount}.
+     */
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, int amount, boolean doDrain) {
         if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
-            return drain(fluidStack.amount, doDrain);
+            return drain(amount, doDrain);
         }
         return null;
     }
@@ -525,6 +560,26 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected final ITexture[][] getOrCreateInventoryTextures() {
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity base = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.UP, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        return textures;
+    }
+
+    public final void clearInventoryTextureCache() {
+        inventoryTextureCache = null;
     }
 
     @Override
@@ -604,6 +659,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    /**
+     * A public method to verify if this MTE has a Mui2 GUI. Returning false indicates that do not try to open a Mui2
+     * GUI
+     * of this.
+     */
+    public boolean hasMui2Gui() {
+        return useMui2() || forceUseMui2();
+    }
+
     @Override
     public final String getGuiId() {
         return mName;
@@ -612,7 +676,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
      */
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
     }
 

@@ -1,12 +1,21 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.List;
+
+import javax.annotation.Nonnegative;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -18,13 +27,25 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.structure.StructureChecker;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
+import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.ISoundPosition;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -39,6 +60,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+
+    private final StructureCenterWalker centerWalker = new StructureCenterWalker();
+    private final StructureErrorWalker errorWalker = new StructureErrorWalker();
+    private final Vector3f center = new Vector3f();
+    private StructureStatus structureStatus = StructureStatus.OK;
+    private final Vector3i errorPos = new Vector3i();
+    private int structureRadius;
 
     protected MTEEnhancedMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -56,12 +84,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
-            mMachine = false;
-            mUpdated = false;
-            mUpdate = 50;
+            onMachineBlockUpdate();
             if (getBaseMetaTileEntity().isServerSide()
                 && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
@@ -126,8 +151,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
-    protected abstract MultiblockTooltipBuilder createTooltip();
-
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return getTooltip().getStructureHint();
@@ -159,6 +182,65 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             Flip.byIndex(aNBT.getByte("eFlip")));
         if (!getAlignmentLimits().isNewExtendedFacingValid(mExtendedFacing)) {
             mExtendedFacing = getCorrectedAlignment(mExtendedFacing);
+        }
+    }
+
+    @Nullable
+    public Vector3f getCenter() {
+        return center;
+    }
+
+    /// Gets the approximate radius of this multi in blocks.
+    @Nonnegative
+    public int getApproximateRadius() {
+        return structureRadius;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected @NotNull GTSoundLoop createSoundLoop(SoundResource activitySound) {
+        GTSoundLoop loop = super.createSoundLoop(activitySound);
+
+        // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
+        loop.setVolume(Math.max(1f, structureRadius / 16f * this.getSoundRadiusMultiplier()));
+
+        return loop;
+    }
+
+    // allows for fine-tuning on multiblocks that may be a little bit too loud/quiet.
+    @SideOnly(Side.CLIENT)
+    protected float getSoundRadiusMultiplier() {
+        return 4f;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ISoundPosition getSoundPosition() {
+        return this::getCenter;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        structureStatus = StructureStatus.OK;
+    }
+
+    @Override
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
+
+        StructureSize size = centerWalker.finish();
+
+        if (size != null) {
+            this.center.set(size.centerX, size.centerY, size.centerZ);
+            this.structureRadius = size.radius;
+        } else {
+            this.center.set(igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
+            this.structureRadius = 1;
+        }
+
+        if (mMachine) {
+            igte.issueTileUpdate();
         }
     }
 
@@ -203,10 +285,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * <p>
      * All these offsets can be negative.
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        return getCastedStructureDefinition().check(
-            this,
+        structureStatus = StructureStatus.OK;
+        IStructureWalker<MTEEnhancedMultiBlockBase<T>> checkWalker = mMachine
+            ? IStructureWalker.skipBlockUnloaded(errorWalker)
+            : errorWalker;
+        getCastedStructureDefinition().iterate(
             piece,
             tTile.getWorld(),
             getExtendedFacing(),
@@ -216,7 +303,70 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             horizontalOffset,
             verticalOffset,
             depthOffset,
-            !mMachine);
+            checkWalker);
+
+        boolean success = structureStatus == StructureStatus.OK;
+
+        if (success) {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                centerWalker);
+        }
+
+        return success;
+    }
+
+    /**
+     * Explanation of the world coordinate these offset means:
+     * <p>
+     * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
+     * <p>
+     * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
+     * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
+     * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
+     * controller itself.
+     * <p>
+     * All these offsets can be negative.
+     */
+    public final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset,
+        @Nullable List<StructureError> errors) {
+        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        StructureChecker<MTEEnhancedMultiBlockBase<T>> checker = new StructureChecker<>(this, !mMachine, errors);
+        getCastedStructureDefinition().iterate(
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            checker);
+
+        if (checker.success) {
+            getCastedStructureDefinition().iterate(
+                piece,
+                tTile.getWorld(),
+                getExtendedFacing(),
+                tTile.getXCoord(),
+                tTile.getYCoord(),
+                tTile.getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                centerWalker);
+        }
+
+        return checker.success;
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
@@ -402,9 +552,234 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        if (aBaseMetaTileEntity.isClientSide())
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeFloat(center.x);
+        buffer.writeFloat(center.y);
+        buffer.writeFloat(center.z);
+        buffer.writeInt(structureRadius);
+        buffer.writeByte(mExtendedFacing.getIndex());
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        center.x = buffer.readFloat();
+        center.y = buffer.readFloat();
+        center.z = buffer.readFloat();
+
+        int oldRadius = structureRadius;
+        structureRadius = buffer.readInt();
+        if (oldRadius != structureRadius) {
+            restartActivitySound();
+        }
+
+        mExtendedFacing = ExtendedFacing.byIndex(buffer.readByte());
+    }
+
+    protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {
+        int count = (int) element.count(this);
+        if (count < min) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, element, count, min));
+        }
+    }
+
+    protected final void checkHatchExact(List<StructureError> errors, HatchElement element, int target) {
+        int count = (int) element.count(this);
+        if (count != target) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, element, count, target));
+        }
+    }
+
+    protected final void checkHatchMax(List<StructureError> errors, HatchElement element, int max) {
+        int count = (int) element.count(this);
+        if (count > max) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, element, count, max));
+        }
+    }
+
+    protected final void checkCasingMin(List<StructureError> errors, int current, int required) {
+        if (current < required) {
+            errors.add(StructureErrors.missingCasings(current, required));
+        }
+    }
+
+    protected final void checkHasEnergyHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Energy, 1);
+    }
+
+    protected final void checkOneEnergyHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Energy, 1);
+    }
+
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMufflerHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkOneMufflerHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkOneInputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkHasInputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkOneInputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkHasOutputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkOneOutputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkHasOutputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected final void checkOneOutputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected void checkHasAnyInput(List<StructureError> errors) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_input"));
+        }
+    }
+
+    protected void checkHasAnyOutput(List<StructureError> errors) {
+        if (mOutputBusses.isEmpty() && mOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_output"));
+        }
+    }
+
+    protected void checkHasAnyEnergy(List<StructureError> errors) {
+        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        }
+    }
+
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
+        }
+    }
+
+    protected void checkOneEnergyHatchMaybeExotic(List<StructureError> errors) {
+        int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+        if (count == 0) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        } else if (count > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.Energy, count, 1));
+        }
+    }
+
+    public static class StructureSize {
+
+        public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        public int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+
+        public float centerX, centerY, centerZ;
+        public int radius;
+    }
+
+    private class StructureCenterWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        private StructureSize size;
+
+        public StructureSize finish() {
+            StructureSize size = this.size;
+            this.size = null;
+            // When `size` is null, for whatever reason the piece method was never called, which never called [#visit].
+            // We'll just fall back to the default behaviour in this case - play the sound at the center with the
+            // default radius.
+            // This usually happens when a multi has its own structure check logic.
+            if (size == null) return null;
+
+            size.centerX = (size.minX + size.maxX) * 0.5f;
+            size.centerY = (size.minY + size.maxY) * 0.5f;
+            size.centerZ = (size.minZ + size.maxZ) * 0.5f;
+
+            size.radius = GTUtility.max(size.maxX - size.minX, size.maxY - size.minY, size.maxZ - size.minZ) / 2;
+
+            return size;
+        }
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            if (size == null) {
+                size = new StructureSize();
+            }
+
+            size.minX = Math.min(size.minX, x);
+            size.minY = Math.min(size.minY, y);
+            size.minZ = Math.min(size.minZ, z);
+
+            size.maxX = Math.max(size.maxX, x);
+            size.maxY = Math.max(size.maxY, y);
+            size.maxZ = Math.max(size.maxZ, z);
+
+            return true;
+        }
+    }
+
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    private class StructureErrorWalker implements IStructureWalker<MTEEnhancedMultiBlockBase<T>> {
+
+        @Override
+        public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
+            int a, int b, int c) {
+            boolean result = element.check(MTEEnhancedMultiBlockBase.this, world, x, y, z);
+
+            if (!result) {
+                structureStatus = StructureStatus.WRONG_BLOCK;
+                errorPos.set(x, y, z);
+            }
+
+            return result;
+        }
+
+        @Override
+        public boolean blockNotLoaded(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x,
+            int y, int z, int a, int b, int c) {
+            structureStatus = StructureStatus.BLOCK_NOT_LOADED;
+            return false;
+        }
+    }
+
+    private enum StructureStatus {
+        OK,
+        WRONG_BLOCK,
+        BLOCK_NOT_LOADED,
     }
 }

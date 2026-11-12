@@ -23,13 +23,8 @@ public enum Mixin implements IMixins {
     WorldMixin(new MixinBuilder("Block update detection")
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
-    StringTranslateMixin(new MixinBuilder("Keep track of currently translating mods")
-        .addCommonMixins(
-            "minecraft.StringTranslateMixin",
-            "minecraft.LanguageRegistryMixin")
-        .setPhase(Phase.EARLY)),
-    LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
-        .addClientMixins("minecraft.LocaleMixin")
+    LanguageRegistryMixin(new MixinBuilder()
+        .addCommonMixins("minecraft.LanguageRegistryMixin")
         .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
@@ -68,9 +63,20 @@ public enum Mixin implements IMixins {
             .addCommonMixins("minecraft.ItemToolMaterialMixin")
             .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
             .setPhase(Phase.EARLY)),
+
+    GTWorldgenSortingFix(new MixinBuilder("Forces GTWorldgenerator to the end of the world gen list")
+        .addCommonMixins("forge.GameRegistryMixin")
+        .setPhase(Phase.EARLY)),
+
+    HEEAccessors(new MixinBuilder("Various accessors for Hardcore Ender Expansion")
+        .addCommonMixins("hee.ChunkProviderHardcoreEndMixin", "hee.MapGenIslandMixin")
+        .addRequiredMod(TargetedMod.HEE)
+        .setPhase(Phase.LATE)),
+
     ForgeHooksMixin(new MixinBuilder("Adds missing hooks in ForgeHooks")
         .addCommonMixins("forge.ForgeHooksMixin")
         .setPhase(Phase.EARLY)),
+
     IC2_MACHINE_WRENCHING(new MixinBuilder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addCommonMixins(
             "ic2.MixinDamageDropped",
@@ -78,11 +84,7 @@ public enum Mixin implements IMixins {
             "ic2.MixinItemDropped")
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
-    IC2_REINFORCED_GLASS_SILK(
-        new MixinBuilder("Lets Reinforced Glass be harvested by silk touch")
-            .addCommonMixins("ic2.MixinIc2ReinforcedGlass")
-            .addRequiredMod(TargetedMod.IC2)
-            .setPhase(Phase.LATE)),
+
     IC2_REMOVE_FISSION_FUELS(new MixinBuilder()
         .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
         .addRequiredMod(TargetedMod.IC2)
@@ -104,6 +106,10 @@ public enum Mixin implements IMixins {
     VANILLA_TRADING(new MixinBuilder()
         .setPhase(Phase.EARLY)
         .addCommonMixins("minecraft.VanillaTradingMixin")),
+
+    PORTAL_PIGMAN_SPAWN(new MixinBuilder("Suppresses Mob spawning from portals via monster repellents")
+        .addCommonMixins("minecraft.PortalSpawnCheckMixin")
+        .setPhase(Phase.EARLY)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new MixinBuilder()
@@ -141,6 +147,21 @@ public enum Mixin implements IMixins {
         .setPhase(Phase.LATE)
         .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
         .addRequiredMod(TargetedMod.THAUMCRAFT)),
+    POLLUTION_TICON_SLAB_FURNACE(new MixinBuilder("Tinker's Contruct Slab Furnace Pollutes")
+        .addCommonMixins("tinkersconstruct.MixinFurnaceLogicPollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.TINKERSCONSTRUCT)),
+    POLLUTION_EFR_FURNACE(new MixinBuilder("Et Futurum Requiem Blast Furnace and Smoker Pollutes")
+        .addCommonMixins("efr.MixinTileEntityBlastFurnacePollution", "efr.MixinTileEntitySmokerPollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.EFR)),
+    POLLUTION_NATURA_NETHER_FURNACE(new MixinBuilder("Natura Nether Furnace Pollutes")
+        .addCommonMixins("natura.MixinNetherrackFurnacePollution")
+        .setPhase(Phase.LATE)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addRequiredMod(TargetedMod.NATURA)),
     POLLUTION_RAILCRAFT(new MixinBuilder("Make Railcraft Pollute")
         .addCommonMixins(
             "railcraft.MixinRailcraftBoilerPollution",

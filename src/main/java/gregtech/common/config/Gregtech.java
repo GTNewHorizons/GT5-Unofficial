@@ -5,7 +5,11 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 import gregtech.common.GTProxy;
 
-@Config(modid = Mods.ModIDs.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
+@Config(
+    modid = Mods.ModIDs.GREG_TECH,
+    category = Mods.ModIDs.GREG_TECH,
+    configSubDirectory = "GregTech",
+    filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
 public class Gregtech {
 
@@ -26,6 +30,9 @@ public class Gregtech {
 
     @Config.Comment("Ore drop behavior section")
     public static final OreDropBehavior oreDropBehavior = new OreDropBehavior();
+
+    @Config.Comment("Void miners")
+    public static final VoidMiners voidMiners = new VoidMiners();
 
     @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
@@ -99,6 +106,11 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean debugChunkloaders;
+
+        @Config.Comment("Enables logging of icons registration. (May help resource-pack creators)")
+        @Config.DefaultBoolean(false)
+        @Config.RequiresMcRestart
+        public boolean logRegisterIcons;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.features")
@@ -141,6 +153,11 @@ public class Gregtech {
         @Config.Comment("if true, batch mode will initially be enabled when multiblocks are placed in the world.")
         @Config.DefaultBoolean(true)
         public boolean batchModeInitialValue;
+
+        @Config.Comment("If true, explosive food items (e.g. Explosive Ice Cream) deal damage when eaten. "
+            + "If false, only the explosion effect plays, with no damage.")
+        @Config.DefaultBoolean(true)
+        public boolean explosiveFoodDamage;
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
@@ -222,11 +239,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, hungers the players based on his amount of stuff in the inventory every 6s, regardless of player movement.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hungerEffect;
-
         @Config.Comment("If true, enables the item oredification of the items in the inventory.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
@@ -257,11 +269,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean achievements;
 
-        @Config.Comment("if true, hides unused ores.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hideUnusedOres;
-
         @Config.Comment("if true, enables all the materials in GT5U.")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
@@ -291,11 +298,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean lowGravProcessing;
-
-        @Config.Comment("if true, crops need a block below to fully grow.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean cropNeedBlock;
 
         @Config.Comment("if yes, allows the automatic interactions with the maintenance hatches.")
         @Config.DefaultBoolean(true)
@@ -342,6 +344,16 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean costlyCableConnection;
 
+        @Config.Comment("if true, enables cable multi-connection using a wire cutter.")
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        public boolean cableMultiConnectEnabled;
+
+        @Config.Comment("Maximum number of cables to check during multi-connect before stopping.")
+        @Config.DefaultInt(10000)
+        @Config.RequiresMcRestart
+        public int cableMultiConnectLimit;
+
         @Config.Comment("if true, crashes on null recipe input.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
@@ -377,10 +389,25 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/explosions.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
+
+        @Config.Comment("The maximum number of nanoseconds that the cooperative scheduler will run for each tick.")
+        @Config.DefaultInt(10_000_000) // 10 ms
+        @Config.Name("Scheduler Max Duration (ns)")
+        public int schedulerDuration;
+
+        @Config.Comment("The maximum number of tasks that the scheduler will try to run per tick (not a hard limit).")
+        @Config.DefaultInt(5)
+        @Config.Name("Scheduler Target Task Count")
+        public int maxTaskCount;
+
+        @Config.Comment("0 = No Profiling. 1 = Print the time taken by the scheduler. 2 = Print the time taken by each task.")
+        @Config.DefaultInt(0)
+        @Config.Name("Scheduler Profiling")
+        public int schedulerProfileLevel;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
@@ -523,21 +550,15 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean machineThunderExplosions;
 
-        @Config.Comment("If true, enable the guis of the machines to get a tint and it will be of the color of the dye applied to the machine.")
+        @Config.Comment("If true, show the color of the dye applied to the machine as a swatch next to the GUI title.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean coloredGUI;
 
-        @Config.Comment("If true and if the machine tint is activated, the guis will have a uniform metallic tint no matter what color is applied to the machines.")
+        @Config.Comment("If true and if coloredGUI is enabled, hide the color swatch and show a uniform metallic tint no matter what color is applied to the machines.")
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean machineMetalGUI;
-
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        @Config.Comment("If true, use the definition of the metallic tint in GT5U, otherwise NHCore will set it to white.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean useMachineMetal;
 
         @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
         @Config.DefaultBoolean(true)
@@ -547,6 +568,18 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.Name("Enable Powerfail Notifications")
         public boolean enablePowerfailNotifications;
+
+        @Config.Comment("Format template for the ghost circuit suffix in AE2 terminal display names. Use %s as placeholder for the circuit number. Applies to all GT machines and Crafting Input Bus/Buffer.")
+        @Config.DefaultString(" [%s]")
+        @Config.Name("Ghost Circuit Suffix Format")
+        @Config.RequiresMcRestart
+        public String ghostCircuitSuffixFormat = " [%s]";
+
+        @Config.Comment("Format template for the item slots suffix in AE2 terminal display names. Use %s as placeholder for comma-separated item names. Applies to Crafting Input Bus/Buffer manual slots and non-consumed recipe inputs (e.g. molds).")
+        @Config.DefaultString(" {%s}")
+        @Config.Name("Item Slots Suffix Format")
+        @Config.RequiresMcRestart
+        public String itemSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
@@ -562,5 +595,21 @@ public class Gregtech {
         @Config.DefaultEnum("FortuneItem")
         @Config.RequiresMcRestart
         public GTProxy.OreDropSystem setting = GTProxy.OreDropSystem.FortuneItem;
+    }
+
+    @Config.LangKey("GT5U.gui.config.gregtech.void_miners")
+    public static class VoidMiners {
+
+        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.Materials")
+        @Config.Name("Deep Dark GT Ore Weights")
+        public String[] gregtechWeightsDD;
+
+        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: bartworks.system.material.Werkstoff")
+        @Config.Name("Deep Dark BW Ore Weights")
+        public String[] bartworksWeightsDD;
+
+        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gtPlusPlus.core.material.ORES")
+        @Config.Name("Deep Dark GT++ Ore Weights")
+        public String[] gtppWeightsDD;
     }
 }

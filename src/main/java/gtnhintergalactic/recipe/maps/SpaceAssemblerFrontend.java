@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -15,10 +17,10 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
@@ -50,23 +52,23 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         int bar1Width = 17;
         int bar2Width = 18;
-        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width);
+        List<Supplier<Float>> splitProgress = splitProgress(ctx.progressSupplier, bar1Width, bar2Width);
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
-                .setPos(new Pos2d(88, 8).add(windowOffset))
+                .setPos(new Pos2d(88, 8).add(ctx.windowOffset))
                 .setSize(bar1Width, 72));
         builder.widget(
             new ProgressBar().setTexture(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
-                .setPos(new Pos2d(124, 8).add(windowOffset))
+                .setPos(new Pos2d(124, 8).add(ctx.windowOffset))
                 .setSize(bar2Width, 72));
     }
 
@@ -76,22 +78,22 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
             int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-            specialInfo.add(GTUtility.translate("ig.nei.module", recipeTier));
+            specialInfo.add(StatCollector.translateToLocalFormatted("ig.nei.module", recipeTier));
 
             String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
             if (neededProject != null && !neededProject.isEmpty()) {
                 specialInfo.add(
                     String.format(
-                        GTUtility.translate("ig.nei.spaceassembler.project"),
+                        StatCollector.translateToLocal("ig.nei.spaceassembler.project"),
                         SpaceProjectManager.getProject(neededProject)
                             .getLocalizedName()));
                 specialInfo.add(
                     String.format(
-                        GTUtility.translate("ig.nei.spaceassembler.projectAt"),
+                        StatCollector.translateToLocal("ig.nei.spaceassembler.projectAt"),
                         neededProjectLocation == null || neededProjectLocation.isEmpty()
-                            ? GTUtility.translate("ig.nei.spaceassembler.projectAnyLocation")
-                            : GTUtility.translate(
+                            ? StatCollector.translateToLocal("ig.nei.spaceassembler.projectAnyLocation")
+                            : StatCollector.translateToLocal(
                                 SpaceProjectManager.getLocation(neededProjectLocation)
                                     .getUnlocalizedName())));
             }

@@ -2,10 +2,11 @@ package gregtech.common.items;
 
 import java.util.Arrays;
 
+import net.minecraft.util.StatCollector;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
@@ -152,11 +153,10 @@ public enum CombType {
     VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
 
     // Infinity
-    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5, 0x484848, 0x323232,
-        ItemComb.Voltage.UV),
+    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5, ItemComb.Voltage.UV),
     INFINITYCATALYST(118, "infinity_catalyst", true, Materials.InfinityCatalyst, 2, 0xFFFFFF, 0xFFFFFF,
         ItemComb.Voltage.UHV),
-    INFINITY(119, "infinity", true, Materials.Infinity, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
+    INFINITY(119, "infinity", true, Materials.Infinity, 1, ItemComb.Voltage.UEV),
 
     // HEE
     ENDDUST(120, "end_dust", true, Materials._NULL, 50, 0x003A7D, 0xCC00FA, ItemComb.Voltage.HV),
@@ -166,7 +166,7 @@ public enum CombType {
     DRAGONESSENCE(124, "dragon_essence", true, Materials._NULL, 30, 0x911ECE, 0xFFA12B, ItemComb.Voltage.IV),
     ENDERMAN(125, "enderman", true, Materials._NULL, 25, 0x6200e7, 0x161616, ItemComb.Voltage.IV),
     SILVERFISH(126, "silverfish", true, Materials._NULL, 25, 0x0000000, 0xEE053D, ItemComb.Voltage.EV),
-    ENDIUM(127, "endium", true, Materials.HeeEndium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
+    ENDIUM(127, "endium", true, Materials.Endium, 50, 0x2F5A6C, 0xa0ffff, ItemComb.Voltage.HV),
     RUNEI(128, "rune_type_1", true, Materials._NULL, 10, 0x0104D9, 0xE31010, ItemComb.Voltage.IV),
     RUNEII(129, "rune_type_2", true, Materials._NULL, 10, 0xE31010, 0x0104D9, ItemComb.Voltage.IV),
     FIREESSENSE(130, "fire_essence", true, Materials._NULL, 30, 0xFFA157, 0xD41238, ItemComb.Voltage.IV),
@@ -209,38 +209,39 @@ public enum CombType {
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
     BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
     KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
-    DRACONIC(162, "draconium", true, Materials.Draconium, 50, 0x161616, 0x6200e7, ItemComb.Voltage.MV),
-    AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
-        ItemComb.Voltage.MV),
+    DRACONIC(162, "draconium", true, Materials.Draconium, 50, ItemComb.Voltage.MV),
+    AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials.DraconiumAwakened, 50, ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
     INFUSEDGOLD(165, "infused_gold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
     // Additions to rare metals, moved here so we don't shift all comb IDs
     NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
     MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
-    NETHERITE(169, "netherite", true, Materials._NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
+    NETHERITE(169, "netherite", true, Materials._NULL, 10, ItemComb.Voltage.LuV),
     // Gem Addition
     PRISMATIC(170, "prismatic", true, Materials._NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
     REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
     // Metals Addition
     PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
     // Botania Line
-    MANASTEEL(173, "manasteel", true, MaterialsBotania.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
+    MANASTEEL(173, "manasteel", true, Materials.Manasteel, 50, 0x4BAFFB, 0xCEEAFD, ItemComb.Voltage.LV),
     MMM(174, "M-M-M", true, Materials._NULL, 50, 0x3F9B7B, 0x76FFCF, ItemComb.Voltage.EV),
     ELVEN(175, "elven", true, Materials._NULL, 50, 0xC72ED9, 0xEFBFF9, ItemComb.Voltage.EV),
-    TERRASTEEL(176, "terrasteel", true, MaterialsBotania.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
-    GAIASPIRIT(177, "gaia_spirit", true, MaterialsBotania.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
+    TERRASTEEL(176, "terrasteel", true, Materials.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
+    GAIASPIRIT(177, "gaia_spirit", true, Materials.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
+    public static final CombType[] VALUES = values();
     public boolean showInList;
+    public final boolean customIcon;
     public final ItemComb.Voltage voltage;
     public final Materials material;
     public final int chance;
 
     private final int id;
-    private final String localizedName;
+    private final String name;
     private final int[] color;
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
@@ -255,18 +256,33 @@ public enum CombType {
         this.material = material;
         this.chance = chance;
         this.showInList = show;
+        this.customIcon = false;
         this.color = new int[] { color1, color2 };
-        this.localizedName = GTLanguageManager
-            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
+        this.name = pName;
+        GTLanguageManager
+            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
+    }
+
+    CombType(int id, String pName, boolean show, Materials material, int chance, ItemComb.Voltage voltage) {
+        if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
+        this.id = id;
+        this.voltage = voltage;
+        this.material = material;
+        this.chance = chance;
+        this.showInList = show;
+        this.customIcon = true;
+        this.color = new int[] { 0xFFFFFF, 0xFFFFFF };
+        this.name = pName;
+        GTLanguageManager
+            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
     }
 
     public void setHidden() {
         this.showInList = false;
     }
 
-    public String getName() {
-
-        return this.localizedName;
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("comb." + name);
     }
 
     public int[] getColours() {
@@ -281,18 +297,22 @@ public enum CombType {
         return id < 0 || id >= Companion.VALUES.length ? _NULL : Companion.VALUES[id];
     }
 
+    public boolean hasCustomIcon() {
+        return this.customIcon;
+    }
+
     private static final class Companion {
 
         private static final CombType[] VALUES;
 
         static {
-            int biggestId = Arrays.stream(CombType.values())
+            int biggestId = Arrays.stream(CombType.VALUES)
                 .mapToInt(CombType::getId)
                 .max()
                 .getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
-            for (CombType type : CombType.values()) {
+            for (CombType type : CombType.VALUES) {
                 if (type != _NULL) VALUES[type.getId()] = type;
             }
         }

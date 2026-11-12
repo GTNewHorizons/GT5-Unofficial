@@ -1,34 +1,34 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import java.util.List;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
+@IMetaTileEntity.SkipGenerateName
 public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     private static final int STEAM_PER_SECOND = 750;
@@ -52,6 +52,15 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.electricboiler.name",
+            GTValues.getLocalizedLongVoltageName(tier),
+            GTValues.VN[tier]);
+    }
+
+    @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
@@ -62,8 +71,13 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             GTPPCore.GT_Tooltip.get());
     }
 
-    public ITexture getOverlayIcon() {
-        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.electric.tier.s",
+                GTUtility.getColoredTierNameFromTier((byte) tier)));
     }
 
     @Override
@@ -205,6 +219,12 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         int burnTime = getBurnTime(fuelStack);
         if (burnTime > 0 && this.mTemperature <= 101) {
             consumeFuel(tile, fuelStack, burnTime);
+
+            // Return fuel container, like a bucket
+            if (this.mInventory[2] == null) {
+                Item item = fuelStack.getItem();
+                this.mInventory[2] = item == null ? null : item.getContainerItem(fuelStack);
+            }
         }
     }
 
@@ -254,7 +274,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         return burnTime;
     }
 
-    public void consumeFuel(IGregTechTileEntity tile, ItemStack fuel, int burnTime) {
+    private void consumeFuel(IGregTechTileEntity tile, ItemStack fuel, int burnTime) {
         this.mProcessingEnergy += burnTime / 10;
         this.mTemperature += burnTime / 500; // will add bonus temperature points if the burn time is pretty high
 
@@ -268,7 +288,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                     .contains("coke")) {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
             } else {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L));
             }
         }
     }
@@ -283,52 +303,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STANDARD;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.DEFAULT;
-    }
-
-    @Override
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_COAL };
-    }
-
-    @Override
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DUST };
-    }
-
-    @Override
     public int getTitleColor() {
         return COLOR_TITLE.get();
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotIn() {
-        return GTUITextures.OVERLAY_SLOT_IN;
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotOut() {
-        return GTUITextures.OVERLAY_SLOT_OUT;
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotCanister() {
-        return GTPPUITextures.OVERLAY_SLOT_CANISTER_DARK;
-    }
-
-    @Override
-    protected UITexture getProgressbarEmpty() {
-        return GTPPUITextures.PROGRESSBAR_BOILER_EMPTY;
-    }
-
-    @Override
-    protected UITexture getProgressbarFuel() {
-        return GTPPUITextures.PROGRESSBAR_FUEL;
     }
 }

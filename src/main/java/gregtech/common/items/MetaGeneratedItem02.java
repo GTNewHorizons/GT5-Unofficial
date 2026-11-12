@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ACTIVITYDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
@@ -47,7 +48,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Potato_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Purple_Drink;
 import static gregtech.common.items.IDMetaItem02.Bottle_Reed_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Rum;
-import static gregtech.common.items.IDMetaItem02.Bottle_Salty_Water;
+import static gregtech.common.items.IDMetaItem02.Bottle_Salt_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Scotch;
 import static gregtech.common.items.IDMetaItem02.Bottle_Snitches_Glitch_Sauce;
 import static gregtech.common.items.IDMetaItem02.Bottle_Vinegar;
@@ -55,49 +56,14 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Vodka;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Hops_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wine;
-import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverExternal;
+import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiver;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverInternal;
-import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitterExternal;
+import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitter;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitterInternal;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessActivityDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessFluidDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessItemDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessNeedsMaintainance;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Argentia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Aurelia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Bauxite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_BobsYerUncleRanks;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Chilly;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Coppon;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Cucumber;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Ferru;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Grapes;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Ilmenite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Indigo;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Iridium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Lemon;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_MTomato;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Manganese;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Mica;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_MilkWart;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Naquadah;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Nickel;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_OilBerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Onion;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Osmium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Pitchblende;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Platinum;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Plumbilia;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Rape;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Scheelite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_TeaLeaf;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Thorium;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Tine;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Tomato;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUABerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUMBerry;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Uraninite;
-import static gregtech.common.items.IDMetaItem02.Crop_Drop_Zinc;
 import static gregtech.common.items.IDMetaItem02.Display_ITS_FREE;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_00;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_01;
@@ -135,6 +101,112 @@ import static gregtech.common.items.IDMetaItem02.Food_Dough_Chocolate;
 import static gregtech.common.items.IDMetaItem02.Food_Dough_Sugar;
 import static gregtech.common.items.IDMetaItem02.Food_Flat_Dough;
 import static gregtech.common.items.IDMetaItem02.Food_Fries;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Acid;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_AntimatterAffogato;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Banana;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BananaSplit;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Benzene;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Blueberry;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BlueberryBlastStargate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Boucream;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BowlOfHarmony;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Brownie;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ButterPecan;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Butterscotch;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Caramel;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Cheese;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CherryParfait;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Chestmonster;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocoVanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocolateChip;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocolateWalnutFudge;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CircuitBoardCrunch;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Coffee;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CompileError;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Concrete;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ConfettiQuestbook;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CookieDough;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CookiesAndCream;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CottonCandy;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CrudeOil;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Diesel;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_DuctTape;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ElectronicBlast;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Engineers;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Exotic;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Explosive;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Foolish;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_FrenchVanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_GrapeMatterManipulator;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_GraveDirtAndGummis;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Grind;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_HoneyBeeBowl;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_HotFudge;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_IceSlush;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_IlluminatiCone;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Jelly;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_JustCone;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_LawnbaseSpecial;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Lemonade;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_LunarLander;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MHDCSM;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Mango;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MasterOfDreams;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MatchaSnake;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Meat;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MintChip;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadahNutSwirl;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NaquadriaPlasmaParfait;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Neapolitan;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NetherStarNutCrunch;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NoFlavor;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NotFound404;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NutsAndBolts;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Orange;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_OverclockedEspresso;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Peach;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_PeachPlasmaParfait;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_PeanutButter;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Pipegetti;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Pistachio;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_PitOfDoomAndDespair;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Diamond;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Double;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Freeze;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Fruit;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_Grapquada;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Popsicle_StrawberryYogurt;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Potato;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Radioactive;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Random;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_RocketFuelFloat;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Rubber;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_RubberDucky;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_SaltedCaramel;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sandwich;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sandwich_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Snowcone;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sorbet_Pineapple;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sorbet_RainbowStellar;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sorbet_Raspberry;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sorbet_Redstone;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Spaghetti;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sprinkles;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Strawberry;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ThaumaturgesDelight;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ThaumiumTruffle;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ToffeeButter;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_TotallyInnocentRing;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Transcendent;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Trophy;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Unicorn;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Vanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_VoidKitty;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_VoidMinersVanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Warped;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_WitchyWildberry;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Bacon;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Cheese;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Steak;
@@ -225,16 +297,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.StatCollector;
+
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -243,7 +316,6 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -255,12 +327,12 @@ import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
 import gregtech.common.covers.redstone.CoverWirelessFluidDetector;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 import gregtech.common.covers.redstone.CoverWirelessMaintenanceDetector;
-import ic2.api.crops.CropCard;
-import ic2.api.crops.Crops;
 
 public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     public static MetaGeneratedItem02 INSTANCE;
+    /** NBT tag holding the lang key that replaces the default name of a {@link ItemList#Display_ITS_FREE} stack. */
+    public static final String DISPLAY_NAME_KEY_TAG = "displayNameKey";
     private static final String aTextCover = "Usable as Cover";
 
     public MetaGeneratedItem02() {
@@ -301,10 +373,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         INSTANCE = this;
 
         ItemList.ThermosCan_Coffee.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Coffee.ID,
-                "Coffee",
-                "Coffee, dark, without anything else",
+                "gt.item.thermos_can.coffee.name",
+                "gt.item.thermos_can.coffee.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -326,10 +398,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
         ItemList.ThermosCan_Sweet_Coffee.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Coffee.ID,
-                "Sweet coffee",
-                "Keeping you awake the whole night",
+                "gt.item.thermos_can.sweet_coffee.name",
+                "gt.item.thermos_can.sweet_coffee.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -351,10 +423,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 3L)));
         ItemList.ThermosCan_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Latte.ID,
-                "Latte",
-                "Just the regular morning Coffee, with milk",
+                "gt.item.thermos_can.latte.name",
+                "gt.item.thermos_can.latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -376,10 +448,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
         ItemList.ThermosCan_Sweet_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Latte.ID,
-                "Sweet Latte",
-                "A little bit of sugar goes a long way",
+                "gt.item.thermos_can.sweet_latte.name",
+                "gt.item.thermos_can.sweet_latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -401,10 +473,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
         ItemList.ThermosCan_Sweet_Jesus_Latte.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Jesus_Latte.ID,
-                "Sweet Jesus Latte",
-                "You want some Coffee to your Sugar?",
+                "gt.item.thermos_can.sweet_jesus_latte.name",
+                "gt.item.thermos_can.sweet_jesus_latte.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -426,10 +498,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 3L)));
         ItemList.ThermosCan_Dark_Chocolate_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Dark_Chocolate_Milk.ID,
-                "Dark Chocolate Milk",
-                "A bit bitter, better add a bit Sugar",
+                "gt.item.thermos_can.dark_chocolate_milk.name",
+                "gt.item.thermos_can.dark_chocolate_milk.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -447,10 +519,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.ThermosCan_Chocolate_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Chocolate_Milk.ID,
-                "Chocolate Milk",
-                "Sweet Goodness",
+                "gt.item.thermos_can.chocolate_milk.name",
+                "gt.item.thermos_can.chocolate_milk.tooltip",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -468,10 +540,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 2L)));
         ItemList.ThermosCan_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Tea.ID,
-                "Tea",
-                "Keep calm and carry on",
+                "gt.item.thermos_can.tea.name",
+                "gt.item.thermos_can.tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -488,10 +560,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.ThermosCan_Sweet_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Sweet_Tea.ID,
-                "Sweet Tea",
-                "How about a Tea Party? In Boston?",
+                "gt.item.thermos_can.sweet_tea.name",
+                "gt.item.thermos_can.sweet_tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -504,10 +576,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
         ItemList.ThermosCan_Ice_Tea.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 ThermosCan_Ice_Tea.ID,
-                "Ice Tea",
-                "Better than this purple Junk Drink from failed Potions",
+                "gt.item.thermos_can.ice_tea.name",
+                "gt.item.thermos_can.ice_tea.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -524,13 +596,17 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
-        ItemList.GelledToluene.set(addItem(GelledToluene.ID, "Gelled Toluene", "Raw Explosive"));
+        ItemList.GelledToluene.set(
+            addItemWithLocalizationKeys(
+                GelledToluene.ID,
+                "gt.item.gelled_toluene.name",
+                "gt.item.gelled_toluene.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Purple_Drink.ID,
-                "Purple Drink",
-                "How about Lemonade. Or some Ice Tea? I got Purple Drink!",
+                "gt.item.bottle.purple_drink.name",
+                "gt.item.bottle.purple_drink.tooltip",
                 new GTFoodStat(
                     8,
                     0.2F,
@@ -547,10 +623,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1L)));
         ItemList.Bottle_Grape_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Grape_Juice.ID,
-                "Grape Juice",
-                "This has a cleaning effect on your internals.",
+                "gt.item.bottle.grape_juice.name",
+                "gt.item.bottle.grape_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -567,10 +643,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Wine.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wine.ID,
-                "Wine",
-                "Ordinary",
+                "gt.item.bottle.wine.name",
+                "gt.item.bottle.wine.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -595,10 +671,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Vinegar.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Vinegar.ID,
-                "Vinegar",
-                "Exquisite",
+                "gt.item.bottle.vinegar.name",
+                "gt.item.bottle.vinegar.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -627,10 +703,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Potato_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Potato_Juice.ID,
-                "Potato Juice",
-                "Ever seen Potato Juice in stores? No? That has a reason.",
+                "gt.item.bottle.potato_juice.name",
+                "gt.item.bottle.potato_juice.tooltip",
                 new GTFoodStat(
                     3,
                     0.3F,
@@ -643,10 +719,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Vodka.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Vodka.ID,
-                "Vodka",
-                "Not to confuse with Water",
+                "gt.item.bottle.vodka.name",
+                "gt.item.bottle.vodka.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -671,10 +747,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TELUM, 1L)));
         ItemList.Bottle_Leninade.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Leninade.ID,
-                "Leninade",
-                "Let the Communism flow through you!",
+                "gt.item.bottle.leninade.name",
+                "gt.item.bottle.leninade.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -703,10 +779,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TELUM, 2L)));
         ItemList.Bottle_Mineral_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Mineral_Water.ID,
-                "Mineral Water",
-                "The best Stuff you can drink to stay healthy",
+                "gt.item.bottle.mineral_water.name",
+                "gt.item.bottle.mineral_water.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -722,12 +798,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-        ItemList.Bottle_Salty_Water.set(
-            addItem(
-                Bottle_Salty_Water.ID,
-                "Salty Water",
-                "Like Sea Water but less dirty",
-                SubTag.INVISIBLE,
+        ItemList.Bottle_Salt_Water.set(
+            addItemWithLocalizationKeys(
+                Bottle_Salt_Water.ID,
+                "gt.item.bottle.salt_water.name",
+                "gt.item.bottle.salt_water.tooltip",
+                OrePrefixes.bottle.get(Materials.SaltWater),
                 new GTFoodStat(
                     1,
                     0.0F,
@@ -744,10 +820,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.TEMPESTAS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Bottle_Reed_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Reed_Water.ID,
-                "Reed Water",
-                "I guess this tastes better when fermented",
+                "gt.item.bottle.reed_water.name",
+                "gt.item.bottle.reed_water.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -760,10 +836,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Bottle_Rum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Rum.ID,
-                "Rum",
-                "A buddle o' rum",
+                "gt.item.bottle.rum.name",
+                "gt.item.bottle.rum.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -788,10 +864,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Bottle_Pirate_Brew.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Pirate_Brew.ID,
-                "Pirate Brew",
-                "Set the Sails, we are going to Torrentuga!",
+                "gt.item.bottle.pirate_brew.name",
+                "gt.item.bottle.pirate_brew.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -820,10 +896,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 2L)));
         ItemList.Bottle_Hops_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Hops_Juice.ID,
-                "Hops Juice",
-                "Every Beer has a start",
+                "gt.item.bottle.hops_juice.name",
+                "gt.item.bottle.hops_juice.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -836,10 +912,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Dark_Beer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Dark_Beer.ID,
-                "Dark Beer",
-                "Dark Beer, for the real Men",
+                "gt.item.bottle.dark_beer.name",
+                "gt.item.bottle.dark_beer.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -864,10 +940,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
         ItemList.Bottle_Dragon_Blood.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Dragon_Blood.ID,
-                "Dragon Blood",
-                "FUS RO DAH!",
+                "gt.item.bottle.dragon_blood.name",
+                "gt.item.bottle.dragon_blood.tooltip",
                 new GTFoodStat(
                     4,
                     0.4F,
@@ -896,10 +972,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
         ItemList.Bottle_Wheaty_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wheaty_Juice.ID,
-                "Wheaty Juice",
-                "Is this liquefied Bread or what?",
+                "gt.item.bottle.wheaty_juice.name",
+                "gt.item.bottle.wheaty_juice.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -912,10 +988,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L)));
         ItemList.Bottle_Scotch.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Scotch.ID,
-                "Scotch",
-                "Technically this is just a Whisky",
+                "gt.item.bottle.scotch.name",
+                "gt.item.bottle.scotch.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -940,10 +1016,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Glen_McKenner.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Glen_McKenner.ID,
-                "Glen McKenner",
-                "Don't hand to easily surprised people, they will shatter it.",
+                "gt.item.bottle.glen_mckenner.name",
+                "gt.item.bottle.glen_mckenner.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -972,10 +1048,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 2L)));
         ItemList.Bottle_Wheaty_Hops_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Wheaty_Hops_Juice.ID,
-                "Wheaty Hops Juice",
-                "Also known as 'Duff-Lite'",
+                "gt.item.bottle.wheaty_hops_juice.name",
+                "gt.item.bottle.wheaty_hops_juice.tooltip",
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -988,10 +1064,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 2L)));
         ItemList.Bottle_Beer.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Beer.ID,
-                "Beer",
-                "Good old Beer",
+                "gt.item.bottle.beer.name",
+                "gt.item.bottle.beer.tooltip",
                 new GTFoodStat(
                     6,
                     0.4F,
@@ -1016,10 +1092,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Chilly_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Chilly_Sauce.ID,
-                "Chilly Sauce",
-                "Spicy",
+                "gt.item.bottle.chilly_sauce.name",
+                "gt.item.bottle.chilly_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1040,10 +1116,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Bottle_Hot_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Hot_Sauce.ID,
-                "Hot Sauce",
-                "Very Spicy, I guess?",
+                "gt.item.bottle.hot_sauce.name",
+                "gt.item.bottle.hot_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1064,10 +1140,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L)));
         ItemList.Bottle_Diabolo_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Diabolo_Sauce.ID,
-                "Diabolo Sauce",
-                "As if the Devil made this Sauce",
+                "gt.item.bottle.diabolo_sauce.name",
+                "gt.item.bottle.diabolo_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1088,10 +1164,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3L)));
         ItemList.Bottle_Diablo_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Diablo_Sauce.ID,
-                "Diablo Sauce",
-                "Diablo always comes back!",
+                "gt.item.bottle.diablo_sauce.name",
+                "gt.item.bottle.diablo_sauce.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -1112,10 +1188,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4L)));
         ItemList.Bottle_Snitches_Glitch_Sauce.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Snitches_Glitch_Sauce.ID,
-                "Old Man Snitches glitched Diablo Sauce",
-                "[Missing No]",
+                "gt.item.bottle.snitches_glitch_sauce.name",
+                "gt.item.bottle.snitches_glitch_sauce.tooltip",
                 SubTag.INVISIBLE,
                 new GTFoodStat(
                     2,
@@ -1137,10 +1213,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 5L)));
         ItemList.Bottle_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Apple_Juice.ID,
-                "Apple Juice",
-                "Made of the Apples from our best Oak Farms",
+                "gt.item.bottle.apple_juice.name",
+                "gt.item.bottle.apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1157,10 +1233,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Bottle_Cider.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Cider.ID,
-                "Cider",
-                "If you have nothing better to do with your Apples",
+                "gt.item.bottle.cider.name",
+                "gt.item.bottle.cider.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1185,10 +1261,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Golden_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Golden_Apple_Juice.ID,
-                "Golden Apple Juice",
-                "A golden Apple in liquid form",
+                "gt.item.bottle.golden_apple_juice.name",
+                "gt.item.bottle.golden_apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1213,10 +1289,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Golden_Cider.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Golden_Cider.ID,
-                "Golden Cider",
-                "More Resistance, less Regeneration",
+                "gt.item.bottle.golden_cider.name",
+                "gt.item.bottle.golden_cider.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1241,10 +1317,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L)));
         ItemList.Bottle_Iduns_Apple_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Iduns_Apple_Juice.ID,
-                "Idun's Apple Juice",
-                "So you got the Idea of using Notch Apples for a drink?",
+                "gt.item.bottle.iduns_apple_juice.name",
+                "gt.item.bottle.iduns_apple_juice.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1273,10 +1349,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 9L)));
         ItemList.Bottle_Notches_Brew.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Notches_Brew.ID,
-                "Notches Brew",
-                "This is just overpowered",
+                "gt.item.bottle.notches_brew.name",
+                "gt.item.bottle.notches_brew.tooltip",
                 new GTFoodStat(
                     4,
                     0.2F,
@@ -1309,10 +1385,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 9L)));
         ItemList.Bottle_Lemon_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Lemon_Juice.ID,
-                "Lemon Juice",
-                "Maybe adding Sugar will make it less sour",
+                "gt.item.bottle.lemon_juice.name",
+                "gt.item.bottle.lemon_juice.tooltip",
                 new GTFoodStat(
                     2,
                     0.4F,
@@ -1329,10 +1405,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Limoncello.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Limoncello.ID,
-                "Limoncello",
-                "An alcoholic Drink which tastes like Lemons",
+                "gt.item.bottle.limoncello.name",
+                "gt.item.bottle.limoncello.tooltip",
                 new GTFoodStat(
                     2,
                     0.4F,
@@ -1353,10 +1429,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Lemonade.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Lemonade.ID,
-                "Lemonade",
-                "Cold and refreshing Lemonade",
+                "gt.item.bottle.lemonade.name",
+                "gt.item.bottle.lemonade.tooltip",
                 new GTFoodStat(
                     4,
                     0.3F,
@@ -1373,10 +1449,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 1L)));
         ItemList.Bottle_Alcopops.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Alcopops.ID,
-                "Alcopops",
-                "Don't let your Children drink this junk!",
+                "gt.item.bottle.alcopops.name",
+                "gt.item.bottle.alcopops.tooltip",
                 new GTFoodStat(
                     2,
                     0.2F,
@@ -1397,10 +1473,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VENENUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VINCULUM, 1L)));
         ItemList.Bottle_Cave_Johnsons_Grenade_Juice.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Cave_Johnsons_Grenade_Juice.ID,
-                "Cave Johnson's Grenade Juice",
-                "When life gives you Lemons, make Life take them Lemons back!",
+                "gt.item.bottle.cave_johnsons_grenade_juice.name",
+                "gt.item.bottle.cave_johnsons_grenade_juice.tooltip",
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1413,10 +1489,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MORTUUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1L)));
         ItemList.Bottle_Milk.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Milk.ID,
-                "Milk",
-                "Got Milk?",
+                "gt.item.bottle.milk.name",
+                "gt.item.bottle.milk.tooltip",
                 OrePrefixes.bottle.get(Materials.Milk),
                 new GTFoodStat(
                     0,
@@ -1430,10 +1506,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
         ItemList.Bottle_Holy_Water.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Bottle_Holy_Water.ID,
-                "Holy Water",
-                "May the holy Planks be with you",
+                "gt.item.bottle.holy_water.name",
+                "gt.item.bottle.holy_water.tooltip",
                 OrePrefixes.bottle.get(Materials.HolyWater),
                 new GTFoodStat(
                     0,
@@ -1452,48 +1528,48 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AURAM, 1L)));
 
         ItemList.Food_Potato_On_Stick.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Potato_On_Stick.ID,
-                "Potato on a Stick",
-                "Totally looks like a Crab Claw",
+                "gt.item.food.potato_on_stick.name",
+                "gt.item.food.potato_on_stick.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Food_Potato_On_Stick_Roasted.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Potato_On_Stick_Roasted.ID,
-                "Roasted Potato on a Stick",
-                "Still looks like a Crab Claw",
+                "gt.item.food.potato_on_stick_roasted.name",
+                "gt.item.food.potato_on_stick_roasted.tooltip",
                 new GTFoodStat(6, 0.6F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Fries.ID,
-                "Potato Strips",
-                "It's Potato in Stripe Form",
+                "gt.item.food.raw_fries.name",
+                "gt.item.food.raw_fries.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Fries.ID,
-                "Fries",
-                "Not to confuse with Fry the Delivery Boy",
+                "gt.item.food.fries.name",
+                "gt.item.food.fries.tooltip",
                 new GTFoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_Fries.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_Fries.ID,
-                "Fries",
-                "Ketchup not included",
+                "gt.item.food.packaged_fries.name",
+                "gt.item.food.packaged_fries.tooltip",
                 new GTFoodStat(
                     7,
                     0.5F,
@@ -1507,39 +1583,39 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_PotatoChips.ID,
-                "Potato Chips (Raw)",
-                "Just like a Potato",
+                "gt.item.food.raw_potato_chips.name",
+                "gt.item.food.raw_potato_chips.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_PotatoChips.ID,
-                "Potato Chips",
-                "Crunchy",
+                "gt.item.food.potato_chips.name",
+                "gt.item.food.potato_chips.tooltip",
                 new GTFoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_ChiliChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_ChiliChips.ID,
-                "Chili Chips",
-                "Spicy",
+                "gt.item.food.chili_chips.name",
+                "gt.item.food.chili_chips.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_PotatoChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_PotatoChips.ID,
-                "Bag of Potato Chips",
-                "Full of delicious Air",
+                "gt.item.food.packaged_potato_chips.name",
+                "gt.item.food.packaged_potato_chips.tooltip",
                 new GTFoodStat(
                     7,
                     0.5F,
@@ -1553,10 +1629,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Packaged_ChiliChips.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Packaged_ChiliChips.ID,
-                "Bag of Chili Chips",
-                "Stop making noises Baj!",
+                "gt.item.food.packaged_chili_chips.name",
+                "gt.item.food.packaged_chili_chips.tooltip",
                 new GTFoodStat(
                     7,
                     0.6F,
@@ -1570,10 +1646,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Chum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Chum.ID,
-                "Chum",
-                "Chum is Fum!",
+                "gt.item.food.chum.name",
+                "gt.item.food.chum.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1594,10 +1670,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Chum_On_Stick.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Chum_On_Stick.ID,
-                "Chum on a Stick",
-                "Don't forget to try our Chum-balaya",
+                "gt.item.food.chum_on_stick.name",
+                "gt.item.food.chum_on_stick.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1618,72 +1694,72 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Dough_Sugar.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough_Sugar.ID,
-                "Sugary Dough",
-                "Don't eat the Dough before it is baken",
+                "gt.item.food.dough_sugar.name",
+                "gt.item.food.dough_sugar.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Dough_Chocolate.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough_Chocolate.ID,
-                "Chocolate Dough",
-                "I said don't eat the Dough!",
+                "gt.item.food.dough_chocolate.name",
+                "gt.item.food.dough_chocolate.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Cookie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Cookie.ID,
-                "Cookie shaped Dough",
-                "For baking Cookies",
+                "gt.item.food.raw_cookie.name",
+                "gt.item.food.raw_cookie.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
         ItemList.Food_Sliced_Buns.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Buns.ID,
-                "Buns",
-                "Pre Sliced",
+                "gt.item.food.sliced_buns.name",
+                "gt.item.food.sliced_buns.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Veggie.ID,
-                "Veggieburger",
-                "No matter how you call this, this is NOT a Burger!",
+                "gt.item.food.burger_veggie.name",
+                "gt.item.food.burger_veggie.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Cheese.ID,
-                "Cheeseburger",
-                "Cheesy!",
+                "gt.item.food.burger_cheese.name",
+                "gt.item.food.burger_cheese.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new ItemData(Materials.Cheese, 907200L)));
         ItemList.Food_Burger_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Meat.ID,
-                "Hamburger",
-                "The Mc Burger Queen Burger",
+                "gt.item.food.burger_meat.name",
+                "gt.item.food.burger_meat.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Burger_Chum.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Burger_Chum.ID,
-                "Chumburger",
-                "Fum is Chum!",
+                "gt.item.food.burger_chum.name",
+                "gt.item.food.burger_chum.tooltip",
                 new GTFoodStat(
                     5,
                     0.2F,
@@ -1705,156 +1781,1244 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
         ItemList.Food_Sliced_Breads.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Breads.ID,
-                "Breads",
-                "Pre Sliced",
+                "gt.item.food.sliced_breads.name",
+                "gt.item.food.sliced_breads.tooltip",
                 new GTFoodStat(5, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Veggie.ID,
-                "Veggie Sandwich",
-                "Meatless",
+                "gt.item.food.sandwich_veggie.name",
+                "gt.item.food.sandwich_veggie.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Cheese.ID,
-                "Cheese Sandwich",
-                "Say Cheese!",
+                "gt.item.food.sandwich_cheese.name",
+                "gt.item.food.sandwich_cheese.tooltip",
                 new GTFoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Bacon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Bacon.ID,
-                "Bacon Sandwich",
-                "The best Sandwich ever!",
+                "gt.item.food.sandwich_bacon.name",
+                "gt.item.food.sandwich_bacon.tooltip",
                 new GTFoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Steak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sandwich_Steak.ID,
-                "Steak Sandwich",
-                "Not a 'Steam Sandwich'",
+                "gt.item.food.sandwich_steak.name",
+                "gt.item.food.sandwich_steak.tooltip",
                 new GTFoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Baguettes.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Baguettes.ID,
-                "Baguettes",
-                "Pre Sliced",
+                "gt.item.food.sliced_baguettes.name",
+                "gt.item.food.sliced_baguettes.tooltip",
                 new GTFoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Veggie.ID,
-                "Large Veggie Sandwich",
-                "Just not worth it",
+                "gt.item.food.large_sandwich_veggie.name",
+                "gt.item.food.large_sandwich_veggie.tooltip",
                 new GTFoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Cheese.ID,
-                "Large Cheese Sandwich",
-                "I need another cheesy tooltip for this",
+                "gt.item.food.large_sandwich_cheese.name",
+                "gt.item.food.large_sandwich_cheese.tooltip",
                 new GTFoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Bacon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Bacon.ID,
-                "Large Bacon Sandwich",
-                "For Men! (and manly Women)",
+                "gt.item.food.large_sandwich_bacon.name",
+                "gt.item.food.large_sandwich_bacon.tooltip",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Steak.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Large_Sandwich_Steak.ID,
-                "Large Steak Sandwich",
-                "Yes, I once accidentially called it 'Steam Sandwich'",
+                "gt.item.food.large_sandwich_steak.name",
+                "gt.item.food.large_sandwich_steak.tooltip",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Veggie.ID,
-                "Raw Veggie Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_veggie.name",
+                "gt.item.food.raw_pizza_veggie.tooltip",
                 new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Cheese.ID,
-                "Raw Cheese Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_cheese.name",
+                "gt.item.food.raw_pizza_cheese.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Pizza_Meat.ID,
-                "Raw Mince Meat Pizza",
-                "Into the Oven with it!",
+                "gt.item.food.raw_pizza_meat.name",
+                "gt.item.food.raw_pizza_meat.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
         ItemList.Food_Baked_Pizza_Veggie.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Veggie.ID,
-                "Veggie Pizza",
-                "The next they want is Gluten Free Pizzas...",
+                "gt.item.food.baked_pizza_veggie.name",
+                "gt.item.food.baked_pizza_veggie.tooltip",
                 new GTFoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Cheese.ID,
-                "Cheese Pizza",
-                "Pizza Magarita",
+                "gt.item.food.baked_pizza_cheese.name",
+                "gt.item.food.baked_pizza_cheese.tooltip",
                 new GTFoodStat(4, 0.4F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Meat.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Pizza_Meat.ID,
-                "Mince Meat Pizza",
-                "Emo Pizza, it cuts itself!",
+                "gt.item.food.baked_pizza_meat.name",
+                "gt.item.food.baked_pizza_meat.tooltip",
                 new GTFoodStat(5, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
 
+        // Ice Creams
+        ItemList.Ice_Cream_Random.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Random.ID,
+                "gt.item.food.icecream_random.name",
+                "gt.item.food.icecream_random.tooltip",
+                SubTag.INVISIBLE));
+        ItemList.Ice_Cream_Acid.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Acid.ID,
+                "gt.item.food.icecream_acid.name",
+                "gt.item.food.icecream_acid.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    100,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Banana.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Banana.ID,
+                "gt.item.food.icecream_banana.name",
+                "gt.item.food.icecream_banana.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BananaSplit.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BananaSplit.ID,
+                "gt.item.food.icecream_bananasplit.name",
+                "gt.item.food.icecream_bananasplit.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Benzene.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Benzene.ID,
+                "gt.item.food.icecream_benzene.name",
+                "gt.item.food.icecream_benzene.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    100,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BlueberryBlastStargate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BlueberryBlastStargate.ID,
+                "gt.item.food.icecream_blueberryblaststargate.name",
+                "gt.item.food.icecream_blueberryblaststargate.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    600,
+                    0,
+                    100,
+                    Potion.jump.id,
+                    600,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Blueberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Blueberry.ID,
+                "gt.item.food.icecream_blueberry.name",
+                "gt.item.food.icecream_blueberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Boucream.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Boucream.ID,
+                "gt.item.food.icecream_boucream.name",
+                "gt.item.food.icecream_boucream.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BowlOfHarmony.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BowlOfHarmony.ID,
+                "gt.item.food.icecream_bowlofharmony.name",
+                "gt.item.food.icecream_bowlofharmony.tooltip",
+                new GTFoodStat(
+                    3,
+                    0.2F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    600,
+                    0,
+                    100,
+                    Potion.resistance.id,
+                    1200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Brownie.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Brownie.ID,
+                "gt.item.food.icecream_brownie.name",
+                "gt.item.food.icecream_brownie.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ButterPecan.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ButterPecan.ID,
+                "gt.item.food.icecream_butterpecan.name",
+                "gt.item.food.icecream_butterpecan.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Butterscotch.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Butterscotch.ID,
+                "gt.item.food.icecream_butterscotch.name",
+                "gt.item.food.icecream_butterscotch.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Caramel.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Caramel.ID,
+                "gt.item.food.icecream_caramel.name",
+                "gt.item.food.icecream_caramel.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CherryParfait.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CherryParfait.ID,
+                "gt.item.food.icecream_cherryparfait.name",
+                "gt.item.food.icecream_cherryparfait.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocoVanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocoVanilla.ID,
+                "gt.item.food.icecream_chocovanilla.name",
+                "gt.item.food.icecream_chocovanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocolateChip.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocolateChip.ID,
+                "gt.item.food.icecream_chocolatechip.name",
+                "gt.item.food.icecream_chocolatechip.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Chocolate.ID,
+                "gt.item.food.icecream_chocolate.name",
+                "gt.item.food.icecream_chocolate.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sandwich_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sandwich_Chocolate.ID,
+                "gt.item.food.icecream_sandwich_chocolate.name",
+                "gt.item.food.icecream_sandwich_chocolate.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Chocolate.ID,
+                "gt.item.food.icecream_popsicle_chocolate.name",
+                "gt.item.food.icecream_popsicle_chocolate.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocolateWalnutFudge.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocolateWalnutFudge.ID,
+                "gt.item.food.icecream_chocolatewalnutfudge.name",
+                "gt.item.food.icecream_chocolatewalnutfudge.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Coffee.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Coffee.ID,
+                "gt.item.food.icecream_coffee.name",
+                "gt.item.food.icecream_coffee.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSlowdown.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CookieDough.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CookieDough.ID,
+                "gt.item.food.icecream_cookiedough.name",
+                "gt.item.food.icecream_cookiedough.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.hunger.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CookiesAndCream.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CookiesAndCream.ID,
+                "gt.item.food.icecream_cookiesandcream.name",
+                "gt.item.food.icecream_cookiesandcream.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CottonCandy.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CottonCandy.ID,
+                "gt.item.food.icecream_cottoncandy.name",
+                "gt.item.food.icecream_cottoncandy.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 40, 64, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Double.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Double.ID,
+                "gt.item.food.icecream_popsicle_double.name",
+                "gt.item.food.icecream_popsicle_double.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ElectronicBlast.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ElectronicBlast.ID,
+                "gt.item.food.icecream_electronicblast.name",
+                "gt.item.food.icecream_electronicblast.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    300,
+                    1,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Engineers.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Engineers.ID,
+                "gt.item.food.icecream_engineers.name",
+                "gt.item.food.icecream_engineers.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 4, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_FrenchVanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_FrenchVanilla.ID,
+                "gt.item.food.icecream_frenchvanilla.name",
+                "gt.item.food.icecream_frenchvanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Fruit.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Fruit.ID,
+                "gt.item.food.icecream_popsicle_fruit.name",
+                "gt.item.food.icecream_popsicle_fruit.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_GrapeMatterManipulator.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_GrapeMatterManipulator.ID,
+                "gt.item.food.icecream_grapemattermanipulator.name",
+                "gt.item.food.icecream_grapemattermanipulator.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.damageBoost.id,
+                    900,
+                    0,
+                    100,
+                    Potion.weakness.id,
+                    900,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_HotFudge.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_HotFudge.ID,
+                "gt.item.food.icecream_hotfudge.name",
+                "gt.item.food.icecream_hotfudge.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.fireResistance.id,
+                    1200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sandwich.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sandwich.ID,
+                "gt.item.food.icecream_sandwich.name",
+                "gt.item.food.icecream_sandwich.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_JustCone.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_JustCone.ID,
+                "gt.item.food.icecream_justcone.name",
+                "gt.item.food.icecream_justcone.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.hunger.id, 100, 59, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Lemonade.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Lemonade.ID,
+                "gt.item.food.icecream_lemonade.name",
+                "gt.item.food.icecream_lemonade.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MHDCSM.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MHDCSM.ID,
+                "gt.item.food.icecream_MHDCSM.name",
+                "gt.item.food.icecream_MHDCSM.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.damageBoost.id,
+                    1200,
+                    0,
+                    100,
+                    Potion.resistance.id,
+                    1200,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Mango.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Mango.ID,
+                "gt.item.food.icecream_mango.name",
+                "gt.item.food.icecream_mango.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Meat.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Meat.ID,
+                "gt.item.food.icecream_meat.name",
+                "gt.item.food.icecream_meat.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MintChip.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MintChip.ID,
+                "gt.item.food.icecream_mintchip.name",
+                "gt.item.food.icecream_mintchip.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Neapolitan.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Neapolitan.ID,
+                "gt.item.food.icecream_neapolitan.name",
+                "gt.item.food.icecream_neapolitan.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NoFlavor.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NoFlavor.ID,
+                "gt.item.food.icecream_noflavor.name",
+                "gt.item.food.icecream_noflavor.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Peach.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Peach.ID,
+                "gt.item.food.icecream_peach.name",
+                "gt.item.food.icecream_peach.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_PeanutButter.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_PeanutButter.ID,
+                "gt.item.food.icecream_peanutbutter.name",
+                "gt.item.food.icecream_peanutbutter.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Pistachio.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Pistachio.ID,
+                "gt.item.food.icecream_pistachio.name",
+                "gt.item.food.icecream_pistachio.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Radioactive.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Radioactive.ID,
+                "gt.item.food.icecream_radioactive.name",
+                "gt.item.food.icecream_radioactive.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    400,
+                    1,
+                    100,
+                    Potion.confusion.id,
+                    400,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_RainbowStellar.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sorbet_RainbowStellar.ID,
+                "gt.item.food.icecream_sorbet_rainbowstellar.name",
+                "gt.item.food.icecream_sorbet_rainbowstellar.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    1200,
+                    9,
+                    100,
+                    Potion.regeneration.id,
+                    400,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_Raspberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sorbet_Raspberry.ID,
+                "gt.item.food.icecream_sorbet_raspberry.name",
+                "gt.item.food.icecream_sorbet_raspberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_SaltedCaramel.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_SaltedCaramel.ID,
+                "gt.item.food.icecream_saltedcaramel.name",
+                "gt.item.food.icecream_saltedcaramel.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Spaghetti.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Spaghetti.ID,
+                "gt.item.food.icecream_spaghetti.name",
+                "gt.item.food.icecream_spaghetti.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 300, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sprinkles.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sprinkles.ID,
+                "gt.item.food.icecream_sprinkles.name",
+                "gt.item.food.icecream_sprinkles.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Strawberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Strawberry.ID,
+                "gt.item.food.icecream_strawberry.name",
+                "gt.item.food.icecream_strawberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ToffeeButter.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ToffeeButter.ID,
+                "gt.item.food.icecream_toffeebutter.name",
+                "gt.item.food.icecream_toffeebutter.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Unicorn.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Unicorn.ID,
+                "gt.item.food.icecream_unicorn.name",
+                "gt.item.food.icecream_unicorn.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    400,
+                    1,
+                    100,
+                    Potion.field_76444_x.id,
+                    400,
+                    19,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Vanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Vanilla.ID,
+                "gt.item.food.icecream_vanilla.name",
+                "gt.item.food.icecream_vanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Concrete.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Concrete.ID,
+                "gt.item.food.icecream_concrete.name",
+                "gt.item.food.icecream_concrete.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.resistance.id, 400, 4, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Rubber.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Rubber.ID,
+                "gt.item.food.icecream_rubber.name",
+                "gt.item.food.icecream_rubber.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 40, 64, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Diesel.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Diesel.ID,
+                "gt.item.food.icecream_diesel.name",
+                "gt.item.food.icecream_diesel.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    200,
+                    1,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Snowcone.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Snowcone.ID,
+                "gt.item.food.icecream_snowcone.name",
+                "gt.item.food.icecream_snowcone.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_IceSlush.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_IceSlush.ID,
+                "gt.item.food.icecream_iceslush.name",
+                "gt.item.food.icecream_iceslush.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_Pineapple.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sorbet_Pineapple.ID,
+                "gt.item.food.icecream_sorbet_pineapple.name",
+                "gt.item.food.icecream_sorbet_pineapple.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Orange.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Orange.ID,
+                "gt.item.food.icecream_orange.name",
+                "gt.item.food.icecream_orange.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Jelly.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Jelly.ID,
+                "gt.item.food.icecream_jelly.name",
+                "gt.item.food.icecream_jelly.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MatchaSnake.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MatchaSnake.ID,
+                "gt.item.food.icecream_matchasnake.name",
+                "gt.item.food.icecream_matchasnake.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.poison.id, 200, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Freeze.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Freeze.ID,
+                "gt.item.food.icecream_popsicle_freeze.name",
+                "gt.item.food.icecream_popsicle_freeze.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_HoneyBeeBowl.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_HoneyBeeBowl.ID,
+                "gt.item.food.icecream_honeybeebowl.name",
+                "gt.item.food.icecream_honeybeebowl.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 600, 2, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_IlluminatiCone.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_IlluminatiCone.ID,
+                "gt.item.food.icecream_illuminaticone.name",
+                "gt.item.food.icecream_illuminaticone.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.invisibility.id, 1200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ConfettiQuestbook.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ConfettiQuestbook.ID,
+                "gt.item.food.icecream_confettiquestbook.name",
+                "gt.item.food.icecream_confettiquestbook.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    400,
+                    2,
+                    100,
+                    Potion.moveSpeed.id,
+                    400,
+                    2,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_PitOfDoomAndDespair.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_PitOfDoomAndDespair.ID,
+                "gt.item.food.icecream_pitofdoomanddespair.name",
+                "gt.item.food.icecream_pitofdoomanddespair.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.wither.id,
+                    400,
+                    0,
+                    100,
+                    Potion.blindness.id,
+                    400,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MasterOfDreams.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MasterOfDreams.ID,
+                "gt.item.food.icecream_masterofdreams.name",
+                "gt.item.food.icecream_masterofdreams.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100,
+                    Potion.regeneration.id,
+                    400,
+                    2,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Explosive.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Explosive.ID,
+                "gt.item.food.icecream_explosive.name",
+                "gt.item.food.icecream_explosive.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false).setExplosive(20f),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NotFound404.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NotFound404.ID,
+                "gt.item.food.icecream_notfound404.name",
+                "gt.item.food.icecream_notfound404.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.hunger.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_AntimatterAffogato.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_AntimatterAffogato.ID,
+                "gt.item.food.icecream_antimatteraffogato.name",
+                "gt.item.food.icecream_antimatteraffogato.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.confusion.id,
+                    400,
+                    1,
+                    100,
+                    Potion.poison.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Cheese.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Cheese.ID,
+                "gt.item.food.icecream_cheese.name",
+                "gt.item.food.icecream_cheese.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Chestmonster.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Chestmonster.ID,
+                "gt.item.food.icecream_chestmonster.name",
+                "gt.item.food.icecream_chestmonster.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.weakness.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CircuitBoardCrunch.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CircuitBoardCrunch.ID,
+                "gt.item.food.icecream_circuitboardcrunch.name",
+                "gt.item.food.icecream_circuitboardcrunch.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CompileError.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CompileError.ID,
+                "gt.item.food.icecream_compileerror.name",
+                "gt.item.food.icecream_compileerror.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CrudeOil.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CrudeOil.ID,
+                "gt.item.food.icecream_crudeoil.name",
+                "gt.item.food.icecream_crudeoil.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSlowdown.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Diamond.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Diamond.ID,
+                "gt.item.food.icecream_popsicle_diamond.name",
+                "gt.item.food.icecream_popsicle_diamond.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_GraveDirtAndGummis.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_GraveDirtAndGummis.ID,
+                "gt.item.food.icecream_gravedirtandgummis.name",
+                "gt.item.food.icecream_gravedirtandgummis.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.weakness.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_RubberDucky.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_RubberDucky.ID,
+                "gt.item.food.icecream_rubberducky.name",
+                "gt.item.food.icecream_rubberducky.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 600, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_DuctTape.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_DuctTape.ID,
+                "gt.item.food.icecream_ducttape.name",
+                "gt.item.food.icecream_ducttape.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 200, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Exotic.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Exotic.ID,
+                "gt.item.food.icecream_exotic.name",
+                "gt.item.food.icecream_exotic.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.nightVision.id, 1200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Grapquada.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_Grapquada.ID,
+                "gt.item.food.icecream_popsicle_grapquada.name",
+                "gt.item.food.icecream_popsicle_grapquada.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Grind.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Grind.ID,
+                "gt.item.food.icecream_grind.name",
+                "gt.item.food.icecream_grind.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 600, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Foolish.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Foolish.ID,
+                "gt.item.food.icecream_foolish.name",
+                "gt.item.food.icecream_foolish.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_LawnbaseSpecial.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_LawnbaseSpecial.ID,
+                "gt.item.food.icecream_lawnbasespecial.name",
+                "gt.item.food.icecream_lawnbasespecial.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.hunger.id,
+                    400,
+                    0,
+                    100,
+                    Potion.poison.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_LunarLander.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_LunarLander.ID,
+                "gt.item.food.icecream_lunarlander.name",
+                "gt.item.food.icecream_lunarlander.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 600, 2, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NaquadahNutSwirl.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NaquadahNutSwirl.ID,
+                "gt.item.food.icecream_naquadahnutswirl.name",
+                "gt.item.food.icecream_naquadahnutswirl.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NaquadriaPlasmaParfait.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NaquadriaPlasmaParfait.ID,
+                "gt.item.food.icecream_naquadriaplasmaparfait.name",
+                "gt.item.food.icecream_naquadriaplasmaparfait.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.fireResistance.id,
+                    600,
+                    0,
+                    100,
+                    Potion.poison.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NetherStarNutCrunch.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NetherStarNutCrunch.ID,
+                "gt.item.food.icecream_netherstarnutcrunch.name",
+                "gt.item.food.icecream_netherstarnutcrunch.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 400, 2, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NutsAndBolts.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NutsAndBolts.ID,
+                "gt.item.food.icecream_nutsandbolts.name",
+                "gt.item.food.icecream_nutsandbolts.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_OverclockedEspresso.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_OverclockedEspresso.ID,
+                "gt.item.food.icecream_overclockedespresso.name",
+                "gt.item.food.icecream_overclockedespresso.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    600,
+                    2,
+                    100,
+                    Potion.digSpeed.id,
+                    600,
+                    2,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_PeachPlasmaParfait.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_PeachPlasmaParfait.ID,
+                "gt.item.food.icecream_peachplasmaparfait.name",
+                "gt.item.food.icecream_peachplasmaparfait.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.fireResistance.id,
+                    600,
+                    0,
+                    100,
+                    Potion.poison.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Pipegetti.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Pipegetti.ID,
+                "gt.item.food.icecream_pipegetti.name",
+                "gt.item.food.icecream_pipegetti.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Potato.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Potato.ID,
+                "gt.item.food.icecream_potato.name",
+                "gt.item.food.icecream_potato.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 200, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_Redstone.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sorbet_Redstone.ID,
+                "gt.item.food.icecream_sorbet_redstone.name",
+                "gt.item.food.icecream_sorbet_redstone.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_RocketFuelFloat.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_RocketFuelFloat.ID,
+                "gt.item.food.icecream_rocketfuelfloat.name",
+                "gt.item.food.icecream_rocketfuelfloat.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    400,
+                    2,
+                    100,
+                    Potion.poison.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_StrawberryYogurt.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Popsicle_StrawberryYogurt.ID,
+                "gt.item.food.icecream_popsicle_strawberryyogurt.name",
+                "gt.item.food.icecream_popsicle_strawberryyogurt.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ThaumaturgesDelight.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ThaumaturgesDelight.ID,
+                "gt.item.food.icecream_thaumaturgesdelight.name",
+                "gt.item.food.icecream_thaumaturgesdelight.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ThaumiumTruffle.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ThaumiumTruffle.ID,
+                "gt.item.food.icecream_thaumiumtruffle.name",
+                "gt.item.food.icecream_thaumiumtruffle.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.regeneration.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_TotallyInnocentRing.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_TotallyInnocentRing.ID,
+                "gt.item.food.icecream_totallyinnocentring.name",
+                "gt.item.food.icecream_totallyinnocentring.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.weakness.id,
+                    400,
+                    0,
+                    100,
+                    Potion.blindness.id,
+                    200,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Transcendent.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Transcendent.ID,
+                "gt.item.food.icecream_transcendent.name",
+                "gt.item.food.icecream_transcendent.tooltip",
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    400,
+                    1,
+                    100,
+                    Potion.nightVision.id,
+                    600,
+                    0,
+                    100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_VoidKitty.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_VoidKitty.ID,
+                "gt.item.food.icecream_voidkitty.name",
+                "gt.item.food.icecream_voidkitty.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.invisibility.id, 600, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_VoidMinersVanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_VoidMinersVanilla.ID,
+                "gt.item.food.icecream_voidminersvanilla.name",
+                "gt.item.food.icecream_voidminersvanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 1, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Warped.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Warped.ID,
+                "gt.item.food.icecream_warped.name",
+                "gt.item.food.icecream_warped.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 400, 2, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_WitchyWildberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_WitchyWildberry.ID,
+                "gt.item.food.icecream_witchywildberry.name",
+                "gt.item.food.icecream_witchywildberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSpeed.id, 400, 0, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Trophy.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Trophy.ID,
+                "gt.item.food.icecream_trophy.name",
+                "gt.item.food.icecream_trophy.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+
         ItemList.Dye_Indigo.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Dye_Indigo.ID,
-                "Indigo Dye",
-                "Blue Dye",
+                "gt.item.dye.indigo.name",
+                "gt.item.dye.indigo.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L),
                 Dyes.dyeBlue));
 
@@ -1862,529 +3026,448 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             Dye_Color_04.ID, Dye_Color_05.ID, Dye_Color_06.ID, Dye_Color_07.ID, Dye_Color_08.ID, Dye_Color_09.ID,
             Dye_Color_10.ID, Dye_Color_11.ID, Dye_Color_12.ID, Dye_Color_13.ID, Dye_Color_14.ID, Dye_Color_15.ID };
         for (int i = 0; i < 16; i = i + 1) {
+            String dyeKey = "gt.item.dye." + Dyes.get(i).mName.toLowerCase()
+                .replace(" ", "_") + ".name";
             ItemList.DYE_ONLY_ITEMS[i].set(
-                addItem(
+                addItemWithLocalizationKeys(
                     Dye_Colors[i],
-                    Dyes.get(i).mName + " Dye",
+                    dyeKey,
                     "",
                     Dyes.get(i)
                         .name(),
                     new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L)));
         }
-
-        ItemList.Plank_Oak
-            .set(addItem(Plank_Oak.ID, "Oak Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        final String plankOredict = "coverPlank";
+        ItemList.Plank_Oak.set(
+            addItemWithLocalizationKeys(
+                Plank_Oak.ID,
+                "gt.item.plank_cover.oak.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Spruce.set(
-            addItem(Plank_Spruce.ID, "Spruce Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Birch
-            .set(addItem(Plank_Birch.ID, "Birch Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Spruce.ID,
+                "gt.item.plank_cover.spruce.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Birch.set(
+            addItemWithLocalizationKeys(
+                Plank_Birch.ID,
+                "gt.item.plank_cover.birch.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Jungle.set(
-            addItem(Plank_Jungle.ID, "Jungle Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Jungle.ID,
+                "gt.item.plank_cover.jungle.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia.set(
-            addItem(Plank_Acacia.ID, "Acacia Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Acacia.ID,
+                "gt.item.plank_cover.acacia.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_DarkOak.set(
-            addItem(Plank_DarkOak.ID, "Dark Oak Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Larch
-            .set(addItem(Plank_Larch.ID, "Larch Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Teak
-            .set(addItem(Plank_Teak.ID, "Teak Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_DarkOak.ID,
+                "gt.item.plank_cover.dark_oak.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Larch.set(
+            addItemWithLocalizationKeys(
+                Plank_Larch.ID,
+                "gt.item.plank_cover.larch.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Teak.set(
+            addItemWithLocalizationKeys(
+                Plank_Teak.ID,
+                "gt.item.plank_cover.teak.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Acacia_Green.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Acacia_Green.ID,
-                "Green Acacia Plank",
-                aTextCover,
+                "gt.item.plank_cover.green_acacia.name",
+                plankOredict,
+                "gt.item.plank_cover.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Lime
-            .set(addItem(Plank_Lime.ID, "Lime Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Lime.set(
+            addItemWithLocalizationKeys(
+                Plank_Lime.ID,
+                "gt.item.plank_cover.lime.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Chestnut.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Chestnut.ID,
-                "Chestnut Plank",
-                aTextCover,
+                "gt.item.plank_cover.chestnut.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Wenge
-            .set(addItem(Plank_Wenge.ID, "Wenge Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Wenge.set(
+            addItemWithLocalizationKeys(
+                Plank_Wenge.ID,
+                "gt.item.plank_cover.wenge.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Baobab.set(
-            addItem(Plank_Baobab.ID, "Baobab Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Sequoia.set(
-            addItem(Plank_Sequoia.ID, "Sequoia Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Kapok
-            .set(addItem(Plank_Kapok.ID, "Kapok Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Ebony
-            .set(addItem(Plank_Ebony.ID, "Ebony Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Mahagony.set(
-            addItem(
-                Plank_Mahagony.ID,
-                "Mahagony Plank",
-                aTextCover,
+            addItemWithLocalizationKeys(
+                Plank_Baobab.ID,
+                "gt.item.plank_cover.baobab.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Balsa
-            .set(addItem(Plank_Balsa.ID, "Balsa Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Sequoia.set(
+            addItemWithLocalizationKeys(
+                Plank_Sequoia.ID,
+                "gt.item.plank_cover.sequoia.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Kapok.set(
+            addItemWithLocalizationKeys(
+                Plank_Kapok.ID,
+                "gt.item.plank_cover.kapok.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Ebony.set(
+            addItemWithLocalizationKeys(
+                Plank_Ebony.ID,
+                "gt.item.plank_cover.ebony.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Mahagony.set(
+            addItemWithLocalizationKeys(
+                Plank_Mahagony.ID,
+                "gt.item.plank_cover.mahagony.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Balsa.set(
+            addItemWithLocalizationKeys(
+                Plank_Balsa.ID,
+                "gt.item.plank_cover.balsa.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Willow.set(
-            addItem(Plank_Willow.ID, "Willow Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Willow.ID,
+                "gt.item.plank_cover.willow.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Walnut.set(
-            addItem(Plank_Walnut.ID, "Walnut Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Walnut.ID,
+                "gt.item.plank_cover.walnut.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Greenheart.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Greenheart.ID,
-                "Greenheart Plank",
-                aTextCover,
+                "gt.item.plank_cover.greenheart.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry.set(
-            addItem(Plank_Cherry.ID, "Cherry Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Mahoe
-            .set(addItem(Plank_Mahoe.ID, "Mahoe Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Cherry.ID,
+                "gt.item.plank_cover.cherry.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Mahoe.set(
+            addItemWithLocalizationKeys(
+                Plank_Mahoe.ID,
+                "gt.item.plank_cover.mahoe.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Poplar.set(
-            addItem(Plank_Poplar.ID, "Poplar Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Palm
-            .set(addItem(Plank_Palm.ID, "Palm Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Poplar.ID,
+                "gt.item.plank_cover.poplar.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Palm.set(
+            addItemWithLocalizationKeys(
+                Plank_Palm.ID,
+                "gt.item.plank_cover.palm.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Papaya.set(
-            addItem(Plank_Papaya.ID, "Papaya Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Pine
-            .set(addItem(Plank_Pine.ID, "Pine Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Plum
-            .set(addItem(Plank_Plum.ID, "Plum Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.Plank_Maple
-            .set(addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Papaya.ID,
+                "gt.item.plank_cover.papaya.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Pine.set(
+            addItemWithLocalizationKeys(
+                Plank_Pine.ID,
+                "gt.item.plank_cover.pine.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Plum.set(
+            addItemWithLocalizationKeys(
+                Plank_Plum.ID,
+                "gt.item.plank_cover.plum.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Maple.set(
+            addItemWithLocalizationKeys(
+                Plank_Maple.ID,
+                "gt.item.plank_cover.maple.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
-            addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+            addItemWithLocalizationKeys(
+                Plank_Citrus.ID,
+                "gt.item.plank_cover.citrus.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Cherry_EFR.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Plank_Cherry_EFR.ID,
-                "Cherry Plank",
-                aTextCover,
+                "gt.item.plank_cover.cherry_efr.name",
+                "gt.item.plank_cover.tooltip",
+                plankOredict,
                 new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-        ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
-        ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
-
-        ItemList.Crop_Drop_Plumbilia.set(
-            addItem(
-                Crop_Drop_Plumbilia.ID,
-                "Plumbilia Leaf",
-                "Source of Lead",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L)));
-        ItemList.Crop_Drop_Argentia.set(
-            addItem(
-                Crop_Drop_Argentia.ID,
-                "Argentia Leaf",
-                "Source of Silver",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_Indigo.set(
-            addItem(
-                Crop_Drop_Indigo.ID,
-                "Indigo Blossom",
-                "Used for making Blue Dye",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L)));
-        ItemList.Crop_Drop_Ferru.set(
-            addItem(
-                Crop_Drop_Ferru.ID,
-                "Ferru Leaf",
-                "Source of Iron",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L)));
-        ItemList.Crop_Drop_Aurelia.set(
-            addItem(
-                Crop_Drop_Aurelia.ID,
-                "Aurelia Leaf",
-                "Source of Gold",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_TeaLeaf.set(
-            addItem(
-                Crop_Drop_TeaLeaf.ID,
-                "Tea Leaf",
-                "Source of Tea",
-                "cropTea",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-
-        ItemList.Crop_Drop_OilBerry.set(
-            addItem(
-                Crop_Drop_OilBerry.ID,
-                "Oil Berry",
-                "Oil in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-        ItemList.Crop_Drop_BobsYerUncleRanks.set(
-            addItem(
-                Crop_Drop_BobsYerUncleRanks.ID,
-                "Bobs-Yer-Uncle-Berry",
-                "Source of Emeralds",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Crop_Drop_UUMBerry.set(
-            addItem(
-                Crop_Drop_UUMBerry.ID,
-                "UUM Berry",
-                "UUM in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-        ItemList.Crop_Drop_UUABerry.set(
-            addItem(
-                Crop_Drop_UUABerry.ID,
-                "UUA Berry",
-                "UUA in Berry form",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
-
-        ItemList.Crop_Drop_MilkWart.set(
-            addItem(
-                Crop_Drop_MilkWart.ID,
-                "Milk Wart",
-                "Source of Milk",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-
-        ItemList.Crop_Drop_Coppon.set(
-            addItem(
-                Crop_Drop_Coppon.ID,
-                "Coppon Fiber",
-                "ORANGE WOOOOOOOL!!!",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1L)));
-
-        ItemList.Crop_Drop_Tine.set(
-            addItem(
-                Crop_Drop_Tine.ID,
-                "Tine Twig",
-                "Source of Tin",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-
-        ItemList.Crop_Drop_Mica.set(
-            addItem(
-                Crop_Drop_Mica.ID,
-                "Micadia Twig",
-                "Source of Mica",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
-
-        ItemList.Crop_Drop_Bauxite.set(addItem(Crop_Drop_Bauxite.ID, "Bauxia Leaf", "Source of Aluminium"));
-        ItemList.Crop_Drop_Ilmenite.set(addItem(Crop_Drop_Ilmenite.ID, "Titania Leaf", "Source of Titanium"));
-        ItemList.Crop_Drop_Pitchblende.set(addItem(Crop_Drop_Pitchblende.ID, "Reactoria Leaf", "Source of Uranium"));
-        ItemList.Crop_Drop_Uraninite.set(addItem(Crop_Drop_Uraninite.ID, "Uranium Leaf", "Source of Uranite"));
-        ItemList.Crop_Drop_Thorium.set(addItem(Crop_Drop_Thorium.ID, "Thunder Leaf", "Source of Thorium"));
-        ItemList.Crop_Drop_Nickel.set(addItem(Crop_Drop_Nickel.ID, "Nickelback Leaf", "Source of Nickel"));
-        ItemList.Crop_Drop_Zinc.set(addItem(Crop_Drop_Zinc.ID, "Galvania Leaf", "Source of Zinc"));
-        ItemList.Crop_Drop_Manganese.set(addItem(Crop_Drop_Manganese.ID, "Pyrolusium Leaf", "Source of Manganese"));
-        ItemList.Crop_Drop_Scheelite.set(addItem(Crop_Drop_Scheelite.ID, "Scheelinium Leaf", "Source of Tungsten"));
-        ItemList.Crop_Drop_Platinum.set(addItem(Crop_Drop_Platinum.ID, "Platina Leaf", "Source of Platinum"));
-        ItemList.Crop_Drop_Iridium.set(addItem(Crop_Drop_Iridium.ID, "Quantaria Leaf", "Source of Iridium"));
-        ItemList.Crop_Drop_Osmium.set(addItem(Crop_Drop_Osmium.ID, "Quantaria Leaf", "Source of Osmium"));
-        ItemList.Crop_Drop_Naquadah.set(addItem(Crop_Drop_Naquadah.ID, "Stargatium Leaf", "Source of Naquadah"));
-
-        ItemList.Crop_Drop_Chilly.set(
-            addItem(
-                Crop_Drop_Chilly.ID,
-                "Chilly Pepper",
-                "It is red and hot",
-                "cropChilipepper",
-                new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 200, 1, 40),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Lemon.set(
-            addItem(
-                Crop_Drop_Lemon.ID,
-                "Lemon",
-                "Don't make Lemonade",
-                "cropLemon",
-                new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Tomato.set(
-            addItem(
-                Crop_Drop_Tomato.ID,
-                "Tomato",
-                "Solid Ketchup",
-                "cropTomato",
-                new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_MTomato.set(
-            addItem(
-                Crop_Drop_MTomato.ID,
-                "Max Tomato",
-                "Full Health in one Tomato",
-                "cropTomato",
-                new GTFoodStat(
-                    9,
-                    1.0F,
-                    EnumAction.eat,
-                    null,
-                    false,
-                    true,
-                    false,
-                    Potion.regeneration.id,
-                    100,
-                    100,
-                    100),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.SANO, 3L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Grapes.set(
-            addItem(
-                Crop_Drop_Grapes.ID,
-                "Grapes",
-                "Source of Wine",
-                "cropGrape",
-                new GTFoodStat(2, 0.3F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Onion.set(
-            addItem(
-                Crop_Drop_Onion.ID,
-                "Onion",
-                "Taking over the whole Taste",
-                "cropOnion",
-                new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Cucumber.set(
-            addItem(
-                Crop_Drop_Cucumber.ID,
-                "Cucumber",
-                "Not a Sea Cucumber!",
-                "cropCucumber",
-                new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
-        ItemList.Crop_Drop_Rape.set(
-            addItem(
-                Crop_Drop_Rape.ID,
-                "Rape",
-                "Also known as Canola.",
-                new TCAspects.TC_AspectStack(TCAspects.MESSIS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L)));
+        ItemList.SFMixture
+            .set(addItemWithLocalizationKeys(SFMixture.ID, "gt.item.sf_mixture.name", "gt.item.sf_mixture.tooltip"));
+        ItemList.MSFMixture
+            .set(addItemWithLocalizationKeys(MSFMixture.ID, "gt.item.msf_mixture.name", "gt.item.msf_mixture.tooltip"));
 
         ItemList.Food_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Cheese.ID,
-                "Cheese",
-                "Click the Cheese",
+                "gt.item.food.cheese.name",
+                "gt.item.food.cheese.tooltip",
                 "foodCheese",
                 new GTFoodStat(3, 0.6F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 2L)));
         ItemList.Food_Dough.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Dough.ID,
-                "Dough",
-                "For making Breads",
+                "gt.item.food.dough.name",
+                "gt.item.food.dough.tooltip",
                 "foodDough",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Flat_Dough.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Flat_Dough.ID,
-                "Flattened Dough",
-                "For making Pizza",
+                "gt.item.food.flat_dough.name",
+                "gt.item.food.flat_dough.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bread.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Bread.ID,
-                "Dough",
-                "In Bread Shape",
+                "gt.item.food.raw_bread.name",
+                "gt.item.food.raw_bread.tooltip",
                 new GTFoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Bun.ID,
-                "Dough",
-                "In Bun Shape",
+                "gt.item.food.raw_bun.name",
+                "gt.item.food.raw_bun.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Raw_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Baguette.ID,
-                "Dough",
-                "In Baguette Shape",
+                "gt.item.food.raw_baguette.name",
+                "gt.item.food.raw_baguette.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Bun.ID,
-                "Bun",
-                "Do not teleport Bread!",
+                "gt.item.food.baked_bun.name",
+                "gt.item.food.baked_bun.tooltip",
                 new GTFoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Baked_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Baguette.ID,
-                "Baguette",
-                "I teleported nothing BUT Bread!!!",
+                "gt.item.food.baked_baguette.name",
+                "gt.item.food.baked_baguette.tooltip",
                 new GTFoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bread.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Bread.ID,
-                "Sliced Bread",
-                "Just half a Bread",
+                "gt.item.food.sliced_bread.name",
+                "gt.item.food.sliced_bread.tooltip",
                 new GTFoodStat(2, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bun.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Bun.ID,
-                "Sliced Bun",
-                "Just half a Bun",
+                "gt.item.food.sliced_bun.name",
+                "gt.item.food.sliced_bun.tooltip",
                 new GTFoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Baguette.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Baguette.ID,
-                "Sliced Baguette",
-                "Just half a Baguette",
+                "gt.item.food.sliced_baguette.name",
+                "gt.item.food.sliced_baguette.tooltip",
                 new GTFoodStat(4, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
         ItemList.Food_Raw_Cake.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Raw_Cake.ID,
-                "Cake Bottom",
-                "For making Cake",
+                "gt.item.food.raw_cake.name",
+                "gt.item.food.raw_cake.tooltip",
                 new GTFoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Baked_Cake.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Baked_Cake.ID,
-                "Baked Cake Bottom",
-                "I know I promised you an actual Cake, but well...",
+                "gt.item.food.baked_cake.name",
+                "gt.item.food.baked_cake.tooltip",
                 new GTFoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
         ItemList.Food_Sliced_Lemon.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Lemon.ID,
-                "Lemon Slice",
-                "Ideal to put on your Drink",
+                "gt.item.food.sliced_lemon.name",
+                "gt.item.food.sliced_lemon.tooltip",
                 new GTFoodStat(1, 0.075F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Tomato.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Tomato.ID,
-                "Tomato Slice",
-                "Solid Ketchup",
+                "gt.item.food.sliced_tomato.name",
+                "gt.item.food.sliced_tomato.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Onion.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Onion.ID,
-                "Onion Slice",
-                "ONIONS, UNITE!",
+                "gt.item.food.sliced_onion.name",
+                "gt.item.food.sliced_onion.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
         ItemList.Food_Sliced_Cucumber.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Cucumber.ID,
-                "Cucumber Slice",
-                "QUEWWW-CUMMM-BERRR!!!",
+                "gt.item.food.sliced_cucumber.name",
+                "gt.item.food.sliced_cucumber.tooltip",
                 new GTFoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 1L)));
 
         ItemList.Food_Sliced_Cheese.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Food_Sliced_Cheese.ID,
-                "Cheese Slice",
-                "ALIEN ATTACK!!!, throw the CHEEEEESE!!!",
+                "gt.item.food.sliced_cheese.name",
+                "gt.item.food.sliced_cheese.tooltip",
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
-        ItemList.Cover_AdvancedRedstoneTransmitterExternal.set(
-            addItem(
-                Cover_AdvancedRedstoneTransmitterExternal.ID,
-                "Advanced Redstone Transmitter (External)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+        ItemList.Cover_AdvancedRedstoneTransmitter.set(
+            addItemWithLocalizationKeys(
+                Cover_AdvancedRedstoneTransmitter.ID,
+                "gt.item.cover.advanced_redstone_transmitter.name",
+                "gt.item.cover.advanced_redstone_transmitter.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
-                "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.advanced_redstone_transmitter_internal.name",
+                "gt.item.cover.advanced_redstone_transmitter_internal.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
-        ItemList.Cover_AdvancedRedstoneReceiverExternal.set(
-            addItem(
-                Cover_AdvancedRedstoneReceiverExternal.ID,
-                "Advanced Redstone Receiver (External)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+        ItemList.Cover_AdvancedRedstoneReceiver.set(
+            addItemWithLocalizationKeys(
+                Cover_AdvancedRedstoneReceiver.ID,
+                "gt.item.cover.advanced_redstone_receiver.name",
+                "gt.item.cover.advanced_redstone_receiver.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
-                "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.advanced_redstone_receiver_internal.name",
+                "gt.item.cover.advanced_redstone_receiver_internal.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
         ItemList.Cover_WirelessFluidDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessFluidDetector.ID,
-                "Wireless Fluid Detector Cover",
-                "Transfers Fluid Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_fluid_detector.name",
+                "gt.item.cover.wireless_fluid_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L)));
         ItemList.Cover_WirelessItemDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessItemDetector.ID,
-                "Wireless Item Detector Cover",
-                "Transfers Item Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_item_detector.name",
+                "gt.item.cover.wireless_item_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
         ItemList.Cover_WirelessNeedsMaintainance.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessNeedsMaintainance.ID,
-                "Wireless Needs Maintenance Cover",
-                "Transfers Maintenance Issues as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_needs_maintenance.name",
+                "gt.item.cover.wireless_needs_maintenance.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 3L)));
 
         ItemList.Cover_WirelessActivityDetector.set(
-            addItem(
+            addItemWithLocalizationKeys(
                 Cover_WirelessActivityDetector.ID,
-                "Wireless Activity Detector Cover",
-                "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
+                "gt.item.cover.wireless_activity_detector.name",
+                "gt.item.cover.wireless_activity_detector.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
@@ -2393,25 +3476,42 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Display_ITS_FREE.set(
             addItem(
                 Display_ITS_FREE.ID,
-                "ITS FREE",
-                "(or at least almost free)",
+                stack -> StatCollector.translateToLocal(
+                    stack.hasTagCompound() && stack.getTagCompound()
+                        .hasKey(DISPLAY_NAME_KEY_TAG) ? stack.getTagCompound()
+                            .getString(DISPLAY_NAME_KEY_TAG) : "gt.item.display.its_free.name"),
+                $ -> StatCollector.translateToLocal("gt.item.display.its_free.tooltip"),
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
-        ItemList.Item_Redstone_Sniffer
-            .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
-        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
-        ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
+        ItemList.Item_Redstone_Sniffer.set(
+            new ItemRedstoneSniffer(
+                "Item_Redstone_Sniffer",
+                "gt.item.redstone_sniffer.name",
+                "gt.item.redstone_sniffer.tooltip"));
+        ItemList.DroneRemoteInterface.set(
+            new ItemDroneRemoteInterface(
+                "Item_Drone_Remote_Interface",
+                "gt.item.drone_remote_interface.name",
+                "gt.item.drone_remote_interface.tooltip"));
+        ItemList.Vajra_Core.set(addItemWithLocalizationKeys(Vajra_Core.ID, "gt.item.vajra_core.name", ""));
+        ItemList.Magnetron.set(addItemWithLocalizationKeys(Magnetron.ID, "gt.item.magnetron.name", ""));
+        ItemList.ChaosLocator.set(
+            new ItemChaosLocator("Item_Chaos_Locator", "gt.item.chaos_locator.name", "gt.item.chaos_locator.tooltip"));
 
-        try {
-            CropCard tCrop;
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
-            GTUtility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
-                .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
-        } catch (Throwable e) {
-            if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
-            }
+        final ItemGTToolbox itemToolbox = new ItemGTToolbox(
+            "Item_Toolbox",
+            "Field Engineer's Toolbox",
+            "A container to hold your tools!");
+        ItemList.ToolBox.set(itemToolbox);
+
+        if (GregTechAPI.sThaumcraftCompat != null) {
+            GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
+                new ItemStack(itemToolbox),
+                ImmutableList.of(
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)),
+                false);
         }
 
         setAllFluidContainerStats();
@@ -2441,15 +3541,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mEnchantmentTools != null)) {
-            Enchantment tEnchant = aMaterial.mEnchantmentTools == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mEnchantmentTools;
+        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
+            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
+                : aMaterial.mToolEnchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
-                NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
-                if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
-                    tNBT.setBoolean("GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.setNBT(aStack, tNBT);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mEnchantmentToolsLevel);
+                if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
+                    ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
+                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
                 }
             }
         }
@@ -2504,8 +3602,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         setBurnValue(32000 + Plank_Maple.ID, 75);
         setBurnValue(32000 + Plank_Citrus.ID, 75);
         setBurnValue(32000 + Plank_Cherry_EFR.ID, 75);
-        setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
-        setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
 
     public void initCraftingShapedRecipes() {
@@ -2538,54 +3634,60 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public void initAssemblerRecipes() {
         RA.stdBuilder()
             .itemInputs(
-                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
+                ItemList.Cover_RedstoneTransmitter.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
             .itemInputs(
-                ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
+                ItemList.Cover_RedstoneReceiver.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_FluidDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_WirelessController.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Cover_WirelessController.get(1L), ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedWirelessController.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ItemDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_NeedsMaintainance.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ActivityDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ActivityDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2593,18 +3695,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     }
 
     public void initCraftingShapelessRecipes() {
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L) });
+
     }
 
     public void initExtractorRecipes() {
@@ -2692,116 +3783,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
-            .duration(15 * SECONDS)
-            .eut(16)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Argentia.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
-            .duration(15 * SECONDS)
-            .eut(16)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
-            .itemOutputs(ItemList.Dye_Indigo.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Coppon.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
-            .duration(15 * SECONDS)
-            .eut(16)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
-            .duration(15 * SECONDS)
-            .eut(16)
-            .addTo(extractorRecipes);
 
     }
 
     public void initCompressorRecipes() {
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
-            .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
-            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
@@ -2828,13 +3813,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -2877,7 +3855,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
@@ -3043,7 +4021,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 0));
 
         CoverRegistry.registerCover(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+            ItemList.Cover_AdvancedRedstoneTransmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
             context -> new CoverAdvancedRedstoneTransmitterExternal(
                 context,
@@ -3057,7 +4035,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
 
         CoverRegistry.registerCover(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+            ItemList.Cover_AdvancedRedstoneReceiver.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
             context -> new CoverAdvancedRedstoneReceiverExternal(
                 context,
@@ -3065,10 +4043,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             context -> new CoverAdvancedRedstoneReceiverInternal(
                 context,
-                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+                TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessFluidDetector.get(1L),
@@ -3097,7 +4075,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.name()
+        return (aDoShowAllItems) || (!aPrefix.getName()
             .startsWith("toolHead"));
     }
 

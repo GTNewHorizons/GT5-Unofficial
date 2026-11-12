@@ -1,9 +1,7 @@
 package gregtech.common.pollution;
 
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBases;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -26,13 +24,21 @@ public class PollutionTooltip {
         if (event.itemStack == null) return;
 
         if (PollutionConfig.furnacesPollute) {
-            String furnacePollution = StatCollector
-                .translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.furnacePollutionAmount);
 
             // Furnace and Iron Furnace
-            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace)) || GTUtility
+            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace))) {
+                event.toolTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        PRODUCES_POLLUTION_FORMAT,
+                        formatNumber(FurnacePollution.FURNACE.getPollution())));
+            }
+
+            if (GTUtility
                 .areStacksEqual(event.itemStack, GTModHandler.getModItem(IndustrialCraft2.ID, "blockMachine", 1, 1))) {
-                event.toolTip.add(furnacePollution);
+                event.toolTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        PRODUCES_POLLUTION_FORMAT,
+                        formatNumber(FurnacePollution.IRON_FURNACE.getPollution())));
             }
 
             // Alchemical Furnace
@@ -40,7 +46,10 @@ public class PollutionTooltip {
                 if (GTUtility.areStacksEqual(
                     event.itemStack,
                     GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            formatNumber(FurnacePollution.ALCHEMICAL_FURNACE.getPollution())));
                 }
             }
 
@@ -49,7 +58,45 @@ public class PollutionTooltip {
                 if (GTUtility.areStacksEqual(
                     event.itemStack,
                     GTModHandler.getModItem(ThaumicBases.ID, "advAlchFurnace", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            formatNumber(FurnacePollution.ADVANCED_ALCHEMICAL_FURNACE.getPollution())));
+                }
+            }
+
+            if (EtFuturumRequiem.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0))
+                    || GTUtility.areStacksEqual(
+                        event.itemStack,
+                        GTModHandler.getModItem(EtFuturumRequiem.ID, "smoker", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            formatNumber(FurnacePollution.BLAST_FURNACE.getPollution())));
+                }
+            }
+
+            if (Natura.isModLoaded()) {
+                if (GTUtility
+                    .areStacksEqual(event.itemStack, GTModHandler.getModItem(Natura.ID, "NetherFurnace", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            formatNumber(FurnacePollution.NETHER_FURNACE.getPollution())));
+                }
+            }
+
+            if (TinkerConstruct.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(TinkerConstruct.ID, "FurnaceSlab", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            formatNumber(FurnacePollution.SLAB_FURNACE.getPollution())));
                 }
             }
         }
@@ -63,7 +110,7 @@ public class PollutionTooltip {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.tooltip.pollution.produces.firebox",
-                        PollutionConfig.fireboxPollutionAmount));
+                        formatNumber(PollutionConfig.fireboxPollutionAmount)));
             }
 
             // Tunnel Bore
@@ -71,15 +118,16 @@ public class PollutionTooltip {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         PRODUCES_POLLUTION_FORMAT,
-                        PollutionConfig.tunnelBorePollutionAmount));
+                        formatNumber(PollutionConfig.tunnelBorePollutionAmount)));
             }
 
             // Coke Oven Brick
             if (GTUtility
                 .areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.alpha", 1, 7))) {
                 event.toolTip.add(
-                    StatCollector
-                        .translateToLocalFormatted(MULTI_POLLUTION_FORMAT, PollutionConfig.cokeOvenPollutionAmount));
+                    StatCollector.translateToLocalFormatted(
+                        MULTI_POLLUTION_FORMAT,
+                        formatNumber(PollutionConfig.cokeOvenPollutionAmount)));
             }
 
             // Advanced Coke Oven Brick
@@ -88,7 +136,7 @@ public class PollutionTooltip {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         MULTI_POLLUTION_FORMAT,
-                        PollutionConfig.advancedCokeOvenPollutionAmount));
+                        formatNumber(PollutionConfig.advancedCokeOvenPollutionAmount)));
             }
 
             // Hobbyist's Steam Engine
@@ -97,7 +145,7 @@ public class PollutionTooltip {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         PRODUCES_POLLUTION_FORMAT,
-                        PollutionConfig.hobbyistEnginePollutionAmount));
+                        formatNumber(PollutionConfig.hobbyistEnginePollutionAmount)));
             }
         }
 
@@ -115,11 +163,11 @@ public class PollutionTooltip {
                         event.toolTip.add(
                             StatCollector.translateToLocalFormatted(
                                 "GT5U.tooltip.pollution.produces.rocket.ignited",
-                                (PollutionConfig.rocketPollutionAmount * tier / 100)));
+                                formatNumber(PollutionConfig.rocketPollutionAmount * tier / 100)));
                         event.toolTip.add(
                             StatCollector.translateToLocalFormatted(
                                 "GT5U.tooltip.pollution.produces.rocket.flying",
-                                PollutionConfig.rocketPollutionAmount * tier));
+                                formatNumber(PollutionConfig.rocketPollutionAmount * tier)));
                         break;
                     }
                 }

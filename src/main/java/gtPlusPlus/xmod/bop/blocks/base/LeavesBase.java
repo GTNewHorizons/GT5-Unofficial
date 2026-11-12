@@ -23,7 +23,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class LeavesBase extends BlockLeaves {
@@ -33,7 +32,7 @@ public class LeavesBase extends BlockLeaves {
     protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
-    public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
+    public LeavesBase(String blockNameLocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
         String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
@@ -50,7 +49,6 @@ public class LeavesBase extends BlockLeaves {
 
     @Override // Drops when Leaf is broken
     protected void func_150124_c(World world, int x, int y, int z, int meta, int randomChance) {
-        Logger.INFO("Dropping Bonus Drops");
         for (ItemStack bonusDrop : this.bonusDrops) {
             if (bonusDrop != null && world.rand.nextInt(randomChance) == 0) {
                 this.dropBlockAsItem(world, x, y, z, GTUtility.copyAmount(1, bonusDrop));
@@ -61,10 +59,9 @@ public class LeavesBase extends BlockLeaves {
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List metaList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> metaList) {
         for (int i = 0; i < this.treeType.length; ++i) {
             metaList.add(new ItemStack(item, 1, i));
         }

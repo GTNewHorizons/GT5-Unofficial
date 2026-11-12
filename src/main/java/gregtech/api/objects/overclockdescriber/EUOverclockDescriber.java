@@ -1,5 +1,6 @@
 package gregtech.api.objects.overclockdescriber;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -59,12 +60,13 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     /**
      * @return Whole original EU/t usage. Also displays voltage tier if it should be shown.
      */
+    // TODO: when porting frontends to mui2, use mui2 Color, not EnumChatFormatting for customization
     protected String getOriginalEUtDisplay(RecipeDisplayInfo recipeInfo) {
         OverclockCalculator originalPowerCalculator = OverclockCalculator.ofNoOverclock(recipeInfo.recipe)
             .calculate();
         String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? ""
             : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
-        String original_voltage = GTUtility.formatNumbers(originalPowerCalculator.getConsumption());
+        String original_voltage = formatNumber(originalPowerCalculator.getConsumption());
         return StatCollector
             .translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
     }

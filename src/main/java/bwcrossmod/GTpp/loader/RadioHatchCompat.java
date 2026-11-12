@@ -21,7 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.util.log.DebugLog;
+import bartworks.MainMod;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -39,7 +39,7 @@ public class RadioHatchCompat {
 
     @SuppressWarnings("unchecked")
     public static void run() {
-        DebugLog.log("Starting Generation of missing GT++ rods/longrods");
+        MainMod.BW_DEBUG_LOGGER.info("Starting Generation of missing GT++ rods/longrods");
         try {
             Field cOwners = GameData.class.getDeclaredField("customOwners");
             cOwners.setAccessible(true);
@@ -71,10 +71,11 @@ public class RadioHatchCompat {
                     UniqueIdentifierMap.replace(itemRod, "miscutils:" + itemRod.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemRod);
                     ownerItems.replace(ui, bartworks, gtpp);
-                    String tanslate = itemRod.getUnlocalizedName() + ".name=" + mats.getLocalizedName() + " Rod";
-                    RadioHatchCompat.TranslateSet.add(tanslate);
-                    DebugLog.log(tanslate);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
+                    String translate = itemRod.getUnlocalizedName() + ".name=" + mats.getDefaultLocalName() + " Rod";
+                    RadioHatchCompat.TranslateSet.add(translate);
+                    MainMod.BW_DEBUG_LOGGER.info(translate);
+                    MainMod.BW_DEBUG_LOGGER
+                        .info("Generate: {}{}", BaseItemComponent.ComponentTypes.ROD, mats.getUnlocalizedName());
                 }
 
                 if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
@@ -83,13 +84,14 @@ public class RadioHatchCompat {
                     UniqueIdentifierMap.replace(itemRodLong, "miscutils:" + itemRodLong.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);
                     ownerItems.replace(ui2, bartworks, gtpp);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.RODLONG + mats.getUnlocalizedName());
+                    MainMod.BW_DEBUG_LOGGER
+                        .info("Generate: {}{}", BaseItemComponent.ComponentTypes.RODLONG, mats.getUnlocalizedName());
                 }
 
             }
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
         }
     }
 

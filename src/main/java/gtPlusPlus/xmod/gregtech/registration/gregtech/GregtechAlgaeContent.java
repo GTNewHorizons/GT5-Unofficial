@@ -5,17 +5,15 @@ import static gregtech.api.enums.MetaTileEntityIDs.Bus_Catalysts;
 import static gregtech.api.enums.MetaTileEntityIDs.ChemicalPlant_Controller;
 
 import gregtech.api.GregTechAPI;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchCatalysts;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae.MTEAlgaePondBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae.MTEAlgaePondBaseLegacy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class GregtechAlgaeContent {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Algae Content.");
         run1();
     }
 
@@ -23,7 +21,7 @@ public class GregtechAlgaeContent {
 
         // Algae Pond
         GregtechItemList.AlgaeFarm_Controller.set(
-            new MTEAlgaePondBase(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
+            new MTEAlgaePondBaseLegacy(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
                 .getStackForm(1L));
 
         // Chemical Plant
@@ -51,6 +49,6 @@ public class GregtechAlgaeContent {
         // Laurenium
         MTEChemicalPlant.registerMachineCasingForTier(6, ModBlocks.blockCustomMachineCasings, 2, 84);
         // Botmium
-        MTEChemicalPlant.registerMachineCasingForTier(7, ModBlocks.blockCustomMachineCasings, 3, 11);
+        MTEChemicalPlant.registerMachineCasingForTier(7, ModBlocks.blockCustomMachineCasings, 3, 100);
     }
 }

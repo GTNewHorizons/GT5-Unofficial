@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
@@ -15,10 +13,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverDoesWorkGui;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui.cover.CoverDoesWorkGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.DoesWorkUIFactory;
 
 public class CoverDoesWork extends CoverLegacyData {
@@ -103,17 +101,17 @@ public class CoverDoesWork extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.normal");
             // Progress scaled
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.inverted");
             // ^ inverted
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.ready"));
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.ready");
             // Not Running
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.not_ready"));
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.not_ready");
             // Running
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_on"));
+            case 4 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mach_on");
             // Enabled
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_off"));
+            case 5 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mach_off");
             // Disabled
         }
     }
@@ -161,7 +159,7 @@ public class CoverDoesWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverDoesWorkGui(this);
     }
 

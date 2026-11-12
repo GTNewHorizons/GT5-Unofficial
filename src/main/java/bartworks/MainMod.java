@@ -14,22 +14,26 @@
 package bartworks;
 
 import static bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
-import static bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.Mods.BartWorks;
 
-import java.io.IOException;
+import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
-import bartworks.API.BioVatLogicAdder;
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
+import bartworks.client.renderer.CircuitPartItemsRenderer;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
@@ -43,13 +47,12 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.gtenhancement.PlatinumSludgeRecipes;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
-import bartworks.util.log.DebugLog;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -67,6 +70,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.CasingTier;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
@@ -78,7 +83,6 @@ import tectech.loader.recipe.Godforge;
     dependencies = """
         required-after:IC2;\
         required-after:gregtech;\
-        after:berriespp;\
         after:tectech;\
         after:GalacticraftMars;\
         after:GalacticraftCore;\
@@ -92,6 +96,7 @@ public final class MainMod {
     public static final String MOD_ID = Mods.ModIDs.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
+    public static final Logger BW_DEBUG_LOGGER = GTLog.conditionalLogger("BartWorks Debug");
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);
@@ -99,32 +104,59 @@ public final class MainMod {
 
     public static final boolean DEBUG = Boolean.getBoolean("bw.debug");
 
+    static {
+        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
+        try {
+            GTLog.configureRollingLogger(
+                BW_DEBUG_LOGGER,
+                DEBUG,
+                new File(minecraftHome, "logs/BWLog.log"),
+                new File(minecraftHome, "logs/BWLog-%i.log"),
+                "BartWorksDebugFile");
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to configure BartWorks debug logger", e);
+        }
+    }
+
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
 
     public MainMod() {
+        GregTechAPI.sBeforeGTPostload.add(() -> {
+            CircuitImprint.registerExternalModCircuitsInItemList();
+            CircuitImprint.registerSlicedCircuitsAndImprints();
+            CircuitImprint.populateImprintLookups();
+        });
 
+        GregTechAPI.sAfterGTPostload.add(() -> {
+            CircuitWraps.registerWraps();
+            CircuitImprintLoader.makeCuttingRecipes();
+            CircuitImprintLoader.makeCraftingRecipes();
+        });
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
+        BioDataEnum.registerLoopkups();
+        BioCultureEnum.registerLoopkups();
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_TieredGlass");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_ExtraGlass");
 
-        if (DEBUG) {
-            try {
-                DebugLog.initDebugLog(event);
-            } catch (IOException e) {
-                MainMod.LOGGER.catching(e);
-            }
-        }
+        GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass, BWItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass2, BWItemBlocks.class, "BW_GlasBlocks2");
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
 
         WerkstoffLoader.setUp();
 
         BioCultureLoader.run();
 
         Werkstoff.init();
-        GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
+        }
         if (event.getSide()
             .isClient()) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
@@ -151,6 +183,7 @@ public final class MainMod {
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
+        CasingTier.RegisterCasingTiers.run();
     }
 
     @Mod.EventHandler
@@ -182,9 +215,8 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
-        removeIC2Recipes();
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
-        PlatinumSludgeOverHaul.replacePureElements();
+        PlatinumSludgeRecipes.register();
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();
@@ -195,8 +227,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        CircuitImprintLoader.run();
-        BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()

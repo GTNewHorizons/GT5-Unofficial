@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
@@ -186,7 +185,6 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
      * their own) Args: x, y, z, neighbor blockID
      */
     public void onNeighborBlockChange(World world, int x, int y, int z) {
-        Logger.INFO("Trigger");
         validatePortalStructure(world, x, y, z);
 
         byte b0 = 0;

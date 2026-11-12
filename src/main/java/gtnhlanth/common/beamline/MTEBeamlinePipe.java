@@ -12,25 +12,24 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.render.GTTextureBuilder;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
-    private static Textures.BlockIcons.CustomIcon pipe;
-
-    private byte connectionCount = 0;
-
-    private boolean active;
+    private static IIconContainer pipe;
 
     public MTEBeamlinePipe(int id, String name, String nameRegional) {
-        super(id, name, nameRegional, 0);
+        super(id, name, 0);
     }
 
     public MTEBeamlinePipe(String name) {
@@ -38,40 +37,62 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                mConnections = 0;
-                connectionCount = 0;
+    public boolean needsClientTick() {
+        return false;
+    }
 
-                for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                    ForgeDirection d1 = dir.getOpposite();
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(dir);
-                    if (tTileEntity instanceof IConnectsToBeamline) {
-                        if (((IConnectsToBeamline) tTileEntity).canConnect(d1)) {
-                            mConnections |= 1 << dir.ordinal();
-                            connectionCount++;
-                        }
-                    } else if (tTileEntity instanceof IGregTechTileEntity) {
-                        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                        if (meta instanceof IConnectsToBeamline) {
-                            if (((IConnectsToBeamline) meta).canConnect(d1)) {
-                                mConnections |= 1 << dir.ordinal();
-                                connectionCount++;
-                            }
-                        }
+    protected void checkConnections() {
+        mCheckConnections = false;
+        mConnections = 0;
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            ForgeDirection d1 = dir.getOpposite();
+            TileEntity tTileEntity = base.getTileEntityAtSide(dir);
+            if (tTileEntity instanceof IConnectsToBeamline neigh) {
+                if (neigh.canConnect(d1)) {
+                    mConnections |= 1 << dir.ordinal();
+                }
+            } else if (tTileEntity instanceof IGregTechTileEntity neighBase) {
+                if (neighBase.getMetaTileEntity() instanceof IConnectsToBeamline neigh) {
+                    if (neigh.canConnect(d1)) {
+                        mConnections |= 1 << dir.ordinal();
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-                aBaseMetaTileEntity.issueTextureUpdate();
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
+        }
+    }
+
+    @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            checkConnections();
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick > 1) {
+                aBaseMetaTileEntity.tryDisableTicking();
             }
+        }
     }
 
     @Override
     public byte getTileEntityBaseType() {
-        return 7;
+        return HarvestTool.WrenchPipeLevel3.toTileEntityBaseType();
     }
 
     @Override
@@ -123,7 +144,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipe = new Textures.BlockIcons.CustomIcon("iconsets/pipe");
+        pipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/pipe");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -137,9 +158,8 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                 .build() };
     }
 
-    public void markUsed() {
-        this.active = true;
-    }
+    @Deprecated
+    public void markUsed() {}
 
     @Override
     public boolean isDataInputFacing(ForgeDirection side) {
@@ -149,11 +169,9 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("beamline.pipe.desc.0"), // Beamline pipe
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross,
-                                                                                              // split
-                                                                                              // or turn
-            "Added by " + EnumChatFormatting.GREEN + "GTNH: Lanthanides"
-
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1") // Does not cross,
+                                                                                             // split
+                                                                                             // or turn
         };
     }
 

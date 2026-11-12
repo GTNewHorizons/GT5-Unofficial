@@ -53,7 +53,14 @@ public class NodeEnergyReceiver extends ConsumerNode {
             float tStrength = GTValues.getExplosionPowerForVoltage(aRfOut);
             int tX = mTileEntity.xCoord, tY = mTileEntity.yCoord, tZ = mTileEntity.zCoord;
             World tWorld = mTileEntity.getWorldObj();
-            GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+            GTUtility.sendSoundToPlayers(
+                tWorld,
+                SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
+                1.0F,
+                -1,
+                tX + .5,
+                tY + .5,
+                tZ + .5);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
             if (GregTechAPI.sMachineExplosions) if (GTMod.proxy.mPollution)
                 Pollution.addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GTMod.proxy.mPollutionOnExplosion);

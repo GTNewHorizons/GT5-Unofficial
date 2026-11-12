@@ -3,15 +3,21 @@ package detrav.gui.textures;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.util.Arrays;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
+import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.ProspectingPacket;
+import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -19,10 +25,16 @@ import detrav.net.ProspectingPacket;
 public class DetravMapTexture extends AbstractTexture {
 
     public final ProspectingPacket packet;
-    private String selected = "All";
+    // "All" in the current language, used for comparison with the selected ore name
+    // Since language can change, we need to retrieve the localized "all" string in the constructor rather than
+    // hardcoding it.
+    private final String selectedAll = StatCollector.translateToLocal("gui.detrav.scanner.all");
+    private String selected = selectedAll;
     public int width = -1;
     public int height = -1;
     public boolean invert = false;
+    private short[] topId = null;
+    private int[] topY = null;
 
     public DetravMapTexture(ProspectingPacket aPacket) {
         packet = aPacket;
@@ -30,59 +42,186 @@ public class DetravMapTexture extends AbstractTexture {
 
     private BufferedImage getImage() {
         final int backgroundColor = invert ? Color.GRAY.getRGB() : Color.WHITE.getRGB();
-        final int wh = (packet.size * 2 + 1) * 16;
+        final int blockSize = (packet.size * 2 + 1) * 16;
+        final int chunkSize = packet.size * 2 + 1;
+        topId = null;
+        topY = null;
 
-        BufferedImage image = new BufferedImage(wh, wh, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(blockSize, blockSize, BufferedImage.TYPE_INT_ARGB);
         WritableRaster raster = image.getRaster();
 
         int playerI = packet.posX - (packet.chunkX - packet.size) * 16 - 1; // Correct player offset
         int playerJ = packet.posZ - (packet.chunkZ - packet.size) * 16 - 1;
-        for (int i = 0; i < wh; i++) {
-            for (int j = 0; j < wh; j++) {
-                image.setRGB(i, j, backgroundColor);
-                if (packet.map[i][j] != null) {
-                    if (packet.ptype == 0 || packet.ptype == 1) {
-                        for (short meta : packet.map[i][j].values()) {
-                            final String name = packet.metaMap.get(meta);
-                            if (!selected.equals("All") && !selected.equals(name)) continue;
 
-                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
+        for (int y = 0; y < blockSize; y++) {
+            for (int x = 0; x < blockSize; x++) {
+                image.setRGB(x, y, backgroundColor);
+            }
+        }
+
+        switch (packet.ptype) {
+            case DetravMetaGeneratedTool01.MODE_BIG_ORES, DetravMetaGeneratedTool01.MODE_ALL_ORES -> {
+
+                short[] depth = new short[blockSize * blockSize];
+                Arrays.fill(depth, (short) 0);
+
+                topId = new short[blockSize * blockSize];
+                Arrays.fill(topId, (short) -1);
+                topY = new int[blockSize * blockSize];
+
+                short selectedId = -1;
+
+                if (!selected.equals(selectedAll)) {
+                    var iterator = packet.items.short2ObjectEntrySet()
+                        .fastIterator();
+                    while (iterator.hasNext()) {
+                        var entry = iterator.next();
+                        if (selected.equals(entry.getValue().name)) {
+                            selectedId = entry.getShortKey();
                             break;
                         }
-                    } else if (packet.ptype == 2) {
-                        final short fluidId = packet.map[i][j].get((byte) 1),
-                            fluidSize = packet.map[i][j].get((byte) 2);
-                        final String name = packet.metaMap.get(fluidId);
-
-                        // Variables used to locate within a chunk.
-                        final int k = (i % 16), l = (j % 16);
-
-                        if (((k + l * 16) * 3) < (fluidSize + 48)
-                            && (selected.equals("All") || selected.equals(name))) {
-                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
-                        }
-                    } else if (packet.ptype == 3) {
-                        final short meta = packet.map[i][j].get((byte) 1);
-                        image.setRGB(i, j, ((meta & 0xFF) << 16) + ((meta & 0xFF) << 8) + ((meta & 0xFF)) | 0XFF000000);
                     }
                 }
-                // draw player pos
-                if (i == playerI || j == playerJ) {
-                    raster.setSample(i, j, 0, (raster.getSample(i, j, 0) + 255) / 2);
-                    raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
-                    raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+
+                for (var e : packet.map.long2ShortEntrySet()) {
+                    if (selectedId != -1 && selectedId != e.getShortValue()) continue;
+
+                    long coord = e.getLongKey();
+
+                    int x = CoordinatePacker.unpackX(coord);
+                    int y = CoordinatePacker.unpackY(coord);
+                    int z = CoordinatePacker.unpackZ(coord);
+
+                    int idx = x + z * blockSize;
+                    if (y < depth[idx]) continue;
+                    depth[idx] = (short) y;
+
+                    var blockInfo = packet.items.get(e.getShortValue());
+
+                    if (blockInfo == null) continue;
+
+                    topId[idx] = e.getShortValue();
+                    topY[idx] = y;
+                    image.setRGB(x, z, blockInfo.rgba);
                 }
-                // draw grid
-                if ((i) % 16 == 0 || (j) % 16 == 0) {
-                    raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
-                    raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
-                    raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+            }
+            case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                // Tank-fill: each chunk is filled bottom-up to a level proportional to its amount on one
+                // shared linear scale (richest chunk in the scan = full).
+                int maxAmount = 1;
+                for (int cZ = 0; cZ < chunkSize; cZ++) {
+                    for (int cX = 0; cX < chunkSize; cX++) {
+                        var fluidInfo = packet.fluids.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        int amount = packet.getAmount(cX, cZ);
+                        if (fluidInfo == null || amount <= 0) continue;
+                        if (!selected.equals(selectedAll) && !selected.equals(fluidInfo.name)) continue;
+                        maxAmount = Math.max(maxAmount, amount);
+                    }
                 }
 
+                for (int cZ = 0; cZ < chunkSize; cZ++) {
+                    for (int cX = 0; cX < chunkSize; cX++) {
+                        var fluidInfo = packet.fluids.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        int amount = packet.getAmount(cX, cZ);
+
+                        if (fluidInfo == null || amount <= 0) continue;
+                        if (!selected.equals(selectedAll) && !selected.equals(fluidInfo.name)) continue;
+
+                        int rgba = fluidInfo.rgba;
+                        int fill = Math.max(1, Math.round(16F * amount / maxAmount)); // bottom-up rows, 1..16
+
+                        for (int y = 16 - fill; y < 16; y++) {
+                            for (int x = 0; x < 16; x++) {
+                                image.setRGB(cX * 16 + x, cZ * 16 + y, rgba);
+                            }
+                        }
+                    }
+                }
+            }
+            case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                for (int cZ = 0; cZ < chunkSize; cZ++) {
+                    for (int cX = 0; cX < chunkSize; cX++) {
+                        int amount = packet.getAmount(cX, cZ);
+
+                        if (amount == 0) continue;
+
+                        float mult = amount / 500000f;
+
+                        if (!invert) mult = 1f - mult;
+
+                        mult = GTUtility.clamp(mult, 0, 1);
+
+                        for (int x = 0; x < 16; x++) {
+                            for (int y = 0; y < 16; y++) {
+                                int x2 = cX * 16 + x;
+                                int y2 = cZ * 16 + y;
+
+                                raster.setSample(x2, y2, 0, (int) (raster.getSample(x2, y2, 0) * mult));
+                                raster.setSample(x2, y2, 1, (int) (raster.getSample(x2, y2, 1) * mult));
+                                raster.setSample(x2, y2, 2, (int) (raster.getSample(x2, y2, 2) * mult));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int y = 0; y < blockSize; y++) {
+            for (int x = 0; x < blockSize; x++) {
+                // draw grid
+                if (x % 16 == 0 || y % 16 == 0) {
+                    raster.setSample(x, y, 0, raster.getSample(x, y, 0) / 2);
+                    raster.setSample(x, y, 1, raster.getSample(x, y, 1) / 2);
+                    raster.setSample(x, y, 2, raster.getSample(x, y, 2) / 2);
+                }
+
+                // draw player pos
+                if (x == playerI || y == playerJ) {
+                    raster.setSample(x, y, 0, (raster.getSample(x, y, 0) + 255) / 2);
+                    raster.setSample(x, y, 1, raster.getSample(x, y, 1) / 2);
+                    raster.setSample(x, y, 2, raster.getSample(x, y, 2) / 2);
+                }
             }
         }
 
         return image;
+    }
+
+    /** Display name of the topmost ore drawn at the given block column. */
+    public String getTopOreName(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return null;
+        short id = topId[x + z * bs];
+        if (id < 0) return null;
+        var object = packet.items.get(id);
+        return object == null ? null : object.name;
+    }
+
+    /** World Y of the topmost ore drawn at the given block column. */
+    public int getTopOreY(int x, int z) {
+        int bs = packet.getSize();
+        if (topY == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
+        return topY[x + z * bs];
+    }
+
+    /** ARGB colour of the topmost ore drawn at the given block column, or 0 if none. */
+    public int getTopOreColor(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
+        short id = topId[x + z * bs];
+        if (id < 0) return 0;
+        var object = packet.items.get(id);
+        return object == null ? 0 : object.rgba;
+    }
+
+    /** Ore material internal name of the topmost ore at the given block column, or empty string. */
+    public String getTopOreMaterialName(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return "";
+        short id = topId[x + z * bs];
+        if (id < 0) return "";
+        var object = packet.items.get(id);
+        return object == null ? "" : object.internalName;
     }
 
     @Override
@@ -114,15 +253,12 @@ public class DetravMapTexture extends AbstractTexture {
     }
 
     public void draw(int x, int y) {
-        float f = 1F / (float) width;
-        float f1 = 1F / (float) height;
-        int u = 0, v = 0;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x, y + height, 0, (float) (u) * f, (float) (v + height) * f1);
-        tessellator.addVertexWithUV(x + width, y + height, 0, (float) (u + width) * f, (float) (v + height) * f1);
-        tessellator.addVertexWithUV(x + width, y, 0, (float) (u + width) * f, (float) (v) * f1);
-        tessellator.addVertexWithUV(x, y, 0, (float) (u) * f, (float) (v) * f1);
+        tessellator.addVertexWithUV(x, y + height, 0, 0F, 1F);
+        tessellator.addVertexWithUV(x + width, y + height, 0, 1F, 1F);
+        tessellator.addVertexWithUV(x + width, y, 0, 1F, 0F);
+        tessellator.addVertexWithUV(x, y, 0, 0F, 0F);
         tessellator.draw();
     }
 

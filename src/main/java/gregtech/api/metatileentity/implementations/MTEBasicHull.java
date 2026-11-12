@@ -3,22 +3,32 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEBasicHull extends MTEBasicTank {
 
-    public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-        ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, 1, aDescription, aTextures);
+    public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, 1, (String) null, aTextures);
     }
 
     public MTEBasicHull(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hull.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -129,5 +139,14 @@ public class MTEBasicHull extends MTEBasicTank {
     @Override
     public int getCapacity() {
         return (mTier + 1) * 1000;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.basic_hull.desc");
     }
 }

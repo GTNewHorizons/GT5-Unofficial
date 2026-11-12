@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -15,21 +16,24 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> {
+public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> implements ISmartInputHatch {
 
     private boolean delDelay = true;
 
     private long history;
+
+    protected void updateComputationHistory(long value) {
+        this.history = value;
+    }
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -37,7 +41,7 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
     }
@@ -77,6 +81,8 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     public void setContents(QuantumDataPacket qIn) {
+        Long old = this.q == null ? null : this.q.getContent();
+
         if (qIn == null) {
             this.q = null;
         } else {
@@ -89,6 +95,9 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
             history = q == null ? 0 : q.getContent();
         }
+
+        Long now = this.q == null ? null : this.q.getContent();
+        if (now != null && !now.equals(old)) notifyWatchers();
     }
 
     @Override
@@ -118,7 +127,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip
-            .add(translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
+        currenttip.add(translate("tt.keyphrase.Computation_Receiving", formatNumber(tag.getLong("computation"))));
     }
 }

@@ -21,8 +21,18 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 /**
+ * Related to {@link SpaceProjectWorldSavedData}
+ *
  * @author BlueWeabo
+ *
+ * @see com.gtnewhorizon.gtnhlib.teams.ITeamData ITeamData
+ * @see com.gtnewhorizon.gtnhlib.teams.Team Team
+ * @see com.gtnewhorizon.gtnhlib.teams.TeamManager TeamManager
+ *
+ * @deprecated This kind of team and data management should be migrated to
+ *             {@link com.gtnewhorizon.gtnhlib.teams.Team#getData(String) Team#getData(String)}
  */
+@Deprecated
 public class SpaceProjectManager {
 
     /**
@@ -209,7 +219,20 @@ public class SpaceProjectManager {
 
         public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
             int aEUt, int aSpecialValue, String projectName) {
-            super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
+            super(
+                aOptimize,
+                aInputs,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                aFluidInputs,
+                null,
+                aDuration,
+                aEUt,
+                aSpecialValue);
             this.projectName = projectName;
         }
     }

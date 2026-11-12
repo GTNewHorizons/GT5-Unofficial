@@ -26,14 +26,14 @@ public class AssociationLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
-        for (OrePrefixes prefixes : OrePrefixes.values()) {
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) {
             if (!werkstoff.hasItemType(prefixes)) continue;
 
             Materials werkstoffBridgeMaterial = werkstoff.getBridgeMaterial();
             ItemStack stack = WerkstoffLoader.getCorrespondingItemStackUnsafe(prefixes, werkstoff, 1);
 
             if (stack != null && stack.getItem() != null) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoffBridgeMaterial, stack);
                 GTOreDictUnificator.set(prefixes, werkstoffBridgeMaterial, stack, true, true);
             }
         }

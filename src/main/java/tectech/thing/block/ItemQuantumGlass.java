@@ -10,8 +10,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import tectech.util.CommonValues;
-
 /**
  * Created by Tec on 11.04.2017.
  */
@@ -25,7 +23,6 @@ public class ItemQuantumGlass extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(CommonValues.TEC_MARK_EM);
         aList.add(translateToLocal("tile.quantumGlass.desc.0")); // Dense yet transparent
         aList.add(
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD

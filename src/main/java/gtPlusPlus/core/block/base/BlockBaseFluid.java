@@ -48,10 +48,6 @@ public class BlockBaseFluid extends BlockFluidClassic {
         return false;
     }
 
-    public boolean preInit() {
-        return true;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int meta) {

@@ -12,7 +12,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionCreator;
@@ -21,7 +20,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionD
 public class GregtechPollutionDevices {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
         run1();
     }
 

@@ -1,13 +1,24 @@
 package gregtech.crossmod.ae2;
 
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BloodArsenal;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.ForbiddenMagic;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Laser_Lens_Special;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Laser_Lens_WoodsGlass;
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
+
 import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
+import appeng.api.features.IInterfaceTerminalRegistry;
 import appeng.api.storage.IExternalStorageRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.covers.CoverPlacer;
@@ -18,14 +29,19 @@ import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 
 public final class AE2Compat {
 
     public static void onPreInit() {
-        AEApi.instance()
+        ChatComponentCustomRegistry.register(ChatComponentGhostCircuitSuffix::new);
+        ChatComponentCustomRegistry.register(ChatComponentNonConsumedItemsSuffix::new);
+
+        IInterfaceTerminalRegistry reg = AEApi.instance()
             .registries()
-            .interfaceTerminal()
-            .register(MTEHatchCraftingInputME.class);
+            .interfaceTerminal();
+        reg.register(MTEHatchCraftingInputME.class);
+        reg.register(MTELargeMolecularAssembler.class);
     }
 
     public static void onPostInit() {
@@ -88,22 +104,7 @@ public final class AE2Compat {
             ItemList.Shape_Extruder_Hoe, ItemList.Shape_Extruder_Hammer, ItemList.Shape_Extruder_File,
             ItemList.Shape_Extruder_Saw, ItemList.Shape_Extruder_Gear, ItemList.Shape_Extruder_Rotor,
             ItemList.Shape_Extruder_Turbine_Blade, ItemList.Shape_Extruder_Small_Gear,
-            ItemList.Shape_Extruder_ToolHeadDrill,
-
-            ItemList.White_Dwarf_Shape_Extruder_Bottle, ItemList.White_Dwarf_Shape_Extruder_Plate,
-            ItemList.White_Dwarf_Shape_Extruder_Cell, ItemList.White_Dwarf_Shape_Extruder_Ring,
-            ItemList.White_Dwarf_Shape_Extruder_Rod, ItemList.White_Dwarf_Shape_Extruder_Bolt,
-            ItemList.White_Dwarf_Shape_Extruder_Ingot, ItemList.White_Dwarf_Shape_Extruder_Wire,
-            ItemList.White_Dwarf_Shape_Extruder_Casing, ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny,
-            ItemList.White_Dwarf_Shape_Extruder_Pipe_Small, ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium,
-            ItemList.White_Dwarf_Shape_Extruder_Pipe_Large, ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge,
-            ItemList.White_Dwarf_Shape_Extruder_Block, ItemList.White_Dwarf_Shape_Extruder_Sword,
-            ItemList.White_Dwarf_Shape_Extruder_Pickaxe, ItemList.White_Dwarf_Shape_Extruder_Shovel,
-            ItemList.White_Dwarf_Shape_Extruder_Axe, ItemList.White_Dwarf_Shape_Extruder_Hoe,
-            ItemList.White_Dwarf_Shape_Extruder_Hammer, ItemList.White_Dwarf_Shape_Extruder_File,
-            ItemList.White_Dwarf_Shape_Extruder_Saw, ItemList.White_Dwarf_Shape_Extruder_Gear,
-            ItemList.White_Dwarf_Shape_Extruder_Rotor, ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade,
-            ItemList.White_Dwarf_Shape_Extruder_Small_Gear, ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill };
+            ItemList.Shape_Extruder_ToolHeadDrill, };
         for (ItemList item : nonConsumables) {
             registry.register(item.get(1));
         }
@@ -111,11 +112,46 @@ public final class AE2Compat {
         registry.register(ItemList.Circuit_Integrated.getItem());
         // GT lenses are registered by ProcessingLens
         registry.register(WerkstoffLoader.items.get(OrePrefixes.lens));
+
+        // Exclude woodglass and quantum anomaly
+        registry.register(Laser_Lens_WoodsGlass.get(1));
+        registry.register(Laser_Lens_Special.get(1));
+
         if (NewHorizonsCoreMod.isModLoaded()) {
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ChromaticLens"));
         }
+
+        if (BloodMagic.isModLoaded()) {
+            registry.register(getModItem(BloodMagic.ID, "weakBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "apprenticeBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "magicianBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "masterBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "archmageBloodOrb"));
+            registry.register(getModItem(BloodMagic.ID, "transcendentBloodOrb"));
+        }
+
+        if (BloodArsenal.isModLoaded()) {
+            registry.register(getModItem(BloodArsenal.ID, "transparent_orb"));
+        }
+
+        if (ForbiddenMagic.isModLoaded()) {
+            registry.register(getModItem(ForbiddenMagic.ID, "EldritchOrb"));
+        }
+
+        if (Avaritia.isModLoaded()) {
+            registry.register(getModItem(Avaritia.ID, "Orb_Armok"));
+        }
+
+        if (TwilightForest.isModLoaded()) {
+            registry.register(getModItem(TwilightForest.ID, "item.trophy", 1, WILDCARD));
+        }
+
+        if (ExtraUtilities.isModLoaded()) {
+            registry.register(getModItem(ExtraUtilities.ID, "divisionSigil"));
+        }
+
     }
 }

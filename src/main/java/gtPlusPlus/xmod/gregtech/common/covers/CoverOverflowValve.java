@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,8 +19,8 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.OverflowUIFactory;
 import gtPlusPlus.xmod.gregtech.common.covers.gui.CoverOverflowValveGui;
 import io.netty.buffer.ByteBuf;
@@ -245,10 +244,7 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
     }
 
     @Override
@@ -263,10 +259,7 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
         return true;
     }
     // GUI
@@ -277,7 +270,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<CoverOverflowValve> getCoverGui() {
+    protected @NotNull CoverBaseGui<CoverOverflowValve> getCoverGui() {
         return new CoverOverflowValveGui(this);
     }
 

@@ -31,7 +31,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import gtPlusPlus.api.objects.Logger;
+import gregtech.api.objects.XSTR;
 import toxiceverglades.dimension.DimensionEverglades;
 
 public class ChunkProviderModded implements IChunkProvider {
@@ -99,7 +99,7 @@ public class ChunkProviderModded implements IChunkProvider {
         this.worldObj = par1World;
         this.field_147435_p = par1World.getWorldInfo()
             .getTerrainType();
-        this.rand = new Random(par2);
+        this.rand = new XSTR(par2);
         this.field_147431_j = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147429_l = new NoiseGeneratorOctaves(this.rand, 8);
@@ -178,7 +178,7 @@ public class ChunkProviderModded implements IChunkProvider {
                                     try {
                                         p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
                                                                                                          // .
-                                    } catch (Throwable t) {
+                                    } catch (Exception t) {
                                         p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
                                     }
                                 } else {
@@ -442,7 +442,6 @@ public class ChunkProviderModded implements IChunkProvider {
             } catch (NullPointerException n) {
                 n.getStackTrace();
                 (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-                Logger.INFO("Error while generating DarkWorld Lake.");
             }
         }
 
@@ -462,9 +461,7 @@ public class ChunkProviderModded implements IChunkProvider {
             if (l1 < 63 || this.rand.nextInt(10) == 0) { // Changes 63 -> 128
                 try {
                     (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-                } catch (NullPointerException n) {
-                    Logger.INFO("Error while generating DarkWorld Lake. [2]");
-                }
+                } catch (NullPointerException ignored) {}
             }
         }
         biomegenbase.decorate(this.worldObj, this.rand, k, l);

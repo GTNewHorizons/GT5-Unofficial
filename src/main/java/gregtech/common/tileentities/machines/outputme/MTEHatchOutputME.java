@@ -1,0 +1,676 @@
+package gregtech.common.tileentities.machines.outputme;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
+
+import appeng.api.AEApi;
+import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.events.MENetworkChannelsChanged;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.security.BaseActionSource;
+import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
+import appeng.api.storage.ISaveProvider;
+import appeng.api.storage.StorageChannel;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.util.AECableType;
+import appeng.api.util.DimensionalCoord;
+import appeng.helpers.IPriorityHost;
+import appeng.me.GridAccessException;
+import appeng.me.helpers.AENetworkProxy;
+import appeng.me.helpers.IGridProxyable;
+import appeng.util.item.AEFluidStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputHatchType;
+import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.IOutputHatchTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
+import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
+import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
+import io.netty.buffer.ByteBuf;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
+
+    public static final long DEFAULT_CAPACITY = 128_000;
+
+    public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 4, null, 1);
+    }
+
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(this) {};
+
+    public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_me.desc");
+    }
+
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEHatchOutputME(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH) };
+    }
+
+    @Override
+    public byte getTierForStructure() {
+        return (byte) (GTValues.V.length - 2);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        getProxy().onReady();
+        provider.updateState();
+    }
+
+    @MENetworkEventSubscribe
+    public void updateCell(final MENetworkChannelsChanged c) {
+        provider.updateCell();
+    }
+
+    @Override
+    public int fill(FluidStack aFluid, boolean doFill) {
+        IAEFluidStack input = AEFluidStack.create(aFluid);
+        provider.storePartial(input, !doFill);
+        return aFluid.amount - (int) input.getStackSize();
+    }
+
+    @Override
+    public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
+        return provider.canStore(AEFluidStack.create(fluidStack));
+    }
+
+    @Override
+    public boolean isFluidLocked() {
+        return provider.isFiltered();
+    }
+
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    @Override
+    public long getDefaultCapacity() {
+        return DEFAULT_CAPACITY;
+    }
+
+    public boolean getCheckMode() {
+        return provider.getCheckMode();
+    }
+
+    public boolean shouldCheckCell() {
+        return provider.shouldCheckCell();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
+    }
+
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
+    }
+
+    @Override
+    public boolean isEmptyAndAcceptsAnyFluid() {
+        return !provider.isFiltered() && !provider.getCheckMode();
+    }
+
+    BaseActionSource requestSource;
+
+    @Override
+    public BaseActionSource getActionSource() {
+        if (requestSource == null) requestSource = new MachineSource(this);
+        return requestSource;
+    }
+
+    @Override
+    public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
+        return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
+    }
+
+    @Override
+    public void onFacingChange() {
+        provider.updateValidGridProxySides();
+    }
+
+    EntityPlayer lastClickedPlayer = null;
+
+    @Override
+    public boolean acceptsConfigCopy() {
+        return false;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        lastClickedPlayer = aPlayer;
+
+        openGui(aPlayer);
+
+        return true;
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        provider.updateAE2ProxyColor();
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return true;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex == 0 && side == aBaseMetaTileEntity.getFrontFacing() && isItemValidForSlot(aIndex, aStack);
+    }
+
+    @Override
+    public boolean doesFillContainers() {
+        return false;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        provider.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        return provider.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return provider.getAdditionalConnection();
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        provider.setAdditionalConnection(connects);
+    }
+
+    @Override
+    public AENetworkProxy getProxy() {
+        return provider.getProxy();
+    }
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        provider.onPostTick(aBaseMetaTileEntity, aTick);
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void notifyOutputSpaceChanged() {
+        // The provider detected its free space grew or its cell was swapped/repartitioned; re-check a blocked recipe.
+        notifyWatchers();
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        provider.addAdditionalTooltipInformation(stack, tooltip);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        provider.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, ss, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+
+        ss.add(
+            translateToLocalFormatted(
+                "GT5U.waila.hatch.outputme.fluid_cache_capacity",
+                formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return MTEHatchOutputMEBase.WailaHelper.hasWailaAdvancedBody(accessor);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaAdvancedBody(itemStack, ss, accessor, config);
+        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("fluid", ss, accessor);
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        provider.setItemNBT(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        provider.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        provider.loadNBTData(aNBT);
+
+        NBTBase t = aNBT.getTag("cachedFluids");
+        if (t instanceof NBTTagList l) {
+            for (int i = 0; i < l.tagCount(); ++i) {
+                NBTTagCompound tag = l.getCompoundTagAt(i);
+                NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
+                final IAEFluidStack s = AEApi.instance()
+                    .storage()
+                    .createFluidStack(GTUtility.loadFluid(tagFluidStack));
+                if (s != null) {
+                    s.setStackSize(tag.getLong("size"));
+                    provider.addToCache(s);
+                } else {
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: {}",
+                        tagFluidStack);
+                }
+            }
+        }
+    }
+
+    @Override
+    public IGridProxyable getIGridProxyable() {
+        return this;
+    }
+
+    @Override
+    public StorageChannel getChannel() {
+        return StorageChannel.FLUIDS;
+    }
+
+    @Override
+    public ItemStack getCellStack() {
+        return mInventory[0];
+    }
+
+    @Override
+    public ISaveProvider getISaveProvider() {
+        return this;
+    }
+
+    @Override
+    public EntityPlayer getLastClickedPlayer() {
+        return lastClickedPlayer;
+    }
+
+    @Override
+    public IMEInventory<IAEFluidStack> getNetworkInvtory() throws GridAccessException {
+        return getProxy().getStorage()
+            .getFluidInventory();
+    }
+
+    @Override
+    public NBTTagCompound saveStackToNBT(IAEFluidStack s) {
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound tagFluidStack = new NBTTagCompound();
+        s.getFluidStack()
+            .writeToNBT(tagFluidStack);
+        tag.setTag("fluidStack", tagFluidStack);
+        tag.setLong("size", s.getStackSize());
+        return tag;
+    }
+
+    @Override
+    public IAEFluidStack loadStackFromNBT(NBTTagCompound tag) {
+        final FluidStack fluid = GTUtility.loadFluid(tag.getCompoundTag("fluidStack"));
+        if (fluid == null) return null;
+        return AEFluidStack.create(fluid)
+            .setStackSize(tag.getLong("size"));
+    }
+
+    public static final String COPIED_DATA_IDENTIFIER = "outputHatchME";
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public ItemStack getVisual() {
+        return ItemList.Hatch_Output_ME.get(1);
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        return provider.getCopiedData(player);
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        return provider.pasteCopiedData(player, nbt);
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
+        provider.writeToClientPacket(buffer);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        provider.readFromClientPacket(buffer);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return provider.getInfoData(
+            getAEDiagnostics(),
+            "GT5U.infodata.hatch.output_me",
+            (IAEFluidStack s) -> s.getFluidStack()
+                .getLocalizedName());
+    }
+
+    @Override
+    public void onContentsChanged(int slot) {
+        provider.onContentsChanged(slot);
+    }
+
+    @Override
+    public List<IMEInventoryHandler> getCellArray(final StorageChannel channel) {
+        return provider.getCellArray(channel);
+    }
+
+    @Override
+    public int getPriority() {
+        return provider.getPriority();
+    }
+
+    @Override
+    public void setPriority(int newValue) {
+        provider.setPriority(newValue);
+    }
+
+    @Override
+    public void saveChanges(IMEInventory cellInventory) {
+        markDirty();
+    }
+
+    @Override
+    public IGridNode getActionableNode() {
+        return getProxy().getNode();
+    }
+
+    @Override
+    public DimensionalCoord getLocation() {
+        IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
+        return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
+    }
+
+    @Override
+    public void securityBreak() {}
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection forgeDirection) {
+        return getProxy().getNode();
+    }
+
+    @Override
+    public void dispatchMarkDirty() {
+        this.markDirty();
+    }
+
+    @Override
+    public MTEHatchOutputMEBase<IAEFluidStack> getProvider() {
+        return provider;
+    }
+
+    @Override
+    public String getEnableKey() {
+        return "GT5U.hatch.fluid.filter.enable";
+    }
+
+    @Override
+    public String getDisableKey() {
+        return "GT5U.hatch.fluid.filter.disable";
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isFiltered() {
+        return provider.isFiltered();
+    }
+
+    @Override
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        return canStoreFluid(id.getFluidStack());
+    }
+
+    @Override
+    public OutputHatchType getHatchType() {
+        if (provider.getCacheMode())
+            return provider.isFiltered() ? OutputHatchType.MECacheFiltered : OutputHatchType.MECacheUnfiltered;
+        else return provider.isFiltered() ? OutputHatchType.MEFiltered : OutputHatchType.MEUnfiltered;
+    }
+
+    @Override
+    public IOutputHatchTransaction createTransaction() {
+        return new MEOutputHatchTransaction();
+    }
+
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware {
+
+        private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
+        private final long availableSpace;
+        private boolean active = true;
+        private boolean allowAnyInput = false;
+        private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
+        private IMEInventoryHandler<IAEFluidStack> cell = null;
+
+        public MEOutputHatchTransaction() {
+            availableSpace = provider.getPhysicalSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
+            if (isRecipeCheck && shouldCheckCell()) {
+                provider.flushCachedStack();
+                cell = AEApi.instance()
+                    .registries()
+                    .cell()
+                    .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
+            }
+            updateFlags();
+        }
+
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+            updateFlags();
+        }
+
+        private void updateFlags() {
+            // only false when cache mode on and is distribution
+            isDynamicCapacity = isRecipeCheck && isProtectOutput
+                && getCheckMode()
+                && (!provider.getCacheMode() || !provider.isDistribution())
+                && !provider.canVoidOverflow();
+            allowAnyInput = !getCheckMode() && availableSpace > 0;
+            if (!isRecipeCheck) {
+                allowAnyInput |= provider.getLastInputTick() == provider.getTickCounter();
+            }
+        }
+
+        @Override
+        public boolean needsTotalParallelData() {
+            return isDynamicCapacity;
+        }
+
+        @Override
+        public IOutputHatch getHatch() {
+            return MTEHatchOutputME.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return allowAnyInput || cache.getTotal() < availableSpace;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack, long totalPerParallel,
+            long perParallel) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            if (isRecipeCheck) {
+                if (shouldCheckCell()) {
+                    IAEFluidStack input = AEFluidStack.create(stack);
+                    if (isDynamicCapacity) {
+                        long cellAvailableSpace = provider.getCellAvailableSpace();
+                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
+                        amount = Math.min(amount, stack.amount);
+                        input.setStackSize(amount);
+                    }
+                    IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
+                    cache.insert(id, inserted);
+                    stack.amount -= inserted;
+                    return inserted > 0;
+                } else if (isDynamicCapacity) {
+                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
+                    amount = Math.min(amount, stack.amount);
+                    cache.insert(id, amount);
+                    stack.amount -= amount;
+                    return amount > 0;
+                }
+            }
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
+                return false;
+            }
+            cache.insert(id, stack.amount);
+            stack.amount = 0;
+            return true;
+        }
+
+        @Override
+        public void complete(GTUtility.FluidId id) {
+            // Do nothing
+        }
+
+        @Override
+        public void commit() {
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEFluidStack.create(id.getFluidStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputME.this.markDirty();
+            }
+            active = false;
+        }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isFluidCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isFluidCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
+    }
+}

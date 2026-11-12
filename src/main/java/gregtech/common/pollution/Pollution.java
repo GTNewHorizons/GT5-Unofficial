@@ -50,7 +50,7 @@ import gregtech.api.util.GTUtility;
 // the global pollution manager should be a
 // non static instance in GTProxy
 // and all access to it should be non static and via
-// GTProxy.gregtechProxy.pollutionManager......
+// GTProxy.proxy.pollutionManager......
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
@@ -187,12 +187,6 @@ public class Pollution {
                             continue;
                         if (!(HazardProtection.isWearingFullGasHazmat(tEnt))) {
                             switch (XSTR_INSTANCE.nextInt(3)) {
-                                default:
-                                    tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.digSlowdown.id,
-                                            Math.min(tPollution / 1000, 1000),
-                                            tPollution / 400000));
                                 case 1:
                                     tEnt.addPotionEffect(
                                         new PotionEffect(
@@ -203,6 +197,12 @@ public class Pollution {
                                     tEnt.addPotionEffect(
                                         new PotionEffect(
                                             Potion.moveSlowdown.id,
+                                            Math.min(tPollution / 1000, 1000),
+                                            tPollution / 400000));
+                                default:
+                                    tEnt.addPotionEffect(
+                                        new PotionEffect(
+                                            Potion.digSlowdown.id,
                                             Math.min(tPollution / 1000, 1000),
                                             tPollution / 400000));
                             }
@@ -216,8 +216,6 @@ public class Pollution {
                                 continue;
                             if (!HazardProtection.isWearingFullGasHazmat(tEnt)) {
                                 switch (XSTR_INSTANCE.nextInt(4)) {
-                                    default:
-                                        tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
                                     case 1:
                                         tEnt.addPotionEffect(
                                             new PotionEffect(
@@ -236,6 +234,8 @@ public class Pollution {
                                                 Potion.blindness.id,
                                                 Math.min(tPollution / 2000, 1000),
                                                 1));
+                                    default:
+                                        tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
                                 }
                             }
                         }

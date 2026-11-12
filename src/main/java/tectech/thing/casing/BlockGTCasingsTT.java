@@ -7,13 +7,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import tectech.TecTech;
@@ -38,32 +34,6 @@ public class BlockGTCasingsTT extends BlockCasingsAbstract {
             Textures.BlockIcons.casingTexturePages[texturePage][b] = TextureFactory.of(this, b);
             /* IMPORTANT for block recoloring **/
         }
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Computer Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Computer Heat Vent");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Advanced Computer Casing");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Molecular Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Advanced Molecular Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Containment Field Generator");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Molecular Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Hollow Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Spacetime Altering Casing");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Teleportation Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Dimensional Bridge Generator");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultimate Molecular Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
-
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides"); // NOT REGISTER AS
-                                                                                                   // TEXTURE FOR
-                                                                                                   // HATCHES!
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
 
@@ -175,13 +145,6 @@ public class BlockGTCasingsTT extends BlockCasingsAbstract {
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(ordinalSide, tMeta);
     }
 
     @Override

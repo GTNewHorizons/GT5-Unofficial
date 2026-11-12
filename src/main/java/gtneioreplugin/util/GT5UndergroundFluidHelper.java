@@ -1,7 +1,6 @@
 package gtneioreplugin.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,16 +34,17 @@ public class GT5UndergroundFluidHelper {
             } catch (NumberFormatException ignored) {
                 dimension = getDimensionForEdgeCase(rawDimension);
                 if (dimension == null) {
-                    for (int i = 0; i < DimensionHelper.DimNameTrimmed.length; i++) {
-                        if (DimensionHelper.DimNameTrimmed[i].equalsIgnoreCase(rawDimension)) {
-                            dimension = DimensionHelper.DimNameDisplayed[i];
+                    for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
+                        if (record.trimmedName()
+                            .equalsIgnoreCase(rawDimension)) {
+                            dimension = record.abbr();
                             break;
                         }
                     }
                 }
             }
             if (dimension == null) {
-                GTNEIOrePlugin.LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
+                GTNEIOrePlugin.LOG.warn("Unknown dimension found in GT5 config: {}", rawDimension);
                 continue;
             }
 
@@ -75,10 +75,7 @@ public class GT5UndergroundFluidHelper {
         }
 
         for (List<UndergroundFluidWrapper> wrappers : fluidMap.values()) {
-            wrappers.sort(
-                Comparator.comparingInt(
-                    w -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                        .indexOf(w.dimension)));
+            wrappers.sort(Comparator.comparingInt(w -> DimensionHelper.getIndexByAbbr(w.dimension)));
         }
     }
 
@@ -106,7 +103,7 @@ public class GT5UndergroundFluidHelper {
             case "BarnardaF" -> "BF";
             case "TCetiE" -> "TE";
             default -> {
-                GTNEIOrePlugin.LOG.warn("Unknown dimension name while parsing: " + rawDimension);
+                GTNEIOrePlugin.LOG.warn("Unknown dimension name while parsing: {}", rawDimension);
                 yield null;
             }
         };
@@ -115,7 +112,7 @@ public class GT5UndergroundFluidHelper {
     public static class UndergroundFluidWrapper {
 
         /**
-         * Using {@link DimensionHelper#DimNameDisplayed}
+         * Using {@link DimensionHelper#getAllDisplayedNames()}
          */
         public final String dimension;
         /**

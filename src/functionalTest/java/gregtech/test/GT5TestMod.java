@@ -24,7 +24,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 
-@Mod(modid = "gt5-tests", name = "GT5 Dev Tests", version = "1.0", dependencies = "required-after:gregtech")
+@Mod(
+    modid = "gt5-tests",
+    name = "GT5 Dev Tests",
+    version = "1.0",
+    dependencies = "required-after:gregtech",
+    acceptableRemoteVersions = "*")
 public class GT5TestMod {
 
     @Mod.EventHandler

@@ -3,10 +3,7 @@ package gregtech.api.util;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -14,9 +11,9 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility.ItemId;
@@ -72,26 +69,6 @@ public class AssemblyLineUtils {
         return findALRecipeByOutput(output);
     }
 
-    public static @Nullable RecipeAssemblyLine assertSingleRecipe(Collection<RecipeAssemblyLine> recipes) {
-        if (recipes.isEmpty()) return null;
-
-        if (recipes.size() > 1) {
-            if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-                throw new RuntimeException(
-                    "found too many assembly line recipes for output: '" + recipes.iterator()
-                        .next().mOutput.getDisplayName() + "', this method assumes this cannot happen");
-            } else {
-                GTMod.GT_FML_LOGGER.error(
-                    "found too many assembly line recipes for output: '" + recipes.iterator()
-                        .next().mOutput.getDisplayName() + "', this method assumes this cannot happen",
-                    new Exception());
-            }
-        }
-
-        return recipes.iterator()
-            .next();
-    }
-
     /**
      * @param aStack - The ItemStack to check.
      * @return Is this ItemStack a Data Stick?
@@ -105,9 +82,7 @@ public class AssemblyLineUtils {
      * @return Does this Data Stick have a valid output ItemStack?
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
-        return isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
-            && aDataStick.getTagCompound()
-                .hasKey("output");
+        return isItemDataStick(aDataStick) && ItemStackNBT.hasKey(aDataStick, "output");
     }
 
     /**
@@ -150,20 +125,13 @@ public class AssemblyLineUtils {
             }
         }
 
-        String author = "Assembling Line Recipe Generator";
-        String displayName = null;
+        final String author;
+        final String displayName = ItemStackNBT.getDisplayName(aDataStick);
 
-        if (aDataStick.hasTagCompound()) {
-            NBTTagCompound tag = aDataStick.getTagCompound();
-
-            if (tag.hasKey("author", NBT.TAG_STRING)) {
-                author = tag.getString("author");
-            }
-
-            if (tag.hasKey("display", NBT.TAG_COMPOUND)) {
-                NBTTagCompound displayTag = tag.getCompoundTag("display");
-                if (displayTag.hasKey("Name", NBT.TAG_STRING)) displayName = displayTag.getString("Name");
-            }
+        if (ItemStackNBT.hasKey(aDataStick, "author", NBT.TAG_STRING)) {
+            author = ItemStackNBT.getString(aDataStick, "author");
+        } else {
+            author = "Assembling Line Recipe Generator";
         }
 
         // remove possible old NBTTagCompound

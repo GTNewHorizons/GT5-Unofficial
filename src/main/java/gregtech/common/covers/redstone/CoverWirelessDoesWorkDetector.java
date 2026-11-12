@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -16,8 +15,8 @@ import gregtech.api.interfaces.modularui.KeyProvider;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.common.covers.CoverPosition;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.redstone.CoverWirelessDoesWorkDetectorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessDoesWorkDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessActivityDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -144,18 +143,18 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
 
     public enum ActivityMode implements KeyProvider {
 
-        RECIPE_PROGRESS(IKey.lang("gt.interact.desc.recipeprogress")),
-        MACHINE_IDLE(IKey.lang("gt.interact.desc.machineidle")),
-        MACHINE_ENABLED(IKey.lang("gt.interact.desc.mach_on"));
+        RECIPE_PROGRESS("gt.interact.desc.recipeprogress"),
+        MACHINE_IDLE("gt.interact.desc.machineidle"),
+        MACHINE_ENABLED("gt.interact.desc.mach_on");
 
-        private final IKey key;
+        private final String key;
 
-        ActivityMode(IKey key) {
+        ActivityMode(String key) {
             this.key = key;
         }
 
         @Override
-        public IKey getKey() {
+        public String getKey() {
             return this.key;
         }
     }
@@ -166,7 +165,7 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverWirelessDoesWorkDetectorGui(this);
     }
 }

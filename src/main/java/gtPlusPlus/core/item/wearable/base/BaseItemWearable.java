@@ -1,12 +1,12 @@
 package gtPlusPlus.core.item.wearable.base;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmor {
 
@@ -14,48 +14,26 @@ public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmo
         super(material, renderIndex, armourType);
     }
 
-    public abstract int getRenderIndex();
-
-    @Override
-    public abstract ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source,
-        double damage, int slot);
-
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public abstract void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage,
-        int slot);
-
-    public void dyeArmour(ItemStack aArmour, int aColour) {
-        func_82813_b(aArmour, aColour);
+    public void func_82813_b(ItemStack stack, int color) {
+        final NBTTagCompound nbt = ItemStackNBT.get(stack);
+        final NBTTagCompound display = nbt.getCompoundTag("display");
+        if (!nbt.hasKey("display", 10)) {
+            nbt.setTag("display", display);
+        }
+        display.setInteger("color", color);
     }
 
     @Override
-    public void func_82813_b(ItemStack p_82813_1_, int p_82813_2_) {
-        NBTTagCompound nbttagcompound = p_82813_1_.getTagCompound();
-        if (nbttagcompound == null) {
-            nbttagcompound = new NBTTagCompound();
-            p_82813_1_.setTagCompound(nbttagcompound);
-        }
-        NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
-        if (!nbttagcompound.hasKey("display", 10)) {
-            nbttagcompound.setTag("display", nbttagcompound1);
-        }
-        nbttagcompound1.setInteger("color", p_82813_2_);
-    }
-
-    @Override
-    public void removeColor(ItemStack p_82815_1_) {
-        NBTTagCompound nbttagcompound = p_82815_1_.getTagCompound();
-        if (nbttagcompound != null) {
-            NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
-            if (nbttagcompound1.hasKey("color")) {
-                nbttagcompound1.removeTag("color");
-            }
+    public void removeColor(ItemStack stack) {
+        final NBTTagCompound display = ItemStackNBT.getCompoundTag(stack, "display");
+        if (display != null) {
+            display.removeTag("color");
         }
     }
 }

@@ -20,10 +20,16 @@ public final class PowerGogglesKeybindHandler {
         Keyboard.KEY_NONE,
         "Gregtech");
 
+    public static final KeyBinding toggleMeasurements = new KeyBinding(
+        "GT5U.power_goggles.toggle_measurements_section",
+        Keyboard.KEY_NONE,
+        "Gregtech");
+
     private PowerGogglesKeybindHandler() {}
 
     public static void init() {
         ClientRegistry.registerKeyBinding(openConfigGui);
         ClientRegistry.registerKeyBinding(toggleChart);
+        ClientRegistry.registerKeyBinding(toggleMeasurements);
     }
 }

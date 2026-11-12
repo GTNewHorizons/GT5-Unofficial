@@ -2,7 +2,6 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -22,7 +21,6 @@ public class TAE {
         for (int i = 64; i < 128; i++) {
             mFreeSlots.add(i);
         }
-        Logger.INFO("Initialising TAE.");
     }
 
     /**
@@ -43,35 +41,18 @@ public class TAE {
             mTAE.put(aID, texture);
             return true;
         }
-
-        Logger.ERROR("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
-        throw new IllegalStateException();
+        throw new IllegalStateException(
+            "Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
     }
 
     public static void finalizeTAE() {
-        StringBuilder aFreeSpaces = new StringBuilder();
-        StringBuilder aPageAndSlotFree = new StringBuilder();
-        int[] aTemp = mFreeSlots.toArray(new int[0]);
-        for (int i = 0; i < mFreeSlots.size(); i++) {
-            int j = aTemp[i];
-            aFreeSpaces.append(j);
-            aPageAndSlotFree.append(getPageFromIndex(j));
-            if (i != (mFreeSlots.size() - 1)) {
-                aFreeSpaces.append(", ");
-                aPageAndSlotFree.append(", ");
-            }
-        }
-        Logger.INFO("Free Indexes within TAE: " + aFreeSpaces);
-        Logger.INFO("Free Page slots within TAE: " + aPageAndSlotFree);
-        Logger.INFO("Filling them with ERROR textures.");
+        final int[] aTemp = mFreeSlots.toArray(new int[0]);
         for (int aFreeSlot : aTemp) {
             registerTexture(aFreeSlot, TextureFactory.of(ModBlocks.blockCasingsTieredGTPP, 15));
         }
-        Logger.INFO("Finalising TAE.");
         for (Int2ObjectMap.Entry<ITexture> entry : mTAE.int2ObjectEntrySet()) {
             Textures.BlockIcons.setCasingTextureForId(entry.getIntKey(), entry.getValue());
         }
-        Logger.INFO("Finalised TAE.");
     }
 
     public static ITexture getTexture(int index) {

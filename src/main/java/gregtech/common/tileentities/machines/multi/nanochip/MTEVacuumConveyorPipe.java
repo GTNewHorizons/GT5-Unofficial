@@ -1,0 +1,308 @@
+
+package gregtech.common.tileentities.machines.multi.nanochip;
+
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+
+import java.util.Collection;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolModes;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.common.config.Other;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
+import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
+
+public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumFactoryElement {
+
+    private static IIconContainer CCPipe;
+    private static IIconContainer CCBarOverlay, CCBarOverlayActive;
+    public VacuumFactoryNetwork network;
+    private boolean clientRenderState;
+    private boolean registered = false;
+
+    public MTEVacuumConveyorPipe(int aID, String aName) {
+        super(aID, aName);
+    }
+
+    public MTEVacuumConveyorPipe(MTEVacuumConveyorPipe prototype) {
+        super(prototype);
+    }
+
+    @Override
+    public boolean getGT6StyleConnection() {
+        return GTMod.proxy.gt6Pipe;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+        return new MTEVacuumConveyorPipe(this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        CCPipe = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/CC_PIPE");
+        CCBarOverlay = Textures.BlockIcons.customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY");
+        CCBarOverlayActive = Textures.BlockIcons
+            .customOptional(Mods.GregTech.resourceDomain, "iconsets/CC_BAR_OVERLAY_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    public final void toggleClientRenderState() {
+        clientRenderState = !clientRenderState;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
+        int colorIndex, boolean aConnected, boolean aRedstone) {
+        return new ITexture[] { TextureFactory.of(CCPipe),
+            TextureFactory.of(
+                clientRenderState ? CCBarOverlayActive : CCBarOverlay,
+                Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+    }
+
+    @Override
+    public byte getTileEntityBaseType() {
+        return 4;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.TOOLTIP_COLORED + " to work",
+            "Transports" + EnumChatFormatting.YELLOW
+                + " Circuit Components "
+                + EnumChatFormatting.GRAY
+                + "between Vacuum Conveyor Hatches" };
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+        if (aBaseMetaTileEntity.isClientSide()) {
+            registered = true;
+            VacuumConveyorPipeClientStateManager.INSTANCE.register(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
+        }
+        super.onUnload();
+    }
+
+    @Override
+    public float getCollisionThickness() {
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .shouldHideThings()) {
+            return 0.0625F;
+        }
+        return 0.375f;
+    }
+
+    @Override
+    public boolean canConnectOnSide(ForgeDirection side) {
+        return !this.getBaseMetaTileEntity()
+            .hasCoverAtSide(side);
+    }
+
+    @Override
+    public byte getColorization() {
+        return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public void getNeighbours(Collection<VacuumFactoryElement> neighbours) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+
+        if (base == null || base.isDead() || base.getColorization() == -1) return;
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+            if (igte.getColorization() != base.getColorization()) continue;
+            if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+            if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+            neighbours.add(element);
+        }
+    }
+
+    @Override
+    public void onEdgeAdded(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeAdded(adjacent);
+        setCheckConnections();
+    }
+
+    @Override
+    public void onEdgeRemoved(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeRemoved(adjacent);
+        setCheckConnections();
+    }
+
+    @Override
+    public void onEdgeChanged(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeChanged(adjacent);
+        setCheckConnections();
+    }
+
+    @Override
+    protected void checkConnections() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null || base.isDead()) return;
+
+        mCheckConnections = false;
+        mConnections = 0;
+
+        if (base.getColorization() != -1) {
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+                if (igte.getColorization() != base.getColorization()) continue;
+                if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
+                if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
+                mConnections |= dir.flag;
+            }
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
+        }
+
+    }
+
+    public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
+        if (!isConnectedAtSide(side)) {
+            if (connect(side) > 0) {
+                GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.connected");
+            }
+        } else {
+            disconnect(side);
+            GTUtility.sendChatTrans(entityPlayer, "GT5U.chat.disconnected");
+        }
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+
+        if (GTMod.proxy.gt6Pipe) {
+            final int mode = MetaGeneratedTool.getToolMode(aTool);
+            IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
+            MTEVacuumConveyorPipe currentPipe = (MTEVacuumConveyorPipe) currentPipeBase.getMetaTileEntity();
+            final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+
+            if (mode == ToolModes.REGULAR.get()) {
+                currentPipe.connectPipeOnSide(tSide, entityPlayer);
+                return true;
+            }
+
+            if (mode == ToolModes.WRENCH_LINE.get()) {
+
+                boolean wasActionPerformed = false;
+
+                int limit = Other.pipeWrenchingChainRange;
+                for (int connected = 0; connected < limit; connected++) {
+
+                    TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
+
+                    // if next tile doesn't exist or if next tile is not GT tile
+                    if (!(nextPipeBaseTile instanceof IGregTechTileEntity nextPipeBase)) {
+                        return wasActionPerformed;
+                    }
+
+                    MTEVacuumConveyorPipe nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEVacuumConveyorPipe
+                        ? (MTEVacuumConveyorPipe) nextPipeBase.getMetaTileEntity()
+                        : null;
+
+                    // if next tile entity is not a pipe
+                    if (nextPipe == null) {
+                        return wasActionPerformed;
+                    }
+
+                    currentPipe.connectPipeOnSide(tSide, entityPlayer);
+
+                    wasActionPerformed = true;
+
+                    currentPipeBase = nextPipeBase;
+                    currentPipe = nextPipe;
+
+                }
+                return wasActionPerformed;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
+        final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        if (baseMetaTile.hasCoverAtSide(side)) return false;
+        TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
+        if (tTileEntity == null) return false;
+        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+        if (meta == null) return false;
+        if (((IGregTechTileEntity) tTileEntity).hasCoverAtSide(side.getOpposite())) return false;
+        return meta instanceof VacuumFactoryElement;
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+        if (getBaseMetaTileEntity().isClientSide() && registered) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.unregister(this);
+        }
+    }
+
+    @Override
+    public VacuumFactoryNetwork getNetwork() {
+        return network;
+    }
+
+    @Override
+    public void setNetwork(VacuumFactoryNetwork network) {
+        this.network = network;
+    }
+
+    @Override
+    public void onColorChangeServer(byte color) {
+        super.onColorChangeServer(color);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    protected void onCoverChangedServer() {
+        super.onCoverChangedServer();
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+        setCheckConnections();
+    }
+}

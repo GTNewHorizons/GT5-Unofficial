@@ -34,10 +34,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -50,14 +53,19 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import gregtech.GTMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -66,20 +74,22 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     /**
      * Number of seconds to average the wormhole energy over. (controls the weights in a weighted average)
@@ -185,22 +195,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                    .extFacing()
-                    .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                    .extFacing()
-                    .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(TT_CASING_INDEX);
     }
 
     // #region Structure
@@ -224,7 +234,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             buildHatchAdder(MTEWormholeGenerator.class)
                 .atLeast(Maintenance, InputBus)
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(1)
+                .hint(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -233,30 +243,30 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
         .addElement('t',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(TOP_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(BOTTOM_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(LEFT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(RIGHT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .build();
@@ -264,9 +274,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     private static class TransferHatch implements IHatchElement<MTEWormholeGenerator> {
 
+        private final String name;
+
         public final int mIndex;
 
-        public TransferHatch(int index) {
+        public TransferHatch(String name, int index) {
+            this.name = name;
             this.mIndex = index;
         }
 
@@ -282,18 +295,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 
-                if (aMetaTileEntity == null) return false;
-
-                if (aMetaTileEntity instanceof MTEHatchEnergyMulti input) {
-                    input.updateTexture(aBaseCasingIndex);
-                    input.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mSendHatches[mIndex] = input;
-                    return true;
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti output) {
-                    output.updateTexture(aBaseCasingIndex);
-                    output.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mReceiveHatches[mIndex] = output;
-                    return true;
+                switch (aMetaTileEntity) {
+                    case null -> {
+                        return false;
+                    }
+                    case MTEHatchEnergyMulti input -> {
+                        input.updateTexture(aBaseCasingIndex);
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
+                        tile.mSendHatches[mIndex] = input;
+                        return true;
+                    }
+                    case MTEHatchDynamoMulti output -> {
+                        output.updateTexture(aBaseCasingIndex);
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
+                        tile.mReceiveHatches[mIndex] = output;
+                        return true;
+                    }
+                    default -> {
+                    }
                 }
 
                 return false;
@@ -309,10 +328,21 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         public long count(MTEWormholeGenerator t) {
             return t.mExoticEnergyHatches.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
@@ -322,27 +352,26 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
         glassTier = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
         mStructureBadGlassTier = false;
-
         for (MTEHatch energyHatch : mExoticEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
-
             if (energyHatch.getTierForStructure() > glassTier) {
                 mStructureBadGlassTier = true;
                 break;
             }
         }
-
-        return !mStructureBadGlassTier;
+        if (mStructureBadGlassTier) {
+            errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -362,12 +391,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         destroyRenderBlock();
-    }
-
-    @Override
-    public void onDisableWorking() {
-        super.onDisableWorking();
-        // destroyRenderBlock();
     }
 
     @Override
@@ -402,7 +425,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Nullable
-    private TileEntityWormhole createRenderBlock() {
+    private RenderingTileEntityWormhole createRenderBlock() {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
         World world = gregTechTileEntity.getWorld();
@@ -426,11 +449,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
+        return (RenderingTileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable
-    private TileEntityWormhole getRenderBlock() {
+    private RenderingTileEntityWormhole getRenderBlock() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
         int x = gregTechTileEntity.getXCoord();
@@ -448,7 +471,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         TileEntity tile = Optional.ofNullable(gregTechTileEntity.getWorld())
             .map(w -> w.getTileEntity(wX, wY, wZ))
             .orElse(null);
-        if (tile instanceof TileEntityWormhole wormhole) return wormhole;
+        if (tile instanceof RenderingTileEntityWormhole wormhole) return wormhole;
         return null;
 
     }
@@ -460,7 +483,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .map(IHasWorldObjectAndCoords::getWorld)
             .orElse(null);
 
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
@@ -469,7 +492,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     public void updateRenderRadius(double radius) {
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
@@ -500,14 +523,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             mAllowOverclocks = !mAllowOverclocks;
-
-            if (mAllowOverclocks) {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §a%s§r", GTUtility.trans("088", "Enabled")));
-            } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §c%s§r", GTUtility.trans("087", "Disabled")));
-            }
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowOverclocks ? "GT5U.chat.worm_hole_generator.overclocks.enable"
+                    : "GT5U.chat.worm_hole_generator.overclocks.disable");
         } else {
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         }
@@ -586,7 +605,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         Long freq = link != null && link.getTagCompound() != null
             && link.getTagCompound()
-                .hasKey("freq", 4 /* Long */) ? link.getTagCompound()
+                .hasKey("freq", NBT.TAG_LONG) ? link.getTagCompound()
                     .getLong("freq") : null;
 
         if (!Objects.equals(freq, mLink == null ? null : mLink.mFrequency)) {
@@ -707,8 +726,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 aNBT.setTag("mLink", link);
             }
-        } catch (Throwable t) {
-            GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
+        } catch (Exception t) {
+            GTLoggers.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
 
@@ -758,8 +777,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         0,
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
-            } catch (Throwable t) {
-                GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
+            } catch (Exception t) {
+                GTLoggers.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
     }
@@ -968,34 +987,31 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         // spotless:off
-        tt.addMachineType("Wormhole Generator")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
-            .addGlassEnergyLimitInfo()
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 9, 7, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
-            .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
-            .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (dot 1)")
-            .addInputBus("§61§r (dot 1)")
-            .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
-            .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wormhole_generator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "wormhole-generator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("transfer_efficiency", TRANSFER_EFFICIENCY * 100)
+                    .put("overclock_limit", MAX_OVERCLOCKS)
+                    .build())
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 7, true)
+            .addEnergyHatchGlassTier()
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-51", Casings.HighPowerCasing.getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("24", Casings.MolecularCasing.getLocalizedName(), false)
+            .addCasing("22", Casings.FusionCoilBlock.getLocalizedName(), false)
+            .addCasing("8", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 
@@ -1013,24 +1029,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
-        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator"));
+        data.add("GT5U.infodata.wormhole_generator");
 
         if (mStructureBadGlassTier) {
-            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.structure_error"));
-            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.bad_class_tier"));
+            data.add("GT5U.infodata.wormhole_generator.structure_error");
+            data.add("GT5U.infodata.wormhole_generator.bad_class_tier");
         }
 
         if (mLink == null) {
-            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.no_link"));
+            data.add("GT5U.infodata.wormhole_generator.no_link");
         } else {
             if (!mLink.isFormed()) {
-                data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_destination"));
+                data.add("GT5U.infodata.wormhole_generator.status.no_destination");
             } else {
                 if (mLink.mWormholeEnergy > 0) {
                     if (mLink.isActive()) {
-                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.active"));
+                        data.add("GT5U.infodata.wormhole_generator.status.active");
                     } else {
-                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.decaying"));
+                        data.add("GT5U.infodata.wormhole_generator.status.decaying");
                     }
                 } else {
                     boolean anyTransferable = false;
@@ -1045,21 +1061,20 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
 
                     if (anyTransferable) {
-                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.inactive"));
+                        data.add("GT5U.infodata.wormhole_generator.status.inactive");
                     } else {
-                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_energy"));
+                        data.add("GT5U.infodata.wormhole_generator.status.no_energy");
                     }
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
                 data.add(
-                    StatCollector
-                        .translateToLocalFormatted("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
+                    IGregTechDeviceInformation
+                        .encode("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
 
                 data.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.infodata.wormhole_generator.optimal_transfer_speed",
-                        mLink.mWormholeEnergy / 20));
+                    IGregTechDeviceInformation
+                        .encode("GT5U.infodata.wormhole_generator.optimal_transfer_speed", mLink.mWormholeEnergy / 20));
             }
         }
 
@@ -1091,10 +1106,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             // spotless:off
             if(inputHatch != null) {
-                data.add(StatCollector.translateToLocalFormatted(
+                data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
-                    inputHatch.Amperes,
+                    inputHatch.getAmperes(),
                     VN[inputHatch.mTier],
                     avgSend,
                     avgSend / 20 / V[inputHatch.mTier],
@@ -1102,7 +1117,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else if(outputHatch != null) {
-                data.add(StatCollector.translateToLocalFormatted(
+                data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.received",
                     getLocalizedHatchName(i),
                     outputHatch.Amperes,
@@ -1113,7 +1128,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else {
-                data.add(StatCollector.translateToLocalFormatted("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
+                data.add(IGregTechDeviceInformation.encode("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
             }
             // spotless:on
         }
@@ -1121,6 +1136,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
 
         return data.toArray(new String[0]);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -1183,6 +1203,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             new FakeSyncWidget.DoubleSyncer(
                 () -> mLink != null ? mLink.mWormholeEnergy : 0,
                 val -> mWormholeEnergy_UI = val));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     // #endregion

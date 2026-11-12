@@ -1,0 +1,1034 @@
+package gregtech.common.tileentities.machines.multi.nanochip;
+
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.math.BigInteger;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.ExoticEnergyInputHelper;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.ItemEjectionHelper;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.CircularSound;
+import gregtech.client.volumetric.ISoundPosition;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
+import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitBatch;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
+import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
+
+public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
+    implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
+
+    public static final String STRUCTURE_PIECE_MAIN = "main";
+
+    public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
+
+    // How many seconds of power should each module buffer
+    private static final BigInteger MODULE_BUFFER_SECONDS = BigInteger.valueOf(20 * SECONDS);
+
+    public static final int BATCH_SIZE = 1000;
+    public static final int HISTORY_BLOCKS = 100;
+    public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
+    private static final float SOUND_RADIUS = 32f;
+    public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
+    private CircuitBatch currentBlock;
+
+    // Store a small buffer in the main NAC to prevent issues where the energy hatch cannot
+    // buffer 20 ticks worth of power itself, which the NAC needs for routing to modules
+    // (for example, with non-wireless standard or multi-amp energy hatches).
+    private long euBuffer = 0;
+    private long euBufferMax = 0;
+
+    // 1 to 99, representing 1 to 99% power portioned to matrix
+    private int matrixPowerPortion = 25;
+
+    private boolean allModuleToggle = true;
+
+    public CircuitCalibration.CalibrationThreshold currentThreshold;
+
+    public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTENanochipAssemblyComplex>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
+        // Exterior Nanochip Casing
+        .addElement('A', Casings.NanochipFirewallProjectionCasing.asElement())
+        // Primary Nanochip Casing
+        .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Secondary Nanochip Casing
+        .addElement('C', Casings.NanochipReinforcementCasing.asElement())
+        // Computational Matrix Casing
+        .addElement('J', Casings.NanochipComputationalMatrixCasing.asElement())
+        .addElement('D', ofFrame(Materials.Naquadah))
+        // Nanochip Glass
+        .addElement('E', Casings.NanochipComplexGlass.asElement())
+        // Either a module or an ignored hatch (since this hatch would be on the module)
+        .addElement(
+            'F',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0, AssemblyHatchElement.IgnoredHatch, 0))
+                .casingIndex(CASING_INDEX_WHITE)
+                .hint(1)
+                // Base casing or assembly module
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+        // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
+        .addElement(
+            'H',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeast(
+                    ImmutableMap.of(
+                        AssemblyHatchElement.VacuumConveyorHatch,
+                        1,
+                        InputBus,
+                        1,
+                        OutputBus,
+                        1,
+                        ExoticEnergy,
+                        1,
+                        Energy,
+                        0))
+                .casingIndex(CASING_INDEX_WHITE)
+                .hint(2)
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+        // Either a white casing block or an ignored hatch (this hatch is on the module)
+        .addElement(
+            'I',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.IgnoredHatch, 0))
+                .casingIndex(CASING_INDEX_WHITE)
+                .hint(3)
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+        .build();
+
+    public static final int MODULE_CONNECT_INTERVAL = 20;
+
+    private final ArrayList<MTENanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
+
+    private final VacuumConveyorHatchMap<MTEHatchVacuumConveyor> vacuumConveyors = new VacuumConveyorHatchMap<>();
+
+    public MTENanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    protected MTENanochipAssemblyComplex(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
+
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            MAIN_OFFSET_X,
+            MAIN_OFFSET_Y,
+            MAIN_OFFSET_Z,
+            realBudget,
+            env,
+            false,
+            true);
+    }
+
+    private MTEHatch getEnergyHatch() {
+        if (this.mExoticEnergyHatches.isEmpty()) {
+            if (this.mEnergyHatches.isEmpty()) return null;
+            return this.mEnergyHatches.get(0);
+        }
+        return this.mExoticEnergyHatches.get(0);
+    }
+
+    public long getEnergyHatchTier() {
+        MTEHatch energyHatch = this.getEnergyHatch();
+        return energyHatch != null ? energyHatch.getInputTier() : 0;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        modules.clear();
+        vacuumConveyors.clear();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
+        // Exactly one energy hatch is accepted
+        checkOneEnergyHatchMaybeExotic(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (!errors.isEmpty()) return;
+
+        long maxInputEU = getMaxInputEu();
+        // Check in double-precision to avoid long overflow
+        if (maxInputEU * 5.0D * SECONDS >= Long.MAX_VALUE) {
+            this.euBufferMax = Long.MAX_VALUE;
+        } else {
+            this.euBufferMax = maxInputEU * 5 * SECONDS;
+        }
+        updateModuleEU(this.matrixPowerPortion, true);
+    }
+
+    @Override
+    public IStructureDefinition<MTENanochipAssemblyComplex> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.main.logo"))
+            .addSeparator()
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.3", TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.4", TOOLTIP_VCOs, TOOLTIP_COLOR))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.5", TOOLTIP_CCs, TOOLTIP_VCI))
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.main.body.6",
+                    TOOLTIP_CCs,
+                    TOOLTIP_COLORED,
+                    TOOLTIP_VCI,
+                    TOOLTIP_COLOR))
+            .addSeparator()
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
+            .addSupportAny()
+            .addSeparator()
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+            .beginStructureBlock(63, 49, 63, false)
+            .addController("Middle of structure, 9th layer")
+            // Nanochip Reinforcement Casing
+            .addCasing("3958", translateToLocal("gt.blockcasings12.2.name"), false)
+            // Nanochip Complex Glass
+            .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
+            // Nanochip Mesh Interface Casing
+            .addCasing("1124-1719", translateToLocal("gt.blockcasings12.1.name"), false)
+            // Nanochip Computational Matrix Casing
+            .addCasing("721", translateToLocal("gt.blockcasings12.3.name"), false)
+            // Naquadah Frame Box
+            .addCasing("53", "Naquadah Frame Box", false)
+            // Nanochip Firewall Projection Casing
+            .addCasing("32", translateToLocal("gt.blockcasings12.4.name"), false)
+            .addMiscHatch(
+                "0-12",
+                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"),
+                1)
+            .addEnergyHatch("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addInputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addOutputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
+            .toolTipFinisher();
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTENanochipAssemblyComplex(this.mName);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
+    }
+
+    public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
+            module.connect(this);
+            // immediate recheck to prevent module from using outdated hatch during recipe check
+            // delay is already done by the main structure, this does not cause immediate recheck.
+            module.checkStructure(true, aTileEntity);
+            return modules.add(module);
+        }
+        return false;
+    }
+
+    public boolean addConveyorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatchVacuumConveyor hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.setMainController(this);
+            return vacuumConveyors.addHatch(hatch);
+        }
+        return false;
+    }
+
+    public boolean ignoreAndAcceptHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Callback that will be invoked when the controller is removed
+     */
+    @Override
+    public void onRemoval() {
+        // On destroying the controller block, all modules should be disconnected
+        if (!GTMod.GT.isClientSide()) disconnectAll();
+        super.onRemoval();
+    }
+
+    private void disconnectAll() {
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            module.disconnect();
+            module.clearBaseMulti();
+        }
+    }
+
+    private ArrayList<ItemStackWithSourceBus> getStoredInputsWithBus() {
+        // We need to replicate some behaviour of getStoredInputs() here to avoid duplicating items with stocking
+        // buses, but we cannot call getStoredInputs() directly because the specific hatch the ItemStack is coming
+        // from matters for routing the created circuit components
+
+        ArrayList<ItemStackWithSourceBus> inputs = new ArrayList<>();
+        Map<GTUtility.ItemId, ItemStackWithSourceBus> inputsFromME = new HashMap<>();
+        for (MTEHatchInputBus bus : filterValidMTEs(this.mInputBusses)) {
+            // Ignore crafting input buses
+            if (bus instanceof MTEHatchCraftingInputME) {
+                continue;
+            }
+
+            // Same as the original implementation of getStoredInputs(), but keep track of the bus we found the input
+            // in.
+            IGregTechTileEntity te = bus.getBaseMetaTileEntity();
+            boolean isMEBus = bus instanceof MTEHatchInputBusME;
+            for (int i = te.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stack = te.getStackInSlot(i);
+                if (stack != null) {
+                    if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GTUtility.ItemId.createNoCopy(stack), new ItemStackWithSourceBus(stack, bus));
+                    } else {
+                        inputs.add(new ItemStackWithSourceBus(stack, bus));
+                    }
+                }
+            }
+        }
+        // Now add all values from the ME input map
+        inputs.addAll(inputsFromME.values());
+        return inputs;
+    }
+
+    // Route circuit components to a set of hatches. Returns true if the components were routed successfully and the
+    // stack
+    // should be consumed
+    private boolean routeToHatches(List<MTEHatchVacuumConveyor> hatches, byte color, CircuitComponent component,
+        int amount, String customName) {
+        // If no hatches were passed, we can't route
+        if (hatches == null) return false;
+        // Find the first hatch that can be used for routing
+        for (MTEHatchVacuumConveyor hatch : filterValidMTEs(hatches)) {
+            // Hatch must be an output
+            if (hatch instanceof MTEHatchVacuumConveyorOutput outputHatch) {
+                // Ensure that the color matches the expected color, since hatches can be recolored in between rebuilds
+                // of the hatch map
+                if (outputHatch.getBaseMetaTileEntity()
+                    .getColorization() != color) {
+                    // If the color did not match, we found an inconsistency in the hatch map, so fix it instead
+                    // of waiting for the next structure check
+                    vacuumConveyors.fixConsistency();
+                    continue;
+                }
+                // Now we can route our components to this hatch
+                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount, customName);
+                // Merge with the already existing hatch contents
+                outputHatch.unifyPacket(packet);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void processRealItemInputs() {
+        this.startRecipeProcessing();
+
+        ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
+        // Say the magic incantation to prevent duping
+        this.startRecipeProcessing();
+        // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
+        for (ItemStackWithSourceBus stack : inputs) {
+            // Find a conversion recipe
+            GTRecipe recipe = RecipeMaps.nanochipConversionRecipes.findRecipeQuery()
+                .items(stack.stack)
+                .find();
+            if (recipe == null) continue;
+            // If one existed, we have the component now
+            CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            // We also need to keep track of the custom name from the original stack, if there was one
+            String customName = GTUtility.getStackCustomName(stack.stack);
+            // Find destination hatch. Note that we already know that this bus is a valid MTE, see
+            // getStoredInputsWithBus
+            byte busColor = stack.bus.getBaseMetaTileEntity()
+                .getColorization();
+            ArrayList<MTEHatchVacuumConveyor> destinationHatches = vacuumConveyors.findColoredHatches(busColor);
+            // Try to route to the set of destination hatches
+            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize, customName);
+            // If successful, consume the input
+            if (routed) {
+                stack.bus.removeAllResource(stack.stack);
+            }
+        }
+    }
+
+    private void processComponentInputs() {
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
+
+        // Convert finished circuit CCs to real circuit items and add them as output.
+        for (ArrayList<MTEHatchVacuumConveyor> hatchList : this.vacuumConveyors.allHatches()) {
+            for (MTEHatchVacuumConveyor hatch : filterValidMTEs(hatchList)) {
+                // For each vacuum conveyor input, loop over its contents and try to find a circuit component
+                if (hatch instanceof MTEHatchVacuumConveyorInput) {
+                    // Skip empty hatches
+                    if (hatch.contents == null) continue;
+                    Map<CircuitComponent, List<MutablePair<String, Long>>> contents = hatch.contents.getComponents();
+                    // Use Iterator to protect against ConcurrentModificationException
+                    var iterator = contents.entrySet()
+                        .iterator();
+                    while (iterator.hasNext()) {
+                        var entry = iterator.next();
+                        CircuitComponent component = entry.getKey();
+                        if (component.realComponent == null) continue;
+
+                        var namedAmounts = entry.getValue();
+                        var innerItr = namedAmounts.iterator();
+                        boolean failedSomething = false;
+
+                        while (innerItr.hasNext()) {
+                            var pair = innerItr.next();
+                            long ejected = ejectCircuitComponent(
+                                ejectionHelper,
+                                component,
+                                pair.getRight(),
+                                pair.getLeft());
+                            if (ejected > 0) {
+                                long originalAmount = pair.getRight();
+                                long newAmount = originalAmount - ejected;
+                                if (newAmount == 0) {
+                                    innerItr.remove();
+                                } else {
+                                    pair.setRight(newAmount);
+                                    failedSomething = true;
+                                }
+                            } else {
+                                failedSomething = true;
+                            }
+                        }
+                        if (!failedSomething) {
+                            iterator.remove();
+                        }
+                    }
+                }
+            }
+        }
+
+        ejectionHelper.commit();
+    }
+
+    // Outputs a CC to the output bus as a real item, attempting to fit as much as possible in one operation
+    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount,
+        String customName) {
+        long ejected = 0;
+        while (amount > 0) {
+            int maxEject = (int) Math.min(Integer.MAX_VALUE, amount);
+            ItemStack toOutput = GTUtility.copyAmountUnsafe(maxEject, component.realComponent.get());
+            if (toOutput == null) break;
+
+            if (customName != null) {
+                toOutput.setStackDisplayName(customName);
+            }
+
+            int amountEjected = helper.ejectStack(toOutput);
+            ejected += amountEjected;
+            if (amountEjected != maxEject) break;
+            amount -= maxEject;
+        }
+        return ejected;
+    }
+
+    public void addToHistory(CircuitCalibration circuitType, int amount) {
+        if (circuitType == CircuitCalibration.NONE) return;
+
+        amount = Math.min(amount, CALIBRATION_MAX);
+        if (currentBlock == null) currentBlock = new CircuitBatch();
+
+        int leftover = currentBlock.add(circuitType, amount);
+
+        // If the current block is full, store to history. Push the oldest block if needed.
+        if (currentBlock.isFull()) {
+            circuitHistory.add(currentBlock);
+            if (circuitHistory.size() > HISTORY_BLOCKS) {
+                circuitHistory.poll();
+            }
+            currentBlock = new CircuitBatch();
+            // Update calibration stats
+            setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
+        }
+
+        // Recursively call addToHistory to clear leftovers evenly
+        if (leftover > 0) addToHistory(circuitType, leftover);
+    }
+
+    // values of calibration steps
+    public float globalEUMultiplier = 1;
+    // duration only gets applied if the CircuitCalibration Metadata key is present on the recipe and is active on the
+    // NAC
+    public float globalDurationMultiplier = 1;
+    public boolean primitiveT1Active = false;
+    public boolean primitiveT2Active = false;
+    public boolean primitiveT3Active = false;
+    public boolean crystalT3Active = false;
+    public boolean wetwareT3Active = false;
+    public boolean bioT3Active = false;
+    public boolean opticalT3Active = false;
+
+    public void setCurrentThreshold(CircuitCalibration.CalibrationThreshold currentThreshold) {
+        this.currentThreshold = currentThreshold;
+        this.resetCalibrationValues();
+        if (currentThreshold == null) return;
+        currentThreshold.function.accept(this);
+    }
+
+    public void resetCalibrationValues() {
+        globalEUMultiplier = 1;
+        globalDurationMultiplier = 1;
+        primitiveT1Active = false;
+        primitiveT2Active = false;
+        primitiveT3Active = false;
+        crystalT3Active = false;
+        wetwareT3Active = false;
+        bioT3Active = false;
+        opticalT3Active = false;
+    }
+
+    public String getCalibrationTitle() {
+        if (currentThreshold == null) return "GT5U.gui.text.nac.title.standard";
+        return currentThreshold.title;
+    }
+
+    public int getCurrentBlockSize() {
+        return currentBlock == null ? 0 : currentBlock.total;
+    }
+
+    public int getTotalCircuit(CircuitCalibration circuitType) {
+        if (circuitType == CircuitCalibration.NONE) return 0;
+
+        int total = 0;
+        for (CircuitBatch batch : circuitHistory) {
+            switch (circuitType) {
+                case PRIMITIVE -> total += batch.primitives;
+                case CRYSTAL -> total += batch.crystals;
+                case WETWARE -> total += batch.wetwares;
+                case BIO -> total += batch.bios;
+                case OPTICAL -> total += batch.opticals;
+                case EXOTIC -> total += batch.exotics;
+                case COSMIC -> total += batch.cosmics;
+                case TEMPORAL -> total += batch.temporals;
+                case SPECIAL -> total += batch.specials;
+            }
+        }
+        return total;
+    }
+
+    public long getHatchVar() {
+        MTEHatch hatch = this.getEnergyHatch();
+        if (hatch == null || hatch.getBaseMetaTileEntity() == null) return 0;
+
+        return hatch.getBaseMetaTileEntity()
+            .getStoredEU();
+    }
+
+    public void setHatchVar(long energy) {
+        MTEHatch hatch = this.getEnergyHatch();
+        if (hatch == null || hatch.getBaseMetaTileEntity() == null) return;
+        hatch.setEUVar(energy);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (isAllowedToWork()) {
+                // Fill internal buffer every tick
+                if (this.euBuffer < this.euBufferMax) {
+                    long hatchVar = getHatchVar();
+                    long maxToFill = Math.min(getMaxInputEu(), hatchVar);
+                    long toFill = Math.min(maxToFill, this.euBufferMax - this.euBuffer);
+                    if (toFill > 0) {
+                        setHatchVar(hatchVar - toFill);
+                        this.euBuffer += toFill;
+                    }
+                }
+
+                // If the complex is turned on, periodically reconnect modules.
+                // Fill module buffers every connection interval
+                if (aTick % MODULE_CONNECT_INTERVAL == 0) {
+                    if (!modules.isEmpty()) {
+                        // Calculate the max power to be shared to the modules
+                        BigInteger availableEnergy = BigInteger
+                            .valueOf(Math.min(this.euBuffer, this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
+                        if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
+                        BigInteger drainedEnergy = BigInteger.ZERO;
+                        // iterate over the modules, sending EU to fill their internal buffers
+                        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                            // Connect first, since a module only runs its own structure check while connected.
+                            module.connect(this);
+                            // But do not fill the buffer of a module whose own structure is incomplete.
+                            if (!module.mMachine) continue;
+
+                            BigInteger moduleCapacity = module.getBufferSize();
+                            BigInteger moduleStored = module.getCurrentEUStored();
+                            if (moduleCapacity.compareTo(moduleStored) <= 0) continue;
+
+                            BigInteger euToSend = moduleCapacity.subtract(moduleStored)
+                                .min(availableEnergy);
+                            BigInteger sentEnergy = module.increaseStoredEU(euToSend);
+                            availableEnergy = availableEnergy.subtract(sentEnergy);
+                            drainedEnergy = drainedEnergy.add(sentEnergy);
+                            if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
+                        }
+                        this.euBuffer -= drainedEnergy.longValue();
+                    }
+                }
+            } else {
+                // If the complex is turned off or unformed, disconnect all modules
+                disconnectAll();
+            }
+        }
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        // Always keep the machine running, it doesn't run recipes directly.
+        if (isAllowedToWork()) {
+            mEfficiencyIncrease = 10000;
+            mMaxProgresstime = 5 * SECONDS;
+            // Inside checkProcessing we can safely consume inputs from hatches
+            processRealItemInputs();
+            processComponentInputs();
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
+
+        mEfficiencyIncrease = 0;
+        mMaxProgresstime = 0;
+        return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.nanochipConversionRecipes;
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound nbt) {
+        super.setItemNBT(nbt);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        nbt.setTag("history", history);
+        if (currentBlock != null) {
+            nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
+        nbt.setInteger("matrixPortion", matrixPowerPortion);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        aNBT.setTag("history", history);
+        if (currentBlock != null) {
+            aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
+        aNBT.setInteger("matrixPortion", matrixPowerPortion);
+        aNBT.setBoolean("allModuleToggle", allModuleToggle);
+        aNBT.setLong("euBuffer", euBuffer);
+        aNBT.setLong("euBufferMax", euBufferMax);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        NBTTagList history = aNBT.getTagList("history", Constants.NBT.TAG_INT_ARRAY);
+        for (Object rawTag : history.tagList) {
+            if (rawTag instanceof NBTTagIntArray batch) {
+                circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
+            }
+        }
+        setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
+        if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
+        if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
+        if (aNBT.hasKey("allModuleToggle")) allModuleToggle = aNBT.getBoolean("allModuleToggle");
+        if (aNBT.hasKey("euBuffer")) euBuffer = aNBT.getLong("euBuffer");
+        if (aNBT.hasKey("euBufferMax")) euBufferMax = aNBT.getLong("euBufferMax");
+    }
+
+    public List<MTENanochipAssemblyModuleBase<?>> getModules() {
+        return modules;
+    }
+
+    public void setMatrixPowerPortion(int portion) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+                matrixPowerPortion = portion;
+            }
+        }
+    }
+
+    public int getMatrixPowerPortion() {
+        return matrixPowerPortion;
+    }
+
+    private boolean updateModuleEU(long newPortion, boolean force) {
+        if (modules.isEmpty()) {
+            return false;
+        }
+        List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
+        if (energyHatches.isEmpty()) {
+            return false;
+        }
+
+        int matrix = 0;
+        int nonMatrix = 0;
+        var modules = new ArrayList<>(this.modules);
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            if (!force && module.mMaxProgresstime > 0) {
+                return false;
+            }
+
+            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+            else nonMatrix++;
+        }
+
+        if (matrix + nonMatrix == 0) {
+            return false;
+        }
+        long totalEUt = ExoticEnergyInputHelper.getTotalEuMulti(energyHatches);
+        if (totalEUt == 0) {
+            for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                module.setAvailableEUt(0);
+                module.setBufferSize(BigInteger.ZERO);
+            }
+            return true;
+        }
+
+        long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
+        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+        BigInteger matrixBufferSize = BigInteger.valueOf(perMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
+        BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion)
+            .multiply(MODULE_BUFFER_SECONDS);
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            ModuleTypes type = module.getModuleType();
+            if (type == ModuleTypes.Splitter) continue;
+
+            if (type == ModuleTypes.AssemblyMatrix) {
+                module.setAvailableEUt(perMatrixPortion);
+                module.setBufferSize(matrixBufferSize);
+            } else {
+                module.setAvailableEUt(perNonMatrixPortion);
+                module.setBufferSize(nonMatrixBufferSize);
+            }
+        }
+
+        return true;
+    }
+
+    public void toggleAllModules(boolean on) {
+        for (var module : modules) {
+            if (on) {
+                module.enableWorking();
+            } else {
+                module.disableWorking();
+            }
+        }
+        allModuleToggle = on;
+    }
+
+    public boolean getAllModuleToggle() {
+        return allModuleToggle;
+    }
+
+    @Override
+    public boolean supportsMaintenanceIssueHoverable() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTENanochipAssemblyComplexGui(this);
+    }
+
+    @Override
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.NANOCHIP;
+    }
+
+    // holds a minute of eu/t reserves.
+    @Override
+    public long maxEUStore() {
+        return 60 * this.getMaxInputEu() * MODULE_CONNECT_INTERVAL;
+    }
+
+    // Hatch adder for modules
+    public enum AssemblyHatchElement implements IHatchElement<MTENanochipAssemblyComplex> {
+
+        AssemblyModule("GT5U.MBTT.AnyModule", MTENanochipAssemblyComplex::addModuleToMachineList,
+            MTENanochipAssemblyModuleBase.class) {
+
+            @Override
+            public long count(MTENanochipAssemblyComplex tileEntity) {
+                return tileEntity.modules.size();
+            }
+        },
+        VacuumConveyorHatch("GT5U.MBTT.VacuumConveyorHatch", MTENanochipAssemblyComplex::addConveyorToMachineList,
+            MTEHatchVacuumConveyor.class) {
+
+            @Override
+            public long count(MTENanochipAssemblyComplex tileEntity) {
+                return tileEntity.vacuumConveyors.size();
+            }
+        },
+        // Hatches are allowed in the module base slots, but the assembly complex ignores these for its base operation,
+        // so we need a custom adder to not add them to our hatch lists
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTEHatch.class) {
+
+            @Override
+            public long count(MTENanochipAssemblyComplex tileEntity) {
+                return 0;
+            }
+        };
+
+        private final String name;
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTENanochipAssemblyComplex> adder;
+
+        @SafeVarargs
+        AssemblyHatchElement(String name, IGTHatchAdder<MTENanochipAssemblyComplex> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTENanochipAssemblyComplex> adder() {
+            return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+    }
+
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        // Does not get have maintenance issues
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_NANOCHIP;
+    }
+
+    @Override
+    protected float getSoundRadiusMultiplier() {
+        return 6f;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected void doActivitySound(SoundResource activitySound) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true,
+                    GTSoundLoop.VOLUME_RAMP * SOUND_RADIUS);
+
+                activitySoundLoop.setPosition(getSoundPosition());
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop.setFadeMe(true);
+                activitySoundLoop = null;
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ISoundPosition getSoundPosition() {
+        return new CircularSound(this, 0, 0, 0, 0, 1, 0, 0, 0, SOUND_RADIUS);
+    }
+}

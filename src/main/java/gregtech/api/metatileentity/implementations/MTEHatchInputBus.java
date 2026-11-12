@@ -6,7 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -16,36 +16,46 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport, IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchInputBus extends MTEHatch
+    implements IConfigurationCircuitSupport, ISmartInputHatch, IPhysicalCircuitDisplay, INonConsumedItemDisplay {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
@@ -66,16 +76,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     public MTEHatchInputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Input for Multiblocks",
-                "Shift + right click with screwdriver to turn Sort mode on/off",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchInputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -84,6 +85,12 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     public MTEHatchInputBus(String aName, int aTier, int aSlots, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.input_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -132,27 +139,15 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", (byte) (getBaseMetaTileEntity().getColorization() + 1));
-
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        byte color = (byte) (accessor.getNBTData()
+        final byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
-        if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
-    }
-
-    @Override
-    public int getCircuitSlotX() {
-        return 153;
-    }
-
-    @Override
-    public int getCircuitSlotY() {
-        return 63;
+        MTEHatch.addColorChannelInfo(currenttip, color);
     }
 
     @Override
@@ -166,6 +161,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            notifyWatchers();
             updateSlots();
         }
     }
@@ -177,33 +173,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void fillStacksIntoFirstSlots() {
-        final int L = mInventory.length - 1;
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GTUtility.ItemId> order = new ArrayList<>(L);
-        List<Integer> validSlots = new ArrayList<>(L);
-        for (int i = 0; i < L; i++) {
-            if (!isValidSlot(i)) continue;
-            validSlots.add(i);
-            ItemStack s = mInventory[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mInventory[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mInventory[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
-            mInventory[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
+        // Don't compact busses with fewer than 2 slots since there's no point
+        if (mInventory.length > 1) {
+            GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
         }
     }
 
@@ -216,6 +188,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         if (mRecipeMap != null) {
             aNBT.setString("recipeMap", mRecipeMap.unlocalizedName);
         }
+        aNBT.setBoolean("migrationCircuitSlot", true);
     }
 
     @Override
@@ -227,6 +200,20 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             disableLimited = aNBT.getBoolean("disableLimited");
         }
         mRecipeMap = RecipeMap.getFromOldIdentifier(aNBT.getString("recipeMap"));
+
+        // TODO Delete this code after one update. Also, don't forget to delete the NbtTag - "migrationCircuitSlot".
+        if (allowSelectCircuit()) {
+            if (!aNBT.hasKey("migrationCircuitSlot")) {
+                int newCircuitSlot = getSlots(mTier);
+                int oldCircuitSlot = mTier < 1 ? 1 : mTier == 1 ? 4 : mTier == 2 ? 9 : 16;
+                ItemStack oldCircuit = getStackInSlot(oldCircuitSlot);
+
+                if (oldCircuit != null && getStackInSlot(newCircuitSlot) == null) {
+                    setInventorySlotContents(newCircuitSlot, oldCircuit.copy());
+                    setInventorySlotContents(oldCircuitSlot, null);
+                }
+            }
+        }
     }
 
     @Override
@@ -245,14 +232,13 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                     disableLimited = true;
                 }
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + disableSort).appendText("   ")
+                    .appendSibling(new ChatComponentTranslation("GT5U.hatch.disableLimited." + disableLimited)));
         } else {
             disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
         }
     }
 
@@ -287,6 +273,45 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         return getSlots(mTier);
     }
 
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        return IPhysicalCircuitDisplay.collectCircuitNumbers(this, 0, getSizeInventory(), getCircuitSlot());
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        List<ItemStack> result = new ArrayList<>();
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, stack)) {
+                result.add(stack);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchInputBusGui(this).build(data, syncManager, uiSettings);
+    }
+
+    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(6 + (uiButtonCount++ * BUTTON_SIZE), 60 + getOffsetY())
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
+    }
+
     protected void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
@@ -304,33 +329,221 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addCloseListener(() -> uiButtonCount = 0);
-        addSortStacksButton(builder);
-        addOneStackLimitButton(builder);
-        // Remove one for ghost circuit slot
-        int slotCount = getSizeInventory();
-        if (allowSelectCircuit()) {
-            slotCount = slotCount - 1;
-        }
-        // We do this to decouple slot count from tier in here, since there is no reason to do so.
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {}
-        }
+    public int getGUIWidth() {
+        return super.getGUIWidth() + getOffsetX();
     }
 
-    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
-        return new CycleButtonWidget().setToggle(getter, setter)
-            .setStaticTexture(picture)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE)
-            .setGTTooltip(tooltipDataSupplier);
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + getOffsetY();
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153 + getOffsetX();
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 60 + getOffsetY();
+    }
+
+    /**
+     * Removes the specified quantity of items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @param amount  Number of items to remove.
+     * @return ItemStack of removed items, or null if nothing was removed.
+     */
+    public ItemStack removeResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        int remaining = amount;
+        for (int i = 0; i < this.getSizeInventory() && remaining > 0; i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = this.getStackInSlot(i);
+            if (slotStack == null || slotStack.stackSize < amount) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        int toRemove = Math.min(remaining, slotStack.stackSize);
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, toRemove);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else {
+                                result.stackSize += removed.stackSize;
+                            }
+                            remaining -= removed.stackSize;
+                            updateSlots();
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Removes all items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return ItemStack with the total quantity of removed items, or null if nothing was removed.
+     */
+    public ItemStack removeAllResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getBaseMetaTileEntity() == null) {
+            return null;
+        }
+
+        ItemStack result = null;
+        boolean updated = false;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    if (result == null || GTUtility.areStacksEqual(result, slotStack)) {
+                        ItemStack removed = getBaseMetaTileEntity().decrStackSize(i, slotStack.stackSize);
+                        if (removed != null) {
+                            if (result == null) {
+                                result = removed.copy();
+                            } else if (GTUtility.areStacksEqual(result, removed)) {
+                                result.stackSize += removed.stackSize;
+                            }
+                            updated = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (updated) {
+            updateSlots();
+        }
+        return result;
+    }
+
+    /**
+     * Finds the first ItemStack matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return First found ItemStack, or null if nothing was found.
+     */
+    public ItemStack findResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
+            return null;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return slotStack.copy();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if the inventory contains an item matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @return true if a matching item is found, false otherwise.
+     */
+    public boolean hasResource(ItemStack[] targets) {
+        if (targets == null || targets.length == 0 || getSizeInventory() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the inventory contains at least the specified quantity of items matching any of the target ItemStacks.
+     *
+     * @param targets Array of target ItemStacks to search for (compared by type and metadata).
+     * @param amount  Number of items to check for.
+     * @return true if at least the specified quantity is found, false otherwise.
+     */
+    public boolean hasResource(ItemStack[] targets, int amount) {
+        if (targets == null || targets.length == 0 || amount <= 0 || getSizeInventory() == 0) {
+            return false;
+        }
+
+        int total = 0;
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack slotStack = getStackInSlot(i);
+            if (slotStack == null) {
+                continue;
+            }
+            for (ItemStack target : targets) {
+                if (target != null && GTUtility.areStacksEqual(slotStack, target)) {
+                    total += slotStack.stackSize;
+                    if (total >= amount) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // one element target methods
+
+    public ItemStack removeResource(ItemStack target, int amount) {
+        if (target == null) return null;
+        return removeResource(new ItemStack[] { target }, amount);
+    }
+
+    public ItemStack removeAllResource(ItemStack target) {
+        if (target == null) return null;
+        return removeAllResource(new ItemStack[] { target });
+    }
+
+    public ItemStack findResource(ItemStack target) {
+        if (target == null) return null;
+        return findResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target });
+    }
+
+    public boolean hasResource(ItemStack target, int amount) {
+        if (target == null) return false;
+        return hasResource(new ItemStack[] { target }, amount);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.input_bus.desc" : "gt.blockmachines.input_bus.singular.desc",
+            getSlots(mTier));
     }
 }

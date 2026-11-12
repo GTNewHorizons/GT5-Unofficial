@@ -3,6 +3,8 @@ package gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,10 +21,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverFluidRegulatorGui;
-import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
+import gregtech.common.gui.modularui.cover.CoverFluidRegulatorGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidRegulatorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -168,21 +170,18 @@ public class CoverFluidRegulator extends Cover {
         }
     }
 
-    private String getScredriverClickChat() {
+    private IChatComponent getScrewdriverClickChat() {
         if (Math.abs(speed) == getMaxSpeed()) {
-            return GTUtility.trans("316", "Pump speed limit reached!");
+            return new ChatComponentTranslation("GT5U.chat.cover.fluid_regulator.max");
         }
         if (tickRate == 1) {
-            return GTUtility.trans("048", "Pump speed: ") + speed
-                + GTUtility.trans("049", "L/tick ")
-                + speed * 20
-                + GTUtility.trans("050", "L/sec");
+            return new ChatComponentTranslation("GT5U.chat.cover.fluid_regulator.rate_1", speed, speed * 20);
         }
-        return String.format(
-            GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
+        return new ChatComponentTranslation(
+            "GT5U.chat.cover.fluid_regulator.speed",
             speed,
             tickRate,
-            speed * 20d / tickRate);
+            String.format("%.2f", (speed * 20d / tickRate)));
     }
 
     @Override
@@ -196,10 +195,11 @@ public class CoverFluidRegulator extends Cover {
         if (Math.abs(speed) > getMaxSpeed()) {
             speed = getMaxSpeed() * (speed > 0 ? 1 : -1);
         }
-        GTUtility.sendChatToPlayer(aPlayer, getScredriverClickChat());
+        GTUtility.sendChatComp(aPlayer, getScrewdriverClickChat());
     }
 
     public int getMaxSpeed() {
+        if ((long) mTransferRate * tickRate > Integer.MAX_VALUE) return Integer.MAX_VALUE;
         return mTransferRate * tickRate;
     }
 
@@ -273,7 +273,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverFluidRegulatorGui(this);
     }
 

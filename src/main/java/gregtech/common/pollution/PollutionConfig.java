@@ -114,7 +114,7 @@ public class PollutionConfig {
     @Config.Comment({
         "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
         "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
-    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8 })
+    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 })
     @Config.RequiresMcRestart
     public static double[] pollutionDieselGeneratorReleasedByTier;
 
@@ -343,14 +343,9 @@ public class PollutionConfig {
     @Config.Comment("pollution rate in gibbl/s for the Multiblock Molecular Transformer")
     @Config.DefaultInt(1_000)
     public static int pollutionPerSecondMultiMolecularTransformer;
-
     @Config.Comment("pollution rate in gibbl/s for the Elemental Duplicator")
     @Config.DefaultInt(1_000)
     public static int pollutionPerSecondElementalDuplicator;
-
-    @Config.Comment("pollution rate in gibbl/s for the Thermal boiler")
-    @Config.DefaultInt(700)
-    public static int pollutionPerSecondMultiThermalBoiler;
     @Config.Comment("pollution rate in gibbl/s for the Algae farm")
     @Config.DefaultInt(0)
     public static int pollutionPerSecondMultiAlgaePond;

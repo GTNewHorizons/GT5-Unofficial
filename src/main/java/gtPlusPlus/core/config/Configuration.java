@@ -12,15 +12,10 @@ public class Configuration {
 
     public static final Debug debug = new Debug();
     public static final Features features = new Features();
-    public static final Visual visual = new Visual();
     public static final Worldgen worldgen = new Worldgen();
 
     @Config.Comment("Debug section")
     public static class Debug {
-
-        @Config.Comment("Makes many machines display lots of debug logging.")
-        @Config.DefaultBoolean(false)
-        public boolean MachineInfo;
 
         @Config.Comment("Dumps all GT++ and Toxic Everglade Data to en_US.lang in the config folder. This config option can be used by foreign players to generate blank .lang files, which they can populate with their language of choice.")
         @Config.DefaultBoolean(false)
@@ -33,18 +28,6 @@ public class Configuration {
         @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
         @Config.DefaultBoolean(true)
         public boolean hideUniversalCells;
-    }
-
-    @Config.Comment("Visual section")
-    public static class Visual {
-
-        @Config.Comment("Enables Animated GT++ Textures")
-        @Config.DefaultBoolean(true)
-        public boolean enableAnimatedTextures;
-
-        @Config.Comment("Use GT textures")
-        @Config.DefaultBoolean(true)
-        public boolean useGregtechTextures;
     }
 
     @Config.Comment("Worldgen section")

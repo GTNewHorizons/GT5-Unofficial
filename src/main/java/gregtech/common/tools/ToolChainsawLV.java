@@ -17,6 +17,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -85,13 +86,7 @@ public class ToolChainsawLV extends ToolSaw {
                 aDrops.clear();
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
-            && (aDrops.isEmpty())) {
-                aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
-                aEvent.dropChance = 1.0F;
-                return 1;
-            }
+        }
         if ((GregTechAPI.sTimber) && (!aPlayer.isSneaking())
             && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
             int tY = aY + 1;
@@ -129,10 +124,15 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
+    }
+
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadChainsaw.mTextureIndex]
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw
+                .getTextureIndex()]
             : Textures.ItemIcons.POWER_UNIT_LV;
     }
 

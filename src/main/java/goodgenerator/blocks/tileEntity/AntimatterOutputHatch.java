@@ -2,45 +2,61 @@ package goodgenerator.blocks.tileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
 
+    private static final String DATA_STICK_DATA_TYPE = "AntimatterOutputHatch";
+
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
-        this.mDescriptionArray[1] = "Stores Antimatter";
-        this.mDescriptionArray[2] = "Antimatter can be inserted from any side";
-        this.mDescriptionArray[3] = "Front face input can be toggled with a screwdriver";
-        this.mDescriptionArray[4] = "Capacity: 16,384,000L";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        super.setLockedFluidName(
-            MaterialsUEVplus.Antimatter.getFluid(1)
-                .getFluid()
-                .getName());
+        super.setLockedFluid(ANTIMATTER.getFluid());
     }
 
     @Override
-    public void setLockedFluidName(String lockedFluidName) {
-        this.lockedFluidName = MaterialsUEVplus.Antimatter.getFluid(1)
-            .getFluid()
-            .getName();
+    public void setLockedFluid(Fluid lockedFluid) {
+        this.lockedFluid = ANTIMATTER.getFluid();
         markDirty();
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setByte(MODE_NBT_KEY, mMode);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        mMode = nbt.getByte(MODE_NBT_KEY);
+        markDirty();
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     @Override
@@ -69,7 +85,10 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         mMode ^= 1;
-        GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            mMode == 1 ? "gg.chat.antimatter_output_hatch.front_face_input.enable"
+                : "gg.chat.antimatter_output_hatch.front_face_input.disable");
     }
 
     @Override
@@ -84,7 +103,12 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     }
 
     @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == MaterialsUEVplus.Antimatter.mFluid);
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_antimatter.desc");
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.isFluidEqual(ANTIMATTER);
     }
 }

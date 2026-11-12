@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -19,32 +18,39 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -53,8 +59,10 @@ import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitBaryonicPerfection
-    extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
+    extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public static long BARYONIC_MATTER_OUTPUT = 2000L;
 
@@ -97,7 +105,7 @@ public class MTEPurificationUnitBaryonicPerfection
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 onElementPass(t -> t.numCasings++, ofBlock(GregTechAPI.sBlockCasings10, 2))))
@@ -170,6 +178,8 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
+    private static final int CONSUME_INTERVAL = 20;
+
     private int correctStartIndex = -1;
     private int numCasings = 0;
     private static final int MIN_CASINGS = 300;
@@ -190,29 +200,20 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            OVERLAY_FRONT_WATER_T8,
+            OVERLAY_FRONT_WATER_T8_GLOW,
+            OVERLAY_FRONT_WATER_T8_ACTIVE,
+            OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN);
     }
 
     @Override
@@ -245,139 +246,55 @@ public class MTEPurificationUnitBaryonicPerfection
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         numCasings = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        if (numCasings < MIN_CASINGS) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkCasingMin(errors, numCasings, MIN_CASINGS);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Insert " + EnumChatFormatting.WHITE
-                    + "Quark Releasing Catalysts "
-                    + EnumChatFormatting.GRAY
-                    + "into the input bus while running")
-            .addInfo(
-                "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " different "
-                    + EnumChatFormatting.WHITE
-                    + "Quark Releasing Catalysts")
-            .addInfo("will correctly identify the lone quark and succeed the recipe")
-            .addInfo(
-                "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
-                    + "Up"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Down"
-                    + EnumChatFormatting.GRAY
-                    + " can be identified by inserting "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Down"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.BLUE
-                    + "Up")
-            .addSeparator()
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL catalysts in the input bus")
-            .addInfo(
-                "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
-                    + CATALYST_BASE_COST
-                    + "L"
-                    + EnumChatFormatting.WHITE
-                    + " Molten Infinity")
-            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled")
-            .addSeparator()
-            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe")
-            .addInfo(
-                "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
-                    + EnumChatFormatting.RED
-                    + BARYONIC_MATTER_OUTPUT
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter")
-            .addInfo(
-                "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
-                    + PurifiedWaterRecipes.extraBaryonicOutput
-                    + "L "
-                    + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter"
-                    + EnumChatFormatting.GRAY
-                    + " per parallel")
-            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The final stage of water purification goes beyond subatomic particles and identifies the smallest")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "possible imperfections within the baryons themselves. By correctly identifying which pairs of quark")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_baryonic_perfection"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("interval", CONSUME_INTERVAL)
+                    .put("catalyst_cost", CATALYST_BASE_COST)
+                    .put(
+                        "catalyst_fluid",
+                        Materials.Infinity.getMolten(1)
+                            .getLocalizedName())
+                    .put("output", BARYONIC_MATTER_OUTPUT)
+                    .put("extra_output", PurifiedWaterRecipes.extraBaryonicOutput)
+                    .put(
+                        "output_fluid",
+                        Materials.StableBaryonicMatter.getFluid(1)
+                            .getLocalizedName())
+                    .build())
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
-            .addCasingInfoMinColored(
-                "Quark Exclusion Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Femtometer-Calibrated Particle Beam Casing",
-                EnumChatFormatting.GRAY,
-                96,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Particle Beam Guidance Pipe Casing",
-                EnumChatFormatting.GRAY,
-                37,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Non-Photonic Matter Exclusion Glass",
-                EnumChatFormatting.GRAY,
-                240,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                108,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
-            .addInputHatch("Any Quark Exclusion Casing", 1)
-            .addOutputBus("Any Quark Exclusion Casing", 1)
-            .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
+            .addCasing(MIN_CASINGS + "-339", Casings.QuarkExclusionCasing.getLocalizedName(), false)
+            .addCasing("240", Casings.NonPhotonicMatterExclusionGlass.getLocalizedName(), false)
+            .addCasing("108", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bedrockium), false)
+            .addCasing("96", Casings.FemtometerCalibratedParticleBeamCasing.getLocalizedName(), false)
+            .addCasing("37", Casings.ParticleBeamGuidancePipeCasing.getLocalizedName(), false)
+            .addInputBus(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing_no_stocking"),
+                1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
+            .toolTipFinisher();
         return tt;
     }
 
@@ -454,7 +371,7 @@ public class MTEPurificationUnitBaryonicPerfection
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
-        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+        if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             startRecipeProcessing();
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             // For each stack in the input, check if it is a valid catalyst item and if so consume it
@@ -498,7 +415,8 @@ public class MTEPurificationUnitBaryonicPerfection
             // Now check the sequence for a correct combination
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
-            if (correctStartIndex != -1) addOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
+            if (correctStartIndex != -1)
+                addOutputPartial(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
         }
     }
 
@@ -558,26 +476,20 @@ public class MTEPurificationUnitBaryonicPerfection
         return EnumChatFormatting.GRAY;
     }
 
+    @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
+        info.add(IGregTechDeviceInformation.encode("GT5U.infodata.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
-            String name = stack.getDisplayName();
-            String[] split = name.split("-");
             info.add(
-                EnumChatFormatting.YELLOW + ""
-                    + (i + 1)
-                    + ": "
-                    + getQuarkColor(stack)
-                    + split[0]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + split[1]);
+                IGregTechDeviceInformation.encode(
+                    "GT5U.infodata.pubp.catalyst_entry",
+                    "" + EnumChatFormatting.YELLOW + (i + 1),
+                    getQuarkColor(stack) + stack.getDisplayName()));
         }
         info.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
+            IGregTechDeviceInformation.encode("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

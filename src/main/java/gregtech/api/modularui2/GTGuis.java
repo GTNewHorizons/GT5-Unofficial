@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.items.armor.ui.ArmorRadialMenu;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.panel.GTPopUpPanel;
@@ -25,7 +26,7 @@ public final class GTGuis {
      *
      * @see CommonMetaTileEntity#useMui2
      */
-    public static boolean GLOBAL_SWITCH_MUI2 = false;
+    public static boolean GLOBAL_SWITCH_MUI2 = true;
 
     /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
@@ -56,5 +57,8 @@ public final class GTGuis {
     public static void registerFactories() {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
         GuiManager.registerFactory(CoverUIFactory.INSTANCE);
+        GuiManager.registerFactory(ToolboxSelectGuiFactory.INSTANCE);
+        GuiManager.registerFactory(ProxiedMteGui.GUI);
+        GuiManager.registerFactory(ArmorRadialMenu.INSTANCE);
     }
 }

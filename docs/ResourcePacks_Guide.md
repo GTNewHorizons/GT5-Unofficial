@@ -35,7 +35,8 @@ Here is an example of the file:
       "Magenta":    "BF4095",
       "Orange":     "AA4F00",
       "White":      "FAFAFF",
-      "Machine Metal": "0047AB"
+      "Machine Metal": "0047AB",
+      "Gui Metal": "0047AB"
     },
     "textColor": {
       "title": "FF7700",

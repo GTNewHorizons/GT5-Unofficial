@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -19,6 +18,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
@@ -148,7 +148,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 1;
                         break;
                     case 1:
@@ -156,14 +156,14 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 1;
                     default:
                         // Utils.LOG_WARNING("Did not click the correct place.");
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         break;
                 }
                 GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
@@ -191,28 +191,28 @@ public class MTETesseractTerminal extends MTEBasicTank {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 64;
                     }
                     case 1 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 64;
                     }
                     case 2 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency -= 512;
                     }
                     case 3 -> {
                         try {
                             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                                 .remove(this.mFrequency);
-                        } catch (Throwable t) {}
+                        } catch (Exception ignored) {}
                         this.mFrequency += 512;
                     }
                 }
@@ -226,11 +226,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .compareTo(this.mOwner) != 0) {
                 GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
             }
-    }
-
-    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     public MTETesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
@@ -268,11 +263,10 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .isAllowedToWork()) && (tTileEntity.isSendingInformation())) {
             return tTileEntity.getInfoData();
         }
-        return new String[] { StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.name"),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
-            this.getTesseract(this.mFrequency, false) != null
-                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
-                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
+        return new String[] { "gtpp.infodata.tesseract_generator.name",
+            IGregTechDeviceInformation.encode("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            this.getTesseract(this.mFrequency, false) != null ? "gtpp.infodata.tesseract_generator.status.active"
+                : "gtpp.infodata.tesseract_generator.status.inactive" };
     }
 
     @Override
@@ -551,7 +545,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
                 TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
             : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
-                TextureFactory.of(Textures.BlockIcons.VOID) };
+                TextureFactory.of(Textures.GlobalIcons.VOID) };
     }
 
     // To-Do?
@@ -594,7 +588,12 @@ public class MTETesseractTerminal extends MTEBasicTank {
         try {
             GTPPCore.sTesseractTerminalOwnershipMap.get(mOwner)
                 .remove(this.mFrequency);
-        } catch (Throwable t) {}
+        } catch (Exception ignored) {}
         super.onRemoval();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

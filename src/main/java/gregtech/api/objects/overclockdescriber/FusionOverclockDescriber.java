@@ -32,11 +32,11 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
             .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
 
-    protected double getEUtIncreasePerOC() {
+    public double getEUtIncreasePerOC() {
         return 2.0;
     }
 
-    protected double getDurationDecreasePerOC() {
+    public double getDurationDecreasePerOC() {
         return 2.0;
     }
 

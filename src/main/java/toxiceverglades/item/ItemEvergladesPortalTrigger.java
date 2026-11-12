@@ -49,12 +49,12 @@ public class ItemEvergladesPortalTrigger extends Item {
         return StatCollector.translateToLocal("item.everglades.trigger.name");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.0"));
-        list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.1"));
-        super.addInformation(stack, aPlayer, list, bool);
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
+        final boolean adv) {
+        tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.0"));
+        tooltip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.1"));
+        super.addInformation(stack, player, tooltip, adv);
     }
 
     @Override

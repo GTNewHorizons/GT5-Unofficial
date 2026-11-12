@@ -1,10 +1,11 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -12,115 +13,93 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
-import gregtech.common.gui.modularui.widget.TextButtonWidget;
+import gregtech.common.gui.modularui.multiblock.MTEPurificationPlantGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPurificationPlant>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
      */
-    public static final int MAX_UNIT_DISTANCE = 32;
+    public static final int MAX_UNIT_DISTANCE = 64;
 
     /**
      * Time in ticks for a full processing cycle to complete.
      */
     public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
+    public List<LinkedPurificationUnit> getLinkedUnits() {
+        return linkedUnits;
+    }
+
     /**
      * Stores all purification units linked to this controller. Normally all units in this list should be valid and
      * unique, if not then there is a bug where they are not being unlinked properly on block destruction/relinking.
      */
-    private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
+    private final List<LinkedPurificationUnit> linkedUnits = new ArrayList<>();
 
     /**
      * Debug mode is an operational mode that does not produce output or consume input, but cuts down processing time
      * for players to more easily debug their automation setups.
      */
     private boolean debugMode = false;
+    private boolean needsWaterFill = false;
     public static final int CYCLE_TIME_IN_DEBUG = 30 * SECONDS;
 
     private static final IStructureDefinition<MTEPurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
-        // Create an identical structure for survival autobuild, with water replaced with air
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("F", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Superplasticizer-treated high strength concrete
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 3))
         // Sterile Water Plant Casing
@@ -129,7 +108,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        .addElement('F', ofAnyWater())
+        .addElement('F', ofChain(ofAnyWater(false), isAir()))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -138,7 +117,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationPlant>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4))
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 4)))
@@ -159,14 +138,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
-        if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
-            return 0;
-        }
-        return built;
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -177,106 +150,38 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant, WPP")
-            .addInfo("Main controller block for the Water Purification Plant")
-            .addInfo(
-                "Freely place " + EnumChatFormatting.YELLOW
-                    + "Purification Units "
-                    + EnumChatFormatting.GRAY
-                    + "within "
-                    + EnumChatFormatting.RED
-                    + MAX_UNIT_DISTANCE
-                    + EnumChatFormatting.GRAY
-                    + " blocks along each axis")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
-            .addInfo("Supplies power to linked purification units")
-            .addTecTechHatchInfo()
-            .addSeparator()
-            .addInfo(
-                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                    + CYCLE_TIME_TICKS / SECONDS
-                    + EnumChatFormatting.GRAY
-                    + " seconds")
-            .addInfo("All linked units follow this cycle")
-            .addSeparator()
-            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input")
-            .addInfo(
-                EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of output yield will be consumed in exchange for an")
-            .addInfo(
-                "additive " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success")
-            .addInfo(
-                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
-                    + "50%"
-                    + EnumChatFormatting.GRAY
-                    + " chance")
-            .addInfo("to return water of the same quality as the input or lower")
-            .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
-            .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water is systematically purified through a series of increasingly precise and complex")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation")
-            .beginStructureBlock(7, 9, 8, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Superplasticizer-Treated High Strength Concrete",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_plant"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-plant"),
+                ImmutableMap.of(
+                    "distance",
+                    MAX_UNIT_DISTANCE,
+                    "cycle",
+                    CYCLE_TIME_TICKS / SECONDS,
+                    "boost_fluid",
+                    WATER_BOOST_NEEDED_FLUID * 100,
+                    "boost_chance",
+                    WATER_BOOST_BONUS_CHANCE * 100,
+                    "debug_cycle",
+                    CYCLE_TIME_IN_DEBUG / SECONDS))
+            .addSupportAny()
+            .beginStructureBlock(7, 9, 8, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("77", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("71-72", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("56", Casings.SuperplasticizerTreatedHighStrengthConcrete.getLocalizedName(), false)
+            .addCasing("30", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing(
+                "6",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
                 false)
-            .addCasingInfoRangeColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                71,
-                72,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungsten Frame Box",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("Requires water to be placed in the tank.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .toolTipFinisher();
         return tt;
     }
 
@@ -286,36 +191,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_PURIFICATION_PLANT,
+            OVERLAY_FRONT_PURIFICATION_PLANT_GLOW,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4));
     }
 
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
@@ -323,24 +215,24 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check self
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) {
-            return false;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                PurificationPlantStructureString.STRUCTURE_STRING,
+                3,
+                6,
+                0,
+                'F');
+            return;
         }
 
-        // Check hatches
-        if (!checkHatches()) {
-            return false;
-        }
-
-        // using nano forge method of detecting hatches.
-        return checkExoticAndNormalEnergyHatches();
-    }
-
-    private boolean checkHatches() {
-        // Exactly one maintenance hatch is required
-        return mMaintenanceHatches.size() == 1;
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     public boolean debugModeOn() {
@@ -352,12 +244,24 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (needsWaterFill && aTick % 20 == 0) {
+                if (GTStructureUtility.fillStructureWithWater(
+                    aBaseMetaTileEntity,
+                    getExtendedFacing(),
+                    PurificationPlantStructureString.STRUCTURE_STRING,
+                    3,
+                    6,
+                    0,
+                    'F')) {
+                    needsWaterFill = false;
+                }
+            }
             // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
-            for (int i = 0; i < mLinkedUnits.size(); ++i) {
+            for (int i = 0; i < linkedUnits.size(); ++i) {
                 if (aTick % CYCLE_TIME_TICKS == i) {
-                    LinkedPurificationUnit unit = mLinkedUnits.get(i);
+                    LinkedPurificationUnit unit = linkedUnits.get(i);
                     boolean structure = unit.metaTileEntity()
-                        .checkStructure(true);
+                        .checkStructure(true, aBaseMetaTileEntity);
                     // If unit was active but deformed, set as inactive
                     if (unit.isActive() && !structure) {
                         unit.setActive(false);
@@ -393,7 +297,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     markDirty();
                     mProgresstime += 1;
                     // Update progress time for active units
-                    for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+                    for (LinkedPurificationUnit unit : this.linkedUnits) {
                         if (unit.isActive()) {
                             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
                             metaTileEntity.mProgresstime = mProgresstime;
@@ -407,10 +311,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     // Power drain failed, shut down all other units due to power loss.
                     // Note that we do not need to shut down self, as this is done in
                     // onRunningTick already
-                    for (LinkedPurificationUnit unit : mLinkedUnits) {
+                    for (LinkedPurificationUnit unit : linkedUnits) {
                         if (unit.isActive()) {
                             unit.metaTileEntity()
                                 .stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                            unit.setActive(false);
                         }
                     }
                 }
@@ -431,11 +336,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 
         // Find active units and notify them that the cycle started
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
-            // Unit needs to be online to be considered active.
-            if (status == PurificationUnitStatus.ONLINE) {
+            // Unit needs to be idle at first before active if it is active it will only check if running recipes.
+            if (status == PurificationUnitStatus.IDLE || status == PurificationUnitStatus.ACTIVE) {
                 // Perform recipe check for unit and start it if successful
                 if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);
@@ -452,7 +357,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         mMaxProgresstime = 0;
 
         // Mark all units as inactive and reset their progress time
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             // If this unit was active, end the cycle
             if (unit.isActive()) {
@@ -460,6 +365,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
             unit.setActive(false);
         }
+        mLastWorkingTick = mTotalRunTime;
     }
 
     /**
@@ -467,7 +373,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      */
     private long calculateEffectivePowerUsage() {
         long euT = 0;
-        for (LinkedPurificationUnit unit : mLinkedUnits) {
+        for (LinkedPurificationUnit unit : linkedUnits) {
             if (unit.isActive()) {
                 euT += unit.metaTileEntity()
                     .getActualPowerUsage();
@@ -481,11 +387,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
         // waterline multiblocks not resuming their progress until the next cycle.
         link.setActive(unit.mMaxProgresstime > 0);
-        this.mLinkedUnits.add(link);
+        this.linkedUnits.add(link);
     }
 
     public void unregisterLinkedUnit(MTEPurificationUnitBase<?> unit) {
-        this.mLinkedUnits.removeIf(link -> link.metaTileEntity() == unit);
+        this.linkedUnits.removeIf(link -> link.metaTileEntity() == unit);
     }
 
     @Override
@@ -513,26 +419,28 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
+        ret.add(
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.recipesDone.fmt",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET));
         // Show linked purification units and their status
-        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        ret.add("GT5U.infodata.purification_plant.linked_units");
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ONLINE -> {
-                    text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
-                }
-                case DISABLED -> {
-                    text = text + EnumChatFormatting.YELLOW
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
-                }
-                case INCOMPLETE_STRUCTURE -> {
-                    text = text + EnumChatFormatting.RED
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
-                }
+                case ACTIVE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.active");
+                case IDLE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.idle");
+                case DISABLED -> text = text + EnumChatFormatting.YELLOW
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                case INCOMPLETE_STRUCTURE -> text = text + EnumChatFormatting.RED
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
             }
             ret.add(text);
         }
@@ -542,237 +450,25 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public void onBlockDestroyed() {
         // When the controller is destroyed we want to notify all currently linked units
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             unit.metaTileEntity()
                 .unlinkController();
         }
         super.onBlockDestroyed();
     }
 
-    private void drawTopText(DynamicPositionedColumn screenElements) {
-        screenElements.setSynced(false)
-            .setSpace(0);
-
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(EnumChatFormatting.RED)
-                    .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-
-        screenElements
-            .widget(
-                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(EnumChatFormatting.BLACK)
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().isActive(),
-                    val -> getBaseMetaTileEntity().setActive(val)));
-        screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.GREEN)
-                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
-        screenElements.widget(
-            TextWidget.dynamicString(
-                () -> getBaseMetaTileEntity().getLastShutDownReason()
-                    .getDisplayString())
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(
-                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                        && GTUtility.isStringValid(
-                            getBaseMetaTileEntity().getLastShutDownReason()
-                                .getDisplayString())
-                        && getBaseMetaTileEntity().wasShutdown()))
-            .widget(
-                new ShutDownReasonSyncer(
-                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
-                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().wasShutdown(),
-                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
-        screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentProgress)
-                .setSynced(false)
-                .setTextAlignment(new Alignment(-1, -1))
-                .setSize(180, 12)
-                .setEnabled(
-                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                        || (mOutputItems != null && mOutputItems.length > 0)))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
-    }
-
-    private final int STATUS_WINDOW_ID = 10;
-
-    private ModularWindow createStatusWindow(final EntityPlayer player) {
-        final int windowWidth = 260;
-        final int windowHeight = 200;
-        ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(windowWidth - 15, 3));
-
-        // Title widget
-        builder.widget(
-            new TextWidget(translateToLocal("GT5U.infodata.purification_plant.status_title"))
-                .setTextAlignment(Alignment.Center)
-                .setPos(5, 10)
-                .setSize(windowWidth, 8));
-
-        int currentYPosition = 20;
-        Scrollable mainDisp = new Scrollable().setVerticalScroll()
-            .setHorizontalScroll();
-
-        int rowHeight = 20;
-        for (int i = 0; i < this.mLinkedUnits.size(); i++) {
-            mainDisp.widget(makeUnitStatusWidget(mLinkedUnits.get(i)).setPos(0, rowHeight * (i + 1)));
-        }
-
-        builder.widget(
-            mainDisp.setPos(5, currentYPosition)
-                .setSize(windowWidth - 10, windowHeight - currentYPosition - 5));
-        return builder.build();
-    }
-
-    private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
-            translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
-                .setSize(40, 16)
-                .setPos(10, 40);
-        widget.button()
-            .setOnClick(
-                (clickData, w) -> {
-                    if (!w.isClient()) w.getContext()
-                        .openSyncedWindow(STATUS_WINDOW_ID);
-                })
-            .setBackground(GTUITextures.BUTTON_STANDARD);
-        widget.text()
-            .setTextAlignment(Alignment.CenterLeft)
-            .setDefaultColor(EnumChatFormatting.BLACK);
-        return widget;
-    }
-
-    private Widget makeUnitStatusWidget(LinkedPurificationUnit unit) {
-        // Draw small machine controller icon
-        DynamicPositionedRow row = new DynamicPositionedRow();
-        ItemStackHandler machineIcon = new ItemStackHandler(1);
-        machineIcon.setStackInSlot(
-            0,
-            unit.metaTileEntity()
-                .getStackForm(1));
-
-        row.widget(
-            SlotWidget.phantom(machineIcon, 0)
-                .disableInteraction()
-                .setPos(0, 0))
-            .setSize(20, 20);
-
-        // Display machine name and status
-        String name = unit.metaTileEntity()
-            .getLocalName();
-
-        String statusString = name + "  " + unit.getStatusString();
-        int widgetWidth = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            widgetWidth = fontRenderer.getStringWidth(statusString) + 25;
-        }
-
-        row.widget(
-            TextWidget.dynamicString(() -> statusString)
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(25, 0)
-                .fillParent())
-            .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
-            .widget(
-                unit.metaTileEntity()
-                    .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive))
-            .setSize(widgetWidth, 20);
-
-        return row;
-    }
-
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-
-        buildContext.addSyncedWindow(STATUS_WINDOW_ID, this::createStatusWindow);
-
-        // Draw basic recipe info
-        final DynamicPositionedColumn controlTextArea = new DynamicPositionedColumn();
-        drawTopText(controlTextArea);
-        builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(controlTextArea)
-                .setPos(10, 7)
-                .setSize(182, 24));
-
-        // Draw line separator
-        builder.widget(
-            new Rectangle().setColor(Color.rgb(114, 120, 139))
-                .asWidget()
-                .setSizeProvider((screenSize, window, parent) -> new Size(window.getSize().width - 8, 2))
-                .setPos(3, 32));
-
-        // Add status window button
-        builder.widget(makeStatusWindowButton());
-
-        //
-        builder.widget(
-            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
-                .setOnClick((c, w) -> debugMode = !debugMode)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    if (debugMode) {
-                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-                    } else {
-                        ret.add(GTUITextures.BUTTON_STANDARD);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(174, 112)
-                .setSize(16, 16));
-
-        builder.widget(createPowerSwitchButton(builder));
-
-        // Add value syncers, note that we do this here so
-        // everything is updated once the status gui opens
-        addSyncers(builder);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPurificationPlantGui(this);
     }
 
-    private void addSyncers(ModularWindow.Builder builder) {
-        // Sync connection list to client
-        builder.widget(new FakeSyncWidget.ListSyncer<>(() -> mLinkedUnits, links -> {
-            mLinkedUnits.clear();
-            mLinkedUnits.addAll(links);
-        }, (buffer, link) -> {
-            // Try to save link data to NBT, so we can reconstruct it on client
-            try {
-                buffer.writeNBTTagCompoundToBuffer(link.writeLinkDataToNBT());
-            } catch (IOException e) {
-                GTLog.err.println(e.getCause());
-            }
-        }, buffer -> {
-            // Try to load link data from NBT compound as constructed above.
-            try {
-                return new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer());
-            } catch (IOException e) {
-                GTLog.err.println(e.getCause());
-            }
-            return null;
-        }));
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public boolean setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+        return debugMode;
     }
 
     @Override
@@ -786,5 +482,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         super.saveNBTData(aNBT);
         aNBT.setBoolean("debugMode", debugMode);
 
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

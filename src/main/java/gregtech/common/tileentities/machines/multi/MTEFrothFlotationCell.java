@@ -1,0 +1,381 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.List;
+import java.util.Objects;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEFrothFlotationCellGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int OFFSET_X = 5;
+    private static final int OFFSET_Y = 3;
+    private static final int OFFSET_Z = 0;
+    private static final int TOP_CASING_AMOUNT = 28;
+    private static ITexture casingTexture;
+
+    private int casingAmount;
+    private boolean needsWaterFill = false;
+
+    private static final String[][] structure = new String[][] {
+        { "           ", "           ", "           ", "    D~D    ", "   CCCCC   " },
+        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
+        { "           ", "       BB  ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+        { "           ", "      BBB  ", "       B   ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+        { "   EEEEE   ", " AE  BBBEA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+        { " EEEEEEEEE ", " E  BEB  E ", "     E     ", "DWWWDEDWWWD", "CCCCCCCCCCC" },
+        { "   EEEEE   ", " AEBBB  EA ", "A         A", "DWWWWDWWWWD", "CCCCCCCCCCC" },
+        { "           ", "  BBB      ", "   B       ", " DWWWWWWWD ", "CCCCCCCCCCC" },
+        { "           ", "  BB       ", "           ", " DWWWWWWWD ", " CCCCCCCCC " },
+        { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
+        { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } };
+
+    private static final IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEFrothFlotationCell>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement(
+            'C',
+            buildHatchAdder(MTEFrothFlotationCell.class).atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .casingIndex(Casings.InconelReinforcedCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
+        .addElement('D', Casings.FlotationCellCasings.asElement())
+        .addElement('E', Casings.InconelReinforcedCasing.asElement())
+        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
+        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
+        .build();
+
+    public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEFrothFlotationCell(final String aName) {
+        super(aName);
+    }
+
+    public String getLockedMaterialName() {
+        return lockedMaterialName == null ? "" : lockedMaterialName;
+    }
+
+    public void setLockedMaterialName(String lockedMaterialName) {
+        this.lockedMaterialName = lockedMaterialName;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEFrothFlotationCell(this.mName);
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.flotation_cell"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "froth-flotation-cell"),
+                ImmutableMap.<String, Object>builder().build())
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(11, 5, 11, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.STABALLOY), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.INCONEL_690), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_HUM;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.flotationCellRecipes;
+    }
+
+    @Override
+    public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDFrothFlotationCell,
+            TexturesGtBlock.oMCDFrothFlotationCellGlow,
+            TexturesGtBlock.oMCDFrothFlotationCellActive,
+            TexturesGtBlock.oMCDFrothFlotationCellActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        // FlotationCellCasings.textureId points at Cyclotron Coil, so build the texture from the block itself
+        if (casingTexture == null) {
+            casingTexture = TextureFactory
+                .of(Casings.FlotationCellCasings.getBlock(), Casings.FlotationCellCasings.getBlockMeta());
+        }
+        return casingTexture;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'W');
+            return;
+        }
+        checkCasingMin(errors, casingAmount + TOP_CASING_AMOUNT, 110);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiFrothFlotationCell;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                // Make sure we lock to a specific milled ore, checked via oredict
+                String milledName = getMilledStackName(recipe);
+                if (milledName == null) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+
+                // Set material locked for this controller
+                // "milled" check is to clear old save data since the name caching system changed
+                if (lockedMaterialName == null || !lockedMaterialName.startsWith("milled")) {
+                    lockedMaterialName = milledName;
+                }
+
+                // Ensure oredict matches
+                if (!Objects.equals(lockedMaterialName, milledName)) {
+                    return SimpleCheckRecipeResult.ofFailure("machine_locked_to_different_recipe");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            private String getMilledStackName(GTRecipe recipe) {
+                if (recipe == null || recipe.mInputs == null) {
+                    return null;
+                }
+
+                for (ItemStack stack : recipe.mInputs) {
+                    for (int oreID : OreDictionary.getOreIDs(stack)) {
+                        String oredict = OreDictionary.getOreName(oreID);
+                        if (oredict.startsWith(OrePrefixes.milled.toString())) {
+                            return oredict;
+                        }
+                    }
+                }
+                return null;
+            }
+        }.enablePerfectOverclock();
+    }
+
+    /*
+     * Handle NBT
+     */
+
+    private String lockedMaterialName = null;
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        if (lockedMaterialName != null) {
+            aNBT.setString("lockedMaterialName", lockedMaterialName);
+        }
+        super.setItemNBT(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (lockedMaterialName != null) {
+            aNBT.setString("lockedMaterialName", lockedMaterialName);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("lockedMaterialName", Constants.NBT.TAG_STRING)) {
+            lockedMaterialName = aNBT.getString("lockedMaterialName");
+        }
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (ItemStackNBT.hasKey(stack, "lockedMaterialName")) {
+            tooltip.add(
+                StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
+                    + StatCollector.translateToLocal(
+                        stack.getTagCompound()
+                            .getString("lockedMaterialName")));
+        }
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+
+    @Override
+    public boolean isRecipeLockingEnabled() {
+        return lockedMaterialName != null && !lockedMaterialName.isEmpty();
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEFrothFlotationCellGui(this);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'W')) {
+                needsWaterFill = false;
+            }
+        }
+    }
+}

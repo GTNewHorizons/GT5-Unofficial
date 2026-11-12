@@ -1,5 +1,7 @@
 package gregtech.mixin.mixins.early.minecraft.pollution;
 
+import static gregtech.common.pollution.PollutionHelper.furnaceAddPollutionOnUpdate;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -9,8 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import gregtech.common.pollution.Pollution;
-import gregtech.common.pollution.PollutionConfig;
+import gregtech.common.pollution.FurnacePollution;
 
 // Merged from ModMixins under the MIT License Copyright bartimaeusnek & GTNewHorizons
 @Mixin(TileEntityFurnace.class)
@@ -24,10 +25,6 @@ public abstract class MixinTileEntityFurnacePollution extends TileEntity {
             opcode = Opcodes.GETFIELD,
             ordinal = 2))
     private void gt5u$addPollution(CallbackInfo ci) {
-        if (!this.worldObj.isRemote && (this.worldObj.getTotalWorldTime() % 20) == 0) {
-            Pollution.addPollution(
-                this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord),
-                PollutionConfig.furnacePollutionAmount);
-        }
+        furnaceAddPollutionOnUpdate(this.worldObj, this.xCoord, this.zCoord, FurnacePollution.FURNACE.getPollution());
     }
 }

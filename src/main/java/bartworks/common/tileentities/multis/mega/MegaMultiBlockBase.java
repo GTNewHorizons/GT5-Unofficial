@@ -1,5 +1,6 @@
 package bartworks.common.tileentities.multis.mega;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
@@ -7,21 +8,20 @@ import java.util.Arrays;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.util.GTUtility;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 
 public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
 
@@ -55,6 +55,11 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         long maxEnergy = ttHatches[1];
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            if (tHatch instanceof MTEHatchEnergyDebug debugHatch) {
+                storedEnergy = debugHatch.getEUVar();
+                maxEnergy = debugHatch.maxEUStore();
+                break;
+            }
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -68,65 +73,29 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         String[] extendedInfo = this.getExtendedInfoData();
 
         String[] baseInfo = {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(this.mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(-this.lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + GTUtility.formatNumbers(this.getMaxInputAmps())
-                + "A) = "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(nominalV)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
-                + EnumChatFormatting.YELLOW
-                + tName
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (this.getIdealStatus() - this.getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + this.mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(this.mProgresstime / 20),
+                formatNumber(this.mMaxProgresstime / 20)),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(-this.lEUt)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.mei.fmt.mega",
+                formatNumber(this.getMaxInputVoltage()),
+                formatNumber(this.getMaxInputAmps()),
+                formatNumber(nominalV)),
+            IGregTechDeviceInformation.encode("GT5U.machines.tier.fmt", tName),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                this.getIdealStatus() - this.getRepairStatus(),
+                this.mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
 
-        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
+        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length);
 
         System.arraycopy(extendedInfo, 0, combinedInfo, baseInfo.length, extendedInfo.length);
-
-        combinedInfo[combinedInfo.length - 1] = BWTooltipReference.BW;
 
         return combinedInfo;
     }

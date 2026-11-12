@@ -33,14 +33,14 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * sets the Redstone Level the TileEntity should emit to the given Output Side
      * <p/>
      * Do not use this if ICoverable is implemented. ICoverable has @getInternalOutputRedstoneSignal for Machine
-     * internal Output Redstone, so that it doesnt conflict with Cover Redstone. This sets the true Redstone Output
+     * internal Output Redstone, so that it doesn't conflict with Cover Redstone. This sets the true Redstone Output
      * Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
     void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
      * Sets the strength of the redstone signal on the given side to strong or weak. Does not change the actual signal.
-     * 
+     *
      * @param side     Must not be UNKNOWN
      * @param isStrong True = strong, false = weak
      */
@@ -48,7 +48,7 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
 
     /**
      * Checks if the given side will output a strong redstone signal when emitting a redstone signal.
-     * 
+     *
      * @param side Must not be UNKNOWN
      * @return True = strong signal, false = weak signal
      */

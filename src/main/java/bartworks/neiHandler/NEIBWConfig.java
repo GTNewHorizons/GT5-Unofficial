@@ -45,8 +45,6 @@ public class NEIBWConfig implements IConfigureNEI {
     public void loadConfig() {
         API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
-        API.hideItem(new ItemStack(ItemRegistry.bw_fake_glasses));
-        API.hideItem(new ItemStack(ItemRegistry.bw_fake_glasses2));
         ItemStack[] prefixesToHide = {
             WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite)
                 .copy(),
@@ -78,7 +76,6 @@ public class NEIBWConfig implements IConfigureNEI {
         }
 
         NEIBWConfig.sIsAdded = false;
-        new OreNEIHandler();
         new BioVatNEIHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());
         new BioLabNEIHandler(BartWorksRecipeMaps.bioLabRecipes.getDefaultRecipeCategory());
         NEIBWConfig.sIsAdded = true;

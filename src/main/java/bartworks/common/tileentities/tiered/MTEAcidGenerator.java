@@ -18,8 +18,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,14 +28,21 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
-    public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
+    private final int efficiency;
+
+    public MTEAcidGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency,
+        ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, GTValues.emptyStringArray, aTextures);
+        this.efficiency = efficiency;
     }
 
-    public MTEAcidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEAcidGenerator(String aName, int aTier, int efficiency, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        this.efficiency = efficiency;
     }
 
     @Override
@@ -50,19 +57,17 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return 100 - 3 * this.mTier;
+        return efficiency;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEAcidGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEAcidGenerator(this.mName, this.mTier, this.efficiency, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] { super.getFront(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
+        return new ITexture[] { super.getFront(aColor)[0], Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -80,10 +85,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")),
+            TextureFactory.of(
+                Textures.BlockIcons
+                    .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT")),
             TextureFactory.builder()
-                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
                 .glow()
                 .build() };
     }
@@ -97,7 +106,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
             Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
@@ -115,12 +123,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL),
-            TextureFactory
-                .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+        return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(
+            Textures.BlockIcons
+                .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
             TextureFactory.builder()
-                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -138,6 +148,12 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"),
             StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
@@ -149,7 +165,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
                 + this.getEfficiency(),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
                 + EnumChatFormatting.YELLOW
-                + this.maxAmperesOut(),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+                + this.maxAmperesOut() };
     }
 }

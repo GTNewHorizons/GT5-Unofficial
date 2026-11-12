@@ -1,15 +1,13 @@
 package gregtech.loaders.preload;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,10 +34,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
@@ -74,7 +72,7 @@ public class GTPreLoad {
             }
             Objects.requireNonNull(GTUtility.getField(tLoadController, "activeModList", true, true))
                 .set(tLoadController, tNewModsList);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.logStackTrace(e);
         }
     }
@@ -89,7 +87,8 @@ public class GTPreLoad {
                 .getLanguageManager()
                 .getCurrentLanguage()
                 .getLanguageCode();
-            GT_FML_LOGGER.info("User lang is " + userLang);
+            GTLanguageManager.LanguageCode = userLang;
+            GT_FML_LOGGER.info("User lang is {}", userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
                 GTLanguageManager.isEN_US = true;
@@ -98,10 +97,10 @@ public class GTPreLoad {
                 String l10nFileName = "GregTech_" + userLang + ".lang";
                 File l10nFile = new File(languageDir, l10nFileName);
                 if (l10nFile.isFile()) {
-                    GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
+                    GT_FML_LOGGER.info("Loading l10n file: {}", l10nFileName);
                     GTLanguageManager.sEnglishFile = new Configuration(l10nFile);
                 } else {
-                    GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
+                    GT_FML_LOGGER.info("Cannot find l10n file {}, fallback to GregTech.lang", l10nFileName);
                     GTLanguageManager.isEN_US = true;
                     GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
                 }
@@ -117,8 +116,10 @@ public class GTPreLoad {
             .parallelStream()
             .filter(Objects::nonNull)
             .forEach(
-                aMaterial -> aMaterial.mLocalizedName = GTLanguageManager
-                    .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
+                aMaterial -> {
+                    GTLanguageManager
+                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
+                });
     }
 
     public static void getConfiguration(File configDir) {
@@ -138,49 +139,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile.save();
     }
 
-    public static void createLogFiles(File parentFile) {
-        GTLog.mLogFile = new File(parentFile, "logs/GregTech.log");
-        if (!GTLog.mLogFile.exists()) {
-            try {
-                GTLog.mLogFile.createNewFile();
-            } catch (Throwable ignored) {}
-        }
-        try {
-            GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
-        } catch (FileNotFoundException ignored) {}
-
-        if (Gregtech.general.loggingOreDict) {
-            GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
-            if (!GTLog.mOreDictLogFile.exists()) {
-                try {
-                    GTLog.mOreDictLogFile.createNewFile();
-                } catch (Throwable ignored) {}
-            }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).mBufferedOreDictLog;
-            try {
-                GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Throwable ignored) {}
-            GTLog.ore.println("******************************************************************************");
-            GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-            GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-            GTLog.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-            GTLog.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
-            GTLog.ore.println("******************************************************************************");
-            tList.forEach(GTLog.ore::println);
-        }
-        if (Gregtech.general.loggingExplosions) {
-            GTLog.mExplosionLog = new File(parentFile, "logs/Explosion.log");
-            if (!GTLog.mExplosionLog.exists()) {
-                try {
-                    GTLog.mExplosionLog.createNewFile();
-                } catch (Throwable ignored) {}
-            }
-            try {
-                GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Throwable ignored) {}
-        }
-    }
-
     public static void runMineTweakerCompat() {
         if (!CraftTweaker.isModLoaded()) return;
 
@@ -198,7 +156,7 @@ public class GTPreLoad {
                             scripts.add(line);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GT_FML_LOGGER.error(e);;
                     }
                 }
             }
@@ -232,7 +190,7 @@ public class GTPreLoad {
                                 hit = hit.substring(2);
                                 meta = Integer.parseInt(hit);
                             } catch (Exception e) {
-                                GT_FML_LOGGER.info("parseError: " + hit);
+                                GT_FML_LOGGER.info("parseError: {}", hit);
                             }
                             if (meta > 0 && meta < 32000) {
                                 int prefix = meta / 1000;
@@ -245,13 +203,13 @@ public class GTPreLoad {
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;
                                     } else {
                                         tag = GregTechAPI.sGeneratedMaterials[material].mName;
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {
-                                    GT_FML_LOGGER.info("MaterialDisabled: " + material + " " + m.group(1));
+                                    GT_FML_LOGGER.info("MaterialDisabled: {} {}", material, m.group(1));
                                 }
                             }
                         }
@@ -278,7 +236,7 @@ public class GTPreLoad {
             final String str = oreTags.get(i);
             if (StringUtils.startsWithAny(str, preS)) {
                 mMTTags.add(str);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: " + str);
+                if (GTValues.D1) GT_FML_LOGGER.info("oretag: {}", str);
             }
         }
 
@@ -289,7 +247,10 @@ public class GTPreLoad {
             final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
-                Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Materials tName = Materials.get(
+                    reEnable.substring(
+                        tPrefix.getName()
+                            .length()));
                 tPrefix.mDisabledItems.remove(tName);
                 tPrefix.mGeneratedItems.add(tName);
                 if (tPrefix == OrePrefixes.screw) {
@@ -321,7 +282,7 @@ public class GTPreLoad {
                     OrePrefixes.ring.mGeneratedItems.add(tName);
                 }
             } else {
-                GT_FML_LOGGER.info("noPrefix " + reEnable);
+                GT_FML_LOGGER.info("noPrefix {}", reEnable);
             }
         }
     }
@@ -334,12 +295,12 @@ public class GTPreLoad {
             ((List<?>) Objects
                 .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
                     .clear();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
-        GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 
@@ -358,7 +319,6 @@ public class GTPreLoad {
         GTValues.debugBlockPump = Gregtech.debug.debugBlockPump;
         GTValues.debugEntityCramming = Gregtech.debug.debugEntityCramming;
         GTValues.debugWorldData = Gregtech.debug.debugWorldData;
-        GTValues.oreveinPercentage = Gregtech.general.oreveinPercentage;
         GTValues.oreveinAttempts = Gregtech.general.oreveinAttempts;
         GTValues.oreveinMaxPlacementAttempts = Gregtech.general.oreveinMaxPlacementAttempts;
         GTValues.oreveinPlacerOres = Gregtech.general.oreveinPlacerOres;
@@ -377,19 +337,16 @@ public class GTPreLoad {
         GTMod.proxy.mIncreaseDungeonLoot = Gregtech.general.increaseDungeonLoot;
         GTMod.proxy.mAxeWhenAdventure = Gregtech.general.axeWhenAdventure;
         GTMod.proxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
-        GTMod.proxy.mHungerEffect = Gregtech.general.hungerEffect;
         GTMod.proxy.mInventoryUnification = Gregtech.general.inventoryUnification;
         GTMod.proxy.mGTBees = Gregtech.general.GTBees;
         GTMod.proxy.mCraftingUnification = Gregtech.general.craftingUnification;
         GTMod.proxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
         GTMod.proxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.proxy.mAchievements = Gregtech.general.achievements;
-        GTMod.proxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
         GTMod.proxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
         GTMod.proxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
-        GTMod.proxy.mCropNeedBlock = Gregtech.general.cropNeedBlock;
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
         GTMod.proxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
@@ -399,6 +356,8 @@ public class GTPreLoad {
         GTMod.proxy.gt6Cable = Gregtech.general.gt6Cable;
         GTMod.proxy.ic2EnergySourceCompat = Gregtech.general.ic2EnergySourceCompat;
         GTMod.proxy.costlyCableConnection = Gregtech.general.costlyCableConnection;
+        GTMod.proxy.cableMultiConnectEnabled = Gregtech.general.cableMultiConnectEnabled;
+        GTMod.proxy.cableMultiConnectLimit = Gregtech.general.cableMultiConnectLimit;
         GTMod.proxy.crashOnNullRecipeInput = Gregtech.general.crashOnNullRecipeInput;
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             GTMod.proxy.crashOnNullRecipeInput = false; // Use flags in GTRecipeBuilder instead!
@@ -429,8 +388,6 @@ public class GTPreLoad {
         GregTechAPI.sMachineThunderExplosions = Gregtech.machines.machineThunderExplosions;
         GregTechAPI.sColoredGUI = Gregtech.machines.coloredGUI;
         GregTechAPI.sMachineMetalGUI = Gregtech.machines.machineMetalGUI;
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTechAPI.sUseMachineMetal = Gregtech.machines.useMachineMetal;
 
         // client
         loadClientConfig();
@@ -502,20 +459,6 @@ public class GTPreLoad {
 
         // features
         GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
-        for (OrePrefixes tPrefix : OrePrefixes.values()) {
-            if (tPrefix.mIsUsedForOreProcessing) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(1, Gregtech.features.maxOreStackSize)));
-            } else if (tPrefix == OrePrefixes.plank) {
-                tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxPlankStackSize)));
-            } else if ((tPrefix == OrePrefixes.wood) || (tPrefix == OrePrefixes.treeLeaves)
-                || (tPrefix == OrePrefixes.treeSapling)
-                || (tPrefix == OrePrefixes.log)) {
-                    tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, Gregtech.features.maxLogStackSize)));
-                } else if (tPrefix.mIsUsedForBlocks) {
-                    tPrefix.mDefaultStackSize = ((byte) Math
-                        .min(64, Math.max(16, Gregtech.features.maxOtherBlocksStackSize)));
-                }
-        }
 
         GTRecipeBuilder.onConfigLoad();
     }
@@ -548,6 +491,51 @@ public class GTPreLoad {
 
         GTMod.proxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
         GTMod.proxy.wailaAverageNS = Client.waila.wailaAverageNS;
+        if (Client.waila.ProgressBarColor != TTRenderGTProgressBar.ProgressBarColor.Custom) {
+            switch (Client.waila.ProgressBarColor) {
+                case Green:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF109010;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF0D7D0D;
+                    break;
+                case LightBlue:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF6060FF;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF5050E0;
+                    break;
+                case DarkBlue:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF3333DA;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF2020D0;
+                    break;
+                case Red:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFFC02222;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFFA00000;
+                    break;
+            }
+        } else {
+            try {
+                GTMod.proxy.wailaProgressBarColor1 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressBarCustomColor1, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBarColor1 = 0xFF3333DA;
+            }
+            try {
+                GTMod.proxy.wailaProgressBarColor2 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressBarCustomColor2, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBarColor2 = 0xFF2020D0;
+            }
+            try {
+                GTMod.proxy.wailaProgressBorderColor1 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressCustomBorderColor1, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBorderColor1 = 0xFF505050;
+            }
+            try {
+                GTMod.proxy.wailaProgressBorderColor2 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressCustomBorderColor2, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBorderColor2 = 0xFF505050;
+            }
+        }
 
         GTMod.proxy.reloadNEICache();
     }

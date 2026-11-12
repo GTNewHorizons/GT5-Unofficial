@@ -1,11 +1,15 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
@@ -33,7 +37,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
         MetaGeneratedTool item = (MetaGeneratedTool) stack.getItem();
         GL11.glEnable(GL11.GL_BLEND);
-        GTRenderUtil.applyStandardItemTransform(type);
+        ItemRenderUtil.applyStandardItemTransform(type);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
         IToolStats toolStats = item != null ? item.getToolStats(stack) : null;
@@ -88,12 +92,12 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             if (icon != null) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             }
-            if (overlay != null) {
+            if (overlay != null && overlay != INVISIBLE_ICON) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             }
         }
     }
@@ -108,13 +112,13 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 short[] modulation = toolStats.getRGBa(isToolHead, stack);
                 GL11.glColor3f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F);
-                GTRenderUtil.renderItem(type, icon);
+                ItemRenderUtil.renderItem(type, icon);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
             }
-            if (overlay != null) {
+            if (overlay != null && overlay != INVISIBLE_ICON) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItem(type, overlay);
+                ItemRenderUtil.renderItem(type, overlay);
             }
         }
     }

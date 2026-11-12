@@ -1,7 +1,5 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +27,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -38,54 +37,45 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
-public class BlockFrameBox extends BlockContainer {
+public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
+
+    public static final int MATERIAL_MASK = 0xFFF;
+    public static final int MTE_BIT = 0x1000;
 
     protected final String mUnlocalizedName;
-
-    private static final String DOT_NAME = ".name";
-    private static final String DOT_TOOLTIP = ".tooltip";
 
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
 
+    // Texture[meta][side][layer]
+    private ITexture[][][] textures = new ITexture[1000][][];
+
     public BlockFrameBox() {
         super(new MaterialMachines());
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + "." + WILDCARD + ".name", "Any Sub Block of this one");
-
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
         for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
-            if (material != null && (material.mTypes & 0x02) != 0) {
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + meta + DOT_NAME,
-                    GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
-                GTLanguageManager
-                    .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
+            if (material != null && material.hasMetalItems()) {
+
+                ITexture[] texture = { TextureFactory.of(
+                    material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
+                    Dyes.getModulation(-1, material.mRGBa)) };
+
+                textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
             }
         }
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public ItemStack getStackForm(int amount, int meta) {
-        return new ItemStack(this, amount, meta);
-    }
-
-    public String getLocalizedNameFormat(Materials aMaterial) {
-        return switch (aMaterial.mName) {
-            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-            default -> "%material" + " Frame Box";
-        };
+        return new ItemStack(this, amount, meta & MATERIAL_MASK);
     }
 
     @Override
@@ -93,33 +83,52 @@ public class BlockFrameBox extends BlockContainer {
         return mUnlocalizedName;
     }
 
-    public String getLocalizedName(Materials aMaterial) {
-        return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
+    public static String getLocalizedName(Materials materials) {
+        return switch (materials.mName) {
+            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> OrePrefixes
+                .getLocalizedNameForItem("%material Infused Stone", materials);
+            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> OrePrefixes
+                .getLocalizedNameForItem("%material", materials);
+            default -> OrePrefixes.frameGt.getLocalizedNameForItem(materials);
+        };
     }
 
-    private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
-        // Obtain metadata to grab proper material identifier
-        int meta = worldIn.getBlockMetadata(x, y, z);
-        Materials material = getMaterial(meta);
-        MTEFrame frame = new MTEFrame("GT_Frame_" + material, material);
-        baseMte.setMetaTileEntity(frame);
-        baseMte.setInitialValuesAsNBT(null, (short) (4096 + meta)); // 4096 is found in LoaderMetaTileEntities for
-                                                                    // frames
-        frame.setBaseMetaTileEntity(baseMte);
+    public static String getLocalizedName(int meta) {
+        return getLocalizedName(getMaterial(meta & MATERIAL_MASK));
     }
 
+    // Matter manipulator please fix your mixins.
     private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
-        // Spawn a TE frame box at this location, then apply the cover
-        BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
-        createFrame(worldIn, x, y, z, newTileEntity);
-        worldIn.setTileEntity(x, y, z, newTileEntity);
+        return spawnFrameEntity(worldIn, null, x, y, z);
+    }
 
-        return newTileEntity;
+    public BaseMetaPipeEntity spawnFrameEntity(World worldIn, EntityPlayer player, int x, int y, int z) {
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof BaseMetaPipeEntity base) {
+            return base;
+        }
+        int newMeta = worldIn.getBlockMetadata(x, y, z) | MTE_BIT;
+        worldIn.setBlockMetadataWithNotify(x, y, z, newMeta, 2);
+
+        // Same logic as ItemMachines#placeBlockAt
+        BaseMetaPipeEntity base = (BaseMetaPipeEntity) worldIn.getTileEntity(x, y, z);
+        // 4096 is found in LoaderMetaTileEntities for frames
+        base.setInitialValuesAsNBT(null, (short) (4096 + (newMeta & MATERIAL_MASK)));
+
+        if (player != null) {
+            base.setOwnerName(player.getDisplayName());
+            base.setOwnerUuid(player.getUniqueID());
+        }
+
+        base.getMetaTileEntity()
+            .initDefaultModes(null);
+
+        return base;
     }
 
     // Get the material that this frame box is made of
     public static Materials getMaterial(int meta) {
-        return GregTechAPI.sGeneratedMaterials[meta];
+        return GregTechAPI.sGeneratedMaterials[meta & MATERIAL_MASK];
     }
 
     @Override
@@ -131,11 +140,6 @@ public class BlockFrameBox extends BlockContainer {
         TileEntity te = worldIn.getTileEntity(x, y, z);
 
         if (te instanceof BaseMetaPipeEntity baseTileEntity) {
-            // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
-            // This happens on world load for some reason
-            if (baseTileEntity.getMetaTileEntity() == null) {
-                createFrame(worldIn, x, y, z, baseTileEntity);
-            }
             return baseTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
@@ -143,7 +147,7 @@ public class BlockFrameBox extends BlockContainer {
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (CoverRegistry.isCover(item)) {
-            BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
+            BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, player, x, y, z);
             return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
@@ -182,7 +186,7 @@ public class BlockFrameBox extends BlockContainer {
         for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
             // If material is not null and has a frame box item associated with it
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x02) != 0)) {
+            if (tMaterial != null && tMaterial.hasMetalItems()) {
                 aList.add(new ItemStack(aItem, 1, i));
             }
         }
@@ -195,7 +199,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -215,7 +219,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ);
+        return aWorld.getBlockMetadata(aX, aY, aZ) & MATERIAL_MASK;
     }
 
     @Override
@@ -387,7 +391,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public boolean hasTileEntity(int aMeta) {
-        return true;
+        return (aMeta & MTE_BIT) != 0;
     }
 
     @Override
@@ -402,12 +406,11 @@ public class BlockFrameBox extends BlockContainer {
         // Find temporary TE if there was one
         final IGregTechTileEntity tempTe = mTemporaryTileEntity.get();
         ArrayList<ItemStack> drops = new ArrayList<>();
-        drops.add(getStackForm(1, metadata));
+        drops.add(getStackForm(1, metadata & MATERIAL_MASK));
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                ItemStack cover = tempTe.getCoverItemAtSide(direction);
-                if (cover != null) drops.add(cover);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         // Make sure to clear the temporary TE
@@ -450,21 +453,36 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        Materials material = GregTechAPI.sGeneratedMaterials[meta];
+        Materials material = GregTechAPI.sGeneratedMaterials[meta & MATERIAL_MASK];
         if (material == null) return null;
-        return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
+        return material.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
-    public ITexture[] getTexture(int meta) {
-        Materials material = getMaterial(meta);
-        if (material == null) return null;
-        return new ITexture[] { TextureFactory.of(
-            material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(-1, material.mRGBa)) };
+    @Override
+    public ITexture[][] getTextures(IBlockAccess world, int x, int y, int z) {
+        TileEntity te = world.getTileEntity(x, y, z);
+
+        if (te instanceof BaseMetaPipeEntity bmpe) {
+            ITexture[][] textures = new ITexture[6][];
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                textures[dir.ordinal()] = bmpe.getTexture(this, dir);
+            }
+
+            return textures;
+        }
+
+        return getTextures(world.getBlockMetadata(x, y, z));
+    }
+
+    @Override
+    public ITexture[][] getTextures(int meta) {
+        int texture = meta & MATERIAL_MASK;
+        return texture >= 1000 ? null : textures[texture];
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
+        return (meta & MTE_BIT) == 0 ? null : new BaseMetaPipeEntity();
     }
 }

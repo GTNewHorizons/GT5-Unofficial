@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -9,8 +11,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
-
-import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientMachineTier implements CheckRecipeResult {
 
@@ -36,8 +36,8 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.insufficient_machine_tier",
-                GTUtility.formatNumbers(required)));
+                "GT5U.gui.text.recipe_result.insufficient_machine_tier",
+                formatNumber(required)));
     }
 
     @Override

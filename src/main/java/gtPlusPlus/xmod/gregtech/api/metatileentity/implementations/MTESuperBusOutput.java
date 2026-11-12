@@ -1,19 +1,28 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTESuperBusOutput extends MTEHatchOutputBus {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtechLogo {
 
     public MTESuperBusOutput(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, getSlots(tier));
@@ -34,6 +43,16 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // GT5U.MBTT.Deprecated colours the whole line, which suits a tooltip but not a name.
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.MBTT.Deprecated",
+            EnumChatFormatting.RESET + StatCollector
+                .translateToLocalFormatted("gt.blockmachines.hatch.superbus.output.name", GTValues.VN[mTier]));
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESuperBusOutput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
@@ -46,39 +65,16 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < this.mInventory.length; ++i) {
-            if (this.mInventory[i] != null && this.mInventory[i].stackSize <= 0) {
-                this.mInventory[i] = null;
-            }
-        }
-        this.fillStacksIntoFirstSlots();
-    }
-
     protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < this.mInventory.length; ++i) {
-            for (int j = i + 1; j < this.mInventory.length; ++j) {
-                if (this.mInventory[j] != null && (this.mInventory[i] == null
-                    || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        this.getBaseMetaTileEntity(),
-                        this.getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-            }
-        }
+        GTUtility.compactInventory(this);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
-            "Left click with data stick to save filter config", "Right click with data stick to load filter config",
-            GTPPCore.GT_Tooltip.get() };
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.output_bus_super.desc",
+            GTPPCore.GT_Tooltip.get(),
+            getSlots(this.mTier));
     }
 
     @Override
@@ -96,10 +92,15 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
             scrollable.setSize(18 * 4 + 4, 18 * 4)
                 .setPos(52, 7));
 
-        if (acceptsItemLock()) {
+        if (acceptsConfigCopy()) {
             builder.widget(
                 new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }
