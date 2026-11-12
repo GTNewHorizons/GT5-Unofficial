@@ -2898,7 +2898,6 @@ item.LiquidHydrogen.name=液氢单元[LOH]
 //Added 24/8/19
 //Debug Labels
 tile.blockDoorAlloy.name=防爆门
-tile.blockInhibitorObelisk.name=传送抑制方尖碑
 tile.Battlesign.name=战斗牌子
 tile.blockMagicBox.name=奥法之盒
 tile.blockManaPod.name=法力荚茎

@@ -3419,7 +3419,6 @@ item.LiquidHydrogen.name=Капсула жидкого водорода [LOH]
 # Added 24/8/19
 # Debug Labels
 tile.blockDoorAlloy.name=Укреплённая дверь
-tile.blockInhibitorObelisk.name=Inhibitor Obelisk
 tile.Battlesign.name=Боевая табличка
 tile.blockMagicBox.name=Магический ящик
 tile.blockManaPod.name=Mana Pod Stem
