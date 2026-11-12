@@ -35,7 +35,6 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderNuclear;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.Gregtech4Content;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAlgaeContent;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechBufferDynamos;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechCustomHatches;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
@@ -123,7 +122,6 @@ public class CompatHandler {
         GregtechHiAmpTransformer.run();
         GregtechSemiFluidgenerators.run();
         GregtechWirelessChargers.run();
-        GregtechBufferDynamos.run();
         GregtechFactoryGradeReplacementMultis.run();
         GregtechThaumcraftDevices.run();
         GregtechThreadedBuffers.run();

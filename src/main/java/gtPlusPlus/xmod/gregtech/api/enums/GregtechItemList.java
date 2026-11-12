@@ -374,18 +374,6 @@ public enum GregtechItemList implements IItemContainer {
      * Custom hatches/Busses
      */
 
-    // Buffer Dynamos
-    Hatch_Buffer_Dynamo_ULV,
-    Hatch_Buffer_Dynamo_LV,
-    Hatch_Buffer_Dynamo_MV,
-    Hatch_Buffer_Dynamo_HV,
-    Hatch_Buffer_Dynamo_EV,
-    Hatch_Buffer_Dynamo_IV,
-    Hatch_Buffer_Dynamo_LuV,
-    Hatch_Buffer_Dynamo_ZPM,
-    Hatch_Buffer_Dynamo_UV,
-    Hatch_Buffer_Dynamo_MAX,
-
     // Air Intake hatch
     Hatch_Air_Intake,
     Hatch_Air_Intake_Extreme,

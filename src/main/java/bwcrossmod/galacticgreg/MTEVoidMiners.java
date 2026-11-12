@@ -49,7 +49,6 @@ public class MTEVoidMiners {
     public static class VMLUV extends MTEVoidMinerBase<VMLUV> {
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
-        private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMLUV> STRUCTURE_DEFINITION = StructureDefinition.<VMLUV>builder()
             // spotless:off
