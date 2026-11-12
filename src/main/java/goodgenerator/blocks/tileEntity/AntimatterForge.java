@@ -741,7 +741,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (world.getBlock(x, y, z)
                 .equals(Loaders.antimatterRenderBlock)) {
                 // not sure if this is needed
-                cachedAntimatterRender.invalidate();
+                cachedAntimatterRender = null;
                 world.setBlock(x, y, z, Blocks.air);
             }
         }
