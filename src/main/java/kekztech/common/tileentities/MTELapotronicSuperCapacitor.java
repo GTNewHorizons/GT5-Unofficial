@@ -439,6 +439,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addCasing(
                 "9",
                 StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true,
                 true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
@@ -446,6 +447,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addCasing(
                 "9",
                 StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.capacitor"),
+                true,
                 true)
             .addStructureInfo("")
             .addStructureFooter(
