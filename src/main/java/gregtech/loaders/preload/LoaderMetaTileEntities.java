@@ -314,6 +314,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugChest;
 import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
@@ -8259,6 +8260,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "", 9).getStackForm(1L));
         ItemList.Quantum_Chest_IV
             .set(new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "", 10).getStackForm(1L));
+        ItemList.Debug_Chest
+            .set(new MTEDebugChest(DEBUG_CHEST.ID, "quantum.chest.debug", "Debug Chest", 10).getStackForm(1L));
     }
 
     private static void registerSuperTank() {
