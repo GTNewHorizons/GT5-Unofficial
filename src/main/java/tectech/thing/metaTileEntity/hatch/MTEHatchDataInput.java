@@ -29,10 +29,10 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     private boolean delDelay = true;
 
-    private long history;
+    private long computation;
 
     protected void updateComputationHistory(long value) {
-        this.history = value;
+        this.computation = value;
     }
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
@@ -71,6 +71,11 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
+    public boolean canClear() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
@@ -81,44 +86,28 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     public void setContents(QuantumDataPacket qIn) {
-        Long old = this.q == null ? null : this.q.getContent();
+        long old = computation;
 
         if (qIn == null) {
-            this.q = null;
+            computation = 0;
+            q = new QuantumDataPacket(0L).unifyTraceWith(q);
         } else {
             if (qIn.getContent() > 0) {
-                this.q = qIn;
+                computation = qIn.getContent();
                 delDelay = true;
             } else {
-                this.q = null;
+                computation = 0;
             }
-
-            history = q == null ? 0 : q.getContent();
+            q = qIn;
         }
-
-        Long now = this.q == null ? null : this.q.getContent();
-        if (now != null && !now.equals(old)) notifyWatchers();
-    }
-
-    @Override
-    protected void resetHistory() {
-        history = 0;
-    }
-
-    @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (delDelay) {
-            delDelay = false;
-        } else {
-            setContents(null);
-        }
+        if (computation != old) notifyWatchers();
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("computation", history);
+        tag.setLong("computation", computation);
     }
 
     @Override

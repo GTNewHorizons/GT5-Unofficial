@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -42,6 +43,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -71,6 +73,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
     protected Parameters.Group.ParameterIn[] weight;
 
     private @Nullable QuantumDataPacket pendingPacket;
+    private boolean compChanged = false;
 
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -237,24 +240,40 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
+    public void clearHatches() {
+        for (MTEHatchDataInput input : validMTEList(eInputData)) {
+            input.removeWatcher(this);
+        }
+        super.clearHatches();
+    }
+
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        super.scheduleRecipeCheckImmediate();
+        this.compChanged = true;
+    }
+
+    @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         short thingsActive = 0;
         pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
         if (pendingPacket == null) {
+            this.compChanged = true;
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
         for (MTEHatchDataInput di : eInputData) {
             if (di.q != null) {
                 thingsActive++;
                 if (di.q.contains(getPos())) {
+                    this.compChanged = true;
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
                 pendingPacket = pendingPacket.unifyPacketWith(di.q);
                 if (pendingPacket == null) {
+                    this.compChanged = true;
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
-                di.setContents(null);
             }
         }
 
@@ -266,11 +285,13 @@ public class MTENetworkSwitch extends TTMultiblockBase
             mEfficiencyIncrease = 10000;
             return SimpleCheckRecipeResult.ofSuccess("routing");
         }
+        this.compChanged = true;
         return SimpleCheckRecipeResult.ofFailure("no_routing");
     }
 
     @Override
     public void outputAfterRecipe_EM() {
+        if (!this.compChanged) return;
         if (!eOutputData.isEmpty() && pendingPacket != null) {
             double total = 0;
             double weight;
@@ -297,6 +318,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
                             out.q = new QuantumDataPacket(remainingComputation).unifyTraceWith(pendingPacket);
+                            out.moveAround(out.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
                             break;
                         }
                     } else {
@@ -305,9 +327,11 @@ public class MTENetworkSwitch extends TTMultiblockBase
                             remainingComputation -= part;
                             if (remainingComputation > 0) {
                                 out.q = new QuantumDataPacket(part).unifyTraceWith(pendingPacket);
+                                out.moveAround(out.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
                             } else if (part + remainingComputation > 0) {
                                 out.q = new QuantumDataPacket(part + remainingComputation)
                                     .unifyTraceWith(pendingPacket);
+                                out.moveAround(out.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
                                 break;
                             } else {
                                 break;
@@ -319,6 +343,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
             pendingPacket = null;
         }
+        this.compChanged = false;
     }
 
     @Override

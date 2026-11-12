@@ -4,8 +4,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
-
 import gregtech.api.util.GTUtility;
 
 public class QuantumDataPacket extends DataPacket<Long> {
@@ -31,16 +29,11 @@ public class QuantumDataPacket extends DataPacket<Long> {
     }
 
     @Override
-    public boolean extraCheck() {
-        return true;
-    }
-
-    @Override
     protected Long unifyContentWith(Long content) {
         return GTUtility.addSafe(this.content, content);
     }
 
-    public @Nullable QuantumDataPacket unifyTraceWith(Vec3Impl... positions) {
+    public @Nullable QuantumDataPacket unifyTraceWith(long... positions) {
         return (QuantumDataPacket) super.unifyTrace(positions);
     }
 
