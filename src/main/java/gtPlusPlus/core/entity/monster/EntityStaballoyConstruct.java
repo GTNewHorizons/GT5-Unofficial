@@ -17,6 +17,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     public EntityStaballoyConstruct(World world) {
         super(world);
         this.experienceValue = 250;
+        this.isImmuneToFire = true;
         this.getNavigator()
             .setBreakDoors(true);
         this.getNavigator()
@@ -91,11 +92,11 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     @Override
-    public void onEntityUpdate() {
-        if (!this.isImmuneToFire) {
-            this.isImmuneToFire = true;
-        }
-        super.onEntityUpdate();
+    public boolean getCanSpawnHere() {
+        int nearby = this.worldObj
+            .getEntitiesWithinAABB(EntityStaballoyConstruct.class, this.boundingBox.expand(32.0D, 16.0D, 32.0D))
+            .size();
+        return nearby < 2 && super.getCanSpawnHere();
     }
 
     @Override

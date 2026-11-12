@@ -131,6 +131,8 @@ public class ChunkProviderModded implements IChunkProvider {
 
     public void func_147424_a(int p_147424_1_, int p_147424_2_, Block[] p_147424_3_) {
         byte b0 = 63;
+        Block fluidBlock = DimensionEverglades.blockFluidLakes != null ? DimensionEverglades.blockFluidLakes
+            : Blocks.water;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager()
             .getBiomesForGeneration(this.biomesForGeneration, p_147424_1_ * 4 - 2, p_147424_2_ * 4 - 2, 10, 10);
         this.func_147423_a(p_147424_1_ * 4, p_147424_2_ * 4);
@@ -175,12 +177,7 @@ public class ChunkProviderModded implements IChunkProvider {
                                 if ((d15 += d16) > 0.0D) {
                                     p_147424_3_[j3 += short1] = DimensionEverglades.blockMainFiller;
                                 } else if (k2 * 8 + l2 < b0) {
-                                    try {
-                                        p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
-                                                                                                         // .
-                                    } catch (Exception t) {
-                                        p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
-                                    }
+                                    p_147424_3_[j3 += short1] = fluidBlock;
                                 } else {
                                     p_147424_3_[j3 += short1] = null;
                                 }
@@ -437,12 +434,9 @@ public class ChunkProviderModded implements IChunkProvider {
             k1 = k + this.rand.nextInt(16) + 8;
             l1 = this.rand.nextInt(256);
             i2 = l + this.rand.nextInt(16) + 8;
-            try {
-                (new WorldGenLakes(DimensionEverglades.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
-            } catch (NullPointerException n) {
-                n.getStackTrace();
-                (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-            }
+            Block lakeFluid = DimensionEverglades.blockFluidLakes != null ? DimensionEverglades.blockFluidLakes
+                : Blocks.water;
+            (new WorldGenLakes(lakeFluid)).generate(this.worldObj, this.rand, k1, l1, i2);
         }
 
         if (TerrainGen.populate(
