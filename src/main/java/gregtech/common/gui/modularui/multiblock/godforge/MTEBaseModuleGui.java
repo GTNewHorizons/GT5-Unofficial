@@ -194,10 +194,15 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     }
 
     @Override
-    protected ToggleButton createDisableableToggleButton(BooleanSyncValue syncValue, BooleanSupplier condition,
-        IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
-        return super.createDisableableToggleButton(syncValue, condition, offOverlay, onOverlay, tooltipBuilder)
-            .clickSound(ForgeOfGodsGuiUtil.getButtonSound());
+    protected ToggleButton createDisableableToggleButton(PanelSyncManager syncManager, BooleanSyncValue syncValue,
+        BooleanSupplier condition, IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
+        return super.createDisableableToggleButton(
+            syncManager,
+            syncValue,
+            condition,
+            offOverlay,
+            onOverlay,
+            tooltipBuilder).clickSound(ForgeOfGodsGuiUtil.getButtonSound());
     }
 
     @Override
