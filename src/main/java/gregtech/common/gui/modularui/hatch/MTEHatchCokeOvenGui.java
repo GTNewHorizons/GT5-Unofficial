@@ -1,6 +1,9 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -33,7 +36,17 @@ public class MTEHatchCokeOvenGui extends MTEHatchBaseGui<MTEHatchCokeOven> {
 
     @Override
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
-        return super.createFluidSlot(panel, syncManager, fluidTank)
-            .syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false));
+        return super.createFluidSlot(panel, syncManager, fluidTank).syncHandler(new FluidSlotSyncHandler(fluidTank) {
+
+            @Override
+            public void setValue(@Nullable FluidStack value, boolean setSource, boolean sync) {
+                if (setSource && baseMetaTileEntity.isClientSide()) {
+                    // Client synchronization must bypass the tank's output-only fill policy.
+                    machine.setDrainableStack(copyFluid(value));
+                    setSource = false;
+                }
+                super.setValue(value, setSource, sync);
+            }
+        }.canFillSlot(false));
     }
 }
