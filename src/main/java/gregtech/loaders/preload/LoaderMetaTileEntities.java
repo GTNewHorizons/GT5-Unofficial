@@ -2230,7 +2230,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hull_UXV.set(new MTEBasicHull(HULL_UXV.ID, "hull.tier.13", "", 13).getStackForm(1L));
 
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
+        ItemList.Hull_MAXV.set(new MTEBasicHull(HULL_MAX.ID, "hull.tier.14", "", 14).getStackForm(1L));
     }
 
     private static void registerTransformer() {
