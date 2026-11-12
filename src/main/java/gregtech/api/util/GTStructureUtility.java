@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -890,6 +891,51 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> chainAllGlasses() {
         return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
+    }
+
+    /** Like {@link #chainAllGlasses()}, but NEI previews, holograms and auto-build use vanilla glass. */
+    public static <T> IStructureElement<T> chainAllGlassesVanillaHint() {
+        return new ProxyStructureElement<>(GTStructureUtility.<T>chainAllGlasses()) {
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.glass, 0);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x, y, z, Blocks.glass, 0, 2);
+                return true;
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return BlocksToPlace.create(Blocks.glass, 0);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                // Glass of the same tier counts as placed, matching the proxied element.
+                if (Objects.equals(
+                    GlassTier.getGlassBlockTier(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z)),
+                    GlassTier.getGlassBlockTier(Blocks.glass, 0))) {
+                    return SKIP;
+                }
+                return StructureUtility.survivalPlaceBlock(
+                    Blocks.glass,
+                    0,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
+            }
+        };
     }
 
     private static ItemStack capGlassStack(ItemStack stack) {
