@@ -4190,7 +4190,6 @@ gt.blockmachines.solartower.controller.tier.single.name=Solar Tower
 gt.blockmachines.sparge.controller.single.name=Sparge Tower Controller
 gt.blockmachines.substation.01.input.single.name=Power Station Control Node
 # Machine names
-gt.blockmachines.hatch.dynamo.buffer.name=%s Dynamo Hatch [Buffered]
 gt.blockmachines.hatch.muffler.adv.name=Advanced Muffler Hatch (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Requires an Air Filter
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Requires an Air Filter §f%s§7

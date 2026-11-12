@@ -3984,7 +3984,6 @@ gt.blockmachines.solartower.controller.tier.single.name=Солнечная ба�
 gt.blockmachines.sparge.controller.single.name=Контроллер барботажной башни
 gt.blockmachines.substation.01.input.single.name=Узел управления электростанцией
 # Machine names
-gt.blockmachines.hatch.dynamo.buffer.name=%s Энерговывод [Буферизованный]
 gt.blockmachines.hatch.muffler.adv.name=Продвинутая выхлопная система (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Требуется воздушный фильтр
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Требуется воздушный фильтр §f%s§7
