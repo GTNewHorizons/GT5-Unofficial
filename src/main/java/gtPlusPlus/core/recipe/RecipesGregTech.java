@@ -916,7 +916,7 @@ public class RecipesGregTech {
     }
 
     private static void blastSmelterRecipes() {
-        // Steel. 
+        // Steel
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Iron.getDust(1),
