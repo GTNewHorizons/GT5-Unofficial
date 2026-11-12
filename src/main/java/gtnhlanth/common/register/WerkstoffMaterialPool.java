@@ -578,7 +578,7 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID + 50,
         TextureSet.SET_DULL);
 
-    // TODO
+    // TODO what?
 
     // BASTNASITE
     public static final Werkstoff MuddyRareEarthBastnasiteSolution = new Werkstoff(

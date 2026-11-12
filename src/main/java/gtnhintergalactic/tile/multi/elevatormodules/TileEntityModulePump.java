@@ -273,7 +273,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
      *
      * @param aBaseMetaTileEntity This
      * @param aStack              Item stack present in the controller GUI
-     * @return True if valid, else false
      */
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {

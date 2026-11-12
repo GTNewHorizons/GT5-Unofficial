@@ -336,7 +336,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     .voltage(V[this.mTier])
                     .cachedRecipe(this.mLastRecipe)
                     .dontCheckStackSizes(true)
-                    .notUnificated(true)
+                    .notUnified(true)
                     .find() != null;
             }
             case 2 -> {
@@ -355,7 +355,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                                 .voltage(V[this.mTier])
                                 .cachedRecipe(this.mLastRecipe)
                                 .dontCheckStackSizes(true)
-                                .notUnificated(true)
+                                .notUnified(true)
                                 .find() != null)));
             }
             default -> {
@@ -366,7 +366,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     || tID >= ASSEMBLING_MACHINE_LuV.ID && tID <= ASSEMBLING_MACHINE_UMV.ID) { // assembler
                     // lv-iv;
                     // circuit
-                    // asseblers
+                    // assemblers
                     // lv -
                     // uv;
                     // assemblers

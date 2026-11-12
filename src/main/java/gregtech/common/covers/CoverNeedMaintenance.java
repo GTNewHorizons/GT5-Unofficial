@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.api.util.GTUtility.*;
-import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.getMaintenanceIssuesCountChat;
+import static gregtech.common.gui.mui1.cover.NeedMaintenanceUIFactory.getMaintenanceIssuesCountChat;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,11 +24,11 @@ import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.modularui.cover.CoverNeedMaintenanceGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
+import gregtech.common.gui.mui1.cover.NeedMaintenanceUIFactory;
 
-public class CoverNeedMaintainance extends CoverLegacyData {
+public class CoverNeedMaintenance extends CoverLegacyData {
 
-    public CoverNeedMaintainance(CoverContext context, ITexture coverTexture) {
+    public CoverNeedMaintenance(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
@@ -184,7 +184,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
 
     @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new NeedMaintainanceUIFactory(buildContext).createWindow();
+        return new NeedMaintenanceUIFactory(buildContext).createWindow();
     }
 
 }

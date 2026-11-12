@@ -53,9 +53,9 @@ public interface IEnergyConnected extends IColoredTileEntity {
      */
     final class Util {
 
-        // TODO: Deduplicate code by rewokring the Enet system using the GTCEu one as inspiration - BlueWeabo
+        // TODO: Deduplicate code by reworking the Enet system using the GTCEu one as inspiration - BlueWeabo
         /**
-         * Emits Energy to the E-net. Also compatible with adjacent IC2 TileEntities.
+         * Emits Energy to the E-net. Also, compatible with adjacent IC2 TileEntities.
          *
          * @return the used Amperage.
          */

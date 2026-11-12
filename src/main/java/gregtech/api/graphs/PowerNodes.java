@@ -4,12 +4,12 @@ import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.PowerNodePath;
 
 /*
- * look for and power node that need power how this works a node only contains nodes that has a higher value then it
- * self except for 1 which is the return node this node also contains the highest known node value of its network this
- * network only includes nodes that have a higher value then it self so it does not know the highest known value that
+ * look for and power node that need power how this works a node only contains nodes that has a higher value then itself
+ * except for 1 which is the return node this node also contains the highest known node value of its network this
+ * network only includes nodes that have a higher value then itself so it does not know the highest known value that
  * the return node knows with these rules we can know for the target node to be in the network of a node, the target
  * node must have a value no less than the node we are looking and no greater than the highest value that node knows
- * this way we don't have to go over the entire network to look for it we also hold a list of all consumers so we can
+ * this way we don't have to go over the entire network to look for it, we also hold a list of all consumers so we can
  * check before looking if that consumer actually needs power and only look for nodes that actually need power
  */
 public class PowerNodes {
@@ -45,7 +45,7 @@ public class PowerNodes {
                     }
                 }
             } else {
-                // if the target node has a node value greater then current node value
+                // if the target node has a node value greater than current node value
                 for (int side = 5; side > -1; side--) {
                     final Node tNextNode = aCurrentNode.mNeighbourNodes[side];
                     if (tNextNode == null) continue;

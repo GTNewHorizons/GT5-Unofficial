@@ -372,8 +372,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     private @Nullable ItemStack getHolderStack() {
-        if (this.eHolders.isEmpty() || this.eHolders.get(0).mInventory[0] == null) return null;
-        ItemStack stack = this.eHolders.get(0).mInventory[0];
+        if (this.eHolders.isEmpty() || this.eHolders.getFirst().mInventory[0] == null) return null;
+        ItemStack stack = this.eHolders.getFirst().mInventory[0];
         if (GTUtility.isStackInvalid(stack) || stack.stackSize <= 0) return null;
         return stack;
     }
@@ -415,7 +415,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (eHolders == null || eHolders.isEmpty() || eHolders.get(0).mInventory[0] == null)
+        if (eHolders == null || eHolders.isEmpty() || eHolders.getFirst().mInventory[0] == null)
             stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
         if (computationRemaining <= 0) {
             computationRemaining = 0;
@@ -619,7 +619,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 holderStack.stackSize -= this.holderStackToConsume.stackSize;
                 // we have to manually wipe it since it doesn't auto-clear if stack size <= 0
                 if (holderStack.stackSize <= 0) {
-                    this.eHolders.get(0).mInventory[0] = null;
+                    this.eHolders.getFirst().mInventory[0] = null;
                 }
             } else {
                 this.mOutputItems = null;
@@ -792,8 +792,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEResearchStationGui(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_RESEARCH,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_SCANNER);
     }
 
     public long getComputationConsumed() {

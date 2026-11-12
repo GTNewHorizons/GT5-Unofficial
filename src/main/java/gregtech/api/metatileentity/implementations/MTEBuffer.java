@@ -440,7 +440,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
                 OptionalInt stored = sink.getStoredItemsInSink(null);
 
-                if (!stored.isPresent()) return;
+                if (stored.isEmpty()) return;
 
                 int toTransfer = mTargetStackSize - stored.getAsInt();
 
@@ -534,7 +534,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
         EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         if (entityPlayer.isSneaking()) {
-            // I was so proud of all this but I literally just copied code from OutputBus
+            // I was so proud of all this, but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
             GTUtility.sendChatTrans(
                 entityPlayer,

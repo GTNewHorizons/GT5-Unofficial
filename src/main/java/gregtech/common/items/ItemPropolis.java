@@ -72,7 +72,7 @@ public class ItemPropolis extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(PropolisType.VALUES.length - 1, stack.getItemDamage()));
+        int meta = Math.clamp(stack.getItemDamage(), 0, PropolisType.VALUES.length - 1);
         return PropolisType.VALUES[meta].getColours();
     }
 

@@ -16,8 +16,9 @@ import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
 /**
  * Progressbar widget that can:
  * <ol>
- * <li>Have NEI transferrect; An area which player can click to see relevant recipes on NEI.</li>
- * <li>Specify widget theme to use for progressbar texture. Textures specified by {@link ProgressWidget#texture} will be
+ * <li>Have NEI transferRect; An area which player can click to see relevant recipes on NEI.</li>
+ * <li>Specify a widget theme to use for progressbar texture. Textures specified by {@link ProgressWidget#texture} will
+ * be
  * ignored in such a case.</li>
  * </ol>
  */
@@ -27,7 +28,7 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
     private Object[] transferRectArgs;
 
     /**
-     * Sets NEI transferrect; An area which player can click to see relevant recipes on NEI.
+     * Sets NEI transferRect; An area which player can click to see relevant recipes on NEI.
      *
      * @param transferRectID      {@code outputId} that gets passed to
      *                            {@link codechicken.nei.recipe.ICraftingHandler#getRecipeHandler
@@ -48,7 +49,7 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
     }
 
     /**
-     * Sets NEI transferrect; An area which player can click to see relevant recipes on NEI.
+     * Sets NEI transferRect; An area which player can click to see relevant recipes on NEI.
      *
      * @param transferRectID {@code outputId} that gets passed to
      *                       {@link codechicken.nei.recipe.ICraftingHandler#getRecipeHandler
@@ -62,9 +63,9 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
     }
 
     /**
-     * Sets NEI transferrect; An area which player can click to see relevant recipes on NEI.
+     * Sets NEI transferRect; An area which player can click to see relevant recipes on NEI.
      *
-     * @param recipeMap RecipeMap whose recipes get displayed on widget click.
+     * @param recipeMap RecipeMap, whose recipes get displayed on the widget click.
      */
     public GTProgressWidget neiTransferRect(RecipeMap<?> recipeMap) {
         return neiTransferRect(

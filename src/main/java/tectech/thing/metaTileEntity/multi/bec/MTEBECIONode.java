@@ -446,7 +446,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             current += step.left();
         }
 
-        setRequiredTier(this.recipeSteps.get(0).nanite);
+        setRequiredTier(this.recipeSteps.getFirst().nanite);
     }
 
     private RecipeStep getCurrentStep() {
@@ -568,7 +568,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.subtickCounter -= fullTicks * divisor;
 
-        // If we don't use nextProgress we're wasting the ticks acrued from subtickCounter, but there's no good way to
+        // If we don't use nextProgress, we're wasting the ticks accrued from subtickCounter, but there's no good way to
         // prevent that. It just means the process will be slower by a tick or two if it gets paused.
         int nextProgress = this.mProgresstime + fullTicks;
 
@@ -1022,8 +1022,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchNaniteDetector hatch) {
                     hatch.updateTexture(id);
@@ -1072,8 +1072,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchIONodeController hatch) {
                     hatch.updateTexture(id);
@@ -1121,8 +1121,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (self.losHatch == null && imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);

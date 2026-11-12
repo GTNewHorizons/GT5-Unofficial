@@ -22,7 +22,7 @@ public interface IOutputHatch {
 
     /**
      * Attempt to store as many fluids as possible into the internal inventory of this output Hatch.
-     * 
+     *
      * @param stack    The stack to insert. Will be modified by this method (will contain whatever fluids could not be
      *                 inserted; stackSize will be 0 when everything was inserted).
      * @param simulate When true this Hatch will not be modified.
@@ -31,9 +31,9 @@ public interface IOutputHatch {
     boolean storePartial(FluidStack stack, boolean simulate);
 
     /**
-     * Creates a transaction from this output Hatch. The transaction copies this Hatch' state (inventory, etc) when
-     * created, and subsequent calls on the transaction modify the copy of this Hatch. The transaction does not modify
-     * this Hatch' state unless {@link IOutputHatchTransaction#commit()} is called.
+     * Creates a transaction from this output Hatch. The transaction copies this hatch' state (inventory, etc.) when
+     * created, and subsequent calls on the transaction modify the copy of this hatch. The transaction does not modify
+     * this hatch' state unless {@link IOutputHatchTransaction#commit()} is called.
      */
     IOutputHatchTransaction createTransaction();
 }

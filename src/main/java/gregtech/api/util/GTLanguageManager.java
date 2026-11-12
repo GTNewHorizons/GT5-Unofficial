@@ -32,7 +32,7 @@ public class GTLanguageManager {
      */
     private static final HashMap<String, String> TEMPMAP = new HashMap<>();
     /**
-     * Buffer used when something is trying to add new lang entry while config file is not set up yet.
+     * Buffer used when something is trying to add a new lang entry while a config file is not set up yet.
      */
     public static final Map<String, String> BUFFERMAP = new HashMap<>();
     /**
@@ -40,12 +40,14 @@ public class GTLanguageManager {
      */
     private static final Map<String, String> LANGMAP = new HashMap<>();
     /**
-     * Config file handler bound to GregTech.lang or GregTech_(locale_name).lang. Even though it says English file, it's
-     * not necessarily English, but on system it's always treated as English (as in, "default" language.)
+     * Config file handler bound to GregTech.lang or GregTech_(locale_name).lang. Even though it says an English file,
+     * it's
+     * not necessarily English, but on English systems it's always treated as English (as in, "default" language.)
      */
     public static Configuration sEnglishFile;
     /**
-     * If the game is running with en_US language. This does not get updated when user changes language in game; GT lang
+     * If the game is running with en_US language. This does not get updated when a user changes language in the game;
+     * The GT lang
      * system cannot handle that anyway.
      */
     public static boolean isEN_US;
@@ -55,7 +57,7 @@ public class GTLanguageManager {
     @Deprecated
     public static boolean i18nPlaceholder = true;
     /**
-     * If there's any lang entry that is not found on lang file and waiting to be written.
+     * If there's any lang entry that is not found in a lang file and waiting to be written.
      */
     private static boolean hasUnsavedEntry = false;
 
@@ -86,7 +88,7 @@ public class GTLanguageManager {
     }
 
     /**
-     * If you newly use this method, please consider using MC lang system instead.
+     * If you newly use this method, please consider using the MC lang system instead.
      */
     public static synchronized void addStringLocalization(String aKey, String aEnglish) {
         String trimmedKey = aKey != null ? aKey.trim() : "";

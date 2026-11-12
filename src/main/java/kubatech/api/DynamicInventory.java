@@ -236,7 +236,7 @@ public class DynamicInventory<T> {
                         // special button handler goes here
                         if (drawables.size() <= finalID) return;
                         if (player.capabilities.isCreativeMode && player.inventory.getItemStack() == null) {
-                            int realID = drawables.get(finalID).realSlots.get(0);
+                            int realID = drawables.get(finalID).realSlots.getFirst();
                             ItemStack stack = inventoryGetter.get(inventory.get(realID))
                                 .copy();
                             stack.stackSize = stack.getMaxStackSize();
@@ -247,7 +247,7 @@ public class DynamicInventory<T> {
                     } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
                         if (drawables.size() <= finalID) return;
-                        int realID = drawables.get(finalID).realSlots.get(0);
+                        int realID = drawables.get(finalID).realSlots.getFirst();
                         T removed = inventoryExtractor.extract(realID);
                         if (removed != null) {
                             ItemStack stack = inventoryGetter.get(removed);
@@ -261,7 +261,7 @@ public class DynamicInventory<T> {
                         if (input != null) {
                             if (drawables.size() > finalID) {
                                 if (inventoryReplacer == null) return;
-                                int realID = drawables.get(finalID).realSlots.get(0);
+                                int realID = drawables.get(finalID).realSlots.getFirst();
                                 ItemStack removed = inventoryReplacer.replaceOrMerge(realID, input);
                                 if (removed == null) return;
                                 player.inventory.setItemStack(removed.stackSize == 0 ? null : removed);
@@ -289,7 +289,7 @@ public class DynamicInventory<T> {
                         }
                         if (drawables.size() > finalID) {
                             if (inventoryExtractor == null) return;
-                            int realID = drawables.get(finalID).realSlots.get(0);
+                            int realID = drawables.get(finalID).realSlots.getFirst();
                             T removed = inventoryExtractor.extract(realID);
                             if (removed != null) {
                                 ItemStack stack = inventoryGetter.get(removed);
@@ -405,7 +405,7 @@ public class DynamicInventory<T> {
         final int perRow = width / 18;
         for (int i = 0, imax = ((buttons.size() - 1) / perRow); i <= imax; i++) {
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            for (int j = 0, jmax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
+            for (int j = 0, jMax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jMax; j++) {
                 final int finalI = i * perRow;
                 final int ID = finalI + j;
                 row.widget(buttons.get(ID));

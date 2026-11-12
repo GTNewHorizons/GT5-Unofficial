@@ -228,8 +228,8 @@ public class MTEIndustrialPlatePressLegacy extends GTPPMultiBlockBase<MTEIndustr
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_BENDING);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_FORMING);
     }
 
     @Override
@@ -251,7 +251,7 @@ public class MTEIndustrialPlatePressLegacy extends GTPPMultiBlockBase<MTEIndustr
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_BENDING,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_BENDING,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_FORMING);
     }
 }

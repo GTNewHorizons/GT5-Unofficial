@@ -20,7 +20,7 @@ import gregtech.common.inventory.IAEInventory;
 
 /**
  * A version of {@link IItemHandlerModifiable} that supports AE stacks (stacks bigger than int max).
- * By default all MC stack operations proxy to the AE method equivalents and truncate any stack sizes >int max.
+ * By default, all MC stack operations proxy to the AE method equivalents and truncate any stack sizes >int max.
  */
 public interface IAEItemHandlerModifiable extends IItemHandlerModifiable, IAEInventory {
 

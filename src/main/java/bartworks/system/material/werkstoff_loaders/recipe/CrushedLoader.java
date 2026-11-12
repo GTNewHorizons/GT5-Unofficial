@@ -197,7 +197,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .eut(BWUtil.calculateRecipeEU(werkstoff, 5))
             .addTo(centrifugeRecipes);
 
-        if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
+        if (werkstoff.contains(SubTag.CRYSTALLIZABLE)) {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustPure))

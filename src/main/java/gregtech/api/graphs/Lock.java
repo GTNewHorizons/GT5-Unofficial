@@ -26,7 +26,7 @@ public class Lock {
         return !tiles.isEmpty();
     }
 
-    // i want to check for the exact object not equals
+    // I want to check for the exact object, not equals
     protected int contains(TileEntity tileEntity) {
         for (int i = 0; i < tiles.size(); i++) {
             if (tiles.get(i) == tileEntity) {

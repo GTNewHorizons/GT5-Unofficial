@@ -31,7 +31,7 @@ import gregtech.api.util.GTModHandler;
 public final class BioObjectAdder {
 
     /**
-     * @param voltageTier (i.e. 6 for LuV, 7 for ZPM, only intresting for LuV+)
+     * @param voltageTier (i.e., 6 for LuV, 7 for ZPM, only interesting for LuV+)
      * @return the propper Bacteria Tier (at least 0)
      */
     public static int getBacteriaTierFromVoltageTier(int voltageTier) {
@@ -40,7 +40,7 @@ public final class BioObjectAdder {
 
     /**
      * If you get NPE's related to BioCultures (most likely because of Load Order or creating BioCultures after the
-     * postinit Phase) execute this.
+     * postInit Phase), execute this.
      */
     public static void regenerateBioFluids() {
         FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)

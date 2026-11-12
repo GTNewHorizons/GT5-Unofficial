@@ -36,13 +36,13 @@ public class QuantumComputerFrontend extends RecipeMapFrontend {
             QuantumComputerRecipeData data = recipeInfo.recipe.getMetadata(GTRecipeConstants.QUANTUM_COMPUTER_DATA);
             if (data != null) {
                 // If this is false, it's a cooling component.
-                if (data.subZero) {
-                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.heating", data.heatConstant));
-                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.computation", data.computation));
+                if (data.subZero()) {
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.heating", data.heatConstant()));
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.computation", data.computation()));
                 } else {
-                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.cooling", data.coolConstant));
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.cooling", data.coolConstant()));
                 }
-                result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.maxheat", data.maxHeat));
+                result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.maxheat", data.maxHeat()));
             }
             return result;
         }

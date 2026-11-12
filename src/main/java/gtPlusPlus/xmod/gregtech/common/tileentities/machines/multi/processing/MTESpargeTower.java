@@ -278,7 +278,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!mTopLayerFound) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
-        if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(0)
+        if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.getFirst()
             .isEmpty()) {
             errors.add(StructureErrors.missingOutputHatchDT(List.of(2)));
         }

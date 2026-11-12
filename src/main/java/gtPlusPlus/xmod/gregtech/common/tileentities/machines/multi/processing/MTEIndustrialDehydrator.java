@@ -266,8 +266,8 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID);
     }
 
     @Override
@@ -301,7 +301,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID);
     }
 }

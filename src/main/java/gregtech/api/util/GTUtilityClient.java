@@ -31,7 +31,8 @@ public class GTUtilityClient {
             if (aGuiStyle) {
                 tooltip.set(
                     0,
-                    (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor + tooltip.get(0));
+                    (aStack.getRarity() == null ? EnumRarity.common : aStack.getRarity()).rarityColor
+                        + tooltip.getFirst());
                 for (int i = 1; i < tooltip.size(); i++) {
                     tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
                 }

@@ -17,12 +17,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TickTime;
 
-// this is a middleware for block updates
-// Greg's BaseMetaTileEntity uses World::markBlockForUpdate() to update the texture of a machine
-// World::markBlockForUpdate() triggers block updates of all blocks within the same chunk
-// this class makes sure chunk updates are perfmormed only once even if several blocks requested update
-// (valid obly for requests made using BlockUpdateHandler::enqueueBlockUpdate)
-// and introduces a per chunk cooldown to slow the things a bit
+// this is middleware for block updates
+// Greg's BaseMetaTileEntity uses World#markBlockForUpdate() to update the texture of a machine
+// World#markBlockForUpdate() triggers block updates of all blocks within the same chunk
+// this class makes sure chunk updates are performed only once, even if several blocks requested an update
+// (valid only for requests made using BlockUpdateHandler#enqueueBlockUpdate)
+// and introduces a per-chunk cooldown to slow the things a bit
 // cause too frequent updates are not necessary for visual appearance of a block
 
 @SideOnly(Side.CLIENT)

@@ -30,7 +30,7 @@ public interface ISpaceProject {
     String getUnlocalizedName();
 
     /**
-     * @return Localized name of the project using StatCollect#translateToLocal.
+     * @return the localized name of the project using StatCollect#translateToLocal.
      */
     String getLocalizedName();
 
@@ -61,7 +61,7 @@ public interface ISpaceProject {
     int getCurrentStage();
 
     /**
-     * @return The Total amount of stages the project has
+     * @return The total number of stages the project has
      */
     int getTotalStages();
 
@@ -92,7 +92,7 @@ public interface ISpaceProject {
     ItemStack[] getItemsCostPerStage();
 
     /**
-     * @param index Index at which the itemstack is found at
+     * @param index Index at which the item stack is found at
      * @return an item's cost at the appropriate index. Null otherwise if it goes above the index or there are no item
      *         costs
      */
@@ -104,19 +104,19 @@ public interface ISpaceProject {
     ItemStack[] getCurrentItemsProgress();
 
     /**
-     * @param index Index at which the itemstack is found at
+     * @param index Index at which the item stack is found at
      * @return an item's current progress at the appropriate index. Null otherwise if it goes above the index or there
      *         are no item costs
      */
     ItemStack getCurrentItemProgress(int index);
 
     /**
-     * @return The items total cost required in an array form.
+     * @return The total item cost required in an array form.
      */
     ItemStack[] getTotalItemsCost();
 
     /**
-     * @param index Index at which the itemstack is found at
+     * @param index Index at which the item stack is found at
      * @return an item's total cost at the appropriate index. Null otherwise if it goes above the index or there are no
      *         item costs
      */
@@ -128,7 +128,7 @@ public interface ISpaceProject {
     FluidStack[] getFluidsCostPerStage();
 
     /**
-     * @param index Index at which the fluidstack is found at
+     * @param index Index at which the fluid stack is found at
      * @return a fluid's cost at the appropriate index. Null otherwise if it goes above the index or there are no fluid
      *         costs
      */
@@ -140,7 +140,7 @@ public interface ISpaceProject {
     FluidStack[] getCurrentFluidsProgress();
 
     /**
-     * @param index Index at which the fluidstack is found at
+     * @param index Index at which the fluid stack is found at
      * @return a fluid's current progress at the appropriate index. Null otherwise if it goes above the index or there
      *         are no fluid costs
      */
@@ -152,7 +152,7 @@ public interface ISpaceProject {
     FluidStack[] getTotalFluidsCost();
 
     /**
-     * @param index Index at which the fluidstack is found at
+     * @param index Index at which the fluid stack is found at
      * @return a fluid's total cost at the appropriate index. Null otherwise if it goes above the index or there are no
      *         fluid costs
      */
@@ -222,7 +222,7 @@ public interface ISpaceProject {
     boolean meetsRequirements(UUID team, boolean checkLocation);
 
     /**
-     * Checks if the projects is finished
+     * Checks if the project is finished
      */
     boolean isFinished();
 
@@ -260,7 +260,7 @@ public interface ISpaceProject {
         ItemStack[] getItemsCostPerStage();
 
         /**
-         * @param index Index at which the itemstack is found at
+         * @param index Index at which the item stack is found at
          * @return an item's cost at the appropriate index. Null otherwise if it goes above the index or there are no
          *         item costs
          */
@@ -272,31 +272,31 @@ public interface ISpaceProject {
         ItemStack[] getCurrentItemsProgress();
 
         /**
-         * @param index Index at which the itemstack is found at
+         * @param index Index at which the item stack is found at
          * @return an item's current progress at the appropriate index. Null otherwise if it goes above the index or
          *         there are no item costs
          */
         ItemStack getCurrentItemProgress(int index);
 
         /**
-         * @return The items total cost required in an array form.
+         * @return The total item cost required in an array form.
          */
         ItemStack[] getTotalItemsCost();
 
         /**
-         * @param index Index at which the itemstack is found at
+         * @param index Index at which the item stack is found at
          * @return an item's total cost at the appropriate index. Null otherwise if it goes above the index or there are
          *         no item costs
          */
         ItemStack getTotalItemCost(int index);
 
         /**
-         * @return The fluids cost required per stage in an array form. Used for making the recipe.
+         * @return The fluid cost required per stage in an array form. Used for making the recipe.
          */
         FluidStack[] getFluidsCostPerStage();
 
         /**
-         * @param index Index at which the fluidstack is found at
+         * @param index Index at which the fluid stack is found at
          * @return a fluid's cost at the appropriate index. Null otherwise if it goes above the index or there are no
          *         fluid costs
          */
@@ -308,19 +308,19 @@ public interface ISpaceProject {
         FluidStack[] getCurrentFluidsProgress();
 
         /**
-         * @param index Index at which the fluidstack is found at
+         * @param index Index at which the fluid stack is found at
          * @return a fluid's current progress at the appropriate index. Null otherwise if it goes above the index or
          *         there are no fluid costs
          */
         FluidStack getCurrentFluidProgress(int index);
 
         /**
-         * @return The fluids total cost required in an array form. Null if there are no fluid costs
+         * @return The total fluid cost required in an array form. Null if there are no fluid costs
          */
         FluidStack[] getTotalFluidsCost();
 
         /**
-         * @param index Index at which the fluidstack is found at
+         * @param index Index at which the fluid stack is found at
          * @return a fluid's total cost at the appropriate index. Null otherwise if it goes above the index or there are
          *         no fluid costs
          */
@@ -347,7 +347,7 @@ public interface ISpaceProject {
         float getCurrentProgress();
 
         /**
-         * @return The voltage at which the upgrade requires to be build at.
+         * @return The voltage at which the upgrade requires to be built at.
          */
         long getVoltage();
 

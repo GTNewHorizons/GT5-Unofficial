@@ -27,7 +27,7 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends Cover implements Invertable {
+public class CoverEUMeter extends Cover implements Invertible {
 
     private EnergyType type;
     private long maxThreshold;
@@ -68,7 +68,7 @@ public class CoverEUMeter extends Cover implements Invertable {
         return this.threshold;
     }
 
-    public CoverEUMeter setThresdhold(long threshold) {
+    public CoverEUMeter setThreshold(long threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -238,7 +238,7 @@ public class CoverEUMeter extends Cover implements Invertable {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
-    public long fetchMaxthreshold() {
+    public long fetchMaxThreshold() {
         return getType().getTileEntityEnergyCapacity(getTile());
     }
 

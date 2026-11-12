@@ -630,7 +630,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return super.getGui().withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_PACKAGER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_UNPACKAGER);
     }
 }

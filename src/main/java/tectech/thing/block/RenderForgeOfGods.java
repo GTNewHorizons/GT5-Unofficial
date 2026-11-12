@@ -225,13 +225,13 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     public void bufferSoftBeam(TileEntityForgeOfGods tile) {
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.1f;
-        float startx = -radius * (float) Math.cos(angle);
-        float starty = radius * (float) Math.sin(angle);
+        float startX = -radius * (float) Math.cos(angle);
+        float startY = radius * (float) Math.sin(angle);
 
         softBeamSegmentMatrixBuffer.clear();
 
-        softBeamSegmentMatrixBuffer.put(starty);
-        softBeamSegmentMatrixBuffer.put(startx);
+        softBeamSegmentMatrixBuffer.put(startY);
+        softBeamSegmentMatrixBuffer.put(startX);
         softBeamSegmentMatrixBuffer.put(0);
 
         for (int i = tile.getRingCount() - 1; i >= 0; i--) {
@@ -250,22 +250,22 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     public void bufferIntenseBeam(TileEntityForgeOfGods tile) {
         float angle = tile.getStartAngle();
         float radius = tile.getStarRadius() * 1.05f;
-        float startx = -radius * (float) Math.cos(angle);
-        float starty = radius * (float) Math.sin(angle);
+        float startX = -radius * (float) Math.cos(angle);
+        float startY = radius * (float) Math.sin(angle);
 
         // first lens means the one closest to the star
         int firstLens = tile.getRingCount() - 1;
 
-        float nextx = tile.getLensDistance(firstLens);
-        float nexty = tile.getLenRadius(firstLens) * .75f;
+        float nextX = tile.getLensDistance(firstLens);
+        float nextY = tile.getLenRadius(firstLens) * .75f;
 
-        float backx = Math.max(-radius, (nextx + radius) / 2);
-        float backy = TileEntityForgeOfGods.interpolate(startx, nextx, starty, nexty, backx);
+        float backX = Math.max(-radius, (nextX + radius) / 2);
+        float backY = TileEntityForgeOfGods.interpolate(startX, nextX, startY, nextY, backX);
 
         intenseBeamSegmentMatrixBuffer.clear();
 
-        intenseBeamSegmentMatrixBuffer.put(backy);
-        intenseBeamSegmentMatrixBuffer.put(backx);
+        intenseBeamSegmentMatrixBuffer.put(backY);
+        intenseBeamSegmentMatrixBuffer.put(backX);
         intenseBeamSegmentMatrixBuffer.put(0);
 
         float transparency = .2f;
@@ -276,20 +276,20 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             transparency += .3f;
         }
 
-        float currx = tile.getLensDistance(0);
-        float curry = tile.getLenRadius(0) / 2;
-        float lastx = TileEntityForgeOfGods.BACK_PLATE_DISTANCE;
-        float lasty = Math.min(tile.getLenRadius(firstLens), TileEntityForgeOfGods.BACK_PLATE_RADIUS);
+        float currX = tile.getLensDistance(0);
+        float currY = tile.getLenRadius(0) / 2;
+        float lastX = TileEntityForgeOfGods.BACK_PLATE_DISTANCE;
+        float lastY = Math.min(tile.getLenRadius(firstLens), TileEntityForgeOfGods.BACK_PLATE_RADIUS);
 
-        float midx = lastx + 8f;
-        float midy = TileEntityForgeOfGods.interpolate(currx, lastx, curry, lasty, midx);
+        float midX = lastX + 8f;
+        float midY = TileEntityForgeOfGods.interpolate(currX, lastX, currY, lastY, midX);
 
-        intenseBeamSegmentMatrixBuffer.put(midy);
-        intenseBeamSegmentMatrixBuffer.put(midx);
+        intenseBeamSegmentMatrixBuffer.put(midY);
+        intenseBeamSegmentMatrixBuffer.put(midX);
         intenseBeamSegmentMatrixBuffer.put(transparency);
 
-        intenseBeamSegmentMatrixBuffer.put(lasty);
-        intenseBeamSegmentMatrixBuffer.put(lastx);
+        intenseBeamSegmentMatrixBuffer.put(lastY);
+        intenseBeamSegmentMatrixBuffer.put(lastX);
         intenseBeamSegmentMatrixBuffer.put(0f);
 
         intenseBeamSegmentMatrixBuffer.rewind();

@@ -154,7 +154,7 @@ public class RecipeGenRecycling implements Runnable {
                         .itemInputs(GTUtility.copyAmount(1, tempStack))
                         .itemOutputs(arcOutput)
                         .duration((int) Math.max(16L, tAmount / M))
-                        .eut((int) Math.max(30L, Math.min(120L, tAmount / 192L)))
+                        .eut((int) Math.clamp(tAmount / 192L, 30L, 120L))
                         .metadata(RECYCLE, true)
                         .addTo(UniversalArcFurnace);
                 }
@@ -171,7 +171,7 @@ public class RecipeGenRecycling implements Runnable {
             final int aDuration = (int) Math.max(1, (24 * materialAmount) / M);
             final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
             // Temporary: align fluid extraction recycling EU/t with GT++ fluid recipe tiering
-            // to avoid mid-tier uptiers (e.g., Tumbaga/Potin). This uses the same tier->voltage
+            // to avoid mid-tier up-tiers (e.g., Tumbaga/Potin). This uses the same tier->voltage
             // mapping as RecipeGenFluids via material.voltageMultiplier.
             long powerUsage = Math.max(8L, material.voltageMultiplier);
             final int powerTier = GTUtility.getTier(powerUsage);
@@ -292,7 +292,7 @@ public class RecipeGenRecycling implements Runnable {
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0)
+            final ItemStack returnValue = oreDictList.getFirst()
                 .copy();
             returnValue.stackSize = amount;
             return returnValue;

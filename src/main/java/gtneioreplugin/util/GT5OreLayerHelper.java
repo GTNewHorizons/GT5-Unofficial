@@ -129,7 +129,7 @@ public class GT5OreLayerHelper {
             }
             // Fallback just in case so we at least show *some* ore
             if (stackList.isEmpty() && !validStones.isEmpty()) {
-                stackList.add(getLayerOre(veinLayer, validStones.get(0)));
+                stackList.add(getLayerOre(veinLayer, validStones.getFirst()));
             }
             return stackList;
         }
@@ -170,7 +170,7 @@ public class GT5OreLayerHelper {
         public final ArrayList<OreLayerWrapper> oreVeins = new ArrayList<>();
         public final HashMap<OreLayerWrapper, Double> oreVeinToProbabilityInDimension = new HashMap<>();
 
-        // Calculate all weights of ore veins once dimension is initialised.
+        // Calculate all weights of ore veins once dimension is initialized.
         private void calculateWeights() {
             int totalWeight = 0;
             for (OreLayerWrapper oreVein : oreVeins) {

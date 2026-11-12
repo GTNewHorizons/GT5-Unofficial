@@ -23,7 +23,7 @@ import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     /**
-     * Determines which tooltip is displayed within the itemblock.
+     * Determines which tooltip is displayed within the item block.
      */
     private static final int mTooltipID = 2;
 

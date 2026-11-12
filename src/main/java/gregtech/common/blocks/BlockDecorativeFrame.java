@@ -36,8 +36,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 /**
  * A purely decorative frame box block (GT++ style): a non-functional, see-through block oredicted under
- * {@link OrePrefixes#frameGt}. Unlike {@link BlockFrameBox}/{@code MTEFrame} it has no covers, redstone passthrough or
- * scaffolding behavior -- it exists so {@link IOreMaterial}s that lack a real frame box (e.g. Werkstoffs) can still
+ * {@link OrePrefixes#frameGt}. Unlike {@link BlockFrameBox}/{@code MTEFrame} it has no covers, redstone passthrough, or
+ * scaffolding behavior -- it exists so {@link IOreMaterial}s that lack a real frame box (e.g., Werkstoffs) can still
  * satisfy {@code frameGt} in recipes.
  */
 public class BlockDecorativeFrame extends BlockStorage implements IBlockWithTextures {

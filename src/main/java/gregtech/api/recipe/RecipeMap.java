@@ -43,7 +43,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
 
     /**
-     * All the recipemap instances. key=unlocalized name, value=instance.
+     * All the recipemap instances; key=unlocalized name, value=instance.
      */
     public static final Map<String, RecipeMap<?>> ALL_RECIPE_MAPS = new HashMap<>();
 
@@ -93,8 +93,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     private int nonConsumedInputItemIdsRecipeCount = -1;
 
     /**
-     * @return Item IDs (ignoring stack size) of every non-consumed input item (i.e. recipe input with stackSize == 0,
-     *         like a mold) across all recipes of this recipemap. Used to detect items like molds sitting in an input
+     * @return Item IDs (ignoring stack size) of every non-consumed input item (i.e., recipe input with stackSize == 0,
+     *         like molds) across all recipes of this recipemap. Used to detect items like molds sitting in an input
      *         bus so they can be shown in the AE2 terminal interface name.
      */
     public Set<GTUtility.ItemId> getNonConsumedInputItemIds() {
@@ -267,7 +267,8 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     private static final Pattern LEGACY_IDENTIFIER_PATTERN = Pattern.compile("(.+)_[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+");
 
     /**
-     * Gets recipemap instance from old mUniqueIdentifier format. This is only for backward compat, where tiles saved
+     * Gets recipemap instance from the old mUniqueIdentifier format. This is only for backward compat, where tiles
+     * saved
      * recipemap with mUniqueIdentifier.
      *
      * @param legacyIdentifier mUniqueIdentifier, in %s_%d_%d_%d_%d_%d format

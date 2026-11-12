@@ -114,9 +114,9 @@ public class AdditionalRecipes {
             BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
 
             if (DNA != null) {
-                ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-                BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
-                BehaviourDataOrb.setDataName(Outp, DNA.getName());
+                ItemStack output = ItemList.Tool_DataOrb.get(1L);
+                BehaviourDataOrb.setDataTitle(output, "DNA Sample");
+                BehaviourDataOrb.setDataName(output, DNA.getName());
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(
@@ -124,7 +124,7 @@ public class AdditionalRecipes {
                         FluidLoader.BioLabFluidCells[0],
                         FluidLoader.BioLabFluidCells[3],
                         ItemList.Tool_DataOrb.get(1L))
-                    .itemOutputs(Outp, ItemList.Cell_Empty.get(2L))
+                    .itemOutputs(output, ItemList.Cell_Empty.get(2L))
                     .outputChances(DNA.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[1])
@@ -193,9 +193,9 @@ public class AdditionalRecipes {
             }
         }
 
-        ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
-        BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
-        BehaviourDataOrb.setDataName(Outp, "Any DNA");
+        ItemStack output = ItemList.Tool_DataOrb.get(1L);
+        BehaviourDataOrb.setDataTitle(output, "DNA Sample");
+        BehaviourDataOrb.setDataName(output, "Any DNA");
         ItemStack resulting = ItemList.EmptyPetriDish.get(1)
             .setStackDisplayName("The Culture made from DNA");
         resulting.setTagInfo("NEI", new NBTTagByte((byte) 1));
@@ -205,7 +205,7 @@ public class AdditionalRecipes {
                 ItemList.EmptyPetriDish.get(1),
                 ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
-                Outp)
+                output)
             .itemOutputs(resulting)
             .outputChances(75_00)
             .fluidInputs(GTModHandler.getLiquidDNA(8_000))
@@ -236,7 +236,7 @@ public class AdditionalRecipes {
                             ItemList.EmptyPetriDish.get(1),
                             fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
-                                    .get(0))
+                                    .getFirst())
                         .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
@@ -358,7 +358,7 @@ public class AdditionalRecipes {
             .metadata(ADDITIVE_AMOUNT, 6)
             .addTo(primitiveBlastRecipes);
 
-        // Cubic Circonia
+        // Cubic Zirconia
         // 2Y + 3O = Y2O3
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Yttrium.getDust(2))

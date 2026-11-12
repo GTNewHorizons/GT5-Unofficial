@@ -12,7 +12,7 @@ import paulscode.sound.SoundBuffer;
 import paulscode.sound.codecs.CodecJOrbis;
 
 /**
- * A somewhat hacky codec that allows starting music playback from the middle of a Ogg Vorbis file. Registers for URLs
+ * A somewhat hacky codec that allows starting music playback from the middle of an Ogg Vorbis file. Registers for URLs
  * of the form: {@literal jar:blah/blah.jar!blah/music.ogg?seek_ms=5000&ext=.gt5oggseek}
  */
 public class SeekingOggCodec extends CodecJOrbis {
@@ -26,7 +26,7 @@ public class SeekingOggCodec extends CodecJOrbis {
      * Encodes the given millisecond seek amount into a URL/resource name suffix that can be appended to the sound path
      * to start playing from that point onwards.
      */
-    public static String getEncodedSeekSuffxix(long milliseconds) {
+    public static String getEncodedSeekSuffix(long milliseconds) {
         return String.format("?seek_ms=%d&ext=." + EXTENSION, milliseconds);
     }
 
@@ -50,7 +50,7 @@ public class SeekingOggCodec extends CodecJOrbis {
     public static ResourceLocation seekResource(ResourceLocation loc, long milliseconds) {
         String original = loc.getResourcePath();
         original = stripSeekMetadata(original);
-        return new ResourceLocation(loc.getResourceDomain(), original + getEncodedSeekSuffxix(milliseconds));
+        return new ResourceLocation(loc.getResourceDomain(), original + getEncodedSeekSuffix(milliseconds));
     }
 
     @Override

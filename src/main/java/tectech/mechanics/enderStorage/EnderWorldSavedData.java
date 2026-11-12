@@ -126,7 +126,7 @@ public class EnderWorldSavedData extends WorldSavedData {
         NBTTagList tags = new NBTTagList();
 
         enderLiquidTagLink.forEach((tag, container) -> {
-            // channels are owned by the covers now, so a channel is kept as long as it holds something
+            // the covers own channels now, so a channel is kept as long as it holds something
             if (usedTags.contains(tag) || !container.isEmpty()) {
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setTag("k", tag.save());
@@ -168,7 +168,7 @@ public class EnderWorldSavedData extends WorldSavedData {
     }
 
     /**
-     * Returns the channel that was bound to this tank's position before channels moved into the cover, and forgets it.
+     * Returns the channel previously bound to this tank's position before channels moved into the cover and forgets it.
      *
      * @return The channel, or null if there is none left for this position.
      */

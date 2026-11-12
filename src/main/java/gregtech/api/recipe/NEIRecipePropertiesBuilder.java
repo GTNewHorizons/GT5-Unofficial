@@ -91,8 +91,8 @@ public final class NEIRecipePropertiesBuilder {
         return this;
     }
 
-    public NEIRecipePropertiesBuilder unificateOutput(boolean unificateOutput) {
-        this.unificateOutput = unificateOutput;
+    public NEIRecipePropertiesBuilder unificateOutput(boolean unifyOutput) {
+        this.unificateOutput = unifyOutput;
         return this;
     }
 

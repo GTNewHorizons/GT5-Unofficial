@@ -88,7 +88,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Function<ItemStack, String>> mNameLocalizationFunctions = new ConcurrentHashMap<>();
-    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mTooltipLocalizationFuncitons = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mTooltipLocalizationFunctions = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -113,7 +113,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID             The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aID             The id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param nameFunction    The Localized Name Function of the created Item
      * @param tooltipFunction The Localized ToolTip Function of the created Item, you can also insert null for having no
      *                        ToolTip
@@ -127,7 +127,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             short meta = (short) (mOffset + aID);
             ItemStack rStack = new ItemStack(this, 1, meta);
             mNameLocalizationFunctions.put(meta, nameFunction);
-            mTooltipLocalizationFuncitons.put(meta, tooltipFunction);
+            mTooltipLocalizationFunctions.put(meta, tooltipFunction);
             if (mEnabledItems.get(aID)) {
                 throw new IllegalArgumentException(
                     String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
@@ -210,7 +210,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
      * For dynamic content assembled at runtime (e.g. formatted strings with per-item data),
      * use {@link #addItem} directly and build the string manually.
      *
-     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aID         The id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param aNameKey    The localization key for the item's display name
      * @param aToolTipKey The localization key for the item's tooltip, or null for no tooltip.
      *                    The translated value may contain {@code \n} to separate tooltip lines.
@@ -314,7 +314,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
-        return mTooltipLocalizationFuncitons.get((short) getDamage(aStack));
+        return mTooltipLocalizationFunctions.get((short) getDamage(aStack));
     }
 
     @Override

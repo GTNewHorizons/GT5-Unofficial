@@ -54,7 +54,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IDamageableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -84,7 +84,7 @@ import mrtjp.projectred.api.IScrewdriver;
         @Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
         @Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInventoryGuiData>, ISpecialElectricItem,
-    IPickBlockHandler, IDamagableItem, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
+    IPickBlockHandler, IDamageableItem, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
     public static final String CONTENTS_KEY = "gt5u.toolbox:Contents";
     public static final String TOOLBOX_OPEN_KEY = "gt5u.toolbox:ToolboxOpen";

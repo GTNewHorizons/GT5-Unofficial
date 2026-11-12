@@ -340,6 +340,6 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @Override
     public List<Parameter<?, ?>> getParameters() {
-        return List.<Parameter<?, ?>>of(filterParameters);
+        return List.of(filterParameters);
     }
 }

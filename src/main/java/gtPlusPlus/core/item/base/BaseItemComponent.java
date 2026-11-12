@@ -286,7 +286,7 @@ public class BaseItemComponent extends Item {
         ROD("Rod", "@ Rod", "stick", OrePrefixes.stick),
         RODLONG("RodLong", "Long @ Rod", "stickLong", OrePrefixes.stickLong),
         GEAR("Gear", "@ Gear", "gearGt", OrePrefixes.gearGt),
-        SMALLGEAR("SmallGear", "Small @ Gear", "gearGtSmall", OrePrefixes.gearGtSmall), // TODO
+        SMALLGEAR("SmallGear", "Small @ Gear", "gearGtSmall", OrePrefixes.gearGtSmall),
         SCREW("Screw", "@ Screw", "screw", OrePrefixes.screw),
         BOLT("Bolt", "@ Bolt", "bolt", OrePrefixes.bolt),
         ROTOR("Rotor", "@ Rotor", "rotor", OrePrefixes.rotor),
@@ -306,6 +306,9 @@ public class BaseItemComponent extends Item {
         private final String OREDICT_NAME;
         private final OrePrefixes a_GT_EQUAL;
 
+        /**
+         * @param DisplayName {@literal @} is the placeholder for the material name.
+         */
         ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName,
             final OrePrefixes aPrefix) {
             this.COMPONENT_NAME = LocalName;

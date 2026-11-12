@@ -164,7 +164,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         if (!OrePrefixes.ore.doGenerateItem(gtMat)) return false;
 
         IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones()
-            .get(0) : info.stoneType;
+            .getFirst() : info.stoneType;
 
         if (!(stoneType instanceof StoneType stoneType2)) return false;
         if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;

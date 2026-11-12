@@ -35,7 +35,7 @@ import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 
-public class ItemStonageRotors extends Item implements IKineticRotor {
+public class ItemStoneAgeRotors extends Item implements IKineticRotor {
 
     private final int[] DiaMinMax = new int[3];
     private final float eff;
@@ -46,7 +46,7 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     private final float mRotor;
     private final int maxDamageEx;
 
-    public ItemStonageRotors(int diameter, float eff, int speed, float mRotor, int min, int max, int durability,
+    public ItemStoneAgeRotors(int diameter, float eff, int speed, float mRotor, int min, int max, int durability,
         IKineticRotor.GearboxType type, ResourceLocation tex, String Name, String itemTex) {
         this.DiaMinMax[0] = diameter;
         this.DiaMinMax[1] = min;

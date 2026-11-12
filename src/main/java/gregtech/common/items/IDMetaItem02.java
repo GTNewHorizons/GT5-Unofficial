@@ -161,7 +161,7 @@ public enum IDMetaItem02 {
     Cover_AdvancedRedstoneReceiverInternal(580),
     Cover_WirelessFluidDetector(581),
     Cover_WirelessItemDetector(582),
-    Cover_WirelessNeedsMaintainance(583),
+    Cover_WirelessNeedsMaintenance(583),
     Cover_WirelessActivityDetector(584),
     Vajra_Core(585),
     Magnetron(586),

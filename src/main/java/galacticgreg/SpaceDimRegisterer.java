@@ -15,7 +15,7 @@ import gregtech.api.enums.StoneType;
 /**
  * In this class, you'll find everything you need in order to tell GGreg what to do and where. Everything is done in
  * here. If you're trying to use anything else, you're probably doing something wrong (Or I forgot to add it. In that
- * case, find me on github and create an issue please)
+ * case, find me on GitHub and create an issue, please)
  */
 public class SpaceDimRegisterer {
 

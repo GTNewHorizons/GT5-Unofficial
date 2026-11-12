@@ -94,7 +94,7 @@ public class TGSFrontend extends RecipeMapFrontend {
         if (gui == null) return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
 
         // The last input in neiCachedRecipe is always the special slot, this is the input sapling.
-        if (gui.isMouseOver(neiCachedRecipe.mInputs.get(neiCachedRecipe.mInputs.size() - 1), 0)) {
+        if (gui.isMouseOver(neiCachedRecipe.mInputs.getLast(), 0)) {
             currentTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.nei.tgs.tooltip.sapling"));
             super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
             return currentTip;

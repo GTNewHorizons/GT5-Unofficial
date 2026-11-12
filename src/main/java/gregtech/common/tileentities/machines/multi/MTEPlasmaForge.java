@@ -804,7 +804,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             if (mEnergyHatches.size() > 2) {
                 errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, mEnergyHatches.size(), 2));
             } else {
-                byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+                byte tier_of_hatch = mEnergyHatches.getFirst().mTier;
                 for (MTEHatchEnergy energyHatch : mEnergyHatches) {
                     if (energyHatch.mTier != tier_of_hatch) {
                         errors.add(StructureErrors.of("GT5U.gui.text.structure_error.energy_hatch_tier_mismatch"));

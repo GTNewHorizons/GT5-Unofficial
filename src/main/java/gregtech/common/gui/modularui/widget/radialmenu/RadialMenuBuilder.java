@@ -260,8 +260,8 @@ public class RadialMenuBuilder implements BranchableRadialMenu {
             this.option.label = this.label;
             this.option.weight = this.weight;
             this.option.hidden = this.hidden;
-            this.option.onClick = (menu2, option, mouseButton, side) -> {
-                syncManager.callSyncedAction(baseName + actionId, buffer -> { buffer.writeInt(mouseButton); });
+            this.option.onClick = (_, _, mouseButton, _) -> {
+                syncManager.callSyncedAction(baseName + actionId, buffer -> buffer.writeInt(mouseButton));
             };
 
             menu.options.add(this.option);

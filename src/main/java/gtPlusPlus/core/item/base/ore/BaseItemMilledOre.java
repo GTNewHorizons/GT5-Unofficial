@@ -96,7 +96,7 @@ public class BaseItemMilledOre extends BaseOreComponent {
     public BaseItemMilledOre(final Material material, int materialEU, ItemStack custom) {
         super(material, BaseOreComponent.ComponentTypes.MILLED);
 
-        // if ItemStack supplied as custom, will generate recipe with that itemstack as input
+        // if ItemStack supplied as custom, will generate recipe with that item stack as input
 
         ItemStack millingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
         ItemStack millingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);

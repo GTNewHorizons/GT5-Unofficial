@@ -241,7 +241,7 @@ public class EntityRenderer extends EntityFX {
         boolean hasColorModifier = BossStatus.hasColorModifier;
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
+        int stackDepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
 
         try {
             instance.renderEntityWithPosYaw(entityToRender, 0f, 0f, 0f, f1, p_147936_2_);
@@ -259,9 +259,9 @@ public class EntityRenderer extends EntityFX {
         BossStatus.hasColorModifier = hasColorModifier;
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
-        if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
-        if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
+        stackDepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
+        if (stackDepth < 0) for (; stackDepth < 0; stackDepth++) GL11.glPopMatrix();
+        if (stackDepth > 0) for (; stackDepth > 0; stackDepth--) GL11.glPushMatrix();
 
         int err;
         while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG

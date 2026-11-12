@@ -183,13 +183,14 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         return BaubleType.BELT;
     }
 
-    @Override // TODO
+    // TODO: implement (un-)equip logic that was planned 10 years ago, if anyone even remembers the plan.
+    @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onWornTick(final ItemStack arg0, final EntityLivingBase arg1) {
         // Utils.LOG_INFO("Trying to Tick Belt. 1");
         if (!arg1.worldObj.isRemote) {

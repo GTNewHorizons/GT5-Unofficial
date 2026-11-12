@@ -136,7 +136,7 @@ public class ItemSlotGridBuilder {
 
     /**
      * Sets the offset for the starting index within the {@link IItemHandler}.
-     * This is highly useful when mapping a grid to a specific sub-section of a larger inventory.
+     * This is highly useful when mapping a grid to a specific subsection of a larger inventory.
      *
      * @param indexOffset The starting index. Defaults to 0.
      * @return This builder instance for method chaining.
@@ -159,7 +159,7 @@ public class ItemSlotGridBuilder {
 
     /**
      * Sets the item slot supplier. Useful for modifying the item slot (setting the background
-     * or the tooltip for example), or replacing it with sublclass of {@link ItemSlot}.
+     * or the tooltip, for example), or replacing it with subclass of {@link ItemSlot}.
      *
      * @param itemSlotSupplier An item slot supplier. Defaults to {@link ItemSlot#ItemSlot()}
      * @return This builder instance for method chaining.
@@ -173,10 +173,10 @@ public class ItemSlotGridBuilder {
      * Sets the modular slot supplier. The result of this supplier will be used as a parameter in
      * {@link ItemSlot#slot(ModularSlot)}
      * <p>
-     * It is important pass the two parameters of this function to the constructor of
+     * It is important to pass the two parameters of this function to the constructor of
      * the modular slot <b>without modification</b> such that it can act like a supplier.
      * <p>
-     * Useful for replacing the modular slot with sublclass of {@link ModularSlot}.
+     * Useful for replacing the modular slot with subclass of {@link ModularSlot}.
      *
      * @param modularSlotSupplier A modular slot supplier. Defaults to
      *                            {@link ModularSlot#ModularSlot(IItemHandler, int)}

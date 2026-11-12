@@ -479,13 +479,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return mIconMap.get(0);
         } else {
             int newMeta = aMetaData - this.mOffset;
-            newMeta = (Math.max(0, Math.min(4, newMeta)));
+            newMeta = (Math.clamp(newMeta, 0, 4));
             return mIconMap.get(newMeta);
         }
     }
 
     /**
-     * Sets the unlocalized name of this item to the string passed as the parameter"
+     * Sets the unlocalized name of this item to the string passed as the parameter
      */
     @Override
     public Item setUnlocalizedName(final String p_77655_1_) {
@@ -534,7 +534,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aID         The id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
      * @param aEnglish    The Default Localized Name of the created Item
      * @param aToolTip    The Default ToolTip of the created Item, you can also insert null for having no ToolTip
      * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
@@ -638,11 +638,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     public void storeFluid(ItemStack aStack, FluidStack aFluid) {
         if (aFluid != null) {
-            final String fluidname = aFluid.getFluid()
+            final String fluidName = aFluid.getFluid()
                 .getName();
             final int amount = aFluid.amount;
-            if (fluidname != null && !fluidname.isEmpty() && amount > 0) {
-                ItemStackNBT.setString(aStack, "mFluid", fluidname);
+            if (fluidName != null && !fluidName.isEmpty() && amount > 0) {
+                ItemStackNBT.setString(aStack, "mFluid", fluidName);
                 ItemStackNBT.setInteger(aStack, "mFluidAmount", amount);
             }
         }
@@ -654,10 +654,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             initNBT(container);
         }
         if (ItemStackNBT.getBoolean(container, "mInit")) {
-            final String fluidname = ItemStackNBT.getString(container, "mFluid");
+            final String fluidName = ItemStackNBT.getString(container, "mFluid");
             final int amount = ItemStackNBT.getInteger(container, "mFluidAmount");
-            if (fluidname != null && amount > 0) {
-                return FluidRegistry.getFluidStack(fluidname, amount);
+            if (fluidName != null && amount > 0) {
+                return FluidRegistry.getFluidStack(fluidName, amount);
             } else {
                 return null;
             }
@@ -887,7 +887,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null || aMetaTileEntity instanceof MTEHatchMultiInput) {
-            // blacklist multiinput hatch as it's too complex
+            // blacklist multi-input hatch as it's too complex
             return null;
         }
         if (aMetaTileEntity instanceof MTEBasicTank) {
@@ -929,7 +929,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 return 0;
             } else {
                 int newMeta = aStack.getItemDamage() - this.mOffset;
-                newMeta = (Math.max(0, Math.min(4, newMeta)));
+                newMeta = (Math.clamp(newMeta, 0, 4));
                 return newMeta;
             }
         }

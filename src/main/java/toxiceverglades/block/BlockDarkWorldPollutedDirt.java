@@ -38,7 +38,7 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
     }
 
     /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
+     * Returns an integer with hex for 0xrrggbb with this color multiplied against the block's color. Note only called
      * when first determining what to render.
      */
     @Override

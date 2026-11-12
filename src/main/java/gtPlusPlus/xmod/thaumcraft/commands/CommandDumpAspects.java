@@ -24,7 +24,7 @@ public class CommandDumpAspects extends GTBaseCommand {
         final long D = T - mLastScanTime;
         final int Z = (int) (D / 1000);
         if (Z >= 30) {
-            // Lets process this in the Background on a new Thread.
+            // Let's process this in the Background on a new Thread.
             Thread t = createNewThread();
             sendChatToPlayer(sender, "Beginning to dump information about all items/blocks & their aspects to file.");
             sendChatToPlayer(

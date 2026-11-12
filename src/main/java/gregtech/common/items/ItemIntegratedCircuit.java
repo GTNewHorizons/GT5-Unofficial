@@ -405,7 +405,7 @@ public class ItemIntegratedCircuit extends GTGenericItem
         return null;
     }
 
-    // Because for some reason, the toolbox inventory refuses to read the itemstack nbt
+    // Because for some reason, the toolbox inventory refuses to read the item stack nbt
     // on the client (according to IC2 this is in fact intentional).
     private static void populateToolboxInventory(IHasGui toolboxInventory, ItemStack toolbox) {
         NBTTagCompound nbt = toolbox.getTagCompound();

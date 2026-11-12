@@ -290,7 +290,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         }
                     };
                 }))
-                // mCasing1 is shared with the element `h`, this counting can be removed as well
+                // mCasing1 is shared with the element `h`, this counting can be removed as well,
                 // but I would need to count how many `t` occurs in the structure.
                 .addElement(
                     't',
@@ -515,8 +515,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         int aTier = getHeaterTier();
         int aHeaters = getHeaterCountForTier(aTier);
 
-        // Original formula was (-Math.pow(this.mHeatLevel - 50000, 0.8) + 7000) / 7000
-        // However, negative numbers to the power of a non-integer result in NaN, by default
+        // The original formula was (-Math.pow(this.mHeatLevel - 50000, 0.8) + 7000) / 7000
+        // However, negative numbers to the power of a non-integer result in NaN, by default.
         // Max efficiency is 1, at mHeatLevel = 50000, and it lowers at the same rate if going above or below this heat
         // Min efficiency is 0.179, at mHeatLevel = 0 or 100000
         double aEfficiency = (-Math.pow(Math.abs(this.mHeatLevel - HEAT_EFFICIENCY_CENTER), HEAT_EFFICIENCY_EXPONENT)
@@ -526,7 +526,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .getWorld();
 
         // Manage Heat every 10s
-        // Add Heat First, if sources available and it's daytime, heat gain is halved if raining
+        // Add Heat First if sources available, and it's daytime, heat gain is halved if raining
         if (w != null) {
             if (aHeaters > 0 && w.isDaytime()) {
                 if (w.isRaining() && this.getBaseMetaTileEntity()

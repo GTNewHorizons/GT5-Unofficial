@@ -83,9 +83,9 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     int[] statBlocks = new int[4];
 
-    protected void setRandomBlockWAirChance(World worldObj, int x, int y, int z, Random rand, int airchance,
+    protected void setRandomBlockWAirChance(World worldObj, int x, int y, int z, Random rand, int airChance,
         Pair<Block, Integer>... blocks) {
-        if (rand.nextInt(100) >= airchance) this.setRandomBlock(worldObj, x, y, z, rand, blocks);
+        if (rand.nextInt(100) >= airChance) this.setRandomBlock(worldObj, x, y, z, rand, blocks);
         else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
@@ -130,14 +130,14 @@ public abstract class MapGenRuins extends WorldGenerator {
         return this.setGTMachineBlock(worldObj, x, y, z, meta);
     }
 
-    protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
-        if (rand.nextInt(100) > airchance) {
+    protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airChance, int meta) {
+        if (rand.nextInt(100) > airChance) {
             this.setGTMachineBlock(worldObj, x, y, z, meta);
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
-    protected void setGTCablekWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
-        if (rand.nextInt(100) > airchance) {
+    protected void setGTCableWChance(World worldObj, int x, int y, int z, Random rand, int airChance, int meta) {
+        if (rand.nextInt(100) > airChance) {
             this.setGTCable(worldObj, x, y, z, meta);
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
@@ -229,9 +229,9 @@ public abstract class MapGenRuins extends WorldGenerator {
             boolean useColor = rand.nextBoolean();
             byte set = 0;
             byte toSet = (byte) (rand.nextInt(Configuration.RossRuinMetas.maxTierRoss - tier) + 1);
-            int cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
-            byte treeinaRow = 0;
-            boolean lastset = rand.nextBoolean();
+            int cableMeta = BWWorldGenUtil.getCable(secureRandom, tier);
+            byte threeInARow = 0;
+            boolean lastSet = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
                 for (int dy = 0; dy <= 8; dy++) {
                     for (int dz = -6; dz <= 6; dz++) {
@@ -337,12 +337,12 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             owner,
                                             ForgeDirection.WEST);
                                     } else {
-                                        this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                        this.setGTCableWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cableMeta);
                                     }
                                 } else if (dx < 3 && dx > -5 && dz == 4) {
-                                    this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                    this.setGTCableWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cableMeta);
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
-                                    if (!lastset || treeinaRow > 2) {
+                                    if (!lastSet || threeInARow > 2) {
                                         int meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                                         this.setGTMachine(
                                             worldObj,
@@ -354,11 +354,11 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             ForgeDirection.UP);
 
                                         set++;
-                                        treeinaRow = 0;
-                                        lastset = true;
+                                        threeInARow = 0;
+                                        lastSet = true;
                                     } else {
-                                        lastset = rand.nextBoolean();
-                                        if (lastset) treeinaRow++;
+                                        lastSet = rand.nextBoolean();
+                                        if (lastSet) threeInARow++;
                                     }
                                 }
                             }
@@ -480,17 +480,17 @@ public abstract class MapGenRuins extends WorldGenerator {
                     if (set >= toSet) {
                         break tosetloop;
                     }
-                    if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
+                    if (!lastSet || threeInARow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
                         int meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                         this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
 
                         set++;
-                        treeinaRow = 0;
-                        lastset = true;
+                        threeInARow = 0;
+                        lastSet = true;
                     } else {
-                        lastset = rand.nextBoolean();
-                        if (lastset) {
-                            treeinaRow++;
+                        lastSet = rand.nextBoolean();
+                        if (lastSet) {
+                            threeInARow++;
                         }
                     }
                 }

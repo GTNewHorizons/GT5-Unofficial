@@ -161,13 +161,13 @@ public final class RecipeLookupValidator {
         if (recipe.stackTraces.isEmpty()) {
             return "[]";
         }
-        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        List<String> stackTrace = recipe.stackTraces.getLast();
         for (String stackTraceElement : stackTrace) {
             if (!isInternalRecipeCallsite(stackTraceElement)) {
                 return stackTraceElement;
             }
         }
-        return stackTrace.isEmpty() ? "[]" : stackTrace.get(0);
+        return stackTrace.isEmpty() ? "[]" : stackTrace.getFirst();
     }
 
     private static boolean isInternalRecipeCallsite(String stackTraceElement) {
@@ -225,7 +225,7 @@ public final class RecipeLookupValidator {
         if (recipe.stackTraces.isEmpty()) {
             return "[]";
         }
-        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        List<String> stackTrace = recipe.stackTraces.getLast();
         return stackTrace.stream()
             .limit(12)
             .collect(Collectors.joining(" <- ", "[", stackTrace.size() > 12 ? " <- ...]" : "]"));
@@ -443,11 +443,10 @@ public final class RecipeLookupValidator {
 
     @Nullable
     private String unresolvedOreDictInputReason(GTRecipe recipe, ItemStack[] items) {
-        if (!(recipe instanceof GTRecipe.GTRecipe_WithAlt)) {
+        if (!(recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt)) {
             return null;
         }
 
-        GTRecipe.GTRecipe_WithAlt recipeWithAlt = (GTRecipe.GTRecipe_WithAlt) recipe;
         if (recipeWithAlt.mOreDictIds == null) {
             return null;
         }
@@ -841,22 +840,9 @@ public final class RecipeLookupValidator {
         return issues.size() + recipeConflictIssues.size() + unresolvedOreDictIssues.size();
     }
 
-    private static final class ValidationLookupResult {
+    private record ValidationLookupResult(List<GTRecipe> matches, List<GTRecipe> sampleRejectedCandidates,
+        int rawCandidates, int filteredMatches, boolean truncated) {
 
-        private final List<GTRecipe> matches;
-        private final List<GTRecipe> sampleRejectedCandidates;
-        private final int rawCandidates;
-        private final int filteredMatches;
-        private final boolean truncated;
-
-        private ValidationLookupResult(List<GTRecipe> matches, List<GTRecipe> sampleRejectedCandidates,
-            int rawCandidates, int filteredMatches, boolean truncated) {
-            this.matches = matches;
-            this.sampleRejectedCandidates = sampleRejectedCandidates;
-            this.rawCandidates = rawCandidates;
-            this.filteredMatches = filteredMatches;
-            this.truncated = truncated;
-        }
     }
 
     private String estimateEta(long elapsedNanos) {

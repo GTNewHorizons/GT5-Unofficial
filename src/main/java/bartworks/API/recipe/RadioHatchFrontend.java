@@ -37,7 +37,7 @@ public class RadioHatchFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0));
-            int radioLevel = data.sievert;
+            int radioLevel = data.sievert();
             int mass = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0);
             long time = MTERadioHatch.calcDecayTicks(radioLevel);
             return Arrays.asList(

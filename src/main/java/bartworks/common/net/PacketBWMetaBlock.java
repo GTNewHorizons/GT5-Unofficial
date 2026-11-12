@@ -76,7 +76,7 @@ public class PacketBWMetaBlock extends GTPacket {
         this.z = byteArrayDataInput.readInt();
         this.y = byteArrayDataInput.readShort();
         this.meta = byteArrayDataInput.readShort();
-        PacketBWMetaBlock todecode = new PacketBWMetaBlock(this.x, this.y, this.z, this.meta);
+        PacketBWMetaBlock toDecode = new PacketBWMetaBlock(this.x, this.y, this.z, this.meta);
         if (byteArrayDataInput.readInt() != MurmurHash3.murmurhash3_x86_32(
             ByteBuffer.allocate(12)
                 .putInt(this.x)
@@ -90,7 +90,7 @@ public class PacketBWMetaBlock extends GTPacket {
             MainMod.LOGGER.error("PACKET HASH DOES NOT MATCH!");
             return null;
         }
-        return todecode;
+        return toDecode;
     }
 
     @Override

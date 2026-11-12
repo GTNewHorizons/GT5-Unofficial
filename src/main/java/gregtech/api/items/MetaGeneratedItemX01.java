@@ -82,7 +82,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     /**
      * @param aPrefix   the OreDict Prefix
      * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
+     * @param aMetaData an index from [0 - 31999]
      * @return the Localized Name when default LangFiles are used.
      */
     public String getDefaultLocalization(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
@@ -92,7 +92,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     /**
      * @param aPrefix   the OreDict Prefix
      * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
+     * @param aMetaData an index from [0 - 31999]
      * @return the Localized Name Format when default LangFiles are used.
      */
     public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {

@@ -164,7 +164,7 @@ public class ItemEjectionHelper {
         if (itemProtectionEnabled) {
             // If we care about protecting the items, reduce the starting parallels by however many batches of items
             // were ejected.
-            // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
+            // Otherwise, we can just tell the multi to run the full amount, and it'll void everything that doesn't fit.
 
             for (ItemParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;

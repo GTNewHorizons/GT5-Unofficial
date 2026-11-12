@@ -76,7 +76,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
                 (coverHasGui ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
                     + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                     + (coverHasGui ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                    + tooltips.get(0))
+                    + tooltips.getFirst())
             .newLine()
             .addStringLines(cover.getAdditionalTooltip())
             .addStringLines(

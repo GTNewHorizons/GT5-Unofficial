@@ -61,15 +61,15 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 }
             }
             ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
-            int alnsnfds = 0;
+            int index = 0;
             for (MaterialStack r : material.getComposites()) {
                 if (r != null) {
-                    componentMap.add(Pair.of(partSizes[alnsnfds], r.getStackMaterial()));
+                    componentMap.add(Pair.of(partSizes[index], r.getStackMaterial()));
                 }
-                alnsnfds++;
+                index++;
             }
 
-            /**
+            /*
              * Centrifuge
              */
 
@@ -118,7 +118,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     }
                 }
 
-                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // I don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
@@ -184,7 +184,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                         mInternalOutputs[j] = GTValues.NI;
                     }
                 }
-                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // I don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);

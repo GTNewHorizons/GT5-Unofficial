@@ -134,7 +134,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder = new MultiblockTooltipBuilder();
             tooltipBuilder.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bricked_blast_furnace"))
                 .addMarkdown(new ResourceLocation("gregtech", "bricked-blast-furnace"))
-                .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
+                .addPollutionAmount(GTMod.proxy.mPollutionPrimitiveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 4, 3, true)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
                 .addCasing("32", Casings.Firebricks.getLocalizedName(), false)
@@ -325,7 +325,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
                 Pollution
-                    .addPollution(this.getBaseMetaTileEntity(), GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond);
+                    .addPollution(this.getBaseMetaTileEntity(), GTMod.proxy.mPollutionPrimitiveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));

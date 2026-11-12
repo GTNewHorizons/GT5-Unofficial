@@ -80,7 +80,7 @@ public class GGItemBlocks extends ItemBlock {
             .equals(yottaFluidTankCell)) {
             StringBuilder cap = new StringBuilder();
             cap.append(" 1000000");
-            for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
+            cap.repeat("00", Math.max(0, stack.getItemDamage()));
             cap.append(" ")
                 .append(getFluidUnit());
             tooltip.add(translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));

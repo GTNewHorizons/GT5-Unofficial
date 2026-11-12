@@ -11,7 +11,7 @@ import gregtech.common.misc.spaceprojects.enums.StarType;
 public interface ISpaceBody {
 
     /**
-     * @return The star type of the space body, if its a star
+     * @return The star type of the space body, if it's a star
      */
     StarType getStarType();
 

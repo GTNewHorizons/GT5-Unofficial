@@ -133,7 +133,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             pollutionMultiplier++;
         }
-        GTUtility.sendChatToPlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
+        GTUtility.sendChatToPlayer(aPlayer, "Pollution Multiplier is now " + pollutionMultiplier + ".");
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 

@@ -384,7 +384,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
                 if (!mInputBusses.isEmpty()) {
                     if (data.getInternalBattery() == 0 || data.isUpgradeActive(END)) {
-                        MTEHatchInputBus inputBus = mInputBusses.get(0);
+                        MTEHatchInputBus inputBus = mInputBusses.getFirst();
 
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {

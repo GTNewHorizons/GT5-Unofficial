@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
@@ -96,7 +95,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
     /** Tank capacity */
     public BigInteger mStorage = BigInteger.ZERO;
-    /** Amount of fluid millibuckets currently in the tank */
+    /** Amount of fluid milli buckets currently in the tank */
     public BigInteger mStorageCurrent = BigInteger.ZERO;
     /**
      * Fluid type currently stored in the tank, can be null. Stack size is always 1, real amount is stored in
@@ -214,7 +213,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     /**
      * Attempts to remove {@code amount} of fluid from the tank if possible, does not do partial removals.
      *
-     * @param amount The millibucket amount of the fluid to remove
+     * @param amount The milli bucket amount of the fluid to remove
      * @return True if successfully removed amount, false if no fluid was removed.
      */
     public boolean reduceFluid(long amount) {
@@ -231,8 +230,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
      * Attempts to put {@code amount} of fluid into the tank if possible, fails if there's not enough space for all of
      * it.
      *
-     * @param amount The millibucket amount of the fluid to insert
-     * @param doFill Whether to actually fill, or just simulate a fill
+     * @param amount The milli bucket amount of the fluid to insert
+     * @param doFill Whether to actually fill or just simulate a fill
      * @return True if successfully added the given amount of fluid to the tank, false if failed.
      */
     public boolean addFluid(long amount, boolean doFill) {
@@ -496,7 +495,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         long totalInput = 0;
         long totalOutput = 0;
 
-        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
+        long tickRate = Math.clamp((long) tickRateSettings.get(), 1L, 100L);
         ++workTickCounter;
         if (workTickCounter < tickRate) {
             fluidInputValues1m.update(totalInput);

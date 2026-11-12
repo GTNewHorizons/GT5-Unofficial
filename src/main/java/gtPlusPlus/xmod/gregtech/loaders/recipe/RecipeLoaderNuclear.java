@@ -55,7 +55,7 @@ public class RecipeLoaderNuclear {
         chemicalBathRecipes();
         chemicalReactorRecipes();
         dehydratorRecipes();
-        electroMagneticSeperator();
+        electroMagneticSeparator();
         fluidExtractorRecipes();
         fluidHeater();
         fusionChainRecipes();
@@ -350,7 +350,7 @@ public class RecipeLoaderNuclear {
             .addTo(multiblockChemicalReactorRecipes);
     }
 
-    private static void electroMagneticSeperator() {
+    private static void electroMagneticSeparator() {
         // Zirconium
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1))

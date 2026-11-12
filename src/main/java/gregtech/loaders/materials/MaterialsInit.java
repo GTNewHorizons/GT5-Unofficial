@@ -2385,7 +2385,7 @@ public class MaterialsInit {
             .setUnifiable(false)
             .setIconSet(TextureSet.SET_QUARTZ)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -2529,7 +2529,7 @@ public class MaterialsInit {
             .addDustItems()
             .addGemItems()
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -3020,7 +3020,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Quartzite)
             .addOreByproduct(() -> Materials.Barite)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -3045,7 +3045,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Quartzite)
             .addOreByproduct(() -> Materials.Barite)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -3224,7 +3224,7 @@ public class MaterialsInit {
             .addCell()
             .addOreByproduct(() -> Materials.Dilithium)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -3373,7 +3373,7 @@ public class MaterialsInit {
             .setHeatDamage(5.0f)
             .addSubTag(SubTag.BURNING)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
@@ -3433,7 +3433,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Neodymium)
             .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.NO_SMASHING)
@@ -3458,7 +3458,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Neodymium)
             .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .addSubTag(SubTag.MAGICAL)
             .addSubTag(SubTag.NO_SMASHING)
@@ -3844,7 +3844,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.LUCRUM, 6)
             .addAspect(TCAspects.VITREUS, 3)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .removeOrePrefix(OrePrefixes.lens)
             .constructMaterial();
     }
@@ -4086,7 +4086,7 @@ public class MaterialsInit {
             .addAspect(TCAspects.VITREUS, 1)
             .addOreByproduct(() -> Materials.Netherrack)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -4238,7 +4238,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.CertusQuartz)
             .addOreByproduct(() -> Materials.Barite)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -6664,7 +6664,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Sodalite)
             .addOreByproduct(() -> Materials.Lapis)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
@@ -7463,7 +7463,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Oxygen, 2)
             .addOreByproduct(() -> Materials.SiliconDioxide)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.QUARTZ)
@@ -7521,7 +7521,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Lazurite)
             .addOreByproduct(() -> Materials.Lapis)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
@@ -9731,7 +9731,7 @@ public class MaterialsInit {
         Materials.Air = loadAir();
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
-        Materials.Alumite = loadAlumite();
+        Materials.Alumite = loadObzinite();
         Materials.Alunite = loadAlunite();
         Materials.Amethyst = loadAmethyst();
         Materials.Apatite = loadApatite();
@@ -9868,7 +9868,7 @@ public class MaterialsInit {
             .constructMaterial();
     }
 
-    private static Materials loadAlumite() {
+    private static Materials loadObzinite() {
         return new MaterialBuilder().setName("Alumite")
             .setDefaultLocalName("Obzinite")
             .setIconSet(TextureSet.SET_METALLIC)
@@ -9948,7 +9948,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Phosphate)
             .addOreByproduct(() -> Materials.Pyrochlore)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.lens)
@@ -10739,7 +10739,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Sodalite)
             .addOreByproduct(() -> Materials.Pyrite)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .removeOrePrefix(OrePrefixes.block) // minecraft:lapis_block
@@ -10958,7 +10958,7 @@ public class MaterialsInit {
             .addOreByproduct(() -> Materials.Neodymium)
             .addOreByproduct(() -> Materials.RareEarth)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
@@ -14069,7 +14069,7 @@ public class MaterialsInit {
             .addMaterial(Materials.CallistoIce, 1)
             .addAspect(TCAspects.HUMANUS, 2)
             .addSubTag(SubTag.SOFT)
-            .removeOrePrefix(OrePrefixes.cell) // non molten cell is useless
+            .removeOrePrefix(OrePrefixes.cell) // non-molten cell is useless
             .constructMaterial()
             .setGasTemperature(12_406);
     }
@@ -15052,7 +15052,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadAcetylene() {
-        // TODO: Add to JUPITER Athmosphere and Enceladus and to moon of Saturn
+        // TODO: Add to JUPITER atmosphere and Enceladus and to moon of Saturn
         return new MaterialBuilder().setName("Acetylene")
             .setDefaultLocalName("Acetylene")
             .setIconSet(TextureSet.SET_FLUID)
@@ -16813,7 +16813,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .setARGB(0xffffffff)
             .addSubTag(SubTag.CRYSTAL)
-            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.CRYSTALLIZABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)

@@ -55,7 +55,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IDamageableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -80,7 +80,7 @@ import mrtjp.projectred.api.IScrewdriver;
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
-    implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
+    implements IDamageableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -210,8 +210,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID                     The Id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven
-     *                                ID's are empty electric Items)
+     * @param aID                     The id of the assigned Tool Class [0 - 32765] (only even Numbers allowed! Uneven
+     *                                ids are empty electric Items)
      * @param aEnglish                The Default Localized Name of the created Item
      * @param aToolTip                The Default ToolTip of the created Item, you can also insert null for having no
      *                                ToolTip
@@ -382,14 +382,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (aEntity.attackEntityFrom(tStats.getDamageSource(aPlayer, aEntity), tDamage)) {
                     if (aEntity instanceof EntityLivingBase)
                         aEntity.setFire(EnchantmentHelper.getFireAspectModifier(aPlayer) * 4);
-                    int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
+                    int knockback = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
                         ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
                         : 0);
-                    if (tKnockcack > 0) {
+                    if (knockback > 0) {
                         aEntity.addVelocity(
-                            -MathHelper.sin(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F,
+                            -MathHelper.sin(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F,
                             0.1D,
-                            MathHelper.cos(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F);
+                            MathHelper.cos(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
                         aPlayer.motionX *= 0.6D;
                         aPlayer.motionZ *= 0.6D;
                         aPlayer.setSprinting(false);

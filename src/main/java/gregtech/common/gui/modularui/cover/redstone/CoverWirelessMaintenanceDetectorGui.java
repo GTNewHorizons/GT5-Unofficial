@@ -20,10 +20,10 @@ import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitter
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
-public class CoverWirelessMaintenenceDetectorGui
+public class CoverWirelessMaintenanceDetectorGui
     extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessMaintenanceDetector> {
 
-    public CoverWirelessMaintenenceDetectorGui(CoverWirelessMaintenanceDetector cover) {
+    public CoverWirelessMaintenanceDetectorGui(CoverWirelessMaintenanceDetector cover) {
         super(cover);
     }
 
@@ -68,12 +68,12 @@ public class CoverWirelessMaintenenceDetectorGui
         MaintenanceMode value2) {
         return Flow.row()
             .coverChildren()
-            .child(makeMaintanenceIssueRow(syncValue, value1).marginRight(8))
-            .child(makeMaintanenceIssueRow(syncValue, value2))
+            .child(makeMaintenanceIssueRow(syncValue, value1).marginRight(8))
+            .child(makeMaintenanceIssueRow(syncValue, value2))
             .marginBottom(4);
     }
 
-    private Flow makeMaintanenceIssueRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value) {
+    private Flow makeMaintenanceIssueRow(EnumSyncValue<MaintenanceMode, ?> syncValue, MaintenanceMode value) {
         return Flow.row()
             .size(90, 18)
             .child(

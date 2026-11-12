@@ -214,9 +214,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     private MTEHatch getEnergyHatch() {
         if (this.mExoticEnergyHatches.isEmpty()) {
             if (this.mEnergyHatches.isEmpty()) return null;
-            return this.mEnergyHatches.get(0);
+            return this.mEnergyHatches.getFirst();
         }
-        return this.mExoticEnergyHatches.get(0);
+        return this.mExoticEnergyHatches.getFirst();
     }
 
     public long getEnergyHatchTier() {

@@ -360,7 +360,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
         // 5 seconds per integer multiple over the rate
         float progressTime = calculateProgressTime(metadata.amount, inputRate);
         int batchAmount = 1;
-        if (progressTime < 1) { // Subticking
+        if (progressTime < 1) { // sub-ticking
             batchAmount = (int) Math.round(1.0 / progressTime);
 
             if (metadata.focusItem != null) {

@@ -101,7 +101,7 @@ public class ItemBlockOre extends ItemBlock {
                         list.add(
                             StatCollector.translateToLocalFormatted(
                                 "GTPP.tooltip.ore.mining_level",
-                                Math.min(Math.max(aMiningLevel1, 0), 5)));
+                                Math.clamp(aMiningLevel1, 0, 5)));
                     }
                 }
 

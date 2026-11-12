@@ -208,7 +208,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public int currentDroneMask = 0;
     public boolean wasFilterPasted = false;
     /**
-     * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
+     * The last computed list of possible recipes. Can be reused if distance etc. doesn't change and used to display
+     * stats
      * to the user
      */
     protected WeightedAsteroidList prevRecipes = null;
@@ -812,7 +813,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 cycleDistanceParameter.setValue(Math.max(0, distance - range));
             }
         } else {
-            cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
+            cycleDistanceParameter.setValue((int) Math.clamp(distance, 0, MAX_DISTANCE));
         }
     }
 
@@ -847,7 +848,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
         long power = GTValues.V[tTier];
         if (prevRecipes == null) {
-            return Collections.<AsteroidSummary>emptyList();
+            return Collections.emptyList();
         }
         float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
         float totalTimedensity = prevRecipes.totalTimedensity;
