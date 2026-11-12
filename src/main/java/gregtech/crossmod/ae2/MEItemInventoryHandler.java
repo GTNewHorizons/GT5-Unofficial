@@ -18,6 +18,7 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 
 public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInventory>
@@ -43,11 +44,13 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public AccessRestriction getAccess() {
+        if (!isAccessible()) return AccessRestriction.NO_ACCESS;
         return AccessRestriction.READ_WRITE;
     }
 
     @Override
     public boolean isPrioritized(IAEItemStack aeItemStack) {
+        if (!isAccessible()) return false;
         ItemStack s = machine.getItemStack();
         if (s == null || aeItemStack == null) return false;
         return aeItemStack.isSameType(s);
@@ -55,6 +58,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public boolean canAccept(IAEItemStack aeItemStack) {
+        if (!isAccessible()) return false;
         ItemStack s = machine.getItemStack();
         if (s == null || aeItemStack == null) return true;
         return aeItemStack.isSameType(s);
@@ -86,6 +90,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     private IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
+        if (!isAccessible()) return out;
         ItemStack storedStack = machine.getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);
@@ -102,7 +107,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public IAEItemStack injectItems(IAEItemStack input, Actionable mode, BaseActionSource src) {
-        if (machine.getBaseMetaTileEntity() == null) return input;
+        if (!isAccessible()) return input;
 
         final ItemStack inputStack = input.getItemStack();
         final int maxCapacity = machine.getItemCapacity();
@@ -144,7 +149,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
-        if (machine.getBaseMetaTileEntity() == null) return null;
+        if (!isAccessible()) return null;
 
         if (request.isSameType(machine.getItemStack())) {
             // Internal inv content is queried
@@ -243,5 +248,10 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
         // if there are no active storage buses - clear the listeners
         listeners.clear();
         return false;
+    }
+
+    private boolean isAccessible() {
+        final IGregTechTileEntity base = machine.getBaseMetaTileEntity();
+        return base != null && base.canAccessData();
     }
 }
