@@ -422,7 +422,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .put("low_output_mult", LOW_OUTPUT_MULT * 100)
                     .put("high_output_mult", HIGH_OUTPUT_MULT * 100)
                     .build())
-            .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
