@@ -426,7 +426,7 @@ public class RecipeLoaderChemicalSkips {
                 .fluidInputs(FluidRegistry.getFluidStack("unknowwater", 25_000))
                 .fluidOutputs(
                     FluidRegistry.getFluidStack("seaweedbroth", 50_000),
-                    MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidMolten, 64_000))
+                    MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidMolten, 64 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .metadata(QFT_CATALYST, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(0))
