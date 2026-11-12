@@ -349,3 +349,6 @@ gt.blockmachines.megadistillationtower.name=Mega Distillation Tower
 gt.blockmachines.megaoilcracker.name=Mega Oil Cracker
 gt.blockmachines.megavacuumfreezer.name=Mega Vacuum Freezer
 gt.blockmachines.thtr.name=Thorium High Temperature Reactor
+
+gt.BWCircuitProgrammer.name=Circuit Programmer
+gt.BWCircuitProgrammer.tooltip=Programs Integrated Circuits
