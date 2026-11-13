@@ -125,8 +125,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
         this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_ROTOR.getKey(), GTGuiTextures.OVERLAY_ROTOR);
-        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.WIND_LOW.getKey(), GTGuiTextures.OVERLAY_WIND);
-        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.WIND_HIGH.getKey(), GTGuiTextures.OVERLAY_WIND);
+        this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.WIND_LOW.getKey(), GTGuiTextures.OVERLAY_WIND_PROBLEM);
+        this.shutdownReasonTextureMap
+            .put(ShutDownReasonRegistry.WIND_HIGH.getKey(), GTGuiTextures.OVERLAY_WIND_PROBLEM);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));

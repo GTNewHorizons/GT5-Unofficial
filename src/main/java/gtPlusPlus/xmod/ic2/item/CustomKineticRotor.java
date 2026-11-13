@@ -35,7 +35,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
         "itemVibrantRotor", "itemIridiumRotor", "itemMagnaliumRotor", "itemUltimetRotor", };
     private static final int[] mMaxDurability = new int[] { 512000, 809600, 1600000, 3200000 };
     private static final int[] mRadius = new int[] { 9, 11, 13, 15 };
-    private static final float[] mEfficiency = new float[] { 0.9f, 1.0f, 1.2f, 1.5f };
+    private static final float[] mEfficiency = new float[] { 1.0f, 1.2f, 1.4f, 1.6f };
     private static final int[] mMinWindStrength = new int[] { 12, 14, 16, 18 };
     private static final int[] mMaxWindStrength = new int[] { 80, 120, 160, 320 };
 
