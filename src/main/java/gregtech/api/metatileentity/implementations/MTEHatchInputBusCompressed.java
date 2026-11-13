@@ -5,6 +5,7 @@ import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -27,6 +28,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
@@ -60,6 +63,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusCompressedGui;
 import gregtech.common.gui.modularui.util.ProxiedItemHandlerModifiable;
 import gregtech.common.inventory.AEInventory;
+import gregtech.common.inventory.AEInventoryItemIO;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -525,6 +529,27 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
 
         public BusInventory(int slotCount) {
             super(slotCount);
+        }
+
+        @Override
+        public AEInventoryItemIO getItemIO() {
+            return new AEInventoryItemIO(this) {
+
+                @Override
+                public OptionalInt simulateStore(ImmutableItemStack stack) {
+                    if (stack.isEmpty()) return ZERO;
+                    InventoryIterator iter = simulatedSinkIterator();
+                    if (disableLimited) return OptionalInt.of(store(stack, iter));
+
+                    // Limited buses accept each item type in only one slot
+                    while (iter.hasNext()) {
+                        iter.next();
+                        int rejected = iter.insert(stack, false);
+                        if (rejected < stack.getStackSize()) return OptionalInt.of(rejected);
+                    }
+                    return OptionalInt.of(stack.getStackSize());
+                }
+            };
         }
 
         @Override
