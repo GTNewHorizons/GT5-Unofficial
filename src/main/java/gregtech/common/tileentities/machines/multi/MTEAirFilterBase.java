@@ -11,10 +11,10 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -237,10 +237,10 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_DIESEL_ENGINE,
-            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override

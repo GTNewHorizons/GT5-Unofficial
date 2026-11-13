@@ -55,6 +55,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int OFFSET_Y = 7;
     private static final int OFFSET_Z = 1;
     private static final int PARALLEL_PER_TIER = 6;
+    private static final int TOP_CASING_AMOUNT = 8;
 
     private Byte solenoidLevel = null;
     private int casingAmount;
@@ -160,7 +161,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         casingAmount = 0;
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors, casingAmount, 10);
+        checkCasingMin(errors, casingAmount + TOP_CASING_AMOUNT, 10);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

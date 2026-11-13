@@ -35,13 +35,6 @@ public interface ITextureBuilder {
     ITextureBuilder setRGBA(final short[] rgba);
 
     /**
-     * Texture will render with same orientation as with vanilla blocks
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder stdOrient();
-
-    /**
      * Texture will orientate from block's {@link ExtendedFacing}
      *
      * @return {@link ITextureBuilder} for chaining
