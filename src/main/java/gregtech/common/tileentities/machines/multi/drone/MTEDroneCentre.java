@@ -50,7 +50,6 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -233,11 +232,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.drone_centre"));
-        if (getBaseMetaTileEntity().getMetaTileID() == MetaTileEntityIDs.Drone_Centre.ID) {
-            tt.addStructureDeprecatedLine();
-        }
-        tt.addMarkdown(new ResourceLocation("gregtech", "drone-centre"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.drone_centre"))
+            .addMarkdown(new ResourceLocation("gregtech", "drone-centre"))
             .beginStructureBlock(11, 4, 11, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("61", Casings.SteelPipeCasing.getLocalizedName(), false)

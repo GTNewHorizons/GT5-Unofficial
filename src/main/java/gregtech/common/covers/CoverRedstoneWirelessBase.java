@@ -5,7 +5,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +28,7 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
     private int frequency;
     private boolean privateChannel;
     public static final int MAX_CHANNEL = 65535;
-    private static final int PRIVATE_MASK = 0xFFFE0000;
     public static final int CHANNEL_MASK = 0x0000FFFF;
-    public static final int CHECKBOX_MASK = 0x00010000;
 
     public CoverRedstoneWirelessBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -128,18 +125,8 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        if (nbt instanceof NBTTagInt nbtTagInt) {
-            readLegacyDataFromNbt(nbtTagInt);
-            return;
-        }
-
         NBTTagCompound tag = (NBTTagCompound) nbt;
         processCoverData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
-    }
-
-    private void readLegacyDataFromNbt(NBTTagInt nbtTagInt) {
-        int data = nbtTagInt.func_150287_d();
-        processCoverData(getFlagFrequency(data), getFlagCheckbox(data));
     }
 
     @Override
@@ -186,14 +173,6 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeInt(this.frequency);
         byteBuf.writeBoolean(this.privateChannel);
-    }
-
-    protected int getFlagFrequency(int coverVariable) {
-        return coverVariable & CoverRedstoneWirelessBase.CHANNEL_MASK;
-    }
-
-    protected boolean getFlagCheckbox(int coverVariable) {
-        return (coverVariable & CoverRedstoneWirelessBase.CHECKBOX_MASK) != 0;
     }
 
     @Override
