@@ -2,7 +2,6 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
-import static gregtech.api.enums.OrePrefixes.material;
 
 import java.util.BitSet;
 import java.util.List;

@@ -120,14 +120,7 @@ public class CALImprintRecipe implements IRecipe {
 
         if (tag == null) return null;
 
-        // old tag
-        if (tag.hasKey(MTECircuitAssemblyLine.IMPRINT_KEY)) {
-            String name = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(MTECircuitAssemblyLine.IMPRINT_KEY))
-                .getUnlocalizedName();
-            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
-                return CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
-            }
-        } else if (tag.hasKey(MTECircuitAssemblyLine.IMPRINT_ID_KEY)) {
+        if (tag.hasKey(MTECircuitAssemblyLine.IMPRINT_ID_KEY)) {
             int id = tag.getInteger(MTECircuitAssemblyLine.IMPRINT_ID_KEY);
             if (CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.containsKey(id)) {
                 return CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id);

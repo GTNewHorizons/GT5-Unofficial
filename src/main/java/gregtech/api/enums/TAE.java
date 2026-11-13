@@ -12,7 +12,6 @@ public class TAE {
     // TAE stands for Texture Array Expansion.
 
     public static int gtPPLastUsedIndex = 64;
-    public static int secondaryIndex = 0;
 
     private static final Int2ObjectOpenHashMap<ITexture> mTAE = new Int2ObjectOpenHashMap<>();
     private static final IntOpenHashSet mFreeSlots = new IntOpenHashSet(64);
@@ -55,13 +54,6 @@ public class TAE {
         }
     }
 
-    public static ITexture getTexture(int index) {
-        if (gtPPLastUsedIndex >= 128) {
-            return Textures.BlockIcons.getCasingTextureForId(((64 * 128) + index));
-        }
-        return Textures.BlockIcons.getCasingTextureForId((64 + index));
-    }
-
     public static int GTPP_INDEX(int ID) {
         if (ID >= 64) {
             if (gtPPLastUsedIndex >= 128) {
@@ -76,12 +68,5 @@ public class TAE {
         id += (page == 0 ? 0 : page == 1 ? 16 : page == 2 ? 32 : page == 3 ? 48 : page == 4 ? 64 : 0);
         id += blockMeta;
         return id;
-    }
-
-    public static String getPageFromIndex(int aIndex) {
-        int aAdjustedIndex = aIndex > 64 ? (aIndex - 64) : aIndex;
-        int aPage = aAdjustedIndex / 16;
-        int aSlot = aAdjustedIndex - (16 * aPage);
-        return "[" + aIndex + " | " + aPage + ", " + aSlot + "]";
     }
 }
