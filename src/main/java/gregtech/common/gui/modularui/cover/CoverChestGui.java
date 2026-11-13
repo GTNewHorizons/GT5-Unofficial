@@ -28,6 +28,11 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
+        syncManager.onServerTick(
+            () -> {
+                if (!cover.isAttached()) syncManager.getPlayer()
+                    .closeScreen();
+            });
         int rows = cover.getSlotCount() / 3;
         String[] matrix = new String[rows];
         Arrays.fill(matrix, "xxx");
