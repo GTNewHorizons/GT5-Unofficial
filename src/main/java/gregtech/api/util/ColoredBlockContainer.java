@@ -37,6 +37,7 @@ import codechicken.multipart.TileMultipart;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import mrtjp.projectred.transmission.IBundledCablePart;
 import mrtjp.projectred.transmission.IInsulatedRedwirePart;
 
@@ -58,6 +59,14 @@ public abstract class ColoredBlockContainer {
      * @return true if the block was changed
      */
     public abstract boolean setColor(int newColor);
+
+    public boolean setCustomColor(int rgb) {
+        return setColor(Dyes.getNearest(rgb).mIndex);
+    }
+
+    public Optional<Integer> getCustomColor() {
+        return Optional.empty();
+    }
 
     /**
      * Removes the color of the block.
@@ -340,6 +349,15 @@ public abstract class ColoredBlockContainer {
         }
 
         @Override
+        public boolean setCustomColor(final int rgb) {
+            setColor(Dyes.getNearest(rgb).mIndex);
+            if (coloredTileEntity instanceof final BaseMetaPipeEntity pipe) {
+                pipe.setCustomTint(rgb);
+            }
+            return true;
+        }
+
+        @Override
         public boolean removeColor() {
             if (coloredTileEntity.getColorization() > -1) {
                 coloredTileEntity.setColorization((byte) -1);
@@ -355,6 +373,15 @@ public abstract class ColoredBlockContainer {
                 return Optional.empty();
             }
             return Optional.of(colorization);
+        }
+
+        @Override
+        public Optional<Integer> getCustomColor() {
+            if (coloredTileEntity instanceof final BaseMetaPipeEntity pipe
+                && pipe.getCustomTint() != BaseMetaPipeEntity.NO_CUSTOM_TINT) {
+                return Optional.of(pipe.getCustomTint());
+            }
+            return Optional.empty();
         }
     }
 

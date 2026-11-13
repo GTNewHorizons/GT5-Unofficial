@@ -38,8 +38,14 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     public static final String COLOR_NBT_TAG = "current_color";
     public static final String LOCK_NBT_TAG = "is_locked";
     public static final String PREVENT_SHAKE_TAG = "prevent_shake";
+    public static final String CUSTOM_COLOR_NBT_TAG = "custom_color";
+    public static final String FAVORITES_NBT_TAG = "favorite_colors";
+
+    public static final int CUSTOM_FLAG = 0x1000000;
+    public static final int MAX_FAVORITES = 9;
 
     private byte mCurrentColor;
+    private int mCurrentCustomColor = -1;
 
     static {
         final ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
@@ -86,6 +92,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
             mCurrentColor = ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
         }
+        mCurrentCustomColor = getCustomColor(itemStack);
         return super.onItemUseFirst(aItem, itemStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
     }
 
@@ -93,6 +100,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     protected boolean colorize(ColoredBlockContainer block) {
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
+        }
+        if (mCurrentCustomColor != -1) {
+            return block.setCustomColor(mCurrentCustomColor);
         }
         return block.setColor(getColor());
     }
@@ -147,9 +157,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         if (color == Dyes.MACHINE_METAL) {
             return StatCollector.translateToLocal("item.GT5U.infinite_spray_can.name.solvent" + state);
         }
+        final int customColor = getCustomColor(stack);
         return StatCollector.translateToLocalFormatted(
             "item.GT5U.infinite_spray_can.name.colored" + state,
-            color.getLocalizedDyeName());
+            customColor == -1 ? color.getLocalizedDyeName() : formatHex(customColor));
     }
 
     @Override
@@ -190,6 +201,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
             if (position != null && position.typeOfHit == BLOCK) {
                 final ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, position);
+                final Optional<Integer> customColor = block.getCustomColor();
+                if (customColor.isPresent()) {
+                    sendPacket(GTPacketInfiniteSpraycan.Action.SET_COLOR, CUSTOM_FLAG | customColor.get());
+                    return true;
+                }
                 if (block.getColor()
                     .isPresent()) {
                     sendPacket(
@@ -257,7 +273,46 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             return;
         }
         ItemStackNBT.setByte(itemStack, COLOR_NBT_TAG, color);
+        ItemStackNBT.removeTag(itemStack, CUSTOM_COLOR_NBT_TAG);
         mCurrentColor = color;
+        mCurrentCustomColor = -1;
+    }
+
+    public boolean setSelection(final ItemStack itemStack, final int selection) {
+        if (isLocked(itemStack)) {
+            return false;
+        }
+        if (isCustomSelection(selection)) {
+            final int rgb = selection & 0xFFFFFF;
+            setColor(itemStack, (byte) Dyes.getNearest(rgb).mIndex);
+            ItemStackNBT.setInteger(itemStack, CUSTOM_COLOR_NBT_TAG, rgb);
+            mCurrentCustomColor = rgb;
+            return true;
+        }
+        if (selection < 0 || selection > REMOVE_COLOR) {
+            return false;
+        }
+        setColor(itemStack, (byte) selection);
+        return true;
+    }
+
+    public void toggleFavorite(final ItemStack itemStack, final int selection) {
+        if (!isCustomSelection(selection) && (selection < 0 || selection > REMOVE_COLOR)) {
+            return;
+        }
+        final List<Integer> favorites = new ArrayList<>(getFavorites(itemStack));
+        if (!favorites.remove(Integer.valueOf(selection))) {
+            if (favorites.size() >= MAX_FAVORITES) {
+                favorites.remove(0);
+            }
+            favorites.add(selection);
+        }
+        ItemStackNBT.setIntArray(
+            itemStack,
+            FAVORITES_NBT_TAG,
+            favorites.stream()
+                .mapToInt(Integer::intValue)
+                .toArray());
     }
 
     public boolean toggleLock(final ItemStack itemStack) {
@@ -283,6 +338,42 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             }
         }
         return Dyes.MACHINE_METAL;
+    }
+
+    public static int getSelection(final ItemStack itemStack) {
+        final int customColor = getCustomColor(itemStack);
+        if (customColor != -1) {
+            return CUSTOM_FLAG | customColor;
+        }
+        if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
+            return ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
+        }
+        return REMOVE_COLOR;
+    }
+
+    public static int getCustomColor(final ItemStack itemStack) {
+        if (ItemStackNBT.hasKey(itemStack, CUSTOM_COLOR_NBT_TAG)) {
+            return ItemStackNBT.getInteger(itemStack, CUSTOM_COLOR_NBT_TAG) & 0xFFFFFF;
+        }
+        return -1;
+    }
+
+    public static List<Integer> getFavorites(final ItemStack itemStack) {
+        final List<Integer> favorites = new ArrayList<>();
+        if (ItemStackNBT.hasKey(itemStack, FAVORITES_NBT_TAG)) {
+            for (int selection : ItemStackNBT.getIntArray(itemStack, FAVORITES_NBT_TAG)) {
+                favorites.add(selection);
+            }
+        }
+        return favorites;
+    }
+
+    public static boolean isCustomSelection(final int selection) {
+        return (selection & ~0xFFFFFF) == CUSTOM_FLAG;
+    }
+
+    public static String formatHex(final int rgb) {
+        return String.format("#%06X", rgb & 0xFFFFFF);
     }
 
     public static boolean isLocked(final ItemStack itemStack) {

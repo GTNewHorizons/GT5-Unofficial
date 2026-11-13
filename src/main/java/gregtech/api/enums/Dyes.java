@@ -134,6 +134,35 @@ public enum Dyes implements IColorModulationContainer {
         return 0 <= index && index <= 15;
     }
 
+    public static @NotNull Dyes getNearest(int rgb) {
+        final float[] hsb = java.awt.Color.RGBtoHSB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, null);
+        final float h = hsb[0] * 360, s = hsb[1], v = hsb[2];
+
+        if (s < 0.18f || v < 0.12f) {
+            if (v < 0.2f) return dyeBlack;
+            if (v < 0.55f) return dyeGray;
+            return v < 0.85f ? dyeLightGray : dyeWhite;
+        }
+        if (h < 15 || h >= 340) {
+            if (s < 0.45f && v > 0.7f) return dyePink;
+            return v < 0.45f ? dyeBrown : dyeRed;
+        }
+        if (h < 45) return v < 0.66f ? dyeBrown : dyeOrange;
+        if (h < 70) return v < 0.45f ? dyeBrown : dyeYellow;
+        if (h < 100) return v < 0.5f ? dyeGreen : dyeLime;
+        if (h < 115) return v > 0.6f ? dyeLime : dyeGreen;
+        if (h < 155) return s < 0.6f && v > 0.6f ? dyeLime : dyeGreen;
+        if (h < 200) return h >= 185 && s < 0.5f && v > 0.85f ? dyeLightBlue : dyeCyan;
+        if (h < 222) return dyeLightBlue;
+        if (h < 262) return s < 0.65f && v > 0.75f ? dyeLightBlue : dyeBlue;
+        if (h < 290) return dyePurple;
+        if (h < 330) {
+            if (s < 0.45f && v > 0.7f) return dyePink;
+            return v < 0.6f ? dyePurple : dyeMagenta;
+        }
+        return dyePink;
+    }
+
     /**
      * Transforms a dye index between the GT index for this color and the vanilla index for this color.
      *
