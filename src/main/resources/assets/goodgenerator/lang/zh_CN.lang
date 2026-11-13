@@ -250,8 +250,8 @@ gui.NeutronActivator.1=输入：
 gui.YOTTank.0=容量：
 gui.YOTTank.1=流体：
 gui.YOTTank.2=已存储：
-gui.LargeFusion.0=能量容量：
-gui.LargeFusion.1=储存能量：
+gui.LargeFusion.0=能量容量： %s EU
+gui.LargeFusion.1=储存能量： %s EU
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=大型硅岩反应堆
