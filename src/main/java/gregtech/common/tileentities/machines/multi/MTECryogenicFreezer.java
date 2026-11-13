@@ -263,7 +263,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_ADV_FREEZER_LOOP;
+        return SoundResource.GT_MACHINES_CRYOGENIC_FREEZER_LOOP;
     }
 
     @Override

@@ -6,10 +6,10 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -122,7 +122,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.large_combustion_engine.machine_type"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-combustion-engine"),
                 ImmutableMap.<String, Object>builder()
@@ -162,10 +162,10 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_DIESEL_ENGINE,
-            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override

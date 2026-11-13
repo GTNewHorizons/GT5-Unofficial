@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -61,12 +60,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
-    // TODO DEPRECATED: Remove for 2.9. Only kept around for the name remover
-    @Deprecated
-    public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-        .mapToInt(Enum::ordinal)
-        .mapToObj(i -> "mCoverData" + i)
-        .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
 
     // New Cover Information

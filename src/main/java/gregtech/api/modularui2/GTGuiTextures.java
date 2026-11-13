@@ -2292,9 +2292,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_chembath");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_washplant");
@@ -2319,12 +2316,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_forming");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lhc_accelerator");
@@ -2355,12 +2346,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RECYCLING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_recycling");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");
