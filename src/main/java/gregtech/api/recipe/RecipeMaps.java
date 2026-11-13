@@ -66,6 +66,7 @@ import gregtech.api.recipe.maps.AlgaePondFrontend;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.CentrifugeFrontend;
 import gregtech.api.recipe.maps.ChemicalPlantFrontend;
 import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
@@ -83,6 +84,7 @@ import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
+import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
@@ -816,6 +818,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
+        .frontend(CentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -2170,7 +2173,7 @@ public final class RecipeMaps {
         .maxIO(9, 9, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
-        .frontend(LargeNEIFrontend::new)
+        .frontend(LargeCentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multielectro")
