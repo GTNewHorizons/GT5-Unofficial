@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.liquidlogged.api.LiquidLoggedAPI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -54,7 +55,6 @@ import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.crossmod.liquidlogged.WaterlogHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -248,7 +248,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             }
             synchronizeCover(cover, side);
             if (worldObj != null && !worldObj.isRemote && Mods.LiquidLogged.isModLoaded()) {
-                WaterlogHelper.revalidate(worldObj, xCoord, yCoord, zCoord);
+                LiquidLoggedAPI.revalidate(worldObj, xCoord, yCoord, zCoord);
             }
         }
     }

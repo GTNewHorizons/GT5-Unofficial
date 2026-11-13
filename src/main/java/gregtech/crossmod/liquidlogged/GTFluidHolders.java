@@ -23,8 +23,9 @@ public final class GTFluidHolders {
         return Boolean.TRUE;
     };
 
-    /** The machine block is shared by pipes, wires and machines, so only pipe entities hold fluid. */
+    /** Lets pipes and wires hold fluid and leaves machines unchanged. */
     private static final FluidHolderPredicate PIPE = (world, x, y, z, block, meta, fluid) -> {
+        // sBlockMachines also holds machines, so the check goes by tile entity type
         TileEntity tile = world.getTileEntity(x, y, z);
         return tile instanceof BaseMetaPipeEntity ? Boolean.TRUE : null;
     };
