@@ -764,7 +764,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return 0;
     }
 
-    protected void checkConnections() {
+    public void checkConnections() {
         mCheckConnections = false;
         // Verify connections around us. If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
