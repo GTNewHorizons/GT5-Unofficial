@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -17,14 +18,21 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
@@ -45,9 +53,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.TranslatableStructureError;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -58,11 +70,16 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
+    private int upgradeTier = TIER_NOT_SET;
     private boolean needsWaterFill = false;
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int TIER_NOT_SET = -1;
+    private static final int TIER_BASE = 0;
+    private static final int TIER_UPGRADED = 1;
+    private static final int MAGMATTER_META = 10; // gt.blockmetal9
 
     private static final String[][] structure = new String[][] { { "AABAA", "AEEEA", "AE~EA", "AEEEA" },
         { "  B  ", "EFDFE", "EFDFE", "EEEEE" }, { "     ", "EFFFE", "EFFFE", "EEEEE" },
@@ -90,14 +107,32 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_bath"))
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo(
+                TooltipHelper.NAME_COLOR + "Magmatter Blocks"
+                    + EnumChatFormatting.GRAY
+                    + " allow a single "
+                    + TooltipHelper.HATCH_COLOR
+                    + "Multi-Amp Energy Hatch")
             .beginStructureBlock(4, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("30-39", Casings.WashPlantCasing.getLocalizedName(), false)
             .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.AQUATIC_STEEL), false)
             .addCasing("14", StatCollector.translateToLocal("tile.water.name"), false)
             .addCasing("4", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.block.getLocalizedNameForItem(Materials.Zinc), false)
-            .addCasing("2", OrePrefixes.block.getLocalizedNameForItem(Materials.Copper), false)
+            .addCasing(
+                "2",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Zinc),
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.MagMatter)),
+                false)
+            .addCasing(
+                "2",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Copper),
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.MagMatter)),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
@@ -117,12 +152,19 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 .addShape(STRUCTURE_PIECE_MAIN, structure)
                 .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
                 .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
-                .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
-                .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))
+                .addElement('C', metalOrMagmatter(GregTechAPI.sBlockMetal2, 7))
+                .addElement('D', metalOrMagmatter(GregTechAPI.sBlockMetal8, 6))
                 .addElement(
                     'E',
                     buildHatchAdder(MTEIndustrialChemicalBath.class)
-                        .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(
+                            InputBus,
+                            InputHatch,
+                            OutputHatch,
+                            OutputBus,
+                            Maintenance,
+                            Energy.or(MultiAmpEnergy),
+                            Muffler)
                         .casingIndex(114) // WashPlantCasing
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
@@ -130,6 +172,20 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    private static IStructureElement<MTEIndustrialChemicalBath> metalOrMagmatter(Block baseBlock, int baseMeta) {
+        ITierConverter<Integer> tierConverter = (block, meta) -> {
+            if (block == baseBlock && meta == baseMeta) return TIER_BASE;
+            if (block == GregTechAPI.sBlockMetal9 && meta == MAGMATTER_META) return TIER_UPGRADED;
+            return null;
+        };
+        return ofBlocksTiered(
+            tierConverter,
+            ImmutableList.of(Pair.of(baseBlock, baseMeta), Pair.of(GregTechAPI.sBlockMetal9, MAGMATTER_META)),
+            TIER_NOT_SET,
+            (x, tier) -> x.upgradeTier = tier,
+            x -> x.upgradeTier);
     }
 
     @Override
@@ -156,6 +212,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         needsWaterFill = false;
         casingAmount = 0;
+        upgradeTier = TIER_NOT_SET;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
             needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
                 aBaseMetaTileEntity,
@@ -168,7 +225,16 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             return;
         }
         checkCasingMin(errors, casingAmount, 30);
-        checkHasEnergyHatch(errors);
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (upgradeTier != TIER_UPGRADED) {
+                errors.add(
+                    new TranslatableStructureError(TranslatableText.literal("Need Magmatter Blocks for Multi-Amp")));
+            }
+        } else {
+            checkHasEnergyHatch(errors);
+        }
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);

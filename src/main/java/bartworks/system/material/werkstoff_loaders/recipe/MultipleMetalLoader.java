@@ -48,10 +48,23 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 96))
                 .addTo(benderRecipes);
 
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate, 9))
+                .circuit(1)
+                .itemOutputs(werkstoff.get(plateDense))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 9,
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 96) * 4)
+                .addTo(compressorRecipes);
+
             int compressionTier = (werkstoff.getStats()
                 .getProcessingMaterialTierEU() >= TierEU.RECIPE_UEV || werkstoff.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate, 64))
+                .circuit(2)
                 .itemOutputs(werkstoff.get(plateSuperdense))
                 .metadata(COMPRESSION_TIER, compressionTier)
                 .duration(
