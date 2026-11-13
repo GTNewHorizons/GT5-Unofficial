@@ -34,6 +34,7 @@ import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.api.teleport.IItemOfTravel;
 import forestry.api.apiculture.IArmorApiaristMulti;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods.ModIDs;
@@ -46,6 +47,7 @@ import gregtech.api.items.armor.ArmorState;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
+import gregtech.api.items.armor.MovementStaffClientState;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.items.armor.ui.ArmorRadialMenu;
@@ -65,11 +67,12 @@ import thaumcraft.api.nodes.IRevealer;
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY),
-        @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA) })
+        @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA),
+        @Interface(iface = "crazypants.enderio.api.teleport.IItemOfTravel", modid = ModIDs.ENDER_I_O) })
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
     IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
-    net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
+    net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor, IItemOfTravel {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -570,6 +573,78 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
+    }
+
+    // EnderIO Compat
+    @Override
+    public boolean isActive(EntityPlayer ep, ItemStack stack) {
+        if (ep == null || stack == null) return false;
+        ArmorContext context = load((EntityLivingBase) null, stack);
+
+        boolean worn = false;
+        for (int i = 0; i < 4; i++) {
+            if (ep.getCurrentArmor(i) == stack) {
+                worn = true;
+                break;
+            }
+        }
+        if (!worn) return false;
+
+        boolean hasBasic = context.hasBehavior(BehaviorName.TravelStaff);
+        boolean hasAdvanced = context.hasBehavior(BehaviorName.TeleportationStaff);
+
+        if (!hasBasic && !hasAdvanced) {
+            return false;
+        }
+
+        if (!ep.worldObj.isRemote) {
+            return true;
+        }
+        return MovementStaffClientState.isPreviewActive;
+    }
+
+    @Override
+    public int canExtractInternal(ItemStack stack, int powerUse) {
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return -1;
+        return state.canDrainEnergy(powerUse) ? powerUse : 0;
+    }
+
+    @Override
+    public void extractInternal(ItemStack stack, int powerUse) {
+        ArmorContext context = load((EntityLivingBase) null, stack);
+        if (context.drainEnergy(powerUse)) {
+            context.save();
+        }
+    }
+
+    @Override
+    public int getEnergyStored(ItemStack stack) {
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return Integer.MAX_VALUE;
+        return (int) Math.max(0, Math.min(state.charge, Integer.MAX_VALUE));
+    }
+
+    @Override
+    public int getMaxEnergyStored(ItemStack stack) {
+        ArmorState state = load((EntityLivingBase) null, stack).getArmorState();
+        if (state.hasBehavior(BehaviorName.InfiniteEnergy)) return Integer.MAX_VALUE;
+        return state.core != null ? state.core.getChargeMax() : 0;
+    }
+
+    @Override
+    public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public boolean isTeleportStaff(EntityPlayer player, ItemStack stack) {
+        return load((EntityLivingBase) null, stack).hasBehavior(BehaviorName.TeleportationStaff);
     }
 
 }
