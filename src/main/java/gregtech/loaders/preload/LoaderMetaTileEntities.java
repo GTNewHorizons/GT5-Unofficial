@@ -115,6 +115,7 @@ import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuil
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTECleanroomPassthroughHull;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
@@ -2294,16 +2295,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBasicHullSteelBricks(HULL_CAST_IRON.ID, "hull.steel_bricked", "Bricked Cast Iron Hull", 0)
                 .getStackForm(1L));
 
-        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "", 0).getStackForm(1L));
-        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "", 1).getStackForm(1L));
-        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "", 2).getStackForm(1L));
-        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "", 3).getStackForm(1L));
-        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "", 4).getStackForm(1L));
-        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "", 5).getStackForm(1L));
-        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "", 6).getStackForm(1L));
-        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "", 7).getStackForm(1L));
-        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "", 8).getStackForm(1L));
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hull_ULV.set(new MTEBasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0).getStackForm(1L));
+        ItemList.Hull_LV.set(new MTEBasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1).getStackForm(1L));
+        ItemList.Hull_MV.set(new MTEBasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2).getStackForm(1L));
+        ItemList.Hull_HV.set(new MTEBasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3).getStackForm(1L));
+        ItemList.Hull_Cleanroom_Passthrough.set(
+            new MTECleanroomPassthroughHull(
+                CLEANROOM_PASSTHROUGH_HULL.ID,
+                "hull.cleanroom_passthrough",
+                "Cleanroom Pass-Through Hull",
+                3).getStackForm(1L));
+        ItemList.Hull_EV.set(new MTEBasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4).getStackForm(1L));
+        ItemList.Hull_IV.set(new MTEBasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5).getStackForm(1L));
+        ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6).getStackForm(1L));
+        ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7).getStackForm(1L));
+        ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8).getStackForm(1L));
+        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9).getStackForm(1L));
 
         ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "", 10).getStackForm(1L));
 
