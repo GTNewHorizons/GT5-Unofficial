@@ -190,7 +190,7 @@ public class MTEHatchMuffler extends MTEHatch {
         return (int) ((float) aPollution * ((100F - 12.5F * ((float) mTier - 1F)) / 100F));
     }
 
-    public boolean airCheck() {
+    private boolean airCheck() {
         return getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing());
     }
 
