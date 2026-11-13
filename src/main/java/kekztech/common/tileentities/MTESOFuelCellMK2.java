@@ -121,6 +121,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         vars.put("gasFuelThreshold", formatNumber(GAS_FUEL_THRESHOLD));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk2"), vars)
+            .addSupport4A()
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
@@ -131,7 +132,6 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInputHatch("1+", anyCasingText(), 1)
             .addOutputHatch("1+", anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

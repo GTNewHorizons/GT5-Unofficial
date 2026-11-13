@@ -137,6 +137,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     .put("wait_power", WAIT_POWER_PERCENT)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(10, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
             .addCasing("30-33", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
@@ -153,7 +154,6 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_above_engine_intakes"))
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         // spotless:on
         return tt;

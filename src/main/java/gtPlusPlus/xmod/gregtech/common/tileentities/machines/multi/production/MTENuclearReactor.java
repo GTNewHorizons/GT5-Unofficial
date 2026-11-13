@@ -129,6 +129,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                     .put("tier3", GTUtility.getColoredTierNameFromTier((byte) VoltageIndex.LuV))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(7, 4, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("27-86", Casings.HastelloyNReactorCasing.getLocalizedName(), false)
@@ -140,7 +141,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addOutputHatch("4+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_edge_casing_tier", "IV+"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.me_output_hatch_replaces_four"))
             .toolTipFinisher();
         // spotless:on
