@@ -42,7 +42,7 @@ public class ExtractorRecipes implements Runnable {
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
-        addExtractionRecipe(ItemList.IC2_Food_Can_Filled.get(1L), ItemList.IC2_Food_Can_Empty.get(1L));
+        addExtractionRecipe(ItemList.FoodCanFilled.get(1L), ItemList.FoodCanEmpty.get(1L));
         addExtractionRecipe(new ItemStack(Blocks.clay, 1), new ItemStack(Items.clay_ball, 4));
         addExtractionRecipe(new ItemStack(Blocks.brick_block, 1), new ItemStack(Items.brick, 4));
         addExtractionRecipe(new ItemStack(Blocks.nether_brick, 1), new ItemStack(Items.netherbrick, 4));
