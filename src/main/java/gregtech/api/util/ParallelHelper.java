@@ -398,11 +398,11 @@ public class ParallelHelper {
 
         final long tRecipeEUt = (long) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
         if (availableEUt < tRecipeEUt) {
-            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt, availableEUt);
             return;
         }
         if (recipe.mEUt > calculator.getMaxAllowedRecipeEUt()) {
-            result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
+            result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt, calculator.getMaxAllowedRecipeEUt());
             return;
         }
 
