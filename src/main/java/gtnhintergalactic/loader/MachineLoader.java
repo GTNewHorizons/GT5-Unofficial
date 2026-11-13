@@ -1,7 +1,6 @@
 package gtnhintergalactic.loader;
 
 import static gregtech.api.enums.MetaTileEntityIDs.DysonSwarmController;
-import static gregtech.api.enums.MetaTileEntityIDs.PlanetaryGasSiphonController;
 import static gregtech.api.enums.MetaTileEntityIDs.PlanetarySiphon;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorController;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleAssemblerT1;
@@ -22,7 +21,6 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.ItemList;
 import gtnhintergalactic.tile.multi.MTEPlanetaryGasSiphon;
 import gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
-import gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphonLegacy;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleAssembler;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleManager;
@@ -44,12 +42,6 @@ public class MachineLoader implements Runnable {
     public void run() {
 
         ItemStack stack;
-
-        stack = new TileEntityPlanetaryGasSiphonLegacy(
-            PlanetaryGasSiphonController.ID,
-            "PlanetaryGasSiphon",
-            StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
-        ItemList.PlanetaryGasSiphonController.set(stack);
 
         stack = new MTEPlanetaryGasSiphon(
             PlanetarySiphon.ID,

@@ -341,23 +341,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     }
 
     @Override
-    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
-        int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        // TODO Auto-generated method stub
-        return super.onItemUse(
-            p_77648_1_,
-            p_77648_2_,
-            p_77648_3_,
-            p_77648_4_,
-            p_77648_5_,
-            p_77648_6_,
-            p_77648_7_,
-            p_77648_8_,
-            p_77648_9_,
-            p_77648_10_);
-    }
-
-    @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         ItemStack superStack = super.onItemRightClick(aStack, aWorld, aPlayer);
         if (!aWorld.isRemote && aPlayer.isSneaking()) {

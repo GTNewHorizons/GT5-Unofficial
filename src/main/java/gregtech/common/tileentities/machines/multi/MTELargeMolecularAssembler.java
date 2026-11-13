@@ -74,6 +74,7 @@ import appeng.util.Platform;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -99,6 +100,7 @@ import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler> implements
     ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,7 +108,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private static final int DURATION_BASE_SECONDS = 1;
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
-    private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
     private static final int EU_PER_TICK_BASIC = 16;
     private static final int EU_PER_TICK_CRAFTING = 64;
     private static final int CASING_INDEX = 48;
@@ -304,7 +305,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(MACHINE_TYPE)
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.molecular_assembler"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-molecular-assembler"),
                 ImmutableMap.<String, Object>builder()
@@ -316,15 +317,19 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                     .put("duration_oc2", DURATION_BASE_SECONDS / 4.0)
                     .build())
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom center")
-            .addCasing("54", "Vibrant Quartz Glass", false)
-            .addCasing(MIN_CASING_COUNT + "-40", "Robust Tungstensteel Machine Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMiscHatch("1+", "Input Bus or Crafting Pattern Provider", "Any casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("54", StatCollector.translateToLocal("tile.appliedenergistics2.BlockQuartzLamp.name"), false)
+            .addCasing(MIN_CASING_COUNT + "-40", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.input_bus_or_pattern_provider"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
-            .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_molecular_assembler_data_orb"))
             .toolTipFinisher();
         return tt;
     }

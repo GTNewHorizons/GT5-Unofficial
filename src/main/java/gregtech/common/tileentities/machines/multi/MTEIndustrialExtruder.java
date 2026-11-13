@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -35,7 +36,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -46,6 +46,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtruder>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -98,21 +99,23 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Extruder, IEM")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.extruder"))
             .addBulkMachineInfo(6, 3.5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(4, 4, 9, false)
-            .addController("Front right, 2nd layer")
-            .addCasing("8-33", "Tension Resistant Machine Casing", false)
-            .addCasing("24", "Tungsten Sheetmetal", false)
-            .addCasing("20", "Forming Core", false)
-            .addCasing("3-7", "Extruder Machine Casing", false)
-            .addEnergyHatch("1+", "Any tension resistant or extruder machine casing", 1)
-            .addMaintenanceHatch("1", "Any tension resistant or extruder machine casing", 1)
-            .addMufflerHatch("1", "Any tension resistant or extruder machine casing", 1)
-            .addMiscHatch("1+", "Input/Extrusion Bus", "Any tension resistant casing", 1)
-            .addOutputBus("1+", "Any tension resistant casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_right_2nd_layer"))
+            .addCasing("8-33", Casings.TensionResistantMachineCasing.getLocalizedName(), false)
+            .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("20", Casings.FormingCore.getLocalizedName(), false)
+            .addCasing("3-7", Casings.ExtruderMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_extrusion_bus"), StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -221,17 +224,13 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         return true;
     }
 
-    /**
-     * Can implement {@literal IHatchElement<MTEIndustrialExtruder>} & be private after the removal of
-     * {@link gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy}.
-     * Ugly until the big pretty cleanup :)
-     */
-    public enum ExtruderHatchElement implements IHatchElement<MTEMultiBlockBase> {
+    private enum ExtruderHatchElement implements IHatchElement<MTEIndustrialExtruder> {
 
-        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
+        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEIndustrialExtruder::addInputBusToMachineList,
+            MTEHatchExtrusion.class) {
 
             @Override
-            public long count(MTEMultiBlockBase t) {
+            public long count(MTEIndustrialExtruder t) {
                 return t.mInputBusses.stream()
                     .filter(it -> it instanceof MTEHatchExtrusion)
                     .count();
@@ -240,10 +239,10 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
         private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEMultiBlockBase> adder;
+        private final IGTHatchAdder<MTEIndustrialExtruder> adder;
 
         @SafeVarargs
-        ExtruderHatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder,
+        ExtruderHatchElement(String name, IGTHatchAdder<MTEIndustrialExtruder> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
@@ -256,7 +255,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
 
         @Override
-        public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
+        public IGTHatchAdder<? super MTEIndustrialExtruder> adder() {
             return adder;
         }
 

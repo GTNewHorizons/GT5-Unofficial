@@ -23,8 +23,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
@@ -33,6 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -96,7 +99,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
 
         // spotless:off
-        tt.addMachineType("Pump, FDR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_drilling_rig"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "infinite-oil-drill"),
                 ImmutableMap.<String, Object>builder()
@@ -106,18 +109,18 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                     .put("min_tier", getMinTier())
                     .build())
             .beginStructureBlock(9, 14, 9, false)
-            .addController("Front bottom center")
-            .addCasing("90-103", "Mining Neutronium Casing", false)
-            .addCasing("38", "Neutronium Frame Box", false)
-            .addCasing("20", "Any Tiered Glass", false)
-            .addCasing("12", "Advanced Iridium Plated Machine Casing", false)
-            .addCasing("12", "Advanced Computer Casing", false)
-            .addCasing("9", "PBI Pipe Casing", false)
-            .addCasing("8", "Infinity Sheetmetal", false)
-            .addEnergyHatch("1", "Any mining casing (UHV+)", 1)
-            .addMaintenanceHatch("1", "Any mining casing", 1)
-            .addInputBus("0-1", "Any mining casing", 1)
-            .addOutputHatch("1", "Any mining casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("90-103", Casings.MiningNeutroniumCasing.getLocalizedName(), false)
+            .addCasing("38", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
+            .addCasing("20", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("12", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.AdvancedComputerCasing.getLocalizedName(), false)
+            .addCasing("9", Casings.PBIPipeCasing.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Infinity), false)
+            .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_mining_casing_min_tier", GTValues.VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
+            .addInputBus("0-1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))

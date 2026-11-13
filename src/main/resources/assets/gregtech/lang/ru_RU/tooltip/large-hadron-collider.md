@@ -9,8 +9,8 @@
 пока не будет достигнута {color_electron_volt:целевая энергия пучка} или {light_purple:максимальное число циклов}
 Когда {color_electron_volt:целевая энергия пучка} достигнута, к текущей {gold:интенсивности пучка} добавляется {color_formula:{var:rate_gain}} * {gold:интенсивность пучка}
 При {gold:интенсивности пучка} выше {color_formula:{var:nerf_cutoff}} вместо этого добавляется ({color_formula:{var:rate_gain}} * {gold:интенсивность пучка})^{dark_red:{var:nerf_power}}
-{color_eu_usage:Мощность} начинается с {color_amperage:1A} {var:tier} на единицу {gold:интенсивности пучка} и растёт квадратично с {light_purple:числом завершённых циклов}
-{color_eu_usage:P} = ({color_amperage:1A} {var:tier}) * {gold:R} * ({light_purple:N}+1)^2
+{color_eu_usage:Мощность} начинается с {color_amperage:1A} {VNF:tier} на единицу {gold:интенсивности пучка} и растёт квадратично с {light_purple:числом завершённых циклов}
+{color_eu_usage:P} = ({color_amperage:1A} {VNF:tier}) * {gold:R} * ({light_purple:N}+1)^2
 Переключается в режим коллайдера, когда достигнуто {light_purple:максимальное число циклов}
 {hr}
 {color_mode:Режим коллайдера}

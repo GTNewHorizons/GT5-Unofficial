@@ -284,8 +284,11 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/LiquidMode_off");
 
     // These icons are for mode switching machine modes
+    // region begin unused
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
+    // region end unused
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
@@ -294,10 +297,6 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture.fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/muffle_off");
