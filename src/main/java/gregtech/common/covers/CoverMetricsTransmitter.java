@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -94,22 +96,27 @@ public class CoverMetricsTransmitter extends Cover {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         if (coveredTile.get() instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
             final List<String> payload;
+            final List<IChatComponent> chatPayload;
 
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
+                // TODO localize metrics.
                 payload = metricsExporter.reportMetrics();
+                chatPayload = new ArrayList<>();
             } else {
                 // Stays encoded: ItemAdvancedSensorCard decodes it on the client in the reader's language.
-                final List<String> infoList = new ArrayList<>();
-                for (String info : baseMTE.getInfoData()) {
-                    infoList.add(info);
-                }
+                final List<String> infoList = new ArrayList<>(Arrays.asList(baseMTE.getInfoData()));
                 baseMTE.getExtraInfoData(infoList);
                 payload = infoList;
+
+                final List<IChatComponent> chatInfoList = new ArrayList<>(baseMTE.getChatInfoData());
+                baseMTE.getExtraChatInfoData(chatInfoList);
+                chatPayload = chatInfoList;
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
                 frequency,
                 payload,
+                chatPayload,
                 new GlobalMetricsCoverDatabase.Coordinates(
                     baseMTE.getWorld().provider.getDimensionName(),
                     baseMTE.getXCoord(),
