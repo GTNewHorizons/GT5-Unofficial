@@ -3,6 +3,12 @@ package gregtech.common.gui.modularui.hatch.base;
 import java.util.function.Predicate;
 
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.common.gui.modularui.singleblock.base.MTEMachineWithFluidScreenBaseGui;
@@ -10,16 +16,26 @@ import gregtech.common.gui.modularui.singleblock.base.MTEMachineWithFluidScreenB
 /**
  * A base class for common hatch implementations. Has configurable corner panels and makes building ui's easier.
  * The main overriding is done in
- * {@link #createContentSection(com.cleanroommc.modularui.screen.ModularPanel, com.cleanroommc.modularui.value.sync.PanelSyncManager)}
+ * {@link #createContentSection(ModularPanel, PanelSyncManager)}
  *
  * For heavily custom UI's, override
- * {@link #build(com.cleanroommc.modularui.factory.PosGuiData, com.cleanroommc.modularui.value.sync.PanelSyncManager, com.cleanroommc.modularui.screen.UISettings)}
+ * {@link #build(PosGuiData, PanelSyncManager, UISettings)}
  * instead.
  */
 public class MTEHatchBaseGui<T extends MTEHatch> extends MTEMachineWithFluidScreenBaseGui<T> {
 
     public MTEHatchBaseGui(T machine) {
         super(machine);
+    }
+
+    @Override
+    protected int getInputSlotIndex() {
+        return machine.getInputSlot();
+    }
+
+    @Override
+    protected int getOutputSlotIndex() {
+        return machine.getOutputSlot();
     }
 
     @Override
@@ -30,5 +46,10 @@ public class MTEHatchBaseGui<T extends MTEHatch> extends MTEMachineWithFluidScre
     @Override
     protected Predicate<FluidStack> getFluidSlotFilter() {
         return machine::isFluidInputAllowed;
+    }
+
+    @Override
+    protected IFluidTank getMachineFluidTank() {
+        return machine.getFluidTank();
     }
 }
