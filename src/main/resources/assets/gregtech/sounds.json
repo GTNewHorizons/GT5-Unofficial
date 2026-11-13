@@ -280,11 +280,11 @@
       }
     ]
   },
-  "machines.MTEMegaVacuumFreezer": {
+  "machines.MTEEndothermicFridge": {
     "category": "block",
     "sounds": [
       {
-        "name": "MTEMegaVacuumFreezer",
+        "name": "MTEEndothermicFridge",
         "stream": false
       }
     ]
@@ -406,11 +406,11 @@
       }
     ]
   },
-  "machines.MTEMegaBlastFurnace": {
+  "machines.MTEExothermicHearth": {
     "category": "block",
     "sounds": [
       {
-        "name": "MTEMegaBlastFurnace",
+        "name": "MTEExothermicHearth",
         "stream": false
       }
     ]
