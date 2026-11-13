@@ -49,6 +49,11 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -56,11 +61,12 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 @IMetaTileEntity.SkipGenerateDescription
 public class MTENetworkSwitch extends TTMultiblockBase
-    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
+    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch>, IParametrized {
 
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
 
+    // TODO remove after 2.9
     private static final INameFunction<MTENetworkSwitch> DEST_NAME = MTENetworkSwitch::getDestName;
     private static final IStatusFunction<MTENetworkSwitch> DEST_STATUS = MTENetworkSwitch::getDestStatus;
 
@@ -69,6 +75,11 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     protected Parameters.Group.ParameterIn[] dst;
     protected Parameters.Group.ParameterIn[] weight;
+
+    public static final int GROUP_COUNT = 10;
+    private CompositeParameter[] hatchParameters;
+    private IntegerParameter[] idParameters;
+    private DoubleParameter[] weightParameters;
 
     private @Nullable QuantumDataPacket pendingPacket;
 
@@ -275,8 +286,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
             double total = 0;
             double weight;
             for (int i = 0; i < 10; i++) { // each param pair
-                weight = this.weight[i].get();
-                if (weight > 0 && dst[i].get() >= 0) {
+                weight = this.weightParameters[i].getValue();
+                if (weight > 0 && idParameters[i].getValue() >= 0) {
                     total += weight; // Total weighted div
                 }
             }
@@ -286,8 +297,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
             double dest;
             for (int i = 0; i < 10; i++) {
-                dest = dst[i].get();
-                weight = this.weight[i].get();
+                dest = idParameters[i].getValue();
+                weight = this.weightParameters[i].getValue();
                 if (weight > 0 && dest >= 0) {
                     int outIndex = (int) dest - 1;
                     if (outIndex < 0 || outIndex >= eOutputData.size()) {
@@ -324,5 +335,48 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public void initParameters() {
+        idParameters = new IntegerParameter[GROUP_COUNT];
+        weightParameters = new DoubleParameter[GROUP_COUNT];
+        hatchParameters = new CompositeParameter[GROUP_COUNT];
+
+        for (int i = 0; i < GROUP_COUNT; i++) {
+            idParameters[i] = new IntegerParameter(i + 1, "tt.keyword.Id", "id", () -> 1, () -> Integer.MAX_VALUE);
+
+            weightParameters[i] = new DoubleParameter(
+                0.,
+                "tt.keyword.Weight",
+                "weight",
+                () -> 0.,
+                () -> Double.MAX_VALUE);
+
+            hatchParameters[i] = new CompositeParameter(
+                List.of(idParameters[i], weightParameters[i]),
+                "tt.keyword.Hatch",
+                "hatch" + i,
+                i + 1);
+        }
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        for (int i = 0; i < GROUP_COUNT; i++) {
+            idParameters[i].setValue(oldParams.getInteger(String.valueOf(i)));
+            weightParameters[i].setValue(oldParams.getDouble(String.valueOf(10 + i)));
+        }
+    }
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(hatchParameters);
     }
 }
