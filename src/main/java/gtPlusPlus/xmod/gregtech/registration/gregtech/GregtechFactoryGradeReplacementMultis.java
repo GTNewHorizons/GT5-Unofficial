@@ -2,18 +2,14 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.MetaTileEntityIDs.FusionComputer_UV2;
 import static gregtech.api.enums.MetaTileEntityIDs.FusionComputer_UV3;
-import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Cryogenic_Freezer;
 import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_BlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_DistillationTower;
-import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_ImplosionCompressor;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezerLegacy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvDistillationTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvEBF;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvFusionMk4;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvFusionMk5;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvImplosionCompressorLegacy;
 
 public class GregtechFactoryGradeReplacementMultis {
 
@@ -24,16 +20,6 @@ public class GregtechFactoryGradeReplacementMultis {
     private static void run1() {
         GregtechItemList.Machine_Adv_BlastFurnace.set(
             new MTEAdvEBF(Machine_Adv_BlastFurnace.ID, "multimachine.adv.blastfurnace", "Volcanus").getStackForm(1L));
-        GregtechItemList.Machine_Adv_ImplosionCompressor.set(
-            new MTEAdvImplosionCompressorLegacy(
-                Machine_Adv_ImplosionCompressor.ID,
-                "multimachine.adv.implosioncompressor",
-                "Density^2").getStackForm(1L));
-        GregtechItemList.Industrial_Cryogenic_Freezer.set(
-            new MTEIndustrialVacuumFreezerLegacy(
-                Industrial_Cryogenic_Freezer.ID,
-                "multimachine.adv.industrialfreezer",
-                "Cryogenic Freezer").getStackForm(1L));
         GregtechItemList.FusionComputer_UV2.set(
             new MTEAdvFusionMk4(FusionComputer_UV2.ID, "fusioncomputer.tier.09", "FusionTech MK IV").getStackForm(1L));
         GregtechItemList.FusionComputer_UV3.set(
