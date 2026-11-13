@@ -21,13 +21,13 @@ import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
-import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 
 public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement {
 
@@ -90,12 +90,6 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
-    protected boolean checkActive() {
-        return network != null && !network.getComponents(BECInventory.class)
-            .isEmpty();
-    }
-
-    @Override
     public ConnectionType getConnectionOnSide(ForgeDirection side) {
         return ConnectionType.CONNECTABLE;
     }
@@ -123,12 +117,12 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public void onAdjacentBlockChange(int x, int y, int z) {
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeChanged(BECFactoryElement adjacent) {
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
@@ -150,6 +144,11 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                     }
                 }
             }
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
         }
     }
 
@@ -202,6 +201,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public void onColorChangeServer(byte aColor) {
+        super.onColorChangeServer(aColor);
+
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (base == null || base.getTimer() == 0) return;
