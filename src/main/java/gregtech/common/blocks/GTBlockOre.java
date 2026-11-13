@@ -235,8 +235,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         }
 
         final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
-        final ITexture fg = fgBuilder.stdOrient()
-            .build();
+        final ITexture fg = fgBuilder.build();
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 

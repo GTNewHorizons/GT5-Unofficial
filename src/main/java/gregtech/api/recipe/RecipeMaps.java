@@ -2149,9 +2149,6 @@ public final class RecipeMaps {
                 StatCollector.translateToLocal("gt.nei.solar_tower.3")))
         .frontend(FluidOnlyFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> cyclotronRecipes = RecipeMapBuilder.of("gt.recipe.cyclotron")
-        .maxIO(9, 9, 1, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> fishPondRecipes = RecipeMapBuilder.of("gt.recipe.fishpond")
         .maxIO(1, 25, 0, 0)
         .slotOverlays(
