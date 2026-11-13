@@ -108,6 +108,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     public static final XSTR random = XSTR.XSTR_INSTANCE;
+    public double recipeEuMultiplier = 1;
 
     protected MTENanochipAssemblyComplex baseMulti;
 
@@ -450,7 +451,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // Reset output color
         outputColor = -1;
         this.lEUt = 0;
-
+        this.recipeEuMultiplier = 1;
         if (!isConnected || baseMulti == null || runningCooldown > 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -495,6 +496,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .setAvailableEUt(this.availableEUt)
             .enableBatchMode(0)
             .setRecipe(properRecipe)
+            .setEUtModifier(this.recipeEuMultiplier)
             .setMachine(this, false, false)
             .setMaxParallel(this.getMaximumParallel())
             .setOutputCalculation(true)
@@ -543,7 +545,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             // apply 2/4 overclock with any excess power
             // this still keeps the >= 5 seconds rule so we don't have to think about sub-ticking
             int recipeDuration = properRecipe.mDuration;
-            long recipeEUT = (long) properRecipe.mEUt * currentParallel;
+            long recipeEUT = (long) (this.recipeEuMultiplier * currentParallel * properRecipe.mEUt);
             while (recipeDuration / 2 >= 5 * SECONDS && recipeEUT * 4 <= this.availableEUt) {
                 recipeDuration /= 2;
                 recipeEUT *= 4;
@@ -610,7 +612,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         GTRecipe copiedRecipe = recipe.copy();
+        // a recipe can not have more than MAX_INT EU/t. any EU/t above MAX_INT must be preserved or it gets voided
         copiedRecipe.setEUt((int) recipeEUT);
+        this.recipeEuMultiplier = recipeEUT > Integer.MAX_VALUE ? (recipeEUT / Integer.MAX_VALUE) : 1;
         copiedRecipe.setDuration((int) recipeDuration);
         return copiedRecipe;
     }
