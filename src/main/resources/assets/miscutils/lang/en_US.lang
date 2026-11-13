@@ -4165,7 +4165,6 @@ gtplusplus.blocktieredcasings.1.9.name=Integral Framework V
 
 # Multiblocks
 gt.blockmachines.chemicalplant.controller.tier.single.name=ExxonMobil Chemical Plant
-gt.blockmachines.cyclotron.tier.single.name=COMET - Compact Cyclotron
 gt.blockmachines.fusioncomputer.tier.09.name=FusionTech Mk-IV
 gt.blockmachines.fusioncomputer.tier.10.name=FusionTech Mk-V
 gt.blockmachines.gtplusplus.autocrafter.multi.name=Large Scale Auto-Assembler v1.01
@@ -4176,11 +4175,9 @@ gt.blockmachines.gtpp.multimachine.semifluidgenerator.name=Large Semifluid Burne
 gt.blockmachines.industrialalloysmelter.controller.tier.single.name=Zyngen
 gt.blockmachines.industrialfluidheater.controller.tier.single.name=Thermic Heating Device
 gt.blockmachines.industrialmassfab.controller.tier.single.name=Matter Fabrication CPU
-gt.blockmachines.industrialplatepress.controller.tier.single.name=Industrial Material Press
 gt.blockmachines.industrialrefinery.controller.tier.single.name=Reactor Fuel Processing Plant
 gt.blockmachines.industrialsalloyamelter.controller.tier.mega.name=Mega Alloy Blast Smelter
 gt.blockmachines.industrialsalloyamelter.controller.tier.single.name=Alloy Blast Smelter
-gt.blockmachines.industrialwashplant.controller.tier.single.name=Ore Washing Plant
 gt.blockmachines.lftr.controller.single.name=Liquid Fluoride Thorium Reactor
 gt.blockmachines.multimachine.adv.blastfurnace.name=Volcanus
 gt.blockmachines.multimachine.adv.distillationtower.name=Dangote Distillus
@@ -4192,7 +4189,6 @@ gt.blockmachines.solartower.controller.tier.single.name=Solar Tower
 gt.blockmachines.sparge.controller.single.name=Sparge Tower Controller
 gt.blockmachines.substation.01.input.single.name=Power Station Control Node
 # Machine names
-gt.blockmachines.hatch.dynamo.buffer.name=%s Dynamo Hatch [Buffered]
 gt.blockmachines.hatch.muffler.adv.name=Advanced Muffler Hatch (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Requires an Air Filter
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Requires an Air Filter §f%s§7

@@ -127,7 +127,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     // region parameters
 
-    // TODO remove after 2.9
+    // TODO remove after 2.10
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
