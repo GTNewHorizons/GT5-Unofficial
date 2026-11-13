@@ -55,9 +55,9 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
 
     @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        LongSyncValue steamStoredSyncer = new LongSyncValue(() -> machine.getSteamVar() * 2);
+        LongSyncValue steamStoredSyncer = new LongSyncValue(() -> baseMetaTileEntity.getStoredSteam() * 2);
         syncManager.syncValue("steamStored", steamStoredSyncer);
-        LongSyncValue maxSteamSyncer = new LongSyncValue(() -> machine.maxSteamStore() * 2);
+        LongSyncValue maxSteamSyncer = new LongSyncValue(() -> baseMetaTileEntity.getSteamCapacity() * 2);
         syncManager.syncValue("maxSteam", maxSteamSyncer);
 
         return super.build(guiData, syncManager, uiSettings).child(

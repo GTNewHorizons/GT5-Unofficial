@@ -430,8 +430,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * This is used to get the internal Steam Energy.
      */
     public long getSteamVar() {
-        // null once the machine is removed; an open GUI still syncs once before it closes
-        if (mBaseMetaTileEntity == null) return 0;
         return ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam;
     }
 
