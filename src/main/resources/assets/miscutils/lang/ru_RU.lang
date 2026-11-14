@@ -3419,7 +3419,6 @@ item.LiquidHydrogen.name=Капсула жидкого водорода [LOH]
 # Added 24/8/19
 # Debug Labels
 tile.blockDoorAlloy.name=Укреплённая дверь
-tile.blockInhibitorObelisk.name=Inhibitor Obelisk
 tile.Battlesign.name=Боевая табличка
 tile.blockMagicBox.name=Магический ящик
 tile.blockManaPod.name=Mana Pod Stem
@@ -3961,7 +3960,6 @@ gtpp.tooltip.frame.arborists=Зачем нужны пчёлы, если есть
 
 # Multiblocks
 gt.blockmachines.chemicalplant.controller.tier.single.name=Химический завод ExxonMobil
-gt.blockmachines.cyclotron.tier.single.name=КОМЕТА - Компактный циклотрон
 gt.blockmachines.fusioncomputer.tier.09.name=Компьютер термоядерного реактора Mk-IV
 gt.blockmachines.fusioncomputer.tier.10.name=Компьютер термоядерного реактора Mk-V
 gt.blockmachines.gtplusplus.autocrafter.multi.name=Крупномасштабный авто-сборщик v1.01
@@ -3972,11 +3970,9 @@ gt.blockmachines.gtpp.multimachine.semifluidgenerator.name=Большая пол
 gt.blockmachines.industrialalloysmelter.controller.tier.single.name=Промышленная плавильная печь Zyngen
 gt.blockmachines.industrialfluidheater.controller.tier.single.name=Термическая нагревательная установка
 gt.blockmachines.industrialmassfab.controller.tier.single.name=ЦПУ генератора материи
-gt.blockmachines.industrialplatepress.controller.tier.single.name=Промышленный материальный пресс
 gt.blockmachines.industrialrefinery.controller.tier.single.name=Завод по переработке реакторного топлива
 gt.blockmachines.industrialsalloyamelter.controller.tier.mega.name=Мега сплавоплавильная доменная печь
 gt.blockmachines.industrialsalloyamelter.controller.tier.single.name=Сплавоплавильная доменная печь
-gt.blockmachines.industrialwashplant.controller.tier.single.name=Рудопромывочная машина
 gt.blockmachines.lftr.controller.single.name=Ториевый реактор [ЖФТР]
 gt.blockmachines.multimachine.adv.blastfurnace.name=Вулканус
 gt.blockmachines.multimachine.adv.distillationtower.name=Данготе Дистиллус
@@ -3988,7 +3984,6 @@ gt.blockmachines.solartower.controller.tier.single.name=Солнечная ба�
 gt.blockmachines.sparge.controller.single.name=Контроллер барботажной башни
 gt.blockmachines.substation.01.input.single.name=Узел управления электростанцией
 # Machine names
-gt.blockmachines.hatch.dynamo.buffer.name=%s Энерговывод [Буферизованный]
 gt.blockmachines.hatch.muffler.adv.name=Продвинутая выхлопная система (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Требуется воздушный фильтр
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Требуется воздушный фильтр §f%s§7
