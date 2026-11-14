@@ -114,12 +114,14 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -962,6 +964,29 @@ public class GTProxy implements IFuelHandler {
      * Tells {@link GTNEIDefaultHandler} to reload recipes.
      */
     public void reloadNEICache() {}
+
+    /**
+     * Client side. Starts drawing heat or frost effects on this fluid pipe, until it's back to normal.
+     */
+    public void trackThermalPipe(IGregTechTileEntity pipe) {}
+
+    /**
+     * Client side. Redraws a fluid pipe whose heat or frost has changed. Batched with other pipes in the same chunk
+     * section, so it can take a few ticks.
+     */
+    public void rebuildThermalPipe(IGregTechTileEntity pipe) {}
+
+    /**
+     * Client side. Makes the frost drawn over a frosted fluid pipe as part of its block model.
+     *
+     * @param connections the pipe's connected sides, one bit per side
+     * @param step        how heavy the frost is, from 1 to
+     *                    {@link gregtech.api.metatileentity.implementations.FluidPipeThermals#FROST_STEPS}
+     * @return the frost layer, or null on the server
+     */
+    public @Nullable ITexture getPipeFrostTexture(MTEFluidPipe pipe, int connections, int step) {
+        return null;
+    }
 
     /**
      * Logging in to server or {@link #reloadNEICache} being called increases the count.

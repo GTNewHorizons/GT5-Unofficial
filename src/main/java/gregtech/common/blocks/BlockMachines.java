@@ -222,6 +222,18 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         return pass == 0 || pass == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Chunks only build the alpha-blended pass when a block in them asks for it, so this is needed for
+     *           textures drawn in that pass to show up. In future, we should probably split pipes/cables out into
+     *           distinct blocks.
+     */
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
     @Override
     public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return false;
@@ -673,6 +685,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity) {
             return ((BaseMetaTileEntity) tTileEntity).getLightValue();
+        }
+        if (tTileEntity instanceof BaseMetaPipeEntity pipe) {
+            return pipe.getLightValue();
         }
         return 0;
     }
