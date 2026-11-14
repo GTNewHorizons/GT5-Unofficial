@@ -8,7 +8,9 @@ package gregtech.common;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -39,6 +41,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
@@ -112,6 +115,7 @@ import gregtech.common.config.Client;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
+import gregtech.common.items.ItemFluidDisplay;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.misc.GTCapeCommand;
@@ -462,6 +466,11 @@ public class GTClient extends GTProxy {
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
+        if (event.itemStack.getItem() instanceof codechicken.nei.item.ItemFluidDisplay) {
+            addNEIFluidTooltip(event);
+            return;
+        }
+
         if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
             addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
             return;
@@ -493,6 +502,16 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onFinishTextureStitch(TextureStitchEvent.Post event) {
         ResourceUtils.clearCache();
+    }
+
+    private void addNEIFluidTooltip(ItemTooltipEvent event) {
+        FluidStack fStack = ((codechicken.nei.item.ItemFluidDisplay) event.itemStack.getItem())
+            .getFluid(event.itemStack);
+        if (fStack == null) return;
+
+        List<String> lines = new ArrayList<>();
+        ItemFluidDisplay.addTooltipForFluid(fStack.getFluid(), lines);
+        event.toolTip.addAll(Math.min(1, event.toolTip.size()), lines);
     }
 
     private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
