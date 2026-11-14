@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import java.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import goodgenerator.items.GGMaterial;
@@ -49,6 +50,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
     protected static final int BOARD_OFFSET_X = 3;
@@ -128,22 +130,16 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.1"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.5"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.output_hatch"))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.6"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.7"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.8"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.9"))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-board-processor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("capacity", TANK_CAPACITY)
+                    .put("flush", DEFAULT_AUTO_FLUSH_PERCENTAGE)
+                    .put("low", Math.round(LOW_IMPURITY_THRESHOLD * 100))
+                    .put("high", Math.round(HIGH_IMPURITY_THRESHOLD * 100))
+                    .put("low_base", Math.round(LOW_IMPURITY_BASE_MULTIPLIER * 100))
+                    .put("low_slope", LOW_IMPURITY_SLOPE)
+                    .build())
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Complex Glass
@@ -151,7 +147,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             // Nanochip Reinforcement Casing
             .addCasing("27", translateToLocal("gt.blockcasings12.2.name"), false)
             // Octiron Frame Box
-            .addCasing("19", "Octiron Frame Box", false)
+            .addCasing(
+                "19",
+                MaterialsAlloy.OCTIRON.getFrameBox(1)
+                    .getDisplayName(),
+                false)
             // Nanochip Mesh Interface Casing
             .addCasing("10", translateToLocal("gt.blockcasings12.1.name"), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
@@ -256,7 +256,14 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     private static final int IMPURITY_THRESHOLD = 1000;
     private static final int IMPURITY_INCREASE = 100;
 
-    private int autoFlushPercentage = 100;
+    private static final int TANK_CAPACITY = 1_000_000;
+    private static final int DEFAULT_AUTO_FLUSH_PERCENTAGE = 100;
+    private static final double LOW_IMPURITY_THRESHOLD = 0.15;
+    private static final double HIGH_IMPURITY_THRESHOLD = 0.65;
+    private static final double LOW_IMPURITY_BASE_MULTIPLIER = 0.7;
+    private static final int LOW_IMPURITY_SLOPE = 2;
+
+    private int autoFlushPercentage = DEFAULT_AUTO_FLUSH_PERCENTAGE;
 
     protected static final HashSet<Fluid> LEGAL_FLUIDS = new HashSet<>(
         Arrays.asList(
@@ -307,10 +314,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        if (getImpurityPercentage() <= 0.15) {
-            durationMultiplier = (float) (0.7 + getImpurityPercentage() * 2);
-        } else if (getImpurityPercentage() >= 0.65) {
-            durationMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
+        if (getImpurityPercentage() <= LOW_IMPURITY_THRESHOLD) {
+            durationMultiplier = (float) (LOW_IMPURITY_BASE_MULTIPLIER + getImpurityPercentage() * LOW_IMPURITY_SLOPE);
+        } else if (getImpurityPercentage() >= HIGH_IMPURITY_THRESHOLD) {
+            durationMultiplier = (float) (1 + 2 * (getImpurityPercentage() - HIGH_IMPURITY_THRESHOLD));
         }
 
         return super.validateRecipe(recipe);
@@ -423,7 +430,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     @Override
     public int getCapacity() {
-        return 1000000;
+        return TANK_CAPACITY;
     }
 
     protected double getFillPercentage() {

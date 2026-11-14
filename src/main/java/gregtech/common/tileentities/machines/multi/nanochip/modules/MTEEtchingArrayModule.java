@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -27,6 +27,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,6 +46,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtchingArrayModule> {
 
     protected static final int ETCHING_OFFSET_X = 3;
@@ -167,15 +169,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-etching-array"))
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -183,7 +177,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             // Nanochip Mesh Interface Casing
             .addCasing("24", translateToLocal("gt.blockcasings12.1.name"), false)
             // Enriched Holmium Frame Box
-            .addCasing("17", "Enriched Holmium Frame Box", false)
+            .addCasing("17", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.EnrichedHolmium), false)
             // Nanochip Complex Glass
             .addCasing("13", translateToLocal("gt.blockglass1.8.name"), false)
             // Shielded Accelerator Casing
@@ -191,7 +185,11 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             // Non-Photonic Matter Exclusion Glass
             .addCasing("4", translateToLocal("gt.blockglass1.3.name"), false)
             // Laser Source Hatch
-            .addMiscHatch("1", translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Front center casing", 4)
+            .addMiscHatch(
+                "1",
+                translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                translateToLocal("gt.mbtt.structure.front_center_casing"),
+                4)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,

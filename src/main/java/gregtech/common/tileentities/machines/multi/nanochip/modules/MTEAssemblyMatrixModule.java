@@ -19,12 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import goodgenerator.loader.Loaders;
@@ -43,7 +45,6 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -54,11 +55,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAssemblyMatrixModule> {
 
     protected static final int ASSEMBLY_OFFSET_X = 3;
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
+    private static final double EU_DISCOUNT_PER_TIER = 0.95;
 
     @Override
     public int structureOffsetX() {
@@ -208,24 +211,13 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(
-                translateToLocalFormatted("GT5U.tooltip.nac.module.assembly_matrix.action", TOOLTIP_CCs, TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.module.assembly_matrix.body.1",
-                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.module.assembly_matrix.body.3",
-                    TooltipHelper.EFF_COLOR,
-                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.3")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-assembly-matrix"),
+                ImmutableMap.of(
+                    "casing",
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue(),
+                    "discount",
+                    Math.round((1 - EU_DISCOUNT_PER_TIER) * 100)))
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -235,11 +227,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             // Component Assembly Line Casing
             .addCasing("20", translateToLocal("componentAssemblyLineCasing.name"), true)
             // Naquadah Alloy Frame Box
-            .addCasing("12", "Naquadah Alloy Frame Box", false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
             // Nanochip Mesh Interface Casing
             .addCasing("8", translateToLocal("gt.blockcasings12.1.name"), false)
             // Naquadah Alloy Sheetmetal
-            .addCasing("3", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("3", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",
@@ -281,7 +273,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         // assumes machine tier is always >= recipe tier as that is done in validateRecipe
         int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
         int machineTier = getCasingTier();
-        return (float) Math.pow(0.95, machineTier - recipeTier);
+        return (float) Math.pow(EU_DISCOUNT_PER_TIER, machineTier - recipeTier);
     }
 
     @Override
