@@ -16,11 +16,9 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -167,30 +165,38 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    /**
-     * Attempts to fill an {@link IFluidTank} from the {@link FluidStack} content of an {@link ItemStack}
-     *
-     * @param destinationIFluidTank The destination {@link IFluidTank} to fill
-     * @param SourceItemStack       The source {@link ItemStack} containing the Fluid
-     * @return The {@link ItemStack} of the Empty version of the source {@link ItemStack} or {@code null} if none
-     */
-    public static ItemStack fillIFluidTankFromItemStack(IFluidTank destinationIFluidTank, ItemStack SourceItemStack) {
-        if (destinationIFluidTank == null || SourceItemStack == null) return null;
+    protected void fillFluid(FluidStack equippedContainerFluidStack, ItemStack equippedItemStack, IFluidTank tank,
+        EntityPlayer aPlayer) {
+        final ItemStack itemToDrain = equippedItemStack.copy();
+        itemToDrain.stackSize = 1;
+        final FluidStack fluidToDrain = GTUtility.getFluidForFilledItem(itemToDrain, true);
+        int freeSpace = tank.getCapacity() - tank.getFluidAmount();
+        int amountToDrain = Math.min(equippedContainerFluidStack.amount, freeSpace);
+        if (amountToDrain <= 0) {
+            return;
+        }
 
-        final FluidStack containedFluidStack = GTUtility.getFluidForFilledItem(SourceItemStack, true);
-        if (containedFluidStack == null || containedFluidStack.amount == 0) return null;
+        // 1.Check if item is an IFluidContainerItem, if not treat as a bucket
+        if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
+            FluidStack drained = container.drain(itemToDrain, amountToDrain, true);
 
-        final int fillableAmount = destinationIFluidTank.fill(containedFluidStack, false);
-        if (fillableAmount <= 0) return null;
+            // 2. If drain successful
+            if (drained != null && drained.amount > 0) {
 
-        final Item containerItem = SourceItemStack.getItem();
-        if (containerItem instanceof IFluidContainerItem equippedIFluidContainerItem) {
-            destinationIFluidTank.fill(equippedIFluidContainerItem.drain(SourceItemStack, fillableAmount, true), true);
-            return null;
+                // 3fill boiler
+                tank.fill(drained, true);
+                replaceEquippedItemStack(equippedItemStack, itemToDrain, aPlayer);
+            }
         } else {
-            final ItemStack emptyContainerItemStack = GTUtility.getContainerForFilledItem(SourceItemStack, false);
-            destinationIFluidTank.fill(containedFluidStack, true);
-            return emptyContainerItemStack;
+            // if freespace is less than the capacity of the cell/bucket do nothing
+            if (fluidToDrain != null && (freeSpace < fluidToDrain.amount)) {
+                return;
+            }
+            // fill boiler with cell/bucket
+            ItemStack emptyContainer = GTUtility.getContainerForFilledItem(itemToDrain, false);
+            tank.fill(fluidToDrain, true);
+            replaceEquippedItemStack(equippedItemStack, emptyContainer, aPlayer);
+
         }
     }
 
@@ -200,38 +206,44 @@ public class MTEBoilerLava extends MTEBoiler {
 
         final ItemStack equippedItemStack = aPlayer.getCurrentEquippedItem();
         final FluidStack equippedContainerFluidStack = GTUtility.getFluidForFilledItem(equippedItemStack, true);
-        final ItemStack returnedItemStack;
-        final IFluidTank tank;
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
-            tank = this;
+            fillFluid(equippedContainerFluidStack, equippedItemStack, this, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
-            tank = lavaTank;
+            fillFluid(equippedContainerFluidStack, equippedItemStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
             return true;
         }
-        returnedItemStack = fillIFluidTankFromItemStack(tank, equippedItemStack);
-        if (returnedItemStack != null && !aPlayer.capabilities.isCreativeMode) {
-            if (equippedItemStack.stackSize > 1) {
-                if (!aPlayer.inventory.addItemStackToInventory(returnedItemStack)) {
-                    aBaseMetaTileEntity.getWorld()
-                        .spawnEntityInWorld(
-                            new EntityItem(
-                                aBaseMetaTileEntity.getWorld(),
-                                (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
-                                (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
-                                (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                                returnedItemStack));
-                } else if (aPlayer instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) aPlayer).sendContainerToPlayer(aPlayer.inventoryContainer);
-                }
-                aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
-            } else {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, returnedItemStack);
-            }
-        }
         return true;
+    }
+
+    protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
+        EntityPlayer aPlayer) {
+        heldItemStack.stackSize -= 1;
+        // if held item stack is now zero, set held item to empty container
+        if (heldItemStack.stackSize <= 0) {
+            heldItemStack.stackSize = 0;
+            aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, returnedContainer);
+        } else {
+            // if held stack is 1 or great try and put empty container in inven
+            addItemToPlayerInventory(aPlayer, returnedContainer);
+            // it's the same held item stack, but we need to sync changed stack size
+            aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, heldItemStack);
+        }
+    }
+
+    protected static void addItemToPlayerInventory(EntityPlayer player, ItemStack stack) {
+        if (stack == null) {
+            return;
+        }
+        // Try to place in inventory, if not, spawn in world
+        if (!player.inventory.addItemStackToInventory(stack)) {
+            player.dropPlayerItemWithRandomChoice(stack, false);
+        }
+        if (player instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+        }
     }
 
     @Override
