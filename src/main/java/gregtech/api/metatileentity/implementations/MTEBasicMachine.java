@@ -103,6 +103,7 @@ import gregtech.client.GTSoundLoop;
 import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.crossmod.ae2.PatternTargetKey;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderBar;
@@ -1042,6 +1043,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
+    }
+
+    @Override
+    public Object getTargetKey() {
+        final RecipeMap<?> map = getRecipeMap();
+        if (map == null) return null;
+        final ItemStack[] nonConsumed = getNonConsumedInputDisplayItems().toArray(new ItemStack[0]);
+        return PatternTargetKey.of(map, V[mTier], appendSelectedCircuit(nonConsumed));
     }
 
     /**

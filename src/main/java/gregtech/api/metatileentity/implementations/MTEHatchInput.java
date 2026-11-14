@@ -81,6 +81,12 @@ public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
     }
 
     @Override
+    public Object getTargetKey() {
+        final MTEMultiBlockBase owner = getCraftingIconOwner();
+        return owner == null ? null : owner.getPatternTargetKey(new ItemStack[0]);
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         byte color = getBaseMetaTileEntity().getColorization();
         ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_PIPE_COLORS[color + 1]);

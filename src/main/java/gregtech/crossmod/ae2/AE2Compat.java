@@ -42,6 +42,11 @@ public final class AE2Compat {
             .interfaceTerminal();
         reg.register(MTEHatchCraftingInputME.class);
         reg.register(MTELargeMolecularAssembler.class);
+
+        AEApi.instance()
+            .registries()
+            .patternTargets()
+            .registerMatcher(PatternTargetKey.class, PatternTargetKey::match);
     }
 
     public static void onPostInit() {

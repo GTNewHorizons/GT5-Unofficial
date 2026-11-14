@@ -156,6 +156,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gregtech.crossmod.ae2.PatternTargetKey;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -1172,6 +1173,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
+    }
+
+    /**
+     * Returns the pattern target key for a hatch of this multiblock that adds hatchItems to recipe checks.
+     */
+    @Nullable
+    public PatternTargetKey getPatternTargetKey(ItemStack[] hatchItems) {
+        final RecipeMap<?> map = getRecipeMap();
+        if (!mMachine || map == null) return null;
+        // Same power as setProcessingLogicPower; steam and wireless multis have no energy hatches, so the voltage is 0
+        // and the key turns the voltage check off.
+        final boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        return PatternTargetKey.of(map, getAverageInputVoltage() * (useSingleAmp ? 1 : getMaxInputAmps()), hatchItems);
     }
 
     protected boolean supportsCraftingMEBuffer() {

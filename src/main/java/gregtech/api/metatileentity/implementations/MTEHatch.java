@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -243,6 +246,20 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     @Override
     public ItemStack getMachineCraftingIcon() {
         return this.ae2CraftingIcon;
+    }
+
+    /**
+     * Returns the multiblock that set this hatch's crafting icon, or null if it is gone or not loaded.
+     */
+    @Nullable
+    protected MTEMultiBlockBase getCraftingIconOwner() {
+        final ChunkCoordinates owner = this.ae2CraftingIconOwner;
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (owner == null || base == null) return null;
+        final World world = base.getWorld();
+        if (!world.blockExists(owner.posX, owner.posY, owner.posZ)) return null;
+        return world.getTileEntity(owner.posX, owner.posY, owner.posZ) instanceof IGregTechTileEntity ownerBase
+            && ownerBase.getMetaTileEntity() instanceof MTEMultiBlockBase multi ? multi : null;
     }
 
     /**
