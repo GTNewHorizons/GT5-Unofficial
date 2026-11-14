@@ -62,19 +62,18 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
             SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             if (data != null) {
                 result.add(
-                    StatCollector.translateToLocal("ig.nei.spacemining.distance") + " "
-                        + data.minDistance
-                        + "-"
-                        + data.maxDistance);
+                    StatCollector.translateToLocalFormatted(
+                        "ig.nei.spacemining.distance_range",
+                        data.minDistance,
+                        data.maxDistance));
                 result.add(
-                    StatCollector.translateToLocal("ig.nei.spacemining.size") + " "
-                        + data.minSize
-                        + "-"
-                        + data.maxSize);
+                    StatCollector
+                        .translateToLocalFormatted("ig.nei.spacemining.size_range", data.minSize, data.maxSize));
                 result.add(
                     StatCollector
                         .translateToLocalFormatted("tt.nei.research.min_computation", formatNumber(data.computation)));
-                result.add(StatCollector.translateToLocal("ig.nei.spacemining.weight") + " " + data.recipeWeight);
+                result.add(
+                    StatCollector.translateToLocalFormatted("ig.nei.spacemining.recipe_weight", data.recipeWeight));
             }
             return result;
         }

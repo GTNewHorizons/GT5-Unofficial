@@ -132,17 +132,18 @@ beamline.in_pre=Multiblock Beam Line Input
 beamline.in_pre.hdr=§lMultiblock Beam Line Input: §r
 beamline.particle=Particle
 beamline.particle.fmt=Particle: §6%s (%s)§r
-beamline.energy=Energy
+beamline.nei.energy_range=Energy: %s-%s eV
 beamline.energy.eV.fmt=Energy: §4%s§r eV
 beamline.energy.keV.fmt=Energy: §4%s§r keV
-beamline.focus=Focus
+beamline.nei.focus=Focus: %s
+beamline.nei.minimum_focus=Focus: >=%s
 beamline.focus.fmt=Focus: §9%s§r
-beamline.amount=Amount
+beamline.nei.amount=Amount: %s
 beamline.amount.fmt=Amount: §d%s§r
-beamline.rate=Rate
-beamline.materialenergy=Max Material Energy
-beamline.particleenergy=Max Particle Energy
-beamline.energyratio=Energy Ratio
+beamline.nei.rate=Rate: %s
+beamline.nei.material_energy=Max Material Energy: %s keV
+beamline.nei.particle_energy=Max Particle Energy: %s keV
+beamline.nei.energy_ratio=Energy Ratio: %s
 beamline.temperature=Temperature
 beamline.temperature.fmt=Temperature: §4%s§r K
 beamline.coolusage=Coolant Usage
@@ -186,8 +187,8 @@ particle.alpha=Alpha
 
 beamcrafting.energy_A=min Energy 1
 beamcrafting.energy_B=min Energy 2
-beamcrafting.amount_A=Amount 1
-beamcrafting.amount_B=Amount 2
+beamcrafting.nei.amount_A=Amount 1: %s
+beamcrafting.nei.amount_B=Amount 2: %s
 
 tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV
 tooltip.gtnhlanth.particle.charge=Charge: %s e
