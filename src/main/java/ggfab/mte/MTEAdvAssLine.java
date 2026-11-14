@@ -859,7 +859,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (tag.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_LIST)) {
             NBTTagList tl = tag.getTagList(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT);
             @SuppressWarnings("unchecked")
-            List<NBTTagInt> list = tl.tagList;
+            List<NBTTagInt> list = (List<NBTTagInt>) (List<?>) tl.tagList;
             for (int i = 0, listSize = list.size(); i < listSize; i++) {
                 NBTTagInt t = list.get(i);
                 int progress = t.func_150287_d();

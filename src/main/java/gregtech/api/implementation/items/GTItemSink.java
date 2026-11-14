@@ -53,7 +53,7 @@ public class GTItemSink extends InventoryItemSink {
         int existingMaxStack = stack == null ? 64 : stack.getMaxStackSize();
 
         if (invStackLimit > 64) {
-            return invStackLimit / 64 * existingMaxStack;
+            return Math.min(invStackLimit, GTUtility.longToInt((long) (invStackLimit / 64) * existingMaxStack));
         } else {
             return Math.min(invStackLimit, existingMaxStack);
         }
