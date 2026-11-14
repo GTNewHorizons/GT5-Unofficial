@@ -10215,6 +10215,12 @@ GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 GT5U.gui.text.nanite-detector-analog=Analog
 GT5U.gui.text.nanite-detector-tier=Tier %s
+GT5U.gui.text.control-pause=Pause
+GT5U.gui.text.control-parallel=Parallel
+GT5U.gui.text.control-parallel.base=Base:
+GT5U.gui.text.control-parallel.multiplier=Multiplier:
+GT5U.gui.text.control-parallel.multiplier.value=%sx
+GT5U.gui.text.control-parallel.parallel=Parallel:
 
 # BEC I/O Node Structure Hints
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
@@ -10274,6 +10280,8 @@ gt.tooltip.nanite-tier=Nanite Tier: %s
 gt.tooltip.max-nanite=Max Nanite Tier:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
+GT5U.gui.text.control-pause.tooltip=Control the I/O Node processing flow suspension
+GT5U.gui.text.control-parallel.tooltip=Control the I/O Node max parallel for recipes
 
 # BEC Chat Messages
 GT5U.chat.bec-saved-link-data=Saved Link Data to the Data Stick
@@ -10281,6 +10289,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
+GT5U.chat.bec-max-parallel=Max Parallel: %s
 GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 

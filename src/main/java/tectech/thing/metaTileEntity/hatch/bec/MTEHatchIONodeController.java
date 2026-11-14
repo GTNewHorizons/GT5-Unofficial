@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
@@ -21,23 +23,52 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.MTEHatchIONodeControllerGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
-public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
+public class MTEHatchIONodeController extends MTEHatchConfigurableBase implements IConfigurationCircuitSupport {
+
+    public static final int PHYSICAL_CIRCUIT_SLOT = 0;
+    public static final int GHOST_CIRCUIT_SLOT = 1;
 
     private Lazy<List<String>> tooltip = null;
 
-    private Mode mode = Mode.PAUSE_INSTANT;
+    private Control control = Control.PAUSE;
 
-    public enum Mode {
+    private PauseMode pauseMode = PauseMode.PAUSE_INSTANT;
+    private byte baseParallel = 0;
+
+    public enum Control {
+
+        PAUSE,
+        PARALLEL;
+
+        @Override
+        public String toString() {
+            return switch (this) {
+                case PAUSE -> StatCollector.translateToLocal("GT5U.gui.text.control-pause");
+                case PARALLEL -> StatCollector.translateToLocal("GT5U.gui.text.control-parallel");
+            };
+        }
+
+        public String getTooltip() {
+            return switch (this) {
+                case PAUSE -> StatCollector.translateToLocal("GT5U.gui.text.control-pause.tooltip");
+                case PARALLEL -> StatCollector.translateToLocal("GT5U.gui.text.control-parallel.tooltip");
+            };
+        }
+    }
+
+    public enum PauseMode {
 
         PAUSE_INSTANT,
         PAUSE_STEP;
@@ -59,11 +90,11 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
     }
 
     public MTEHatchIONodeController(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UIV, null);
+        super(aID, aName, VoltageIndex.UIV, 2, null);
     }
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {
-        super(prototype);
+        super(prototype, 2);
 
         tooltip = prototype.tooltip;
     }
@@ -86,16 +117,36 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
             .build() };
     }
 
-    public Mode getMode() {
-        return mode;
+    public Control getControl() {
+        return control;
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
+    public void setControl(Control control) {
+        this.control = control;
+    }
+
+    public PauseMode getPauseMode() {
+        return pauseMode;
+    }
+
+    public void setPauseMode(PauseMode pauseMode) {
+        this.pauseMode = pauseMode;
     }
 
     public boolean receivingSignal() {
         return getBaseMetaTileEntity().getRedstone();
+    }
+
+    public byte signalReceived() {
+        return getBaseMetaTileEntity().getStrongestRedstone();
+    }
+
+    public byte getBaseParallel() {
+        return baseParallel;
+    }
+
+    public int getParallel() {
+        return baseParallel * (1 + signalReceived());
     }
 
     @Override
@@ -118,13 +169,81 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
     }
 
     @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    @Override
+    public boolean isValidSlot(int index) {
+        return index == PHYSICAL_CIRCUIT_SLOT;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return index == PHYSICAL_CIRCUIT_SLOT && GTUtility.isAnyIntegratedCircuit(itemStack);
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return GHOST_CIRCUIT_SLOT;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity base, int index, ForgeDirection side, ItemStack stack) {
+        return isItemValidForSlot(index, stack);
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity base, int index, ForgeDirection side, ItemStack stack) {
+        return isItemValidForSlot(index, stack);
+    }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 153;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 63;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+
+        if (baseMetaTileEntity.hasInventoryBeenModified()) {
+            ItemStack circuit = getStackInSlot(PHYSICAL_CIRCUIT_SLOT);
+
+            if (circuit == null) {
+                circuit = getStackInSlot(GHOST_CIRCUIT_SLOT);
+            }
+
+            if (circuit != null) {
+                baseParallel = (byte) circuit.getItemDamage();
+            } else {
+                baseParallel = 0;
+            }
+        }
+    }
+
+    @Override
     protected void saveConfig(NBTTagCompound aNBT) {
-        aNBT.setInteger("mode", mode.ordinal());
+        aNBT.setInteger("control", control.ordinal());
+        aNBT.setInteger("mode", pauseMode.ordinal());
+        aNBT.setByte("baseParallel", baseParallel);
     }
 
     @Override
     protected void loadConfig(@Nullable NBTTagCompound aNBT) {
-        mode = Mode.values()[aNBT == null ? 0 : aNBT.getInteger("mode")];
+        control = Control.values()[aNBT == null ? 0 : aNBT.getInteger("control")];
+        pauseMode = PauseMode.values()[aNBT == null ? 0 : aNBT.getInteger("mode")];
+        baseParallel = aNBT == null ? 0 : aNBT.getByte("baseParallel");
     }
 
     @Override
