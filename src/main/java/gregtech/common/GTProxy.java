@@ -714,7 +714,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
         NetworkAnalyzerPlayerTracker.init();
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
-            .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
+            .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_NONE)
             .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
             .registerGlobalListener(ItemGTToolbox::switchToolMode);
         CTRL_KEYBIND = SyncedKeybind.create(Keyboard.KEY_LCONTROL);
