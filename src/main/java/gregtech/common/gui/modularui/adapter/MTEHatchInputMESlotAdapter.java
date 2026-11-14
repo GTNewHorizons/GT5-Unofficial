@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.MTEHatchInputME.Slot;
 
 public class MTEHatchInputMESlotAdapter implements IByteBufAdapter<Slot> {
@@ -18,11 +18,11 @@ public class MTEHatchInputMESlotAdapter implements IByteBufAdapter<Slot> {
     public Slot deserialize(PacketBuffer packetBuffer) throws IOException {
         if (!packetBuffer.readBoolean()) return null; // slot is null
 
-        Slot slot = new Slot(FluidStack.loadFluidStackFromNBT(packetBuffer.readNBTTagCompoundFromBuffer()));
+        Slot slot = new Slot(GTUtility.loadFluid(packetBuffer.readNBTTagCompoundFromBuffer()));
 
         if (packetBuffer.readBoolean()) {
-            slot.extracted = FluidStack.loadFluidStackFromNBT(packetBuffer.readNBTTagCompoundFromBuffer());
-            slot.extractedAmount = packetBuffer.readInt();
+            slot.extracted = GTUtility.loadFluid(packetBuffer.readNBTTagCompoundFromBuffer());
+            slot.extractedAmount = packetBuffer.readLong();
         }
 
         return slot;
@@ -36,7 +36,7 @@ public class MTEHatchInputMESlotAdapter implements IByteBufAdapter<Slot> {
             if (slot.extracted != null) {
                 packetBuffer.writeBoolean(true);
                 packetBuffer.writeNBTTagCompoundToBuffer(slot.extracted.writeToNBT(new NBTTagCompound()));
-                packetBuffer.writeInt(slot.extractedAmount);
+                packetBuffer.writeLong(slot.extractedAmount);
             } else packetBuffer.writeBoolean(false);
 
         } else packetBuffer.writeBoolean(false);
