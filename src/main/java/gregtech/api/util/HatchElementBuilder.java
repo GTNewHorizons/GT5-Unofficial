@@ -502,10 +502,15 @@ public class HatchElementBuilder<T> {
         };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines && is.getItemDamage() == aId)
-                .cacheHint(() -> StatCollector.translateToLocalFormatted("gt.hatch_element_of_id", aId))
+                .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_type") + getHatchIdName(aId))
                 .shouldSkip(
                     (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
                         && t.getMetaTileID() == aId);
+    }
+
+    private static String getHatchIdName(int aId) {
+        IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[aId];
+        return mte != null ? mte.getLocalName() : String.valueOf(aId);
     }
 
     public HatchElementBuilder<T> hatchIds(int... aIds) {
@@ -527,13 +532,12 @@ public class HatchElementBuilder<T> {
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines
                 && coll.contains(is.getItemDamage())).cacheHint(
-                    () -> Arrays.stream(coll.toArray())
-                        .sorted()
-                        .mapToObj(String::valueOf)
+                    () -> Arrays.stream(sortedIds)
+                        .mapToObj(HatchElementBuilder::getHatchIdName)
                         .collect(
                             Collectors.joining(
                                 StatCollector.translateToLocal("gt.hatch_element_or"),
-                                StatCollector.translateToLocal("gt.hatch_element_of_id"),
+                                StatCollector.translateToLocal("gt.hatch_element_of_type"),
                                 "")))
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
