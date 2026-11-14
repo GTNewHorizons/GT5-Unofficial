@@ -2805,6 +2805,7 @@ gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 gt.recipe.create-condensate=Condensate Entanglement
 gt.recipe.assemble-condensate=Condensate Assembling
+gt.recipe.scp=S.Con Processing
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -5840,6 +5841,18 @@ gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
 gt.item.black_hole.stabilizer.tooltip=Opens a superstable black hole\nBlack hole will never destabilize and will operate at maximum efficiency
+gt.item.superconductor_booster.mv.name=Superconductor MV Booster
+gt.item.superconductor_booster.hv.name=Superconductor HV Booster
+gt.item.superconductor_booster.ev.name=Superconductor EV Booster
+gt.item.superconductor_booster.iv.name=Superconductor IV Booster
+gt.item.superconductor_booster.luv.name=Superconductor LuV Booster
+gt.item.superconductor_booster.zpm.name=Superconductor ZPM Booster
+gt.item.superconductor_booster.uv.name=Superconductor UV Booster
+gt.item.superconductor_booster.uhv.name=Superconductor UHV Booster
+gt.item.superconductor_booster.uev.name=Superconductor UEV Booster
+gt.item.superconductor_booster.uiv.name=Superconductor UIV Booster
+gt.item.superconductor_booster.umv.name=Superconductor UMV Booster
+gt.item.superconductor_booster.tooltip=Used with the Superconductor Processor
 
 # MetaItem02
 ## Thermos Can drinks
@@ -9723,6 +9736,7 @@ gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
 gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
 gt.blockcasings12.6.name=Precise Stationary Machine Casing
 gt.blockcasings12.7.name=Ultimately Static Machine Casing
+gt.blockcasings12.8.name=Quantum Convection Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
