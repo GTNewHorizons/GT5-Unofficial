@@ -604,14 +604,17 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         // use corner closest to the drill as mining area center
         return new ChunkCoordIntPair(
             drillPos.chunkXPos + xMultiplier * chunkRadiusConfig
-                + ((getXDrill() - (drillPos.chunkXPos << 4)) < 8 ? 0 : 1),
+                + ((getBaseMetaTileEntity().getXCoord() - (drillPos.chunkXPos << 4)) < 8 ? 0 : 1),
             drillPos.chunkZPos + zMultiplier * chunkRadiusConfig
-                + ((getZDrill() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
+                + ((getBaseMetaTileEntity().getZCoord() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
     }
 
     @NotNull
     private ChunkCoordIntPair getDrillCoords() {
-        return new ChunkCoordIntPair(getXDrill() >> 4, getZDrill() >> 4);
+        // Use tile coordinates because cached drill coordinates are initialized only during a structure check.
+        return new ChunkCoordIntPair(
+            getBaseMetaTileEntity().getXCoord() >> 4,
+            getBaseMetaTileEntity().getZCoord() >> 4);
     }
 
     private ItemStack @NotNull [] getOutputByDrops(@NotNull List<ItemStack> oreBlockDrops) {
