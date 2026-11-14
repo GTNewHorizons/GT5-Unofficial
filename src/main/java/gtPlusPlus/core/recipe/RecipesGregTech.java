@@ -440,7 +440,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_1.get(1),
                 ItemList.StableBaryonContainmentUnit.get(16),
                 MaterialsAlloy.ZERON_100.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
                 MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(8),
                 MaterialsAlloy.INCONEL_625.getScrew(8))
@@ -462,7 +462,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_2.get(1),
                 ItemList.StableLeptonContainmentUnit.get(16),
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(8),
                 MaterialsAlloy.ZERON_100.getScrew(8))
@@ -484,7 +484,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_3.get(1),
                 ItemList.StableMesonContainmentUnit.get(16),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
                 MaterialsAlloy.TITANSTEEL.getBolt(8),
                 MaterialsAlloy.PIKYONIUM.getScrew(8))
@@ -506,7 +506,7 @@ public class RecipesGregTech {
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
                 ItemList.StableBosonContainmentUnit.get(2),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(8),
                 MaterialsAlloy.TITANSTEEL.getScrew(8))
