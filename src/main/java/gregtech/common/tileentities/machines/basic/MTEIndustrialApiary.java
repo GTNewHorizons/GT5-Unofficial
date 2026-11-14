@@ -83,6 +83,7 @@ import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -738,6 +739,65 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     public ItemStack getUsedQueen() {
         return usedQueen;
     }
+
+    // region OCMethod
+
+    /** Tries to move as much of [stack] into a possible upgrade slot */
+    @OCMethod
+    public void addUpgrade(ItemStack stack) {
+        if (stack == null || !GTApiaryUpgrade.isUpgrade(stack)) return;
+
+        int amount = stack.stackSize;
+        for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
+            if (!isItemValidForSlot(i, stack)) continue;
+
+            int maxStackSize = GTApiaryUpgrade.getUpgrade(stack)
+                .getMaxNumber();
+            ItemStack stackInSlot = getStackInSlot(i);
+
+            // Push into empty slot
+            if (stackInSlot == null) {
+                amount = Math.min(amount, maxStackSize);
+                setInventorySlotContents(i, stack.splitStack(amount));
+                return;
+            }
+
+            if (!GTUtility.areStacksEqual(stack, stackInSlot)) continue;
+            amount = Math.max(Math.min(amount, maxStackSize - stackInSlot.stackSize), 0);
+            if (amount == 0) return;
+            stackInSlot.stackSize += amount;
+            stack.stackSize -= amount;
+            return;
+        }
+    }
+
+    /** Returns installed upgrade in slot 0 <= [index] < getMaxUpgradeCount() */
+    @OCMethod
+    public ItemStack getUpgrade(int index) {
+        if (index < 0 || index >= upgradeSlotCount) return null;
+        return getStackInSlot(upgradeSlot + index);
+    }
+
+    /** Tries to remove [amount] or less of the upgrade installed in slot [index]. Returns the removed ItemStack */
+    @OCMethod
+    public ItemStack removeUpgrade(int index, int amount) {
+        if (index < 0 || index >= upgradeSlotCount || amount <= 0) return null;
+
+        ItemStack stackInSlot = getUpgrade(index);
+        if (stackInSlot == null) return null;
+
+        amount = Math.min(amount, stackInSlot.stackSize);
+        ItemStack result = stackInSlot.splitStack(amount);
+        if (stackInSlot.stackSize <= 0) setInventorySlotContents(upgradeSlot + index, null);
+        return result;
+    }
+
+    @OCMethod
+    public static int getMaxUpgradeCount() {
+        return upgradeSlotCount;
+    }
+
+    // endregion
 
     // region IBeeHousing
 
