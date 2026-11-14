@@ -571,7 +571,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 < (1.2f - (CATALYST_SAVE_PER_PIPE_TIER * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutputPartial(GregtechItemList.EmptyCatalystCarrier.get(1));
+                    addPendingOutput(GregtechItemList.EmptyCatalystCarrier.get(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {

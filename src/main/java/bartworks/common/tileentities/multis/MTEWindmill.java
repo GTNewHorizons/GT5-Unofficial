@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -42,7 +43,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -424,7 +424,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addItemOutputs(ItemStack[] stacks) {
+    public boolean addItemOutputs(@NotNull List<ItemStack> stacks, @Nullable List<ItemStack> remaining) {
         for (ItemStack stack : stacks) {
             if (GTUtility.isStackInvalid(stack)) continue;
 

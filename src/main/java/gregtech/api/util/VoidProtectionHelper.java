@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -239,7 +240,7 @@ public class VoidProtectionHelper {
         // Pass the VP helper's protectExcessFluid flag to the ejection helper instead of using the machine's
         // flag
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(
-            machine.getOutputHatches(fluidOutputs),
+            machine.getOutputHatches(Arrays.asList(fluidOutputs)),
             protectExcessFluid,
             true);
 
