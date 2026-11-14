@@ -18,6 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -48,6 +51,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelter> implements ISurvivalConstructable {
 
     private static Item circuit;
@@ -69,7 +73,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     public String getMachineType() {
-        return "Fluid Alloy Cooker, ABS";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_alloy_cooker");
     }
 
     @Override
@@ -84,20 +88,19 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Allows Complex alloys to be created")
-            .addInfo("Recipe Tier is limited to Hatch Tier")
+            .addMarkdown(new ResourceLocation("gregtech", "alloy-blast-smelter"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom center")
-            .addCasing("16", "Blast Smelter Heat Containment Coil", false)
-            .addCasing("3-12", "Blast Smelter Casing Block", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addInputHatch("0+", "Any casing", 1)
-            .addOutputHatch("1+", "Any casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("16", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
+            .addCasing("3-12", Casings.BlastSmelterCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }

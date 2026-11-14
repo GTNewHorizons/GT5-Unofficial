@@ -20,17 +20,21 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputHatch;
@@ -51,8 +55,10 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implements ISurvivalConstructable {
 
+    private static final int TOWER_HEIGHT = 8;
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
@@ -126,18 +132,16 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Sparge Tower")
-            .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-            .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-            .addInfo("Fluids are output one per layer based on the slot number in NEI")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.gas_sparge_tower"))
+            .addMarkdown(new ResourceLocation("gregtech", "sparge-tower"), ImmutableMap.of("height", TOWER_HEIGHT))
             .beginStructureBlock(3, 8, 3, true)
-            .addController("Front bottom center")
-            .addCasing("45-56", "Sparge Tower Exterior Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
-            .addMaintenanceHatch("1", "Any casing", 1, 2)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputHatch("7", "One per layer, except the bottom layer", 2)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("45-56", Casings.SpargeTowerExteriorCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("7", StatCollector.translateToLocal("gt.mbtt.structure.one_per_layer_except_bottom"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
@@ -266,7 +270,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         // check each layer
-        while (mHeight < 8) {
+        while (mHeight < TOWER_HEIGHT) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mTopLayerFound) {
                 break;
@@ -304,7 +308,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
-        int tTotalHeight = 8; // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = TOWER_HEIGHT; // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
         }
@@ -317,7 +321,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         mHeight = 0;
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalHeight = 8; // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = TOWER_HEIGHT; // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
