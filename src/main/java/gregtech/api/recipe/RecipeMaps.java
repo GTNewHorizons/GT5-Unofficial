@@ -2264,4 +2264,10 @@ public final class RecipeMaps {
             || inputPrefix == OrePrefixes.gem && outputPrefix == OrePrefixes.gemFlawless
             || inputPrefix == OrePrefixes.gemFlawless && outputPrefix == OrePrefixes.gemExquisite;
     }
+
+    public static final RecipeMap<RecipeMapBackend> czRecipes = RecipeMapBuilder.of("gt.recipe.czpuller")
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
+        .build();
 }

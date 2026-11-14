@@ -142,6 +142,7 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAlgaePond;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTECZPuller;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
@@ -9239,6 +9240,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
+    private static void registerCZPuller() {
+        ItemList.CZPuller.set(new MTECZPuller(CZPuller.ID, "multimachine.czpuller", "CZ Puller").getStackForm(1L));
+    }
+
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
@@ -9357,6 +9362,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerAirFilters();
         registerNacHatches();
         registerDrawerFramer();
+        registerCZPuller();
 
         ItemList.DebugStructureWriter.set(
             new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)

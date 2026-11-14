@@ -3325,7 +3325,14 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Warped,
     Ice_Cream_WitchyWildberry,
     // Reserved for Ice creams, don't you dare (to 700)
-    Ice_Cream_Trophy
+    Ice_Cream_Trophy,
+    CZPuller,
+    Silicon_Seed_Crystal,
+    AlGaAs_Seed_Crystal,
+    AlGaAs_Monocrystal,
+    Raw_Crude_Si_Wafer,
+    Crude_Si_Wafer,
+    Diamond_Infused_Wire_Saw
     // semicolon after the comment to reduce merge conflicts
     ;
 
