@@ -859,6 +859,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected boolean tryFlushPendingOutputs() {
         if (mPendingItems.isEmpty() && mPendingFluids.isEmpty()) return true;
+        if (!recipeCheckImmediately && mTotalRunTime % 20 != 0) return false;
         if (!mPendingItems.isEmpty()) {
             List<ItemStack> pending = new ArrayList<>();
             addItemOutputs(mPendingItems, protectsExcessItem() ? pending : null);
