@@ -29,11 +29,7 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
                     "tt.spaceelevator.storedEnergy",
                     formatNumber(euVarSyncer.getValue()) + " EU"))
                 .asWidget()
-                .setEnabledIf(
-                    w -> multiblock.getBaseMetaTileEntity()
-                        .isAllowedToWork()
-                        || multiblock.getBaseMetaTileEntity()
-                            .isActive())
+                .setEnabledIf(w -> baseMetaTileEntity.isAllowedToWork() || baseMetaTileEntity.isActive())
                 .color(Color.WHITE.main)
                 .fullWidth()
                 .marginBottom(2));
@@ -42,6 +38,6 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("euVar", new LongSyncValue(multiblock::getEUVar));
+        syncManager.syncValue("euVar", new LongSyncValue(baseMetaTileEntity::getStoredEU));
     }
 }
