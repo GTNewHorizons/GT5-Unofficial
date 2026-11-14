@@ -458,6 +458,7 @@ public class Pollution {
 
         @SubscribeEvent
         public void onWorldUnload(WorldEvent.Unload e) {
+            if (e.world.isRemote) return;
             GTMod.proxy.dimensionWisePollution.remove(e.world.provider.dimensionId);
         }
     }
