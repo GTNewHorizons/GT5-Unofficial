@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,6 +71,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     public final static int OUTPUT_SLOT = 1;
     public final static int FLUID_CAPACITY = 64_000;
 
+    private static final int INCOMPLETE_STRUCTURE_ERROR = 64;
+
     private FluidStack fluid;
     private final ArrayList<MTEHatchCokeOven> hatches = new ArrayList<>();
 
@@ -120,7 +121,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         .addElement(
             'C',
             buildHatchAdder(MTECokeOven.class).atLeast(CokeHatchElement.CokeHatch)
-                .casingIndex(1)
+                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0))
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
         .build();
@@ -153,11 +154,16 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
-        if (side != ForgeDirection.UNKNOWN) return null;
+        if (side != ForgeDirection.UNKNOWN || maxDrain <= 0) return null;
         if (fluid == null || fluid.amount <= 0) return null;
         final int toDrain = Math.min(fluid.amount, maxDrain);
-        if (doDrain) fluid.amount -= toDrain;
-        return GTUtility.copyAmount(toDrain, fluid);
+        FluidStack drained = GTUtility.copyAmount(toDrain, fluid);
+        if (doDrain) {
+            fluid.amount -= toDrain;
+            if (fluid.amount == 0) fluid = null;
+            markDirty();
+        }
+        return drained;
     }
 
     @Override
@@ -204,7 +210,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     @Override
     public boolean allowPutStack(IGregTechTileEntity baseMetaTileEntity, int index, ForgeDirection side,
         ItemStack stack) {
-        // Only allow putting stacks through hatches which set the direction to `UNKNOWN`
         if (side != ForgeDirection.UNKNOWN) return false;
         return super.allowPutStack(baseMetaTileEntity, index, side, stack);
     }
@@ -238,12 +243,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         return IAlignmentLimits.UPRIGHT;
     }
 
-    /**
-     * Draws random flames and smoke particles in front of Primitive Blast Furnace when active
-     * Copied from {@link MTEBrickedBlastFurnace}.
-     *
-     * @param baseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
-     */
     @SideOnly(Side.CLIENT)
     @Override
     public void onRandomDisplayTick(IGregTechTileEntity baseMetaTileEntity) {
@@ -263,31 +262,31 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
                 final double x = oX + horizontal;
                 final double y = oY + vertical;
                 final double z = oZ - offset;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case SOUTH -> {
                 final double x = oX + horizontal;
                 final double y = oY + vertical;
                 final double z = oZ + offset;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case WEST -> {
                 final double x = oX - offset;
                 final double y = oY + vertical;
                 final double z = oZ + horizontal;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             case EAST -> {
                 final double x = oX + offset;
                 final double y = oY + vertical;
                 final double z = oZ + horizontal;
-                createParticles(baseMetaTileEntity, x, y, z);
+                spawnFlameAndSmokeParticles(baseMetaTileEntity, x, y, z);
             }
             default -> throw new IllegalStateException("Unexpected facing: " + frontFacing);
         }
     }
 
-    private void createParticles(IGregTechTileEntity baseMetaTileEntity, double x, double y, double z) {
+    private void spawnFlameAndSmokeParticles(IGregTechTileEntity baseMetaTileEntity, double x, double y, double z) {
         WorldSpawnedEventBuilder.ParticleEventBuilder particleEventBuilder = new WorldSpawnedEventBuilder.ParticleEventBuilder()
             .setMotion(0, 0, 0)
             .setPosition(x, y, z)
@@ -329,12 +328,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         mTotalRunTime++;
         checkRecipeProgress(baseMetaTileEntity);
 
-        // Polling updates.
         if (tick % 20 == 0) {
             mMachine = checkStructure(true, baseMetaTileEntity);
 
-            // Sets "Incomplete Structure" text in WAILA
-            setErrorDisplayID(mMachine ? 0 : 64);
+            setErrorDisplayID(mMachine ? 0 : INCOMPLETE_STRUCTURE_ERROR);
 
             if (baseMetaTileEntity.isActive()) {
                 Pollution.addPollution(baseMetaTileEntity, GTMod.proxy.mPollutionCokeOvenPerSecond);
@@ -344,51 +341,89 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         baseMetaTileEntity.setActive(mMaxProgresstime > 0 && mMachine);
     }
 
+    @Override
+    public ArrayList<ItemStack> getStoredInputs() {
+        ArrayList<ItemStack> inputs = new ArrayList<>();
+        if (mInventory[INPUT_SLOT] != null) inputs.add(mInventory[INPUT_SLOT]);
+        for (MTEHatchCokeOven hatch : hatches) {
+            if (!hatch.isInput()) continue;
+            for (int slot = 0; slot < hatch.getSizeInventory(); slot++) {
+                ItemStack stack = hatch.getStackInSlot(slot);
+                if (stack != null) inputs.add(stack);
+            }
+        }
+        return inputs;
+    }
+
+    private void flushHatchOutputs() {
+        for (MTEHatchCokeOven hatch : hatches) {
+            int items = hatch.storeItemOutput(mInventory[OUTPUT_SLOT]);
+            if (items > 0) decrStackSize(OUTPUT_SLOT, items);
+            int fluidAmount = hatch.storeFluidOutput(fluid);
+            if (fluidAmount > 0) drain(ForgeDirection.UNKNOWN, fluidAmount, true);
+        }
+    }
+
+    // Shared hatch space cannot be reserved for a running recipe.
+    private boolean canFitOutputsInController(ItemStack itemOutput, FluidStack fluidOutput) {
+        ItemStack stored = mInventory[OUTPUT_SLOT];
+        if (itemOutput != null) {
+            if (itemOutput.stackSize > Math.min(getInventoryStackLimit(), itemOutput.getMaxStackSize())) return false;
+            if (stored != null
+                && (!GTUtility.areStacksEqual(stored, itemOutput) || (long) stored.stackSize + itemOutput.stackSize
+                    > Math.min(getInventoryStackLimit(), stored.getMaxStackSize())))
+                return false;
+        }
+        return fluidOutput == null
+            || (fluidOutput.amount <= FLUID_CAPACITY && (fluid == null || (GTUtility.areFluidsEqual(fluid, fluidOutput)
+                && (long) fluid.amount + fluidOutput.amount <= FLUID_CAPACITY)));
+    }
+
     private void checkRecipeProgress(IGregTechTileEntity baseMetaTileEntity) {
         if (!mMachine) return;
+        flushHatchOutputs();
 
-        if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-            addOutput();
-            addOutputFluid();
-            mOutputItems = null;
-            mOutputFluids = null;
-            mProgresstime = 0;
-            mMaxProgresstime = 0;
-            recipesDone++;
-            mLastWorkingTick = mTotalRunTime;
+        if (mMaxProgresstime > 0) {
+            if (mProgresstime < mMaxProgresstime) mProgresstime++;
+            if (mProgresstime >= mMaxProgresstime) {
+                ItemStack pendingItemOutput = mOutputItems == null || mOutputItems.length == 0 ? null : mOutputItems[0];
+                FluidStack pendingFluidOutput = mOutputFluids == null || mOutputFluids.length == 0 ? null
+                    : mOutputFluids[0];
+                if (!canFitOutputsInController(pendingItemOutput, pendingFluidOutput)) return;
+                addOutput();
+                addOutputFluid();
+                mOutputItems = null;
+                mOutputFluids = null;
+                mProgresstime = 0;
+                mMaxProgresstime = 0;
+                recipesDone++;
+                mLastWorkingTick = mTotalRunTime;
+                markDirty();
+                flushHatchOutputs();
+            }
         }
 
         if (mMaxProgresstime == 0 && baseMetaTileEntity.isAllowedToWork()) {
-            final ItemStack input = mInventory[INPUT_SLOT];
-            final ItemStack output = mInventory[OUTPUT_SLOT];
-
+            final ItemStack[] inputs = getStoredInputs().toArray(new ItemStack[0]);
             final GTRecipe recipe = getRecipeMap().findRecipeQuery()
-                .items(input)
+                .items(inputs)
                 .find();
+            if (recipe == null || !canFitOutputsInController(recipe.getOutput(0), recipe.getFluidOutput(0))) return;
+            if (!recipe.isRecipeInputEqual(true, null, inputs)) return;
 
-            if (recipe == null) return;
-
-            // Check if there is enough space for the output.
-            final ItemStack recipeOutput = recipe.getOutput(0);
-            if (output != null && recipeOutput != null) {
-                if (output.stackSize + recipeOutput.stackSize > output.getMaxStackSize()) return;
-                if (!GTUtility.areStacksEqual(output, recipeOutput)) return;
+            if (mInventory[INPUT_SLOT] != null && mInventory[INPUT_SLOT].stackSize <= 0) mInventory[INPUT_SLOT] = null;
+            for (MTEHatchCokeOven hatch : hatches) {
+                if (!hatch.isInput()) continue;
+                for (int slot = 0; slot < hatch.getSizeInventory(); slot++) {
+                    ItemStack stack = hatch.getStackInSlot(slot);
+                    if (stack != null && stack.stackSize <= 0) hatch.setInventorySlotContents(slot, null);
+                }
+                hatch.markDirty();
             }
-
-            // Check if there is enough space for the fluid.
-            final FluidStack recipeFluid = recipe.getFluidOutput(0);
-            if (fluid != null && recipeFluid != null) {
-                if (fluid.amount + recipeFluid.amount > FLUID_CAPACITY) return;
-                if (!GTUtility.areFluidsEqual(fluid, recipeFluid)) return;
-            }
-
-            // Check if input quantity matches. If it is reduced to zero, remove the item stack.
-            if (!recipe.isRecipeInputEqual(true, null, input)) return;
-            if (input != null && input.stackSize == 0) mInventory[INPUT_SLOT] = null;
-
             mMaxProgresstime = recipe.mDuration;
             mOutputItems = recipe.mOutputs;
             mOutputFluids = recipe.mFluidOutputs;
+            markDirty();
         }
     }
 
@@ -434,6 +469,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     public void setFluid(FluidStack fluid) {
         this.fluid = fluid;
+        markDirty();
     }
 
     private enum CokeHatchElement implements IHatchElement<MTECokeOven> {
@@ -518,9 +554,10 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
         if (metaTileEntity instanceof MTEHatchCokeOven hatch && !hatches.contains(hatch)) {
-            hatch.addController(this);
+            hatch.updateTexture(baseCasingIndex);
             return hatches.add(hatch);
         }
         return false;
     }
+
 }
