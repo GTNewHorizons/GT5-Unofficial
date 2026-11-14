@@ -111,12 +111,8 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private void registerEIGSyncValues(PanelSyncManager syncManager) {
         this.mainSyncManager = syncManager;
 
-        syncManager.syncValue(
-            "eigActive",
-            new BooleanSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .isActive(),
-                val -> machineActive = val));
+        syncManager
+            .syncValue("eigActive", new BooleanSyncValue(baseMetaTileEntity::isActive, val -> machineActive = val));
 
         syncManager.syncValue(
             "eigSetupPhase",
@@ -145,8 +141,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         syncManager.syncValue(
             "eigActive",
             new com.cleanroommc.modularui.value.sync.BooleanSyncValue(
-                () -> multiblock.getBaseMetaTileEntity()
-                    .isActive(),
+                baseMetaTileEntity::isActive,
                 val -> machineActive = val));
 
         seedClickSyncer = new IntSyncValue(() -> 0, this::handleSeedClick).allowC2S();
