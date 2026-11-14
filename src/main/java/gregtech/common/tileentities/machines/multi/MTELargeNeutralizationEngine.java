@@ -91,6 +91,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private static final int CAESIUM_HYDROXIDE_TICKS = 200;
     private static final float FRANCIUM_HYDROXIDE_EFF = 5.0F;
     private static final int FRANCIUM_HYDROXIDE_TICKS = 240;
+    private static final float NBUTYLLITHIUM_EFF = 10.0F;
+    private static final int NBUTYLLITHIUM_TICKS = 400;
     private static final int TIER1_DECAY = 200;
     private static final int TIER1_CAPACITY = 375000;
     private static final int TIER2_DECAY = 400;
@@ -135,6 +137,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int maxFluidUse = 200;
 
+    private final static FluidStack CONCENTRATED_BUTYLLITHIUM_SOLUTION = Materials.nButylLithiumSolutionConcentrated
+        .getFluid(1000L);
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = Materials.FranciumHydroxide.getDust(1);
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = Materials.CaesiumHydroxide.getDust(1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
@@ -333,6 +337,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     .put("caesium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / CAESIUM_HYDROXIDE_TICKS)
                     .put("francium_hydroxide_eff", FRANCIUM_HYDROXIDE_EFF * 100)
                     .put("francium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / FRANCIUM_HYDROXIDE_TICKS)
+                    .put("nbutyllithium_eff", NBUTYLLITHIUM_EFF * 100)
+                    .put("nbutyllithium_rate", TOOLTIP_RATE_DIVIDER / NBUTYLLITHIUM_TICKS * 1000)
                     .put("residue_rand_min", RANDOM_MIN / 1000.0)
                     .put("residue_rand_max", RANDOM_MAX / 1000.0)
                     .put("tier1_decay", TIER1_DECAY)
@@ -457,7 +463,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private void useBooster() {
-        if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
+        if (depleteInput(CONCENTRATED_BUTYLLITHIUM_SOLUTION)) {
+            this.boosterEUBoost = NBUTYLLITHIUM_EFF;
+            this.boosterBoostTicks = NBUTYLLITHIUM_TICKS;
+        } else if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
             this.boosterEUBoost = FRANCIUM_HYDROXIDE_EFF;
             this.boosterBoostTicks = FRANCIUM_HYDROXIDE_TICKS;
         } else if (depleteInput(CAESIUM_HYDROXIDE_DUST)) {
