@@ -20,9 +20,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 public class MTESolarHeater extends MTETieredMachineBlock {
 
     public boolean mHasTower = false;
-    private MTESolarTower mTower = null;
-
-    private Byte mRequiredFacing;
 
     public MTESolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {
@@ -130,7 +127,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(), "gtpp.infodata.solar_heater.testificate" };
+        return new String[] { this.getLocalName() };
     }
 
     @Override
@@ -180,19 +177,12 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        /*
-         * aNBT.setBoolean("mHasTower", mHasTower); if (this.mHasTower) { aNBT.setInteger("mTX", mTX);
-         * aNBT.setInteger("mTY", mTY); aNBT.setInteger("mTZ", mTZ); }
-         */
+        aNBT.setBoolean("mHasTower", mHasTower);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        /*
-         * this.mHasTower = aNBT.getBoolean("mHasTower"); if (this.mHasTower) { if (aNBT.hasKey("mTX")) this.mTX =
-         * aNBT.getInteger("mTX"); if (aNBT.hasKey("mTY")) this.mTY = aNBT.getInteger("mTY"); if (aNBT.hasKey("mTZ"))
-         * this.mTZ = aNBT.getInteger("mTZ"); }
-         */
+        mHasTower = aNBT.getBoolean("mHasTower");
     }
 
     @Override
@@ -232,20 +222,13 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     public boolean setSolarTower(MTESolarTower aTowerTile) {
         if (!hasSolarTower()) {
             this.mHasTower = true;
-            this.mTower = aTowerTile;
             return true;
         }
         return false;
     }
 
-    public boolean clearSolarTower() {
-        if (mHasTower || mRequiredFacing != null || this.mTower != null) {
-            this.mRequiredFacing = null;
-            this.mTower = null;
-            this.mHasTower = false;
-            return true;
-        }
-        return false;
+    public void clearSolarTower() {
+        this.mHasTower = false;
     }
 
     @Override

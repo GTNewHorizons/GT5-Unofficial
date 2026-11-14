@@ -3932,7 +3932,6 @@ gtpp.infodata.multi.steam.parallel=Parallel: §e%s
 gtpp.infodata.abs.mega.parallels=Parallels: %s
 gtpp.infodata.abs.mega.speed_bonus=Speed Bonus: %s
 gtpp.infodata.abs.mega.energy_discount=Energy Discount: %s
-gtpp.infodata.solar_heater.testificate=Testificate
 gtpp.infodata.energy_buffer.eu_stored=%s EU stored
 gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
