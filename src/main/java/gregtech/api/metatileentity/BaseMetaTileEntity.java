@@ -1860,6 +1860,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             || getStoredEU() >= getEUCapacity()
             || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return 0;
         if (aVoltage > getInputVoltage()) {
+            if (mMetaTileEntity.absorbOvervoltage(aVoltage)) return 0;
             GTLog.writeExplosionLog(
                 this.mMetaTileEntity,
                 "Energy Explosion, injected " + aVoltage + "EU/t in a " + getInputVoltage() + "EU/t Machine!");
