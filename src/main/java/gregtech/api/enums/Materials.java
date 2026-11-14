@@ -538,6 +538,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials TengamPurified;
     public static Materials TengamAttuned;
     public static Materials TengamRaw;
+    public static Materials SuperfluidStimulant;
+    public static Materials SuperfluidHelium;
+    public static Materials CoolantByproducts;
     // endregion
 
     // region Unclassified 02 materials
