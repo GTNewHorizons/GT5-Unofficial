@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -66,6 +67,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -227,7 +229,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Laser Engraver, HILE")
+        String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.laser_engraver"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-laser-engraver"),
                 ImmutableMap.<String, Object>builder()
@@ -236,16 +239,16 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                     .put("glass_tier_for_laser", GLASS_TIER_FOR_LASER)
                     .build())
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front bottom center")
-            .addCasing("35-58", "Laser Containment Casing", false)
-            .addCasing("9", "Tungstensteel Frame Box", false)
-            .addCasing("3", "Any Tiered Glass", true)
-            .addCasing("1", "Laser Resistant Plate", false)
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Casing above glass", 2)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("35-58", Casings.LaserContainmentCasing.getLocalizedName(), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing("3", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("1", new ItemStack(GregTechAPI.sLaserRender).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.casing_above_glass"), 2)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addInputAny("1+", anyCasing, 1)
+            .addOutputAny("1+", anyCasing, 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
