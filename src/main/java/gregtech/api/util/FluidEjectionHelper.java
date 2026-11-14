@@ -7,6 +7,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import javax.annotation.Nullable;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.Iterators;
@@ -68,6 +70,10 @@ public class FluidEjectionHelper {
         return ejected;
     }
 
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+        return ejectFluids(outputs, startingParallels, null);
+    }
+
     /**
      * Ejects fluids into the contained output hatch transactions, and calculates the number of parallels that were
      * successfully ran.
@@ -75,9 +81,11 @@ public class FluidEjectionHelper {
      * @param outputs           The fluids to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of fluids to eject. This param is not modified.
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
+     * @param remaining         A list to collect the remaining output stacks that couldn't be ejected, can be null if
+     *                          not need.
      * @return The number of parallels that can be safely ran without voiding fluids.
      */
-    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels, @Nullable List<FluidStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional fluids after committing an FluidEjectionHelper");
@@ -150,18 +158,26 @@ public class FluidEjectionHelper {
             }
         }
 
-        if (fluidProtectionEnabled) {
+        if (fluidProtectionEnabled || remaining != null) {
             // If we care about protecting the fluids, reduce the starting parallels by however many batches of fluids
             // were ejected.
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (FluidParallelData parallelData : outputParallels) {
-                long ejected = parallelData.initialAmount - parallelData.remainingAmount;
-
-                startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
+                if (fluidProtectionEnabled) {
+                    long ejected = parallelData.initialAmount - parallelData.remainingAmount;
+                    startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
+                }
+                if (remaining != null && parallelData.remainingAmount > 0) {
+                    do {
+                        var tmp = parallelData.tmpStack.copy();
+                        tmp.amount = (int) Math.min(parallelData.remainingAmount, Integer.MAX_VALUE);
+                        remaining.add(tmp);
+                        parallelData.remainingAmount -= tmp.amount;
+                    } while (parallelData.remainingAmount > 0);
+                }
             }
         }
-
         return startingParallels;
     }
 

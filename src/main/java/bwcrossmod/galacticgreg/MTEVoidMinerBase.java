@@ -320,7 +320,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
                     if ((isSelectedEmpty() && inputOres.isEmpty())
                         || (this.blacklist ? !matchesFilter : matchesFilter)) {
-                        this.addOutputPartial(output);
+                        this.addPendingOutput(output);
                     }
                 }
             }
