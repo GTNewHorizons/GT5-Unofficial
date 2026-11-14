@@ -73,6 +73,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.16:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Dashboard:1.0.13:api")
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.22:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.5.15:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.41:dev') { transitive = false }
