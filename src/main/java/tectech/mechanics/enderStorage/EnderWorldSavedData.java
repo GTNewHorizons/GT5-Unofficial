@@ -79,7 +79,8 @@ public class EnderWorldSavedData extends WorldSavedData {
                 break;
             }
             case 1: {
-                List<NBTTagCompound> tags = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TAG_LINK)).tagList;
+                List<NBTTagCompound> tags = (List<NBTTagCompound>) (List<?>) ((NBTTagList) nbtTagCompound
+                    .getTag(ENDER_LIQUID_TAG_LINK)).tagList;
 
                 enderLiquidTagLink = new HashMap<>();
 
@@ -89,7 +90,8 @@ public class EnderWorldSavedData extends WorldSavedData {
                     enderLiquidTagLink.put(tag, container);
                 }
 
-                List<NBTTagCompound> tanks = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TANK_LINK)).tagList;
+                List<NBTTagCompound> tanks = (List<NBTTagCompound>) (List<?>) ((NBTTagList) nbtTagCompound
+                    .getTag(ENDER_LIQUID_TANK_LINK)).tagList;
 
                 enderLiquidTankLink = new HashMap<>();
 
