@@ -2419,14 +2419,6 @@ public class Assembler implements Runnable {
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-        // Power Pass Upgrade Cover
-        GTValues.RA.stdBuilder()
-            .itemInputs(CustomItemList.Machine_Multi_Transformer.get(1))
-            .circuit(1)
-            .itemOutputs(CustomItemList.powerPassUpgradeCover.getWithDamage(1, 0))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
         // Tesla Winding Components
         GTValues.RA.stdBuilder()
             .itemInputs(

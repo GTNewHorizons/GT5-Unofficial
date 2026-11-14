@@ -178,7 +178,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public boolean ePowerPassCover = false;
 
     // functionality toggles - changed by buttons in gui also
-    public boolean ePowerPass = false, eSafeVoid = false;
+    public boolean ePowerPass = true, eSafeVoid = false;
 
     // endregion
 
