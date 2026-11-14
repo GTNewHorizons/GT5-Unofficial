@@ -75,10 +75,10 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         this.waterlilyGen = new WorldGenDeadLilly();
 
         this.flowersPerChunk = 1;
-        this.grassPerChunk = 5;
+        this.grassPerChunk = 3;
         this.sandPerChunk = 3;
-        this.sandPerChunk2 = 5;
-        this.clayPerChunk = 7;
+        this.sandPerChunk2 = 3;
+        this.clayPerChunk = 1;
 
         this.generateLakes = true;
     }
@@ -254,13 +254,6 @@ public class CustomBiomeGenerator extends BiomeDecorator {
             this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
         }
 
-        for (j = 0; doGen && j < 10; ++j) {
-            k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-            l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-            i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2);
-            this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
-        }
-
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, PUMPKIN);
         if (doGen && this.randomGenerator.nextInt(32) == 0) {
             j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
@@ -279,14 +272,14 @@ public class CustomBiomeGenerator extends BiomeDecorator {
 
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, LAKE);
         if (doGen && this.generateLakes) {
-            for (j = 0; j < 50; ++j) {
+            for (j = 0; j < 10; ++j) {
                 k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
                 l = this.randomGenerator.nextInt(this.randomGenerator.nextInt(248) + 8);
                 i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
                 (new WorldGenLiquids(Blocks.flowing_water)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
             }
 
-            for (j = 0; j < 20; ++j) {
+            for (j = 0; j < 4; ++j) {
                 k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
                 l = this.randomGenerator
                     .nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);

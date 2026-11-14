@@ -19,7 +19,7 @@ public class DimensionEverglades {
     public static Block blockSecondLayer;
     public static Block blockMainFiller = Blocks.stone;
     public static Block blockSecondaryFiller;
-    public static Block blockFluidLakes;
+    public static Block blockFluidLakes = Blocks.water;
     public static Block blockPortalFrame;
 
     public void load() {

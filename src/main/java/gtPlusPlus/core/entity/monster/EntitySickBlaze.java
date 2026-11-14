@@ -35,7 +35,7 @@ public class EntitySickBlaze extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
             .setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
-            .setBaseValue(1.5D);
+            .setBaseValue(0.3D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage)
             .setBaseValue(6.0D);
     }
@@ -112,15 +112,17 @@ public class EntitySickBlaze extends EntityMob {
             this.motionY *= 0.6D;
         }
 
-        for (int i = 0; i < 2; ++i) {
-            this.worldObj.spawnParticle(
-                "crit",
-                this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
-                this.posY + this.rand.nextDouble() * this.height,
-                this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
-                0.0D,
-                0.0D,
-                0.0D);
+        if (this.worldObj.isRemote) {
+            for (int i = 0; i < 1; ++i) {
+                this.worldObj.spawnParticle(
+                    "crit",
+                    this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
+                    this.posY + this.rand.nextDouble() * this.height,
+                    this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
+                    0.0D,
+                    0.0D,
+                    0.0D);
+            }
         }
 
         super.onLivingUpdate();
@@ -209,16 +211,8 @@ public class EntitySickBlaze extends EntityMob {
         }
     }
 
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
-    @Override
-    protected boolean isValidLightLevel() {
-        return true;
-    }
-
     @Override
     public int getMaxSpawnedInChunk() {
-        return 8;
+        return 4;
     }
 }
