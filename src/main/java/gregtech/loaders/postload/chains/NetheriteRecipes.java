@@ -49,6 +49,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -65,27 +66,6 @@ public class NetheriteRecipes {
 
         // Prismatic Acid
         {
-            GTValues.RA.stdBuilder() // Prismarine
-                .itemInputs(
-                    GregtechItemList.RedAlgaeBiomass.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
-                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 8))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_LuV)
-                .addTo(autoclaveRecipes);
-
-            if (Forestry.isModLoaded()) {
-                GTValues.RA.stdBuilder() // Prismarine + Comb
-                    .itemInputs(
-                        GregtechItemList.RedAlgaeBiomass.get(32),
-                        GTBees.combs.getStackForType(CombType.PRISMATIC, 8))
-                    .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
-                    .duration(15 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(autoclaveRecipes);
-            }
 
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 24))
@@ -178,6 +158,59 @@ public class NetheriteRecipes {
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(vacuumFreezerRecipes);
+        }
+
+        // Prismarine Tech Line
+        {
+            GTValues.RA.stdBuilder() // Dim Prismarine
+                .itemInputs(
+                    GregtechItemList.RedAlgaeBiomass.get(16),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
+                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(16))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(autoclaveRecipes);
+
+            GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
+                .itemInputs(
+                    GregtechItemList.RedAlgaeBiomass.get(16),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(32))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(autoclaveRecipes);
+
+            GTValues.RA.stdBuilder() // Compression
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                .fluidInputs(Materials.PrismaticAcid.getFluid(4000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(64))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
+
+            GTValues.RA.stdBuilder() // Engraving
+                .itemInputs(
+                    ItemList.Dim_Prismarine.get(16),
+                    GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.lens, Materials.InfusedWater, 1)))
+                .circuit(1)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(laserEngraverRecipes);
+
+            if (Forestry.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Engraving with Comb
+                    .itemInputs(
+                        ItemList.Dim_Prismarine.get(16),
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16),
+                        GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.lens, Materials.InfusedWater, 1)))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 32))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(laserEngraverRecipes);
+            }
         }
 
         // Naquarite
