@@ -276,22 +276,7 @@ public class MTEHatchInputBus extends MTEHatch
     @Override
     public Object getTargetKey() {
         final MTEMultiBlockBase owner = getCraftingIconOwner();
-        return owner == null ? null : owner.getPatternTargetKey(getPatternTargetItems(owner.getRecipeMap()));
-    }
-
-    /**
-     * Returns the items this bus adds to every recipe check of its multiblock: the circuit and non-consumed items.
-     */
-    protected ItemStack[] getPatternTargetItems(RecipeMap<?> recipeMap) {
-        final List<ItemStack> items = new ArrayList<>();
-        final ItemStack circuit = allowSelectCircuit() ? getStackInSlot(getCircuitSlot()) : null;
-        if (circuit != null) items.add(circuit);
-        for (int i = 0; i < getSizeInventory(); i++) {
-            if (i == getCircuitSlot()) continue;
-            final ItemStack stack = getStackInSlot(i);
-            if (INonConsumedItemDisplay.isDisplayableItem(recipeMap, stack)) items.add(stack);
-        }
-        return items.toArray(new ItemStack[0]);
+        return owner == null ? null : owner.getPatternTargetKey(this);
     }
 
     @Override

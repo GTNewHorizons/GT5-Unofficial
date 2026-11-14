@@ -1,6 +1,7 @@
 package gregtech.crossmod.ae2;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,22 +24,22 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 
 /**
- * What a GregTech machine needs to run a pattern: its current recipe map, its voltage and the items it adds to every
- * recipe check, such as the circuit.
+ * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the items it adds to
+ * every recipe check, such as the circuit.
  */
-public record PatternTargetKey(RecipeMap<?> recipeMap, long voltage, List<ItemId> items) {
+public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<ItemId> items) {
 
     /**
      * Builds a key; a non-positive voltage turns the voltage check off.
      */
-    public static PatternTargetKey of(RecipeMap<?> recipeMap, long voltage, ItemStack[] items) {
-        final List<ItemId> ids = new ArrayList<>(items.length);
+    public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items) {
+        final List<ItemId> ids = new ArrayList<>(items.size());
         for (ItemStack stack : items) {
             if (stack != null) {
                 ids.add(ItemId.createWithStackSize(stack));
             }
         }
-        return new PatternTargetKey(recipeMap, Math.max(voltage, 0), ids);
+        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), ids);
     }
 
     /**
@@ -89,18 +90,22 @@ public record PatternTargetKey(RecipeMap<?> recipeMap, long voltage, List<ItemId
             inputs.add(stack);
         }
 
-        final FindRecipeQuery query = recipeMap.findRecipeQuery()
-            .items(inputs.toArray(new ItemStack[0]))
-            .fluids(patternFluids.toArray(new FluidStack[0]));
-        // The query multiplies the voltage by the map's amperage, so "no check" must skip the call, not pass a max.
-        if (voltage > 0) {
-            query.voltage(voltage);
+        final ItemStack[] inputArray = inputs.toArray(new ItemStack[0]);
+        final FluidStack[] fluidArray = patternFluids.toArray(new FluidStack[0]);
+        for (RecipeMap<?> recipeMap : recipeMaps) {
+            final FindRecipeQuery query = recipeMap.findRecipeQuery()
+                .items(inputArray)
+                .fluids(fluidArray);
+            // The query multiplies the voltage by the map's amperage, so "no check" must skip the call, not pass a max.
+            if (voltage > 0) {
+                query.voltage(voltage);
+            }
+            final GTRecipe recipe = query.find();
+            if (recipe != null && producesAllOutputs(recipe, pattern)) {
+                return PatternMatch.MATCH;
+            }
         }
-        final GTRecipe recipe = query.find();
-        if (recipe == null) {
-            return PatternMatch.NO_MATCH;
-        }
-        return producesAllOutputs(recipe, pattern) ? PatternMatch.MATCH : PatternMatch.NO_MATCH;
+        return PatternMatch.NO_MATCH;
     }
 
     private static boolean producesAllOutputs(GTRecipe recipe, ICraftingPatternDetails pattern) {
