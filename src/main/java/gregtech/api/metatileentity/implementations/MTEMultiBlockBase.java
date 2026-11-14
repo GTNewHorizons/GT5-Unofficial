@@ -1896,15 +1896,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids) {
-        return addFluidOutputs(
-            Arrays.asList(outputFluids),
-            null);
+        return addFluidOutputs(Arrays.asList(outputFluids), null);
     }
 
     public boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
-        return addFluidOutputs(
-            Arrays.asList(outputFluids),
-            remaining);
+        return addFluidOutputs(Arrays.asList(outputFluids), remaining);
     }
 
     /**
@@ -3424,7 +3420,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         FluidStack lastStack = null;
         for (int i = 0; i < toOutput.size(); i++) {
             FluidStack fluidOutputForLayer = toOutput.get(i);
-            if (fluidOutputForLayer != null && lastStack != null && lastStack.amount == Integer.MAX_VALUE && fluidOutputForLayer.isFluidEqual(lastStack)) {
+            if (fluidOutputForLayer != null && lastStack != null
+                && lastStack.amount == Integer.MAX_VALUE
+                && fluidOutputForLayer.isFluidEqual(lastStack)) {
                 lastStack = fluidOutputForLayer;
                 continue;
             }

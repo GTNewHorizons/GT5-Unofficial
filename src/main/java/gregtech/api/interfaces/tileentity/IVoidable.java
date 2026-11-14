@@ -1,6 +1,5 @@
 package gregtech.api.interfaces.tileentity;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
