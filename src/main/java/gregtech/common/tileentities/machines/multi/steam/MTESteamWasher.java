@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.chainAllGlassesVanillaHint;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -214,7 +214,7 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', chainAllGlasses())
+                .addElement('D', chainAllGlassesVanillaHint())
                 .addElement('E', ofChain(ofAnyWater(false), isAir()))
                 .addElement(
                     'A',
