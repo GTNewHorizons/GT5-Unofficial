@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -812,8 +813,20 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         }
         // Even if we're holding a tool, we still want to check for collisions with the regular size
         // of the pipe in case the player is currently in contact with it.
-        AxisAlignedBB physicalBoundingBox = getPhysicalCollisionBoundingBox(x, y, z);
-        if (inputAABB.intersectsWith(physicalBoundingBox)) outputAABB.add(physicalBoundingBox);
+        for (AxisAlignedBB physicalBoundingBox : getPhysicalCollisionBoxes(x, y, z)) {
+            if (inputAABB.intersectsWith(physicalBoundingBox)) outputAABB.add(physicalBoundingBox);
+        }
+    }
+
+    /**
+     * Gets the boxes that clicks should be raytraced against, so that the space between the pipe core, its connections
+     * and its covers lets clicks through to the blocks behind it.
+     *
+     * @return the boxes in world coordinates, or null to raytrace against the block bounds instead
+     */
+    public @Nullable List<AxisAlignedBB> getRayTraceBoxes(int x, int y, int z) {
+        if (boundingBoxShouldBeFullBlock()) return null;
+        return getPhysicalCollisionBoxes(x, y, z);
     }
 
     @Override
@@ -826,7 +839,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return getPhysicalCollisionBoundingBox(x, y, z);
     }
 
-    private boolean boundingBoxShouldBeFullBlock() {
+    // Package-private for tests
+    boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
         return (GTMod.GT.isClientSide() && GTMod.clientProxy()
             .forceFullBlockBB()) || getCollisionThickness() == 1;
@@ -892,6 +906,66 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         }
 
         return AxisAlignedBB.getBoundingBox(x + xStart, y + yStart, z + zStart, x + xEnd, y + yEnd, z + zEnd);
+    }
+
+    /**
+     * Gets the separate parts of the rendered pipe: the core, one arm per connection and one plate per cover. Unlike
+     * {@link #getPhysicalCollisionBoundingBox}, the space between these parts is left empty.
+     */
+    private @NotNull List<AxisAlignedBB> getPhysicalCollisionBoxes(int x, int y, int z) {
+        final double space = (1f - getCollisionThickness()) / 2;
+        // Same depth as the cover plates drawn by the pipe renderer
+        final double coverThickness = Math.min(1.0 / 8.0, space);
+        final BaseMetaPipeEntity baseTE = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        // this.mConnections isn't synced, but BaseMetaPipeEntity.mConnections is for some reason
+        final byte connections = baseTE.mConnections;
+
+        final List<AxisAlignedBB> boxes = new ArrayList<>(13);
+        boxes.add(
+            AxisAlignedBB.getBoundingBox(x + space, y + space, z + space, x + 1 - space, y + 1 - space, z + 1 - space));
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if ((connections & side.flag) != 0) boxes.add(getSideBox(x, y, z, side, space, 1 - space, space));
+            if (baseTE.hasCoverAtSide(side)) boxes.add(getSideBox(x, y, z, side, 0, 1, coverThickness));
+        }
+        return boxes;
+    }
+
+    /**
+     * Gets a box against the given side of the block, spanning from min to max along the face and reaching depth into
+     * the block.
+     */
+    private static @NotNull AxisAlignedBB getSideBox(int x, int y, int z, ForgeDirection side, double min, double max,
+        double depth) {
+        double minX = min, minY = min, minZ = min;
+        double maxX = max, maxY = max, maxZ = max;
+        switch (side) {
+            case DOWN -> {
+                minY = 0;
+                maxY = depth;
+            }
+            case UP -> {
+                minY = 1 - depth;
+                maxY = 1;
+            }
+            case NORTH -> {
+                minZ = 0;
+                maxZ = depth;
+            }
+            case SOUTH -> {
+                minZ = 1 - depth;
+                maxZ = 1;
+            }
+            case WEST -> {
+                minX = 0;
+                maxX = depth;
+            }
+            case EAST -> {
+                minX = 1 - depth;
+                maxX = 1;
+            }
+            default -> {}
+        }
+        return AxisAlignedBB.getBoundingBox(x + minX, y + minY, z + minZ, x + maxX, y + maxY, z + maxZ);
     }
 
     public boolean letsIn(Cover cover) {
