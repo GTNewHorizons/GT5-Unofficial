@@ -81,8 +81,5 @@ public class BotWerkstoffMaterialPool implements Runnable {
         SET_METALLIC);
 
     @Override
-    public void run() {
-        // TODO Auto-generated method stub
-
-    }
+    public void run() {}
 }
