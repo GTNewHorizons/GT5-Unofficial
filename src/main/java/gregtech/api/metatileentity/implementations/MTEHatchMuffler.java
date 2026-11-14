@@ -190,6 +190,10 @@ public class MTEHatchMuffler extends MTEHatch {
         return (int) ((float) aPollution * ((100F - 12.5F * ((float) mTier - 1F)) / 100F));
     }
 
+    private boolean airCheck() {
+        return getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing());
+    }
+
     /**
      * @param mte             The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer
      *                        muffler hatches can do wacky things with the multis
@@ -197,7 +201,7 @@ public class MTEHatchMuffler extends MTEHatch {
      * @return pollution success
      */
     public boolean polluteEnvironment(MetaTileEntity mte, int pollutionAmount) {
-        if (getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing())) {
+        if (airCheck()) {
             Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(pollutionAmount));
             return true;
         }
