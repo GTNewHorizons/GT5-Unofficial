@@ -168,6 +168,9 @@ dependencies {
 
     // For building structures faster
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MatterManipulator:0.1.65-GTNH')
+
+    // for tracing with spark
+    // runtimeOnlyNonPublishable(rfg.deobf("curse.maven:spark-361579:4271867"))
 }
 
 afterEvaluate {

@@ -51,6 +51,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
+import bwcrossmod.galacticgreg.VoidMinerFrontend;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -65,6 +66,7 @@ import gregtech.api.recipe.maps.AlgaePondFrontend;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.CentrifugeFrontend;
 import gregtech.api.recipe.maps.ChemicalPlantFrontend;
 import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
@@ -82,6 +84,7 @@ import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
+import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
@@ -786,7 +789,7 @@ public final class RecipeMaps {
         .frontend(FluidOnlyFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
-        .maxIO(2, 6, 1, 1)
+        .maxIO(2, 9, 1, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return null;
@@ -815,6 +818,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
+        .frontend(CentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -2145,9 +2149,6 @@ public final class RecipeMaps {
                 StatCollector.translateToLocal("gt.nei.solar_tower.3")))
         .frontend(FluidOnlyFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> cyclotronRecipes = RecipeMapBuilder.of("gt.recipe.cyclotron")
-        .maxIO(9, 9, 1, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> fishPondRecipes = RecipeMapBuilder.of("gt.recipe.fishpond")
         .maxIO(1, 25, 0, 0)
         .slotOverlays(
@@ -2166,10 +2167,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multicentrifuge")
-        .maxIO(6, 6, 6, 6)
+        .maxIO(9, 9, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
-        .frontend(LargeNEIFrontend::new)
+        .frontend(LargeCentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multielectro")
@@ -2215,6 +2216,17 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> voidMinerRecipes = RecipeMapBuilder.of("gt.recipe.voidminer")
+        .maxIO(1, VoidMinerFrontend.MAX_ITEM_OUTPUTS, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBarPos(75, 26)
+        .logoPos(10, 10)
+        .neiHandlerInfo(
+            builder -> builder.setHeight(240)
+                .setMultipleWidgetsAllowed(false))
+        .frontend(VoidMinerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gt.recipe.multiblockrockbreaker")

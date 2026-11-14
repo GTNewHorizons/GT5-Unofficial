@@ -506,7 +506,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
+        return SoundResource.GT_MACHINES_ENDOTHERMIC_FRIDGE_LOOP;
     }
 
     // data class
