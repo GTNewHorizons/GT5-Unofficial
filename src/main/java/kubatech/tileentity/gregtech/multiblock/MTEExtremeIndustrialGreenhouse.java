@@ -41,6 +41,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
@@ -51,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -107,9 +109,8 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.eig.EIGBucket;
+import kubatech.api.eig.EIGBucketFactoryRegistry;
 import kubatech.api.eig.EIGDropTable;
-import kubatech.api.eig.EIGMode;
-import kubatech.api.enums.EIGModes;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.CropRenderer;
 import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
@@ -123,6 +124,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static final double EIG_BALANCE_MAX_FERTILIZER_BOOST = 4.0d;
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
+
+    private static final int EIG_SLOTS_STARTING = 1;
+    private static final int EIG_SLOTS_PER_TIER_MULTIPLIER = 2;
+    private static final int EIG_SEED_CAPACITY_PER_SLOT = 64;
+    private static final int EIG_WEEDEX_MULTIPLIER = 1;
+    private static final int EIG_MAX_FERTILIZER_PER_SEED = 2;
+
+    private static final String[] SETUP_PHASE_KEYS = { "kubatech.gui.text.operating", "kubatech.gui.text.input",
+        "kubatech.gui.text.output" };
 
     private static final Fluid WEEDEX_FLUID = Materials.WeedEX9000.mFluid;
     private static final LinkedList<ItemStack> FERTILIZER_ITEM_LIST = new LinkedList<>();
@@ -168,10 +178,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * The Amount of Weed-EX used per cycle.
      */
     private int weedEXUsage = 0;
-    /**
-     * The mode that the EIG is in.
-     */
-    private EIGMode mode = EIGModes.Normal;
     private boolean isCheckingDirtWater = false;
 
     public int getSetupPhase() {
@@ -180,12 +186,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     public void setSetupPhase(int phase) {
         if (this.mMaxProgresstime > 0) return;
-        this.setupPhase = phase;
-        this.updateSeedLimits();
-    }
 
-    public EIGMode getEIGMode() {
-        return this.mode;
+        this.setupPhase = Math.floorMod(phase, SETUP_PHASE_KEYS.length);
+        this.updateSeedLimits();
     }
 
     public int getMaxSeedTypes() {
@@ -321,7 +324,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addMarkdown(
                 new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
                 ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(), "unit", getFluidUnit()));
-        EIGModes.addTooltipInfo(tt);
+
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("minVoltageTier", voltageTooltipFormatted(EIG_BALANCE_REGULAR_MODE_MIN_TIER));
+        ttVars.put("minVoltageTierMinus1", voltageTooltipFormatted(EIG_BALANCE_REGULAR_MODE_MIN_TIER - 1));
+        ttVars.put("startingSlotCount", EIG_SLOTS_STARTING);
+        ttVars.put("slotPerTierMultiplier", EIG_SLOTS_PER_TIER_MULTIPLIER);
+        ttVars.put("seedCapacityPerSlot", EIG_SEED_CAPACITY_PER_SLOT);
+        ttVars.put("maxFertilizerUsagePerSeed", EIG_MAX_FERTILIZER_PER_SEED);
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", 2.0d * 100));
+        tt.addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
+
         tt.beginStructureBlock(7, 7, 9, true)
             .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -363,10 +376,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         if (this.toMigrate != null) {
-            this.mode = EIGModes.Normal;
             for (EIGMigrationHolder holder : toMigrate) {
                 holder.seed.stackSize = holder.count;
-                EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
+                EIGBucket bucket = EIGBucketFactoryRegistry
+                    .tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
                 if (bucket == null) {
                     holder.seed.stackSize = holder.count;
                     this.addOutputPartial(holder.seed);
@@ -422,36 +435,22 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     // region mode change standardisation
 
-    /**
-     * Attempts to change the setup phase of the EIG to the next mode
-     *
-     * @param aPlayer The player to notify for success and errors
-     */
     private void tryChangeSetupPhase(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the setup phase change messages.
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("kubatech.chat.eig.setup_change.cannot_change"));
             return;
         }
-        this.setupPhase++;
-        if (this.setupPhase == 3) this.setupPhase = 0;
-        String phaseChangeMessage = "EIG is now running in ";
-        switch (this.setupPhase) {
-            case 0:
-                phaseChangeMessage += "operational mode.";
-                break;
-            case 1:
-                phaseChangeMessage += "seed input mode.";
-                break;
-            case 2:
-                phaseChangeMessage += "seed output mode.";
-                break;
-            default:
-                phaseChangeMessage += "an invalid mode please send us a ticket!";
-                break;
-        }
+
+        this.setupPhase = (this.setupPhase + 1) % SETUP_PHASE_KEYS.length;
         this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
+
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted(
+                "kubatech.chat.eig.setup_change.phase.fmt",
+                StatCollector.translateToLocal(SETUP_PHASE_KEYS[this.setupPhase])));
     }
 
     // endregion mode change standardisation
@@ -464,7 +463,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         aNBT.setInteger("version", NBT_REVISION);
         aNBT.setByte("glassTier", this.glassTier);
         aNBT.setInteger("setupPhase", this.setupPhase);
-        aNBT.setString("mode", this.mode.getName());
         NBTTagList bucketListNBT = new NBTTagList();
         for (EIGBucket b : this.buckets) {
             bucketListNBT.appendTag(b.save());
@@ -507,15 +505,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             // migrate old EIG with greenhouse slots to new mode and fix variable names
             this.glassTier = aNBT.getByte("glasTier");
             this.setupPhase = aNBT.getInteger("setupphase");
-            this.mode = EIGModes.Normal;
             // aggregate all seed types
             HashMap<String, EIGMigrationHolder> toMigrate = new HashMap<>();
             for (int i = 0; i < aNBT.getInteger("mStorageSize"); i++) {
                 EIGMigrationHolder holder = new EIGMigrationHolder(aNBT.getCompoundTag("mStorage." + i));
-                if (toMigrate.containsKey(holder.getKey())) {
-                    toMigrate.get(holder.getKey()).count += holder.count;
-                } else {
-                    toMigrate.put(holder.getKey(), holder);
+                EIGMigrationHolder previous = toMigrate.putIfAbsent(holder.getKey(), holder);
+                if (previous != null) {
+                    previous.count += holder.count;
                 }
             }
 
@@ -523,9 +519,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         } else {
             this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
-            this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
-            if (this.mode == null) this.mode = EIGModes.Normal;
-            this.mode.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
+            EIGBucketFactoryRegistry.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
             new EIGDropTable(aNBT.getTagList("progress", 10)).addTo(this.dropTracker);
         }
     }
@@ -633,17 +627,18 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * @return The number of seeds in the EIG.
      */
     public int getTotalSeedCount() {
-        // null check is to prevent a occasional weird NPE from MUI
-        return this.buckets.parallelStream()
-            .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
+        return buckets.stream()
+            .mapToInt(EIGBucket::getSeedCount)
+            .sum();
     }
 
     /**
      * Updates the max seed counts of the machine
      */
     private void updateSeedLimits() {
-        this.maxSeedTypes = this.mode.getSlotCount(getVoltageTier());
-        this.maxSeedCount = this.maxSeedTypes * this.mode.getSeedCapacityPerSlot();
+        int tierAboveMin = getVoltageTier() - EIG_BALANCE_REGULAR_MODE_MIN_TIER;
+        this.maxSeedTypes = tierAboveMin < 0 ? 0 : (EIG_SLOTS_STARTING << tierAboveMin);
+        this.maxSeedCount = this.maxSeedTypes * EIG_SEED_CAPACITY_PER_SLOT;
     }
 
     /**
@@ -685,11 +680,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * @return True if the item can be consumed as fertilizer.
      */
     public static boolean isFertilizer(ItemStack item) {
-        if (item == null || item.stackSize <= 0) return false;
-        for (ItemStack fert : FERTILIZER_ITEM_LIST) {
-            if (GTUtility.areStacksEqual(item, fert)) return true;
-        }
-        return false;
+        return item != null && item.stackSize > 0
+            && FERTILIZER_ITEM_LIST.stream()
+                .anyMatch(fert -> GTUtility.areStacksEqual(item, fert));
     }
 
     private boolean tryEmptyBucket(EIGBucket bucket) {
@@ -782,8 +775,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         // Compute the Weed-EX and water requirements,
         // TODO: We only really need to update water usage and WeedEX usage when adding seeds or when loading NBT.
         this.waterUsage = seedCount * 1000;
-        this.weedEXUsage = (seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0)
-            * this.mode.getWeedEXMultiplier();
+        this.weedEXUsage = (seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0) * EIG_WEEDEX_MULTIPLIER;
 
         // Consume water, fail if we don't have enough
         if (!this.tryDrain(new FluidStack(FluidRegistry.WATER, this.waterUsage), false)) {
@@ -813,7 +805,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         int consumedFertilizer = 0;
         int maxFertilizerToConsume = 0;
         for (EIGBucket bucket : this.buckets)
-            maxFertilizerToConsume += bucket.getSeedCount() * this.mode.getMaxFertilizerUsagePerSeed();
+            maxFertilizerToConsume += bucket.getSeedCount() * EIG_MAX_FERTILIZER_PER_SEED;
 
         ArrayList<ItemStack> inputs = getStoredInputs();
         for (ItemStack i : inputs) {
@@ -880,7 +872,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         }
 
         // try creating a new bucket, this only returns valid buckets.
-        EIGBucket bucket = this.mode.tryCreateNewBucket(this, input, addCap, simulate);
+        EIGBucket bucket = EIGBucketFactoryRegistry.tryCreateNewBucket(this, input, addCap, simulate);
         if (bucket == null) return false;
         this.buckets.add(bucket);
         return input.stackSize <= 0;
@@ -892,8 +884,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
             Arrays.asList(
-                this.setupPhase == 0
-                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                this.setupPhase == 0 ? "kubatech.infodata.eig.running_mode.operational"
                     : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
                         : "kubatech.infodata.eig.running_mode.setup_mode.output"),
                 IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),

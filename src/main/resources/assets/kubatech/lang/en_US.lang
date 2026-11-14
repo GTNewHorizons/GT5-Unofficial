@@ -377,6 +377,10 @@ kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Fertilized Dirt 
 kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Purple Lamp (ProjectRed Illumination, regular or inverted)
 kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=The dirt is tilled and the water is spawned for free once formed
 
+kubatech.chat.eig.setup_change.cannot_change=Cannot change mode whilst running!
+kubatech.chat.eig.setup_change.phase.fmt=Now running in %s mode
+
+kubatech.infodata.eig.running_mode.operational=Status: Operational
 
 kubatech.multiblock.MegaIndustrialApiary.machine_type=Mega Apiary, Mapiary
 kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Dirt or Grass
