@@ -253,9 +253,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        BooleanSyncValue isActive = new BooleanSyncValue(
-            () -> multiblock.getBaseMetaTileEntity()
-                .isActive());
+        BooleanSyncValue isActive = new BooleanSyncValue(baseMetaTileEntity::isActive);
         BigIntSyncValue capacity = new BigIntSyncValue(multiblock::getEnergyCapacity, multiblock::setCapacity);
         BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, val -> {
             // need to check server side if we have permission
