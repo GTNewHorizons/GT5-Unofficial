@@ -19,9 +19,9 @@ public class ItemBlockBasicTile extends ItemBlock {
         this.mID = ((ITileTooltip) block).getTooltipID();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (this.mID == 1) { // Fish trap
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.1"));
@@ -35,16 +35,12 @@ public class ItemBlockBasicTile extends ItemBlock {
             list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.1"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.2"));
-        } else if (this.mID == 4) { // Butterfly Killer
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.0"));
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.1"));
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.2"));
         } else if (this.mID == 5) { // Volumetric Flask Setter
             list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.1"));
         } else {
             list.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.bad_tooltip_id", mID));
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 }

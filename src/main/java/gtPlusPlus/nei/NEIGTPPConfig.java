@@ -6,21 +6,17 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+@SuppressWarnings("unused")
 public class NEIGTPPConfig implements IConfigureNEI {
-
-    public static boolean sIsAdded = true;
 
     @Override
     public synchronized void loadConfig() {
-        sIsAdded = false;
-
-        Logger.INFO("NEI Registration: Registering NEI handler for " + DecayableRecipeHandler.mNEIName);
         API.registerRecipeHandler(new DecayableRecipeHandler());
         API.registerUsageHandler(new DecayableRecipeHandler());
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");
@@ -40,12 +36,9 @@ public class NEIGTPPConfig implements IConfigureNEI {
         // Moved to its own handler
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_Vacuum_Furnace.get(1),
-            GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
+            RecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
-        // ULV simple washer
-        API.removeRecipeCatalyst(
-            GregtechItemList.SimpleDustWasher_ULV.get(1),
-            GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
+        API.removeRecipeCatalyst(ItemList.Boldarnator.get(1), RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {
@@ -53,7 +46,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
             API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
-        sIsAdded = true;
     }
 
     @Override

@@ -22,8 +22,10 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEFluidStack;
 import appeng.util.item.FluidList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.fluid.GTFluidTank;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,14 +55,14 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         }
     }
 
-    private static final Textures.BlockIcons.CustomIcon TEXTURE_TFFT_HATCH = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_HATCH");
+    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;
 
     public MTEHatchTFFT(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 3, 0, "All-in-one access for the T.F.F.T");
+        super(aID, aName, aNameRegional, 3, 0, "All-in-one access for the TFFT");
     }
 
     public MTEHatchTFFT(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -70,12 +72,6 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        return super.getTexture(aBaseMetaTileEntity, side, facing, colorIndex, aActive, aRedstone);
     }
 
     @Override
@@ -180,8 +176,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-
-    public IItemList<IAEFluidStack> getAvailableItems(IItemList out, int iteration) {
+    public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out, int iteration) {
         if (controller != null) {
             for (int i = 0; i < MTETankTFFT.MAX_DISTINCT_FLUIDS; i++) {
                 if (!controller.STORE[i].isEmpty()) {
@@ -212,14 +207,14 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
 
     @Override
 
-    public void addListener(IMEMonitorHandlerReceiver<IAEFluidStack> l, Object verificationToken) {
+    public void addListener(IMEMonitorHandlerReceiver l, Object verificationToken) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(l, verificationToken);
     }
 
     @Override
 
-    public void removeListener(IMEMonitorHandlerReceiver<IAEFluidStack> l) {
+    public void removeListener(IMEMonitorHandlerReceiver l) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(l);
     }
@@ -296,7 +291,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     public void notifyListeners(boolean isIncrement, FluidStack stack) {
         if (stack == null) return;
         AEFluidStack s = AEFluidStack.create(stack);
-        if (isIncrement == false) s.setStackSize(-s.getStackSize());
+        if (!isIncrement) s.setStackSize(-s.getStackSize());
         listeners.forEach((l, o) -> {
             if (l.isValid(o)) l.postChange(this, ImmutableSet.of(s), null);
             else removeListener(l);
@@ -313,4 +308,13 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
             }
         }
     }
+
+    @Override
+    public int getCapacity() {
+        if (controller != null) {
+            return (int) Math.min(controller.getCapacityPerFluid(), Integer.MAX_VALUE);
+        }
+        return 0;
+    }
+
 }

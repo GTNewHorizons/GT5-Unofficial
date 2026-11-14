@@ -5,42 +5,49 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEElectricAutoWorkbenchGui;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregtechLogo {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     public int mMode = 0, mCurrentSlot = 0, mThroughPut = 0, mTicksUntilNextUpdate = 20;
     public boolean mLastCraftSuccessful = false;
-    protected String mLocalName;
 
-    private static final int MAX_MODES = 10;
-    private static final int MAX_THROUGHPUT = 4;
+    public static final int MAX_MODES = 10;
+    public static final int MAX_THROUGHPUT = 4;
+
+    public static final int INPUT_SLOT_OFFSET = 0;
+    public static final int INPUT_SLOT_COUNT = 9;
+    public static final int OUTPUT_SLOT_OFFSET = INPUT_SLOT_OFFSET + INPUT_SLOT_COUNT;
+    public static final int OUTPUT_SLOT_COUNT = 9;
+    public static final int PHANTOM_SLOT_OFFSET = OUTPUT_SLOT_OFFSET + OUTPUT_SLOT_COUNT + 1;
+    public static final int PHANTOM_SLOT_COUNT = 9;
 
     public MTEElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
@@ -50,7 +57,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             aTier,
             30,
             aDescription);
-        mLocalName = "Auto Workbench (" + GTValues.VN[aTier] + ")";
     }
 
     public MTEElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,
@@ -60,7 +66,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 19;
+        return aIndex < PHANTOM_SLOT_OFFSET;
     }
 
     @Override
@@ -168,7 +174,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
         return side != getBaseMetaTileEntity().getFrontFacing() && side != getBaseMetaTileEntity().getBackFacing();
     }
 
-    private void switchMode() {
+    public void switchMode() {
         mInventory[28] = null;
     }
 
@@ -226,21 +232,16 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
                     }
                     switch (mMode) {
                         case 0 -> {
-                            if (mInventory[mCurrentSlot] != null
-                                && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2 && mCurrentSlot < 8) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (int i = 0; i < 9; i++) {
-                                tRecipe[i] = mInventory[i + 19];
-                                if (tRecipe[i] != null) {
-                                    tRecipe[i] = GTUtility.copy(tRecipe[i]);
-                                    tRecipe[i].stackSize = 1;
-                                }
+                            System.arraycopy(
+                                buildModeZeroRecipe(mInventory, mCurrentSlot, mThroughPut),
+                                0,
+                                tRecipe,
+                                0,
+                                9);
+                            if (isStrayBeingEjectedInModeZero(mInventory, mCurrentSlot, mThroughPut)) {
+                                mInventory[18] = mInventory[mCurrentSlot];
+                                mInventory[mCurrentSlot] = null;
+                                mTicksUntilNextUpdate = 1;
                             }
                         }
                         case 1 -> {
@@ -482,35 +483,14 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
                                 }
                             }
                         }
-                        case 9 -> {
-                            if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (byte i = 0, j = 0; i < 18 && j < 9
-                                && (j < 2
-                                    || GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                        == null); i++) {
-                                tRecipe[j] = mInventory[(mCurrentSlot + i) % 18];
-                                if (tRecipe[j] != null) {
-                                    tRecipe[j] = GTUtility.copy(tRecipe[j]);
-                                    tRecipe[j].stackSize = 1;
-                                    j++;
-                                }
-                            }
-                            if (tRecipe[1] == null) tRecipe[0] = null;
-                        }
+                        case 9 -> System.arraycopy(buildCircleRecipe(mInventory), 0, tRecipe, 0, 9);
                     }
                 }
 
                 if (tOutput == null)
                     tOutput = GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe);
 
-                if (tOutput != null || mMode == 0) mInventory[28] = tOutput;
+                updateRecipePreview(mInventory, tOutput);
 
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
@@ -600,24 +580,20 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             }
 
             if (mThroughPut < 2) {
-                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                    GTUtility.moveOneItemStack(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity().getIInventoryAtSide(getBaseMetaTileEntity().getBackFacing()),
-                        getBaseMetaTileEntity().getBackFacing(),
-                        getBaseMetaTileEntity().getFrontFacing(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1) * 10,
-                    true);
+                GTItemTransfer transfer = new GTItemTransfer();
+
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getBackFacing());
+
+                getBaseMetaTileEntity().decreaseStoredEnergyUnits(transfer.transfer() * 10L, true);
             }
         }
     }
 
     private boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack aStack) {
+        return isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, aStack);
+    }
+
+    static boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack[] mInventory, ItemStack aStack) {
         if (aStack == null) return true;
         for (byte i = 19; i < 28; i++) {
             if (mInventory[i] != null) {
@@ -627,6 +603,67 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
             }
         }
         return false;
+    }
+
+    /**
+     * In mode 0 a stray (non-template) item sitting in the input grid is moved to the output slot. This
+     * is only possible when the output is free, throughput allows ejecting, and the item is in the input
+     * grid (slots 0-7).
+     */
+    static boolean isStrayBeingEjectedInModeZero(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        return mInventory[currentSlot] != null
+            && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, mInventory[currentSlot])
+            && mInventory[18] == null
+            && throughPut < 2
+            && currentSlot < 8;
+    }
+
+    /**
+     * Builds the mode 0 (Normal Crafting Table) recipe grid from the phantom template (slots 19-27). The
+     * grid - and therefore the recipe preview in slot 28 - must reflect the template even when a stray
+     * item is present in the input buffer. The only exception is the single tick on which a stray item is
+     * ejected: the grid is left empty so the machine does not craft over the item just moved to the
+     * output slot.
+     */
+    static ItemStack[] buildModeZeroRecipe(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        if (isStrayBeingEjectedInModeZero(mInventory, currentSlot, throughPut)) {
+            return tRecipe;
+        }
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = mInventory[i + 19];
+            if (tRecipe[i] != null) {
+                tRecipe[i] = GTUtility.copy(tRecipe[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
+    }
+
+    /**
+     * Builds the Circle mode (mode 9) recipe grid directly from the live input grid (slots 0-8),
+     * preserving slot positions (empty slots stay null). Reading positionally - rather than compacting
+     * non-null items toward the front - is what lets shaped recipes match.
+     */
+    static ItemStack[] buildCircleRecipe(ItemStack[] mInventory) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = null;
+            if (mInventory[i] != null) {
+                tRecipe[i] = GTUtility.copy(mInventory[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
+    }
+
+    /**
+     * Writes the current recipe output into the preview slot (28). Done unconditionally for every mode
+     * so the preview always reflects the current grid and is cleared (set to null) as soon as no recipe
+     * matches.
+     */
+    static void updateRecipePreview(ItemStack[] mInventory, ItemStack tOutput) {
+        mInventory[28] = tOutput;
     }
 
     private ArrayList<ItemStack> recipeContent(ItemStack[] tRecipe) {
@@ -648,12 +685,16 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     private ArrayList<ItemStack> benchContent() {
+        return benchContent(mInventory);
+    }
+
+    static ArrayList<ItemStack> benchContent(ItemStack[] mInventory) {
         ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 18; i++) {
             if (mInventory[i] != null) {
                 boolean temp = false;
                 for (byte j = 0; j < tList.size(); j++) {
-                    if (GTUtility.areStacksEqual(mInventory[i], mInventory[j])) {
+                    if (GTUtility.areStacksEqual(mInventory[i], tList.get(j))) {
                         tList.get(j).stackSize += mInventory[i].stackSize;
                         temp = true;
                         break;
@@ -688,8 +729,18 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.basicmachine.automation.autoworkbench.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return new String[] { "Automatic Crafting Table Mk III",
+        return new String[] {
+            StatCollector.translateToLocal("gt.blockmachines.basicmachine.automation.autoworkbench.tooltip"),
             // this.mDescription,
             GTPPCore.GT_Tooltip.get() };
     }
@@ -749,81 +800,21 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(118, 22));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEElectricAutoWorkbenchGui(this).buildUI(data, syncManager, uiSettings);
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 3)
-                .endAtSlot(8)
-                .build()
-                .setPos(7, 4))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 9)
-                    .startFromSlot(9)
-                    .endAtSlot(17)
-                    .canInsert(false)
-                    .background(GTUITextures.SLOT_DARK_GRAY)
-                    .applyForWidget(SlotWidget::disableShiftInsert)
-                    .build()
-                    .setPos(7, 59))
-            .widget(
-                new SlotWidget(inventoryHandler, 18).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                    .setPos(151, 40))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SLOTS_HOLO_3BY3)
-                    .setPos(62, 4)
-                    .setSize(54, 54))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(19)
-                    .endAtSlot(27)
-                    .phantom(true)
-                    .background(GTUITextures.TRANSPARENT)
-                    .build()
-                    .setPos(62, 4))
-            .widget(
-                SlotWidget.phantom(inventoryHandler, 28)
-                    .disableInteraction()
-                    .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_ARROW_4)
-                    .setPos(151, 4));
-        builder.widget(
-            new CycleButtonWidget().setGetter(() -> mThroughPut)
-                .setSetter(val -> mThroughPut = val)
-                .setLength(MAX_THROUGHPUT)
-                .setTextureGetter(i -> GTPPUITextures.OVERLAY_BUTTON_THROUGHPUT[i])
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(120, 4)
-                .setSize(18, 18));
-        String[] mModeText = new String[] { "Normal Crafting Table", "???", "1x1", "2x2", "3x3", "Unifier", "Dust",
-            "???", "Hammer?", "Circle" };
-        CycleButtonWidget modeButton = new CycleButtonWidget().setGetter(() -> mMode)
-            .setSetter(val -> {
-                mMode = val;
-                switchMode();
-            })
-            .setLength(MAX_MODES)
-            .setTextureGetter(i -> GTPPUITextures.OVERLAY_BUTTON_MODE[i]);
-        for (int i = 0; i < MAX_MODES; i++) {
-            modeButton.addTooltip(i, "Mode: " + mModeText[i]);
-        }
-        builder.widget(
-            modeButton.setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(120, 40)
-                .setSize(18, 18));
-        builder.widget(
-            new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_WORKBENCH_CIRCLE)
-                .setPos(136, 23)
-                .setSize(16, 16))
-            .widget(
-                new DrawableWidget().setDrawable(GTPPUITextures.PICTURE_ARROW_WHITE_DOWN)
-                    .setPos(155, 23)
-                    .setSize(10, 16));
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return isPhantomSlot(index);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return isPhantomSlot(slot) ? 1 : super.getSlotLimit(slot);
+    }
+
+    private boolean isPhantomSlot(int index) {
+        return PHANTOM_SLOT_OFFSET <= index && index < PHANTOM_SLOT_OFFSET + PHANTOM_SLOT_COUNT;
     }
 }

@@ -1,12 +1,12 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -21,15 +21,18 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -39,16 +42,18 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
+import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gregtech.common.config.Other;
+import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.oredict.OreDictRegistrationHandler;
+import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
@@ -57,22 +62,24 @@ import ic2.api.recipe.RecipeOutput;
 @SuppressWarnings("deprecation")
 public class GTPostLoad {
 
-    public static void activateOreDictHandler() {
+    public static void processOreDictRegistrations() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.proxy.activateOreDictHandler();
+
+        OreDictRegistrationHandler.processBufferedRegistrations();
+        OreDictUnificationOverrides.finalizeUnification();
 
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER
-            .info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
-        GTLog.out.println(
-            "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GTLog.out.println(
-            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sVanillaRecipeList_warntOutput.toString());
-        GTLog.out.println(
-            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.debug(
+            "GTMod: List of Lists of Tool Recipes: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sVanillaRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
     }
 
     public static void removeIc2Recipes(Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList,
@@ -97,7 +104,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void registerFluidCannerRecipes() {
@@ -115,7 +122,14 @@ public class GTPostLoad {
                 .fluidInputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
+            if (GTUtility.areFluidsEqual(WerkstoffLoader.Ruthenium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(WerkstoffLoader.Rhodium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), tData.fluid)) {
+                continue;
+            }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -124,27 +138,17 @@ public class GTPostLoad {
             builder.fluidOutputs(tData.fluid)
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
         }
     }
 
     public static void addFakeRecipes() {
-        GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
+        GT_FML_LOGGER.debug("GTMod: Adding Fake Recipes for NEI");
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
         }
 
-        if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
-                .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8 * SECONDS)
-                .eut(8)
-                .ignoreCollision()
-                .fake()
-                .addTo(scannerFakeRecipes);
-        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))
@@ -168,6 +172,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
+            .special(ItemList.Tool_DataOrb.getWithName(0L, "Orb to copy"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
@@ -242,54 +247,52 @@ public class GTPostLoad {
         Materials.getMaterialsMap()
             .values()
             .forEach(tMaterial -> {
-                if ((tMaterial.mElement != null) && (!tMaterial.mElement.mIsIsotope)
-                    && (tMaterial != Materials.Magic)
-                    && (tMaterial.getMass() > 0L)) {
-                    ItemStack dataOrb = ItemList.Tool_DataOrb.get(1L);
-                    BehaviourDataOrb.setDataTitle(dataOrb, "Elemental-Scan");
-                    BehaviourDataOrb.setDataName(dataOrb, tMaterial.mElement.name());
-                    ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
-                    if (dustItem != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(dustItem)
-                            .itemOutputs(dataOrb)
-                            .special(ItemList.Tool_DataOrb.get(1L))
-                            .duration((int) (tMaterial.getMass() * 8192L))
-                            .eut(TierEU.RECIPE_LV)
-                            .fake()
-                            .ignoreCollision()
-                            .addTo(scannerFakeRecipes);
-                        GTValues.RA.stdBuilder()
-                            .itemOutputs(dustItem)
-                            .special(dataOrb)
-                            .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                            .addTo(RecipeMaps.replicatorRecipes);
-                        return;
-                    }
-                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    if (cellItem != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(cellItem)
-                            .itemOutputs(dataOrb)
-                            .special(ItemList.Tool_DataOrb.get(1L))
-                            .duration((int) (tMaterial.getMass() * 8192L))
-                            .eut(TierEU.RECIPE_LV)
-                            .fake()
-                            .ignoreCollision()
-                            .addTo(scannerFakeRecipes);
-                        FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
-                        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
-                        if (fluidStack != null) {
-                            builder.fluidOutputs(fluidStack);
-                        } else {
-                            builder.itemInputs(Materials.Empty.getCells(1))
-                                .itemOutputs(cellItem);
-                        }
-                        builder.special(dataOrb)
-                            .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                            .addTo(RecipeMaps.replicatorRecipes);
-                    }
+                // check if material is scannable
+                GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
+                if (scannerResult == null || scannerResult.isNotMet()) return;
+
+                // add recipe if a dust exists.
+                GTRecipeBuilder builder = null;
+                ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
+                if (dustItem != null) {
+                    builder = GTValues.RA.stdBuilder()
+                        .itemInputs(dustItem);
+                    // add corresponding fluid replicator recipe.
+                    GTValues.RA.stdBuilder()
+                        .itemOutputs(dustItem)
+                        .special(scannerResult.output)
+                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
+                        .addTo(RecipeMaps.replicatorRecipes);
                 }
+                // else try to add a recipe for the cell.
+                if (builder == null) {
+                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
+                    if (cellItem == null) return;
+                    // create builder
+                    builder = GTValues.RA.stdBuilder()
+                        .itemInputs(cellItem);
+                    // add corresponding replicator recipe
+                    FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
+                    GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
+                    if (fluidStack != null) {
+                        replicatorRecipeBuilder.fluidOutputs(fluidStack);
+                    } else {
+                        // if there is no fluid for some reason, add a cell recipe, with cell input.
+                        replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
+                            .itemOutputs(cellItem);
+                    }
+                    replicatorRecipeBuilder.special(scannerResult.output)
+                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
+                        .addTo(RecipeMaps.replicatorRecipes);
+                }
+
+                builder.itemOutputs(scannerResult.output)
+                    .special(ItemList.Tool_DataOrb.get(1L))
+                    .duration(scannerResult.duration)
+                    .eut(scannerResult.eut)
+                    .fake()
+                    .ignoreCollision()
+                    .addTo(scannerFakeRecipes);
             });
 
         if (!MTEMassfabricator.sRequiresUUA) {
@@ -308,7 +311,7 @@ public class GTPostLoad {
         }
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
@@ -321,15 +324,14 @@ public class GTPostLoad {
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.top"))
+            b -> b.recipeDescription("gt.recipe.rockbreaker.fakeitem.top")
                 .sideBlocks(Blocks.water)
                 .topBlock(Blocks.lava)
                 .outputItem(new ItemStack(Blocks.stone, 1))
                 .duration(16 * TICKS));
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.side"))
-                .sideBlocks(Blocks.water, Blocks.lava)
+            b -> b.sideBlocks(Blocks.water, Blocks.lava)
                 .outputItem(new ItemStack(Blocks.cobblestone, 1))
                 .duration(16 * TICKS));
 
@@ -373,7 +375,7 @@ public class GTPostLoad {
             return;
         }
 
-        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
+        GT_FML_LOGGER.debug("GTMod: Updating Vanilla Wooden Tools");
         Items.wooden_sword.setMaxDamage(64);
         Items.wooden_pickaxe.setMaxDamage(64);
         Items.wooden_shovel.setMaxDamage(64);
@@ -384,25 +386,22 @@ public class GTPostLoad {
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
+        GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
         Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
             .collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
-        if (BetterLoadingScreen.isModLoaded()) {
-            GTCLSCompat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
-            GTCLSCompat.pushToDisplayProgress();
-        } else {
-            replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(m.mDefaultLocalName);
-                doActualRegistration(m);
-            });
+
+        for (Materials material : replaceVanillaItemsSet) {
+            progressBar.step(material.getLocalizedName());
+            doActualRegistration(material);
         }
+
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void doActualRegistration(Materials m) {
@@ -446,6 +445,31 @@ public class GTPostLoad {
         }
     }
 
+    public static void addCauldronRecipe() {
+        OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
+            OrePrefixes.dust };
+
+        for (Materials material : Materials.getAll()) {
+            for (OrePrefixes prefix : washablePrefixes) {
+                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
+                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
+
+                if (input == null || output == null) {
+                    continue;
+                }
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(input)
+                    .fluidInputs(Materials.Water.getFluid(333))
+                    .itemOutputs(output)
+                    .duration(0)
+                    .eut(0)
+                    .fake()
+                    .addTo(RecipeMaps.cauldronRecipe);
+            }
+        }
+    }
+
     public static void identifyAnySteam() {
         final String[] steamCandidates = { "steam", "ic2steam" };
         final String[] superHeatedSteamCandidates = { "ic2superheatedsteam" };
@@ -460,5 +484,22 @@ public class GTPostLoad {
             .filter(Objects::nonNull)
             .map(FluidRegistry::getFluidID)
             .collect(Collectors.toList());
+    }
+
+    public static void processToolboxBans() {
+        final ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
+
+        for (final String name : Other.toolboxBans) {
+            final String[] nameParts = name.split(":");
+
+            if (nameParts.length == 2) {
+                final Item item = GameRegistry.findItem(nameParts[0], nameParts[1]);
+                if (item != null) {
+                    builder.add(item);
+                }
+            }
+        }
+
+        GTMod.proxy.toolboxBans = builder.build();
     }
 }

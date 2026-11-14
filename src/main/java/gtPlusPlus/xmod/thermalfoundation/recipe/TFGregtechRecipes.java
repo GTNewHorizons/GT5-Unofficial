@@ -16,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
@@ -40,7 +39,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 4L))
-            .fluidInputs(Materials.LiquidNitrogen.getGas(100L))
+            .fluidInputs(Materials.LiquidNitrogen.getFluid(100L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
@@ -68,7 +67,7 @@ public class TFGregtechRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
             .duration(8 * SECONDS)
@@ -79,15 +78,11 @@ public class TFGregtechRecipes {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Niter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
-    }
-
-    private static FluidStack getFluidStack(final String fluidName, final int amount) {
-        return FluidUtils.getFluidStack(fluidName, amount);
     }
 }

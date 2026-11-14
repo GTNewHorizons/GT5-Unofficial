@@ -295,7 +295,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             buildHatchAdder(MTESuperConductorProcessor.class)
                 .atLeast(InputBus, InputHatch, OutputBus, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTESuperConductorProcessor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 8))))
 
@@ -313,7 +313,7 @@ public class MTESuperConductorProcessor extends MTEExtendedPowerMultiBlockBase<M
             buildHatchAdder(MTESuperConductorProcessor.class).adder(MTESuperConductorProcessor::addboosterHatch)
                 .hatchClass(MTEHatchBooster.class)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                .dot(2)
+                .hint(2)
                 .build())
         .build();
 

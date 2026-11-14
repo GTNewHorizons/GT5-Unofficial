@@ -1,0 +1,327 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static IStructureDefinition<MTEIndustrialMixer> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int OFFSET_X = 2;
+    private static final int OFFSET_Y = 5;
+    private static final int OFFSET_Z = 0;
+
+    private static final int PARALLEL_PER_TIER = 8;
+    private static final double SPEED_INCREASE_TIER = 1.0D;
+    private static final double SPEED_BASIC = 1.0D;
+    private static final int GLASS_TIER_FOR_MULTI_AMP = VoltageIndex.UIV;
+    private static final int EU_EFFICIENCY = 100;
+
+    private int glassTier = -1;
+
+    public MTEIndustrialMixer(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEIndustrialMixer(final String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEIndustrialMixer(this.mName);
+    }
+
+    @Override
+    public IStructureDefinition<MTEIndustrialMixer> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialMixer>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    // spotless:off
+                    new String[][]{{
+                        " DDD ",
+                        " EEE ",
+                        "     ",
+                        "     ",
+                        "     ",
+                        " E~E ",
+                        " DDD "
+                    },{
+                        "DEEED",
+                        "EAAAE",
+                        " AAA ",
+                        " AAA ",
+                        " AAA ",
+                        "EAAAE",
+                        "DEEED"
+                    },{
+                        "DEEED",
+                        "EBCBE",
+                        "EBCBE",
+                        "EBCBE",
+                        "EBCBE",
+                        "EBCBE",
+                        "DEEED"
+                    },{
+                        "DEEED",
+                        "EAAAE",
+                        " AAA ",
+                        " AAA ",
+                        " AAA ",
+                        "EAAAE",
+                        "DEEED"
+                    },{
+                        " DDD ",
+                        " EEE ",
+                        "  E  ",
+                        "  E  ",
+                        "  E  ",
+                        " EEE ",
+                        " DDD "
+                    }})
+                //spotless:on
+                .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement(
+                    'B',
+                    chainItemPipeCasings(-1, MTEIndustrialMixer::setItemPipeTier, MTEIndustrialMixer::getItemPipeTier))
+                .addElement('C', Casings.TitaniumTurbineCasing.asElement())
+                .addElement('D', ofSheetMetal(Materials.Tungsten))
+                .addElement(
+                    'E',
+                    buildHatchAdder(MTEIndustrialMixer.class)
+                        .atLeast(
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy,
+                            Muffler,
+                            InputHatch,
+                            OutputHatch,
+                            MultiAmpEnergy)
+                        .casingIndex(Casings.MixerCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(
+                            onElementPass(MTEIndustrialMixer::onCasingAdded, Casings.MixerCasing.asElement())))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialMixer,
+            TexturesGtBlock.oMCDIndustrialMixerGlow,
+            TexturesGtBlock.oMCDIndustrialMixerActive,
+            TexturesGtBlock.oMCDIndustrialMixerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.MixerCasing.getCasingTexture();
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.industrial_mixer"))
+            .addVoltageParallelInfo(PARALLEL_PER_TIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-mixer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed_increase", SPEED_INCREASE_TIER * 100)
+                    .put("eu_eff", EU_EFFICIENCY)
+                    .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
+                    .build())
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(5, 7, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("5-45", Casings.MixerCasing.getLocalizedName(), false)
+            .addCasing("30", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("10", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("5", Casings.TitaniumTurbineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_mixer_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
+            .toolTipFinisher();
+        return tt;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
+    public double getSpeedBonus() {
+        return 1.0D / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
+    }
+
+    private int casingAmount;
+
+    private void onCasingAdded() {
+        casingAmount++;
+    }
+
+    private int itemPipeTier = -1;
+
+    private void setItemPipeTier(int tier) {
+        itemPipeTier = tier;
+    }
+
+    private int getItemPipeTier() {
+        return itemPipeTier;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        itemPipeTier = -1;
+        glassTier = -1;
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 5);
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (glassTier < GLASS_TIER_FOR_MULTI_AMP) {
+                errors.add(StructureErrors.glassTierNotEnough(GLASS_TIER_FOR_MULTI_AMP));
+            }
+        } else {
+            checkHasEnergyHatch(errors);
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiIndustrialMixer;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.mixerNonCellRecipes;
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        inputSeparation = !inputSeparation;
+        GTUtility.sendChatTrans(
+            aPlayer,
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MIXER;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+}

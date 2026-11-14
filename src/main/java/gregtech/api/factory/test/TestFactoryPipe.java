@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,8 +19,8 @@ import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
 
 public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryElement {
 
-    public TestFactoryPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public TestFactoryPipe(int aID, String aName) {
+        super(aID, aName);
     }
 
     public TestFactoryPipe(TestFactoryPipe prototype) {
@@ -43,8 +44,10 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.network",
+                accessor.getNBTData()
+                    .getString("network")));
     }
 
     @Override
@@ -72,12 +75,8 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
-    public void onNeighbourChanged(TestFactoryElement neighbour) {
-        mCheckConnections = true;
-    }
-
-    @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -97,11 +96,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
         }
     }
 
-    @Override
-    protected void checkActive() {
-        mIsActive = getBaseMetaTileEntity().getTimer() % 200 > 100;
-    }
-
     private TestFactoryNetwork network;
 
     @Override
@@ -116,10 +110,15 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
+    public void onEdgeChanged(TestFactoryElement adjacent) {
+        mCheckConnections = true;
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -131,6 +130,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 }

@@ -81,7 +81,7 @@ public class TecTechResearchLoader {
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Osmium.getMolten(10 * INGOTS), Materials.Neutronium.getMolten(10 * INGOTS) },
-            ItemRegistry.eic.copy(),
+            ItemList.ElectricImplosionCompressor.get(1L),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);
 

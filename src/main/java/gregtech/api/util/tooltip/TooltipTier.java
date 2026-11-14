@@ -20,7 +20,10 @@ public enum TooltipTier {
     SOLENOID("GT5U.MBTT.Tiers.Solenoid"),
     TURBINE("GT5U.MBTT.Tiers.Turbine"),
     GLASS("GT5U.MBTT.Tiers.Glass"),
-    COMPONENT_ASSEMBLY_LINE_CASING("GT5U.MBTT.Tiers.ComponentAssemblyLineCasing");
+    COMPONENT_ASSEMBLY_LINE_CASING("GT5U.MBTT.Tiers.ComponentAssemblyLineCasing"),
+    FIELD_RESTRICTION_COIL("GT5U.MBTT.Tiers.FieldRestrictionCoil"),
+
+    ;
 
     public final String key;
 

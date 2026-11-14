@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.ItemIcons;
@@ -22,7 +23,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.BehaviourNone;
 import gregtech.common.tools.GTTool;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 public class ToolAngleGrinder extends GTTool {
 
@@ -91,7 +91,11 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? TexturesGtTools.ANGLE_GRINDER : ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ANGLE_GRINDER
+                    .ordinal()]
+            : ItemIcons.POWER_UNIT_HV;
     }
 
     @Override
@@ -105,7 +109,7 @@ public class ToolAngleGrinder extends GTTool {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-        } catch (final Exception e) {}
+        } catch (final Exception ignored) {}
     }
 
     @Override

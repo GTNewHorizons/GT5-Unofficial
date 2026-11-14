@@ -18,9 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.MaterialIconRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -29,12 +32,12 @@ import gregtech.api.interfaces.IIconContainer;
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
 
-    public static Map<OrePrefixes, Map<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
+    public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMap = new HashMap<>();
     public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
 
     private static void fillBlockTexMap() {
-        blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
+        blockTexMap.put(TextureSet.SET_QUARTZ, (short) MaterialIconRegistry.IconType.BLOCK4.ordinal());
         Stream.of(OrePrefixes.blockCasing, OrePrefixes.blockCasingAdvanced)
             .forEach(prefixes -> {
                 HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
@@ -46,11 +49,13 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                new Textures.BlockIcons.CustomIcon(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                Textures.BlockIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                            MainMod.LOGGER.error(e);
                         }
                     });
                 texMapBlocks.put(prefixes, curr);
@@ -63,7 +68,7 @@ public class PrefixTextureLinker implements Runnable {
                 prefixes -> prefixes != OrePrefixes.rod && prefixes.getTextureIndex() == -1
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
             .forEach(prefixes -> {
-                HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
+                HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
                 Arrays.stream(TextureSet.class.getFields())
                     .filter(
                         field -> field.getName()
@@ -72,11 +77,13 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                new Textures.ItemIcons.CustomIcon(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                Textures.ItemIcons.textureSet(
+                                    Mods.GregTech.resourceDomain,
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                            MainMod.LOGGER.error(e);
                         }
                     });
                 texMap.put(prefixes, curr);

@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -8,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -30,9 +30,9 @@ public class NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0);
-        ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens", 0);
+        ItemStack aUVTierLens = getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0);
+        ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 0);
+        ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
@@ -183,9 +183,8 @@ public class NaniteChain {
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 Materials.WhiteDwarfMatter.getBlocks(8),
-                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                ItemList.Circuit_Chip_APIC.get(64),
+                ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
             .itemOutputs(Materials.WhiteDwarfMatter.getNanite(4))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
@@ -204,9 +203,8 @@ public class NaniteChain {
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 Materials.BlackDwarfMatter.getBlocks(8),
-                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                ItemList.Circuit_Chip_APIC.get(64),
+                ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64))
             .itemOutputs(Materials.BlackDwarfMatter.getNanite(4))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
@@ -221,13 +219,12 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
                 // Quantum Anomaly, couldn't find any better naming.
                 GregtechItemList.Laser_Lens_Special.get(0),
                 Materials.Universium.getBlocks(8),
-                ItemList.Optically_Perfected_CPU.get(16),
-                ItemList.Optically_Compatible_Memory.get(16),
-                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
-            )
+                ItemList.Circuit_Chip_APIC.get(64),
+                ItemList.Circuit_Parts_Chip_Bioware.get(64))
             .itemOutputs(Materials.Universium.getNanite(2))
             .fluidInputs(
                 Materials.SpaceTime.getMolten(1 * INGOTS),
@@ -244,29 +241,29 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
-                Materials.TranscendentMetal.getNanite(1),
+                Materials.Universium.getNanite(2),
                 Materials.Eternity.getBlocks(8),
-                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                ItemList.Timepiece.get(4))
-            .itemOutputs(Materials.Eternity.getNanite(4))
+                ItemList.Circuit_Chip_APIC.get(64),
+                ItemList.Timepiece.get(1))
+            .itemOutputs(Materials.Eternity.getNanite(1))
             .fluidInputs(
-                Materials.Space.getMolten(8 * INGOTS),
-                Materials.ExcitedDTSC.getFluid(50_000),
+                Materials.Space.getMolten(2 * INGOTS),
+                Materials.ExcitedDTSC.getFluid(12_500),
                 Materials.PrimordialMatter.getFluid(64_000))
             .metadata(NANO_FORGE_TIER, 3)
-            .duration(12 * MINUTES + 30 * SECONDS)
+            .duration(3 * MINUTES + 7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
 
-        // MagMatter nanites, currently only used in the production of Stargates.
+        // MagMatter nanites
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
-                Materials.Universium.getNanite(1),
+                Materials.Universium.getNanite(4),
                 Materials.MagMatter.getBlocks(8),
-                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
+                ItemList.Circuit_Chip_YPIC.get(64),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 1))
             .itemOutputs(Materials.MagMatter.getNanite(1))
             .fluidInputs(
                 Materials.QuarkGluonPlasma.getFluid(100_000),

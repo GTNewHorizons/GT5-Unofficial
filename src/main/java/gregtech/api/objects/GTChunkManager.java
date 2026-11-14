@@ -1,5 +1,7 @@
 package gregtech.api.objects;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
+import net.minecraftforge.common.ForgeChunkManager.PlayerOrderedLoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -19,16 +23,17 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLog;
 
 /**
  * Handles re-initialization of chunks after a server restart.
  */
-public class GTChunkManager
-    implements ForgeChunkManager.OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
+public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoadingCallback {
+
+    public static final GTChunkManager instance = new GTChunkManager();
 
     private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
-    public static GTChunkManager instance = new GTChunkManager();
+
+    private GTChunkManager() {}
 
     public static void init() {
         ForgeChunkManager.setForcedChunkLoadingCallback(GTMod.GT, instance);
@@ -110,7 +115,7 @@ public class GTChunkManager
         if (!GTValues.enableChunkloaders) return false;
         if (!GTValues.alwaysReloadChunkloaders && chunkXZ == null) return false;
         if (GTValues.debugChunkloaders && chunkXZ != null)
-            GTLog.out.println("GTChunkManager: Chunk request: (" + chunkXZ.chunkXPos + ", " + chunkXZ.chunkZPos + ")");
+            GT_FML_LOGGER.debug("GTChunkManager: Chunk request: ({}, {})", chunkXZ.chunkXPos, chunkXZ.chunkZPos);
         if (instance.registeredTickets.containsKey(owner)) {
             ForgeChunkManager.forceChunk(instance.registeredTickets.get(owner), chunkXZ);
         } else {
@@ -121,16 +126,14 @@ public class GTChunkManager
                 .requestPlayerTicket(GTMod.GT, player, owner.getWorldObj(), ForgeChunkManager.Type.NORMAL);
             if (ticket == null) {
                 if (GTValues.debugChunkloaders)
-                    GTLog.out.println("GTChunkManager: ForgeChunkManager.requestTicket failed");
+                    GT_FML_LOGGER.debug("GTChunkManager: ForgeChunkManager.requestTicket failed");
                 return false;
             }
-            if (GTValues.debugChunkloaders) GTLog.out.println(
-                "GTChunkManager: ticket issued for machine at: (" + owner.xCoord
-                    + ", "
-                    + owner.yCoord
-                    + ", "
-                    + owner.zCoord
-                    + ")");
+            if (GTValues.debugChunkloaders) GT_FML_LOGGER.debug(
+                "GTChunkManager: ticket issued for machine at: ({}, {}, {})",
+                owner.xCoord,
+                owner.yCoord,
+                owner.zCoord);
             NBTTagCompound tag = ticket.getModData();
             tag.setInteger("OwnerX", owner.xCoord);
             tag.setInteger("OwnerY", owner.yCoord);
@@ -156,8 +159,8 @@ public class GTChunkManager
         if (!GTValues.enableChunkloaders) return;
         Ticket ticket = instance.registeredTickets.get(owner);
         if (ticket != null) {
-            if (GTValues.debugChunkloaders) GTLog.out
-                .println("GTChunkManager: Chunk release: (" + chunkXZ.chunkXPos + ", " + chunkXZ.chunkZPos + ")");
+            if (GTValues.debugChunkloaders)
+                GT_FML_LOGGER.debug("GTChunkManager: Chunk release: ({}, {})", chunkXZ.chunkXPos, chunkXZ.chunkZPos);
             ForgeChunkManager.unforceChunk(ticket, chunkXZ);
         }
     }
@@ -167,15 +170,13 @@ public class GTChunkManager
         Ticket ticket = instance.registeredTickets.get(owner);
         if (ticket != null) {
             if (GTValues.debugChunkloaders) {
-                GTLog.out.println(
-                    "GTChunkManager: ticket released by machine at: (" + owner.xCoord
-                        + ", "
-                        + owner.yCoord
-                        + ", "
-                        + owner.zCoord
-                        + ")");
-                for (ChunkCoordIntPair chunk : ticket.getChunkList()) GTLog.out
-                    .println("GTChunkManager: Chunk release: (" + chunk.chunkXPos + ", " + chunk.chunkZPos + ")");
+                GT_FML_LOGGER.debug(
+                    "GTChunkManager: ticket released by machine at: ({}, {}, {})",
+                    owner.xCoord,
+                    owner.yCoord,
+                    owner.zCoord);
+                for (ChunkCoordIntPair chunk : ticket.getChunkList())
+                    GT_FML_LOGGER.debug("GTChunkManager: Chunk release: ({}, {})", chunk.chunkXPos, chunk.chunkZPos);
             }
             ForgeChunkManager.releaseTicket(ticket);
             instance.registeredTickets.remove(owner);
@@ -183,25 +184,22 @@ public class GTChunkManager
     }
 
     public static void printTickets() {
-        GTLog.out.println("GTChunkManager: Start forced chunks dump:");
+        GT_FML_LOGGER.debug("GTChunkManager: Start forced chunks dump:");
         instance.registeredTickets.forEach((machine, ticket) -> {
-            GTLog.out.print(
-                "GTChunkManager: Chunks forced by the machine at (" + machine.xCoord
-                    + ", "
-                    + machine.yCoord
-                    + ", "
-                    + machine.zCoord
-                    + ")");
-            if (ticket.isPlayerTicket()) GTLog.out.print(" Owner: " + ticket.getPlayerName());
-            GTLog.out.print(" :");
+            GT_FML_LOGGER.debug(
+                "GTChunkManager: Chunks forced by the machine at ({}, {}, {})",
+                machine.xCoord,
+                machine.yCoord,
+                machine.zCoord);
+            if (ticket.isPlayerTicket()) GT_FML_LOGGER.debug(" Owner: {}", ticket.getPlayerName());
             for (ChunkCoordIntPair c : ticket.getChunkList()) {
-                GTLog.out.print("(");
-                GTLog.out.print(c.chunkXPos);
-                GTLog.out.print(", ");
-                GTLog.out.print(c.chunkZPos);
-                GTLog.out.print("), ");
+                GT_FML_LOGGER.debug("({}, {}), ", c.chunkXPos, c.chunkZPos);
             }
         });
-        GTLog.out.println("GTChunkManager: End forced chunks dump:");
+        GT_FML_LOGGER.debug("GTChunkManager: End forced chunks dump:");
+    }
+
+    public void onServerStopped() {
+        this.registeredTickets.clear();
     }
 }

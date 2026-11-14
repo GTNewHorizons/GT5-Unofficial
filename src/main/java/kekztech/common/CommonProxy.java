@@ -4,6 +4,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import kekztech.Items;
 import kekztech.common.items.ErrorItem;
 import kekztech.common.items.MetaItemCraftingComponent;
@@ -42,5 +44,7 @@ public class CommonProxy {
         }
 
         MTEHatchTFFT.registerAEIntegration();
+        MTEHatchOutputBusCompressed.registerAEIntegration();
+        MTEHatchInputBusCompressed.registerAEIntegration();
     }
 }

@@ -35,7 +35,6 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
@@ -61,7 +60,7 @@ public class DEFCRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 8L))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
-            .duration(14_000)
+            .duration(2100 * SECONDS)
             .addTo(mixerRecipes);
 
         // Casings
@@ -77,7 +76,7 @@ public class DEFCRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "tile.BloodyIchorium", 1, 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "BloodyIchorium", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6L))
             .fluidInputs(Materials.Void.getMolten(8 * INGOTS))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))
@@ -129,7 +128,7 @@ public class DEFCRecipes {
         conversionRecipes();
     }
 
-    private static final Item EMTItems = GameRegistry.findItem("EMT", "EMTItems");
+    private static final Item EMTItems = GameRegistry.findItem(ElectroMagicTools.ID, "EMTItems");
 
     private static void addOldHiddenRecipe(GTRecipe recipe) {
         if (!ElectroMagicTools.isModLoaded()) return;
@@ -217,7 +216,7 @@ public class DEFCRecipes {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Draconium, 4),
                     GTModHandler.getModItem(DraconicEvolution.ID, "wyvernCore", 4, 0),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ManyullynCrystal", 1, 0),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ManyullynCrystal", 1, 0),
                     kubatech.api.enums.ItemList.DEFCAwakenedSchematic.get(0L))
                 .fluidInputs(Materials.Infinity.getMolten(10 * INGOTS))
                 .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0))
@@ -277,26 +276,26 @@ public class DEFCRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.dragon_egg, 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTUtility.getIntegratedCircuit(1))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+            .circuit(1)
             .fluidInputs(Materials.Radon.getPlasma(1 * INGOTS))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
             .duration(4200)
-            .metadata(DEFC_CASING_TIER, 3)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
+                .circuit(1)
                 .fluidInputs(Materials.Radon.getPlasma(72))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(3600)
-                .metadata(DEFC_CASING_TIER, 3)
+                .metadata(DEFC_CASING_TIER, 2)
                 .addTo(fusionCraftingRecipes);
         }
 
@@ -309,7 +308,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
-            .metadata(DEFC_CASING_TIER, 3)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
@@ -322,7 +321,7 @@ public class DEFCRecipes {
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(2400)
-                .metadata(DEFC_CASING_TIER, 3)
+                .metadata(DEFC_CASING_TIER, 2)
                 .addTo(fusionCraftingRecipes);
         }
     }

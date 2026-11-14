@@ -19,6 +19,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class VacuumFreezerRecipes implements Runnable {
@@ -374,6 +375,13 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidOutputs(Materials.SuperfluidHelium.getFluid(144L), Materials.CoolantByproducts.getFluid(5000L))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(vacuumFreezerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1000))
+            .fluidOutputs(Materials.Force.getMolten(1000))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
     }
 

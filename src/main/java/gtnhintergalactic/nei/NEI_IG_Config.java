@@ -30,9 +30,9 @@ public class NEI_IG_Config implements IConfigureNEI {
             ItemList.SpaceElevatorModulePumpT3.get(1))) {
             API.addRecipeCatalyst(pump, "gtnhintergalactic.nei.SpacePumpModuleRecipeHandler");
         }
-        API.addRecipeCatalyst(
-            ItemList.PlanetaryGasSiphonController.get(1),
-            "gtnhintergalactic.nei.GasSiphonRecipeHandler");
+        API.addRecipeCatalyst(ItemList.PlanetarySiphon.get(1), "gtnhintergalactic.nei.GasSiphonRecipeHandler");
+
+        API.addOption(new AsteroidDumper());
 
         executed = true;
     }
@@ -53,7 +53,7 @@ public class NEI_IG_Config implements IConfigureNEI {
             new HandlerInfo.Builder(
                 "gtnhintergalactic.nei.GasSiphonRecipeHandler",
                 GTNHIntergalactic.MODNAME,
-                GTNHIntergalactic.MODID).setDisplayStack(ItemList.PlanetaryGasSiphonController.get(1))
+                GTNHIntergalactic.MODID).setDisplayStack(ItemList.PlanetarySiphon.get(1))
                     .setShiftY(6)
                     .setWidth(160)
                     .setHeight(90)

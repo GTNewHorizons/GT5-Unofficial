@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HeatingCoilLevel.EV;
 import static gregtech.api.enums.HeatingCoilLevel.HV;
 import static gregtech.api.enums.HeatingCoilLevel.IV;
@@ -19,11 +19,12 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -31,51 +32,58 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import gregtech.api.net.ClientMetaTrackerRegistry;
+import gregtech.api.net.GTCoilTrackerAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings5 extends BlockCasingsAbstract
-    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
 
-    public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
-    public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
-
-    public static final int ACTIVE_OFFSET = 16;
+    private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 4);
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
 
-        register(0, ItemList.Casing_Coil_Cupronickel, "Cupronickel Coil Block");
-        register(1, ItemList.Casing_Coil_Kanthal, "Kanthal Coil Block");
-        register(2, ItemList.Casing_Coil_Nichrome, "Nichrome Coil Block");
-        register(3, ItemList.Casing_Coil_TungstenSteel, "TPV-Alloy Coil Block");
-        register(4, ItemList.Casing_Coil_HSSG, "HSS-G Coil Block");
-        register(5, ItemList.Casing_Coil_Naquadah, "Naquadah Coil Block");
-        register(6, ItemList.Casing_Coil_NaquadahAlloy, "Naquadah Alloy Coil Block");
-        register(7, ItemList.Casing_Coil_ElectrumFlux, "Electrum Flux Coil Block");
-        register(8, ItemList.Casing_Coil_AwakenedDraconium, "Awakened Draconium Coil Block");
-        register(9, ItemList.Casing_Coil_HSSS, "HSS-S Coil Block");
-        register(10, ItemList.Casing_Coil_Trinium, "Trinium Coil Block");
-        register(11, ItemList.Casing_Coil_Infinity, "Infinity Coil Block");
-        register(12, ItemList.Casing_Coil_Hypogen, "Hypogen Coil Block");
-        register(13, ItemList.Casing_Coil_Eternal, "Eternal Coil Block");
+        register(0, ItemList.Casing_Coil_Cupronickel);
+        register(1, ItemList.Casing_Coil_Kanthal);
+        register(2, ItemList.Casing_Coil_Nichrome);
+        register(3, ItemList.Casing_Coil_TungstenSteel);
+        register(4, ItemList.Casing_Coil_HSSG);
+        register(5, ItemList.Casing_Coil_Naquadah);
+        register(6, ItemList.Casing_Coil_NaquadahAlloy);
+        register(7, ItemList.Casing_Coil_ElectrumFlux);
+        register(8, ItemList.Casing_Coil_AwakenedDraconium);
+        register(9, ItemList.Casing_Coil_HSSS);
+        register(10, ItemList.Casing_Coil_Trinium);
+        register(11, ItemList.Casing_Coil_Infinity);
+        register(12, ItemList.Casing_Coil_Hypogen);
+        register(13, ItemList.Casing_Coil_Eternal);
 
         for (int i = 0; i < 14; i++) {
             GTStructureChannels.HEATING_COIL
                 .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
         }
+
+        ClientMetaTrackerRegistry.register(this, new GTCoilTrackerAccess());
     }
 
     @Override
@@ -126,9 +134,15 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
+        final boolean useOldCoils = Client.render.useOldCoils;
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0)
+            + (useOldCoils ? ACTIVE_OFFSET * 2 : 0);
+        ITexture[][] cached = textureCache.get(cacheIndex);
+        if (cached != null) return cached;
+
         List<ITexture> textures = new ArrayList<>();
 
-        if (Client.render.useOldCoils) {
+        if (useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
@@ -195,17 +209,14 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         ITexture[] layers = textures.toArray(new ITexture[0]);
 
-        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        cached = new ITexture[][] { layers, layers, layers, layers, layers, layers };
+        if (textureCache.compareAndSet(cacheIndex, null, cached)) return cached;
+        return textureCache.get(cacheIndex);
     }
 
     @Override
     public int getRenderType() {
         return GTRendererBlock.RENDER_ID;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
     }
 
     /*--------------- COIL CHECK IMPL. ------------*/
@@ -261,6 +272,14 @@ public class BlockCasings5 extends BlockCasingsAbstract
         int metadata = stack.getItemDamage();
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
-        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.coilheattooltip", formatNumber(coilLevel.getHeat())));
+    }
+
+    @Override
+    public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        ItemStack stack = accessor.getStack()
+            .copy();
+        stack.setItemDamage(stack.getItemDamage() % ACTIVE_OFFSET);
+        return stack;
     }
 }

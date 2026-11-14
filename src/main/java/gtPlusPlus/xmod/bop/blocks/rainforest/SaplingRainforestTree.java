@@ -9,7 +9,6 @@ import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 import gtPlusPlus.xmod.bop.world.features.trees.WorldGenRainForestTree_Ex;
@@ -17,12 +16,11 @@ import gtPlusPlus.xmod.bop.world.features.trees.WorldGenRainForestTree_Ex;
 public class SaplingRainforestTree extends SaplingBase {
 
     public SaplingRainforestTree() {
-        super("Rainforest Oak Sapling", "rainforestoak", new String[] { "rainforest" });
+        super("Rainforest Oak Sapling", new String[] { "rainforest" });
     }
 
     @Override
     public void func_149878_d(World world, int x, int y, int z, Random rand) {
-        Logger.WARNING("func_149878_d - 1");
         if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
         int l = world.getBlockMetadata(x, y, z) & 7;
         rand.nextInt(10);

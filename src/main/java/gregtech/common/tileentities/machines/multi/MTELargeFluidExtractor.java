@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -21,48 +21,48 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.gui.modularui.multiblock.MTELargeFluidExtractorGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELargeFluidExtractor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 48; // Robust Tungstensteel Machine Casing
@@ -97,7 +97,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             buildHatchAdder(MTELargeFluidExtractor.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX) // Robust Tungstensteel Machine Casing
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(
                         MTELargeFluidExtractor::onCasingAdded,
@@ -128,11 +128,29 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     private int glassTier = -1;
     @Nullable
-    private HeatingCoilLevel mCoilLevel = null;
+    private HeatingCoilLevel coilLevel = null;
     @Nullable
-    private Byte mSolenoidLevel = null;
-    private int mCasingAmount;
-    private boolean mStructureBadGlassTier = false, mStructureBadCasingCount = false;
+    private Byte solenoidLevel = null;
+    private int casingAmount;
+    private boolean structureBadGlassTier = false;
+
+    public boolean getStructureBadCasingCount() {
+        return structureBadCasingCount;
+    }
+
+    public boolean getStructureBadGlassTier() {
+        return structureBadGlassTier;
+    }
+
+    public int getGlassTier() {
+        return glassTier;
+    }
+
+    public int getCasingAmount() {
+        return casingAmount;
+    }
+
+    private boolean structureBadCasingCount = false;
 
     public MTELargeFluidExtractor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -151,36 +169,33 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     public void clearHatches() {
         super.clearHatches();
 
-        mCasingAmount = 0;
-        mStructureBadGlassTier = false;
-        mStructureBadCasingCount = false;
+        casingAmount = 0;
+        structureBadGlassTier = false;
+        structureBadCasingCount = false;
         glassTier = -1;
-        mCoilLevel = null;
-        mSolenoidLevel = null;
+        coilLevel = null;
+        solenoidLevel = null;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0)) {
-            return false;
-        }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
-        if (mCasingAmount < (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)) {
-            mStructureBadCasingCount = true;
-        }
-
+        checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
 
-            if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
-                mStructureBadGlassTier = true;
-                break;
+            if (energyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(energyHatch.getTierForStructure()));
+                return;
             }
         }
-
-        return !mStructureBadGlassTier && !mStructureBadCasingCount;
     }
 
     @Override
@@ -196,17 +211,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEUMultiplier());
-                setSpeedBonus(1.0f / getSpeedBonus());
-                return super.process();
-            }
-        }.noRecipeCaching()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifierSupplier(this::getEUMultiplier)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     @Override
@@ -215,136 +223,92 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     private HeatingCoilLevel getCoilLevel() {
-        return mCoilLevel;
+        return coilLevel;
     }
 
     private void setCoilLevel(HeatingCoilLevel level) {
-        mCoilLevel = level;
+        coilLevel = level;
     }
 
     private Byte getSolenoidLevel() {
-        return mSolenoidLevel;
+        return solenoidLevel;
     }
 
     private void setSolenoidLevel(byte level) {
-        mSolenoidLevel = level;
+        solenoidLevel = level;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCALargeFluidExtractor,
+            TexturesGtBlock.oMCALargeFluidExtractorGlow,
+            TexturesGtBlock.oMCALargeFluidExtractorActive,
+            TexturesGtBlock.oMCALargeFluidExtractorActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Fluid Extractor, LFE")
-            .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
-            .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
-            .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
-            .addInfo(String.format(
-                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
-            ))
-            .addInfo(String.format(
-                "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                EnumChatFormatting.ITALIC,
-                BASE_EU_MULTIPLIER,
-                HEATING_COIL_EU_MULTIPLIER,
-                EnumChatFormatting.GRAY
-            ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
+        .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
+        .addMarkdown(
+            new ResourceLocation("gregtech", "large-fluid-extractor"),
+            ImmutableMap.<String, Object>builder()
+                .put("speed", formatNumber(BASE_SPEED_BONUS * 100))
+                .put("speed_bonus", formatNumber(SPEED_PER_COIL * 100))
+                .put("eu_eff", formatNumber(BASE_EU_MULTIPLIER * 100))
+                .put("eu_eff_bonus", formatNumber(HEATING_COIL_EU_MULTIPLIER))
+                .build())            
             .beginStructureBlock(5, 9, 5, false)
-            .addController("Front Center (Bottom Layer)")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
-            .addCasingInfoExactly("Heating Coils", 8 * 3, true)
-            .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
+            .addEnergyHatchGlassTier()
+            .addController("Front bottom center")
+            .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("36", "Any Tiered Glass", true)
+            .addCasing("24", "Heating Coil", true)
+            .addCasing("24", "Black Steel Frame Box", false)
+            .addCasing("7", "Solenoid Superconductor Coil", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeFluidExtractorGui(this);
     }
 
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
+    public int getHatchTier() {
+        int hatchTier = 0;
 
-        screenElements.widgets(TextWidget.dynamicString(() -> {
-            if (mStructureBadCasingCount) {
-                return EnumChatFormatting.DARK_RED
-                    + StatCollector
-                        .translateToLocalFormatted(
-                            "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
-                            BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
-                            mCasingAmount)
-                        .replace("\\n", "\n")
-                    + EnumChatFormatting.RESET;
-            }
-
-            if (mStructureBadGlassTier) {
-                int hatchTier = 0;
-
-                for (var hatch : mEnergyHatches) {
-                    if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
-                }
-
-                return String.format(
-                    "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
-                    EnumChatFormatting.DARK_RED,
-                    VN[hatchTier],
-                    VN[glassTier],
-                    RESET);
-            }
-
-            return "";
-        })
-            .setTextAlignment(Alignment.CenterLeft));
+        for (var hatch : mEnergyHatches) {
+            if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
+        }
+        return hatchTier;
     }
 
     @Override
@@ -363,34 +327,30 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(
-            StatCollector.translateToLocalFormatted("Max Parallels: %s%d%s", YELLOW, getMaxParallelRecipes(), RESET));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.large_fluid_extractor.max_parallels", YELLOW, getMaxParallelRecipes(), RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Heating Coil Speed Bonus: +%s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus",
                 YELLOW,
-                getCoilSpeedBonus() * 100,
+                formatNumber(getCoilSpeedBonus() * 100),
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total Speed Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_speed_multiplier",
                 YELLOW,
-                getSpeedBonus() * 100,
+                formatNumber((BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100),
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total EU/t Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_eu_multiplier",
                 YELLOW,
-                getEUMultiplier() * 100,
+                formatNumber(getEUMultiplier() * 100),
                 RESET));
 
         return data.toArray(new String[0]);
@@ -398,36 +358,21 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public int getMaxParallelRecipes() {
-        return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * mSolenoidLevel));
+        return Math.max(1, solenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * solenoidLevel));
     }
 
-    public float getCoilSpeedBonus() {
-        return (float) ((mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier()));
+    public double getCoilSpeedBonus() {
+        return ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
     }
 
-    public float getSpeedBonus() {
-        return (float) (BASE_SPEED_BONUS + getCoilSpeedBonus());
+    public double getSpeedBonus() {
+        return 1.0D / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
-    public float getEUMultiplier() {
-        double heatingBonus = (mCoilLevel == null ? 0
-            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, mCoilLevel.getTier()));
+    public double getEUMultiplier() {
+        double heatingBonus = (coilLevel == null ? 0
+            : GTUtility.powInt(HEATING_COIL_EU_MULTIPLIER, coilLevel.getTier()));
 
-        return (float) (BASE_EU_MULTIPLIER * heatingBonus);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
+        return (BASE_EU_MULTIPLIER * heatingBonus);
     }
 }

@@ -1,60 +1,50 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.GlStateManager;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
 
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-        500 };
+    private static IIconContainer ScreenON;
+    private static IIconContainer ScreenOFF;
+    private final short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+        500, 500 };
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
+    private boolean showValues = false;
     private boolean stopChecking = false;
     private String clientLocale = "en_US";
 
@@ -68,12 +58,53 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         regenerate();
     }
 
+    public short getMatrixElement(int index) {
+        return matrix[index];
+    }
+
+    public void setMatrixElement(short matrixElement, int index) {
+        matrix[index] = matrixElement;
+        compute();
+    }
+
+    public byte getSelection() {
+        return selection;
+    }
+
+    public void setSelection(byte selection) {
+        this.selection = selection;
+    }
+
+    public byte getMode() {
+        return mode;
+    }
+
+    public void setMode(byte mode) {
+        this.mode = mode;
+    }
+
+    public byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(byte status) {
+        this.status = status;
+    }
+
+    public boolean isShowingValues() {
+        return showValues;
+    }
+
+    public void setShowValues(boolean showValues) {
+        this.showValues = showValues;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/UC");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/UC_ACTIVE");
     }
 
     @Override
@@ -95,10 +126,15 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
+
+                int oldStatus = status;
+
                 if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
                 }
+
+                if (status == 0 && oldStatus != status) notifyWatchers();
             }
         }
     }
@@ -115,8 +151,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            translateToLocalFormatted("tt.keyword.Status", clientLocale) + ": " + EnumChatFormatting.GOLD + status };
+        return new String[] { IGregTechDeviceInformation.encode("tt.infodata.uncertainty.status", status) };
     }
 
     @Override
@@ -137,6 +172,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         aNBT.setByte("mSel", selection);
         aNBT.setByte("mMode", mode);
         aNBT.setByte("mStatus", status);
+        aNBT.setBoolean("mShowValues", showValues);
         NBTTagCompound mat = new NBTTagCompound();
         for (int i = 0; i < 16; i++) {
             mat.setShort(Integer.toString(i), matrix[i]);
@@ -150,6 +186,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         selection = aNBT.getByte("mSel");
         mode = aNBT.getByte("mMode");
         status = aNBT.getByte("mStatus");
+        showValues = aNBT.getBoolean("mShowValues");
         NBTTagCompound mat = aNBT.getCompoundTag("mMat");
         for (int i = 0; i < 16; i++) {
             matrix[i] = mat.getShort(Integer.toString(i));
@@ -190,13 +227,12 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public String[] getDescription() {
-        String[] description = new String[4];
-        description[0] = CommonValues.TEC_MARK_EM;
-        description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0"); // Feeling certain, or not?
-        description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-            + translateToLocal("gt.blockmachines.hatch.certain.desc.1"); // Schrödinger equation in a box
+        String[] description = new String[mTier < 6 ? 3 : 2];
+        description[0] = translateToLocal("gt.blockmachines.hatch.certain.desc.0");
+        description[1] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+            + translateToLocal("gt.blockmachines.hatch.certain.desc.1");
         if (mTier < 6) {
-            description[3] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
+            description[2] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
         }
         return description;
     }
@@ -327,125 +363,17 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
-                .setSize(18, 18)
-                .setPos(112, 55));
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchUncertaintyGui(this).build(guiData, syncManager, uiSettings);
+    }
 
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .setPos(43, 4)
-                .setSize(90, 72))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR)
-                    .setPos(46, 27)
-                    .setSize(46, 46));
-
-        int[] xPositions = new int[] { 7, 25, 133, 151 };
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                final int index = i * 4 + j;
-                builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                    if (selection == -1) {
-                        selection = (byte) index;
-                    } else {
-                        short temp = matrix[selection];
-                        matrix[selection] = matrix[index];
-                        matrix[index] = temp;
-                        selection = -1;
-                    }
-                    compute();
-                })
-                    .setPlayClickSound(false)
-                    .setBackground(GTUITextures.BUTTON_STANDARD, TecTechUITextures.OVERLAY_BUTTON_UNCERTAINTY[index])
-                    .setPos(xPositions[i], 4 + j * 18)
-                    .setSize(18, 18))
-                    .widget(new FakeSyncWidget.ShortSyncer(() -> matrix[index], val -> matrix[index] = val));
-            }
-        }
-        builder.widget(new FakeSyncWidget.ByteSyncer(() -> selection, val -> selection = val))
-            .widget(new FakeSyncWidget.ByteSyncer(() -> mode, val -> mode = val))
-            .widget(new FakeSyncWidget.ByteSyncer(() -> status, val -> status = val));
-
-        builder.widget(
-            new TextWidget()
-                .setStringSupplier(
-                    () -> (status == 0 ? StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ok")
-                        : StatCollector.translateToLocal("tt.gui.text.hatch.uncertainty.status.ng")))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setPos(46, 7));
-
-        for (int i = 0; i < 9; i++) {
-            final int index = i;
-            builder.widget(new DrawableWidget().setDrawable(() -> {
-                UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
-                UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
-                switch (mode) {
-                    case 1: // ooo oxo ooo
-                        if (index == 4) return status == 0 ? valid : invalid;
-                        break;
-                    case 2: // ooo xox ooo
-                        if (index == 3) return (status & 1) == 0 ? valid : invalid;
-                        if (index == 5) return (status & 2) == 0 ? valid : invalid;
-                        break;
-                    case 3: // oxo xox oxo
-                        if (index == 1) return (status & 1) == 0 ? valid : invalid;
-                        if (index == 3) return (status & 2) == 0 ? valid : invalid;
-                        if (index == 5) return (status & 4) == 0 ? valid : invalid;
-                        if (index == 7) return (status & 8) == 0 ? valid : invalid;
-                        break;
-                    case 4: // xox ooo xox
-                        if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                        if (index == 2) return (status & 2) == 0 ? valid : invalid;
-                        if (index == 6) return (status & 4) == 0 ? valid : invalid;
-                        if (index == 8) return (status & 8) == 0 ? valid : invalid;
-                        break;
-                    case 5: // xox oxo xox
-                        if (index == 0) return (status & 1) == 0 ? valid : invalid;
-                        if (index == 2) return (status & 2) == 0 ? valid : invalid;
-                        if (index == 4) return (status & 4) == 0 ? valid : invalid;
-                        if (index == 6) return (status & 8) == 0 ? valid : invalid;
-                        if (index == 8) return (status & 16) == 0 ? valid : invalid;
-                        break;
-                }
-                return null;
-            })
-                .setPos(55 + (index % 3) * 12, 36 + (index / 3) * 12)
-                .setSize(4, 4));
-        }
-
-        for (int i = 0; i < 16; i++) {
-            final int index = i;
-            builder.widget(new DrawableWidget() {
-
-                @Override
-                public void draw(float partialTicks) {
-                    glEnable(GL_BLEND);
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                    glColor4f(1f, 1f, 1f, (float) matrix[index] / 1000f);
-
-                    // super.draw but without disabling blend
-                    GlStateManager.pushMatrix();
-                    getDrawable().draw(Pos2d.ZERO, getSize(), partialTicks);
-                    GlStateManager.popMatrix();
-
-                    glDisable(GL_BLEND);
-                    glColor4f(1f, 1f, 1f, 1f);
-                }
-            }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR)
-                .setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)
-                .setSize(8, 8))
-                .widget(
-                    new DrawableWidget()
-                        .setDrawable(() -> selection == index ? TecTechUITextures.PICTURE_UNCERTAINTY_SELECTED : null)
-                        .setPos(46 + (i / 4) * 12, 27 + (i % 4) * 12)
-                        .setSize(10, 10));
-        }
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 }

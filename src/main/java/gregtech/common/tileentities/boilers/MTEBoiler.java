@@ -2,11 +2,17 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -19,15 +25,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,29 +35,31 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.singleblock.MTEBoilerGui;
 import gregtech.common.pollution.Pollution;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, IAddUIWidgets {
+public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
 
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
+    public int fuelMaxEnergy = 0;
     public int mLossTimer = 0;
     public FluidStack mSteam = null;
     protected final FluidStackTank steamTank = new FluidStackTank(
@@ -200,6 +200,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         aNBT.setInteger("mLossTimer", this.mLossTimer);
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
+        aNBT.setInteger("fuelMaxEnergy", this.fuelMaxEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
         if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
@@ -212,6 +213,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         this.mLossTimer = aNBT.getInteger("mLossTimer");
         this.mTemperature = aNBT.getInteger("mTemperature");
         this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
+        this.fuelMaxEnergy = aNBT.getInteger("fuelMaxEnergy") > 0 ? aNBT.getInteger("fuelMaxEnergy")
+            : this.mProcessingEnergy;
         this.mExcessWater = aNBT.getInteger("mExcessWater");
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
@@ -234,11 +237,18 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            updateSoundLoops(playBoiling);
+    public void onClientSoundStateChanged() {
+        if (mBoilingSound != null && mBoilingSound.isDonePlaying()) {
+            mBoilingSound = null;
         }
+        if (mHeatingSound != null && mHeatingSound.isDonePlaying()) {
+            mHeatingSound = null;
+        }
+        updateSoundLoops(playBoiling);
+    }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
@@ -323,6 +333,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
+        if (this.mProcessingEnergy <= 0) {
+            this.fuelMaxEnergy = 0;
+        }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
 
@@ -348,7 +361,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 this.mHadNoWater = true;
             } else {
                 if (this.mHadNoWater) {
-                    GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                    GTLog.writeExplosionLog(this, "Boiler had no water");
                     onDangerousWaterLack(aBaseMetaTileEntity, aTick);
                     return true;
                 }
@@ -360,6 +373,10 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             playBoiling = false;
         }
         return false;
+    }
+
+    protected boolean isProducingSteam() {
+        return this.mTemperature > 100 && !this.mHadNoWater;
     }
 
     protected void onDangerousWaterLack(IGregTechTileEntity tile, long ignoredTicks) {
@@ -429,7 +446,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(0D, 0D, 0D)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
@@ -463,15 +480,17 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         return 1;
     }
 
+    protected void addProcessingEnergy(int amount) {
+        this.mProcessingEnergy += amount;
+        this.fuelMaxEnergy = Math.max(this.fuelMaxEnergy, this.mProcessingEnergy);
+    }
+
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected boolean useMui2() {
-        return true;
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
-
-    @Override
-    protected abstract GTGuiTheme getGuiTheme();
 
     // this is the mui1 fluid tank, but mui2 has compat with it
     public FluidStackTank getFluidStackTank() {
@@ -492,9 +511,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
-        return new ItemSlot().slot(
-            new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
-                .filter(this::isItemValidFuel))
+        return new ItemSlot().slot(new ModularSlot(inventoryHandler, 2).slotGroup("item_inv"))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
@@ -509,116 +526,53 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
     }
 
-    @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
-    }
-
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
-    }
-
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GTUITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(this::isValidFluidInputSlotItem)
-                .setPos(43, 25)
-                .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setPos(43, 61)
-                    .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-            .widget(createMuffleButton())
-            .widget(createFuelSlotMui1())
-            .widget(createAshSlotMui1())
-            .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(70, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_WATER, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(83, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                    .setTexture(getProgressbarEmpty(), GTUITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(96, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar()
-                    // cap minimum so that one can easily see there's fuel remaining
-                    .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                    .setTexture(getProgressbarFuel(), 14)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(116, 45)
-                    .setSize(14, 14))
-            .widget(
-                new DrawableWidget().setDrawable(getOverlaySlotCanister())
-                    .setPos(43, 43)
-                    .setSize(18, 18));
-    }
-
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
-    }
-
-    protected Widget createFuelSlotMui1() {
-        return new SlotWidget(inventoryHandler, 2).setFilter(this::isItemValidFuel)
-            .setPos(115, 61)
-            .setBackground(getFuelSlotBackground());
     }
 
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return true;
     }
 
-    protected SlotWidget createAshSlotMui1() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-            .setPos(115, 25)
-            .setBackground(getAshSlotBackground());
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
-    }
-
     @Override
     public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+        return getTieredVariant() == TieredVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 
-    // for GT++
-
-    protected IDrawable getOverlaySlotIn() {
-        return GTUITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return (index == 0 && isValidFluidInputSlotItem(itemStack) || index == 2 && isItemValidFuel(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 
-    protected IDrawable getOverlaySlotOut() {
-        return GTUITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        int fuel = tag.getInteger("fuel") * 20;
+        int fuelMax = tag.getInteger("fuelMax") * 20;
+        int temperature = tag.getInteger("temperature");
+
+        if (fuel > 0) {
+            currenttip.add(GTWaila.getMachineProgressString(fuelMax, fuelMax - fuel));
+        }
+
+        if (fuel == 0) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.fuel_empty"));
+        }
+
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.temperature", temperature));
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
-    protected IDrawable getOverlaySlotCanister() {
-        return GTUITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarEmpty() {
-        return GTUITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarFuel() {
-        return GTUITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("fuel", mProcessingEnergy);
+        tag.setInteger("temperature", mTemperature);
+        tag.setInteger("fuelMax", fuelMaxEnergy);
     }
 }

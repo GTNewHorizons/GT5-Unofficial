@@ -12,6 +12,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -27,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -65,16 +68,15 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Top/Bottom layer: Multi-use Casings", 34, false)
-            .addCasingInfoMin("Middle layers: Thermal Containment Casing", 47, false)
-            .addInputBus("Bottom Layer (optional)", 1)
-            .addInputHatch("Bottom Layer", 1)
-            .addOutputBus("Top Layer (optional)", 1)
-            .addOutputHatch("Top Layer", 1)
-            .addEnergyHatch("Any Multi-use Casing", 1)
-            .addMaintenanceHatch("Any Multi-use Casing", 1)
-            .addMufflerHatch("Any Multi-use Casing", 1)
+            .addController("Front center, 2nd layer")
+            .addCasing("47", "Thermal Containment Casing", false)
+            .addCasing("34-37", "Multi-Use Casing", false)
+            .addEnergyHatch("1+", "Any top or bottom casing", 1, 2)
+            .addMaintenanceHatch("1", "Any top or bottom casing", 1, 2)
+            .addMufflerHatch("1", "Any top or bottom casing", 1, 2)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any top casing", 2)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -97,7 +99,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(InputBus, InputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .addElement('X', ofBlock(getCasingBlock1(), getCasingMeta1()))
                 .addElement(
@@ -105,7 +107,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .build();
         }
@@ -124,11 +126,15 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing1 = 0;
-        boolean didBuild = checkPiece(mName, 2, 4, 0);
-        log("Built? " + didBuild + ", " + mCasing1);
-        return didBuild && mCasing1 >= 34 && checkHatch();
+        if (!checkPiece(mName, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasing1, 34);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -163,8 +169,8 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.2F)
-            .setEuModifier(0.9F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 2.2D)
+            .setEuModifier(0.9D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

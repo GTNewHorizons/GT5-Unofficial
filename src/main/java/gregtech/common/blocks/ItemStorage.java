@@ -11,6 +11,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.interfaces.IOreMaterial;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -31,15 +32,12 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        if (this.field_150939_a instanceof BlockMetal) {
-            int aDamage = aStack.getItemDamage();
-            if (aDamage >= 0 && aDamage < ((BlockMetal) this.field_150939_a).mMats.length) {
-                aName = ((BlockMetal) this.field_150939_a).mMats[aDamage].getLocalizedNameForItem(aName);
-            }
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (this.field_150939_a instanceof BlockStorage storage) {
+            return storage.getLocalizedName(stack.getItemDamage());
         }
-        return aName;
+
+        return super.getItemStackDisplayName(stack);
     }
 
     @Override
@@ -49,6 +47,18 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        int aDamage = aStack.getItemDamage();
+        if (this.field_150939_a instanceof BlockMetal blockMetal) {
+            if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
+                blockMetal.mMats[aDamage].addTooltips(aList);
+            }
+        } else if (this.field_150939_a instanceof BlockSheetMetal sheetMetal) {
+            IOreMaterial material = sheetMetal.materials.get(aDamage);
+            material.addTooltips(aList);
+        } else if (this.field_150939_a instanceof BlockDecorativeFrame frame) {
+            IOreMaterial material = frame.materials.get(aDamage);
+            if (material != null) material.addTooltips(aList);
+        }
         super.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 

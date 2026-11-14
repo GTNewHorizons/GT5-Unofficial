@@ -19,7 +19,10 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -42,7 +45,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Quadruples the cost of everything except for Metastable and Celestial, which are only doubled,
             // but gives 4x the output.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(8_000),
                     GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
@@ -61,7 +63,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Doubles the cost across the board, but outputs 3x more.
             // Switches to Heavy Radox, which can be mass-produced with the QFT.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(2_000),
                     GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
@@ -81,7 +82,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // POC
             // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(1_000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
@@ -98,7 +98,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Tier 2
             // First recipe using AwDr coil and super heavy radox
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(250),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
@@ -130,7 +129,7 @@ public class PlasmaForgeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemStandarParticleBase, 1, 24),
-                getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
+                getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 0),
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(1 * INGOTS))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
@@ -157,5 +156,25 @@ public class PlasmaForgeRecipes implements Runnable {
                 .metadata(COIL_HEAT, 12600)
                 .addTo(plasmaForgeRecipes);
         }
+
+        // Chipped Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.Hexanite, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Opal, 64))
+            .fluidInputs(Materials.StargateCrystalSlurry.getFluid(5_000), Materials.ExcitedDTSC.getFluid(72_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Amalgatite, 64))
+            .fluidOutputs(Materials.DTR.getFluid(144_000))
+            .duration(420 * SECONDS)
+            .eut((int) TierEU.RECIPE_MAX)
+            .metadata(COIL_HEAT, 13500)
+            .addTo(plasmaForgeRecipes);
+
     }
 }

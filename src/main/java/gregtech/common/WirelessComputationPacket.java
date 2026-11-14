@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import tectech.mechanics.dataTransport.QuantumDataPacket;
 
 public class WirelessComputationPacket {
 
@@ -32,24 +31,25 @@ public class WirelessComputationPacket {
         return computationStored[downloadIndex()];
     }
 
-    private QuantumDataPacket download(long dataIn, long aTick) {
-        if (!wirelessEnabled) return new QuantumDataPacket(0L);
+    private long download(long dataIn, long aTick) {
+        if (!wirelessEnabled) return 0L;
 
-        // If the net hasn't been updated yet this tick, make sure to do so
-        if (lastUpdateTick < aTick) {
+        // If the net hasn't been updated yet this tick, make sure to do so.
+        // Use != instead of < so that a server/world restart (which resets the tick counter to 0
+        // while lastUpdateTick keeps its old larger value) re-arms the rotation instead of deadlocking it forever.
+        if (lastUpdateTick != aTick) {
             this.update();
             lastUpdateTick = aTick;
         }
 
-        // If we have enough computation 'stored', download it
-        // Note that this means that if you do not have enough computation to go to all
-        // destinations, it won't be distributed equally. This is fine.
-        // This also means that if you don't have enough computation for a hatch, it will not receive any computation
-        // at all. This is also fine.
-        if (getAvailableComputationStored() >= dataIn) {
-            computationStored[downloadIndex()] -= dataIn;
-            return new QuantumDataPacket(dataIn);
-        } else return new QuantumDataPacket(0L);
+        long avail = computationStored[downloadIndex()];
+        if (avail <= 0) return 0L;
+
+        long take = Math.min(dataIn, avail);
+        computationStored[downloadIndex()] -= take;
+        if (computationStored[downloadIndex()] < 0) computationStored[downloadIndex()] = 0;
+
+        return take;
     }
 
     private void update() {
@@ -69,8 +69,10 @@ public class WirelessComputationPacket {
     }
 
     private void upload(long dataOut, long aTick) {
-        // If the net hasn't been updated yet this tick, make sure to do so
-        if (lastUpdateTick < aTick) {
+        // If the net hasn't been updated yet this tick, make sure to do so.
+        // Use != instead of < so that a server/world restart (which resets the tick counter to 0
+        // while lastUpdateTick keeps its old larger value) re-arms the rotation instead of deadlocking it forever.
+        if (lastUpdateTick != aTick) {
             this.update();
             lastUpdateTick = aTick;
         }
@@ -78,7 +80,7 @@ public class WirelessComputationPacket {
         computationStored[uploadIndex()] += dataOut;
     }
 
-    public static QuantumDataPacket downloadData(UUID userId, long dataIn, long aTick) {
+    public static long downloadData(UUID userId, long dataIn, long aTick) {
         return getPacketByUserId(userId).download(dataIn, aTick);
     }
 

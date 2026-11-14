@@ -18,22 +18,21 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.common.covers.redstone.CoverAdvancedRedstoneTransmitterBase;
 import gregtech.common.covers.redstone.CoverWirelessItemDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
 
 public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessItemDetector> {
 
-    public CoverWirelessItemDetectorGui(CoverAdvancedRedstoneTransmitterBase cover) {
+    public CoverWirelessItemDetectorGui(CoverWirelessItemDetector cover) {
         super(cover);
     }
 
     // TODO: numericTextField with "Any" as default.
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold);
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
-        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot);
+        IntSyncValue thresholdSyncer = new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S();
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
+        IntSyncValue slotSyncer = new IntSyncValue(cover::getSlot, cover::setSlot).allowC2S();
         final ICoverable tile = data.getCoverable();
         IItemHandler inventoryHandler;
         if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
@@ -59,8 +58,10 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
 
                     .child(
                         makeNumberField(88).value(thresholdSyncer)
+                            .defaultNumber(0)
+                            .numbersInt(0, Integer.MAX_VALUE)
                             .marginRight(2))
-                    .child(new TextWidget(translateToLocal("gt.interact.desc.itemthreshold"))))
+                    .child(new TextWidget<>(translateToLocal("gt.interact.desc.itemthreshold"))))
             .coverChildrenWidth()
             .child(
                 Flow.row()
@@ -70,14 +71,15 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
                     .child(
                         // number field with 'Any' goes here
                         makeNumberField(88).value(slotSyncer)
-                            .setDefaultNumber(-1)
-                            .setNumbers(-1, tile.getSizeInventory() - 1)
+                            .formatAsInteger(true)
+                            .defaultNumber(-1)
+                            .numbersInt(-1, tile.getSizeInventory() - 1)
                             .marginRight(2))
                     .child(displayWidget.tooltipDynamic(t -> {
                         // to convey the -1 = 'Any'.
                         if (slotSyncer.getIntValue() == -1) t.addLine(translateToLocal("gt.interact.desc.any_slot"));
                     }))
-                    .child(new TextWidget(translateToLocal("gt.interact.desc.item_slot"))))
+                    .child(new TextWidget<>(translateToLocal("gt.interact.desc.item_slot"))))
             .coverChildrenWidth()
 
             .child(physicalRow(physicalSyncer));
@@ -88,10 +90,5 @@ public class CoverWirelessItemDetectorGui extends CoverAdvancedRedstoneTransmitt
             return inv.getStackInSlot(slot);
         }
         return ItemList.Display_ITS_FREE.get(1);
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        return 160;
     }
 }

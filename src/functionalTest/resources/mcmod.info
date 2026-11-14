@@ -13,19 +13,6 @@
       "credits": "",
       "logoFile": "",
       "screenshots": []
-    },
-    {
-      "modid": "kubatech-tests",
-      "name": "KubaTech Dev Tests",
-      "description": "KubaTech Tests to run in the development environment",
-      "version": "1.0",
-      "mcversion": "1.7.10",
-      "url": "https://github.com/GTNewHorizons/KubaTech",
-      "updateUrl": "",
-      "authorList": [],
-      "credits": "",
-      "logoFile": "",
-      "screenshots": []
     }
   ]
 }

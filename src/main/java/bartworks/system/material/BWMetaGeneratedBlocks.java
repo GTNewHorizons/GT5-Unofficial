@@ -38,15 +38,15 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
     protected final OrePrefixes prefix;
-    protected String blockTypeLocalizedName;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -56,11 +56,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
         this.prefix = types;
-        if (this.prefix != null) {
-            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + this.prefix,
-                this.prefix.getMaterialPrefix() + "%material" + this.prefix.getMaterialPostfix());
-        }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 
@@ -81,6 +76,16 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
     @Override
     public @Nullable ITexture[][] getTextures(int meta) {
+        ITexture[][] cached = textureCache.get(meta);
+        if (cached != null) return cached;
+        return cacheTextures(meta);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int meta) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
+        ITexture[][] cached = textureCache.get(meta);
+        if (cached != null) return cached;
+
         ITexture baseTexture = null;
 
         Werkstoff mat = Werkstoff.werkstoffHashMap.get((short) meta);
@@ -104,7 +109,9 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 
-        return new ITexture[][] { texture, texture, texture, texture, texture, texture };
+        cached = new ITexture[][] { texture, texture, texture, texture, texture, texture };
+        textureCache.put(meta, cached);
+        return cached;
     }
 
     @Override

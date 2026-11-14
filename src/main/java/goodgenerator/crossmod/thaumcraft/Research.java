@@ -156,7 +156,7 @@ public class Research {
                         'C',
                         GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Thaumium, 1),
                         'G',
-                        Ic2Items.reinforcedGlass,
+                        ItemList.ReinforcedGlass.get(1L),
                         'A',
                         Ic2Items.advancedMachine) });
 
@@ -196,9 +196,9 @@ public class Research {
                     "ESSENTIA_CELL",
                     ItemRefer.Essentia_Cell_T2.get(1),
                     new ItemStack[] { ItemList.Field_Generator_IV.get(1L), ItemList.Electric_Pump_LuV.get(1L),
-                        new ItemStack(ConfigItems.itemResource, 1, 14), Ic2Items.fluidregulator,
-                        new ItemStack(ConfigBlocks.blockJar, 1, 0),
-                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Ichorium, 1) },
+                        new ItemStack(ConfigItems.itemResource, 1, 14),
+                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Ichorium, 1),
+                        new ItemStack(ConfigBlocks.blockJar, 1, 0), ItemList.FluidRegulator_LuV.get(1L) },
                     ItemRefer.Essentia_Cell_T3.get(1),
                     8,
                     Arrays.asList(

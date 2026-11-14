@@ -152,7 +152,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)
                     && !(aMaterial.contains(SubTag.NO_SMELTING))
                     && aPrefix == OrePrefixes.ingot) {
                     if (aMaterial.mStandardMoltenFluid != null) {
@@ -411,7 +411,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Bottle.get(0L))
                             .itemOutputs(new ItemStack(Items.glass_bottle, 1))
                             .duration((tAmount * 32) * TICKS)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(extruderRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Mold_Bottle.get(0L))
@@ -428,7 +428,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
                     }
-                    case "Iron", "WroughtIron" -> {
+                    case "Iron", "CastIron" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(tAmount))

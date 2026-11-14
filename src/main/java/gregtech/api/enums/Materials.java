@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -34,8 +35,10 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
@@ -50,9 +53,9 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
+public class Materials implements IColorModulationContainer, IOreMaterial {
 
-    // Elements
+    // region Elements
     public static Materials Aluminium;
     public static Materials Americium;
     public static Materials Antimony;
@@ -78,6 +81,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Europium;
     public static Materials Flerovium;
     public static Materials Fluorine;
+    public static Materials Francium;
     public static Materials Gadolinium;
     public static Materials Gallium;
     public static Materials Gold;
@@ -137,15 +141,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Ytterbium;
     public static Materials Yttrium;
     public static Materials Zinc;
+    // endregion
 
-    // Isotopes
+    // region Isotopes
     public static Materials Deuterium;
     public static Materials Helium3;
     public static Materials Plutonium241;
     public static Materials Tritium;
     public static Materials Uranium235;
+    // endregion
 
-    // Water Line
+    // region Water Line
     public static Materials FlocculationWasteLiquid;
     public static Materials Grade1PurifiedWater;
     public static Materials Grade2PurifiedWater;
@@ -155,10 +161,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Grade6PurifiedWater;
     public static Materials Grade7PurifiedWater;
     public static Materials Grade8PurifiedWater;
+    // endregion
 
-    // Random
+    // region Random
     public static Materials AnyBronze;
     public static Materials AnyCopper;
+    public static Materials AnyCarbon;
     public static Materials AnyIron;
     public static Materials AnyRubber;
     public static Materials AnySyntheticRubber;
@@ -169,7 +177,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Organic;
     public static Materials Quartz;
     public static Materials Unknown;
+    // endregion
 
+    // region I don't care
     /*
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make
      * the Material Finder shut up about them. But I do see potential uses in some of these Materials.
@@ -195,8 +205,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Serpentine;
     public static Materials SodiumPeroxide;
     public static Materials Teslatite;
+    // endregion
 
-    // Unknown Material Components. Dead End Section.
+    // region Unknown Material Components. Dead End Section.
     public static Materials Adamantium;
     public static Materials Adamite;
     public static Materials Adluorite;
@@ -205,6 +216,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Amber;
     public static Materials Ammonium;
     public static Materials Amordrine;
+    public static Materials AncientDebris;
     public static Materials Andesite;
     public static Materials Ardite;
     public static Materials Aredrite;
@@ -306,8 +318,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Vyroxeres;
     public static Materials Yellorium;
     public static Materials Zectium;
+    // endregion
 
-    // Tier materials
+    // region Tier materials
     public static Materials ULV;
     public static Materials LV;
     public static Materials MV;
@@ -323,8 +336,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials UMV;
     public static Materials UXV;
     public static Materials MAX;
+    // endregion
 
-    // Circuitry
+    // region Circuitry
     public static Materials Resistor;
     public static Materials Diode;
     public static Materials Transistor;
@@ -332,8 +346,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Inductor;
     public static Materials Nano;
     public static Materials Piko;
+    // endregion
 
-    // Not possible to determine exact Components
+    // region Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
@@ -380,16 +395,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials WoodGas;
     public static Materials WoodTar;
     public static Materials WoodVinegar;
+    // endregion
 
-    // TODO: this
+    // region Bio Vat Bacterial Sludges
+    public static Materials EnrichedBacterialSludge;
+    public static Materials FermentedBacterialSludge;
+    // endregion
+
+    // region TODO: this
     public static Materials AluminiumBrass;
     public static Materials Endstone;
     public static Materials Netherrack;
     public static Materials Osmiridium;
     public static Materials SoulSand;
     public static Materials Sunnarium;
+    // endregion
 
-    // Degree 1 Compounds
+    // region Degree 1 Compounds
     public static Materials AceticAcid;
     public static Materials Acetone;
     public static Materials Air;
@@ -496,12 +518,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SodaAsh;
     public static Materials Sodalite;
     public static Materials SodiumPersulfate;
+    public static Materials SodiumPotassium;
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
     public static Materials Zincite;
+    // endregion
 
-    // Unclassified 01 materials
+    // region Unclassified 01 materials
     public static Materials DenseSteam;
     public static Materials DenseSuperheatedSteam;
     public static Materials DenseSupercriticalSteam;
@@ -517,8 +541,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SuperfluidStimulant;
     public static Materials SuperfluidHelium;
     public static Materials CoolantByproducts;
+    // endregion
 
-    // Unclassified 02 materials
+    // region Unclassified 02 materials
     public static Materials Gas;
     public static Materials HeavyFuel;
     public static Materials LightFuel;
@@ -529,23 +554,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SulfuricHeavyFuel;
     public static Materials SulfuricLightFuel;
     public static Materials SulfuricNaphtha;
+    // endregion
 
-    // Unclassified 03 materials
+    // region Unclassified 03 materials
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
     public static Materials ReinforcedGlass;
+    // endregion
 
-    // Unclassified 04 materials
+    // region Unclassified 04 materials
     public static Materials GrowthMediumRaw;
     public static Materials GrowthMediumSterilized;
+    // endregion
 
-    // Unclassified 05 materials
+    // region Unclassified 05 materials
     public static Materials BioDiesel;
     public static Materials BisphenolA;
     public static Materials Butadiene;
     public static Materials Butane;
     public static Materials Butene;
     public static Materials CalciumAcetateSolution;
+    public static Materials CaesiumHydroxide;
     public static Materials CarbonMonoxide;
     public static Materials Chloramine;
     public static Materials Chloroform;
@@ -580,6 +609,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Polystyrene;
     public static Materials PolyvinylAcetate;
     public static Materials PolyvinylChloride;
+    public static Materials PotassiumHydroxide;
     public static Materials Propane;
     public static Materials Propene;
     public static Materials SaltWater;
@@ -595,8 +625,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Toluene;
     public static Materials VinylAcetate;
     public static Materials VinylChloride;
+    // endregion
 
-    // Roasted Ores
+    // region Roasted Ores
     public static Materials RoastedAntimony;
     public static Materials RoastedArsenic;
     public static Materials RoastedCobalt;
@@ -605,8 +636,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RoastedLead;
     public static Materials RoastedNickel;
     public static Materials RoastedZinc;
+    // endregion
 
-    // Silicon Line
+    // region Silicon Line
     public static Materials AluminiumFluoride;
     public static Materials CalciumDisilicide;
     public static Materials Calciumhydride;
@@ -617,8 +649,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SiliconTetrachloride;
     public static Materials SiliconTetrafluoride;
     public static Materials Trichlorosilane;
+    // endregion
 
-    // Unclassified 06 materials
+    // region Unclassified 06 materials
     public static Materials GalliumArsenide;
     public static Materials IndiumGalliumPhosphide;
     public static Materials SolderingAlloy;
@@ -638,12 +671,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Uvarovite;
     public static Materials VanadiumGallium;
     public static Materials Wood;
+    public static Materials CastIron;
+    @Deprecated
     public static Materials WroughtIron;
     public static Materials Wulfenite;
     public static Materials YellowLimonite;
     public static Materials YttriumBariumCuprate;
+    // endregion
 
-    // Degree 2 Compounds
+    // region Degree 2 Compounds
     public static Materials Aluminiumhydroxide;
     public static Materials Aluminiumoxide;
     public static Materials Alumite;
@@ -709,6 +745,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Perlite;
     public static Materials Pitchblende;
     public static Materials Pollucite;
+    public static Materials Pollution;
     public static Materials PotassiumFeldspar;
     public static Materials QuartzSand;
     public static Materials RawStyreneButadieneRubber;
@@ -743,8 +780,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Wollastonite;
     public static Materials WoodSealed;
     public static Materials Zeolite;
+    // endregion
 
-    // Degree 3 Compounds
+    // region Degree 3 Compounds
     public static Materials Basalt;
     public static Materials BlueSteel;
     public static Materials BorosilicateGlass;
@@ -760,28 +798,32 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RedAlloy;
     public static Materials RedSteel;
     public static Materials RedstoneAlloy;
+    // endregion
 
-    // Degree 4 Compounds
+    // region Degree 4 Compounds
     public static Materials BasalticMineralSand;
     public static Materials ConductiveIron;
     public static Materials EndSteel;
     public static Materials HSSE;
     public static Materials HSSS;
     public static Materials PulsatingIron;
+    // endregion
 
-    // Degree 5 Compounds
+    // region Degree 5 Compounds
     public static Materials CrystallineAlloy;
     public static Materials EnergeticAlloy;
     public static Materials EnergeticSilver;
     public static Materials MelodicAlloy;
+    // endregion
 
-    // Degree 6 Compounds
+    // region Degree 6 Compounds
     public static Materials CrystallinePinkSlime;
     public static Materials StellarAlloy;
     public static Materials VibrantAlloy;
     public static Materials VividAlloy;
+    // endregion
 
-    // Polybenzimidazole Line
+    // region Polybenzimidazole Line
     public static Materials ChromiumTrioxide;
     public static Materials Diaminobenzidin;
     public static Materials Dichlorobenzidine;
@@ -792,8 +834,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Polybenzimidazole;
     public static Materials PotassiumNitrade;
     public static Materials Potassiumdichromate;
+    // endregion
 
-    // Gasoline Line
+    // region Gasoline Line
     public static Materials AntiKnock;
     public static Materials GasolinePremium;
     public static Materials GasolineRaw;
@@ -802,15 +845,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials MTBEMixtureAlt;
     public static Materials NitrousOxide;
     public static Materials Octane;
+    // endregion
 
-    // Added
+    // region Added
     public static Materials BloodInfusedIron;
     public static Materials Electrotine;
     public static Materials Galgadorian;
     public static Materials GalgadorianEnhanced;
     public static Materials Shadow;
+    // endregion
 
-    // Galaxy Space 1.10 compat from Version 2.6
+    // region Galaxy Space 1.10 compat from Version 2.6
     public static Materials BlackPlutonium;
     public static Materials CallistoIce;
     public static Materials Duralumin;
@@ -818,8 +863,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials MysteriousCrystal;
     public static Materials Mytryl;
     public static Materials Quantium;
+    // endregion
 
-    // Unclassified 07 materials
+    // region Unclassified 07 materials
     public static Materials AstralSilver;
     public static Materials BlueAlloy;
     public static Materials ClayCompound;
@@ -828,16 +874,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials ShadowIron;
     public static Materials ShadowSteel;
     public static Materials Soularium;
+    // endregion
 
-    // Overpowered Materials (Draconic Evolution & above)
+    // region Overpowered Materials (Draconic Evolution & above)
     public static Materials Bedrockium;
     public static Materials CosmicNeutronium;
     public static Materials Ichorium;
     public static Materials Infinity;
     public static Materials InfinityCatalyst;
     public static Materials Trinium;
+    // endregion
 
-    // Superconductor Bases
+    // region Superconductor Bases
     public static Materials SuperconductorMVBase;
     public static Materials SuperconductorHVBase;
     public static Materials SuperconductorEVBase;
@@ -849,8 +897,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SuperconductorUEVBase;
     public static Materials SuperconductorUIVBase;
     public static Materials SuperconductorUMVBase;
+    // endregion
 
-    // Superconductors
+    // region Superconductors
     public static Materials SuperconductorMV;
     public static Materials SuperconductorHV;
     public static Materials SuperconductorEV;
@@ -862,16 +911,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SuperconductorUEV;
     public static Materials SuperconductorUIV;
     public static Materials SuperconductorUMV;
+    // endregion
 
-    // Waterline Chemicals
+    // region Waterline Chemicals
     public static Materials ActivatedCarbon;
     public static Materials PreActivatedCarbon;
     public static Materials DirtyActivatedCarbon;
     public static Materials PolyAluminiumChloride;
     public static Materials Ozone;
     public static Materials StableBaryonicMatter;
+    // endregion
 
-    // Radox Line
+    // region Radox Line
     public static Materials RadoxCracked;
     public static Materials RadoxGas;
     public static Materials RadoxHeavy;
@@ -882,8 +933,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RadoxSuperLight;
     public static Materials Xenoxene;
     public static Materials XenoxeneDiluted;
+    // endregion
 
-    // Netherite Line
+    // region Netherite Line
     public static Materials NetherAir;
     public static Materials NetherSemiFluid;
     public static Materials NefariousGas;
@@ -892,8 +944,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials RichNetherWaste;
     public static Materials HellishMetal;
     public static Materials Netherite;
+    // endregion
 
-    // Prismatic Acid Line
+    // region Prismatic Acid Line
     public static Materials ActivatedNetherite;
     public static Materials PrismarineSolution;
     public static Materials PrismarineContaminatedHydrogenPeroxide;
@@ -903,12 +956,36 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials PrismaticAcid;
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
+    // endregion
 
-    // Magic Materials
+    // region Francium Line
+    public static Materials ImpureFranciumSolution;
+    public static Materials FranciumHydroxide;
+    public static Materials FranciumSlurry;
+    public static Materials ThoriumElutionAdsorbent;
+    // endregion
+
+    // region Chlorosulfonic Acid Line
+    public static Materials PhosphorusChlorineMixture;
+    public static Materials PhosphorusPentachloride;
+    public static Materials ToxicAir;
+    public static Materials ToxicSlurry;
+    public static Materials DestabilizationSlurry;
+    public static Materials AgitatingSlurry;
+    public static Materials UltraContaminatedGas;
+    public static Materials StagnantWasteWater;
+    public static Materials ActivatedWasteWater;
+    public static Materials ChlorosulfonicAcid;
+    public static Materials PoisonousSlurry;
+    // endregion
+
+    // region Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
+    public static Materials SoulInfusedMedium;
+    // endregion
 
-    // Botania Materials
+    // region Botania Materials
     public static Materials Manasteel;
     public static Materials Terrasteel;
     public static Materials ElvenElementium;
@@ -918,8 +995,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Dreamwood;
     public static Materials ManaDiamond;
     public static Materials Dragonstone;
+    // endregion
 
-    // Kevlar Line
+    // region Kevlar Line
     public static Materials DiphenylmethaneDiisocyanate;
     public static Materials DiaminodiphenylmethanMixture;
     public static Materials DiphenylmethaneDiisocyanateMixture;
@@ -967,8 +1045,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials SodiumHydride;
     public static Materials TrimethylBorate;
     public static Materials SodiumMethoxide;
+    // endregion
 
-    // Aluminium Ores
+    // region Aluminium Ores
     public static Materials BauxiteSlurry;
     public static Materials HeatedBauxiteSlurry;
     public static Materials SluiceJuice;
@@ -978,8 +1057,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials GreenSapphireJuice;
     public static Materials SapphireJuice;
     public static Materials RubyJuice;
+    // endregion
 
-    // UEV+ Materials
+    // region UEV+ Materials
     public static Materials DTCC;
     public static Materials DTPC;
     public static Materials DTRC;
@@ -1021,8 +1101,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials StargateCrystalSlurry;
     public static Materials LumipodExtract;
     public static Materials BiocatalyzedPropulsionFluid;
+    public static Materials Shijima;
+    public static Materials Churitsu;
+    public static Materials InactiveCosmicSolder;
+    public static Materials BoundlessCosmicSolder;
+    public static Materials ComputationBase;
+    // endregion
 
-    // GTNH Materials
+    // region GTNH Materials
     public static Materials Signalum;
     public static Materials Lumium;
     public static Materials Prismarine;
@@ -1038,6 +1124,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials MetamorphicMineralMixture;
     public static Materials Plagioclase;
     public static Materials Epidote;
+    public static Materials UnformedHexanite;
+    public static Materials Hexanite;
+    // endregion
+
+    // region Lab Grown Gems (cgc)
+    // endregion
+
+    // region Chimera Gems (cgc)
+    public static Materials Amalgatite;
+    // endregion
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
@@ -1115,12 +1211,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mSteamMultiplier = 1.0F;
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
-    public String mChemicalFormula = "?";
+    private String mChemicalFormula = "?";
+    private boolean isFormulaNeededLocalized = false;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
     public String mConfigSection = "null";
-    public String mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
     public Materials mOreReplacement = this;
@@ -1130,6 +1226,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public Materials mMacerateInto = this;
     private Supplier<Materials> mPendingArcSmeltingInto;
     public Materials mArcSmeltInto = this;
+    private Map<Supplier<Materials>, Supplier<Materials>> mPendingArcSmeltingIntoWithGas;
+    public final Map<Materials, Materials> mArcSmeltIntoWithGas = new LinkedHashMap<>();
     private Supplier<Materials> mPendingDirectSmelting;
     public Materials mDirectSmelting = this;
     public Materials mHandleMaterial = this;
@@ -1148,6 +1246,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     private boolean mCanBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
+    private boolean hasGlowingOre = false;
+    private String aliasKey = "";
+    private boolean hasAlias = false;
 
     protected Materials(
         // spotless:off
@@ -1192,8 +1293,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Supplier<Materials> pendingSmeltingInto,
         Supplier<Materials> pendingMaceratingInto,
         Supplier<Materials> pendingArcSmeltingInto,
+        Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
-        LinkedHashSet<SubTag> subTags
+        LinkedHashSet<SubTag> subTags,
+        boolean hasGlowingOre,
+        String aliasKey
         // spotless:on
     ) {
 
@@ -1220,7 +1324,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors
@@ -1278,6 +1382,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mPendingSmeltingInto = pendingSmeltingInto;
         mPendingMaceratingInto = pendingMaceratingInto;
         mPendingArcSmeltingInto = pendingArcSmeltingInto;
+        mPendingArcSmeltingIntoWithGas = pendingArcSmeltingIntoWithGas;
         mPendingDirectSmelting = pendingDirectSmelting;
 
         // Set material density
@@ -1305,7 +1410,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         mOreMultiplier = oreMultiplier;
         mUnifiable = unifiable;
 
-        // No clue what is going on here...
         int numberOfComponents = 0;
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1320,7 +1424,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             }
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
+        if (mMeltingPoint < 0 && numberOfComponents > 1) mMeltingPoint = tMeltingPoint / numberOfComponents;
 
         numberOfComponents *= densityMultiplier;
         numberOfComponents /= densityDivider;
@@ -1330,6 +1434,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             }
         } else {
             mAspects.addAll(aspects);
+        }
+        this.hasGlowingOre = hasGlowingOre;
+
+        if (!aliasKey.isEmpty()) {
+            this.aliasKey = aliasKey;
+            this.hasAlias = true;
         }
     }
 
@@ -1365,9 +1475,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     private static void setArcSmeltingInto() {
         for (Materials material : MATERIALS_MAP.values()) {
-            if (material.mPendingArcSmeltingInto == null) continue;
-            material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
-            material.mPendingArcSmeltingInto = null;
+            if (material.mPendingArcSmeltingInto != null) {
+                material.mArcSmeltInto = material.mPendingArcSmeltingInto.get().mMaterialInto.mArcSmeltInto;
+                material.mPendingArcSmeltingInto = null;
+            }
+            if (material.mPendingArcSmeltingIntoWithGas != null) {
+                for (Map.Entry<Supplier<Materials>, Supplier<Materials>> entry : material.mPendingArcSmeltingIntoWithGas
+                    .entrySet()) {
+                    material.mArcSmeltIntoWithGas.put(
+                        entry.getKey()
+                            .get().mMaterialInto,
+                        entry.getValue()
+                            .get().mMaterialInto.mArcSmeltInto);
+                }
+                material.mPendingArcSmeltingIntoWithGas = null;
+            }
         }
     }
 
@@ -1421,7 +1543,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     private static void setReRegistration() {
         Iron.mOreReRegistrations.add(AnyIron);
         PigIron.mOreReRegistrations.add(AnyIron);
-        WroughtIron.mOreReRegistrations.add(AnyIron);
+        CastIron.mOreReRegistrations.add(AnyIron);
         Copper.mOreReRegistrations.add(AnyCopper);
         AnnealedCopper.mOreReRegistrations.add(AnyCopper);
         Bronze.mOreReRegistrations.add(AnyBronze);
@@ -1430,6 +1552,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         RubberSilicone.mOreReRegistrations.add(AnyRubber);
         StyreneButadieneRubber.mOreReRegistrations.add(AnySyntheticRubber);
         RubberSilicone.mOreReRegistrations.add(AnySyntheticRubber);
+        Carbon.mOreReRegistrations.add(AnyCarbon);
+        Coal.mOreReRegistrations.add(AnyCarbon);
+        Charcoal.mOreReRegistrations.add(AnyCarbon);
+        Lignite.mOreReRegistrations.add(AnyCarbon);
     }
 
     private static void setToolEnchantments() {
@@ -1520,6 +1646,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Materials.ExoHalkonite.renderer = new InfinityRenderer();
         Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
+        Materials.Amalgatite.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -1704,14 +1831,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mName;
     }
 
-    public boolean isRadioactive() {
-        if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
-
-        return mMaterialList.stream()
-            .map(stack -> stack.mMaterial)
-            .anyMatch(Materials::isRadioactive);
-    }
-
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
         if (mMaterialList.isEmpty()) return Element.Tc.getProtons();
@@ -1749,26 +1868,72 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
-    public String getToolTip() {
-        return getToolTip(1, false);
+    /**
+     * Set material's chemical formula.
+     *
+     * @param aChemicalFormula     the Chemical Formula want to set
+     * @param isNeededLocalization if it's true, will generate a localized key.
+     */
+    public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
+        this.mChemicalFormula = aChemicalFormula;
+        if (isNeededLocalization) {
+            this.isFormulaNeededLocalized = true;
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
+        }
     }
 
-    public String getToolTip(boolean aShowQuestionMarks) {
-        return getToolTip(1, aShowQuestionMarks);
+    public void setChemicalFormula(String aChemicalFormula) {
+        setChemicalFormula(aChemicalFormula, false);
     }
 
-    public String getToolTip(long aMultiplier) {
-        return getToolTip(aMultiplier, false);
+    public String getChemicalFormula() {
+        return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
+            : mChemicalFormula;
     }
 
-    public String getToolTip(long aMultiplier, boolean aShowQuestionMarks) {
-        if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
+    public String getChemicalTooltip() {
+        return getChemicalTooltip(1, false);
+    }
+
+    public String getChemicalTooltip(boolean aShowQuestionMarks) {
+        return getChemicalTooltip(1, aShowQuestionMarks);
+    }
+
+    public String getChemicalTooltip(long aMultiplier) {
+        return getChemicalTooltip(aMultiplier, false);
+    }
+
+    public String getChemicalTooltip(long aMultiplier, boolean aShowQuestionMarks) {
+        final String aChemicalFormula = getChemicalFormula();
+        if (!aShowQuestionMarks && aChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
             return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
-                ? mChemicalFormula
-                : "(" + mChemicalFormula + ")") + aMultiplier;
+                ? aChemicalFormula
+                : "(" + aChemicalFormula + ")") + aMultiplier;
         }
-        return mChemicalFormula;
+        return aChemicalFormula;
+    }
+
+    @Nullable
+    public String getFlavorText() {
+        final String key = getLocalizedNameKey() + ".flavorText";
+        return StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : null;
+    }
+
+    public void addTooltips(List<String> list, long aMultiplier) {
+        if (Client.tooltip.showFormula) {
+            final String chemicalTooltip = getChemicalTooltip(aMultiplier);
+            if (GTUtility.isStringValid(chemicalTooltip)) list.add(chemicalTooltip);
+        }
+        if (Client.tooltip.showFlavorText) {
+            final String flavorTooltip = getFlavorText() != null ? "§8§o" + getFlavorText() : null;
+            if (flavorTooltip != null) list.add(flavorTooltip);
+        }
+    }
+
+    @Override
+    public void addTooltips(List<String> list) {
+        addTooltips(list, 1);
     }
 
     /**
@@ -1784,10 +1949,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
      */
     public boolean contains(ItemStack... aStacks) {
         if (aStacks == null || aStacks.length == 0) return false;
-        return mMaterialItems.stream()
-            .anyMatch(
-                tStack -> Arrays.stream(aStacks)
-                    .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+        for (int i = 0, size = mMaterialItems.size(); i < size; i++) {
+            ItemStack materialItem = mMaterialItems.get(i);
+            boolean ignoreNBT = !materialItem.hasTagCompound();
+            for (int j = 0; j < aStacks.length; j++) {
+                if (GTUtility.areStacksEqual(aStacks[j], materialItem, ignoreNBT)) return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -1917,11 +2086,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
-    public String getLocalizedName() {
-        return mLocalizedName;
-    }
-
-    @Override
     public int getId() {
         return mMetaItemSubID;
     }
@@ -1932,6 +2096,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         } else {
             return stoneType.getCategory() == StoneCategory.Stone;
         }
+    }
+
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return this;
     }
 
     @Override
@@ -1948,6 +2117,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mName;
     }
 
+    @Override
+    public String getDefaultLocalName() {
+        return mDefaultLocalName;
+    }
+
     public String getDefaultLocalizedNameForItem(String aFormat) {
         return formatStringSafe(
             aFormat.replace("%s", "%temp")
@@ -1959,7 +2133,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return formatStringSafe(
             aFormat.replace("%s", "%temp")
                 .replace("%material", "%s"),
-            this.mLocalizedName).replace("%temp", "%s");
+            this.getLocalizedName()).replace("%temp", "%s");
+    }
+
+    public static boolean isMaterialItem(int meta) {
+        return meta >= 0 && meta < 32000;
+    }
+
+    public static boolean isMaterialItem(@NotNull ItemStack stack) {
+        return isMaterialItem(stack.getItemDamage());
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return prefix.doGenerateItem(this);
     }
 
     public boolean hasDustItems() {
@@ -2025,7 +2212,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public int getLiquidTemperature() {
-        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
+        return mMeltingPoint == -1 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {
@@ -2146,5 +2333,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     public ItemStack getNanite(int amount) {
         return GTOreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
+
+    public boolean hasGlowingOre() {
+        return hasGlowingOre;
+    }
+
+    public boolean hasAlias() {
+        return this.hasAlias;
+    }
+
+    public String getAliasKey() {
+        return this.aliasKey;
     }
 }

@@ -16,6 +16,7 @@ import gregtech.common.covers.Cover;
 public class CoverGuiData extends SidedPosGuiData {
 
     private final int coverID;
+    private final boolean popup;
 
     /**
      * @param player  Player opened this UI
@@ -24,10 +25,12 @@ public class CoverGuiData extends SidedPosGuiData {
      * @param y       Y position of the tile this cover is attached to
      * @param z       Z position of the tile this cover is attached to
      * @param side    Side this cover is attached to
+     * @param popup   If the GUI is a pop-up panel
      */
-    public CoverGuiData(EntityPlayer player, int coverID, int x, int y, int z, ForgeDirection side) {
+    public CoverGuiData(EntityPlayer player, int coverID, int x, int y, int z, ForgeDirection side, boolean popup) {
         super(player, x, y, z, side);
         this.coverID = coverID;
+        this.popup = popup;
     }
 
     public int getCoverID() {
@@ -41,5 +44,9 @@ public class CoverGuiData extends SidedPosGuiData {
     @NotNull
     public Cover getCover() {
         return getCoverable().getCoverAtSide(getSide());
+    }
+
+    public boolean isPopUp() {
+        return popup;
     }
 }

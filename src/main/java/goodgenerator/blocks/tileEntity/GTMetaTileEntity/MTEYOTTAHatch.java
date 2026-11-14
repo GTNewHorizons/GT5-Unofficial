@@ -1,8 +1,5 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -25,7 +23,6 @@ import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
@@ -42,6 +39,7 @@ import appeng.util.item.AEFluidStack;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.StackUtils;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -51,10 +49,11 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
-public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
-    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
+public class MTEYOTTAHatch extends MTEHatch
+    implements IGridProxyable, ICellContainer, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
-    private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
+    private static final IIconContainer textureFont = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
@@ -110,7 +109,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
         this.isSticky = aNBT.getBoolean("mAESticky");
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
     }
 
     @Override
@@ -132,22 +131,34 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         } catch (GridAccessException e) {
             // :P
         }
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.0", this.priority));
+        GTUtility.sendChatTrans(aPlayer, "yothatch.chat.0", this.priority);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.1", this.readMode));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "yothatch.chat.1",
+            new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
         return true;
+    }
+
+    private static String getUnlocalizedReadMode(AccessRestriction readMode) {
+        return switch (readMode) {
+            case NO_ACCESS -> "gg.chat.ae_modes.no_access";
+            case READ -> "gg.chat.ae_modes.read";
+            case WRITE -> "gg.chat.ae_modes.write";
+            case READ_WRITE -> "gg.chat.ae_modes.read_write";
+        };
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.isSticky = !this.isSticky;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
+        GTUtility.sendChatTrans(aPlayer, this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3");
         return true;
     }
 
@@ -171,9 +182,6 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
 
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
         return this.gridProxy;
     }
@@ -505,10 +513,11 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
 
     @Override
     public boolean canAccept(IAEFluidStack input) {
-        if (this.host == null) return false;
+        if (this.host == null || input == null) return false;
         FluidStack rInput = input.getFluidStack();
-        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
-            || host.mFluid.isFluidEqual(rInput);
+        if (rInput == null) return false;
+        return (this.host.mLockedFluid == null || this.host.mLockedFluid.isFluidEqual(rInput))
+            && (this.host.mFluid == null || this.host.mFluid.isFluidEqual(rInput));
     }
 
     @Override
@@ -526,6 +535,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         return this.priority;
     }
 
+    @Override
     public boolean getSticky() {
         return this.isSticky;
     }

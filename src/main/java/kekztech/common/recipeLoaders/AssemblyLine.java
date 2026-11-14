@@ -39,11 +39,11 @@ public class AssemblyLine implements Runnable {
                 ItemList.Casing_Tank_7.get(4),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeBars", 6),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ChromeBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Quantium, 6),
                 ItemList.Field_Generator_EV.get(8),
                 ItemList.FluidRegulator_LuV.get(1),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4))
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngineeringProcessorFluidEmeraldCore", 4))
             .fluidInputs(Materials.Enderium.getMolten(10 * INGOTS), Materials.Polybenzimidazole.getMolten(11 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
             .eut(TierEU.RECIPE_LuV)
@@ -58,12 +58,12 @@ public class AssemblyLine implements Runnable {
                 ItemList.Casing_Tank_10.get(16),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 6),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "OsmiumBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.MysteriousCrystal, 6),
                 ItemList.Field_Generator_IV.get(16),
                 ItemList.Field_Generator_LuV.get(4),
                 ItemList.FluidRegulator_UV.get(1),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 16))
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngineeringProcessorFluidEmeraldCore", 16))
             .fluidInputs(
                 Materials.CrystallineAlloy.getMolten(20 * INGOTS),
                 Materials.Polybenzimidazole.getMolten(14 * INGOTS))
@@ -81,7 +81,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 6),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "NeutroniumBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
                 ItemList.Field_Generator_ZPM.get(16),
                 ItemList.Field_Generator_UV.get(4),
@@ -131,7 +131,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
                 new ItemStack(huiCircuit, 8, 4),
-                GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
+                GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 5),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(Materials.StellarAlloy.getMolten(50 * INGOTS), Materials.RadoxPolymer.getMolten(32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))

@@ -6,7 +6,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -47,7 +46,7 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
         syncManager.syncValue("canUseWireless", new BooleanSyncValue(multiblock::canUseWireless));
         syncManager.syncValue(
             "wirelessMode",
-            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled));
+            new BooleanSyncValue(multiblock::getWirelessMode, multiblock::setWirelessEnabled).allowC2S());
         syncManager.syncValue("energyProduced", new LongSyncValue(multiblock::getEnergyProduced));
         syncManager.syncValue("efficiencyCur", new DoubleSyncValue(multiblock::getEfficiency));
         syncManager.syncValue("efficiencyAvg", new DoubleSyncValue(multiblock::getAvgEfficiency));
@@ -62,37 +61,28 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.0")
-                            + ": "
-                            + EnumChatFormatting.BLUE
-                            + standardFormat.format(energyProducedSync.getLongValue())
-                            + EnumChatFormatting.WHITE
-                            + " EU")))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.0.s",
+                            standardFormat.format(energyProducedSync.getLongValue())))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " %")))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.1.s",
+                            numberFormat.format(Math.ceil(curEfficiencySync.getDoubleValue() * 100))))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("gui.AntimatterGenerator.1")
-                            + ": ⟨ "
-                            + EnumChatFormatting.RED
-                            + numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))
-                            + EnumChatFormatting.WHITE
-                            + " % ⟩₁₀")));
+                        () -> StatCollector.translateToLocalFormatted(
+                            "gui.AntimatterGenerator.2.s",
+                            numberFormat.format(Math.ceil(avgEfficiencySync.getDoubleValue() * 100))))));
     }
 
     @Override
-    protected Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+    protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         BooleanSyncValue canUseWireless = syncManager.findSyncHandler("canUseWireless", BooleanSyncValue.class);
         BooleanSyncValue wirelessMode = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
-        return super.createPanelGap(parent, syncManager).child(
+        return super.createLeftPanelGapRow(parent, syncManager).child(
             new ButtonWidget<>().size(18, 18)
                 .playClickSound(true)
                 .overlay(new DynamicDrawable(() -> {
@@ -118,6 +108,5 @@ public class AntimatterGeneratorGui extends MTEMultiBlockBaseGui<AntimatterGener
                 .tooltipBuilder(
                     t -> t.addLine(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
-
     }
 }

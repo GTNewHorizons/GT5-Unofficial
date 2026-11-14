@@ -31,21 +31,11 @@ public class ItemGenericToken extends CoreItem {
     private final String mTextureDir;
 
     public ItemGenericToken() {
-        this("itemGenericToken", "Token", new String[] { "Can be reclaimed in some way, shape or form" }, "token");
+        this("itemGenericToken", new String[] { "Can be reclaimed in some way, shape or form" }, "token");
     }
 
-    public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
-        super(
-            aUnlocalName,
-            aInternalName,
-            AddToCreativeTab.tabMisc,
-            64,
-            1000,
-            aBaseTooltip,
-            EnumRarity.common,
-            EnumChatFormatting.RESET,
-            false,
-            null);
+    public ItemGenericToken(String aUnlocalName, String[] aBaseTooltip, String aTextureDir) {
+        super(aUnlocalName, AddToCreativeTab.tabMisc, 64, 1000, aBaseTooltip, EnumRarity.common, false, null);
         mLocalNames = new HashMap<>();
         mMaxStackSizes = new HashMap<>();
         mDescriptionArrays = new HashMap<>();
@@ -98,19 +88,18 @@ public class ItemGenericToken extends CoreItem {
     }
 
     // Handle Sub items
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(final Item var1, final CreativeTabs aCreativeTab, final List aList) {
+    public void getSubItems(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0, j = mIcons.size(); i < j; i++) {
             final ItemStack tStack = new ItemStack(this, 1, i);
-            aList.add(tStack);
+            list.add(tStack);
         }
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
+    public void addInformation(ItemStack stack, EntityPlayer aPlayer, List<String> list, boolean adv) {
+        super.addInformation(stack, aPlayer, list, adv);
         for (int i = 0;; i++) {
             String tooltip = GTLanguageManager.getTranslation(
                 "gtplusplus." + this

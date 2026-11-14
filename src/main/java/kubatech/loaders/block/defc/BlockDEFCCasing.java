@@ -9,11 +9,11 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.ItemCasings;
-import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
 public class BlockDEFCCasing extends BlockCasingsAbstract {
@@ -27,12 +27,12 @@ public class BlockDEFCCasing extends BlockCasingsAbstract {
         this.setResistance(30.0F);
         this.setCreativeTab(KT);
 
-        register(7, ItemList.DEFCCasingBase, "Naquadah Alloy Fusion Casing");
-        register(8, ItemList.DEFCCasingT1, "Bloody Ichorium Fusion Casing", translatedText("defc.casing.tip", 1));
-        register(9, ItemList.DEFCCasingT2, "Draconium Fusion Casing", translatedText("defc.casing.tip", 2));
-        register(10, ItemList.DEFCCasingT3, "Wyvern Fusion Casing", translatedText("defc.casing.tip", 3));
-        register(11, ItemList.DEFCCasingT4, "Awakened Draconium Fusion Casing", translatedText("defc.casing.tip", 4));
-        register(12, ItemList.DEFCCasingT5, "Chaotic Fusion Casing", translatedText("defc.casing.tip", 5));
+        register(7, ItemList.DEFCCasingBase);
+        register(8, ItemList.DEFCCasingT1, translatedText("defc.casing.tip", 1));
+        register(9, ItemList.DEFCCasingT2, translatedText("defc.casing.tip", 2));
+        register(10, ItemList.DEFCCasingT3, translatedText("defc.casing.tip", 3));
+        register(11, ItemList.DEFCCasingT4, translatedText("defc.casing.tip", 4));
+        register(12, ItemList.DEFCCasingT5, translatedText("defc.casing.tip", 5));
 
         // Taking one texture slot :P
         Textures.BlockIcons.setCasingTexture((byte) 1, (byte) (15 + 48), TextureFactory.of(this, 0));
@@ -50,7 +50,7 @@ public class BlockDEFCCasing extends BlockCasingsAbstract {
     public void registerBlockIcons(IIconRegister aIconRegister) {
         texture = new IIcon[6];
         for (int i = 0; i < texture.length; i++) {
-            texture[i] = aIconRegister.registerIcon(Tags.MODID + ":casing/defc_" + i);
+            texture[i] = aIconRegister.registerIcon(Mods.ModIDs.KUBA_TECH + ":casing/defc_" + i);
         }
     }
 }

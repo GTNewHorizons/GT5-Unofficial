@@ -6,11 +6,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
@@ -20,10 +20,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
@@ -84,41 +85,23 @@ public class GregtechSimpleWasher {
             "simplewasher.01.tier.05",
             "Simple Washer VIII",
             8);
-
-        GregtechItemList.SimpleDustWasher_ULV.set(
-            new MTEBasicMachineWithRecipe(
-                SimpleDustWasher_ULV.ID,
-                "simplewasher.01.tier.01",
-                "Deprecated ULV Simple Washer",
-                0,
-                new String[] { "It's like an automatic Cauldron for washing dusts.",
-                    "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", GTPPCore.GT_Tooltip.get() },
-                simpleWasherRecipes,
-                1,
-                1,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "SIMPLE_WASHER").setRecipeCatalystPriority(-11)
-                    .getStackForm(1L));
     }
 
     private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
         washer.set(
-            new MTEBasicMachineWithRecipe(
-                id,
-                unloc,
-                loc,
-                tier,
-                new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() },
-                simpleWasherRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                SpecialEffects.NONE,
-                "SIMPLE_WASHER").setRecipeCatalystPriority(-tier)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder(id)
+                .setName(unloc, loc)
+                .setTier(tier)
+                .setDescription(
+                    new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(simpleWasherRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("SIMPLE_WASHER")
+                .setFluidSlots(true, false)
+                .build()
+                .setRecipeCatalystPriority(-tier)
+                .getStackForm(1L));
     }
 
     private static boolean generateDirtyDustRecipes() {
@@ -142,6 +125,7 @@ public class GregtechSimpleWasher {
             dustClean = GTOreDictUnificator.get(OrePrefixes.dust, v, 1L);
             dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
             dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, v, 1L);
+            dustClean = convertDecomposition(v, dustClean)[0];
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -150,6 +134,16 @@ public class GregtechSimpleWasher {
             dustClean = v.hasItemType(OrePrefixes.dust) ? v.get(OrePrefixes.dust) : null;
             dustDirty = v.hasItemType(OrePrefixes.dustImpure) ? v.get(OrePrefixes.dustImpure) : null;
             dustPure = v.hasItemType(OrePrefixes.dustPure) ? v.get(OrePrefixes.dustPure) : null;
+            dustClean = convertDecomposition(dustClean)[0];
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
+        }
+
+        for (Material v : Material.mMaterialMap) {
+            dustClean = v.getDust(1);
+            dustDirty = v.getDustImpure(1);
+            dustPure = v.getDustPurified(1);
+            dustClean = convertDecomposition(dustClean)[0];
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -179,6 +173,12 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
+        for (Material v : Material.mMaterialMap) {
+            crushedClean = v.getCrushedPurified(1);
+            crushedDirty = v.getCrushed(1);
+            addSimpleWashRecipe(crushedDirty, crushedClean);
+        }
+
         return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
     }
@@ -190,7 +190,7 @@ public class GregtechSimpleWasher {
                 .itemOutputs(aOutput)
                 .fluidInputs(Materials.Water.getFluid(100))
                 .duration(5 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(simpleWasherRecipes);
         }
     }

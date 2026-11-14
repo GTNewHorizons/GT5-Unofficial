@@ -1,15 +1,13 @@
 package gtPlusPlus.core.block.general.antigrief;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -17,6 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -26,7 +25,6 @@ public class BlockWitherProof extends Block {
     public BlockWitherProof() {
         super(Material.redstoneLight);
         this.setBlockName(StringUtils.sanitizeString("blockBlackGate"));
-        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(5000.0F);
@@ -48,8 +46,8 @@ public class BlockWitherProof extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockFrameGt");
+    public IIcon getIcon(int side, int meta) {
+        return Textures.BlockIcons.CONTAINMENT_FRAME.getIcon();
     }
 
     @Override
@@ -95,12 +93,6 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
-        int p_149749_6_) {
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
-    }
-
-    @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World p_149737_2_, int p_149737_3_,
         int p_149737_4_, int p_149737_5_) {
         if (aPlayer instanceof EntityPlayerMP) {
@@ -115,12 +107,6 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_,
-        EntityPlayer p_149699_5_) {
-        super.onBlockClicked(p_149699_1_, p_149699_2_, p_149699_3_, p_149699_4_, p_149699_5_);
-    }
-
-    @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
         if ((entity == null) || !entity.isEntityAlive()) {
             return;
@@ -128,12 +114,6 @@ public class BlockWitherProof extends Block {
         if (!(entity instanceof IBossDisplayData)) {
             super.onEntityCollidedWithBlock(world, x, y, z, entity);
         }
-    }
-
-    @Override
-    public void harvestBlock(World p_149636_1_, EntityPlayer p_149636_2_, int p_149636_3_, int p_149636_4_,
-        int p_149636_5_, int p_149636_6_) {
-        super.harvestBlock(p_149636_1_, p_149636_2_, p_149636_3_, p_149636_4_, p_149636_5_, p_149636_6_);
     }
 
     @Override

@@ -3,7 +3,7 @@ package kubatech.loaders;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -14,11 +14,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -32,36 +31,35 @@ import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTUtility;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
-import kubatech.api.utils.ModUtils;
-import kubatech.client.renderer.HTGRItemRenderer;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRLoader {
 
-    public static final HTGRItem HTGR_ITEM = new HTGRItem();
+    public static final int SHELL_RECYCLE_CHANCE = 9500;
 
     @SuppressWarnings("unchecked")
     public static final RecipeMetadataKey<Pair<ItemStack, Integer>[]> FUEL = SimpleRecipeMetadataKey
         .create((Class<Pair<ItemStack, Integer>[]>) (Class<?>) Pair[].class, "htgr_fuel");
     public static final RecipeMetadataKey<ItemStack[]> SHELL = SimpleRecipeMetadataKey
         .create(ItemStack[].class, "htgr_shell");
+    @SuppressWarnings("unchecked")
+    public static final RecipeMetadataKey<Triple<Double, Double, Double>> FUEL_MODIFICATOR = SimpleRecipeMetadataKey
+        .create((Class<Triple<Double, Double, Double>>) (Class<?>) Triple.class, "htgr_shell");
 
     public static final RecipeMap<RecipeMapBackend> HTGRRecipes = RecipeMapBuilder.of("kubatech.htgrrecipes")
         .maxIO(9, 3, 1, 1)
         .minInputs(1, 0)
-        .neiHandlerInfo(
-            builder -> builder.setHeight(255)
-                .setMaxRecipesPerPage(1)
-                .setDisplayStack(kubatech.api.enums.ItemList.HighTemperatureGasCooledReactor.get(1)))
-        .neiTransferRect(127, 50, 36, 98)
+        .neiHandlerInfo(builder -> builder.setHeight(255))
+        .neiTransferRect(127, 44, 36, 98)
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
             Materials material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
+            Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);
+            if (fuelModificator != null) HTGRItem.setFuelProperties(material, fuelModificator);
 
             ArrayList<ItemStack> items = new ArrayList<>();
             Collections.addAll(items, inputs);
@@ -69,12 +67,12 @@ public class HTGRLoader {
                 for (Pair<ItemStack, Integer> fuel : fuels) {
                     items.add(fuel.getLeft());
                 }
-            } ;
+            }
 
             // mixer
             GTValues.RA.stdBuilder()
                 .itemInputs(items.toArray(new ItemStack[0]))
-                .itemOutputs(HTGR_ITEM.createTRISOMixture(material))
+                .itemOutputs(HTGRItem.createTRISOMixture(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(100)
                 .nbtSensitive()
@@ -82,22 +80,22 @@ public class HTGRLoader {
 
             // forming shell
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createTRISOMixture(material), shells[0])
-                .itemOutputs(HTGR_ITEM.createIncompleteBISOFuel(material))
+                .itemInputs(HTGRItem.createTRISOMixture(material), shells[0])
+                .itemOutputs(HTGRItem.createIncompleteBISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createIncompleteBISOFuel(material), shells[1])
-                .itemOutputs(HTGR_ITEM.createIncompleteTRISOFuel(material))
+                .itemInputs(HTGRItem.createIncompleteBISOFuel(material), shells[1])
+                .itemOutputs(HTGRItem.createIncompleteTRISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createIncompleteTRISOFuel(material), shells[2])
-                .itemOutputs(HTGR_ITEM.createTRISOFuel(material))
+                .itemInputs(HTGRItem.createIncompleteTRISOFuel(material), shells[2])
+                .itemOutputs(HTGRItem.createTRISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
@@ -114,36 +112,63 @@ public class HTGRLoader {
                     ItemStack fuelStack = fuel.getLeft()
                         .copy();
                     fuelStack.stackSize = fuel.getRight();
-                    items.add(fuelStack);
+                    if (fuelStack.stackSize > 0) items.add(fuelStack);
                 }
             }
             int[] chances = new int[items.size() + 3];
             Arrays.fill(chances, 0, items.size(), 10000);
-            Arrays.fill(chances, items.size(), items.size() + 3, 9500);
+            if (builder.getOutputChances() != null) {
+                System.arraycopy(builder.getOutputChances(), 0, chances, 0, builder.getOutputChances().length);
+            }
+            Arrays.fill(chances, items.size(), items.size() + 3, SHELL_RECYCLE_CHANCE);
             items.addAll(Arrays.asList(shells));
 
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createBurnedTRISOFuel(material))
+                .itemInputs(HTGRItem.createBurnedTRISOFuel(material))
                 .itemOutputs(items.toArray(new ItemStack[0]))
                 .outputChances(chances)
                 .eut(TierEU.RECIPE_EV)
                 .duration(300)
                 .nbtSensitive()
-                .addTo(centrifugeRecipes);
+                .addTo(centrifugeNonCellRecipes);
+
+            // for HTGR NEI frontend
+            int[] virtualChances = new int[6 + chances.length];
+            Arrays.fill(virtualChances, 0, 6, 10000);
+            System.arraycopy(chances, 0, virtualChances, 6, chances.length);
+            ItemStack ofuel = HTGRItem.createTRISOFuel(material);
+            ArrayList<ItemStack> virtualOutputs = new ArrayList<>();
+            virtualOutputs.add(HTGRItem.createTRISOMixture(material));
+            virtualOutputs.add(HTGRItem.createIncompleteBISOFuel(material));
+            virtualOutputs.add(HTGRItem.createIncompleteTRISOFuel(material));
+            virtualOutputs.add(ofuel);
+            virtualOutputs.add(ofuel.copy());
+            virtualOutputs.add(HTGRItem.createBurnedTRISOFuel(material));
+            virtualOutputs.addAll(items);
+            builder.itemOutputs(virtualOutputs.toArray(new ItemStack[0]), virtualChances);
         })
         .build();
 
     public static void load() {
 
-        GameRegistry.registerItem(HTGR_ITEM, "htgr_item");
-        if (ModUtils.isClientSided) MinecraftForgeClient.registerItemRenderer(HTGR_ITEM, new HTGRItemRenderer());
+        HTGRItem.initItems();
+
+        // DO NOT CHANGE THE ORDER OF ADDING KNOWN MATERIALS
+        HTGRItem.addKnownMaterial(Materials.Silver);
+        HTGRItem.addKnownMaterial(Materials.Uranium235);
+        HTGRItem.addKnownMaterial(Materials.Plutonium);
+        HTGRItem.addKnownMaterial(Materials.Thorium);
+        HTGRItem.addKnownMaterial(Materials.Tungsten);
+        HTGRItem.addKnownMaterial(Materials.Praseodymium);
+        HTGRItem.addKnownMaterial(Materials.Lanthanum);
+        HTGRItem.addKnownMaterial(Materials.Caesium);
+        HTGRItem.addKnownMaterial(Materials.Glowstone);
 
         // silver to indium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 1L))
@@ -156,16 +181,16 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.1d, 0.8d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
 
-        // plutonium breeding
+        // uranium + plutonium breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L),
@@ -178,6 +203,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(1.1d, 1.1d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -185,9 +211,8 @@ public class HTGRLoader {
         // plutonium 241 breeding
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 4L))
@@ -197,6 +222,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 0.9d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -204,9 +230,8 @@ public class HTGRLoader {
         // thorium to lutetium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 5L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 5L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
@@ -219,6 +244,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.25d, 0.8d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -226,9 +252,8 @@ public class HTGRLoader {
         // tungsten to osmium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 5L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 5L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
@@ -242,6 +267,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.05d, 0.8d, 0.5d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -249,9 +275,8 @@ public class HTGRLoader {
         // praseodymium to promethium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3L))
@@ -263,6 +288,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.75d, 1.2d, 0.7d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -270,9 +296,8 @@ public class HTGRLoader {
         // lanthanum to praseodymium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 3L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 3L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Praseodymium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 1L),
@@ -285,6 +310,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.5d, 0.8d, 0.9d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -292,9 +318,8 @@ public class HTGRLoader {
         // caesium to lanthanum
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 3L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 3L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1L),
@@ -307,6 +332,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.5d, 0.9d, 0.9d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -314,9 +340,8 @@ public class HTGRLoader {
         // glowstone to sunnarium
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 5L),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 5L))
+            .circuit(2)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4L),
@@ -330,6 +355,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.65d, 1.2d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -351,7 +377,7 @@ public class HTGRLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 16),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
                 ItemList.Alumina_Support_Ring.get(2L))
             .itemOutputs(ItemList.Casing_Insulated_Fluid_Pipe.get(1L))

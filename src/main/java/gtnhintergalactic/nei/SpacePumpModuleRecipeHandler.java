@@ -1,5 +1,7 @@
 package gtnhintergalactic.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Rectangle;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -22,9 +25,9 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.StackInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.util.GTUtility;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 
@@ -54,6 +57,10 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     private static final int OUT_AMOUNT_Y = GAS_TYPE_Y + 15;
     /** Color of all texts */
     private static final int TEXT_COLOR = 0x404040;
+    /** Optional lang key for value formatting */
+    private static final String VALUE_FORMAT_KEY = "ig.nei.space.custom.value";
+    /** Default value format if VALUE_FORMAT_KEY is not present */
+    private static final String DEFAULT_VALUE_FORMAT = "%s";
 
     /**
      * Initialize the handler for space pumping recipes
@@ -169,17 +176,10 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        Fluid fluid = null;
-        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
-        if (containerFluid != null) {
-            fluid = containerFluid.getFluid();
-        }
-        if (fluid == null) {
-            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
-            if (displayFluid != null) {
-                fluid = displayFluid.getFluid();
-            }
-        }
+        FluidStack fluidStack = StackInfo.getFluid(result);
+        if (fluidStack == null) return;
+
+        Fluid fluid = fluidStack.getFluid();
         if (fluid == null) return;
 
         for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
@@ -204,6 +204,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public void drawExtras(int recipeIndex) {
+        CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
             I18n.format("ig.nei.elevatorpump.planettype") + ":",
             CATEGORY_TITLE_X,
@@ -223,10 +224,10 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
             TEXT_COLOR,
             false);
 
-        CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
-        GuiDraw.drawStringC(Integer.toString(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(Integer.toString(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(formatValue(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(formatValue(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
+        GuiDraw
+            .drawStringC(formatValue(formatNumber(recipe.amount)), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
@@ -234,6 +235,13 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
             OUT_AMOUNT_Y,
             TEXT_COLOR,
             false);
+    }
+
+    private String formatValue(Object value) {
+        if (StatCollector.canTranslate(VALUE_FORMAT_KEY)) {
+            return I18n.format(VALUE_FORMAT_KEY, value);
+        }
+        return String.format(DEFAULT_VALUE_FORMAT, value);
     }
 
     /**
@@ -278,7 +286,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
          * @param outputAmount Output amount of the operation
          */
         private CachedPumpRecipe(int planetType, int gasType, Fluid output, int outputAmount) {
-            targetFluidDisplay = new PositionedStack(GTUtility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
+            targetFluidDisplay = new PositionedStack(new FluidStack(output, 0), getGuiWidth() - 19, 0);
             this.planetType = planetType;
             this.gasType = gasType;
             amount = outputAmount;

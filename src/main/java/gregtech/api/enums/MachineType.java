@@ -3,6 +3,8 @@ package gregtech.api.enums;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.util.tooltip.TooltipHelper;
+
 public enum MachineType {
 
     ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "gt.recipe.alloysmelter"),
@@ -35,7 +37,6 @@ public enum MachineType {
     LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "gt.recipe.laserengraver"),
     LATHE(FunnyTexts.LATHE, "gt.recipe.lathe"),
     MACERATOR(FunnyTexts.MACERATOR, "gt.recipe.macerator"),
-    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "gt.recipe.macerator_pulverizer"),
     MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "gt.recipe.uuamplifier"),
     MATTER_FABRICATOR(FunnyTexts.MATTER_FABRICATOR, "gt.recipe.massfab"),
     MICROWAVE(FunnyTexts.MICROWAVE, "gt.recipe.microwave"),
@@ -43,6 +44,7 @@ public enum MachineType {
     ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
     OVEN(FunnyTexts.OVEN, "gt.recipe.oven"),
     PACKAGER(FunnyTexts.PACKAGER, "gt.recipe.packager"),
+    @Deprecated
     PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "gt.recipe.plasmaarcfurnace"),
     POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
     PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),
@@ -51,10 +53,10 @@ public enum MachineType {
     SCANNER(FunnyTexts.SCANNER, "gt.recipe.scanner"),
     ROCKBREAKER(FunnyTexts.ROCKBREAKER, "gt.recipe.rockbreaker"),
     SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
-    SLICER(FunnyTexts.SLICER, "gt.recipe.slicer"),
     THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermalcentrifuge"),
     UNPACKAGER(FunnyTexts.UNPACKAGER, "gt.recipe.unpackager"),
-    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill");
+    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill"),
+    DRAWER_FRAMER(FunnyTexts.DRAWER_FRAMER, "gt.recipe.drawerframer");
 
     private static class FunnyTexts {
 
@@ -88,7 +90,6 @@ public enum MachineType {
         static final String LASER_ENGRAVER = "gt.recipe.laserengraver.description";
         static final String LATHE = "gt.recipe.lathe.description";
         static final String MACERATOR = "gt.recipe.macerator.description";
-        static final String MACERATOR_PULVERIZER = "gt.recipe.macerator_pulverizer.description";
         static final String MATTER_AMPLIFIER = "gt.recipe.uuamplifier.description";
         static final String MATTER_FABRICATOR = "gt.recipe.massfab.description";
         static final String MICROWAVE = "gt.recipe.microwave.description";
@@ -104,10 +105,10 @@ public enum MachineType {
         static final String ROCKBREAKER = "gt.recipe.rockbreaker.description";
         static final String SIFTER = "gt.recipe.sifter.description";
         static final String SCANNER = "gt.recipe.scanner.description";
-        static final String SLICER = "gt.recipe.slicer.description";
         static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         static final String UNPACKAGER = "gt.recipe.unpackager.description";
         static final String WIREMILL = "gt.recipe.wiremill.description";
+        static final String DRAWER_FRAMER = "gt.recipe.drawerframer.description";
     }
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
@@ -131,7 +132,7 @@ public enum MachineType {
     public String[] tooltipDescription() {
         return new String[] { description(),
             StatCollector.translateToLocal(TT_machineType) + ": "
-                + EnumChatFormatting.YELLOW
+                + TooltipHelper.MACHINE_TYPE_COLOR
                 + type()
                 + EnumChatFormatting.RESET };
     }

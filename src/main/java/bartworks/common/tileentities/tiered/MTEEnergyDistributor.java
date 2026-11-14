@@ -21,11 +21,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEEnergyDistributor extends MTETransformer {
 
     public MTEEnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, null);
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEEnergyDistributor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -95,7 +98,16 @@ public class MTEEnergyDistributor extends MTETransformer {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.energydistributor.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name") };
+        return GTSplit.splitLocalized("tooltip.tile.energydistributor.0.name");
     }
 }

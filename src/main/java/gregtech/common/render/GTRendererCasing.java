@@ -5,7 +5,6 @@ import static gregtech.common.render.GTRendererBlock.*;
 import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
@@ -62,7 +61,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        aRenderer.useInventoryTint = false;
+        ctx.doCleanup();
     }
 
     private void setupBlockTexturesOnly(Block aBlock, int aMeta, boolean noCoord) {
@@ -70,7 +69,7 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         for (int i = 0, validDirectionsLength = validDirections.length; i < validDirectionsLength; i++) {
             ForgeDirection tFace = validDirections[i];
             if (noCoord) {
-                textureArray[i][0] = TextureFactory.builder()
+                textureArray[i][0] = TextureFactory.blockBuilder()
                     .setFromBlock(aBlock, aMeta)
                     .setFromSide(tFace)
                     .noWorldCoord()
@@ -85,7 +84,6 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
-        aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled();
         aRenderer.useInventoryTint = false;
 
         final TesselatorAccessor tessAccess = (TesselatorAccessor) Tessellator.instance;
@@ -115,8 +113,9 @@ public class GTRendererCasing implements ISimpleBlockRenderingHandler {
         ctx.renderPositiveZFacing(textureArray[SIDE_SOUTH]);
         ctx.renderNegativeXFacing(textureArray[SIDE_WEST]);
         ctx.renderPositiveXFacing(textureArray[SIDE_EAST]);
+        ctx.doCleanup();
         // spotless:on
-
+        aRenderer.useInventoryTint = true;
         return tessAccess.gt5u$hasVertices();
     }
 

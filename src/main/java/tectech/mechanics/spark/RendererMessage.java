@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
+import tectech.loader.ConfigHandler;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 // TODO Re-work how sparks are distributed
@@ -51,18 +51,21 @@ public class RendererMessage implements IMessage {
         }
     }
 
-    public static class ClientHandler extends AbstractClientMessageHandler<RendererData> {
+    public static class ClientHandler implements IMessageHandler<RendererData, IMessage> {
 
         @Override
-        public IMessage handleClientMessage(EntityPlayer pPlayer, RendererData pMessage, MessageContext pCtx) {
+        public IMessage onMessage(RendererData message, MessageContext ctx) {
+            if (!ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                return null;
+            }
             // disgusting
             Random localRand = Minecraft.getMinecraft().theWorld.rand;
             int[] zapsToUse = new int[4];
             for (int i = 0; i < 3; i++) {
-                zapsToUse[i] = localRand.nextInt(pMessage.sparkList.size());
+                zapsToUse[i] = localRand.nextInt(message.sparkList.size());
             }
             int i = 0;
-            for (ThaumSpark spark : pMessage.sparkList) {
+            for (ThaumSpark spark : message.sparkList) {
                 for (int j : zapsToUse) {
                     if (i == j) {
                         thaumLightning(spark);

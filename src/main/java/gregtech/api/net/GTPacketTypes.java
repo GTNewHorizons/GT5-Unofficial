@@ -4,9 +4,13 @@ import java.util.Arrays;
 
 import bartworks.common.net.PacketBWMetaBlock;
 import bartworks.common.net.PacketBioVatRenderer;
-import bartworks.common.net.PacketEIC;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
+import gregtech.api.net.cape.GTPacketBroadcastCapes;
+import gregtech.api.net.cape.GTPacketListCapes;
+import gregtech.api.net.cape.GTPacketSetCape;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzer;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzerMode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -14,7 +18,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
  */
 public enum GTPacketTypes {
 
-    TILE_ENTITY(0, new GTPacketTileEntity()),
+    // ID 0 unused
     SOUND(1, new GTPacketSound()),
     BLOCK_EVENT(2, new GTPacketBlockEvent()),
     POLLUTION(4, new GTPacketPollution()),
@@ -23,17 +27,17 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
-    SET_MOLD(18, new GTPacketSetMold()),
+    REQUEST_OREGEN_PATTERN(18, new GTPacketRequestOregenPattern()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
-    // Free ID 20
+    // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
     BW_META_BLOCK(24, new PacketBWMetaBlock()),
     ORE_DICT_CACHE(25, new PacketOreDictCache()),
     SERVER_JOINED(26, new PacketServerJoined()),
-    EIC(27, new PacketEIC()),
-    CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
+    // ID 27 unused, was ElectricImplosionCompressor(27, new PacketEIC()),
+    // ID 28 unused
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
     PLAYER_TELEPORT(31, new PacketTeleportPlayer()),
@@ -45,6 +49,16 @@ public enum GTPacketTypes {
     ON_POWERFAIL(37, new GTPacketOnPowerfail()),
     CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
     CHAT(39, new GTPacketChat()),
+    BROADCAST_CAPES(40, new GTPacketBroadcastCapes()),
+    LIST_CAPES(41, new GTPacketListCapes()),
+    SET_CAPE(42, new GTPacketSetCape()),
+    TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
+    NETWORK_ANALYZER(44, new GTPacketNetworkAnalyzer()),
+    NETWORK_ANALYZER_MODE(45, new GTPacketNetworkAnalyzerMode()),
+    SYNC_TILE_RENDER_DATA_TO_CLIENT(46, new GTPacketClientMTERendererData()),
+    OBSERVE_MACHINE(47, new PacketObserveMachine()),
+    OPEN_REMOTE_MTE_GUI(48, new PacketOpenRemoteMteGui()),
+
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

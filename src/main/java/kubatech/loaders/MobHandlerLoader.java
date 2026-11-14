@@ -20,13 +20,13 @@
 
 package kubatech.loaders;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.InfernalMobs;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +38,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -50,20 +47,13 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
 public class MobHandlerLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler Loader]");
-
-    private static MobHandlerLoader instance = null;
-
     public static void init() {
-        instance = new MobHandlerLoader();
-        MinecraftForge.EVENT_BUS.register(instance);
+        MinecraftForge.EVENT_BUS.register(new MobHandlerLoader());
     }
 
     public static Map<String, MobEECRecipe> recipeMap = new HashMap<>();
@@ -83,6 +73,7 @@ public class MobHandlerLoader {
             this.recipe = recipe;
             try {
                 this.entityCopy = this.recipe.createEntityCopy();
+                this.entityCopy.setWorld(null);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
                 | IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -107,7 +98,7 @@ public class MobHandlerLoader {
                 MTE.getBaseMetaTileEntity()
                     .getZCoord());
             for (MobDrop o : this.mOutputs) {
-                if (voidAllDamagedAndEnchantedItems && (o.damages != null || o.enchantable != null)) continue;
+                if (voidAllDamagedAndEnchantedItems && o.enchantable != null) continue;
                 int chance = o.chance;
 
                 double dChance = (double) chance / 100d;
@@ -152,6 +143,7 @@ public class MobHandlerLoader {
                             }
                         }
                     }
+                    if (voidAllDamagedAndEnchantedItems && s.isItemDamaged()) continue;
                     stacks.add(s);
                 }
             }
@@ -206,13 +198,11 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPreMobsRegistration(PreMobsRegistrationEvent event) {
         recipeMap.clear();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             for (MobDrop drop : event.drops) {
@@ -220,26 +210,22 @@ public class MobHandlerLoader {
                     drop.additionalInfo.add(
                         StatCollector.translateToLocalFormatted(
                             "kubatech.mobhandler.eec_chance",
-                            (((double) drop.chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                            formatNumber(drop.chance * Config.MobHandler.playerOnlyDropsModifier / 100d)));
                 }
             }
-            @SuppressWarnings("unchecked")
-            ArrayList<MobDrop> drops = (ArrayList<MobDrop>) event.drops.clone();
-            if (!drops.isEmpty()) {
-                recipeMap.put(event.currentMob, new MobEECRecipe(drops, event.recipe));
-            }
+            recipeMap.put(event.currentMob, new MobEECRecipe(new ArrayList<>(event.drops), event.recipe));
         }
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
-            event.additionalInformation.addAll(
-                Arrays.asList(
-                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+            event.additionalInformation.add(
+                StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)));
+            event.additionalInformation.add(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.gui.text.time_line", formatNumber(recipe.mDuration / 20d)));
         }
     }
 }

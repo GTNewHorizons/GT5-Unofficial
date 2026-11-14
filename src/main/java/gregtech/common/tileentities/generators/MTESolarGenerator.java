@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 
@@ -16,40 +16,34 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
+import gregtech.common.gui.modularui.hatch.MTESolarGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTESolarGenerator extends MTETieredMachineBlock {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
-                "Cleans itself automatically", "Does not explode in rain!" });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.solarpanel.tooltip");
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -110,82 +104,6 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         return true;
     }
 
-    protected long clientEU;
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addGregTechLogo(builder);
-        addConditionalImages(builder);
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 2)
-                .startFromSlot(0)
-                .endAtSlot(3)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
-                })
-                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CHARGER)
-                .build()
-                .setPos(100, 15))
-            .widget(
-                new ProgressBar()
-                    .setProgress(
-                        () -> (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity())
-                    .setDirection(ProgressBar.Direction.RIGHT)
-                    .setTexture(GTUITextures.PROGRESSBAR_STORED_EU, 147)
-                    .setPos(14, 74)
-                    .setSize(147, 5))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> formatNumbers(clientEU) + "/"
-                            + formatNumbers(getBaseMetaTileEntity().getEUCapacity())
-                            + " EU")
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(14, 66)
-                    .setSize(147, 5))
-            .widget(new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEU = val));
-    }
-
-    public void addConditionalImages(ModularWindow.Builder builder) {
-        builder
-            .widget(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> dayTime ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setPos(5, 10)
-                    .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator1")).setPos(21, 15))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> dayTime, val -> dayTime = val))
-            .widget(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> noRain ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setPos(5, 26)
-                    .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator2")).setPos(21, 31))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> noRain, val -> noRain = val))
-            .widget(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> seesSky ? GTUITextures.OVERLAY_BUTTON_CHECKMARK : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setPos(5, 42)
-                    .setSize(16, 16))
-            .widget(new TextWidget(StatCollector.translateToLocal("GT5U.machines.solarindicator3")).setPos(21, 47))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> seesSky, val -> seesSky = val));
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT)
-                .setSize(17, 17)
-                .setPos(154, 5));
-    }
-
     private boolean valid = true;
 
     @Override
@@ -221,6 +139,18 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         valid = noRain && dayTime && seesSky;
     }
 
+    public boolean isNoRain() {
+        return noRain;
+    }
+
+    public boolean isDayTime() {
+        return dayTime;
+    }
+
+    public boolean isSeesSky() {
+        return seesSky;
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -240,11 +170,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                 ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
                 : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
         if (tag.hasKey("storedeu") && tag.hasKey("maxeu")) currenttip.add(
-            EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
+            EnumChatFormatting.GREEN + formatNumber(tag.getLong("storedeu"))
                 + EnumChatFormatting.GRAY
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + formatNumbers(tag.getLong("maxeu"))
+                + formatNumber(tag.getLong("maxeu"))
                 + EnumChatFormatting.GRAY
                 + " EU");
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -252,12 +182,26 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public long maxEUStore() {
+        if (mTier == 0) {
+            return 2;
+        }
         return V[mTier] * 10000;
     }
 
     @Override
     public long maxEUOutput() {
+        if (mTier == 0) {
+            return 1;
+        }
         return GTValues.V[mTier];
+    }
+
+    @Override
+    public long getMinimumStoredEU() {
+        if (mTier == 0) {
+            return 0;
+        }
+        return super.getMinimumStoredEU();
     }
 
     @Override
@@ -285,5 +229,15 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTESolarGeneratorGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return 1;
     }
 }

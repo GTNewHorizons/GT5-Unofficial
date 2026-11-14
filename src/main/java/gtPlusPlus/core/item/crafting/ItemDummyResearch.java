@@ -21,24 +21,16 @@ public class ItemDummyResearch extends ItemGenericToken {
     public enum ASSEMBLY_LINE_RESEARCH {
 
         RESEARCH_1_CONTAINMENT("Containment Fields", "Advanced scientific study"),
-        RESEARCH_2_BASIC_CHEM("Basic Chemistry", "Time to start at the beginning"),
-        RESEARCH_3_ADV_CHEM("Advanced Chemistry", "Best learn more than chemical equations"),
-        RESEARCH_4_BASIC_PHYSICS("Basic Physics", "Fundamental laws of motion"),
-        RESEARCH_5_ADV_PHYSICS("Advanced Physics", "Advanced knowledge!"),
-        RESEARCH_6_BASIC_METALLURGY("Basic Metallurgy", "Information about material smelting"),
-        RESEARCH_7_ADV_METALLURGY("Advanced Metallurgy", "Advanced Material Sciences!"),
         RESEARCH_8_TURBINE_AUTOMATION("Turbine Automation", "You really don't want to share this with anyone!"),
         RESEARCH_9_CLOAKING("Cloaking Technologies", "Sneaking around like a mouse"),
         RESEARCH_10_SPARGING("Gas Sparging", "Blowing gas for results"),
         RESEARCH_11_MOLECULAR_TRANSFORMER("Molecular Transformation", "Turning things into something better");
 
         private final String mName;
-        private final String mDesc;
 
         ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
             mName = aName;
-            mDesc = aDesc;
-            ModItems.itemDummyResearch.register(mName, mDesc);
+            ModItems.itemDummyResearch.register(mName, aDesc);
         }
     }
 
@@ -55,7 +47,7 @@ public class ItemDummyResearch extends ItemGenericToken {
     private int aID = 0;
 
     public ItemDummyResearch() {
-        super("dummyResearch", "Research", new String[] { "This object requires some further study" }, "research");
+        super("dummyResearch", new String[] { "This object requires some further study" }, "research");
     }
 
     /**

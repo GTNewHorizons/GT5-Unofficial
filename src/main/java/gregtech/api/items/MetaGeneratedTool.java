@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.canTranslate;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -38,6 +40,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import appeng.api.implementations.items.IAEWrench;
@@ -59,6 +62,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;
@@ -84,6 +89,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
     public static final ConcurrentHashMap<String, MetaGeneratedTool> sInstances = new ConcurrentHashMap<>();
+
+    private static final String EMPTY_NAME_KEY = "gt.metatool.empty.name";
+    private static final String EMPTY_TOOLTIP_KEY = "gt.metatool.empty.tooltip";
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -168,6 +176,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     public static byte getToolMode(ItemStack aStack) {
+        if (aStack == null) {
+            return 0;
+        }
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            return ToolboxUtil.getSelectedTool(aStack)
+                .map(MetaGeneratedTool::getToolMode)
+                .orElse((byte) 0);
+        }
+
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -176,9 +193,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+    public static void switchCurrentToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
         if (!keyDown) return;
         ItemStack currentItem = player.inventory.getCurrentItem();
+        switchToolMode(currentItem);
+    }
+
+    public static void switchToolMode(final ItemStack currentItem) {
         if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
         byte maxMode = item.getToolMaxMode(currentItem);
         if (maxMode <= 1) return;
@@ -203,12 +224,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         Object... aOreDictNamesAndAspects) {
         if (aToolTip == null) aToolTip = "";
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
-            GTLanguageManager
-                .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".tooltip", "You need to recharge it");
+            if (!aEnglish.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
+            }
+            if (!aToolTip.isEmpty()) {
+                GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
+            }
             mToolStats.put((short) aID, aToolStats);
             mToolStats.put((short) (aID + 1), aToolStats);
             aToolStats.onStatsAddedToTool(this, aID);
@@ -315,7 +336,17 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
             }
             return false;
-        }
+        } else if (tStats.isSaw()
+            && ((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))) {
+                int aMetaData = aPlayer.worldObj.getBlockMetadata(aX, aY, aZ);
+                GTUtility
+                    .dropItem(aPlayer.worldObj, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMetaData));
+                aPlayer.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(aBlock)], 1);
+                onBlockDestroyed(aStack, aPlayer.worldObj, aBlock, aX, aY, aZ, aPlayer);
+                doDamage(aStack, tStats.getToolDamagePerDropConversion());
+                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
+                return true;
+            }
         return super.onBlockStartBreak(aStack, aX, aY, aZ, aPlayer);
     }
 
@@ -379,7 +410,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 }
             }
         }
-        if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+        if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
         return true;
     }
 
@@ -450,25 +481,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
-                            " " + formatNumbers(turbine.getMaxDurability()))
+                            formatNumber(turbine.getCurrentDurability()),
+                            formatNumber(turbine.getMaxDurability()))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.base_eff",
-                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
-                        + "%"
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + translateToLocalFormatted(
+                        "gt.item.desc.base_eff",
+                        (int) Math.ceil(turbine.getBaseEfficiency() * 100)) + "%" + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, EnumChatFormatting.GRAY + translateToLocal("gt.item.desc.fuel_eff"));
                 aList.add(
                     tOffset + 4,
@@ -479,10 +507,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s L/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalSteamFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getSteamEfficiency() * 100)
@@ -497,10 +525,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s L/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getLooseSteamEfficiency() * 100)
@@ -518,10 +546,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalGasFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getGasEfficiency() * 100)
@@ -536,10 +564,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLooseGasFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLooseGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getLooseGasEfficiency() * 100)
@@ -554,10 +582,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalPlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalPlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getPlasmaEfficiency() * 100)
@@ -572,10 +600,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
                             EnumChatFormatting.GOLD
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaFlow())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
                             EnumChatFormatting.DARK_GREEN
-                                + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaEUt())))
+                                + formatNumber(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
                                 + (int) (turbine.getLoosePlasmaEfficiency() * 100)
@@ -583,64 +611,61 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
-                    EnumChatFormatting.LIGHT_PURPLE + translateToLocalFormatted(
-                        "gt.item.desc.eff_tier",
-                        "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + translateToLocalFormatted("gt.item.desc.eff_tier", turbine.getOverflowEfficiency()));
             } else {
                 aList.add(
                     tOffset,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
-                            " " + formatNumbers(tMaxDamage))
+                            formatNumber(tMaxDamage - getToolDamage(aStack)),
+                            formatNumber(tMaxDamage))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.damage",
-                            "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                        + translateToLocalFormatted("gt.item.desc.damage", formatNumber(getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.mine_speed",
-                            "" + EnumChatFormatting.GOLD
-                                + Math.max(
+                            formatNumber(
+                                Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed))
+                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)))
                         + EnumChatFormatting.GRAY);
-                NBTTagCompound aNBT = aStack.getTagCompound();
-                if (aNBT != null) {
-                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
-                    if (aNBT != null && aNBT.hasKey("Heat")) {
-                        int tHeat = aNBT.getInteger("Heat");
+                final NBTTagCompound nbt = aStack.getTagCompound();
+                if (nbt != null) {
+                    final NBTTagCompound toolStats = nbt.getCompoundTag("GT.ToolStats");
+                    if (toolStats != null && toolStats.hasKey("Heat")) {
+                        int tHeat = toolStats.getInteger("Heat");
                         long tWorldTime = aPlayer.getEntityWorld()
                             .getWorldTime();
-                        if (aNBT.hasKey("HeatTime")) {
-                            long tHeatTime = aNBT.getLong("HeatTime");
+                        if (toolStats.hasKey("HeatTime")) {
+                            long tHeatTime = toolStats.getLong("HeatTime");
                             if (tWorldTime > (tHeatTime + 10)) {
                                 tHeat = (int) (tHeat - ((tWorldTime - tHeatTime) / 10));
                                 if (tHeat < 300 && tHeat > -10000) tHeat = 300;
                             }
-                            aNBT.setLong("HeatTime", tWorldTime);
-                            if (tHeat > -10000) aNBT.setInteger("Heat", tHeat);
+                            toolStats.setLong("HeatTime", tWorldTime);
+                            if (tHeat > -10000) toolStats.setInteger("Heat", tHeat);
                         }
 
                         aList.add(
                             tOffset + 3,
                             EnumChatFormatting.RED
-                                + translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
+                                + translateToLocalFormatted("GT5U.tooltip.tool.heat", toolStats.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -677,6 +702,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
+        if (aStack.stackSize <= 0) return false;
         Long[] tElectric = getElectricStats(aStack);
         if (tElectric == null) {
             long tNewDamage = getToolDamage(aStack) + aAmount;
@@ -777,6 +803,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            aStack = ToolboxUtil.getSelectedTool(aStack)
+                .orElse(null);
+        }
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
 
@@ -913,8 +943,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aStack == null) return false;
         IToolStats tStats = getToolStatsInternal(aStack);
         if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
-            NBTTagCompound aNBT = aStack.getTagCompound();
-            if (aNBT != null) aNBT.removeTag("ench");
+            ItemStackNBT.removeTag(aStack, "ench");
             return false;
         }
         Materials aMaterial = getPrimaryMaterial(aStack);
@@ -945,9 +974,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     case weapon -> {
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
-                    case all -> {
-                        tResult.put(tEntry.getKey(), tEntry.getValue());
-                    }
+                    case all -> tResult.put(tEntry.getKey(), tEntry.getValue());
                     case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
                     case bow -> {
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
@@ -962,22 +989,55 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return true;
     }
 
+    /**
+     * A discharged tool reads the name of its charged counterpart, so that a tool spells its name once instead of
+     * twice.
+     */
+    private boolean isDischarged(ItemStack aStack) {
+        return getDamage(aStack) % 2 == 1;
+    }
+
+    /**
+     * @param aMeta the Meta Value of the charged tool
+     * @return the name of the charged tool, without the discharged suffix
+     */
+    protected String getChargedName(int aMeta) {
+        return translateToLocal(getUnlocalizedName() + "." + aMeta + ".name");
+    }
+
+    @Override
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        if (isDischarged(aStack)) return tStack -> translateToLocal(EMPTY_TOOLTIP_KEY);
+        return super.getToolTipLocalizationFunction(aStack);
+    }
+
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
+        String result = isDischarged(aStack)
+            ? translateToLocalFormatted(EMPTY_NAME_KEY, getChargedName(getDamage(aStack) - 1))
+            : getChargedName(getDamage(aStack));
+        final String toolMode = getToolModeName(aStack);
 
-        String result = super.getItemStackDisplayName(aStack);
-        IToolStats toolStats = getToolStats(aStack);
-        if (toolStats != null) {
-            String toolName = toolStats.getToolTypeName();
-            if (toolName == null) return result;
-
-            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
-            if (canTranslate(key)) {
-                result += " (" + translateToLocal(key) + ")";
-            }
+        if (toolMode != null) {
+            result += " (" + toolMode + ")";
         }
         return result;
 
+    }
+
+    public String getToolModeName(ItemStack aStack) {
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String toolName = toolStats.getToolTypeName();
+            if (toolName != null) {
+                String key = "gt." + toolName + ".mode." + getToolMode(aStack);
+                if (canTranslate(key)) {
+                    return translateToLocal(key);
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -987,8 +1047,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public short getEmptyMetaData(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) aNBT.removeTag("ench");
+        ItemStackNBT.removeTag(aStack, "ench");
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
     }
 }

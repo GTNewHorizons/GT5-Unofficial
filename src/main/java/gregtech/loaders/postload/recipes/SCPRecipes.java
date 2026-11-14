@@ -13,7 +13,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
@@ -26,7 +25,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SCPRecipes implements Runnable {
@@ -55,7 +53,7 @@ public class SCPRecipes implements Runnable {
             .copyAmountUnsafe(30 * 64, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1));
         ItemStack SuperconductorUMV = GTUtility
             .copyAmountUnsafe(33 * 64, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1));
-        ItemStack MVF = GTUtility.copyAmount(16, ItemRegistry.megaMachines[1]);
+        ItemStack MVF = ItemList.EndothermicFridge.get(16);
         ItemStack coolingCore = GraviSuite.isModLoaded() ? getModItem(GraviSuite.ID, "itemSimpleItem", 8, 2)
             : ItemList.Tool_DataStick.get(1);
 
@@ -108,7 +106,7 @@ public class SCPRecipes implements Runnable {
             .metadata(RESEARCH_ITEM, GregtechItemList.Bus_Milling_Balls.get(1))
             .metadata(SCANNING, new Scanning(150 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
-                CI.getTieredGTPPMachineCasing(8, 8),
+                GregtechItemList.GTPP_Casing_UV.get(8),
                 ItemList.Field_Generator_UV.get(16),
                 GregtechItemList.Energy_Core_ZPM.get(8),
                 GTOreDictUnificator.get(OrePrefixes.round, Materials.SuperconductorIVBase, 64),

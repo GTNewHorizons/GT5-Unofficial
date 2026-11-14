@@ -27,7 +27,7 @@ public abstract class LogBase extends BlockLog {
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 
-    public LogBase(String blockNameLocalized, String blockNameUnlocalized, String[] treeTypes) {
+    public LogBase(String blockNameLocalized, String[] treeTypes) {
         this.treeType = treeTypes;
         String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
@@ -42,7 +42,7 @@ public abstract class LogBase extends BlockLog {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List metaList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> metaList) {
         for (int i = 0; i < this.textureSide.length; ++i) {
             metaList.add(new ItemStack(item, 1, i));
         }

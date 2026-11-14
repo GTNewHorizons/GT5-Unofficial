@@ -50,7 +50,7 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
         writeToFile("Dumping Blocks from " + mod.getModId() + ".");
         for (Object B : GameData.getBlockRegistry()) {
@@ -68,7 +68,7 @@ public class LocaleUtils {
                     }
                 }
 
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
 
     }

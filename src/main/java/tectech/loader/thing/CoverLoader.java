@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
@@ -18,14 +19,16 @@ import tectech.thing.item.ItemTeslaCoilCover;
 
 public class CoverLoader implements Runnable {
 
+    @Override
     public void run() {
-        final IIconContainer TESLA_OVERLAY = new Textures.BlockIcons.CustomIcon("iconsets/TESLA_OVERLAY");
-        final IIconContainer TESLA_OVERLAY_ULTIMATE = new Textures.BlockIcons.CustomIcon(
-            "iconsets/TESLA_OVERLAY_ULTIMATE");
-        final IIconContainer ENDERFLUIDLINK_OVERLAY = new Textures.BlockIcons.CustomIcon(
-            "iconsets/ENDERFLUIDLINK_OVERLAY");
-        final IIconContainer POWERPASSUPGRADE_OVERLAY = new Textures.BlockIcons.CustomIcon(
-            "iconsets/POWERPASSUPGRADE_OVERLAY");
+        final IIconContainer TESLA_OVERLAY = Textures.BlockIcons
+            .custom(Mods.GregTech.resourceDomain, "iconsets/TESLA_OVERLAY");
+        final IIconContainer TESLA_OVERLAY_ULTIMATE = Textures.BlockIcons
+            .custom(Mods.GregTech.resourceDomain, "iconsets/TESLA_OVERLAY_ULTIMATE");
+        final IIconContainer ENDERFLUIDLINK_OVERLAY = Textures.BlockIcons
+            .custom(Mods.GregTech.resourceDomain, "iconsets/ENDERFLUIDLINK_OVERLAY");
+        final IIconContainer POWERPASSUPGRADE_OVERLAY = Textures.BlockIcons
+            .custom(Mods.GregTech.resourceDomain, "iconsets/POWERPASSUPGRADE_OVERLAY");
 
         CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 0),

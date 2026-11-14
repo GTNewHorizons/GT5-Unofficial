@@ -1,11 +1,14 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class ItemCasings extends ItemBlock {
 
@@ -27,6 +30,12 @@ public class ItemCasings extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + blockCasings.damageDropped(getDamage(aStack));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        if (aStack.getItemDamage() == WILDCARD) return StatCollector.translateToLocal("gt.block.any_sub_block");
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

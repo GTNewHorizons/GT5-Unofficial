@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,12 +26,41 @@ public class OilCrackerBackend extends RecipeMapBackend {
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
+        addRecipeCatalystFluid(recipe);
+        return recipe;
+    }
+
+    @Override
+    public void removeRecipes(Collection<? extends GTRecipe> recipesToRemove) {
+        super.removeRecipes(recipesToRemove);
+        rebuildCatalystFluidIndex();
+    }
+
+    @Override
+    public void clearRecipes() {
+        super.clearRecipes();
+        validCatalystFluidNames.clear();
+    }
+
+    @Override
+    public void reInit() {
+        super.reInit();
+        rebuildCatalystFluidIndex();
+    }
+
+    private void rebuildCatalystFluidIndex() {
+        validCatalystFluidNames.clear();
+        for (GTRecipe recipe : getAllRecipes()) {
+            addRecipeCatalystFluid(recipe);
+        }
+    }
+
+    private void addRecipeCatalystFluid(GTRecipe recipe) {
         if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 1 && recipe.mFluidInputs[1] != null) {
             validCatalystFluidNames.add(
                 recipe.mFluidInputs[1].getFluid()
                     .getName());
         }
-        return recipe;
     }
 
     public boolean isValidCatalystFluid(FluidStack fluid) {

@@ -4,9 +4,12 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedTex
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +21,8 @@ import gregtech.api.enums.Textures;
  * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockGlass1 extends BlockCasingsAbstract {
 
@@ -25,18 +30,19 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
-        register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
-        register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
-        register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
-        register(
-            4,
-            ItemList.Hawking_Glass,
-            "Hawking Radiation Realignment Focus",
-            translatedText("gt.casing.hawking-focus"));
-        register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
-        register(6, ItemList.Chamber_Grate, "Chamber Grate");
-
+        register(0, ItemList.GlassPHResistant, translatedText("gt.casing.chemical-resistant"));
+        register(1, ItemList.GlassUVResistant);
+        register(2, ItemList.GlassOmniPurposeInfinityFused);
+        register(3, ItemList.GlassQuarkContainment);
+        register(4, ItemList.Hawking_Glass, translatedText("gt.casing.hawking-focus"));
+        register(5, ItemList.NaniteShieldingGlass);
+        register(6, ItemList.Spinmatron_Chamber_Grate);
+        register(7, ItemList.Glass_ExoFoundry);
+        register(8, ItemList.ComplexNanochipGlass);
+        register(9, ItemList.ElectromagneticWaveguide, translatedText("gt.blockglass1.em-glass-bec.tooltip"));
+        register(10, ItemList.ReinforcedGlass);
+        ItemList.ReinforcedGlass.registerOre("glassReinforced");
+        ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(108.0f), 1, 10));
     }
 
     @Override
@@ -76,7 +82,11 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
             case 5 -> Textures.BlockIcons.NANITE_SHIELDING_FRAME.getIcon();
-            case 6 -> Textures.BlockIcons.SIEVE_MESH.getIcon();
+            case 6 -> Textures.BlockIcons.SPINMATRON_GRATE.getIcon();
+            case 7 -> Textures.BlockIcons.EXOFOUNDRY_GLASS.getIcon();
+            case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
+            case 9 -> Textures.BlockIcons.BEC_GLASS.getIcon();
+            case 10 -> Textures.BlockIcons.REINFORCED_GLASS.getIcon();
 
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
@@ -103,5 +113,18 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         }
 
         return super.shouldSideBeRendered(worldIn, x, y, z, side);
+    }
+
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
+        double explosionY, double explosionZ) {
+        if (world == null) {
+            return 0.0F;
+        }
+        int meta = world.getBlockMetadata(x, y, z);
+        if (meta == 10) return 108.0F;
+
+        return super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+
     }
 }

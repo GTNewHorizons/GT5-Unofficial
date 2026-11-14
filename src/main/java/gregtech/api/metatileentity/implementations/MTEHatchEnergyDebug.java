@@ -1,12 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,11 +13,15 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchEnergyDebugGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     public MTEHatchEnergyDebug(int aID, String aName, String aNameRegional, int aTier) {
@@ -31,8 +33,19 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("gt.blockmachines.hatch.energy.debug.name");
+    }
+
+    @Override
     public long getInputTier() {
         return voltageTier;
+    }
+
+    @Override
+    public byte getTierForStructure() {
+        return (byte) voltageTier;
     }
 
     @Override
@@ -68,10 +81,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Buffers EU internally",
-            EnumChatFormatting.GRAY + "Configure Amps and Voltage in the UI",
-            EnumChatFormatting.ITALIC + "/gt global_energy_set Develo-... begone!",
-            "Author: " + GREEN + BOLD + "Chrom" };
+        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch_debug.desc");
     }
 
     @Override

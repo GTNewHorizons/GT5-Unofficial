@@ -1,11 +1,8 @@
 package gtPlusPlus.core.item.bauble;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import cofh.api.energy.IEnergyContainerItem;
@@ -32,9 +28,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
         super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
         String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
-            GameRegistry.registerItem(this, aUnlocalName);
-        }
+        GameRegistry.registerItem(this, aUnlocalName);
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,12 +46,6 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
             ElectricItem.manager.charge(charged, Double.POSITIVE_INFINITY, Integer.MAX_VALUE, true, false);
             itemList.add(charged);
         }
-    }
-
-    @Override
-    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 
     @Override
@@ -127,7 +115,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                         chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
                     }
                 }
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
     }
 

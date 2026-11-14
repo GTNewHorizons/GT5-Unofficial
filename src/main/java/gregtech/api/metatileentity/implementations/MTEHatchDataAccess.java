@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,21 +14,27 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.GTSplit;
+import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
     private int timeout = 4;
 
@@ -46,6 +53,11 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     public MTEHatchDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.hatch.dataaccess.desc", mTier == 4 ? 4 : 16);
     }
 
     @Override
@@ -112,10 +124,12 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
     }
 
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
 
         cachedRecipes = null;
+        // Adding/removing a data stick changes which assembly-line recipes are available, so push a recipe check.
+        notifyWatchers();
     }
 
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
@@ -130,15 +144,26 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
         return cachedRecipes;
     }
 
+    /**
+     * @return whether the available recipe set changed between two snapshots, compared by content rather than count so
+     *         a same-size data-stick swap is still detected. Data input hatches call this to decide when to notify.
+     */
+    protected static boolean recipesChanged(List<RecipeAssemblyLine> a, List<RecipeAssemblyLine> b) {
+        int aSize = a == null ? 0 : a.size();
+        int bSize = b == null ? 0 : b.size();
+        if (aSize != bSize) return true;
+        if (aSize == 0) return false;
+        return !new HashSet<>(a).equals(new HashSet<>(b));
+    }
+
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mTier == 4) {
-            getBaseMetaTileEntity()
-                .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
-        } else {
-            getBaseMetaTileEntity()
-                .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
-        }
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchDataAccessGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -183,5 +208,11 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
         lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
 
         return lines.toArray(new String[lines.size()]);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

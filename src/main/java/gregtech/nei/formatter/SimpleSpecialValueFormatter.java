@@ -1,5 +1,7 @@
 package gregtech.nei.formatter;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -8,7 +10,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -44,6 +45,6 @@ public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 translationKey,
-                GTUtility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
+                formatNumber((long) recipeInfo.recipe.mSpecialValue * multiplier)));
     }
 }

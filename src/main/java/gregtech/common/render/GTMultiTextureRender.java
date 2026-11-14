@@ -12,12 +12,16 @@ import gregtech.api.render.ISBRContext;
  * I should have done this much earlier...
  * </p>
  */
-public class GTMultiTextureRender extends GTTextureBase implements ITexture {
+public class GTMultiTextureRender extends GTTextureBase {
 
     protected final ITexture[] mTextures;
 
     public static GTMultiTextureRender get(ITexture... aTextures) {
         return GTMod.GT.isClientSide() ? new GTMultiTextureRender(aTextures) : null;
+    }
+
+    public static ITexture create(ITexture[] textures) {
+        return new GTMultiTextureRender(textures);
     }
 
     protected GTMultiTextureRender(ITexture... aTextures) {

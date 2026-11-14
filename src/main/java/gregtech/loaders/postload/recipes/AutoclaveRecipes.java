@@ -12,7 +12,9 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -21,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -33,7 +36,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.EnergeticAlloy.getMolten(2 * INGOTS))
             .duration(30 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
@@ -42,7 +45,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.ConductiveIron.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         final ItemStack certusQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0);
@@ -205,6 +208,14 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 64))
+            .itemOutputs(ItemList.NuclearStar.get(1L))
+            .fluidInputs(Materials.Infinity.getPlasma(2 * INGOTS))
+            .duration(20 * TICKS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.SiliconDioxide.getDust(1))
             .itemOutputs(Materials.Quartzite.getGems(1))
             .outputChances(750)
@@ -232,9 +243,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1_000))
@@ -243,9 +253,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
@@ -296,6 +305,21 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.PhononCrystalSolution.getFluid(250))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(autoclaveRecipes);
+
+        // Exquisite Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amalgatite, 3),
+                WerkstoffLoader.Olenit.get(OrePrefixes.gemChipped, 64),
+                WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Diamond, 64),
+                WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.gemChipped, 64))
+            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Amalgatite, 1))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
             .addTo(autoclaveRecipes);
 
     }

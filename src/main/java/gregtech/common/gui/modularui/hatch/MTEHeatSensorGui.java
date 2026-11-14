@@ -1,67 +1,46 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
+import gregtech.api.modularui2.common.CommonWidgets;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 
-public class MTEHeatSensorGui {
-
-    private final MTEHeatSensor sensor;
+public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
 
     public MTEHeatSensorGui(MTEHeatSensor sensor) {
-        this.sensor = sensor;
+        super(sensor);
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(sensor, data, syncManager, uiSettings)
-            .build()
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow col = Flow.column()
             .child(
-                Flow.column()
-                    .child(createInvertButtonRow())
-                    .child(createThresholdFieldRow())
-                    .coverChildren()
-                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
-                    .childPadding(2)
-                    .pos(8, 6));
-    }
-
-    public Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(sensor::isInverted, sensor::setInverted);
-        return Flow.row()
-            .child(
-                new ToggleButton().value(invertedSyncer)
-                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                    .size(16, 16))
-            .child(
-                IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
-                        : translateToLocal("gt.interact.desc.normal"))
-                    .asWidget())
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
+            .child(createThresholdFieldRow())
             .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(2);
+
+        return super.createContentSection(panel, syncManager).child(col);
     }
 
     public Flow createThresholdFieldRow() {
         return Flow.row()
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, 100)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, 100)
                     .size(77, 12)
-                    .value(new DoubleSyncValue(sensor::getThreshold, sensor::setThreshold))
+                    .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.heat_sensor")

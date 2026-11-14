@@ -1,0 +1,377 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTDualInputPattern;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSolidifier>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final double DECAY_RATE = 0.025D;
+    private static final double MAX_SPEEDUP = 3.0D;
+    private static final double EU_MODIFIER = 0.8D;
+    private static final int PARALLELS_PER_TIER = 10;
+
+    private static final int HORIZONTAL_OFFSET = 2;
+    private static final int VERTICAL_OFFSET = 5;
+    private static final int DEPTH_OFFSET = 0;
+
+    private double speedup = 1.0D;
+    private int runningTickCounter = 0;
+    private int glassTier = -1;
+    private final static int MAX_CASINGS = 77;
+    private final static int MIN_CASINGS = MAX_CASINGS - 53; // = 24.
+
+    private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMassSolidifier>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] { { " bbb ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", " bbb " },
+                    { "bdddb", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", "bdddb" },
+                    { "bbbbb", "a   a", "a e a", "a   a", "a e a", "a   a", "a e a", "a   a", "bbbbb" },
+                    { "bbbbb", "a   a", "a   a", "a   a", "a   a", "a   a", "a   a", "a   a", "bbbbb" },
+                    { "bdddb", "a c a", "accca", "a c a", "accca", "a c a", "accca", "a c a", "bdddb" },
+                    { "bb~bb", "bdbdb", "bbbbb", "bdbdb", "bbbbb", "bdbdb", "bbbbb", "bdbdb", "bbbbb" } }))
+        // spotless:off
+        .addElement('a', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement(
+            'b',
+            buildHatchAdder(MTEMassSolidifier.class)
+                .atLeast(InputBus, OutputBus, InputHatch.or(SolidifierHatch), Maintenance, Energy)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
+                .hint(1)
+                .buildAndChain(
+                    onElementPass(MTEMassSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('e', ofBlock(GregTechAPI.sBlockCasings2, 13))
+        .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .build();
+
+    public MTEMassSolidifier(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTEMassSolidifier(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IStructureDefinition<MTEMassSolidifier> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEMassSolidifier(this.mName);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MASS_SOLIDIFIER,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13));
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_solidifier"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mass-solidifier"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", formatNumber(PARALLELS_PER_TIER))
+                    .put("min_speedup", formatNumber(100))
+                    .put("max_speedup", formatNumber(MAX_SPEEDUP * 100))
+                    .put("speed_increase", formatNumber(DECAY_RATE * 200))
+                    .put("speed_decrease", formatNumber(DECAY_RATE * 400))
+                    .put("eu_modifier", formatNumber(EU_MODIFIER * 100))
+                    .build())
+            .beginStructureBlock(5, 6, 9, false)
+            .addEnergyHatchGlassTier()
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASINGS + "-73", Casings.SolidifierCasing.getLocalizedName(), false)
+            .addCasing("42", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("34", Casings.SolidifierRadiator.getLocalizedName(), false)
+            .addCasing("13", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("7", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("3", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_solidifier_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setDouble("speedup", speedup);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("speedup")) speedup = aNBT.getDouble("speedup");
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        runningTickCounter++;
+        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP) {
+            runningTickCounter = 0;
+            speedup = Math.min(MAX_SPEEDUP, speedup + DECAY_RATE);
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        if (mMaxProgresstime == 0 && speedup > 1) {
+            if (aTick % 5 == 0) {
+                speedup = Math.max(1, speedup - DECAY_RATE);
+            }
+        }
+    }
+
+    @Override
+    public void construct(ItemStack holoStack, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, holoStack, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            holoStack,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    private int casingAmount;
+
+    private void onCasingAdded() {
+        casingAmount++;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (mEnergyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
+            }
+        }
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (!inv.shouldBeCached()) {
+                    return true;
+                }
+
+                if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
+                    activeDualInv = inv;
+                    return true;
+                }
+
+                GTDualInputPattern inputs = inv.getPatternInputs();
+                setInputItems(inputs.inputItems);
+                setInputFluids(inputs.inputFluid);
+                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
+                    .collect(Collectors.toSet());
+                if (!recipes.isEmpty()) {
+                    dualInvWithPatternToRecipeCache.put(inv, recipes);
+                    activeDualInv = inv;
+                    return true;
+                }
+                return false;
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(EU_MODIFIER)
+            .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    @Nonnull
+    @Override
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
+        for (MTEHatchInput solidifierHatch : mInputHatches) {
+            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                List<ItemStack> items = hatch.getNonConsumableItems();
+                FluidStack fluid = solidifierHatch.getFluid();
+
+                if (items != null && fluid != null) {
+                    processingLogic.setInputItems(items);
+                    processingLogic.setInputFluids(fluid);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        lastResult = foundResult;
+                    }
+                }
+            }
+        }
+        processingLogic.clear();
+        return lastResult;
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return PARALLELS_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    public double getSpeedBonus() {
+        return 1.0D / speedup;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fluidSolidifierRecipes;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setFloat("speedup", (float) speedup);
+    }
+
+    @Override
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
+            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                + EnumChatFormatting.WHITE
+                + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
+    }
+
+}

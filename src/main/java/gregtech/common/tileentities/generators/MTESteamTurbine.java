@@ -26,23 +26,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamTurbine extends MTEBasicGenerator {
 
     public MTESteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Converts Steam into EU", "Base rate: 2L of Steam -> 1 EU" });
+        super(aID, aName, aNameRegional, aTier, (String) null);
     }
 
     public MTESteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -66,14 +64,12 @@ public class MTESteamTurbine extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 2];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Fuel Efficiency: " + (600 / getEfficiency()) + "%";
-        desc[mDescriptionArray.length + 1] = String.format(
-            "Consumes up to %sL of Steam per second",
-            (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
-                / (600 / getEfficiency())));
-        return desc;
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.basicgenerator.steamturbine.tooltip",
+            String.valueOf(600 / getEfficiency()),
+            String.valueOf(
+                (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
+                    / (600 / getEfficiency()))));
     }
 
     @Override

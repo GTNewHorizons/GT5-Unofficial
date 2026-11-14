@@ -1,5 +1,9 @@
 package gregtech.api.interfaces.metatileentity;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -103,7 +108,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
@@ -171,6 +176,16 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     /**
+     * Whether {@link #onPreTick} and {@link #onPostTick} run on the client.
+     */
+    boolean needsClientTick();
+
+    /**
+     * Client only. Called after any state sounds depending on have changed.
+     */
+    void onClientSoundStateChanged();
+
+    /**
      * Called when this MetaTileEntity gets (intentionally) disconnected from the BaseMetaTileEntity. Doesn't get called
      * when this thing is moved by Frames or similar hacks.
      */
@@ -207,6 +222,33 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *         upon Block destruction and for Inventory Access Management
      */
     boolean isValidSlot(int aIndex);
+
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    default int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getSlotLimit(slot), stack == null ? 64 : stack.getMaxStackSize());
+    }
+
+    /**
+     * Gets the max stack size limit for a slot. This should be prioritised over
+     * {@link IMetaTileEntity#getStackSizeLimit(int, ItemStack)}in cases where the limit is independent of the item
+     * stack.
+     *
+     * @param slot The slot index, or -1 for a general 'lowest slot' query.
+     */
+    default int getSlotLimit(int slot) {
+        return getInventoryStackLimit();
+    }
 
     /**
      * Check if the item at the specified index should be dropped
@@ -325,9 +367,83 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         ArrayList<String> aList);
 
     /**
-     * get a small Description
+     * Get the description for the TileEntity.
+     * <p>
+     * The behavior of this method depends on whether the class is annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>When the class is annotated with {@link SkipGenerateDescription}, the returned value is displayed directly in
+     * the game.</li>
+     * <li>When the class is not annotated with {@link SkipGenerateDescription}, the returned value is automatically
+     * added to <code>GregTech.lang</code>, and display the value from <code>GregTech.lang</code> in the game</li>
+     * </ul>
+     * <p>
+     * Additional notes when the class is not annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
+     * <li>Only static text is supported(because of <code>GregTech.lang</code>); dynamic text (e.g. display different
+     * random text each time) should also use the {@link #addFormattedString(String)}</li>
+     * </ul>
+     *
+     * @return the description, will display in the tooltips
+     * @see SkipGenerateDescription
+     * @see #addFormattedString(String)
      */
     String[] getDescription();
+
+    /**
+     * Add a formatting marker for automatic parameter substitution.
+     * <p>
+     * This can also be used to display raw text.
+     *
+     * @param formattedStr the String to be formatted with parameter substitution markers.
+     * @return the special formatting markers for automatic parsing.
+     * @apiNote This method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
+     *          otherwise the game will display the format used for marking.<br>
+     *          When use this method, please replace all "(number)%" with "(number)%%".
+     * @see #getDescription()
+     */
+    default String addFormattedString(String formattedStr) {
+        return "%%%" + formattedStr + "%%%";
+    }
+
+    /**
+     * Annotation to mark classes that should skip generating tooltips through the GregTech.lang system.
+     * <p>
+     *
+     * When a class is annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is displayed directly in the game</li>
+     * <li>Automatic addition to <code>GregTech.lang</code> is skipped</li>
+     * </ul>
+     * <p>
+     * When a class is not annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is automatically added to <code>GregTech.lang</code></li>
+     *
+     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this annotation is present.
+     *          This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
+     * @see #getDescription()
+     */
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateDescription {}
+
+    /**
+     * Skip adding the name to <code>GregTech.lang</code>.
+     * <p>
+     * Use it when the class builds its name at runtime by overriding {@link #getLocalName()}, e.g. from a shared key
+     * formatted with the tier, so that no per instance name key is generated.
+     *
+     * @apiNote This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
+     * @see #getLocalName()
+     */
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateName {}
 
     /**
      * In case the Output Voltage varies.
@@ -365,6 +481,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
+     * Returns a stable, read-only inventory texture model, or {@code null} when textures must be resolved per render.
+     */
+    @Nullable
+    @SideOnly(Side.CLIENT)
+    default ITexture[][] getInventoryTextures() {
+        return null;
+    }
+
+    /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
@@ -383,15 +508,35 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeServer(byte aColor);
 
-    void onColorChangeClient(byte aColor);
-
-    default NBTTagCompound getDescriptionData() {
-        return null;
+    default void onColorChangeClient(byte aColor) {
+        // Seems no code need this, keep around for compat just in case
     }
 
-    default void onDescriptionPacket(NBTTagCompound data) {
+    /**
+     * Ideally, you should only sync data that affects block appearance or sound here.
+     * <ul>
+     * <li>GUI data should be synced inside MUI2</li>
+     * <li>Waila data should be synced by the respective waila overrides.</li>
+     * </ul>
+     * <p>
+     * Make sure to call super method and always read the same amount of bytes in {@link #readFromStream(ByteBuf)}.
+     * <p>
+     * If you are writing an array, you should encode the length before the array to allow reading on the other side.
+     * Optional field can be either be encoded by an extra special value or an extra boolean.
+     *
+     * @param buffer write to this buffer
+     */
+    default void writeToStream(ByteBuf buffer) {}
 
-    }
+    /**
+     * See {@link #writeToStream(ByteBuf)} for more details.
+     * Make sure to call super method and always write the same amount of bytes on the other side.
+     * <p>
+     * You do not need to issue texture update, it will always be issued by the base TE on sync.
+     *
+     * @param buffer read from this buffer
+     */
+    default void readFromStream(ByteBuf buffer) {}
 
     /**
      * @return Actual color shown on GUI
@@ -400,7 +545,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return Dyes.MACHINE_METAL.toInt();
+            return Dyes.GUI_METAL.toInt();
         }
     }
 
@@ -427,21 +572,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean shouldJoinIc2Enet();
 
     /**
-     * The Machine Update, which is called when the Machine needs an Update of its Parts. I suggest to wait 1-5 seconds
-     * before actually checking the Machine Parts. RP-Frames could for example cause Problems when you instacheck the
-     * Machine Parts.
-     * <p>
-     * just do stuff since we are already in meta tile...
-     */
-    @Override
-    void onMachineBlockUpdate();
-
-    /**
      * just return in should recurse since we are already in meta tile...
      */
     @Override
     default boolean isMachineBlockUpdateRecursive() {
         return true;
+    }
+
+    default void onAdjacentBlockChange(int x, int y, int z) {
+        /* do nothing */
     }
 
     /**
@@ -469,8 +608,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    default String getLocalNameKey() {
+        return "GT5U.gui.title.unknown";
+    }
+
+    /**
+     * You should override {@link #getLocalNameKey()} instead of this one.
+     *
+     * @return localized name
+     */
     default String getLocalName() {
-        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     default boolean doesBindPlayerInventory() {

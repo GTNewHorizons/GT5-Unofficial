@@ -13,6 +13,7 @@ public class MergedIterator<T> implements Iterator<T> {
         current = 0;
     }
 
+    @Override
     public boolean hasNext() {
         while (current < inners.length && !inners[current].hasNext()) {
             current++;
@@ -21,6 +22,7 @@ public class MergedIterator<T> implements Iterator<T> {
         return current < inners.length;
     }
 
+    @Override
     public T next() {
         while (current < inners.length && !inners[current].hasNext()) {
             current++;

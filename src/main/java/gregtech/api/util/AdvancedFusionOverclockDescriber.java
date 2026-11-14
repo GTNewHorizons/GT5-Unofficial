@@ -13,11 +13,12 @@ public class AdvancedFusionOverclockDescriber extends FusionOverclockDescriber {
     }
 
     @Override
-    protected double getEUtIncreasePerOC() {
+    public double getEUtIncreasePerOC() {
         return 4.0;
     }
 
-    protected double getDurationDecreasePerOC() {
+    @Override
+    public double getDurationDecreasePerOC() {
         return 4.0;
     }
 }

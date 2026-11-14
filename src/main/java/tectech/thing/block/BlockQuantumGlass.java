@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import gregtech.api.GregTechAPI;
 import tectech.Reference;
 import tectech.TecTech;
@@ -19,7 +19,7 @@ import tectech.TecTech;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public final class BlockQuantumGlass extends BlockBase {
+public final class BlockQuantumGlass extends Block {
 
     public static IIcon stuff;
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
@@ -73,13 +73,20 @@ public final class BlockQuantumGlass extends BlockBase {
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
         Block block = worldIn.getBlock(x, y, z);
-        return block != this; // && super.shouldSideBeRendered(worldIn, x, y, z,
-        // side);
+        return block != this;
     }
 
     @Override
     public int getRenderType() {
         return renderID;
+    }
+
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.values()[side];
+        return shouldSideBeRendered(worldIn, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, side)
+            ? super.getIcon(worldIn, x, y, z, side)
+            : null;
     }
 
     @Override

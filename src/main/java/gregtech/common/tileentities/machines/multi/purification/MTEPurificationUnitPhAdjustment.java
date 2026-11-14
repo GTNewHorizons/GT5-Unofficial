@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -23,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -30,34 +30,39 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTEPurificationUnitPhAdjustment>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int STRUCTURE_X_OFFSET = 7;
@@ -153,7 +158,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -164,8 +169,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
-                        .dot(2)
-                        .cacheHint(() -> "pH Sensor Hatch")
+                        .hint(2)
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -176,9 +180,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
-                    .dot(3)
+                    .hint(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputBus.WithFormat",
+                            ALKALINE_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -187,9 +194,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
+                    .cacheHint(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.MBTT.InputHatch.WithFormat",
+                            ACIDIC_MATERIAL.getLocalizedName()))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -202,29 +212,20 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MIDDLE);
     }
 
     public MTEPurificationUnitPhAdjustment(int aID, String aName, String aNameRegional) {
@@ -313,139 +314,54 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Initial pH value every cycle varies from " + EnumChatFormatting.RED
-                    + (PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)
-                    + EnumChatFormatting.GRAY
-                    + " - "
-                    + EnumChatFormatting.RED
-                    + (PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)
-                    + " pH")
-            .addInfo(
-                "If the pH value is within " + EnumChatFormatting.RED
-                    + PH_MAX_DEVIATION
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "of 7.0 pH at the end of the cycle, the recipe always succeeds")
-            .addInfo("Otherwise, the recipe always fails")
-            .addInfo("Use a pH Sensor Hatch to read the current pH value")
-            .addInfo("For safety, the machine will shut down if the pH goes below 0 or exceeds 14")
-            .addSeparator()
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + CONSUME_INTERVAL
-                    + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL "
-                    + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.mLocalizedName
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.mLocalizedName
-                    + EnumChatFormatting.GRAY
-                    + " in the special hatches")
-            .addInfo(
-                EnumChatFormatting.RED + "Raises "
-                    + EnumChatFormatting.GRAY
-                    + "the pH value by "
-                    + EnumChatFormatting.RED
-                    + PH_PER_ALKALINE_DUST
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "per piece of "
-                    + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.getDust(1)
-                        .getDisplayName())
-            .addInfo(
-                EnumChatFormatting.RED + "Lowers "
-                    + EnumChatFormatting.GRAY
-                    + "the pH value by "
-                    + EnumChatFormatting.RED
-                    + -PH_PER_10_ACID_LITER
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "per "
-                    + EnumChatFormatting.RED
-                    + "10L "
-                    + EnumChatFormatting.GRAY
-                    + "of "
-                    + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.getFluid(1L)
-                        .getLocalizedName())
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The fourth step of water purification is to neutralize the solution and bring its pH to exactly 7, rendering")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the solution inert with no hydrogen ion activity beyond water’s natural amphiproticity. Acids and bases from soils")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "and geology cause natural alkalinity variations in water which can cause corrosive reactions with sensitive")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
-            .beginStructureBlock(15, 6, 5, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Stabilized Naquadah Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                16,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Chemical Grade Glass",
-                EnumChatFormatting.GRAY,
-                18,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Naquadah Alloy Frame Box",
-                EnumChatFormatting.GRAY,
-                48,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inert Neutralization Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                67 * 2,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
-                EnumChatFormatting.GOLD + "1",
-                1)
-            .addOtherStructurePart(
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ph_adjustment"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-ph-adjustment"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("ph_min", PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)
+                    .put("ph_max", PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)
+                    .put("ph_deviation", PH_MAX_DEVIATION)
+                    .put("ph_neutral", PH_NEUTRAL_VALUE)
+                    .put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"))
+                    .put("interval", CONSUME_INTERVAL)
+                    .put("alkaline", ALKALINE_MATERIAL.getLocalizedName())
+                    .put("acid", ACIDIC_MATERIAL.getLocalizedName())
+                    .put(
+                        "dust",
+                        ALKALINE_MATERIAL.getDust(1)
+                            .getDisplayName())
+                    .put("ph_per_dust", PH_PER_ALKALINE_DUST)
+                    .put("ph_per_acid", -PH_PER_10_ACID_LITER)
+                    .build())
+            .beginStructureBlock(15, 6, 5, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("134", Casings.InertNeutralizationWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("48", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("18", Casings.ChemicalGradeGlass.getLocalizedName(), false)
+            .addCasing("12-17", Casings.StabilizedNaquadahWaterPlantCasing.getLocalizedName(), false)
+            .addMiscHatch(
+                "0-2",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                EnumChatFormatting.GOLD + "2",
+                StatCollector.translateToLocal("gt.mbtt.structure.below_controller"),
                 2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),
-                EnumChatFormatting.GOLD + "1",
+            .addInputBus(
+                "1",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.ph_adjustment_input_bus",
+                    ALKALINE_MATERIAL.getLocalizedName()),
                 3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
-                EnumChatFormatting.GOLD + "1",
+            .addInputHatch(
+                "2+",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.ph_adjustment_input_hatch",
+                    ACIDIC_MATERIAL.getLocalizedName()),
+                1,
                 4)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.behind_controller"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
+            .toolTipFinisher();
         return tt;
     }
 
@@ -546,18 +462,24 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         return TierEU.RECIPE_ZPM;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
-        if (acidInputHatch == null || alkalineInputBus == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (acidInputHatch == null || alkalineInputBus == null) {
+            throw new IllegalArgumentException(
+                "This should not happen, since the structure definition included mandatory hatches...");
+        }
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_ph_adjustment.ph",
                 "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});
@@ -582,7 +504,8 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitPhAdjustment> {
 
-        PhSensor(MTEPurificationUnitPhAdjustment::addSensorHatchToMachineList, MTEHatchPHSensor.class) {
+        PhSensor("GT5U.MBTT.pHSensorHatch", MTEPurificationUnitPhAdjustment::addSensorHatchToMachineList,
+            MTEHatchPHSensor.class) {
 
             @Override
             public long count(MTEPurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
@@ -590,12 +513,14 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -605,8 +530,19 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitPhAdjustment> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

@@ -117,10 +117,28 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 
     /**
+     * Etching Array Missing Energy and/or Wrong Particle
+     */
+    public static final CheckRecipeResult WRONG_PARTICLE = SimpleCheckRecipeResult.ofFailure("gtnhlanth.wrongparticle");
+
+    public static final CheckRecipeResult LOW_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toolowenergy");
+
+    public static final CheckRecipeResult HIGH_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toohighenergy");
+
+    /**
+     * Board Module has no fluid stored
+     */
+    public static final CheckRecipeResult NO_IMMERSION_FLUID = SimpleCheckRecipeResult.ofFailure("no_immersion_fluid");
+
+    /**
      * Machine is waiting for the main controller to start the cycle.
      */
     @Nonnull
     public static final CheckRecipeResult CYCLE_IDLE = SimpleCheckRecipeResult.ofSuccess("cycle_idle");
+
+    @Nonnull
+    public static final CheckRecipeResult NAC_OPTICAL_MISSING_WATER = SimpleCheckRecipeResult
+        .ofFailure("nac.missing_water");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
@@ -163,8 +181,18 @@ public final class CheckRecipeResultRegistry {
     }
 
     @Nonnull
+    public static CheckRecipeResult insufficientStartupPower(int required, int machineTier) {
+        return new ResultInsufficientStartupPower(required, machineTier);
+    }
+
+    @Nonnull
     public static CheckRecipeResult insufficientStartupPower(BigInteger required) {
         return new ResultInsufficientStartupPowerBigInt(required);
+    }
+
+    @Nonnull
+    public static CheckRecipeResult noValidOutputColor(byte color) {
+        return new ResultNoValidOutputColor(color);
     }
 
     static {
@@ -177,5 +205,6 @@ public final class CheckRecipeResultRegistry {
         register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
         register(new ResultMissingItem());
         register(new ResultMissingApiaryFlowers());
+        register(new ResultNoValidOutputColor((byte) 0));
     }
 }

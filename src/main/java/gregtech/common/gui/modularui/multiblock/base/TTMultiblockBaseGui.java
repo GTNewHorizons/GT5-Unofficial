@@ -1,31 +1,37 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import java.util.function.Function;
+
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IBoolValue;
 import com.cleanroommc.modularui.api.widget.IGuiAction;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import tectech.thing.metaTileEntity.multi.base.IParametrized;
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.SettingsPanelParameterCompat;
 
-public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> {
+public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlockBaseGui<T> {
 
-    public TTMultiblockBaseGui(TTMultiblockBase multiblock) {
+    public TTMultiblockBaseGui(T multiblock) {
         super(multiblock);
     }
 
@@ -39,20 +45,22 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
 
-        return new Column().width(18)
+        return Flow.column()
+            .width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .child(createPowerPassButton())
             .child(createEditParametersButton(panel, syncManager))
             .child(createPowerSwitchButton())
-            .childIf(multiblock.doesBindPlayerInventory(), createControllerSlot());
+            .childIf(multiblock.doesBindPlayerInventory(), this::createControllerSlot);
     }
 
-    private IWidget createControllerSlot() {
+    protected ItemSlot createControllerSlot() {
         return new ItemSlot()
             .slot(
-                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).slotGroup("item_inv"))
-            .background(new DrawableStack(GuiTextures.SLOT_ITEM, GTGuiTextures.TT_OVERLAY_SLOT_MESH))
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
+            .marginTop(4)
+            .backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_MESH)
             .overlay(
                 GTGuiTextures.TT_CONTROLLER_SLOT_HEAT_SINK.asIcon()
                     .size(18, 6)
@@ -61,8 +69,7 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
 
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
-            .tooltip(tooltip -> tooltip.add("Power Pass"))
-            .size(18, 18)
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
             .overlay(createPowerPassOverlay());
     }
 
@@ -71,14 +78,12 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
             multiblock.ePowerPass = bool;
             if (isPowerSwitchDisabled()) { // TRANSFORMER HACK
                 if (multiblock.ePowerPass) {
-                    multiblock.getBaseMetaTileEntity()
-                        .enableWorking();
+                    baseMetaTileEntity.enableWorking();
                 } else {
-                    multiblock.getBaseMetaTileEntity()
-                        .disableWorking();
+                    baseMetaTileEntity.disableWorking();
                 }
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable createPowerPassOverlay() {
@@ -89,29 +94,34 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
     }
 
     protected IWidget createEditParametersButton(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
+        IPanelHandler infoPanel = syncManager.syncedPanel(
+            "parametersPanel",
+            true,
+            (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
-            .tooltipBuilder(t -> t.add("Edit Parameters"))
-            .size(18, 18)
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.edit_parameters"))
             .onMousePressed(onEditParametersPressed(infoPanel));
+    }
+
+    protected final boolean isParametrized() {
+        return multiblock instanceof IParametrized;
     }
 
     private IDrawable createEditParametersOverlay() {
         return new DynamicDrawable(() -> {
-            if (multiblock instanceof IParametrized) {
+            if (isParametrized()) {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_ENABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             } else {
                 return GTGuiTextures.OVERLAY_BUTTON_EDIT_PARAMETERS_DISABLED.asIcon()
-                    .size(16, 16);
+                    .size(16);
             }
         });
     }
 
     private IGuiAction.MousePressed onEditParametersPressed(IPanelHandler infoPanel) {
-        return mouseData -> {
-            if (!(multiblock instanceof IParametrized)) return false;
+        return _ -> {
+            if (!isParametrized()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
@@ -121,18 +131,50 @@ public class TTMultiblockBaseGui extends MTEMultiBlockBaseGui<TTMultiblockBase> 
         };
     }
 
-    // Panel implementation will come with first parametrized multiblock port
     private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        return new ModularPanel("parameters") {
+        if (!isParametrized())
+            throw new UnsupportedOperationException("Cannot open parameter panel on an unparametrized multiblock!");
+
+        ModularPanel panel = new ModularPanel("parametersPanel") {
 
             @Override
             public boolean isDraggable() {
                 return false;
             }
-        }.size(125, 191)
+        }.coverChildrenWidth(80)
+            .coverChildrenHeight()
             .relative(parent)
-            .rightRel(0, 0, 1)
-            .topRel(0);
+            .topRel(0)
+            .leftRel(1)
+            .padding(4)
+            .child(ButtonWidget.panelCloseButton());
+
+        Flow mainColumn = Flow.column()
+            .coverChildren()
+            .childPadding(10)
+            .child(
+                IKey.lang("tt.gui.parameter.header")
+                    .asWidget())
+            .child(getSettingsPanelBuilder().build(panel, syncManager, getBasePanelHeight() - 8));
+
+        return panel.child(mainColumn);
     }
 
+    protected SettingsPanelBuilder getSettingsPanelBuilder() {
+        return SettingsPanelParameterCompat
+            .addSettingsForParameters(((IParametrized) multiblock).getParameters(), getParameterWidgetConfigurator());
+    }
+
+    protected Function<Parameter<?, ?>, WidgetConfigurator<?>> getParameterWidgetConfigurator() {
+        return _ -> null;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        if (isParametrized()) {
+            ((IParametrized) multiblock).getParameters()
+                .forEach(parameter -> parameter.registerSyncValue(syncManager));
+        }
+    }
 }

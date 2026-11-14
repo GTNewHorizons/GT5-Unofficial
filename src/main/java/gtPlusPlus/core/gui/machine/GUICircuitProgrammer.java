@@ -25,22 +25,11 @@ public class GUICircuitProgrammer extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-        super.drawGuiContainerForegroundLayer(i, j);
-    }
-
-    @Override
     protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.renderEngine.bindTexture(craftingTableGuiTextures);
         final int x = (this.width - this.xSize) / 2;
         final int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-    }
-
-    // This method is called when the Gui is first called!
-    @Override
-    public void initGui() {
-        super.initGui();
     }
 }

@@ -14,6 +14,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourSoftMallet;
+import gregtech.common.items.behaviors.BehaviourSwitchMode;
 
 public class ToolSoftMallet extends GTTool {
 
@@ -95,6 +96,7 @@ public class ToolSoftMallet extends GTTool {
     @Override
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourSoftMallet(100));
+        aItem.addItemBehavior(aID, new BehaviourSwitchMode());
     }
 
     @Override
@@ -107,4 +109,15 @@ public class ToolSoftMallet extends GTTool {
                 + aPlayer.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
     }
+
+    @Override
+    public byte getMaxMode() {
+        return 3;
+    }
+
+    @Override
+    public String getToolTypeName() {
+        return "softmallet";
+    }
+
 }

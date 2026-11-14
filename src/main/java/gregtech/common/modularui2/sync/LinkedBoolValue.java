@@ -19,7 +19,7 @@ public class LinkedBoolValue {
         }
     }
 
-    public static <T extends Enum<T>> BoolValue.Dynamic of(EnumSyncValue<T> syncValue, T value) {
+    public static <T extends Enum<T>> BoolValue.Dynamic of(EnumSyncValue<T, ?> syncValue, T value) {
         return new BoolValue.Dynamic(() -> syncValue.getValue() == value, $ -> setValueIfUnset(syncValue, value));
     }
 

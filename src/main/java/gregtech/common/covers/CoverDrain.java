@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -114,12 +112,12 @@ public class CoverDrain extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_cond"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_invert_cond"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_cond"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_invert_cond"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import");
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_cond");
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.import_invert_cond");
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.no_fluid");
+            case 4 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.no_fluid_cond");
+            case 5 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.no_fluid_invert_cond");
         }
     }
 

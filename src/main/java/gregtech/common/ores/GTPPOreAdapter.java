@@ -8,6 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
@@ -33,9 +35,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
         if (!(info.material instanceof Material gtppMat)) return false;
         if (info.isSmall) return false;
-        if (!gtppMat.hasOre()) return false;
-
-        return true;
+        return gtppMat.hasOre();
     }
 
     @Override
@@ -65,7 +65,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
@@ -114,9 +114,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
                 }
             }
             // Unified ore, Per Dimension ore, Regular ore
-            case UnifiedBlock, PerDimBlock, Block -> {
-                drops.add(info.material.getOre(1));
-            }
+            case UnifiedBlock, PerDimBlock, Block -> drops.add(info.material.getOre(1));
         }
 
         return drops;

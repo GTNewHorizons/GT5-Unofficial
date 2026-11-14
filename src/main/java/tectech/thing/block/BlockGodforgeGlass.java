@@ -6,17 +6,17 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import gregtech.api.GregTechAPI;
 import tectech.Reference;
 import tectech.TecTech;
 
-public class BlockGodforgeGlass extends BlockBase {
+public class BlockGodforgeGlass extends Block {
 
     public static IIcon Icon;
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
@@ -76,6 +76,14 @@ public class BlockGodforgeGlass extends BlockBase {
     @Override
     public int getRenderType() {
         return renderID;
+    }
+
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.values()[side];
+        return shouldSideBeRendered(worldIn, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, side)
+            ? super.getIcon(worldIn, x, y, z, side)
+            : null;
     }
 
     @Override

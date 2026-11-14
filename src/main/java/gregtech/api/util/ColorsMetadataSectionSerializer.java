@@ -14,13 +14,14 @@ import com.google.gson.JsonSerializationContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer {
 
+    @Override
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
         JsonDeserializationContext context) {
         // Default values
@@ -39,7 +40,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                         entry.getValue()
                             .getAsString());
                 } else {
-                    GTMod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
+                    GTLoggers.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
                 }
             }
         }
@@ -71,6 +72,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
         return new JsonObject();
     }
 
+    @Override
     public String getSectionName() {
         return "colors";
     }

@@ -30,7 +30,7 @@ public class TileAntimatter extends TileEntity {
     public float coreScale = 1f;
     public float coreScaleSnapshot = 1f;
     public final float coreScaleTransitionTime = 2.5f;
-    public float timeSnapshot;
+    public long timeSnapshot;
     public float spikeFactor = .01f;
 
     // Protomatter Settings
@@ -40,13 +40,15 @@ public class TileAntimatter extends TileEntity {
     public boolean protomatterRender = false;
     public float rotX = 0, rotY = 0, rotZ = 0;
     public float rotationAngle = 0;
+    private ForgeDirection appliedDirection;
+    private Rotation appliedRotation;
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setFloat("coreScale", coreScale);
         compound.setFloat("coreScaleSnapshot", coreScaleSnapshot);
-        compound.setFloat("currentTime", timeSnapshot);
+        compound.setLong("currentTime", timeSnapshot);
         compound.setFloat("spikeFactor", spikeFactor);
         compound.setBoolean("protomatterRender", protomatterRender);
 
@@ -61,7 +63,7 @@ public class TileAntimatter extends TileEntity {
         super.readFromNBT(compound);
         coreScale = compound.getFloat("coreScale");
         coreScaleSnapshot = compound.getFloat("coreScaleSnapshot");
-        timeSnapshot = compound.getFloat("currentTime");
+        timeSnapshot = compound.getLong("currentTime");
         spikeFactor = compound.getFloat("spikeFactor");
         protomatterRender = compound.getBoolean("protomatterRender");
 
@@ -114,6 +116,7 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setCoreSize(float diameter) {
+        if (Math.abs(diameter - coreScale) <= coreScale * 0.01f) return;
         coreScaleSnapshot = coreScale;
         coreScale = diameter;
         timeSnapshot = this.getWorldObj()
@@ -123,6 +126,10 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setRotationFields(ForgeDirection direction, Rotation rotation) {
+        if (direction == appliedDirection && rotation == appliedRotation) return;
+        appliedDirection = direction;
+        appliedRotation = rotation;
+
         Matrix4f rotationMatrix = new Matrix4f().identity();
 
         float localAngle = switch (rotation) {
@@ -160,7 +167,11 @@ public class TileAntimatter extends TileEntity {
         AxisAngle4f rotationVector = new AxisAngle4f();
         rotationMatrix.getRotation(rotationVector);
 
-        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        float newRotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        if (newRotationAngle == rotationAngle && rotationVector.x == rotX
+            && rotationVector.y == rotY
+            && rotationVector.z == rotZ) return;
+        rotationAngle = newRotationAngle;
         rotX = rotationVector.x;
         rotY = rotationVector.y;
         rotZ = rotationVector.z;

@@ -1,26 +1,25 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
@@ -30,11 +29,9 @@ import tectech.util.CommonValues;
  */
 public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTEHatch implements IConnectsToDataPipe {
 
-    public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
-    public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
-    public static Textures.BlockIcons.CustomIcon EM_D_CONN;
-
-    private String clientLocale = "en_US";
+    public static IIconContainer EM_D_SIDES;
+    public static IIconContainer EM_D_ACTIVE;
+    public static IIconContainer EM_D_CONN;
 
     public T q;
 
@@ -52,9 +49,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA_CONN");
     }
 
     @Override
@@ -116,17 +113,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-        }
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -166,22 +152,13 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[] {
-                translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
-                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                    + EnumChatFormatting.AQUA
-                    + (q != null ? q.getContentString() : 0),
-                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                    + EnumChatFormatting.RED
-                    + (q != null ? q.getTraceSize() : 0), };
+            return new String[] { IGregTechDeviceInformation.encode("tt.keyword.ID.fmt", id),
+                IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+                IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
         }
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + (q != null ? q.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (q != null ? q.getTraceSize() : 0), };
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", q != null ? q.getContentString() : 0),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", q != null ? q.getTraceSize() : 0), };
     }
 
     @Override

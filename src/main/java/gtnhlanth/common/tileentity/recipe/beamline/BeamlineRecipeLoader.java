@@ -4,6 +4,8 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.sourceChamberRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.targetChamberRecipes;
+import static gtnhlanth.common.beamline.Particle.OMEGA;
+import static gtnhlanth.common.beamline.Particle.PHOTON;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,13 +42,13 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            Materials.LiquidNitrogen.getGas(1L)
+            Materials.LiquidNitrogen.getFluid(1L)
                 .getFluid()
                 .getName(),
             Materials.Nitrogen.getGas(1L)
                 .getFluid());
         coolantMap.put(
-            Materials.LiquidOxygen.getGas(1L)
+            Materials.LiquidOxygen.getFluid(1L)
                 .getFluid()
                 .getName(),
             Materials.Oxygen.getGas(1L)
@@ -107,6 +109,20 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .addTo(sourceChamberRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.NEUTRON.ordinal())
+                    .rate(10)
+                    .energy(100_000, 999)
+                    .focus(95)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(sourceChamberRecipes);
+
         /*
          * ALPHA
          */
@@ -126,6 +142,41 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         /*
+         * PROTON
+         */
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(Particle.PROTON.ordinal())
+                    .rate(40)
+                    .energy(1_000_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(sourceChamberRecipes);
+
+        /*
+         * OMEGA
+         */
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Unstable.getDust(1))
+            .itemOutputs(Materials.Ash.getDust(1))
+            .outputChances(500)
+            .metadata(
+                SOURCE_CHAMBER_METADATA,
+                SourceChamberMetadata.builder()
+                    .particleID(OMEGA.ordinal())
+                    .rate(60)
+                    .energy(1_700_000, 0.3f)
+                    .focus(99)
+                    .build())
+            .duration(20)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(sourceChamberRecipes);
+        /*
          * TARGET CHAMBER
          */
 
@@ -144,27 +195,29 @@ public class BeamlineRecipeLoader {
                     if (!Arrays.asList(mask.getForbiddenWafers())
                         .contains(wafer)) {
 
-                        ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(mask), 0);
+                        ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(mask), 1);
 
                         GTValues.RA.stdBuilder()
-                            .itemInputs(focusItem, wafer.get(1))
+                            .itemInputs(focusItem, GTUtility.copyAmountUnsafe(mask.getMaxUses(), wafer.get(1)))
                             .itemOutputs(
-                                GTUtility
-                                    .copyAmountUnsafe((int) GTUtility.powInt(2, index + 2), mask.getProducedItem()))
+                                GTUtility.copyAmountUnsafe(
+                                    (int) GTUtility.powInt(2, index + 2) * mask.getMaxUses(),
+                                    mask.getProducedItem()))
                             .metadata(
                                 TARGET_CHAMBER_METADATA,
                                 TargetChamberMetadata.builder(focusItem)
-                                    .particleID(1)
+                                    .particleID(PHOTON.getId())
                                     // 2x recipe amount increase per 2 increases in wafer tier.
                                     // This greatly incentivises the use of higher tier boule wafer recipes
                                     .amount(
                                         (int) Math.round(
-                                            mask.getBaselineAmount() * Math.sqrt(GTUtility.powInt(2, index - 1))))
+                                            mask.getBaselineAmount() * Math.sqrt(GTUtility.powInt(2, index - 1))
+                                                * mask.getMaxUses()))
                                     .energy(mask.getMinEnergy(), mask.getMaxEnergy(), 1)
                                     .minFocus(mask.getMinFocus())
                                     .build())
                             .duration(1)
-                            .eut(1920)
+                            .eut(TierEU.RECIPE_EV)
                             .addTo(targetChamberRecipes);
                     }
                 }
@@ -175,15 +228,16 @@ public class BeamlineRecipeLoader {
 
             // Non-wafer recipes
 
-            ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(mask), 0);
+            ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(mask), 1);
+
             GTValues.RA.stdBuilder()
-                .itemInputs(focusItem, GTUtility.copyAmountUnsafe(1, mask.getTCTargetItem()))
-                .itemOutputs(GTUtility.copyAmountUnsafe(4, mask.getProducedItem()))
+                .itemInputs(focusItem, GTUtility.copyAmountUnsafe(1 * mask.getMaxUses(), mask.getTCTargetItem()))
+                .itemOutputs(GTUtility.copyAmountUnsafe(4 * mask.getMaxUses(), mask.getProducedItem()))
                 .metadata(
                     TARGET_CHAMBER_METADATA,
                     TargetChamberMetadata.builder(focusItem)
-                        .particleID(1)
-                        .amount(mask.getBaselineAmount())
+                        .particleID(PHOTON.getId())
+                        .amount(mask.getBaselineAmount() * mask.getMaxUses())
                         .energy(mask.getMinEnergy(), mask.getMaxEnergy(), 1)
                         .minFocus(mask.getMinFocus())
                         .build())
@@ -196,19 +250,43 @@ public class BeamlineRecipeLoader {
 
         // Raw Advanced Crystal Chip
 
-        ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(MaskList.CSOC), 0);
+        ItemStack focusItem = new ItemStack(LanthItemList.maskMap.get(MaskList.CSOC), 1);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 focusItem,
-                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-            .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)))
+                GTUtility.copyAmountUnsafe(
+                    MaskList.CSOC.getMaxUses(),
+                    WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)))
+            .itemOutputs(
+                GTUtility.copyAmountUnsafe(64 * MaskList.CSOC.getMaxUses(), ItemList.Circuit_Chip_CrystalSoC.get(1)))
             .metadata(
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
-                    .particleID(1)
-                    .amount(24)
+                    .particleID(PHOTON.getId())
+                    .amount(MaskList.CSOC.getBaselineAmount() * MaskList.CSOC.getMaxUses() * 3)
                     .energy(5, 12, 1)
                     .minFocus(60)
+                    .build())
+            .duration(1)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(targetChamberRecipes);
+
+        focusItem = new ItemStack(LanthItemList.maskMap.get(MaskList.ACC), 1);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                focusItem,
+                GTUtility.copyAmountUnsafe(
+                    MaskList.ACC.getMaxUses(),
+                    WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)))
+            .itemOutputs(
+                GTUtility.copyAmountUnsafe(64 * MaskList.ACC.getMaxUses(), ItemList.Circuit_Chip_CrystalSoC2.get(1)))
+            .metadata(
+                TARGET_CHAMBER_METADATA,
+                TargetChamberMetadata.builder(focusItem)
+                    .particleID(PHOTON.getId())
+                    .amount(MaskList.ACC.getBaselineAmount() * MaskList.ACC.getMaxUses() * 3)
+                    .energy(6, 14, 1)
+                    .minFocus(70)
                     .build())
             .duration(1)
             .eut(TierEU.RECIPE_LuV)

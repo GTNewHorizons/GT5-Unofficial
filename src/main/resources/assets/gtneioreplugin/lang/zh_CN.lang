@@ -6,7 +6,6 @@ gtnop.gui.undergroundFluid.name=地下流体信息
 gtnop.gui.ieVeinStat.name=IE虚拟矿脉信息
 gtnop.gui.bedrockOreStat.name=基岩矿脉信息
 
-gtnop.gui.nei.veinName=矿脉名称
 gtnop.gui.nei.primaryOre=上层矿石
 gtnop.gui.nei.secondaryOre=下层矿石
 gtnop.gui.nei.betweenOre=中层矿石
@@ -18,6 +17,12 @@ gtnop.gui.nei.restrictBiome=生物群系限制
 gtnop.gui.nei.dimension=维度
 gtnop.gui.nei.chance=几率
 gtnop.gui.nei.fluidAmount=储量
+gtnop.gui.nei.lineKey=%s
+gtnop.gui.nei.lineValue=%s
+gtnop.gui.nei.title=%s
+
+gtnop.gui.nei.chance.value=%s%%
+gtnop.gui.nei.fluidAmount.value=%s-%s
 
 gtnop.gui.nei.asteroidPrimary=主要生成一
 gtnop.gui.nei.asteroidSecondary=主要生成二
@@ -36,7 +41,6 @@ gtnop.gui.nei.vein=矿脉
 gtnop.gui.nei.oreOthers=伴随生成
 gtnop.nei.genPosition=生成位置
 gtnop.nei.genPositionInfo=各个区块的正中心
-
 
 # world names
 gtnop.world.Overworld=主世界
@@ -77,14 +81,11 @@ gtnop.world.BarnardF=巴纳德F
 gtnop.world.TcetiE=鲸鱼座T星E
 gtnop.world.Underdark=漆黑世界
 
-
 # biome names
 gtnop.biome.none.name=无
 
-
 # ore names extra
 gtnop.ore.null.name=无
-
 
 # vein types
 gtnop.ore.vein.name=矿脉

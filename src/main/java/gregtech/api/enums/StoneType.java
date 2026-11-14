@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -21,10 +23,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
@@ -36,6 +40,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
@@ -78,65 +83,77 @@ public enum StoneType implements IStoneType {
         .setMainStone(() -> GregTechAPI.sBlockStones, 8)
         .setDust(Materials.Basalt)),
     Moon(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreMoon)
         .setStoneNoCobble(GalacticraftCore, "tile.moonBlock", 4)
         .setCoremodDust("Moon")),
     Mars(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreMars)
         .setCobble(GalacticraftMars, "tile.mars", 4)
         .setMainStone(GalacticraftMars, "tile.mars", 9)
         .addOtherStone(GalacticraftMars, "tile.mars", 6)
         .setCoremodDust("Mars")),
     Asteroid(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreAsteroid)
         .setStoneNoCobble(GalacticraftMars, "tile.asteroidsBlock", 1)
         .setCoremodDust("Asteroids")),
-    Phobos(StoneBuilder.galaxySpace("Phobos", 2, 1)),
-    Deimos(StoneBuilder.galaxySpace("Deimos", 1)),
-    Ceres(StoneBuilder.galaxySpace("Ceres", 1)),
-    Io(StoneBuilder.galaxySpace("Io", 2)),
-    Europa(StoneBuilder.galaxySpace("Europa", "grunt", 1)),
-    Ganymede(StoneBuilder.galaxySpace("Ganymede", 1)),
-    Callisto(StoneBuilder.galaxySpace("Callisto", 1)),
-    Enceladus(StoneBuilder.galaxySpace("Enceladus", 1, 3)),
-    Titan(StoneBuilder.galaxySpace("Titan", 2, 1)),
-    Miranda(StoneBuilder.galaxySpace("Miranda", 2, 1)),
-    Oberon(StoneBuilder.galaxySpace("Oberon", 2, 1)),
-    Proteus(StoneBuilder.galaxySpace("Proteus", 2, 1)),
-    Triton(StoneBuilder.galaxySpace("Triton", 2, 1)),
-    Pluto(StoneBuilder.galaxySpace("Pluto", 5, 4)),
-    Haumea(StoneBuilder.galaxySpace("Haumea", 0)),
-    MakeMake(StoneBuilder.galaxySpace("MakeMake", "grunt", 1)),
-    Venus(StoneBuilder.galaxySpace("Venus", 1)),
-    Mercury(StoneBuilder.galaxySpace("Mercury", 2, 1)),
+    Phobos(StoneBuilder.galaxySpace("Phobos", 2, 1).setPrefix(OrePrefixes.orePhobos)),
+    Deimos(StoneBuilder.galaxySpace("Deimos", 1).setPrefix(OrePrefixes.oreDeimos)),
+    Ceres(StoneBuilder.galaxySpace("Ceres", 1).setPrefix(OrePrefixes.oreCeres)),
+    Io(StoneBuilder.galaxySpace("Io", 2).setPrefix(OrePrefixes.oreIo)),
+    Europa(StoneBuilder.galaxySpace("Europa", "grunt", 1).setPrefix(OrePrefixes.oreEuropa)),
+    Ganymede(StoneBuilder.galaxySpace("Ganymede", 1).setPrefix(OrePrefixes.oreGanymede)),
+    Callisto(StoneBuilder.galaxySpace("Callisto", 1).setPrefix(OrePrefixes.oreCallisto)),
+    Enceladus(StoneBuilder.galaxySpace("Enceladus", 1, 3).setPrefix(OrePrefixes.oreEnceladus)),
+    Titan(StoneBuilder.galaxySpace("Titan", 2, 1).setPrefix(OrePrefixes.oreTitan)),
+    Miranda(StoneBuilder.galaxySpace("Miranda", 2, 1).setPrefix(OrePrefixes.oreMiranda)),
+    Oberon(StoneBuilder.galaxySpace("Oberon", 2, 1).setPrefix(OrePrefixes.oreOberon)),
+    Proteus(StoneBuilder.galaxySpace("Proteus", 2, 1).setPrefix(OrePrefixes.oreProteus)),
+    Triton(StoneBuilder.galaxySpace("Triton", 2, 1).setPrefix(OrePrefixes.oreTriton)),
+    Pluto(StoneBuilder.galaxySpace("Pluto", 5, 4).setPrefix(OrePrefixes.orePluto)),
+    Haumea(StoneBuilder.galaxySpace("Haumea", 0).setPrefix(OrePrefixes.oreHaumea)),
+    MakeMake(StoneBuilder.galaxySpace("MakeMake", "grunt", 1).setPrefix(OrePrefixes.oreMakemake)),
+    Venus(StoneBuilder.galaxySpace("Venus", 1).setPrefix(OrePrefixes.oreVenus)),
+    Mercury(StoneBuilder.galaxySpace("Mercury", 2, 1).setPrefix(OrePrefixes.oreMercury)),
     AlphaCentauri(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreAlphaCentauri)
         .setStoneNoCobble(GalaxySpace, "acentauribbsubgrunt", 0)
-        .setDust(NewHorizonsCoreMod, "item.CentauriASurfaceDust")),
-    TCetiE(StoneBuilder.galaxySpace("TCetiE", 2, 1)),
-    VegaB(StoneBuilder.galaxySpace("VegaB", "subgrunt", 0)),
+        .setDust(NewHorizonsCoreMod, "CentauriASurfaceDust")),
+    TCetiE(StoneBuilder.galaxySpace("TCetiE", 2, 1).setPrefix(OrePrefixes.oreTCetiE)),
+    VegaB(StoneBuilder.galaxySpace("VegaB", "subgrunt", 0).setPrefix(OrePrefixes.oreVegaB)),
     BarnardaE(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreBarnardaE)
         .setStoneNoCobble(GalaxySpace, "barnardaEsubgrunt", 0)
         .setCoremodDust("BarnardaE")),
     BarnardaF(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreBarnardaF)
         .setStoneNoCobble(GalaxySpace, "barnardaFsubgrunt", 0)
         .setCoremodDust("BarnardaF")),
     Horus(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreHorus)
         .setStoneNoCobble(() -> Blocks.obsidian, 0)
         .addOtherStone(GalacticraftAmunRa, "tile.baseFalling", 1)
         .addAllowedDimensions(DimNames.HORUS)
         .setDust(Materials.Obsidian)),
     AnubisAndMaahes(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreAnubisAndMaahes)
         .setCobble(GalacticraftAmunRa, "tile.baseBlockRock", 0)
         .setMainStone(GalacticraftAmunRa, "tile.baseBlockRock", 1)
         .setDust(Materials.Basalt)),
     PackedIce(new StoneBuilder()
+        .setPrefix(OrePrefixes.orePackedIce)
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .setDust(Materials.Ice)
-        .setCategory(StoneCategory.Ice)),
+        .setCategory(StoneCategory.Ice)
+        .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
     SethIce(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreSethIce)
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .addOtherStone(Mods.Minecraft, () -> Blocks.ice, 0)
         .setDust(Materials.Ice)
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.SETH)),
     SethClay(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreSethClay)
         .setStoneNoCobble(() -> Blocks.hardened_clay, WILDCARD)
         .addOtherStone(Mods.Minecraft, () -> Blocks.clay, 0)
         .setDust(Materials.Clay)
@@ -144,31 +161,30 @@ public enum StoneType implements IStoneType {
         .addAllowedDimensions(DimNames.SETH)),
 
     Deepslate(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreDeepslate)
         .setStoneNoCobble(Mods.EtFuturumRequiem, "deepslate", WILDCARD)
-        .setDust(NewHorizonsCoreMod, "item.DeepslateDust")
+        .setDust(NewHorizonsCoreMod, "DeepslateDust")
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.OW)),
 
     Tuff(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreTuff)
         .setStoneNoCobble(Mods.EtFuturumRequiem, "tuff", 0)
-        .setDust(NewHorizonsCoreMod, "item.TuffDust")
+        .setDust(NewHorizonsCoreMod, "TuffDust")
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.OW)),
 
     BlueIce(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreBlueIce)
         .setStoneNoCobble(Mods.EtFuturumRequiem, "blue_ice", 0)
         .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)
-        .addAllowedDimensions(DimNames.KUIPERBELT)),
+        .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
 
     ;
     // spotless:on
 
     public static final List<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
-    public static final List<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(
-        Arrays.stream(values())
-            .filter(s -> s.builder.enabled && !s.isExtraneous())
-            .toArray(StoneType[]::new));
 
     public static final List<IStoneType> STONE_ONLY = ImmutableList.of(StoneType.Stone);
     public static final List<IStoneType> STONES = ImmutableList.copyOf(
@@ -179,6 +195,14 @@ public enum StoneType implements IStoneType {
         StoneType.STONE_TYPES.stream()
             .filter(s -> s.getCategory() == StoneCategory.Ice)
             .toArray(StoneType[]::new));
+
+    public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
+    public static final StoneType[] VALUES = StoneType.values();
+    static {
+        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
+            StoneType.STONE_TYPES.stream()
+                .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
+    }
 
     private final StoneBuilder builder;
 
@@ -215,6 +239,32 @@ public enum StoneType implements IStoneType {
     @Override
     public OrePrefixes getPrefix() {
         return builder.oreBlockPrefix;
+    }
+
+    /**
+     * Gets the display name using shared ore templates. Material and stone are separate localization keys so languages
+     * can reorder and inflect them without translations for every material/stone combination.
+     */
+    public String getLocalizedOreName(IOreMaterial material, boolean small) {
+        OrePrefixes basePrefix = small ? OrePrefixes.oreSmall : OrePrefixes.ore;
+        if (this == Stone) return basePrefix.getLocalizedNameForItem(material);
+
+        final String prefixKey = basePrefix.getOreprefixKey(material) + ".with_stone";
+        // The shared lookup in OrePrefixes has no stone in its key, so per-stone overrides are checked here.
+        final String overrideKey = prefixKey + "."
+            + name().toLowerCase(Locale.ROOT)
+            + "."
+            + material.getInternalName()
+                .toLowerCase(Locale.ROOT);
+        if (StatCollector.canTranslate(overrideKey)) {
+            return StatCollector.translateToLocal(overrideKey);
+        }
+
+        return OrePrefixes.getLocalizedNameForItemWithInflection(
+            prefixKey,
+            material,
+            material.getLocalizedNameKey(),
+            "gt.ore.stone." + name().toLowerCase(Locale.ROOT));
     }
 
     @Override
@@ -266,7 +316,6 @@ public enum StoneType implements IStoneType {
 
             texturesTemp[side.ordinal()] = TextureFactory.builder()
                 .addIcon(container)
-                .stdOrient()
                 .build();
         }
 
@@ -314,11 +363,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isDimensionSpecific() {
         return switch (this) {
-            case Stone -> false;
-            case BlackGranite -> false;
-            case RedGranite -> false;
-            case Marble -> false;
-            case Basalt -> false;
+            case Stone, RedGranite, Marble, Basalt, BlackGranite -> false;
             default -> true;
         };
     }
@@ -326,10 +371,7 @@ public enum StoneType implements IStoneType {
     @Override
     public boolean isExtraneous() {
         return switch (this) {
-            case Stone -> false;
-            case Netherrack -> false;
-            case Endstone -> false;
-            case PackedIce -> false;
+            case Stone, Netherrack, Endstone, PackedIce -> false;
             default -> true;
         };
     }
@@ -358,11 +400,30 @@ public enum StoneType implements IStoneType {
             || builder.allowedDimensions.contains(DimensionDef.getDimensionName(world));
     }
 
+    /**
+     * Finds the stone type for the block at the given position, considering only types that can generate in
+     * this dimension so blocks claimed by several dimension-scoped types resolve to the one valid here.
+     */
     @Nullable
     public static StoneType findStoneType(World world, int x, int y, int z) {
-        return findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+        Block block = world.getBlock(x, y, z);
+        if (block == Blocks.air) return null;
+
+        int meta = world.getBlockMetadata(x, y, z);
+
+        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
+            StoneType stoneType = STONE_TYPES.get(i);
+            if (stoneType.builder.enabled && stoneType.canGenerateInWorld(world) && stoneType.contains(block, meta)) {
+                return stoneType;
+            }
+        }
+
+        return null;
     }
 
+    /**
+     * Finds the stone type for a block, ignoring dimension constraints. Returns the first match by enum order.
+     */
     @Nullable
     public static StoneType findStoneType(Block block, int meta) {
         if (block == Blocks.air) return null;
@@ -375,6 +436,14 @@ public enum StoneType implements IStoneType {
         }
 
         return null;
+    }
+
+    public static StoneType findStoneTypeByPrefix(OrePrefixes prefix) {
+        var options = STONE_TYPES_BY_PREFIX.get(prefix);
+
+        if (options == null || options.isEmpty()) return null;
+
+        return options.getFirst();
     }
 
     private static class StoneBuilder {
@@ -485,7 +554,7 @@ public enum StoneType implements IStoneType {
 
         public StoneBuilder setCoremodDust(String name) {
             if (NewHorizonsCoreMod.isModLoaded()) {
-                pureDust = impureDust = new LazyItem(NewHorizonsCoreMod, "item." + name + "StoneDust");
+                pureDust = impureDust = new LazyItem(NewHorizonsCoreMod, name + "StoneDust");
             }
 
             return this;

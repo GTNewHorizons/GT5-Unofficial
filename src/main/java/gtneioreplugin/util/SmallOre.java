@@ -1,7 +1,5 @@
 package gtneioreplugin.util;
 
-import static gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
-
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -52,26 +50,40 @@ public class SmallOre implements Comparable<SmallOre> {
     }
 
     public static String getCsvHeader() {
-        String[] headers = new String[sizeData + DimNameDisplayed.length];
+        int dimCount = DimensionHelper.getAllDim()
+            .size();
+        String[] headers = new String[sizeData + dimCount];
+
         headers[0] = "Ore Name";
         headers[1] = "Block Meta";
         headers[2] = "Height";
         headers[3] = "Amount Per Chunk";
-        for (int i = 0; i < DimNameDisplayed.length; i++) {
-            headers[sizeData + i] = DimensionHelper.getFullName(DimNameDisplayed[i]);
+
+        int i = 0;
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
+            headers[sizeData + i] = DimensionHelper.getFullName(record.abbr());
+            i++;
         }
+
         return String.join(",", headers);
     }
 
     public String getCsvEntry() {
-        String[] values = new String[sizeData + DimNameDisplayed.length];
+        int dimCount = DimensionHelper.getAllDim()
+            .size();
+        String[] values = new String[sizeData + dimCount];
+
         values[0] = oreName;
         values[1] = oreMaterial;
         values[2] = getHeight();
         values[3] = Integer.toString(amount);
-        for (int i = 0; i < DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean.toString(dimensions.contains(DimNameDisplayed[i]));
+
+        int i = 0;
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
+            values[sizeData + i] = Boolean.toString(dimensions.contains(record.abbr()));
+            i++;
         }
+
         return String.join(",", values);
     }
 

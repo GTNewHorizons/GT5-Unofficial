@@ -1,0 +1,283 @@
+package gregtech.common.tileentities.machines.multi;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.HatchElement.CryotheumHatch;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
+
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryogenicFreezer>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int OFFSET_X = 2;
+    private static final int OFFSET_Y = 2;
+    private static final int OFFSET_Z = 0;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int PARALLELS = 16;
+    private static final double SPEED_BONUS = 3.0D;
+    private static final double EU_MODIFIER = 0.9D;
+    private static final int CRYOTHEUM_PER_SECOND = 10;
+
+    private static IStructureDefinition<MTECryogenicFreezer> STRUCTURE_DEFINITION = null;
+
+    private int casingAmount;
+
+    public MTECryogenicFreezer(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    protected MTECryogenicFreezer(MTECryogenicFreezer prototype) {
+        super(prototype.mName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTECryogenicFreezer(this);
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.machine_type"))
+            .addStaticParallelInfo(PARALLELS)
+            .addStaticSpeedInfo((float)SPEED_BONUS)
+            .addStaticEuEffInfo((float)EU_MODIFIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "cryogenic-freezer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("cryotheum", CRYOTHEUM_PER_SECOND)
+                    .build())
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(5, 4, 7, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("46-56", Casings.AdvancedCryogenicCasing.getLocalizedName(), false)
+            .addCasing("24", MaterialsAlloy.LEAGRISIUM.getFrameBox(1).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), anyCasingText(), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addMufflerHatch("1", anyCasingText(), 1)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputAny("1+", anyCasingText(), 1)
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public IStructureDefinition<MTECryogenicFreezer> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTECryogenicFreezer>builder()
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    new String[][] { { "     ", " BBB ", " B~B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
+                        { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
+                        { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
+                        { "     ", " BBB ", " BBB ", " BBB " } })
+                .addElement('A', ofFrame(MaterialsAlloy.LEAGRISIUM))
+                .addElement(
+                    'B',
+                    ofChain(
+                        buildHatchAdder(MTECryogenicFreezer.class)
+                            .atLeast(
+                                InputBus,
+                                OutputBus,
+                                Maintenance,
+                                Energy,
+                                Muffler,
+                                InputHatch,
+                                OutputHatch,
+                                CryotheumHatch)
+                            .casingIndex(Casings.AdvancedCryogenicCasing.textureId)
+                            .hint(1)
+                            .build(),
+                        onElementPass(x -> ++x.casingAmount, Casings.AdvancedCryogenicCasing.asElement())))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 46);
+        checkHatchMin(errors, CryotheumHatch, 1);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezer,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerGlow,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerActive,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AdvancedCryogenicCasing.getCasingTexture();
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.vacuumFreezerRecipes;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1.0D / SPEED_BONUS)
+            .setEuModifier(EU_MODIFIER)
+            .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return PARALLELS;
+    }
+
+    @Override
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiIndustrialVacuumFreezer;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!mMachine) return;
+
+        if (this.mStartUpCheck < 0) {
+            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
+                .hasWorkJustBeenEnabled()) {
+                if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
+                    .hasWorkJustBeenEnabled()) {
+
+                    if (!drainCryotheum(CRYOTHEUM_PER_SECOND)) {
+                        this.causeMaintenanceIssue();
+                        this.stopMachine(
+                            ShutDownReasonRegistry
+                                .outOfFluid(new FluidStack(TFFluids.fluidCryotheum, CRYOTHEUM_PER_SECOND)));
+                    }
+
+                }
+            }
+        }
+    }
+
+    private boolean drainCryotheum(int amount) {
+        FluidStack toDrain = new FluidStack(TFFluids.fluidCryotheum, amount);
+
+        for (MTEHatch hatch : validMTEList(mCryotheumHatches)) {
+
+            if (!(hatch instanceof MTEHatchCustomFluidBase cryoHatch)) continue;
+
+            if (cryoHatch.getBaseMetaTileEntity() == null) continue;
+
+            FluidStack drained = cryoHatch.drain(ForgeDirection.UNKNOWN, toDrain, true);
+            if (drained != null && drained.amount >= amount) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_CRYOGENIC_FREEZER_LOOP;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+}

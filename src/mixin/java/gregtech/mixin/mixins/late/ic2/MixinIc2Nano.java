@@ -13,6 +13,6 @@ public class MixinIc2Nano implements IHazardProtector {
 
     @Override
     public boolean protectsAgainst(ItemStack itemStack, Hazard hazard) {
-        return true;
+        return Hazard.STANDARD_HAZARDS.contains(hazard);
     }
 }

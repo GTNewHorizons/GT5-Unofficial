@@ -1,0 +1,860 @@
+package gregtech.common.tileentities.machines.multi.beamcrafting;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_ACCELERATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LHC_COLLIDER_GLOW;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static java.lang.Math.max;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.BeamLinePacket;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.register.LanthItemList;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
+
+    private static final int MACHINEMODE_ACCELERATOR = 0;
+    private static final int MACHINEMODE_COLLIDER = 1;
+
+    public static final int BOOST_NONE = 0;
+    public static final int BOOST_QGP = 1;
+    public static final int BOOST_MAGMATTER = 2;
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_EM = "EM";
+    private static final String STRUCTURE_PIECE_WEAK = "Weak";
+    private static final String STRUCTURE_PIECE_STRONG = "Strong";
+    private static final String STRUCTURE_PIECE_GRAV = "Grav";
+
+    public static final float MAXIMUM_PARTICLE_ENERGY_keV = 1_000_000_000; // 2TeV collision energy max
+    public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
+    public static final float RATE_SCALE_FACTOR = 1.3F;
+    public static final int RATE_NERF_CUTOFF = 15000;
+    public static final float RATE_NERF_POWER = 0.5F;
+    public static final float RATE_NERF_POWER_QGP = 0.7F;
+    public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
+    public static final int POWER_TIER = VoltageIndex.UV;
+    public static final int COLLISION_ENERGY_MULTIPLIER = 2;
+    public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
+    public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
+
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
+    private static final int ColliderCasingTextureID = Casings.ColliderCasing.getTextureId();
+
+    private float outputEnergy;
+    private int outputRate;
+    private int outputParticleID;
+    private float outputFocus;
+
+    public int boostMode = BOOST_NONE;
+    public int boostActive = BOOST_NONE;
+
+    public double playerTargetBeamEnergyeV = 1_000_000_000;
+    public int playerTargetAccelerationCycles = 10;
+
+    public double calcInputBeamEnergyeV = 0;
+    public int calcInputBeamRate = 1;
+    public double calcTargetBeamEnergyeV = 0;
+    public int calcNumCycles = 1;
+    public int calcBoostMode = BOOST_NONE;
+
+    public double probTableCollisionEnergyeV = 0;
+
+    public BeamInformation initialParticleInfo = null;
+    public BeamInformation cachedOutputParticle = null;
+    public int accelerationCycleCounter = 0;
+
+    public boolean emEnabled;
+    public boolean weakEnabled;
+    public boolean strongEnabled;
+    public boolean gravEnabled;
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("boostMode", boostMode);
+        aNBT.setInteger("boostActive", boostActive);
+        if (cachedOutputParticle != null) {
+            aNBT.setFloat("energy", cachedOutputParticle.getEnergy());
+            aNBT.setInteger("rate", cachedOutputParticle.getRate());
+            aNBT.setInteger("particleId", cachedOutputParticle.getParticleId());
+            aNBT.setFloat("focus", cachedOutputParticle.getFocus());
+        }
+        if (initialParticleInfo != null) {
+            aNBT.setFloat("iniParticleEnergy", initialParticleInfo.getEnergy());
+            aNBT.setInteger("iniParticleRate", initialParticleInfo.getRate());
+            aNBT.setInteger("iniParticleId", initialParticleInfo.getParticleId());
+            aNBT.setFloat("iniParticleFocus", initialParticleInfo.getFocus());
+        }
+        aNBT.setDouble("playerBeamEnergy", playerTargetBeamEnergyeV);
+        aNBT.setInteger("playerAccelCycles", playerTargetAccelerationCycles);
+        aNBT.setDouble("calcInputBeamEnergyeV", calcInputBeamEnergyeV);
+        aNBT.setInteger("calcInputBeamRate", calcInputBeamRate);
+        aNBT.setDouble("calcTargetBeamEnergyeV", calcTargetBeamEnergyeV);
+        aNBT.setInteger("calcNumCycles", calcNumCycles);
+        aNBT.setInteger("calcBoostMode", calcBoostMode);
+        aNBT.setDouble("probTableCollisionEnergyeV", probTableCollisionEnergyeV);
+        aNBT.setInteger("accelerationCycleCounter", accelerationCycleCounter);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        machineMode = aNBT.getInteger("machineMode");
+        boostMode = aNBT.getInteger("boostMode");
+        boostActive = aNBT.getInteger("boostActive");
+        if (aNBT.hasKey("energy") && aNBT.hasKey("rate") && aNBT.hasKey("particleId") && aNBT.hasKey("focus")) {
+            cachedOutputParticle = new BeamInformation(
+                aNBT.getFloat("energy"),
+                aNBT.getInteger("rate"),
+                aNBT.getInteger("particleId"),
+                aNBT.getFloat("focus"));
+        }
+        if (aNBT.hasKey("iniParticleEnergy") && aNBT.hasKey("iniParticleRate")
+            && aNBT.hasKey("iniParticleId")
+            && aNBT.hasKey("iniParticleFocus")) {
+            initialParticleInfo = new BeamInformation(
+                aNBT.getFloat("iniParticleEnergy"),
+                aNBT.getInteger("iniParticleRate"),
+                aNBT.getInteger("iniParticleId"),
+                aNBT.getFloat("iniParticleFocus"));
+        }
+        playerTargetBeamEnergyeV = aNBT.getDouble("playerBeamEnergy");
+        playerTargetAccelerationCycles = aNBT.getInteger("playerAccelCycles");
+        calcInputBeamEnergyeV = aNBT.getDouble("calcInputBeamEnergyeV");
+        calcInputBeamRate = aNBT.getInteger("calcInputBeamRate");
+        calcTargetBeamEnergyeV = aNBT.getDouble("calcTargetBeamEnergyeV");
+        calcNumCycles = aNBT.getInteger("calcNumCycles");
+        calcBoostMode = aNBT.getInteger("calcBoostMode");
+        probTableCollisionEnergyeV = aNBT.getDouble("probTableCollisionEnergyeV");
+        accelerationCycleCounter = aNBT.getInteger("accelerationCycleCounter");
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
+    }
+
+    @Override
+    public String getMachineModeKey() {
+        if (machineMode == MACHINEMODE_ACCELERATOR) {
+            return "GT5U.MULTI_LHC.mode.0";
+        }
+        return "GT5U.MULTI_LHC.mode.1";
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == MACHINEMODE_ACCELERATOR) return MACHINEMODE_COLLIDER;
+        else return MACHINEMODE_ACCELERATOR;
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    private static final IStructureDefinition<MTELargeHadronCollider> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTELargeHadronCollider>builder()
+
+        .addShape(STRUCTURE_PIECE_MAIN, LHCStructureString.MAIN_STRUCTURE)
+        .addShape(STRUCTURE_PIECE_EM, LHCStructureString.EM_MODULE)
+        .addShape(STRUCTURE_PIECE_WEAK, LHCStructureString.WEAK_MODULE)
+        .addShape(STRUCTURE_PIECE_STRONG, LHCStructureString.STRONG_MODULE)
+        .addShape(STRUCTURE_PIECE_GRAV, LHCStructureString.GRAV_MODULE)
+
+        .addElement(
+            'C', // collider casing
+            buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy, InputHatch)
+                .casingIndex(Casings.ColliderCasing.getTextureId())
+                .hint(1)
+                .buildAndChain(Casings.ColliderCasing.asElement()))
+        .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+        .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
+        .addElement('E', lazy(t -> { // any neonite variant
+            if (Mods.Chisel.isModLoaded()) {
+                Block neonite = GameRegistry.findBlock(Mods.Chisel.ID, "neonite");
+                return ofBlockAnyMeta(neonite, 1);
+            } else {
+                return ofBlockAnyMeta(Blocks.air);
+            }
+        }))
+        .addElement('F', buildBeamlineInputHatch(MTELargeHadronCollider.class, ShieldedAccCasingTextureID, 2))
+        .addElement(
+            '1',
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.EM))
+        .addElement(
+            '2',
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                4,
+                FundamentalForce.Weak))
+        .addElement(
+            '3',
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                5,
+                FundamentalForce.Strong))
+        .addElement(
+            '4',
+            buildAdvancedBeamlineOutputHatch(
+                MTELargeHadronCollider.class,
+                ShieldedAccCasingTextureID,
+                6,
+                FundamentalForce.Gravity))
+
+        .addElement('B', Casings.CMSCasing.asElement())
+        .addElement('K', Casings.ATLASCasing.asElement())
+        .addElement('I', Casings.ALICECasing.asElement())
+        .addElement('O', Casings.LHCbCasing.asElement())
+        .build();
+
+    public MTELargeHadronCollider(final int aID, final String aName, final String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTELargeHadronCollider(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IStructureDefinition<MTELargeHadronCollider> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTELargeHadronCollider(this.mName);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if ((aActive) && (this.machineMode == MACHINEMODE_ACCELERATOR)) {
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_ACCELERATOR_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else if ((aActive) && (this.machineMode == MACHINEMODE_COLLIDER)) {
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_COLLIDER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC_COLLIDER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_LHC)
+                        .extFacing()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(ColliderCasingTextureID) };
+        }
+        return rTexture;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        String colliderCasing = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing");
+        String anyNeonite = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite");
+        String shieldedGlass = StatCollector
+            .translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass");
+        String filteredOutput = StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered");
+        String moduleInnerSide = StatCollector.translateToLocal("gt.mbtt.structure.lhc_module_inner_side");
+        String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.particle_collider"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-hadron-collider"),
+                ImmutableMap.<String, Object>builder()
+                    .put("max_energy", MAXIMUM_PARTICLE_ENERGY_keV / 1_000_000_000)
+                    .put("ev_per_eu", keV_EU_RATIO * 1000)
+                    .put("rate_gain", RATE_SCALE_FACTOR - 1)
+                    .put("nerf_cutoff", RATE_NERF_CUTOFF)
+                    .put("nerf_power", RATE_NERF_POWER)
+                    .put("nerf_power_qgp", RATE_NERF_POWER_QGP)
+                    .put("nerf_power_magmatter", RATE_NERF_POWER_MAGMATTER)
+                    .put("tier", POWER_TIER)
+                    .put("collision_multiplier", COLLISION_ENERGY_MULTIPLIER)
+                    .build())
+            .addSeparator()
+            .addSupportAny()
+            .beginStructureBlock(109, 13, 122, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.lhc_controller"))
+            .addCasing("5664", colliderCasing, false)
+            .addCasing("73", anyNeonite, false)
+            .addCasing("20", shieldedGlass, false)
+            .addCasing("16", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.lhc_ring_entrance"), 2)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addInputHatch("1", anyCasing, 7)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "CMS", "E"))
+            .addCasing("523", colliderCasing, false)
+            .addCasing("148", Casings.CMSCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("11", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 3)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "ATLAS", "W"))
+            .addCasing("515", colliderCasing, false)
+            .addCasing("160", Casings.ATLASCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("13", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 4)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "ALICE", "S"))
+            .addCasing("517", colliderCasing, false)
+            .addCasing("158", Casings.ALICECasing.getLocalizedName(), false)
+            .addCasing("140", shieldedGlass, false)
+            .addCasing("11", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 5)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "LHCb", "G"))
+            .addCasing("511", colliderCasing, false)
+            .addCasing("144", Casings.LHCbCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("17", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 6)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 54, 4, 1);
+        buildPiece(STRUCTURE_PIECE_EM, stackSize, hintsOnly, 7, -1, -113);
+        if (stackSize.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_WEAK, stackSize, hintsOnly, 7, -1, -9);
+        }
+        if (stackSize.stackSize > 2) {
+            buildPiece(STRUCTURE_PIECE_STRONG, stackSize, hintsOnly, 57, -1, -59);
+        }
+        if (stackSize.stackSize > 3) {
+            buildPiece(STRUCTURE_PIECE_GRAV, stackSize, hintsOnly, -47, -1, -59);
+        }
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = 0;
+
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+
+        built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, realBudget, env, false, true);
+        built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 7, -1, -113, realBudget, env, false, true);
+        if (stackSize.stackSize > 1) {
+            built += survivalBuildPiece(STRUCTURE_PIECE_WEAK, stackSize, 7, -1, -9, realBudget, env, false, true);
+        }
+        if (stackSize.stackSize > 2) {
+            built += survivalBuildPiece(STRUCTURE_PIECE_STRONG, stackSize, 57, -1, -59, realBudget, env, false, true);
+        }
+        if (stackSize.stackSize > 3) {
+            built += survivalBuildPiece(STRUCTURE_PIECE_GRAV, stackSize, -47, -1, -59, realBudget, env, false, true);
+        }
+        return built;
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+
+        // Ignore the structure error during module checks
+        List<StructureError> tmp = new ArrayList<>();
+
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113, tmp);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9, tmp);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59, tmp);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59, tmp);
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1, errors)) return;
+        int energyCount = mExoticEnergyHatches.size() + mEnergyHatches.size();
+        if (energyCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, energyCount, 1));
+        }
+    }
+
+    @Override
+    public String[] getInfoData() {
+
+        if (cachedOutputParticle == null) {
+            return new String[] { EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.machineoff") };
+        }
+
+        BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
+
+        return new String[] {
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
+    }
+
+    public double getCachedBeamEnergy() {
+        return cachedOutputParticle != null ? cachedOutputParticle.getEnergy() : 0;
+    }
+
+    public int getCachedBeamRate() {
+        return cachedOutputParticle != null ? cachedOutputParticle.getRate() : 0;
+    }
+
+    public BeamInformation accelerateParticle(BeamInformation particle) {
+
+        float inputEnergy = particle.getEnergy();
+        int inputRate = particle.getRate();
+
+        float outEnergy = inputEnergy;
+        int outRate = inputRate;
+
+        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
+        if (inputEnergy < playerTargetBeamEnergyeV / 1000) {
+            outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
+            if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                return new BeamInformation(
+                    MAXIMUM_PARTICLE_ENERGY_keV,
+                    outRate,
+                    particle.getParticleId(),
+                    particle.getFocus());
+            }
+
+        } else {
+            if (outRate < RATE_NERF_CUTOFF) {
+                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            } else {
+                outRate = outRate
+                    + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), rateNerfPowerForBoost(boostActive)));
+            }
+        }
+
+        return new BeamInformation(outEnergy, outRate, particle.getParticleId(), particle.getFocus());
+    }
+
+    public long calculateEnergyCostAccelerator(BeamInformation particle) {
+        return -perCyclePowerCost(particle.getRate(), accelerationCycleCounter);
+    }
+
+    public static long perCyclePowerCost(int rate, int cycleIndex) {
+        // counter starts at 0, so +1
+        // start at 1A UV power cost
+        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[POWER_TIER] * Math.pow(cycleIndex + 1, 2) * rate);
+    }
+
+    public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
+        // rate conceptually is parallels, so use rate 1 for this determination
+        return perCyclePowerCost(1, cycleIndex) * progressTime * keV_EU_RATIO;
+    }
+
+    public static float rateNerfPowerForBoost(int boostMode) {
+        return switch (boostMode) {
+            case BOOST_QGP -> RATE_NERF_POWER_QGP;
+            case BOOST_MAGMATTER -> RATE_NERF_POWER_MAGMATTER;
+            default -> RATE_NERF_POWER;
+        };
+    }
+
+    public static FluidStack boostFluidStack(int boostMode, int amount) {
+        return switch (boostMode) {
+            case BOOST_QGP -> Materials.QuarkGluonPlasma.getFluid(amount);
+            case BOOST_MAGMATTER -> Materials.MagMatter.getMolten(amount);
+            default -> null;
+        };
+    }
+
+    private static int boostFluidCost(int rate) {
+        // equation for how much booster fluid to demand per cycle
+        return (int) rate;
+    }
+
+    private boolean consumeBoostFluid(int rate) {
+        FluidStack needed = boostFluidStack(boostActive, boostFluidCost(rate));
+        if (needed == null) return false;
+        if (!depleteInput(needed, true)) return false; // simulate consumption and fail if not enough present
+        depleteInput(needed, false);
+        return true;
+    }
+
+    public static double[] simulateAccelerator(double inputEnergyKeV, int inputRate, double targetEnergyKeV,
+        int numCycles, int progressTime, int boostMode) {
+
+        if (numCycles < 0) numCycles = 0;
+        if (inputRate < 1) inputRate = 1;
+
+        float nerfPower = rateNerfPowerForBoost(boostMode);
+
+        // mirrors accelerateParticle
+
+        double outEnergy = (boostMode == BOOST_NONE) ? inputEnergyKeV : MAXIMUM_PARTICLE_ENERGY_keV;
+        int outRate = inputRate;
+        long EUtCost = 0;
+
+        for (int c = 0; c < numCycles; c++) {
+            if (outEnergy < targetEnergyKeV) {
+                outEnergy += perCycleEnergyGainKeV(c, progressTime);
+                if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
+                    outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
+                }
+            } else {
+                if (outRate < RATE_NERF_CUTOFF) {
+                    outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+                } else {
+                    outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), nerfPower));
+                }
+            }
+            EUtCost = perCyclePowerCost(outRate, c + 1);
+        }
+
+        return new double[] { outEnergy, (double) outRate, (double) EUtCost };
+    }
+
+    private void resetLHCState() {
+        initialParticleInfo = null;
+        cachedOutputParticle = null;
+        accelerationCycleCounter = 0;
+        machineMode = MACHINEMODE_ACCELERATOR;
+        boostActive = BOOST_NONE;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        resetLHCState();
+        super.stopMachine(reason);
+    }
+
+    @Override
+    public void onDisableWorking() {
+        resetLHCState();
+        super.onDisableWorking();
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        int oldMachineMode = machineMode;
+        if (aValue == MACHINEMODE_ACCELERATOR) {
+            machineMode = MACHINEMODE_ACCELERATOR;
+        } else {
+            machineMode = MACHINEMODE_COLLIDER;
+        }
+        if (oldMachineMode != machineMode) getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) ((machineMode == MACHINEMODE_COLLIDER) ? MACHINEMODE_COLLIDER : MACHINEMODE_ACCELERATOR);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.largeHadronColliderRecipes;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+
+        BeamInformation inputInfo = this.getNthInputParticle(0);
+
+        if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (machineMode == MACHINEMODE_ACCELERATOR) {
+
+            this.mEfficiency = 10000;
+            this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = TickTime.SECOND;
+
+            if (cachedOutputParticle == null) {
+                initialParticleInfo = inputInfo.copy();
+                accelerationCycleCounter = 0;
+                boostActive = boostMode; // locked for this run
+
+                if (boostActive == BOOST_NONE) {
+                    cachedOutputParticle = inputInfo.copy();
+                } else {
+                    if (!consumeBoostFluid(inputInfo.getRate())) {
+                        stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+                    cachedOutputParticle = new BeamInformation(
+                        MAXIMUM_PARTICLE_ENERGY_keV,
+                        inputInfo.getRate(),
+                        inputInfo.getParticleId(),
+                        inputInfo.getFocus());
+                }
+                lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
+            } else {
+                if (!cachedOutputParticle.getParticle()
+                    .canAccelerate()) {
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                if (!initialParticleInfo.isEqual(inputInfo)) {
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                } else {
+
+                    if (checkIfNotEnoughBoosterFluid()) {
+                        stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+
+                    if (accelerationCycleCounter < playerTargetAccelerationCycles) {
+                        cachedOutputParticle = accelerateParticle(cachedOutputParticle);
+                        accelerationCycleCounter += 1;
+                    } else {
+                        machineMode = MACHINEMODE_COLLIDER;
+                    }
+
+                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
+
+                }
+            }
+        } else {
+
+            if (initialParticleInfo != null) {
+                if (!initialParticleInfo.isEqual(inputInfo)) {
+                    stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inputinterrupt"));
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+            }
+
+            float inputEnergy = cachedOutputParticle.getEnergy();
+            Particle inputParticle = Particle.getParticleFromId(cachedOutputParticle.getParticleId());
+            int inputRate = cachedOutputParticle.getRate();
+
+            if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+            float inputFocus = cachedOutputParticle.getFocus();
+
+            if (!inputParticle.canAccelerate()) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            if (checkIfNotEnoughBoosterFluid()) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            this.mEfficiency = 10000;
+            this.mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = TickTime.SECOND;
+
+            this.outputEnergy = (inputEnergy) * COLLISION_ENERGY_MULTIPLIER; // output energy = collision energy
+            this.outputRate = max(0, (inputRate));
+            this.outputFocus = inputFocus;
+
+            if (this.outputRate == 0) {
+                stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noparticle"));
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            outputPacketAfterRecipe(this.outputRate);
+        }
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private int generateOutputParticleID(float collisionEnergy, java.util.Map<Particle, Boolean> acceptedInputMap) {
+
+        // restMass is in MeV
+        // beamline energies are in keV
+        // :(
+
+        double collisionEnergyMeV = collisionEnergy / 1000;
+
+        int n = Particle.VALUES.length;
+
+        double[] weights = new double[n];
+        double totalWeight = 0.0;
+
+        for (int i = 0; i < n; i++) {
+            Particle p = Particle.getParticleFromId(i);
+
+            // filter module-incompatible particles -- keep blacklisted particles in the pool but output nothing if
+            // rolled
+            if (acceptedInputMap == null || !acceptedInputMap.containsKey(p)) {
+                weights[i] = 0.0;
+                continue;
+            }
+
+            double thresholdMeV = max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+            // massive particles have a threshold equal to their rest mass.
+            double w = (collisionEnergyMeV < thresholdMeV) ? 0.0 : p.getLHCWeight();
+
+            if (w < 0 || Double.isInfinite(w)) w = 0.0;
+
+            weights[i] = w;
+            totalWeight += w;
+        }
+        if (totalWeight <= 0.0) {
+            return -1; // nothing eligible, output nothing
+        }
+
+        double[] cumulative = new double[n];
+        double run = 0.0;
+        for (int i = 0; i < n; i++) {
+            run += weights[i];
+            cumulative[i] = run;
+        }
+        double r = XSTR_INSTANCE.nextFloat() * totalWeight;
+        int idx = java.util.Arrays.binarySearch(cumulative, r);
+        if (idx < 0) idx = -idx - 1; // insertion point
+        if (idx >= n) idx = n - 1; // safety clamp
+
+        return idx;
+
+    }
+
+    public static double particleProbability(Particle target, LHCModule module, double collisionEnergyKeV) {
+        if (!module.acceptedParticles.contains(target)) return 0.0;
+
+        double collisionEnergyMeV = collisionEnergyKeV / 1000.0; // restmass is in MeV
+
+        double targetThresholdMeV = Math.max(target.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+        if (collisionEnergyMeV < targetThresholdMeV) return 0.0;
+
+        double targetWeight = target.getLHCWeight();
+        if (targetWeight <= 0 || Double.isInfinite(targetWeight)) return 0.0;
+
+        double totalWeight = 0.0;
+        for (Particle p : module.acceptedParticles) {
+            double thresholdMeV = Math.max(p.getMass(), MASSLESS_PARTICLE_THRESHOLD);
+            if (collisionEnergyMeV < thresholdMeV) continue;
+            double w = p.getLHCWeight();
+            if (w > 0 && !Double.isInfinite(w)) {
+                totalWeight += w;
+            }
+        }
+
+        if (totalWeight <= 0.0) return 0.0;
+        return targetWeight / totalWeight;
+    }
+
+    private void outputPacketAfterRecipe(int rate) {
+        if (this.mAdvancedOutputBeamline.isEmpty()) return;
+
+        for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
+
+            if (rate == 0) {
+                o.dataPacket = null;
+                continue;
+            }
+            int rolledId = generateOutputParticleID(this.outputEnergy, o.acceptedInputMap);
+            if (rolledId < 0) { // energy too low for any valid particle
+                o.dataPacket = null;
+                continue;
+            }
+
+            // void blacklisted particles
+            Particle rolled = Particle.getParticleFromId(rolledId);
+            if (!o.acceptedInputMap.getOrDefault(rolled, false)) {
+                o.dataPacket = null;
+                continue;
+            }
+
+            o.dataPacket = new BeamLinePacket(new BeamInformation(this.outputEnergy, rate, rolledId, this.outputFocus));
+        }
+    }
+
+    private boolean checkIfNotEnoughBoosterFluid() {
+        return (boostActive != BOOST_NONE) && !consumeBoostFluid(cachedOutputParticle.getRate());
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTELargeHadronColliderGui getGui() {
+        return new MTELargeHadronColliderGui(this);
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GT_MACHINES_LHC_SPIN_UP;
+    }
+
+}

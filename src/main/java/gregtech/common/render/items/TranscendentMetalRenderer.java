@@ -152,7 +152,7 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
 
         GL11.glRotatef(
             (GTMod.clientProxy()
-                .getAnimationTicks() * 3.5f) % 360,
+                .getAnimationRenderTicks() * 3.5f) % 360,
             0.3f,
             0.5f,
             0.2f);

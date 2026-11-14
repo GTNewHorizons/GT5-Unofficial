@@ -1,7 +1,5 @@
 package gtPlusPlus.core.block.general;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,6 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 
@@ -168,8 +167,8 @@ public class BlockMiningExplosives extends BlockTNT {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalSheet2");
-        this.textureTop = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalFunnel");
-        this.textureBottom = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalPanel");
+        this.blockIcon = Textures.BlockIcons.MINING_EXPLOSIVES_SIDE.getIcon();
+        this.textureTop = Textures.BlockIcons.MINING_EXPLOSIVES_TOP.getIcon();
+        this.textureBottom = Textures.BlockIcons.INDUSTRIAL_SIEVE_CASING.getIcon();
     }
 }

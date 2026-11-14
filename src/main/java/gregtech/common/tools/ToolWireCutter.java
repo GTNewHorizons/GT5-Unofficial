@@ -7,11 +7,12 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
+import gregtech.common.items.behaviors.BehaviourWireCutter;
 
 public class ToolWireCutter extends GTTool {
 
@@ -42,7 +43,10 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.WIRE_CUTTER : null;
+        return aIsToolHead
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_WIRE_CUTTER.ordinal()]
+            : null;
     }
 
     @Override
@@ -60,5 +64,10 @@ public class ToolWireCutter extends GTTool {
                 + EnumChatFormatting.RED
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
+    }
+
+    @Override
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
+        aItem.addItemBehavior(aID, new BehaviourWireCutter());
     }
 }

@@ -89,7 +89,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
         Werkstoff.werkstoffHashSet.stream()
             .filter(
                 pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
-                    && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
+                    && pMaterial.hasItemType(OrePrefixes.blockCasing)
                     || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
@@ -102,6 +102,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     /**
      * ICustomBlockSetting setBlock override
      */
+    @Override
     public void setBlock(World world, int x, int y, int z, int meta) {
         world.setBlock(x, y, z, this, meta, 2);
         try {

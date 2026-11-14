@@ -16,10 +16,10 @@ import tconstruct.tools.logic.FurnaceLogic;
 @Mixin(value = FurnaceLogic.class, remap = false)
 public abstract class MixinFurnaceLogicPollution extends TileEntity {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean isBurning();
 
-    @Inject(method = "updateEntity", at = @At("TAIL"))
+    @Inject(method = "updateEntity", at = @At("RETURN"), remap = true)
     private void gt5u$addPollution(CallbackInfo ci) {
         if (isBurning()) {
             furnaceAddPollutionOnUpdate(

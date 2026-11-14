@@ -4,6 +4,8 @@ import gregtech.api.enums.Dyes;
 
 public interface IColoredTileEntity {
 
+    int UNCOLOURED = -1;
+
     /**
      * @return 0 - 15 are Colors, while -1 means uncolored
      */
@@ -20,7 +22,7 @@ public interface IColoredTileEntity {
      * @return Actual color shown on GUI
      */
     default int getGUIColorization() {
-        return Dyes.getOrDefault(getColorization(), Dyes.MACHINE_METAL)
+        return Dyes.getOrDefault(getColorization(), Dyes.GUI_METAL)
             .toInt();
     }
 }

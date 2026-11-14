@@ -1,7 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.Objects;
 import java.util.UUID;
 
@@ -81,7 +79,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         byteBuf.writeBoolean(invert);
     }
 
-    private void unregisterSignal() {
+    public void unregisterSignal() {
         unregisterSignal(uuid, frequency);
     }
 
@@ -89,7 +87,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
         final CoverPosition key = getCoverKey(coverable, coverSide);
-        removeSignalAt(uuid, frequency, key);
+        removeSignalAt(oldUuid, oldFrequency, key);
     }
 
     @Override
@@ -105,15 +103,13 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         invert = !invert;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            invert ? translateToLocal("gt.interact.desc.inverted") : translateToLocal("gt.interact.desc.normal"));
+        GTUtility.sendChatTrans(aPlayer, invert ? "gt.interact.desc.inverted" : "gt.interact.desc.normal");
     }
     // GUI stuff
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverAdvancedRedstoneTransmitterBaseGui(this);
+        return new CoverAdvancedRedstoneTransmitterBaseGui<>(this);
     }
 
 }

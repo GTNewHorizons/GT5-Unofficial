@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -23,6 +25,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.api.IBlockWithCustomSound;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,7 +41,9 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -48,9 +54,10 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public GTBlockOre(int series, StoneType[] stoneTypes) {
         super(GTItemOre.class, "gt.blockores" + series, Material.rock);
@@ -60,7 +67,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
         if (stoneTypes.length > 8) throw new IllegalArgumentException("stoneTypes.length must be <= 8");
 
         for (int i = 0; i < stoneTypes.length; i++) {
-            if (!stoneTypes[i].isEnabled()) {
+            if (stoneTypes[i] != null && !stoneTypes[i].isEnabled()) {
                 stoneTypes[i] = null;
             }
         }
@@ -176,10 +183,19 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        return getDropsForPlayer(world, x, y, z, metadata, fortune, this.harvesters.get());
+    }
+
+    /**
+     * Functions as getDrops(), but the player entity can be specified directly in cases where the action is done by
+     * player, but gets called without harvest method.
+     *
+     * @implNote Requires extra casting to GTBlockOre and mod load checks.
+     */
+    public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
+        EntityPlayer harvester) {
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
-
-            EntityPlayer harvester = this.harvesters.get();
 
             boolean doFortune = GTUtility.isRealPlayer(harvester);
             boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
@@ -191,32 +207,41 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     @Override
     public ITexture[][] getTextures(int metadata) {
+        metadata = getTextureCacheKey(metadata);
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+
         StoneType stoneType = getStoneType(metadata);
         Materials mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
-        ITexture[] textures;
-
-        if (stoneType == null) stoneType = StoneType.Stone;
+        final ITextureBuilder fgBuilder;
 
         if (mat != null) {
-            ITexture iTexture = TextureFactory.builder()
-                .addIcon(
-                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
-                        : OrePrefixes.ore.getTextureIndex()])
+            fgBuilder = TextureFactory.builder()
+                .addIcon(mat.mIconSet.getOreTexture(stoneType == null ? StoneType.Stone : stoneType, small))
                 .setRGBA(mat.mRGBa)
-                .stdOrient()
-                .build();
-
-            textures = new ITexture[] { stoneType.getTexture(0), iTexture };
+                .glow(mat.hasGlowingOre());
         } else {
-            textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
-                .stdOrient()
-                .build() };
+            fgBuilder = TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()]);
         }
 
-        return new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
+        final ITexture fg = fgBuilder.build();
+
+        final ITexture[] textures = new ITexture[] { bg, fg };
+
+        cached = new ITexture[][] { textures, textures, textures, textures, textures, textures };
+        textureCache.put(metadata, cached);
+        return cached;
     }
 
     @Override
@@ -338,11 +363,21 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     @Override
+    public Block.SoundType getSound(World world, int x, int y, int z) {
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return Blocks.stone.stepSound;
+
+            return info.stoneType.getStone()
+                .getBlock().stepSound;
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(
@@ -352,7 +387,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
                         GTOreAdapter.INSTANCE.getBlock(info)
                             .getBlockMeta(),
                         3);
-                    GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
+                    GTUtility
+                        .sendChatTrans(player, "GT5U.chat.ore.set_ore_natural_flag", String.valueOf(info.isNatural));
                 }
 
                 return true;
@@ -363,6 +399,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
 
         return false;
+    }
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        super.onBlockClicked(world, x, y, z, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override
@@ -384,6 +428,11 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     }
 
     public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
+
+    static int getTextureCacheKey(int metadata) {
+        if ((metadata % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET) metadata -= NATURAL_ORE_META_OFFSET;
+        return metadata;
+    }
 
     public int getMaterialIndex(int meta) {
         if (meta < 0) return 0;

@@ -3,9 +3,10 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.ItemList.Hatch_LensHousing;
+import static gregtech.api.enums.ItemList.Hatch_LensIndicator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -22,37 +23,45 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEPurificationUnitUVTreatment>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings9, 12);
 
@@ -116,8 +125,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(2)
-                    .cacheHint(() -> "Lens Housing")
+                    .hint(2)
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
         // Lens indicator hatch
@@ -127,8 +135,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
-                        .dot(3)
-                        .cacheHint(() -> "Lens Indicator")
+                        .hint(3)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 12)))
@@ -139,8 +146,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
-                        .dot(1)
-                        .cacheHint(() -> "Input Hatch, Output Hatch")
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 // Naquadria-reinforced Water Plant Casing
@@ -163,29 +169,20 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN);
     }
 
     @Override
@@ -220,94 +217,42 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit");
-        tt.addInfo(
-            EnumChatFormatting.AQUA + ""
-                + EnumChatFormatting.BOLD
-                + "Water Tier: "
-                + EnumChatFormatting.WHITE
-                + GTUtility.formatNumbers(getWaterTier())
-                + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo("During operation, swap the lens in the " + EnumChatFormatting.WHITE + "Lens Housing")
-            .addInfo(
-                "The multiblock will output a signal through the " + EnumChatFormatting.WHITE + "Lens Indicator Hatch")
-            .addInfo("when the current lens must be swapped")
-            .addInfo(
-                "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
-                    + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
-                    + " to "
-                    + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
-                    + "s")
-            .addSeparator()
-            .addInfo(
-                "Success chance is boosted by " + EnumChatFormatting.RED
-                    + SUCCESS_PER_LENS
-                    + "% "
-                    + EnumChatFormatting.GRAY
-                    + "for each successful swap performed.")
-            .addInfo("Removing a lens too early will fail the recipe")
-            .addInfo("Find the order of lenses in the recipe in NEI,")
-            .addInfo("or use a portable scanner to view the currently requested lens")
-            .addInfo("The recipe always starts at the Orundum Lens")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The sixth step of water purification involves identifying any remaining negatively charged ions within")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water which may cause electrical faults in future wafer manufacturing. Bombarding the water with varying")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "wavelengths of photon beams will impart energy into outer-shell electrons, causing them to detach from the")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_uv_treatment"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-uv-treatment"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"))
+                    .put("indicator", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"))
+                    .put("min_swap", (float) MIN_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("max_swap", (float) MAX_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("success", SUCCESS_PER_LENS)
+                    .put(
+                        "first_lens",
+                        GGMaterial.orundum.get(OrePrefixes.lens, 1)
+                            .getDisplayName())
+                    .build())
             .beginStructureBlock(13, 9, 9, true)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Naquadria-Reinforced Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                147,
-                155,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Electron-Permeable Neutronium Coated Glass",
-                EnumChatFormatting.GRAY,
-                144,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "High Energy Ultraviolet Emitter Casing",
-                EnumChatFormatting.GRAY,
-                29,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Stellar Alloy Frame Box",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_output_hatch"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("144-153", Casings.NaquadriaReinforcedWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("144", Casings.ElectronPermeableNeutroniumCoatedGlass.getLocalizedName(), false)
+            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
+            .addCasing("29", Casings.HighEnergyUltravioletEmitterCasing.getLocalizedName(), false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
-                EnumChatFormatting.GOLD + "1",
+                StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"),
                 2)
-            .addOtherStructurePart(
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
-                EnumChatFormatting.GOLD + "1",
+                StatCollector.translateToLocal("gt.mbtt.structure.top_back_casing"),
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
+            .toolTipFinisher();
         return tt;
     }
 
@@ -417,17 +362,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (this.lensCycle != null) {
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
                     "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
                     EnumChatFormatting.GREEN + lensCycle.current()
                         .getDisplayName()));
             if (removedTooEarly) {
-                infoData.add(
-                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
+                infoData.add("GT5U.infodata.purification_unit_uv_treatment.removed_too_early");
             }
         }
         return infoData.toArray(new String[] {});
@@ -447,11 +391,19 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         timeUntilNextSwap = aNBT.getInteger("timeUntilNextSwap");
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without lens bus
-        if (lensInputBus == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (lensInputBus == null) {
+            errors.add(StructureErrors.missingHatch(Hatch_LensHousing.get(1)));
+        }
+        if (lensIndicator == null) {
+            errors.add(StructureErrors.missingHatch(Hatch_LensIndicator.get(1)));
+        }
     }
 
     public boolean addLensHousingToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -479,7 +431,8 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitUVTreatment> {
 
-        LensHousing(MTEPurificationUnitUVTreatment::addLensHousingToMachineList, MTEHatchLensHousing.class) {
+        LensHousing("GT5U.MBTT.LensHousing", MTEPurificationUnitUVTreatment::addLensHousingToMachineList,
+            MTEHatchLensHousing.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
@@ -488,7 +441,8 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             }
         },
 
-        LensIndicator(MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList, MTEHatchLensIndicator.class) {
+        LensIndicator("GT5U.MBTT.LensIndicator", MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList,
+            MTEHatchLensIndicator.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
@@ -497,12 +451,14 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitUVTreatment> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -512,8 +468,19 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitUVTreatment> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

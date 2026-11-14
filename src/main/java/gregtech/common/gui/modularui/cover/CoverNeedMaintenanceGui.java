@@ -32,24 +32,24 @@ public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance>
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<MaintenanceAlertCondition> thresholdSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<MaintenanceAlertCondition, ?> thresholdSyncValue = new EnumSyncValue<>(
             MaintenanceAlertCondition.class,
             cover::getMaintenanceAlertCondition,
-            cover::setMaintenanceAlertCondition);
+            cover::setMaintenanceAlertCondition).allowC2S();
         syncManager.syncValue("threshold", thresholdSyncValue);
-        EnumSyncValue<RedstoneMode> redstoneModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneMode, ?> redstoneModeSyncValue = new EnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            cover::setRedstoneMode);
+            cover::setRedstoneMode).allowC2S();
 
         column.child(
             Flow.row()
                 .marginLeft(WIDGET_MARGIN)
-                .coverChildrenHeight()
-                .width(getGUIWidth() - WIDGET_MARGIN * 4)
+                .coverChildren()
                 .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
                 .child(
                     new Grid().coverChildren()
+                        .marginRight(4)
                         .minElementMargin(1, 1)
                         .alignment(Alignment.CenterLeft)
                         .row(

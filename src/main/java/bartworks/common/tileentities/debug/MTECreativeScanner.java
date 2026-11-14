@@ -17,13 +17,14 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.basic.MTEScanner;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECreativeScanner extends MTEScanner {
 
     public MTECreativeScanner(int aID, String aName, String aNameRegional, int aTier) {
@@ -43,8 +44,7 @@ public class MTECreativeScanner extends MTEScanner {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             MachineType.SCANNER.tooltipDescription(),
-            StatCollector.translateToLocal("gt.blockmachines.creativeScanner.desc.1"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            StatCollector.translateToLocal("gt.blockmachines.creativeScanner.desc.1"));
     }
 
     @Override

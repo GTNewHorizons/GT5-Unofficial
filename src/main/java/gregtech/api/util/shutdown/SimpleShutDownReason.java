@@ -34,7 +34,7 @@ public class SimpleShutDownReason implements ShutDownReason {
     @NotNull
     @Override
     public String getDisplayString() {
-        return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
+        return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text.shutdown_reason." + key));
     }
 
     @Override
@@ -74,7 +74,8 @@ public class SimpleShutDownReason implements ShutDownReason {
     }
 
     /**
-     * Creates new reason with critical state. Add your localized description with `GT5U.gui.text.{key}`. This is
+     * Creates new reason with critical state. Add your localized description with
+     * `GT5U.gui.text.shutdown_reason.{key}`. This is
      * already registered to registry.
      */
     @Nonnull
@@ -83,7 +84,8 @@ public class SimpleShutDownReason implements ShutDownReason {
     }
 
     /**
-     * Creates new reason with normal state. Add your localized description with `GT5U.gui.text.{key}`. This is already
+     * Creates new reason with normal state. Add your localized description with `GT5U.gui.text.shutdown_reason.{key}`.
+     * This is already
      * registered to registry.
      */
     @Nonnull

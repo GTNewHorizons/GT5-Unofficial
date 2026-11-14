@@ -5,42 +5,49 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.isStackValid;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.BitSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
-import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
-public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable, IOutputBus {
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus, ISmartInputHatch {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -52,17 +59,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -80,6 +77,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     public MTEHatchOutputBus(String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -113,7 +116,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             openGui(aPlayer);
             return true;
         }
@@ -136,7 +139,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             return;
         }
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
@@ -235,30 +238,33 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         return false;
     }
 
+    protected int getStackTransferAmount() {
+        return mInventory.length;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
             && (aTick & 0x7) == 0
             && pushOutputInventory()) {
-            final IInventory tTileEntity = aBaseMetaTileEntity
-                .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTileEntity != null) {
-                moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    mInventory.length);
-                for (int i = 0; i < mInventory.length; i++)
-                    if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+
+            GTItemTransfer transfer = new GTItemTransfer();
+
+            transfer.push(aBaseMetaTileEntity, aBaseMetaTileEntity.getFrontFacing());
+
+            transfer.setStacksToTransfer(getStackTransferAmount());
+            transfer.setMaxItemsPerTransfer(getStackSizeLimit(-1, null));
+
+            if (transfer.transfer() > 0) {
+                GTUtility.cleanInventory(this);
             }
+        }
+        // A drained output bus frees up space, which can unblock a recipe that failed with ITEM_OUTPUT_FULL. This must
+        // run AFTER the auto-eject above: that eject marks the inventory dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
         }
     }
 
@@ -275,22 +281,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         super.loadNBTData(aNBT);
         if (aNBT.hasKey(LOCKED_ITEM_NBT_KEY)) {
             lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(LOCKED_ITEM_NBT_KEY));
-        }
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mTier) {
-            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            default -> getBaseMetaTileEntity().add4by4Slots(builder);
-        }
-
-        if (acceptsItemLock()) {
-            builder.widget(
-                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
-                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
         }
     }
 
@@ -320,8 +310,28 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return true;
+    }
+
+    @OCMethod
+    public ItemStack getFilter() {
+        return lockedItem == null ? null : lockedItem.copy();
+    }
+
+    @OCMethod
+    public void setFilter(@Nullable ItemStack aStack) {
+        setLockedItem(aStack);
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + getOffsetX();
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + getOffsetY();
     }
 
     @Override
@@ -344,16 +354,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public OutputBusType getBusType() {
         return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
-    }
-
-    /**
-     * Gets the max stack size limit for a slot and a stack.
-     *
-     * @param slot  The slot, or -1 for a general 'lowest slot' query.
-     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
-     */
-    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
     }
 
     class StandardOutputBusTransaction implements IOutputBusTransaction {
@@ -384,7 +384,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             int maxStackSize = getStackSizeLimit(-1, stack);
@@ -421,7 +421,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             for (int i = 0, invLength = inventory.length; i < invLength; i++) {
@@ -451,5 +451,22 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
 
             active = false;
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.output_bus.desc" : "gt.blockmachines.output_bus.singular.desc",
+            getSlots(mTier));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this).build(guiData, syncManager, uiSettings);
     }
 }

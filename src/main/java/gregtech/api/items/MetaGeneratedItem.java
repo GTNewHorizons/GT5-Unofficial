@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
@@ -32,6 +34,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
@@ -39,7 +42,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -79,11 +81,14 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final BitSet mEnabledItems;
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
+    private final BitSet mItemsWithoutBaseIcon = new BitSet();
 
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mNameLocalizationFunctions = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mTooltipLocalizationFuncitons = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -108,24 +113,27 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
-     * @param aEnglish    The Default Localized Name of the created Item
-     * @param aToolTip    The Default ToolTip of the created Item, you can also insert null for having no ToolTip
-     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @param aID             The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param nameFunction    The Localized Name Function of the created Item
+     * @param tooltipFunction The Localized ToolTip Function of the created Item, you can also insert null for having no
+     *                        ToolTip
+     * @param aRandomData     The OreDict Names you want to give the Item. Also used for TC Aspects and some other
+     *                        things.
      * @return An ItemStack containing the newly created Item.
      */
-    public final ItemStack addItem(int aID, String aEnglish, String aToolTip, Object... aRandomData) {
-        if (aToolTip == null) aToolTip = "";
+    public final ItemStack addItem(int aID, Function<ItemStack, String> nameFunction,
+        Function<ItemStack, String> tooltipFunction, Object... aRandomData) {
         if (aID >= 0 && aID < mItemAmount) {
-            ItemStack rStack = new ItemStack(this, 1, mOffset + aID);
+            short meta = (short) (mOffset + aID);
+            ItemStack rStack = new ItemStack(this, 1, meta);
+            mNameLocalizationFunctions.put(meta, nameFunction);
+            mTooltipLocalizationFuncitons.put(meta, tooltipFunction);
             if (mEnabledItems.get(aID)) {
                 throw new IllegalArgumentException(
                     String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
             }
             mEnabledItems.set(aID);
             mVisibleItems.set(aID);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
-            GTLanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
             List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {
@@ -192,6 +200,42 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     }
 
     /**
+     * Adds a Custom Item, storing the provided localization keys for deferred translation.
+     * Unlike {@link #addItem}, which resolves names and tooltips eagerly at registration time,
+     * this method stores {@code aNameKey} and {@code aToolTipKey} so they are translated at
+     * render time — allowing the displayed text to reflect the player's current language.
+     *
+     * <p>
+     * Use this method when the item name and tooltip are static localization keys.
+     * For dynamic content assembled at runtime (e.g. formatted strings with per-item data),
+     * use {@link #addItem} directly and build the string manually.
+     *
+     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aNameKey    The localization key for the item's display name
+     * @param aToolTipKey The localization key for the item's tooltip, or null for no tooltip.
+     *                    The translated value may contain {@code \n} to separate tooltip lines.
+     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @return An ItemStack containing the newly created Item.
+     */
+    public final ItemStack addItemWithLocalizationKeys(int aID, String aNameKey, String aToolTipKey,
+        Object... aRandomData) {
+        return addItem(
+            aID,
+            $ -> StatCollector.translateToLocal(aNameKey),
+            $ -> StatCollector.translateToLocal(aToolTipKey),
+            aRandomData);
+    }
+
+    public final ItemStack addItemWithLocalizationKeysAndArgs(int aID, String aNameKey, Object[] aNameArgs,
+        String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
+        return addItem(
+            aID,
+            $ -> StatCollector.translateToLocalFormatted(aNameKey, aNameArgs),
+            $ -> StatCollector.translateToLocalFormatted(aToolTipKey, aToolTipArgs),
+            aRandomData);
+    }
+
+    /**
      * Sets a Food Behavior for the Item.
      *
      * @param aMetaValue    the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -250,6 +294,10 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return this;
     }
 
+    protected final void setNoBaseIcon(int itemId) {
+        if (itemId >= 0 && itemId < mItemAmount) mItemsWithoutBaseIcon.set(itemId);
+    }
+
     /**
      *
      * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -262,6 +310,20 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (aCapacity < 0) mElectricStats.remove((short) aMetaValue);
         else mFluidContainerStats.put((short) aMetaValue, new Long[] { aCapacity, Math.max(1, aStacksize) });
         return this;
+    }
+
+    @Override
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        return mTooltipLocalizationFuncitons.get((short) getDamage(aStack));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        Function<ItemStack, String> stringFunction = mNameLocalizationFunctions.get((short) getDamage(aStack));
+        if (stringFunction != null) {
+            return stringFunction.apply(aStack);
+        }
+        return super.getItemStackDisplayName(aStack);
     }
 
     /**
@@ -389,8 +451,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 mIconList[i][k] = aIconRegister.registerIcon(
                     GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
-            mIconList[i][0] = aIconRegister
-                .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            Long[] electricStats = mElectricStats.get((short) (i + mOffset));
+            if (mItemsWithoutBaseIcon.get(i)) {
+                mIconList[i][0] = Textures.InvisibleIcon.INVISIBLE_ICON;
+            } else if (mIconList[i].length > 1 && electricStats != null && electricStats[3] < 0) {
+                mIconList[i][0] = mIconList[i][1];
+            } else {
+                mIconList[i][0] = aIconRegister
+                    .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            }
         }
     }
 
@@ -403,5 +472,4 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final Long[] getFluidContainerStats(ItemStack aStack) {
         return mFluidContainerStats.get((short) aStack.getItemDamage());
     }
-
 }

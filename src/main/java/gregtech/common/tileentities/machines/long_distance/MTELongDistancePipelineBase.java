@@ -22,7 +22,6 @@ package gregtech.common.tileentities.machines.long_distance;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
-import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static mcp.mobius.waila.api.SpecialChars.YELLOW;
@@ -42,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -52,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHullNonElectric;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -70,9 +71,10 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     protected volatile MTELongDistancePipelineBase mSender = null;
     protected volatile ChunkCoordinates mTargetPos = null;
     protected MTELongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
+    protected String tooltipPrefixKey;
 
-    public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTELongDistancePipelineBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -81,9 +83,11 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Only one Input and Output are allowed per pipeline",
-            "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
-            "Minimum distance: " + minimalDistancePoints + " blocks" };
+        if (tooltipPrefixKey != null) return GTSplit.splitLocalizedFormattedWithPrefix(
+            "gt.blockmachines.long_distance_pipeline.desc",
+            StatCollector.translateToLocal(tooltipPrefixKey),
+            minimalDistancePoints);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.long_distance_pipeline.desc", minimalDistancePoints);
     }
 
     @Override
@@ -383,18 +387,26 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         final boolean hasOutput = tag.getBoolean("hasOutput");
         final boolean hasOutputTooClose = tag.getBoolean("hasOutputTooClose");
 
-        if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
-        else if (side == facing.getOpposite()) currentTip.add(BLUE + "Pipeline Output" + RESET);
-        else currentTip.add("Pipeline Side");
+        if (side == facing)
+            currentTip.add(GOLD + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.input") + RESET);
+        else if (side == facing.getOpposite())
+            currentTip.add(BLUE + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.output") + RESET);
+        else currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.side"));
 
         if (!hasInput && !hasInputTooClose && !hasOutput && !hasOutputTooClose) {
-            currentTip.add(YELLOW + "Not connected" + RESET);
+            currentTip
+                .add(YELLOW + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.not_connected") + RESET);
         }
 
-        if (hasInput) currentTip.add(GREEN + "Connected to " + GOLD + "Input" + RESET);
-        else if (hasInputTooClose) currentTip.add(RED + "Connected Input too close" + RESET);
-        else if (hasOutput) currentTip.add(GREEN + "Connected to " + BLUE + "Output" + RESET);
-        else if (hasOutputTooClose) currentTip.add(RED + "Connected Output too close" + RESET);
+        if (hasInput)
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.input"));
+        else if (hasInputTooClose) currentTip.add(
+            RED + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.input.too_close") + RESET);
+        else if (hasOutput)
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.output"));
+        else if (hasOutputTooClose) currentTip.add(
+            RED + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.output.too_close")
+                + RESET);
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }

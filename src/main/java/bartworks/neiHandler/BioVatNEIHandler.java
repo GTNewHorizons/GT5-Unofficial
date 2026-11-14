@@ -24,7 +24,9 @@ import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
 
 public class BioVatNEIHandler extends GTNEIDefaultHandler {
@@ -49,10 +51,8 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
 
     private void loadLabPartRecipes(ItemStack aResult) {
         for (CachedDefaultRecipe recipe : this.getCache()) {
-            // dirty way of finding the special slot item
-            // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
             for (PositionedStack stack : recipe.mInputs) {
-                if (stack.relx == 120 && stack.rely == 52
+                if (GTUtility.areStacksEqual(stack.item, ItemList.EmptyPetriDish.get(1), true)
                     && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }

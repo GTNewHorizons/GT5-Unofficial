@@ -28,11 +28,13 @@ public class ElementStack implements Cloneable {
     @Override
     public boolean equals(Object aObject) {
         if (aObject == this) return true;
-        if (aObject == null) return false;
-        if (aObject instanceof Element) return aObject == mElement;
-        if (aObject instanceof ElementStack) return ((ElementStack) aObject).mElement == mElement
-            && (mAmount < 0 || ((ElementStack) aObject).mAmount < 0 || ((ElementStack) aObject).mAmount == mAmount);
-        return false;
+        return switch (aObject) {
+            case null -> false;
+            case Element element -> aObject == mElement;
+            case ElementStack elementStack -> elementStack.mElement == mElement
+                && (mAmount < 0 || elementStack.mAmount < 0 || elementStack.mAmount == mAmount);
+            default -> false;
+        };
     }
 
     @Override

@@ -9,20 +9,22 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private List<RecipeAssemblyLine> recipes = null;
@@ -53,6 +55,11 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             TextureFactory
                 .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(EM_D_CONN) };
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return true;
     }
 
     @Override
@@ -89,8 +96,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
     }
 
@@ -104,7 +110,9 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                boolean isFirstDownload = recipes == null;
                 this.recipes = wirelessDataStore.downloadData(aTick);
+                if (isFirstDownload || wirelessDataStore.hasNewData(aTick)) notifyWatchers();
             }
         }
     }

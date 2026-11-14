@@ -29,11 +29,13 @@ public class MaterialStack implements Cloneable {
     @Override
     public boolean equals(Object aObject) {
         if (aObject == this) return true;
-        if (aObject == null) return false;
-        if (aObject instanceof Materials) return aObject == mMaterial;
-        if (aObject instanceof MaterialStack) return ((MaterialStack) aObject).mMaterial == mMaterial
-            && (mAmount < 0 || ((MaterialStack) aObject).mAmount < 0 || ((MaterialStack) aObject).mAmount == mAmount);
-        return false;
+        return switch (aObject) {
+            case null -> false;
+            case Materials materials -> aObject == mMaterial;
+            case MaterialStack materialStack -> materialStack.mMaterial == mMaterial
+                && (mAmount < 0 || materialStack.mAmount < 0 || materialStack.mAmount == mAmount);
+            default -> false;
+        };
     }
 
     @Override
@@ -42,7 +44,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = mMaterial.getToolTip(true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }

@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -50,7 +51,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             if (output == null) return;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(GTUtility.copyAmount(1, stack))
+                .circuit(1)
                 .itemOutputs(output)
                 .duration(Math.max(material.getMass() / 4L, 1L) * material.mBlastFurnaceTemp * TICKS)
                 .eut(TierEU.RECIPE_MV)
@@ -186,6 +188,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 : GTOreDictUnificator.get(OrePrefixes.ingot, material.mDirectSmelting, 1L);
         }
 
-        if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(stack, smeltingOutput);
+        if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(
+            stack,
+            convertSmelting(material, GTOreDictUnificator.getAssociation(stack).mPrefix, smeltingOutput));
     }
 }

@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -31,7 +32,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -49,7 +49,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
     }
@@ -161,8 +161,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            translate("tt.keyphrase.Computation_Transmitting", GTUtility.formatNumbers(tag.getLong("computation"))));
+        currenttip.add(translate("tt.keyphrase.Computation_Transmitting", formatNumber(tag.getLong("computation"))));
     }
 
     @Override

@@ -16,11 +16,6 @@ public enum GGItemList implements IItemContainer {
     LinkedInputBus,
     AdvAssLine,
 
-    // region single use tool
-    ToolCast_MV,
-    ToolCast_HV,
-    ToolCast_EV,
-
     // order matters, do not insert randomly like a n00b
     SingleUseFile,
     SingleUseWrench,
