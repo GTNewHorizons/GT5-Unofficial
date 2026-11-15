@@ -1164,7 +1164,7 @@ tt.nei.fog_exotic.weight=Weight: %s
 tt.nei.fog_exotic.chance=Request chance: %s%%
 tt.nei.fog_exotic.random_amount=Random amount: %s-%s L
 tt.nei.fog_exotic.picks=Requests %s random plasma
-tt.nei.fog_exotic.rules=See the controller for details
+tt.nei.fog_exotic.rules=See details in the controller
 tt.nei.research.max_eu=Max EU: %s EU
 tt.nei.research.computation=Computation: %s
 tt.nei.research.min_computation=Min Computation: %s /s
@@ -1908,7 +1908,7 @@ EOH.Recipe.SpacetimeTier=Spacetime Tier: %s
 EOH.Recipe.EU.Out=EU Output: %s EU
 EOH.Recipe.EU.In=EU Input: %s EU
 EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
-EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
+EOH.Recipe.RecipeEnergyEfficiency=Recipe EU Efficiency: %s%%
 
 gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
 gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
