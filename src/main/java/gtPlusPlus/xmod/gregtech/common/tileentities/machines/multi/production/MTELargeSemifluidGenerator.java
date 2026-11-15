@@ -90,22 +90,22 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
 
     @Override
     protected IIconContainer getActiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
+        return Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE;
     }
 
     @Override
     protected IIconContainer getActiveGlowOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
+        return Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW;
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
+        return Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE;
     }
 
     @Override
     protected IIconContainer getInactiveGlowOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+        return Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW;
     }
 
     @Override
