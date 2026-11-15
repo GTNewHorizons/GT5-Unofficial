@@ -24,6 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -38,6 +40,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -60,6 +63,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEIndustrialPackager>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -153,24 +157,23 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Packager, Unpackager, AWD")
-            .addInfo("This Multiblock is used for EXTREME packaging requirements")
-            .addInfo("Can be configured to work as an Unpackager in controller")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.packager_unpackager"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo((float) EU_EFFICIENCY)
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-packager"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
-            .addController("Front right, 2nd layer")
-            .addCasing("4-15", "Supply Depot Casing", false)
-            .addCasing("3", "Item Pipe Casing", true)
-            .addCasing("3", "Any Tiered Glass", false)
-            .addCasing("2", "Iron Frame Box", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_right_2nd_layer"))
+            .addCasing("4-15", Casings.SupplyDepotCasing.getLocalizedName(), false)
+            .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("3", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Iron), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)

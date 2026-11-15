@@ -2059,7 +2059,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(JUPITER, LEDOX, 25, 2);
         if (NewHorizonsCoreMod.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Quantinum"), 0);
-        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteriods")); // Asteriods Dim
+        tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteroids")); // Asteroids Dim
     }),
     ENCELADUS(GTBranchDefinition.PLANET, "Enceladus", true, new Color(0xD2A472), new Color(0x193fa0), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SATURN), 0.25f);

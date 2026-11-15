@@ -481,7 +481,8 @@ public class MechArmorAugmentRegistries {
             .incompatibleAugments(
                 ItemList.Augment_ArchmageStriders,
                 ItemList.Augment_EldritchStriders,
-                ItemList.Augment_StepAssist
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
             )
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
@@ -608,6 +609,11 @@ public class MechArmorAugmentRegistries {
             .requiresBehaviors(BehaviorName.SpeedBoost)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_EldritchStriders
+            )
         ),
         ArchmageStriders(ItemList.Augment_ArchmageStriders, new AugmentBuilder()
             .setId("ArchmageStriders")
@@ -623,7 +629,8 @@ public class MechArmorAugmentRegistries {
             .incompatibleAugments(
                 ItemList.Augment_ApprenticeStriders,
                 ItemList.Augment_EldritchStriders,
-                ItemList.Augment_StepAssist
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
             )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
@@ -689,7 +696,8 @@ public class MechArmorAugmentRegistries {
                 ItemList.Augment_ArchmageStriders,
                 ItemList.Augment_SpeedBoost,
                 ItemList.Augment_JumpBoost,
-                ItemList.Augment_StepAssist
+                ItemList.Augment_StepAssist,
+                ItemList.Augment_OmniMovement
             )
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)

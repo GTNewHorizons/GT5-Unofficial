@@ -43,7 +43,6 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
 import io.netty.buffer.ByteBuf;
@@ -85,12 +84,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
-            mMachine = false;
-            mUpdated = false;
-            mUpdate = 50;
+            onMachineBlockUpdate();
             if (getBaseMetaTileEntity().isServerSide()
                 && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
@@ -720,11 +716,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         private StructureSize size;
 
         public StructureSize finish() {
+            StructureSize size = this.size;
+            this.size = null;
             // When `size` is null, for whatever reason the piece method was never called, which never called [#visit].
             // We'll just fall back to the default behaviour in this case - play the sound at the center with the
             // default radius.
             // This usually happens when a multi has its own structure check logic.
-            if (this.size == null) return null;
+            if (size == null) return null;
 
             size.centerX = (size.minX + size.maxX) * 0.5f;
             size.centerY = (size.minY + size.maxY) * 0.5f;

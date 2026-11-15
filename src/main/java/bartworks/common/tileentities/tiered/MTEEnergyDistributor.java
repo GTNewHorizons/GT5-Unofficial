@@ -100,7 +100,10 @@ public class MTEEnergyDistributor extends MTETransformer {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[this.mTier];
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.energydistributor.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override

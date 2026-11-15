@@ -12,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import binnie.extrabees.apiary.machine.mutator.AlvearyMutator;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
@@ -19,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.CombType;
@@ -179,5 +181,13 @@ public class GTForestryCompat {
                     .addTo(RecipeMaps.fluidExtractionRecipes);
             }
         }
+    }
+
+    public static void registerExtraBeesMutatorItems() {
+        AlvearyMutator.addMutationItem(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium, 1L), 2.0f);
+        AlvearyMutator.addMutationItem(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium235, 1L), 10.0f);
+        AlvearyMutator.addMutationItem(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Uranium235, 1L), 5.5f);
+        AlvearyMutator.addMutationItem(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L), 15.0f);
+        AlvearyMutator.addMutationItem(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L), 9.0f);
     }
 }
