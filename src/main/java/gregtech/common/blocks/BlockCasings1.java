@@ -219,4 +219,9 @@ public class BlockCasings1 extends BlockCasingsAbstract
         return false;
     }
 
+    @Override
+    public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
+    }
+
 }
