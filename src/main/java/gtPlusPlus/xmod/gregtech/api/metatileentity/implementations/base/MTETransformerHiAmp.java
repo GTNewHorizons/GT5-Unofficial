@@ -107,14 +107,16 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
+        String inColor = GTValues.TIER_COLORS[mTier];
+        String outColor = GTValues.TIER_COLORS[mTier + 1];
         return GTSplit.splitLocalizedFormattedWithWarped(
             "gt.blockmachines.transformer_advanced.desc",
             super.getDescription()[0],
             GTPPCore.GT_Tooltip.get(),
-            4,
-            16,
-            2,
-            8);
+            inColor + 4,
+            outColor + 16,
+            inColor + 2,
+            outColor + 8);
     }
 
     @Override
