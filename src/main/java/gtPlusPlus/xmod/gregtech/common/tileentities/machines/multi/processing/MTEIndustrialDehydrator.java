@@ -303,15 +303,6 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound NBT) {
-        // Migrates old NBT tag to the new one
-        if (NBT.hasKey("mDehydratorMode")) {
-            machineMode = NBT.getBoolean("mDehydratorMode") ? MACHINE_MODE_DEHYDRATOR : MACHINE_MODE_VACUUM_FURNACE;
-        }
-        super.loadNBTData(NBT);
-    }
-
-    @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setString("mode", getMachineModeName());
