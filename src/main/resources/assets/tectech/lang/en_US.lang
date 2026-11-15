@@ -250,7 +250,7 @@ gt.blockmachines.hatch.dynamomulti.desc=Multiple Ampere Energy Extractor for Mul
 
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.desc=Energy extracting terminal for Multiblocks
-gt.blockmachines.hatch.screwdrivertooltip=Use screwdriver to adjust amperage
+gt.blockmachines.hatch.screwdrivertooltip=Use a §fScrewdriver§7 to adjust amperage
 
 gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
 gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch
@@ -1918,8 +1918,8 @@ EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
 EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
 EOH.Recipe.Warning=§4§lWarning§r: Not all items displayed.
 
-gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to §92^(2^31)§7 EU\n§7Does not connect to wires. This block accepts EU into the network
-gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to §92^(2^31)§7 EU\n§7Does not connect to wires. This block withdraws EU from the network
+gt.blockmachines.dynamo_hatch.wireless=Does not connect to wires, deposits EU into the network
+gt.blockmachines.energy_hatch.wireless=Does not connect to wires, withdraws EU from the network
 
 gt.godforgecasing.0.name=Singularity Reinforced Stellar Shielding Casing
 gt.godforgecasing.1.name=Celestial Matter Guidance Casing

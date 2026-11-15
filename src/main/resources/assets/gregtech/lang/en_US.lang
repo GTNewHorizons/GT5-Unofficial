@@ -274,7 +274,7 @@ gt.blockmachines.long_distance_pipeline.desc=Only one Input and Output are allow
 gt.blockmachines.dynamo_hatch.desc=Generating electric Energy from Multiblocks\nPuts out up to 1 Amp
 gt.blockmachines.dynamo_hatch_buffer.desc=Dynamo with internal storage and additional Amp capacity\nDoes not accept more than %sEU/t as input
 gt.blockmachines.energy_hatch.desc=Energy Input for Multiblocks\nAccepts up to %1$s
-gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to §92^(2^31)§7 EU\n§7Does not connect to wires. This block withdraws EU from the network
+gt.blockmachines.energy_hatch_wireless.desc=Does not connect to wires, withdraws EU from the network
 gt.blockmachines.energy_hatch_debug.desc=§7Buffers EU internally\n§7Configure Amps and Voltage in the UI\n§o/gt global_energy_set Develo-... begone!
 gt.blockmachines.input_hatch.desc=Fluid Input for Multiblocks\nRight click with screwdriver to toggle input filter\nCapacity: %s L
 gt.blockmachines.input_hatch_multislot.desc=Fluid Input for Multiblocks\nCapacity: %s L\nCan hold %s types of fluid.
@@ -5846,7 +5846,7 @@ gt.item.cover.needs_maintenance.tooltip=Attach to Multiblock Controller. Emits R
 
 ## Wireless Energy Cover
 gt.item.wireless_energy_cover.name=%s Wireless Energy Cover
-gt.item.wireless_energy_cover.tooltip=Stores energy globally in a network, up to 2^(2^31) EU.\nDoes not connect to wires. This cover withdraws EU from the network.\nIgnores voltage limitations (no explosions).\n%s\n%s
+gt.item.wireless_energy_cover.tooltip=Does not connect to wires, withdraws EU from the network.\nIgnores voltage limitations (no explosions).\n%s\n%s
 gt.item.wireless_energy_cover_debug.name=Debug Wireless Energy Cover
 gt.item.wireless_energy_cover_debug.tooltip=Infinite Power. Ignores Voltage Limitations.
 
