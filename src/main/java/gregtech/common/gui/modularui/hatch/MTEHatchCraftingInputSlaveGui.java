@@ -7,9 +7,7 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -19,14 +17,9 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave.RecipeOr
 
 public final class MTEHatchCraftingInputSlaveGui {
 
-    private static final int BUTTON_SIZE = 18;
-    private static final int BUTTON_MARGIN = 5;
-    private static final int BUTTON_ROW_BOTTOM_MARGIN = 86;
-
     private MTEHatchCraftingInputSlaveGui() {}
 
-    public static void addRecipeOrderButton(ModularPanel panel, PanelSyncManager syncManager,
-        @Nullable MetaTileEntity originMTE) {
+    public static CycleButtonWidget createRecipeOrderButton(@Nullable MetaTileEntity originMTE) {
         MTEHatchCraftingInputSlave proxy = originMTE instanceof MTEHatchCraftingInputSlave slave ? slave : null;
 
         EnumSyncValue<RecipeOrder, ?> orderSyncer = new EnumSyncValue<>(
@@ -51,11 +44,7 @@ public final class MTEHatchCraftingInputSlaveGui {
             });
         }
 
-        panel.child(
-            button.size(BUTTON_SIZE)
-                .relative(panel)
-                .leftRelOffset(0, -BUTTON_SIZE - BUTTON_MARGIN)
-                .bottomRelOffset(0, BUTTON_ROW_BOTTOM_MARGIN));
+        return button;
     }
 
     private static UITexture getOrderIcon(RecipeOrder order) {

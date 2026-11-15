@@ -121,6 +121,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.ProxiedMteGui.ProxiedMteGuiData;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
@@ -980,6 +981,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings,
+        ProxiedMteGuiData proxyData) {
+        return new MTEHatchCraftingInputMEGui(this, proxyData).build(data, syncManager, uiSettings);
     }
 
     @Override

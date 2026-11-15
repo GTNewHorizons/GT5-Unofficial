@@ -34,7 +34,7 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
-import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputSlaveGui;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
@@ -81,14 +81,10 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 }
         });
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
-        ModularPanel panel = mte.buildUI(
-            new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord()),
-            syncManager,
-            uiSettings);
-
-        if (data.hasOrigin()) {
-            MTEHatchCraftingInputSlaveGui.addRecipeOrderButton(panel, syncManager, data.getOriginMTE());
-        }
+        PosGuiData posGuiData = new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+        ModularPanel panel = mte instanceof MTEHatchCraftingInputME buffer
+            ? buffer.buildUI(posGuiData, syncManager, uiSettings, data)
+            : mte.buildUI(posGuiData, syncManager, uiSettings);
 
         UUID playerUUID = (syncManager.isClient()) ? null
             : data.getPlayer()
