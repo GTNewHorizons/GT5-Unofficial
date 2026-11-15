@@ -42,7 +42,6 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
     public static final int maxItemInputs = 1, maxItemOutputs = ITEM_COLUMNS * itemRows, maxFluidInputs = 2,
         maxFluidOutputs = FLUID_COLUMNS * fluidRows;
 
-    // The planet, hydrogen and helium side by side in the middle
     private static final int INPUT_X = centeredX(18 * (maxItemInputs + maxFluidInputs));
 
     public EyeOfHarmonyFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
@@ -75,9 +74,6 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
         return fluid != null && fluid.isFluidEqual(gas.getGas(1));
     }
 
-    /**
-     * @return the amount of hydrogen or helium the recipe needs if the stack is one of them, otherwise -1
-     */
     private static long getGasAmount(EyeOfHarmonyRecipe recipe, ItemStack display) {
         if (isGas(display, Materials.Hydrogen)) return recipe.getHydrogenRequirement();
         if (isGas(display, Materials.Helium)) return recipe.getHeliumRequirement();
@@ -98,7 +94,6 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
             return currentTip;
         }
 
-        // Draw tooltip on hydrogen and helium.
         long gasAmount = getGasAmount(currentRecipe, stack);
         if (gasAmount >= 0) {
             currentTip.add(
@@ -135,7 +130,7 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
                 && stack.item.isItemEqual(EOHRecipe.getRecipeTriggerItem())) {
                 fixed.setMaxSize(0);
             }
-            // The amounts are drawn as text, so the gases are no "not consumed" items
+            // The amounts are drawn as text
             if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed && fixed.isFluid()) {
                 fixed.customBadge = Collections.emptyList();
             }
