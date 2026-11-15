@@ -1791,9 +1791,8 @@ GTPP.tooltip.circuit_table.1=Change default setting with a Screwdriver
 GTPP.tooltip.circuit_table.2=Default is used to select slot for auto-insertion
 
 # Decayables Chest
-GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
+GTPP.tooltip.decayables_chest.0=Holds §aRadioactive Materials§7
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
-GTPP.tooltip.decayables_chest.2=Place with right-click
 
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration

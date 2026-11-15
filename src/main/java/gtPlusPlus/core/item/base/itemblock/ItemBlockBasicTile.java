@@ -34,7 +34,6 @@ public class ItemBlockBasicTile extends ItemBlock {
         } else if (this.mID == 3) { // Decayables Chest
             list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.1"));
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.2"));
         } else if (this.mID == 5) { // Volumetric Flask Setter
             list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.1"));
