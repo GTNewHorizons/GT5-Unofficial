@@ -129,8 +129,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int EIG_SLOTS_STARTING = 1;
     private static final int EIG_SLOTS_PER_TIER_MULTIPLIER = 2;
     private static final int EIG_SEED_CAPACITY_PER_SLOT = 64;
-    private static final int EIG_WEEDEX_MULTIPLIER = 1;
     private static final int EIG_MAX_FERTILIZER_PER_SEED = 2;
+    private static final double EIG_FERTILIZER_BONUS_MULTIPLIER = 2.0d;
 
     private static final String[] SETUP_PHASE_KEYS = { "kubatech.gui.text.operating", "kubatech.gui.text.input",
         "kubatech.gui.text.output" };
@@ -365,7 +365,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         ttVars.put("slotPerTierMultiplier", EIG_SLOTS_PER_TIER_MULTIPLIER);
         ttVars.put("seedCapacityPerSlot", EIG_SEED_CAPACITY_PER_SLOT);
         ttVars.put("maxFertilizerUsagePerSeed", EIG_MAX_FERTILIZER_PER_SEED);
-        ttVars.put("fertilizerBonus", String.format("%.0f%%", 2.0d * 100));
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", EIG_FERTILIZER_BONUS_MULTIPLIER * 100));
         tt.addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
 
         tt.beginStructureBlock(7, 7, 9, true)
@@ -470,20 +470,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     private void tryChangeSetupPhase(EntityPlayer aPlayer) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("kubatech.chat.eig.setup_change.cannot_change"));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
 
         this.setupPhase = (this.setupPhase + 1) % SETUP_PHASE_KEYS.length;
         this.updateSeedLimits();
 
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocalFormatted(
-                "kubatech.chat.eig.setup_change.phase.fmt",
-                StatCollector.translateToLocal(SETUP_PHASE_KEYS[this.setupPhase])));
+            "kubatech.chat.mode.generic",
+            StatCollector.translateToLocal(SETUP_PHASE_KEYS[this.setupPhase]));
     }
 
     // endregion mode change standardisation
@@ -686,7 +683,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     private void updateSeedLimits() {
         int tierAboveMin = getVoltageTier() - EIG_BALANCE_REGULAR_MODE_MIN_TIER;
-        this.maxSeedTypes = tierAboveMin < 0 ? 0 : (EIG_SLOTS_STARTING << tierAboveMin);
+        this.maxSeedTypes = tierAboveMin < 0 ? 0
+            : EIG_SLOTS_STARTING * (int) Math.pow(EIG_SLOTS_PER_TIER_MULTIPLIER, tierAboveMin);
         this.maxSeedCount = this.maxSeedTypes * EIG_SEED_CAPACITY_PER_SLOT;
     }
 
@@ -824,7 +822,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         // Compute the Weed-EX and water requirements,
         // TODO: We only really need to update water usage and WeedEX usage when adding seeds or when loading NBT.
         this.waterUsage = seedCount * 1000;
-        this.weedEXUsage = (seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0) * EIG_WEEDEX_MULTIPLIER;
+        this.weedEXUsage = seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0;
 
         // Consume water, fail if we don't have enough
         if (!this.tryDrain(new FluidStack(FluidRegistry.WATER, this.waterUsage), false)) {
