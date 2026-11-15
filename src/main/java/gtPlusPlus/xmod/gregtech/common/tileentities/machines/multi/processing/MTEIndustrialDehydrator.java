@@ -105,7 +105,6 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.vacuum_furnace_dehydrator"))
-            .addInfo("Factory Grade Vacuum Furnace")
             .addStaticParallelInfo(4)
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.5f)
