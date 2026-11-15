@@ -193,7 +193,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Rotor_EV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L));
         ItemList.Rotor_IV.set(GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L));
 
-        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
+        ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", 1_000));
 
         if (Mods.IC2NuclearControl.isModLoaded()) {
             ItemList.NC_SensorCard.set(new ItemSensorCard("sensorcard", "GregTech Sensor Card"));
@@ -946,7 +946,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
         GTFluidFactory.builder("LiquidOxygen")
             .withDefaultLocalName("Liquid Oxygen")
-            .withStateAndTemperature(GAS, 60)
+            .withStateAndTemperature(LIQUID, 90)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidOxygen)
             .addLocalizedName(Materials.LiquidOxygen)
@@ -955,7 +955,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("LiquidNitrogen")
             .withDefaultLocalName("Liquid Nitrogen")
-            .withStateAndTemperature(GAS, 77)
+            .withStateAndTemperature(LIQUID, 77)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidNitrogen)
             .addLocalizedName(Materials.LiquidNitrogen)
@@ -1981,6 +1981,12 @@ public class LoaderGTBlockFluid implements Runnable {
             }
         }
 
+        FluidContainerRegistry.registerFluidContainer(
+            new FluidContainerRegistry.FluidContainerData(
+                Materials.SaltWater.getFluid(250),
+                ItemList.Bottle_Salt_Water.get(1L),
+                ItemList.Bottle_Empty.get(1L)));
+
         GTFluidFactory.builder("potion.awkward")
             .withDefaultLocalName("Awkward Brew")
             .withStateAndTemperature(LIQUID, 295)
@@ -2385,12 +2391,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Mineral_Water.get(1L), ItemList.Bottle_Empty.get(1L));
-        GTFluidFactory.builder("potion.saltywater")
-            .withDefaultLocalName("Salty Water")
-            .withStateAndTemperature(LIQUID, 275)
-            .buildAndRegister()
-            .addLocalizedName()
-            .registerPContainers(ItemList.Bottle_Salty_Water.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.reedwater")
             .withDefaultLocalName("Reed Water")
             .withStateAndTemperature(LIQUID, 295)

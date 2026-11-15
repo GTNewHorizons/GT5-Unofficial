@@ -40,7 +40,12 @@ public class SimpleCheckRecipeResult implements CheckRecipeResult {
     @Override
     @Nonnull
     public @NotNull String getDisplayString() {
-        return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text.recipe_result." + key));
+        return Objects.requireNonNull(StatCollector.translateToLocal(getTranslationKey()));
+    }
+
+    /** Returns the lang key behind {@link #getDisplayString()}, for callers that translate on the client. */
+    public @NotNull String getTranslationKey() {
+        return "GT5U.gui.text.recipe_result." + key;
     }
 
     @Override

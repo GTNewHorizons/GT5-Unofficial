@@ -14,7 +14,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -94,11 +93,9 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
             IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
 
-        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
+        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length);
 
         System.arraycopy(extendedInfo, 0, combinedInfo, baseInfo.length, extendedInfo.length);
-
-        combinedInfo[combinedInfo.length - 1] = BWTooltipReference.BW;
 
         return combinedInfo;
     }

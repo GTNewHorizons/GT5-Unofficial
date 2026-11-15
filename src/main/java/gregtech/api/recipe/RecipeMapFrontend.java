@@ -269,13 +269,6 @@ public class RecipeMapFrontend {
                             .getName()));
             }
         }
-        if (recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
-            recipeInfo.drawText("stackTrace:");
-            // todo: good way to show all stacktraces
-            for (String stackTrace : recipe.stackTraces.get(0)) {
-                recipeInfo.drawText(stackTrace);
-            }
-        }
     }
 
     public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {

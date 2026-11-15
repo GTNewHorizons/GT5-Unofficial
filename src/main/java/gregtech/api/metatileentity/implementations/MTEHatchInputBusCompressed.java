@@ -266,7 +266,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
 
     @Override
     public ItemStack decrStackSize(int index, int amount) {
-        return inventory.extractItem(index, amount, false);
+        return inventory.extractItem(index, amount, false, true);
     }
 
     @Override

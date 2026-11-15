@@ -53,7 +53,6 @@ import gregtech.nei.dumper.TurbineFuelDumper;
 import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -74,6 +73,7 @@ public class NEIGTConfig implements IConfigureNEI {
         .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
+    private static ListMultimap<RecipeCategory, RecipeMapWorkable> DEPRECATED_CATALYST_INDEX;
 
     private static final GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
     private static final GTNEIMacerationStackConversion MACERATOR_UPGRADE_HANDLER = new GTNEIMacerationStackConversion();
@@ -130,6 +130,12 @@ public class NEIGTConfig implements IConfigureNEI {
                         entry.getKey().unlocalizedName,
                         recipeMapWorkable.getRecipeCatalystPriority()));
         }
+        for (Map.Entry<RecipeCategory, RecipeMapWorkable> entry : DEPRECATED_CATALYST_INDEX.entries()) {
+            API.removeRecipeCatalyst(
+                entry.getValue()
+                    .getStackForm(1),
+                entry.getKey().unlocalizedName);
+        }
         API.addRecipeCatalyst(
             GTModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
@@ -152,9 +158,6 @@ public class NEIGTConfig implements IConfigureNEI {
             API.addRecipeCatalyst(item.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
         }
 
-        API.addRecipeCatalyst(
-            GregtechItemList.Industrial_CuttingFactoryController.get(1),
-            RecipeMaps.cutterFakeRecipes.unlocalizedName);
         API.addRecipeCatalyst(ItemList.IndustrialCuttingMachine.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
     }
 
@@ -268,16 +271,23 @@ public class NEIGTConfig implements IConfigureNEI {
         ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> builder = new ImmutableListMultimap.Builder<>();
         builder
             .orderValuesBy(Comparator.comparing(recipeMapWorkable -> -recipeMapWorkable.getRecipeCatalystPriority()));
+        ImmutableListMultimap.Builder<RecipeCategory, RecipeMapWorkable> deprecatedBuilder = new ImmutableListMultimap.Builder<>();
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
             IMetaTileEntity mte = GregTechAPI.METATILEENTITIES[i];
             if (!(mte instanceof RecipeMapWorkable recipeMapWorkable)) continue;
+            boolean deprecated = recipeMapWorkable.isDeprecated();
             for (RecipeMap<?> recipeMap : recipeMapWorkable.getAvailableRecipeMaps()) {
                 for (RecipeCategory recipeCategory : recipeMap.getAssociatedCategories()) {
-                    builder.put(recipeCategory, recipeMapWorkable);
+                    if (deprecated) {
+                        deprecatedBuilder.put(recipeCategory, recipeMapWorkable);
+                    } else {
+                        builder.put(recipeCategory, recipeMapWorkable);
+                    }
                 }
             }
         }
         RECIPE_CATALYST_INDEX = builder.build();
+        DEPRECATED_CATALYST_INDEX = deprecatedBuilder.build();
     }
 
     @Override

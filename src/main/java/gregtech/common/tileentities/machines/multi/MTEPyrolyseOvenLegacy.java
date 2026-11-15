@@ -99,7 +99,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
             .addStructureDeprecatedLine()
             .addInfo("Industrial Charcoal producer")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("EU/t is not affected by Coil tier")
+            .addInfo("EU/t is not affected by Coil Tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front bottom center")
@@ -167,7 +167,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     public double getSpeedBonus() {
-        return 2f / (1 + coilHeat.getTier());
+        return 2.0D / (1.0D + coilHeat.getTier());
     }
 
     private void setCoilLevel(HeatingCoilLevel aCoilLevel) {

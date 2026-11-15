@@ -157,7 +157,7 @@ public class RecipeLoaderChemicalSkips {
             .addTo(quantumForceTransformerRecipes);
         // Early Rubbers/Cable Materials
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Carbon.getDust(64))
+            .itemInputs(Materials.Sulfur.getDust(32), Materials.Carbon.getDust(32))
             .fluidInputs(
                 Materials.Oxygen.getGas(16_000),
                 Materials.Hydrogen.getGas(16_000),

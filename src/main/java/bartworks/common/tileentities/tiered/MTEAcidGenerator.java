@@ -18,7 +18,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
@@ -151,7 +150,7 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[this.mTier];
+        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
     }
 
     @Override
@@ -166,7 +165,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
                 + this.getEfficiency(),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
                 + EnumChatFormatting.YELLOW
-                + this.maxAmperesOut(),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+                + this.maxAmperesOut() };
     }
 }

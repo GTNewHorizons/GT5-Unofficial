@@ -214,14 +214,14 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // ensures heavy mode recipes can not run
+                // ensures heavy mode recipes cannot run
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
             }
         }.noRecipeCaching()
-            .setEuModifier(0.9F)
-            .setSpeedBonus(1F / 2.25F)
+            .setEuModifier(0.9D)
+            .setSpeedBonus(1D / 2.25D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

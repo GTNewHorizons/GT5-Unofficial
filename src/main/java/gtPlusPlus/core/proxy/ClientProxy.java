@@ -80,7 +80,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
+        RenderDecayChest decayChestRenderer = new RenderDecayChest();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, decayChestRenderer);
+        RenderingRegistry.registerBlockHandler(decayChestRenderer);
         // spotless:on
     }
 

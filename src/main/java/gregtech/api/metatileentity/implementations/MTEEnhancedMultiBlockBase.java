@@ -43,7 +43,6 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
 import io.netty.buffer.ByteBuf;
@@ -85,12 +84,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
-            mMachine = false;
-            mUpdated = false;
-            mUpdate = 50;
+            onMachineBlockUpdate();
             if (getBaseMetaTileEntity().isServerSide()
                 && !GregTechAPI.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
@@ -206,9 +202,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         GTSoundLoop loop = super.createSoundLoop(activitySound);
 
         // 16 blocks = 1f volume, doubled so that you can hear the sound outside of large multis
-        loop.setVolume(Math.max(1f, structureRadius / 16f * 4f));
+        loop.setVolume(Math.max(1f, structureRadius / 16f * this.getSoundRadiusMultiplier()));
 
         return loop;
+    }
+
+    // allows for fine-tuning on multiblocks that may be a little bit too loud/quiet.
+    @SideOnly(Side.CLIENT)
+    protected float getSoundRadiusMultiplier() {
+        return 4f;
     }
 
     @SideOnly(Side.CLIENT)

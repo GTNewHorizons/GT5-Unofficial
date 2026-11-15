@@ -162,7 +162,7 @@ public class MTEAdvImplosionCompressorLegacy extends GTPPMultiBlockBase<MTEAdvIm
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 2F)
+            .setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

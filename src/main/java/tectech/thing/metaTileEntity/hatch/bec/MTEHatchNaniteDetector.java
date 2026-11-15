@@ -14,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -33,7 +34,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.DisableableTextFieldWidget;
@@ -43,7 +43,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     private int configuredTier;
-    private @Nullable NaniteTier requiredTier;
+    private int requiredTier = -1;
     private ComparisonWithAnalog comparison = ComparisonWithAnalog.EQ;
 
     private Lazy<List<String>> tooltip = null;
@@ -73,6 +73,20 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     protected void loadConfig(@Nullable NBTTagCompound tag) {
         configuredTier = tag == null ? 0 : tag.getInteger("configuredTier");
         comparison = ComparisonWithAnalog.values()[tag == null ? 0 : tag.getInteger("op")];
+        refreshOutput();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        tag.setInteger("requiredTier", requiredTier);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound tag) {
+        // Load required tier before config load to avoid triggering unnecessary redstone updates
+        requiredTier = tag.hasKey("requiredTier") ? tag.getInteger("requiredTier") : -1;
+        super.loadNBTData(tag);
     }
 
     @Override
@@ -107,18 +121,25 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
+    private void refreshOutput() {
+        if (comparison == ComparisonWithAnalog.ANALOG) {
+            setOutput(requiredTier == -1 ? 0 : requiredTier);
+        } else {
+            setOutput(requiredTier != -1 && comparison.test(requiredTier, configuredTier));
+        }
+    }
+
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
-        this.requiredTier = requiredTier;
+        this.requiredTier = requiredTier == null ? -1 : requiredTier.tier;
+        refreshOutput();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        if (comparison == ComparisonWithAnalog.ANALOG) {
-            setOutput(requiredTier == null ? 0 : requiredTier.tier);
-        } else {
-            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        if (baseMetaTileEntity.isServerSide() && tick > 1) {
+            baseMetaTileEntity.tryDisableTicking();
         }
     }
 
@@ -152,13 +173,21 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         ComparisonWithAnalog.class,
                         () -> comparison,
-                        v -> comparison = v)
+                        v -> {
+                            comparison = v;
+                            if (!NetworkUtils.isClient()) {
+                                refreshOutput();
+                            }
+                        })
                     .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
                         i -> {
                             if (comparison != ComparisonWithAnalog.ANALOG) {
                                 configuredTier = i;
+                                if (!NetworkUtils.isClient()) {
+                                    refreshOutput();
+                                }
                             }
                         },
                         i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()),
@@ -168,14 +197,12 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         DisableableTextFieldWidget::new)
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
-                        new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
+                        new IntSyncValue(() -> requiredTier),
                         nanite -> {
-                            NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
-
-                            if (tier == null) {
+                            if (nanite == -1) {
                                 return IKey.lang("GT5U.gui.text.nil");
                             } else {
-                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", tier.tier);
+                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", nanite);
                             }
                         })
                     .build(panel, syncManager, getContentHolderHeight())

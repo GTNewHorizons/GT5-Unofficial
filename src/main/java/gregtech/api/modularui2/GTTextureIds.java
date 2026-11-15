@@ -19,6 +19,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_NANOCHIP = "gregtech:bg_title_nanochip";
 
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
+    public static final String BACKGROUND_DRONE_CAMERA = "gregtech:bg_drone_camera";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_STEAM = "gregtech:slot_item_%s";

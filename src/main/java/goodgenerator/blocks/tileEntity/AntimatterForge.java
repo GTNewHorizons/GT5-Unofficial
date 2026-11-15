@@ -417,18 +417,21 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /*
-     * How much passive energy is drained every tick Base containment cost: 10M EU/t The containment cost ramps up by
-     * the amount of antimatter each tick, up to 1000 times If the current cost is more than 1000 times the amount of
-     * antimatter, or if no antimatter is in the hatches, the value will decay by 1% every tick
+     * How much passive energy is drained every tick. Base containment cost: 10M EU/t
+     * The containment cost is set to 1000 x antimatter amount every tick.
+     * If the cost is at this value, or if no antimatter is in the hatches, the value will decay by 1% every tick
      */
+    private static final double decay = 0.99d;
+    private static final int growth = 1000;
+
     private long calculateEnergyContainmentCost(long antimatterAmount) {
         if (antimatterAmount == 0) {
-            rollingCost *= 0.995;
+            rollingCost *= decay;
             if (rollingCost < 100) rollingCost = 0;
-        } else if (rollingCost < antimatterAmount * 1000) {
-            rollingCost += antimatterAmount;
+        } else if (rollingCost <= antimatterAmount * growth) {
+            rollingCost = antimatterAmount * growth;
         } else {
-            rollingCost *= 0.995;
+            rollingCost *= decay;
         }
         long value = BASE_CONSUMPTION + (long) Math.pow(rollingCost, 1.5 + modifiers[MAGNETIC_ID]);
         this.guiPassiveEnergy = value;
@@ -501,7 +504,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticEnergyHatches.add(hatch);
         }
         return false;
@@ -512,7 +515,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         switch (aMetaTileEntity) {
@@ -527,7 +530,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 return mOutputHatches.add(tOutput);
             }
             case IDualInputHatch tInput -> {
-                tInput.updateCraftingIcon(this.getMachineCraftingIcon());
+                tInput.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDualInputHatches.add(tInput);
             }
             default -> {
@@ -541,7 +544,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {

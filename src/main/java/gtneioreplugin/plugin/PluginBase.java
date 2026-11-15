@@ -30,7 +30,7 @@ public abstract class PluginBase extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-        return GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location.toString() + ".png";
+        return GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE.location.toString();
     }
 
     @Override

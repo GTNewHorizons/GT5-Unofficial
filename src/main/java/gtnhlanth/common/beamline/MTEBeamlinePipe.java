@@ -153,11 +153,9 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("beamline.pipe.desc.0"), // Beamline pipe
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross,
-                                                                                              // split
-                                                                                              // or turn
-            "Added by " + EnumChatFormatting.GREEN + "GTNH: Lanthanides"
-
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1") // Does not cross,
+                                                                                             // split
+                                                                                             // or turn
         };
     }
 

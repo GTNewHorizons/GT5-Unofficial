@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
-import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGIC2Mode;
 import kubatech.tileentity.gregtech.multiblock.eigmodes.EIGNormalMode;
 
 public class EIGModes {
@@ -14,7 +13,6 @@ public class EIGModes {
     private static final HashMap<String, EIGMode> modes = new HashMap<>();
 
     public static final EIGMode Normal = addMode(EIGNormalMode.instance);
-    public static final EIGMode IC2 = addMode(EIGIC2Mode.instance);
 
     // this is basically a fake enum, plz don't instantiate
     private EIGModes() {}
@@ -37,8 +35,6 @@ public class EIGModes {
     }
 
     public static void addTooltipInfo(MultiblockTooltipBuilder tt) {
-        // maybe make this use the mods list instead
         EIGModes.Normal.addTooltipInfo(tt);
-        EIGModes.IC2.addTooltipInfo(tt);
     }
 }
