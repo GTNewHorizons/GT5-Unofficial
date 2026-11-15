@@ -36,6 +36,8 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchCokeOvenGui;
@@ -185,6 +187,11 @@ public class MTEHatchCokeOven extends MTEHatch {
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.COKE_OVEN;
     }
 
     @Override
