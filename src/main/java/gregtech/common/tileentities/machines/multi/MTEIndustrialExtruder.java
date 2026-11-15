@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -225,17 +224,13 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         return true;
     }
 
-    /**
-     * Can implement {@literal IHatchElement<MTEIndustrialExtruder>} & be private after the removal of
-     * {@link gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy}.
-     * Ugly until the big pretty cleanup :)
-     */
-    public enum ExtruderHatchElement implements IHatchElement<MTEMultiBlockBase> {
+    private enum ExtruderHatchElement implements IHatchElement<MTEIndustrialExtruder> {
 
-        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
+        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEIndustrialExtruder::addInputBusToMachineList,
+            MTEHatchExtrusion.class) {
 
             @Override
-            public long count(MTEMultiBlockBase t) {
+            public long count(MTEIndustrialExtruder t) {
                 return t.mInputBusses.stream()
                     .filter(it -> it instanceof MTEHatchExtrusion)
                     .count();
@@ -244,10 +239,10 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
         private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEMultiBlockBase> adder;
+        private final IGTHatchAdder<MTEIndustrialExtruder> adder;
 
         @SafeVarargs
-        ExtruderHatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder,
+        ExtruderHatchElement(String name, IGTHatchAdder<MTEIndustrialExtruder> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
@@ -260,7 +255,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
 
         @Override
-        public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
+        public IGTHatchAdder<? super MTEIndustrialExtruder> adder() {
             return adder;
         }
 
