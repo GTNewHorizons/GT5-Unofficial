@@ -1902,8 +1902,6 @@ tt.gui.tooltip.full_led_desc.unused=Unused
 EOH_Controller_PlanetBlock=Current Planet Block: %s
 EOH_Controller_AstralArrayAmount=Stored Astral Arrays: %s
 
-EOH.Recipe.Hydrogen.In=Hydrogen: %s L
-EOH.Recipe.Helium.In=Helium: %s L
 EOH.Recipe.SpacetimeTier=Spacetime Tier: %s
 EOH.Recipe.EU.Out=EU Output: %s EU
 EOH.Recipe.EU.In=EU Input: %s EU

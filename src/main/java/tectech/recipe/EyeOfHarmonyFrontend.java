@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.TTUtility.toExponentForm;
@@ -97,9 +98,8 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
         long gasAmount = getGasAmount(currentRecipe, stack);
         if (gasAmount >= 0) {
             currentTip.add(
-                EnumChatFormatting.GRAY + translateToLocalFormatted(
-                    isGas(stack, Materials.Hydrogen) ? "EOH.Recipe.Hydrogen.In" : "EOH.Recipe.Helium.In",
-                    formatNumber(gasAmount)));
+                EnumChatFormatting.BLUE + translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatFluid(gasAmount))
+                    + EnumChatFormatting.GRAY);
             return currentTip;
         }
 
