@@ -31,6 +31,7 @@ public abstract class MTEBaseFactoryHatch extends MTEHatch {
     }
 
     public MTEBaseFactoryHatch(int id, String name, int tier, String[] description) {
+        // Temporarily translate here until hatches are properly localized
         super(id, name, StatCollector.translateToLocal("gt.blockmachines." + name + ".name"), tier, 0, description);
     }
 
