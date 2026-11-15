@@ -24,16 +24,5 @@ repositories {
             includeGroup('net.glease')
         }
     }
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = 'mega'
-                url = 'https://mvn.falsepattern.com/gtmega_releases/'
-            }
-        }
-        filter {
-            includeGroup('mega')
-        }
-    }
     mavenLocal()
 }
