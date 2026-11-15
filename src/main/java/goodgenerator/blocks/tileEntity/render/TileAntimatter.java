@@ -40,6 +40,8 @@ public class TileAntimatter extends TileEntity {
     public boolean protomatterRender = false;
     public float rotX = 0, rotY = 0, rotZ = 0;
     public float rotationAngle = 0;
+    private ForgeDirection appliedDirection;
+    private Rotation appliedRotation;
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -114,6 +116,7 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setCoreSize(float diameter) {
+        if (Math.abs(diameter - coreScale) <= coreScale * 0.01f) return;
         coreScaleSnapshot = coreScale;
         coreScale = diameter;
         timeSnapshot = this.getWorldObj()
@@ -123,6 +126,10 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setRotationFields(ForgeDirection direction, Rotation rotation) {
+        if (direction == appliedDirection && rotation == appliedRotation) return;
+        appliedDirection = direction;
+        appliedRotation = rotation;
+
         Matrix4f rotationMatrix = new Matrix4f().identity();
 
         float localAngle = switch (rotation) {
@@ -160,7 +167,11 @@ public class TileAntimatter extends TileEntity {
         AxisAngle4f rotationVector = new AxisAngle4f();
         rotationMatrix.getRotation(rotationVector);
 
-        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        float newRotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        if (newRotationAngle == rotationAngle && rotationVector.x == rotX
+            && rotationVector.y == rotY
+            && rotationVector.z == rotZ) return;
+        rotationAngle = newRotationAngle;
         rotX = rotationVector.x;
         rotY = rotationVector.y;
         rotZ = rotationVector.z;

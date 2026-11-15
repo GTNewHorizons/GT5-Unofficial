@@ -83,6 +83,13 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final IIcon[][] mIconList;
     private final BitSet mItemsWithoutBaseIcon = new BitSet();
 
+    // Reuse immutable keys without caching values from the public concurrent maps
+    private static final Short[] METADATA_KEYS = new Short[1 << Short.SIZE];
+
+    static {
+        Arrays.setAll(METADATA_KEYS, value -> (short) value);
+    }
+
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
@@ -465,11 +472,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public final Long[] getElectricStats(ItemStack aStack) {
-        return mElectricStats.get((short) aStack.getItemDamage());
+        return mElectricStats.get(metadataKey(aStack.getItemDamage()));
     }
 
     @Override
     public final Long[] getFluidContainerStats(ItemStack aStack) {
-        return mFluidContainerStats.get((short) aStack.getItemDamage());
+        return mFluidContainerStats.get(metadataKey(aStack.getItemDamage()));
+    }
+
+    private static Short metadataKey(int metadata) {
+        return METADATA_KEYS[metadata & 0xFFFF];
     }
 }

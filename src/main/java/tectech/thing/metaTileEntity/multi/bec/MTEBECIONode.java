@@ -967,7 +967,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             List<NaniteTier> tiers = new ArrayList<>();
 
             // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
+            for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 

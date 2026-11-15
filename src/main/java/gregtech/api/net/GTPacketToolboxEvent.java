@@ -91,6 +91,7 @@ public class GTPacketToolboxEvent extends GTPacket {
             @Override
             void execute(final EntityPlayerMP player, final ItemStack itemStack, int toolboxSlot, final int unused) {
                 ItemStackNBT.setBoolean(itemStack, ItemGTToolbox.TOOLBOX_OPEN_KEY, true);
+                ItemStackNBT.removeTag(itemStack, ItemGTToolbox.CURRENT_TOOL_KEY);
 
                 player.inventory.setInventorySlotContents(toolboxSlot, itemStack);
                 GTUtility.sendSoundToPlayers(
@@ -111,6 +112,10 @@ public class GTPacketToolboxEvent extends GTPacket {
                 final int selectedTool) {
                 final ItemStackNBT tag = ItemStackNBT.of(itemStack);
                 boolean dirty = false;
+
+                if (selectedTool != ItemGTToolbox.NO_TOOL_SELECTED && tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)) {
+                    return;
+                }
 
                 if (selectedTool == ItemGTToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
                     tag.removeTag(ItemGTToolbox.CURRENT_TOOL_KEY);
