@@ -570,7 +570,6 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.StatCollector;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.factory.test.TestFactoryHatch;
@@ -1390,7 +1389,7 @@ public class MachineLoader implements Runnable {
                 "hatch.datainass.tier.07",
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datainass.name"),
                 7).getStackForm(1L));
-        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre", ItemList.Tool_DataStick.getDisplayName());
+        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre");
         dataOutAss_Hatch.set(
             new MTEHatchDataItemsOutput(
                 DataBankMasterConnector.ID,

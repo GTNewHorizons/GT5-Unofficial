@@ -2,7 +2,7 @@ package tectech.mechanics.dataTransport;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
-/// Implemented on hatches that transmit AL recipes from a databack into data pipes or the wireless network.
+/// Implemented on hatches that transmit AL recipes from a databank into data pipes or the wireless network.
 public interface IALRecipeOutputHatch extends IMetaTileEntity {
 
     ALRecipeDataPacket getAssemblyLineRecipes();
