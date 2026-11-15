@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
+import static gregtech.api.util.GTUtility.addSafe;
 import static gregtech.api.util.GTUtility.mulSafe;
 
 import java.util.ArrayList;
@@ -705,19 +706,29 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     protected int getControllerMaxParallel() {
         int maxParallel = this.maxParallel;
-        boolean overrideParallel = true;
+
+        int overrideMaxParallelMultiply = 0;
+        int overrideMaxParallelAdd = 0;
 
         for (var controller : this.controllerHatches) {
             if (controller.getControl() != Control.PARALLEL) continue;
-            if (controller.getParallel() == 0) continue;
 
-            if (overrideParallel) {
-                maxParallel = controller.getParallel();
-                overrideParallel = false;
+            if (controller.getParallelMode() == MTEHatchIONodeController.ParallelMode.PARALLEL_ADD) {
+                overrideMaxParallelAdd += controller.signalReceived();
             } else {
-                maxParallel += controller.getParallel();
+                int parallel = controller.signalReceived();
+                if (parallel == 0) continue;
+
+                if (overrideMaxParallelMultiply == 0) {
+                    overrideMaxParallelMultiply = parallel;
+                } else {
+                    overrideMaxParallelMultiply = mulSafe(overrideMaxParallelMultiply, parallel);
+                }
             }
         }
+
+        int overrideMaxParallel = addSafe(overrideMaxParallelMultiply, overrideMaxParallelAdd);
+        if (overrideMaxParallel != 0) maxParallel = overrideMaxParallel;
 
         return maxParallel;
     }

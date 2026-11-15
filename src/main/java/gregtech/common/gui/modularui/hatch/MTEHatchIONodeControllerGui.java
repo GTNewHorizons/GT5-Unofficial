@@ -3,18 +3,13 @@ package gregtech.common.gui.modularui.hatch;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
@@ -33,11 +28,6 @@ public class MTEHatchIONodeControllerGui extends MTEHatchBaseGui<MTEHatchIONodeC
             EnumSyncValue.class,
             () -> new EnumSyncValue<>(MTEHatchIONodeController.Control.class, machine::getControl, machine::setControl)
                 .allowC2S());
-    }
-
-    @Override
-    protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + SLOT_SIZE / 2;
     }
 
     @Override
@@ -98,41 +88,20 @@ public class MTEHatchIONodeControllerGui extends MTEHatchBaseGui<MTEHatchIONodeC
         // spotless:off
         return new ParentWidget<>().fullWidth()
             .child(SettingsPanel.builder()
-                .addReadout(
-                    IKey.lang("GT5U.gui.text.control-parallel.base"),
-                    new ByteSyncValue(machine::getBaseParallel),
-                    amount -> IKey.str(NumberFormatUtil.formatNumber(amount)))
-                .addReadout(
-                    IKey.lang("GT5U.gui.text.control-parallel.multiplier"),
-                    new IntSyncValue(() -> 1 + machine.signalReceived()),
-                    amount -> IKey.lang("GT5U.gui.text.control-parallel.multiplier.value", amount))
+                .addEnumCycleButton(
+                    IKey.lang("GT5U.gui.text.bec-mode"),
+                    MTEHatchIONodeController.ParallelMode.class,
+                    machine::getParallelMode,
+                    machine::setParallelMode,
+                    (_, _, button) -> button.tooltip(
+                        (MTEHatchIONodeController.ParallelMode parallelMode) -> new RichTooltip().add(parallelMode.getTooltip())))
                 .addReadout(
                     IKey.lang("GT5U.gui.text.control-parallel.parallel"),
-                    new IntSyncValue(machine::getParallel),
+                    new IntSyncValue(machine::signalReceived),
                     amount -> IKey.str(NumberFormatUtil.formatNumber(amount))
                 )
                 .build(panel, syncManager, getContentHolderHeight())
                 .horizontalCenter());
         // spotless:on
-    }
-
-    @Override
-    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        // spotless:off
-        return super.createBottomLeftCornerFlow(panel, syncManager)
-            .child(
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, MTEHatchIONodeController.PHYSICAL_CIRCUIT_SLOT))
-                    .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CIRCUIT)
-                    .setEnabledIf(widget -> getControlSync(syncManager).getValue() == MTEHatchIONodeController.Control.PARALLEL)
-            );
-        // spotless:on
-    }
-
-    @Override
-    protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
-        return super.createCircuitSlot(syncManager).setEnabledIf(
-            widget -> getControlSync(syncManager).getValue() == MTEHatchIONodeController.Control.PARALLEL);
     }
 }
