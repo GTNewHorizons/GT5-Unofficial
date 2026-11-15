@@ -436,7 +436,7 @@ public class DroneCentreGuiUtil {
         STATUS;
 
         // saves from before the MUI2 port store "name", "distance" or "error"
-        public static SortMode fromNBT(String name) {
+        public static SortMode fromName(String name) {
             if ("error".equals(name)) return STATUS;
             for (SortMode mode : values()) {
                 if (mode.name()
