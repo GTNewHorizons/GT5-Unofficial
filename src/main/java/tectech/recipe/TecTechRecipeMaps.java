@@ -74,7 +74,7 @@ public class TecTechRecipeMaps {
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setHeight(329)
+            builder -> builder.setHeight(309)
                 .setMultipleWidgetsAllowed(false))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();

@@ -57,7 +57,7 @@ public abstract class ScrollableOutputFrontend extends RecipeMapFrontend {
         this.fluidRows = fluidRows;
     }
 
-    private static int centeredX(int width) {
+    protected static int centeredX(int width) {
         return BACKGROUND_OFFSET + (BACKGROUND_WIDTH - width) / 2;
     }
 
