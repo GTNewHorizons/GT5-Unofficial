@@ -7,21 +7,23 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.WirelessDataStore;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsOutput extends MTEHatchDataBase implements IALRecipeOutputHatch {
 
     @NotNull
@@ -35,8 +37,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatchDataBase implements
             aNameRegional,
             aTier,
             0,
-            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
-                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
+            GTSplit.splitLocalized("gt.blockmachines.hatch.wirelessdataoutass.desc"));
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

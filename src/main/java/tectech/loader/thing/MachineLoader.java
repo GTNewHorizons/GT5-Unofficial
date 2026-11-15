@@ -567,8 +567,10 @@ import static tectech.thing.CustomItemList.rack_Hatch;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.StatCollector;
 
 import codechicken.nei.api.API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.factory.test.TestFactoryHatch;
@@ -1386,14 +1388,14 @@ public class MachineLoader implements Runnable {
             new MTEHatchDataItemsInput(
                 AssemblylineSlaveConnector.ID,
                 "hatch.datainass.tier.07",
-                "Assembly Line Reception Connector",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datainass.name"),
                 7).getStackForm(1L));
-        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre");
+        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre", ItemList.Tool_DataStick.getDisplayName());
         dataOutAss_Hatch.set(
             new MTEHatchDataItemsOutput(
                 DataBankMasterConnector.ID,
                 "hatch.dataoutass.tier.07",
-                "Data Bank Transmission Connector",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.name"),
                 7).getStackForm(1L));
         API.setAliases(dataOutAss_Hatch.get(1L), "gt.alias.fibre");
         dataOut_Wireless_Hatch.set(
@@ -1412,13 +1414,13 @@ public class MachineLoader implements Runnable {
             new MTEHatchWirelessDataItemsInput(
                 WirelessAssemblylineSlaveConnector.ID,
                 "hatch.datainass.wireless.tier.12",
-                "Wireless Assembly Line Reception Connector",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.name"),
                 10).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsOutput(
                 WirelessDataBankMasterConnector.ID,
                 "hatch.dataoutass.wireless.tier.12",
-                "Wireless Data Bank Transmission Connector",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datainasswireless.name"),
                 10).getStackForm(1L));
         rack_Hatch.set(new MTEHatchRack(ComputerRack.ID, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
         holder_Hatch.set(

@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTIVE;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
@@ -9,7 +8,6 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 import java.util.LinkedHashSet;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,13 +23,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.api.util.GTSplit;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
-/// The AL recipe input hatch that receives its recipes from a databack (via a [MTEHatchDataItemsOutput] + data pipe
+/// The AL recipe input hatch that receives its recipes from a databank (via a [MTEHatchDataItemsOutput] + data pipe
 /// chain).
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsInput extends MTEHatchDataBase
@@ -41,15 +40,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     protected ALRecipeDataPacket cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") });
+        super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.hatch.datainass.desc"));
     }
 
     public MTEHatchDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

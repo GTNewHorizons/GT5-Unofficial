@@ -27,7 +27,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +81,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -168,7 +166,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
-            buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
+            buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataInputHatch)
                 .hint(3)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
@@ -328,7 +326,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
             .addMiscHatch(
                 "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
+                StatCollector.translateToLocal("GT5U.MBTT.DataInputHatch"),
                 StatCollector.translateToLocal("ggfab.tt.advassline.structure.data_access_location"),
                 3)
             .addEnergyHatch("1+", StatCollector.translateToLocal("ggfab.tt.advassline.structure.energy_location"), 4)
@@ -1086,7 +1084,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     private enum DataHatchElement implements IHatchElement<MTEAdvAssLine> {
 
-        DataAccess("GT5U.MBTT.DataAccessHatch");
+        DataInputHatch("GT5U.MBTT.DataInputHatch");
 
         private final String name;
 
@@ -1096,7 +1094,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEHatchDataAccess.class);
+            return List.of(IALRecipeInputHatch.class);
         }
 
         @Override

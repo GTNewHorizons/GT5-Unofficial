@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -108,7 +106,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
-            buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess)
+            buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataInputHatch)
                 .hint(3)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
@@ -155,7 +153,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 ImmutableMap.of("complex_parts_tier", GTUtility.getColoredTierNameForTooltip(VoltageIndex.LuV)))
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_grate_casing_not_first_slice"), 3)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_grate_casing_not_first_slice"), 3)
             .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing", 4), 4)
             .addMaintenanceHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
             .addInputBus("5-16", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_each_slice"), 2)
@@ -510,7 +508,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     private enum DataHatchElement implements IHatchElement<MTEAssemblyLine> {
 
-        DataAccess("GT5U.MBTT.DataAccessHatch");
+        DataInputHatch("GT5U.MBTT.DataInputHatch");
 
         private final String name;
 
@@ -520,7 +518,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEHatchDataAccess.class);
+            return List.of(IALRecipeInputHatch.class);
         }
 
         @Override

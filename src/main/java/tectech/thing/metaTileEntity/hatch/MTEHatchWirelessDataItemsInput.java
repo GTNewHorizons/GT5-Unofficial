@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTIVE;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
@@ -18,6 +17,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.common.WirelessDataStore;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeInputHatch;
@@ -35,8 +35,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataBase implements 
             aNameRegional,
             aTier,
             0,
-            new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), });
+            GTSplit.splitLocalized("gt.blockmachines.hatch.datainasswireless.desc"));
     }
 
     public MTEHatchWirelessDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

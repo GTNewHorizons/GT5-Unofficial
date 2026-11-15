@@ -4,8 +4,6 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
@@ -18,6 +16,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTSplit;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 
@@ -25,15 +24,7 @@ import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 public class MTEHatchDebugDataAccess extends MTEHatchDataBase implements IALRecipeInputHatch {
 
     public MTEHatchDebugDataAccess(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.0"),
-                translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.2") });
+        super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.debug.tt.dataaccess.desc"));
     }
 
     public MTEHatchDebugDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

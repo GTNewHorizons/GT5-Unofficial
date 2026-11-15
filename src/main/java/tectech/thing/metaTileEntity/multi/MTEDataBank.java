@@ -35,8 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
@@ -50,8 +48,6 @@ import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
-import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -79,15 +75,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 0)))
         .addElement(
             'D',
-            buildHatchAdder(MTEDataBank.class)
-                .atLeast(
-                    DataBankHatches.OutboundConnector,
-                    DataBankHatches.InboundConnector,
-                    DataBankHatches.WirelessOutboundConnector)
+            buildHatchAdder(MTEDataBank.class).atLeast(DataBankHatches.DataOutputHatch)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(2)
                 .buildAndChain(
-                    DataBankHatches.DataStick
+                    DataBankHatches.DataInputHatch
                         .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 1, 2, TTCasingsContainer.sBlockCasingsTT, 1)))
         .build();
     // endregion
@@ -119,9 +111,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addCasing("0-6", translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("GT5U.MBTT.DataInputHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("GT5U.MBTT.DataOutputHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
             .addStructureInfo("")
             .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
             .toolTipFinisher();
@@ -198,32 +189,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
-    public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
+    public final boolean addDataBankHatchToMachineList(IGregTechTileEntity hatchIGTE, int casingIndex) {
+        if (hatchIGTE == null) {
             return false;
         }
 
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        switch (aMetaTileEntity) {
+        switch (hatchIGTE.getMetaTileEntity()) {
             case null -> {
                 return false;
             }
-            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
-                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
-                return recipeOutputHatches.add(mteHatchWirelessDataItemsOutput);
+            case IALRecipeInputHatch inputHatch -> {
+                inputHatch.updateTexture(casingIndex);
+
+                if (inputHatch instanceof MTEHatchDataItemsInput) {
+                    // inputs are chained from another databank, increase required per-hatch EU/t
+                    slave = true;
+                }
+
+                return recipeInputHatches.add(inputHatch);
             }
-            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return recipeOutputHatches.add(mteHatchDataItemsOutput);
-            }
-            case MTEHatchDataAccess hatch when !(aMetaTileEntity instanceof MTEHatchDataItemsInput) -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return recipeInputHatches.add(hatch);
-            }
-            case MTEHatchDataItemsInput hatch -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                slave = true;
-                return recipeInputHatches.add(hatch);
+            case IALRecipeOutputHatch outputHatch -> {
+                outputHatch.updateTexture(casingIndex);
+                return recipeOutputHatches.add(outputHatch);
             }
             default -> {
             }
@@ -250,28 +237,14 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick("GT5U.MBTT.DataAccessHatch", MTEHatchDataAccess.class) {
+        DataInputHatch("GT5U.MBTT.DataInputHatch", IALRecipeInputHatch.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.recipeInputHatches.size();
             }
         },
-        InboundConnector("GT5U.MBTT.AssemblyLineReception", MTEHatchDataItemsInput.class) {
-
-            @Override
-            public long count(MTEDataBank t) {
-                return t.recipeInputHatches.size();
-            }
-        },
-        OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
-
-            @Override
-            public long count(MTEDataBank t) {
-                return t.recipeOutputHatches.size();
-            }
-        },
-        WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
+        DataOutputHatch("GT5U.MBTT.DataOutputHatch", IALRecipeOutputHatch.class) {
 
             @Override
             public long count(MTEDataBank t) {

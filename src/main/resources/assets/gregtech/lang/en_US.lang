@@ -388,7 +388,6 @@ gt.blockmachines.hatch.datainass.wireless.tier.12.name=Wireless Assembly Line Re
 gt.blockmachines.hatch.dataout.wireless.tier.12.name=Cloud Computation Server Hatch
 gt.blockmachines.hatch.dataout.wireless.tier.12.tooltip=Wireless Computation Output for Multiblocks
 gt.blockmachines.hatch.dataoutass.wireless.tier.12.name=Wireless Data Bank Transmission Connector
-gt.blockmachines.hatch.dataoutass.wireless.tier.12.tooltip=§9Tec§1Tech§9: Elemental Matter\nWireless ItemStack Data Output for Multiblocks\nHigh speed internet connection
 gt.blockmachines.hatch.degasifiercontrol.name=Degasser Control Hatch
 gt.blockmachines.hatch.degasifiercontrol.tooltip=Can be installed in the Degasser Purification Unit.\nOutputs Redstone Signal Strength based on the current control signal.
 gt.blockmachines.hatch.dronedownlink.name=Drone DownLink Module
@@ -1940,9 +1939,8 @@ GT5U.MBTT.AirIntakeHatch=Air Intake Hatch
 GT5U.MBTT.CapacitorHatch=Capacitor Hatch
 GT5U.MBTT.ComputerRackHatch=Computer Rack
 GT5U.MBTT.ObjectHolder=Object Holder
-GT5U.MBTT.DataAccessHatch=Data Access Hatch
-GT5U.MBTT.AssemblyLineReception=Assembly Line Reception Connector
-GT5U.MBTT.DataBankTransmission=Data Bank Transmission Connector
+GT5U.MBTT.DataInputHatch=Data Stick Input Hatch
+GT5U.MBTT.DataOutputHatch=Data Stick Output Hatch
 GT5U.MBTT.ElectrodeDetectorHatch=Electrode Detector Hatch
 GT5U.MBTT.ElectrodeHatch=Electrode Hatch
 GT5U.MBTT.HeatSensorHatch=Heat Sensor Hatch
@@ -8343,7 +8341,6 @@ GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 # GT structure hints
-GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
 GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
 GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
 GT5U.tooltip.structure.heating_coil=Heating Coil
@@ -10446,7 +10443,7 @@ gt.blockmachines.waterpump.controller.tier.single.name=Water Pump
 gt.blockmachines.hatch.dataaccess.adv.name=Advanced Data Access Hatch
 gt.blockmachines.hatch.dataaccess.auto.name=Automatable Data Access Hatch
 gt.blockmachines.hatch.dataaccess.name=Data Access Hatch
-gt.blockmachines.hatch.dataaccess.desc=Data Access for Multiblocks\nAdds %s extra slots for Data Sticks
+gt.blockmachines.hatch.dataaccess.desc=Machine Type: §eData Stick Input Hatch, DSIH§r\nProvides recipes to Assembly Lines, Advanced Assembly Lines, and Data Banks\nData Stick Slots: §e%s§r
 
 # Tools
 gt.metatool.empty.name=%s (Empty)

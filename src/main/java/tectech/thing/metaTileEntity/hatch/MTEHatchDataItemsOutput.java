@@ -4,8 +4,6 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,26 +15,20 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALRecipeOutputHatch, IConnectsToDataPipe {
 
     private ALRecipeDataPacket previousPacket = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
-                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
-                EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
+        super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.hatch.dataoutass.desc"));
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

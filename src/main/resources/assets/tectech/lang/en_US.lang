@@ -286,21 +286,17 @@ gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
 gt.blockmachines.hatch.dataout.desc.1=High speed fiber optics connector.
 gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.datainass.tier.07.name=Assembly Line Reception Connector
-gt.blockmachines.hatch.datainass.desc.0=ItemStack Data Input for Multiblocks
-gt.blockmachines.hatch.datainass.desc.1=High speed fiber optics connector.
-gt.blockmachines.hatch.datainass.desc.2=Must be painted to work
+gt.blockmachines.hatch.datainass.name=Assembly Line Reception Connector
+gt.blockmachines.hatch.datainass.desc=Machine Type: §eData Stick Input Hatch, DSIH§r\nReceives Assembly Line recipes from a Data Bank Transmission Connector\nProvides recipes to Assembly Lines, Advanced Assembly Lines, and Data Banks\nConnects to a Data Bank Transmission Connector via Optical Fiber Cables\nCan be used to daisy-chain Data Banks, at the cost of a higher per-hatch power usage.\n§bMust be painted to work§r
 
-gt.blockmachines.hatch.datainasswireless.desc.0=Wireless ItemStack Data Input for Multiblocks
-gt.blockmachines.hatch.datainasswireless.desc.1=High speed internet connection
+gt.blockmachines.hatch.datainasswireless.name=Wireless Assembly Line Reception Connector
+gt.blockmachines.hatch.datainasswireless.desc=Machine Type: §eData Stick Input Hatch, DSIH§r\nReceives Assembly Line recipes from your GT team's wireless recipe network\nProvides recipes to Assembly Lines, Advanced Assembly Lines, and Data Banks\nUpdates every 10 seconds
 
-gt.blockmachines.hatch.dataoutass.tier.07.name=Data Bank Transmission Connector
-gt.blockmachines.hatch.dataoutass.desc.0=ItemStack Data Output for Multiblocks
-gt.blockmachines.hatch.dataoutass.desc.1=High speed fiber optics connector.
-gt.blockmachines.hatch.dataoutass.desc.2=Must be painted to work
+gt.blockmachines.hatch.dataoutass.name=Data Bank Transmission Connector
+gt.blockmachines.hatch.dataoutass.desc=Machine Type: §eData Stick Output Hatch, DSOH§r\nReceives Assembly Line recipes from a Data Bank.\nSends Assembly Line recipes to an Assembly Line Reception Connector via Optical Fiber Cables\n§bMust be painted to work§r
 
-gt.blockmachines.hatch.wirelessdataoutass.desc.0=Wireless ItemStack Data Output for Multiblocks
-gt.blockmachines.hatch.wirelessdataoutass.desc.1=High speed internet connection
+gt.blockmachines.hatch.wirelessdataoutass.name=Wireless Assembly Line Transmission Connector
+gt.blockmachines.hatch.wirelessdataoutass.desc=Machine Type: §eData Stick Output Hatch, DSOH§r\nReceives Assembly Line recipes from a Data Bank.\nUploads Assembly Line recipes to your GT team's wireless recipe network\nUpdates every 10 seconds
 
 gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
 gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
@@ -1120,9 +1116,7 @@ gt.blockmachines.debug.tt.genny.desc.3=Change it to Laser mode with a screwdrive
 gt.blockmachines.debug.tt.certain.desc.0=Feeling certain, for sure
 gt.blockmachines.debug.tt.certain.desc.1=Schrödinger's cat escaped the box
 gt.blockmachines.debug.tt.dataaccess.name=Debug Data Access Hatch
-gt.blockmachines.debug.tt.dataaccess.desc.0=Cheating in individual research is just so much work...
-gt.blockmachines.debug.tt.dataaccess.desc.1=Provides every Assembly Line recipe to the AL and AAL.
-gt.blockmachines.debug.tt.dataaccess.desc.2=For testing & Dev use. These can lag your world if used in excess.
+gt.blockmachines.debug.tt.dataaccess.desc=Machine Type: §eData Stick Input Hatch, DSIH§r\nProvides every Assembly Line recipe\nUsed in the Assembly Line, Advanced Assembly Line, and Data Bank\n§cFor testing and dev use only, can lag your world if overused§r
 
 GT5U.gui.text.recipe_result.computing=§aComputing
 GT5U.gui.text.recipe_result.providing_data=§aProviding Data
