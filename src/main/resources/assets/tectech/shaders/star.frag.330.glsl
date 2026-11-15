@@ -28,7 +28,7 @@ void main() {
         vec3 targetYIQ = toYIQ(u_Color.rgb);
         vec3 yiqColor = vec3(original.x, targetYIQ.yz);
         vec3 finalrgb = toRGB(yiqColor);
-        finalrgb = pow(finalrgb, vec3(1.0 / u_Gamma));
+        finalrgb = pow(max(finalrgb, vec3(0.0)), vec3(1.0 / u_Gamma));
         color = vec4(finalrgb, u_Color.a);
     }
 

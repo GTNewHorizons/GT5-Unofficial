@@ -18,7 +18,7 @@ float luminanceTransform(vec3 color){
 
 void main() {
     float v_effect = dot(normalize(u_CameraPosition.xy),normalize(v_localPosition));
-    float transparency = (v_effect-.5)*2;
+    float transparency = max((v_effect-.5)*2, 0.0);
     transparency = pow(transparency,u_Intensity);
 
     vec4 texColor = texture(u_Texture,v_TexCoord);
