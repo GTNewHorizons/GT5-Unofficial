@@ -1188,6 +1188,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             : getAvailableRecipeMaps();
         if (maps.isEmpty()) return null;
 
+        // Same power as setProcessingLogicPower; steam and wireless multis have no energy hatches, so the voltage is 0
+        // and the key turns the voltage check off.
+        final boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        final long voltage = getAverageInputVoltage() * (useSingleAmp ? 1 : getMaxInputAmps());
+
+        // checkRecipeForCustomHatches runs a solidifier hatch's fluid with only the hatch's own mold and circuit.
+        if (hatch instanceof MTEHatchSolidifier solidifier) {
+            return PatternTargetKey.of(maps, voltage, solidifier.getNonConsumableItems());
+        }
+        if (isInputSeparationEnabled() && !(hatch instanceof MTEHatchInputBus) && !(hatch instanceof IDualInputHatch)) {
+            return PatternTargetKey.ofSets(maps, voltage, separatedBusItems(hatch, maps));
+        }
+
         // Mirrors doCheckRecipe: a crafting input buffer only adds its shared items, a bus with input separation adds
         // its own items, and without separation every bus but the buffers counts.
         final List<ItemStack> items = new ArrayList<>();
@@ -1205,11 +1218,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             if (canUseControllerSlotForRecipe() && getControllerSlot() != null) items.add(getControllerSlot());
         }
+        return PatternTargetKey.of(maps, voltage, items);
+    }
 
-        // Same power as setProcessingLogicPower; steam and wireless multis have no energy hatches, so the voltage is 0
-        // and the key turns the voltage check off.
-        final boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        return PatternTargetKey.of(maps, getAverageInputVoltage() * (useSingleAmp ? 1 : getMaxInputAmps()), items);
+    // With input separation doCheckRecipe pairs the fluids with one bus at a time, and with the controller slot alone
+    // when no bus shares the hatch's color.
+    private List<List<ItemStack>> separatedBusItems(MTEHatch hatch, Collection<RecipeMap<?>> maps) {
+        final List<List<ItemStack>> sets = new ArrayList<>();
+        final ItemStack controllerItem = canUseControllerSlotForRecipe() ? getControllerSlot() : null;
+        final byte hatchColor = hatch.getColor();
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            if (bus instanceof MTEHatchCraftingInputME) continue;
+            final byte busColor = bus.getColor();
+            if (hatchColor != -1 && busColor != -1 && hatchColor != busColor) continue;
+            final List<ItemStack> items = new ArrayList<>();
+            addPatternConfigItems(items, bus, maps);
+            if (controllerItem != null) items.add(controllerItem);
+            sets.add(items);
+        }
+        if (sets.isEmpty()) {
+            sets.add(controllerItem != null ? Collections.singletonList(controllerItem) : Collections.emptyList());
+        }
+        return sets;
     }
 
     // Only the circuit and items the recipes never consume: the rest of the bus holds leftovers of other crafts.

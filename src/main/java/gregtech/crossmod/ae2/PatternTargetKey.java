@@ -2,6 +2,7 @@ package gregtech.crossmod.ae2;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,22 +25,34 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 
 /**
- * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the items it adds to
- * every recipe check, such as the circuit.
+ * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the sets of items it may
+ * add to a recipe check, such as the circuit; one fitting set is enough.
  */
-public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<ItemId> items) {
+public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets) {
 
     /**
-     * Builds a key; a non-positive voltage turns the voltage check off.
+     * Builds a key with one item set; a non-positive voltage turns the voltage check off.
      */
     public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items) {
-        final List<ItemId> ids = new ArrayList<>(items.size());
-        for (ItemStack stack : items) {
-            if (stack != null) {
-                ids.add(ItemId.createWithStackSize(stack));
+        return ofSets(recipeMaps, voltage, Collections.singletonList(items));
+    }
+
+    /**
+     * Builds a key that matches when any of the item sets fits; a non-positive voltage turns the voltage check off.
+     */
+    public static PatternTargetKey ofSets(Collection<RecipeMap<?>> recipeMaps, long voltage,
+        Collection<? extends Collection<ItemStack>> itemSets) {
+        final List<List<ItemId>> sets = new ArrayList<>(itemSets.size());
+        for (Collection<ItemStack> items : itemSets) {
+            final List<ItemId> ids = new ArrayList<>(items.size());
+            for (ItemStack stack : items) {
+                if (stack != null) {
+                    ids.add(ItemId.createWithStackSize(stack));
+                }
             }
+            sets.add(ids);
         }
-        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), ids);
+        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), sets);
     }
 
     /**
@@ -70,14 +83,25 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             }
         }
 
+        final FluidStack[] fluidArray = patternFluids.toArray(new FluidStack[0]);
         for (PatternTargetKey key : keys) {
-            results.put(key, key.match(pattern, patternItems, patternCircuit, patternFluids));
+            results.put(key, key.match(pattern, patternItems, patternCircuit, fluidArray));
         }
         return results;
     }
 
     private PatternMatch match(ICraftingPatternDetails pattern, List<ItemStack> patternItems,
-        @Nullable ItemStack patternCircuit, List<FluidStack> patternFluids) {
+        @Nullable ItemStack patternCircuit, FluidStack[] fluidArray) {
+        for (List<ItemId> items : itemSets) {
+            if (fits(items, pattern, patternItems, patternCircuit, fluidArray)) {
+                return PatternMatch.MATCH;
+            }
+        }
+        return PatternMatch.NO_MATCH;
+    }
+
+    private boolean fits(List<ItemId> items, ICraftingPatternDetails pattern, List<ItemStack> patternItems,
+        @Nullable ItemStack patternCircuit, FluidStack[] fluidArray) {
         final List<ItemStack> inputs = new ArrayList<>(patternItems);
         for (ItemId id : items) {
             final ItemStack stack = id.getItemStack(id.stackSize());
@@ -85,13 +109,12 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             // first.
             if (patternCircuit != null && GTUtility.isAnyIntegratedCircuit(stack)
                 && !GTUtility.areStacksEqual(stack, patternCircuit)) {
-                return PatternMatch.NO_MATCH;
+                return false;
             }
             inputs.add(stack);
         }
 
         final ItemStack[] inputArray = inputs.toArray(new ItemStack[0]);
-        final FluidStack[] fluidArray = patternFluids.toArray(new FluidStack[0]);
         for (RecipeMap<?> recipeMap : recipeMaps) {
             final FindRecipeQuery query = recipeMap.findRecipeQuery()
                 .items(inputArray)
@@ -102,10 +125,10 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             }
             final GTRecipe recipe = query.find();
             if (recipe != null && producesAllOutputs(recipe, pattern)) {
-                return PatternMatch.MATCH;
+                return true;
             }
         }
-        return PatternMatch.NO_MATCH;
+        return false;
     }
 
     private static boolean producesAllOutputs(GTRecipe recipe, ICraftingPatternDetails pattern) {
