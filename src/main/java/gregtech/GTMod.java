@@ -154,7 +154,7 @@ import ic2.api.recipe.RecipeOutput;
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.6.35,);"
         + "required-after:modularui@[1.1.12,);"
-        + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        + "required-after:appliedenergistics2;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
