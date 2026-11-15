@@ -38,10 +38,6 @@ import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
@@ -55,17 +51,8 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     implements IOverclockDescriptionProvider, IParametrized {
 
-    /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
-    /** Status of the parallel setting */
-    private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
-
     /** Power object used for displaying in NEI */
     protected final OverclockDescriber overclockDescriber;
-    /** Input parameters */
-    Parameters.Group.ParameterIn parallelSetting;
 
     private IntegerParameter parallelParameter;
 
@@ -112,10 +99,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     }
 
     @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
-        parallelParameter.setValue((int) legacyInput.getDouble(String.valueOf(0)));
-    }
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
 
     @Override
     public List<Parameter<?, ?>> getParameters() {
@@ -188,16 +172,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         }.setAmperageOC(false)
             .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()))
             .setSpeedBonus(getSpeedBonus());
-    }
-
-    /**
-     * Instantiate parameters of the controller
-     */
-    @Override
-    protected void parametersInstantiation_EM() {
-        super.parametersInstantiation_EM();
-        Parameters.Group hatch_0 = parametrization.getGroup(0, false);
-        parallelSetting = hatch_0.makeInParameter(0, getMaxParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
     }
 
     /** Texture that will be displayed on the side of the module */
