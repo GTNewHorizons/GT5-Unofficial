@@ -152,10 +152,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void clearHatches() {
         super.clearHatches();
-        // avoid duplicate calls to addWatcher resulting in duplicate notifyWatchers calls
-        for (MTEHatchDataAccess dataAccess : eDataAccessHatches) {
-            dataAccess.removeWatcher(this);
-        }
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
         eWirelessStacksDataOutputs.clear();
@@ -248,12 +244,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             case MTEHatchDataItemsInput mteDataItemInput -> {
                 mteDataItemInput.updateTexture(aBaseCasingIndex);
                 slave = true;
-                mteDataItemInput.addWatcher(this);
                 return eDataAccessHatches.add(mteDataItemInput);
             }
             case MTEHatchDataAccess mteDatastickHatch -> {
                 mteDatastickHatch.updateTexture(aBaseCasingIndex);
-                mteDatastickHatch.addWatcher(this);
                 return eDataAccessHatches.add(mteDatastickHatch);
             }
             default -> {
