@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -57,13 +58,12 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
-    private RecipeOrder recipeOrder = RecipeOrder.NORMAL; // the order in which the master's recipes are shown
-    private int[] randomRecipeOrder; // lazily created, seeded by the position of this hatch
+    private RecipeOrder recipeOrder = RecipeOrder.NORMAL;
+    private int[] randomRecipeOrder;
 
     public enum RecipeOrder {
         NORMAL,
         REVERSED,
-        /** Seeded by the position of this hatch, so it never changes while it stays in place. */
         RANDOM
     }
 
@@ -177,6 +177,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
 
     public void setRecipeOrder(RecipeOrder recipeOrder) {
         this.recipeOrder = recipeOrder;
+        markDirty();
     }
 
     @Override
@@ -408,7 +409,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
 
     private void cycleRecipeOrder() {
         final RecipeOrder[] orders = RecipeOrder.values();
-        recipeOrder = orders[(recipeOrder.ordinal() + 1) % orders.length];
+        setRecipeOrder(orders[(recipeOrder.ordinal() + 1) % orders.length]);
     }
 
     private int getSlotAtPriority(int priority) {
@@ -472,7 +473,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             GTUtility.sendChatTrans(
                 aPlayer,
                 "GT5U.hatch.crafting_input_slave.recipe_order.current",
-                StatCollector.translateToLocal(getRecipeOrderLangKey()));
+                new ChatComponentTranslation(getRecipeOrderLangKey()));
         }
         // not calling super.onScrewdriverRightClick, because input filter is irrelevant for a proxy hatch
     }

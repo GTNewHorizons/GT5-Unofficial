@@ -17,17 +17,14 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave.RecipeOrder;
 
-/** Adds the recipe order button of a Crafting Input Proxy to the GUI of its Crafting Input Buffer/Bus. */
 public final class MTEHatchCraftingInputSlaveGui {
 
     private static final int BUTTON_SIZE = 18;
     private static final int BUTTON_MARGIN = 5;
-    /** The button row of that GUI is 86 pixels above the bottom edge of the panel. */
     private static final int BUTTON_ROW_BOTTOM_MARGIN = 86;
 
     private MTEHatchCraftingInputSlaveGui() {}
 
-    /** @param originMTE the proxy this GUI was opened with, which is only known on the server side */
     public static void addRecipeOrderButton(ModularPanel panel, PanelSyncManager syncManager,
         @Nullable MetaTileEntity originMTE) {
         MTEHatchCraftingInputSlave proxy = originMTE instanceof MTEHatchCraftingInputSlave slave ? slave : null;

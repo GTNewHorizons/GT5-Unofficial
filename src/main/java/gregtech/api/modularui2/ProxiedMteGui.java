@@ -58,7 +58,6 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
         GuiManager.open(GUI, new ProxiedMteGuiData(player, mte), player);
     }
 
-    /** Opens the GUI of an MTE for a player who interacted with another MTE, like the Crafting Input Proxy does. */
     public static void open(MetaTileEntity mte, EntityPlayerMP player, MetaTileEntity originMTE) {
         GuiManager.open(GUI, new ProxiedMteGuiData(player, mte, originMTE), player);
     }
@@ -130,7 +129,6 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
     final public static class ProxiedMteGuiData extends GuiData {
 
         final private @Nullable MetaTileEntity serverMTE;
-        /** The MTE the player interacted with, if it is not the MTE whose GUI is shown. Server side only. */
         final private @Nullable MetaTileEntity originMTE;
         final private boolean hasOrigin;
         final private int mid;
