@@ -662,12 +662,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public void doExplosion(long aExplosionPower) {
-        // TODO Auto-generated method stub
-        super.doExplosion(aExplosionPower);
-    }
-
-    @Override
     public long getMaxInputVoltage() {
         return 32768;
     }
