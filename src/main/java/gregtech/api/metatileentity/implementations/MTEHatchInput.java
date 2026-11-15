@@ -82,8 +82,7 @@ public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
 
     @Override
     public Object getTargetKey() {
-        final MTEMultiBlockBase owner = getCraftingIconOwner();
-        return owner == null ? null : owner.getPatternTargetKey(this);
+        return getOwnerPatternTargetKey();
     }
 
     @Override

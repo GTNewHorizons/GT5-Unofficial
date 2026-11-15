@@ -275,8 +275,7 @@ public class MTEHatchInputBus extends MTEHatch
 
     @Override
     public Object getTargetKey() {
-        final MTEMultiBlockBase owner = getCraftingIconOwner();
-        return owner == null ? null : owner.getPatternTargetKey(this);
+        return getOwnerPatternTargetKey();
     }
 
     @Override
