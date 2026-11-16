@@ -24,6 +24,7 @@ public class NodeEnergySink extends ConsumerNode {
     public int injectEnergy(long aVoltage, long aMaxAmps) {
         int tUsedAmps = 0;
         final long topologyVersion = getTopologyVersion();
+        // Re-checked after getDemandedEnergy(), which may invalidate this graph.
         while (aMaxAmps > tUsedAmps && !mInvalid
             && topologyVersion == getTopologyVersion()
             && ((IEnergySink) mTileEntity).getDemandedEnergy() > 0

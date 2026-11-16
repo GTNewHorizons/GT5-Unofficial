@@ -282,6 +282,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 + PowerNodes.powerNode(rebuiltNode, null, consumers, (int) voltage, (int) (amperage - usedAmperage));
     }
 
+    /**
+     * True only for unmodified built-in cable implementations; addon subclasses may rely on normal ticks or on
+     * transferElectricity's passed set.
+     */
+    public boolean isBuiltinCable() {
+        return getClass() == MTECable.class;
+    }
+
     public boolean isEnergySource() {
         return energySource;
     }

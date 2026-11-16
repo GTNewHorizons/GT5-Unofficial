@@ -11,7 +11,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
 import ic2.api.energy.tile.IEnergySink;
 
 public class TileIC2EnergySink extends TileEntity implements IEnergySink {
@@ -93,7 +92,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
                 euPerAmp,
                 amps,
                 // Only these exact implementations ignore the set; addon overrides still receive a mutable seed.
-                metaTile.getClass() == MTECable.class || metaTile.getClass() == GTPPMTECable.class ? null
+                metaTile instanceof MTECable cable && cable.isBuiltinCable() ? null
                     : Sets.newHashSet((TileEntity) myMeta));
 
         } else usedAmps = myMeta.injectEnergyUnits(directionFrom, euPerAmp, amps);

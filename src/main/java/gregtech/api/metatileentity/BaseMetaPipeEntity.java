@@ -51,7 +51,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -150,7 +149,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     boolean isNonTickingCable() {
         // Addon subclasses may depend on the normal pre/post tick callbacks.
         return mMetaTileEntity == null ? cableBaseType
-            : mMetaTileEntity.getClass() == MTECable.class || mMetaTileEntity.getClass() == GTPPMTECable.class;
+            : mMetaTileEntity instanceof MTECable cable && cable.isBuiltinCable();
     }
 
     @Override
