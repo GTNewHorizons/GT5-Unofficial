@@ -23,7 +23,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -74,9 +73,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTEMultiBlockBase aTurb
-                    && (aMetaTileEntity instanceof MTELargeTurbineLegacy
-                        || aMetaTileEntity instanceof MTELargeTurbineBase)) {
+                if (aMetaTileEntity instanceof MTELargeTurbineBase aTurb) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;

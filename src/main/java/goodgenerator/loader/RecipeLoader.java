@@ -1234,7 +1234,7 @@ public class RecipeLoader {
             .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UV))
             .itemInputs(
                 ItemRefer.Inverter.get(8),
-                ItemList.Hull_MAX.get(1L),
+                ItemList.Hull_UHV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Kevlar, 8),
