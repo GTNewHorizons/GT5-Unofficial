@@ -163,6 +163,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Grade8PurifiedWater;
     // endregion
 
+    public static Materials ElectrochemicalElectrolyteSolution;
+
     // region Random
     public static Materials AnyBronze;
     public static Materials AnyCopper;

@@ -6172,5 +6172,19 @@ public class ChemicalRecipes implements Runnable {
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
+            .fluidOutputs(new FluidStack(Materials.ElectrochemicalElectrolyteSolution.getFluid(1), 1_000))
+            .fluidOutputChances(7_500)
+            .duration(SECONDS)
+            .eut(30)
+            .addTo(chemicalReactorRecipes);
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(1_000))
+            .fluidOutputs(new FluidStack(Materials.ElectrochemicalElectrolyteSolution.getFluid(1), 10_000))
+            .duration(SECONDS)
+            .eut(30)
+            .addTo(chemicalReactorRecipes);
     }
 }

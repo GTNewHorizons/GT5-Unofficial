@@ -86,6 +86,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
+import gregtech.api.recipe.maps.MIPRRecipeFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
 import gregtech.api.recipe.maps.NACMatrixFrontend;
@@ -109,6 +110,11 @@ import gregtech.api.recipe.maps.ThermalBoilerFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.maps.ZhuhaiFrontend;
+import gregtech.api.recipe.maps.boules.CZPullerRecipeFrontend;
+import gregtech.api.recipe.maps.boules.ElectrochemicalCutterRecipeFrontend;
+import gregtech.api.recipe.maps.boules.LaserCutterRecipeFrontend;
+import gregtech.api.recipe.maps.boules.WaferDopingFacilityRecipeFrontend;
+import gregtech.api.recipe.maps.boules.ZoneMelterRecipeFrontend;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -121,6 +127,8 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
+import gregtech.loaders.postload.recipes.CZPullerMetadata;
+import gregtech.loaders.postload.recipes.WaferDopingFacilityMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
@@ -2235,6 +2243,64 @@ public final class RecipeMaps {
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
         .build();
 
+    public static final RecipeMetadataKey<CZPullerMetadata> CZ_PULLER_METADATA = SimpleRecipeMetadataKey
+        .create(CZPullerMetadata.class, "cz_puller_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> czPullerRecipes = RecipeMapBuilder.of("gt.recipe.cz_puller")
+        .maxIO(2, 1, 1, 0)
+        .minInputs(2, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(CZPullerRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> zoneMelterRecipes = RecipeMapBuilder.of("gt.recipe.zone_melter")
+        .maxIO(2, 3, 0, 0)
+        .minInputs(2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(ZoneMelterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> laserCutterRecipes = RecipeMapBuilder.of("gt.recipe.laser_cutter")
+        .maxIO(1, 2, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(LaserCutterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> electrochemicalCutterRecipes = RecipeMapBuilder
+        .of("gt.recipe.electrochemical_cutter")
+        .maxIO(1, 2, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(ElectrochemicalCutterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMetadataKey<WaferDopingFacilityMetadata> WAFER_DOPING_FACILITY_METADATA = SimpleRecipeMetadataKey
+        .create(WaferDopingFacilityMetadata.class, "wafer_doping_facility_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> waferDopingFacilityRecipes = RecipeMapBuilder
+        .of("gt.recipe.wafer_doping_facility")
+        .maxIO(4, 1, 0, 0)
+        .minInputs(2, 0)
+        .neiRecipeComparator(
+            Comparator
+                .<GTRecipe>comparingInt(
+                    recipe -> recipe.getMetadataOrDefault(
+                        WAFER_DOPING_FACILITY_METADATA,
+                        WaferDopingFacilityMetadata.DEFAULT).structureTier)
+                .thenComparing(GTRecipe::compareTo))
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .neiHandlerInfo(builder -> builder.setHeight(190))
+        .frontend(WaferDopingFacilityRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> miprRecipes = RecipeMapBuilder.of("gt.recipe.mipr")
+        .maxIO(0, 1, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(MIPRRecipeFrontend::new)
+        .build();
+
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {
         GTRecipeBuilder builder = sourceBuilder.copy()
             .duration(1 * TICK)
@@ -2265,9 +2331,4 @@ public final class RecipeMaps {
             || inputPrefix == OrePrefixes.gemFlawless && outputPrefix == OrePrefixes.gemExquisite;
     }
 
-    public static final RecipeMap<RecipeMapBackend> czRecipes = RecipeMapBuilder.of("gt.recipe.czpuller")
-        .maxIO(1, 1, 1, 0)
-        .minInputs(1, 1)
-        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
-        .build();
 }
