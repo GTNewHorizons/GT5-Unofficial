@@ -39,17 +39,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CropRenderer extends EntityFX {
 
     int[] meta = new int[7 * 3];
-    boolean isOldStructure;
     ExtendedFacing facing;
 
-    public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age,
-        boolean isOldStructure) {
+    public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age) {
         super(world, x, ((double) y - 0.0625d), z);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.particleMaxAge = age;
-        this.isOldStructure = isOldStructure;
         this.facing = extendedFacing;
         for (int i = 0; i < 7 * 3; i++) this.meta[i] = this.rand.nextInt(8);
     }
@@ -75,14 +72,9 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int zmin = -1, zmax = 1;
-        if (!isOldStructure) {
-            zmin = 0;
-            zmax = 6;
-        }
+        int zmin = 0, zmax = 6;
         int i = 0;
         for (int x = -1; x <= 1; x++) for (int z = zmin; z <= zmax; z++) {
-            if (isOldStructure && x == 0 && z == 0) continue;
             double[] abc = new double[] { x, 0, z };
             double[] xyz = new double[] { 0, 0, 0 };
             facing.getWorldOffset(abc, xyz);

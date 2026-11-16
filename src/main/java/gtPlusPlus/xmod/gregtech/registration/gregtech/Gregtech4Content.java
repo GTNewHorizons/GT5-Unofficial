@@ -11,21 +11,18 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT4_Electric_Auto_Workbench_Z
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Multi_Crafter;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Generator;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Tesseract_Terminal;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Thermal_Boiler;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEAutoCrafter;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEThermalBoilerLegacy;
 
 public class Gregtech4Content {
 
     // ID Range 828, 829, 833 - 850
 
     public static void run() {
-        thermalBoiler();
         multiCrafter();
         tesseracts();
         automation();
@@ -67,14 +64,6 @@ public class Gregtech4Content {
         GregtechItemList.GT4_Tesseract_Terminal.set(
             new MTETesseractTerminal(GT4_Tesseract_Terminal.ID, "tesseract.terminal", "Tesseract Terminal", 4)
                 .getStackForm(1L));
-    }
-
-    private static void thermalBoiler() {
-        // Gregtech 4 Thermal Boiler
-        GregtechItemList.GT4_Thermal_Boiler.set(
-            new MTEThermalBoilerLegacy(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
-                .getStackForm(1L));
-
     }
 
     private static void multiCrafter() {
