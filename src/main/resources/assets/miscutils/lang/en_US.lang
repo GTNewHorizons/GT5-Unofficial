@@ -238,9 +238,9 @@ item.itemSulfuricPotion.name=Throwable Vial of Sulfuric Acid
 item.itemHydrofluoricPotion.name=Throwable Vial of Hydrofluoric Acid
 item.itemBaseItemHotFood.tooltip.0=§7Warning: §cVery hot!§7 Avoid direct handling.
 item.itemBaseItemHotFood.tooltip.1=This food has %d seconds left until it is cool.
-item.itemBoilerChassis.name=Advanced Boiler Chassis [Tier %d]
-item.itemDehydratorCoilWire.name=Coil Wire [%s]
-item.itemDehydratorCoil.name=Dehydrator Coil [%s]
+gtpp.boiler_chassis.name=%s Boiler Chassis
+gtpp.dehydrator_coil_wire.name=%s Coil Wire
+gtpp.dehydrator_coil.name=%s Dehydrator Coil
 item.itemLavaFilter.name=Lava Filter
 item.itemLavaFilter.tooltip=Filters Lava within a Thermal Boiler.
 item.itemGrindleTablet.name=Grindle
@@ -1774,9 +1774,6 @@ item.itemSmallGearCastIron.name=Small Cast Iron Gear
 # Misc
 item.itemFoilUranium235.name=Uranium 235 Foil
 
-item.itemBoilerChassis_0.name=Advanced Boiler Chassis [Tier 1]
-item.itemDehydratorCoilWire_0.name=Coil Wire [EV]
-item.itemDehydratorCoil_0.name=Dehydrator Coil [EV]
 item.itemAirFilter.name=Air Filter
 item.itemAirFilter_0.name=Air Filter
 item.itemAirFilter_1.name=Air Filter
