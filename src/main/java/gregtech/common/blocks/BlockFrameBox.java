@@ -20,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.api.IBlockClimbableFromSide;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +30,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IBlockClimbableFromSide;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -49,8 +50,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures,
     public static final int MTE_BIT = 0x1000;
 
     protected final String mUnlocalizedName;
-
-    private static final double CLIMB_INSET = 1D / 16D;
 
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
@@ -261,21 +260,13 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures,
     }
 
     @Override
-    public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
+    public boolean canClimb(EntityLivingBase entity) {
         return Gregtech.general.climbableFrameBox;
     }
 
-    /**
-     * Collision box of a frame box whose horizontal sides are climbable.
-     */
-    public static AxisAlignedBB getClimbableBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(
-            x + CLIMB_INSET,
-            y,
-            z + CLIMB_INSET,
-            x + 1.0D - CLIMB_INSET,
-            y + 1.0D,
-            z + 1.0D - CLIMB_INSET);
+    @Override
+    public boolean isClimbableSide(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+        return !(world.getTileEntity(x, y, z) instanceof ICoverable coverable && coverable.hasCoverAtSide(side));
     }
 
     @Override
@@ -325,9 +316,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures,
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             return gtTE.getMetaTileEntity()
                 .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-        }
-        if (Gregtech.general.climbableFrameBox) {
-            return getClimbableBox(aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }

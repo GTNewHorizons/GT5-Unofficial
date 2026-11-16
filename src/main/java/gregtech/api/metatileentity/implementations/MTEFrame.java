@@ -1,12 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import java.util.List;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -22,7 +17,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
-import gregtech.common.config.Gregtech;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
@@ -103,32 +97,6 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     @Override
     public float getCollisionThickness() {
         return 1.0F;
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        if (!Gregtech.general.climbableFrameBox) {
-            super.addCollisionBoxesToList(world, x, y, z, inputAABB, outputAABB, collider);
-            return;
-        }
-        final IGregTechTileEntity baseEntity = getBaseMetaTileEntity();
-        final AxisAlignedBB box = BlockFrameBox.getClimbableBox(x, y, z);
-        if (baseEntity.hasCoverAtSide(ForgeDirection.WEST)) {
-            box.minX = x;
-        }
-        if (baseEntity.hasCoverAtSide(ForgeDirection.EAST)) {
-            box.maxX = x + 1.0D;
-        }
-        if (baseEntity.hasCoverAtSide(ForgeDirection.NORTH)) {
-            box.minZ = z;
-        }
-        if (baseEntity.hasCoverAtSide(ForgeDirection.SOUTH)) {
-            box.maxZ = z + 1.0D;
-        }
-        if (inputAABB.intersectsWith(box)) {
-            outputAABB.add(box);
-        }
     }
 
     @Override
