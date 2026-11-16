@@ -48,7 +48,6 @@ public abstract class ScrollableOutputFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder, int itemRows, int fluidRows) {
         super(
             uiPropertiesBuilder.logoPos(new Pos2d(8, ORIGIN_Y)),
-            // The space under the last slot is the same as the one above the trigger item
             neiPropertiesBuilder.recipeBackgroundSize(
                 new Size(
                     BACKGROUND_WIDTH,
