@@ -110,7 +110,6 @@ import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
-import gregtech.common.config.Gregtech;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
@@ -284,11 +283,9 @@ public class GTClient extends GTProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new CondensateAnimationTickHandler());
-        if (Gregtech.general.climbableFrameBox) {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(frameBoxClimbHandler);
-        }
+        FMLCommonHandler.instance()
+            .bus()
+            .register(frameBoxClimbHandler);
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
