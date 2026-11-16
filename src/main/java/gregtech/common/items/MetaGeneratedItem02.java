@@ -609,6 +609,9 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         ItemList.IC2_Plantball
             .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
+        ItemList.IC2_PlantballCompressed
+            .set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
+
         ItemList.IC2_BioChaff
             .set(addItemWithLocalizationKeys(BioChaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 
