@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.liquidlogged.api.LiquidLoggedAPI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -43,6 +44,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -245,6 +247,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 oldCover.onCoverRemoval();
             }
             synchronizeCover(cover, side);
+            if (worldObj != null && !worldObj.isRemote && Mods.LiquidLogged.isModLoaded()) {
+                LiquidLoggedAPI.revalidate(worldObj, xCoord, yCoord, zCoord);
+            }
         }
     }
 
