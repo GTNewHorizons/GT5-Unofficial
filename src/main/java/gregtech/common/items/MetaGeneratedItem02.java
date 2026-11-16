@@ -18,6 +18,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.common.items.IDMetaItem02.BioChaff;
 import static gregtech.common.items.IDMetaItem02.Bottle_Alcopops;
 import static gregtech.common.items.IDMetaItem02.Bottle_Apple_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Beer;
@@ -56,7 +57,6 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Vodka;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Hops_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wine;
-import static gregtech.common.items.IDMetaItem02.BioChaff;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiver;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverInternal;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitter;
@@ -609,7 +609,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         ItemList.IC2_Plantball
             .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
-        ItemList.IC2_BioChaff.set(addItemWithLocalizationKeys(BioChaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
+        ItemList.IC2_BioChaff
+            .set(addItemWithLocalizationKeys(BioChaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItemWithLocalizationKeys(
