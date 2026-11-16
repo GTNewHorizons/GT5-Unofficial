@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,7 +48,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
-    // spotless: off
+    // spotless:off
     private static final String[][] structure = {
         { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", "CCCC~CCCC", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
         { "   CAC   ", "  ABFBA  ", " ABFGFBA ", "CBFGDGFBC", "AFGDDDGFA", "CBFGDGFBC", " ABFGFBA ", "  ABFBA  ", "   CAC   " },
@@ -57,7 +56,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
         { "   CEC   ", "  E   E  ", " E     E ", "C   D   C", "E  DDD  E", "C   D   C", " E     E ", "  E   E  ", "   CEC   " },
         { "   CAC   ", "  ABFBA  ", " ABFGFBA ", "CBFGDGFBC", "AFGDDDGFA", "CBFGDGFBC", " ABFGFBA ", "  ABFBA  ", "   CAC   " },
         { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " }, };
-    // spotless: on
+    // spotless:on
     private static IStructureDefinition<MTEElementalDuplicator> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
