@@ -1,3 +1,4 @@
+{hr}
 Factory Grade Advanced Blast Furnace
 Consumes {gold:{var:pyrotheum} {L}/s} of {gold:{fluid:pyrotheum}} during operation
 Constructed exactly the same as a normal EBF

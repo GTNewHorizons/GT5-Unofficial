@@ -632,7 +632,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             }
         }
         return true;
-
     }
 
     public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -811,7 +810,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal, false);
+        foundryData.setModule(index, ordinal, true);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
