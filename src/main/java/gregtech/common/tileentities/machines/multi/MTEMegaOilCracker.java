@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTUtility.powInt;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.text.DecimalFormat;
@@ -31,12 +32,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -48,6 +51,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -67,18 +71,22 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int HYDRO_H2_SAVING_PERCENT = 20;
+    private static final int HYDRO_OUTPUT_BONUS_PERCENT = 25;
+    private static final int STEAM_OUTPUT_BONUS_PERCENT = 50;
+    private static final double EU_USAGE_BASE = 0.9;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 7;
@@ -192,47 +200,41 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker, MOC")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
-                    EnumChatFormatting.DARK_GRAY))
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cracker"))
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText(StatCollector.translateToLocal("gt.mbtt.flavor.mega_oil_cracker")), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("EU Usage = " + TooltipHelper.effText("0.9^") + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
-            .addSeparator()
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo(
-                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
-                    + " less Hydrogen and outputs "
-                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(
-                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
-            .addSeparator()
-            .addSupportAny()
-            .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-oil-cracker"),
+                ImmutableMap.<String, Object>builder()
+                    .put("eu_usage_base", EU_USAGE_BASE)
+                    .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
+                    .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
+                    .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
+                    .build())
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(13, 8, 9, true)
-            .addController("Front bottom center")
-            .addCasing("162", "Any Tiered Glass", true)
-            .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
-            .addCasing("84", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("80", "Heating Coil", true)
-            .addCasing("14", "Naquadah Sheetmetal", false)
-            .addCasing("9", "Steel Pipe Casing", false)
-            .addEnergyHatch("1+", "Any reinforced distillation casing", 1)
-            .addMaintenanceHatch("1", "Any reinforced distillation casing", 1)
-            .addInputBus("0+", "Any reinforced distillation casing", 1)
-            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 2, 3, 4)
-            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 4)
+            .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("162", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("145-151", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("84", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("80", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("14", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("9", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_input_hatches"), 2, 3, 4)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_output_hatch"), 2, 4)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -465,8 +467,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-
-        return GTUtility.powInt(0.9, this.heatLevel.getTier() + 1);
+        return powInt(EU_USAGE_BASE, this.heatLevel.getTier() + 1);
     }
 
     @Override
@@ -502,7 +503,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
-                + dfTwo.format(GTUtility.powInt(0.9, tag.getInteger("coilTier") + 1) * 100)
+                + dfTwo.format(powInt(EU_USAGE_BASE, tag.getInteger("coilTier") + 1) * 100)
                 + "%");
     }
 

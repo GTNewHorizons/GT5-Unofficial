@@ -1,2 +1,2 @@
-Gains 1 §dperfect overclock§7 per casing tier above recipe
-Normal EU OC still applies !
+{color_mechanic:Performs 4/4 Perfect Overclocks} per Casing Tier above Recipe Tier
+Regular Overclocks still apply

@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import vexatos.tgregworks.reference.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
 
 public class PosteaTransformers implements Runnable {
@@ -39,11 +40,42 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2ItemTransformers() {
+        // These are used to convert ic2 items to their new counterparts.
+        // I.e. Uranium235, Uranium238, Plutonium, ect.
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran238",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235small",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutonium",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutoniumsmall",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+            true);
     }
 
     private void registerIC2BlocksTransformer() {
@@ -55,6 +87,13 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager
             .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMachine", 0, ItemList.Casing_LV.getBlock(), 1);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 0, GregTechAPI.sBlockMetal2, 7);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 1, GregTechAPI.sBlockMetal7, 7);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 2, GregTechAPI.sBlockMetal2, 0);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 3, GregTechAPI.sBlockMetal7, 14);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 4, GregTechAPI.sBlockMetal4, 2);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMetal", 5, GregTechAPI.sBlockMetal6, 13);
     }
 
     private void registerFrameboxTransformers() {
@@ -293,6 +332,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -305,6 +345,5 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
-
     }
 }

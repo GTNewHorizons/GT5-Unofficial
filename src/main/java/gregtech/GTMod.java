@@ -5,6 +5,7 @@ import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
+import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipe.setItemStacks;
@@ -110,6 +111,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
+import gregtech.crossmod.liquidlogged.GTFluidHolders;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
@@ -152,7 +154,7 @@ import ic2.api.recipe.RecipeOutput;
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.6.35,);"
         + "required-after:modularui@[1.1.12,);"
-        + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        + "required-after:appliedenergistics2;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
@@ -188,6 +190,7 @@ import ic2.api.recipe.RecipeOutput;
         + "after:TConstruct;"
         + "after:Translocator;"
         + "after:gendustry;"
+        + "after:etfuturum;"
         + "before:computronics;")
 public class GTMod {
 
@@ -385,6 +388,10 @@ public class GTMod {
     public void onInitialization(FMLInitializationEvent event) {
         DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
 
+        if (Mods.LiquidLogged.isModLoaded()) {
+            GTFluidHolders.register();
+        }
+
         if (GregTechAPI.sLoadStarted) {
             return;
         }
@@ -535,18 +542,16 @@ public class GTMod {
         new CraftingRecipeLoader().run();
         GTModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));
         GTModHandler.removeRecipeByOutput(GTModHandler.getIC2Item("machine", 1L));
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("machine", 1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.transferCentrifugeRecipes();
             GTForestryCompat.transferSqueezerRecipes();
+        }
+
+        if (ExtraBees.isModLoaded()) {
+            GTForestryCompat.registerExtraBeesMutatorItems();
         }
 
         AE2Compat.onPostInit();

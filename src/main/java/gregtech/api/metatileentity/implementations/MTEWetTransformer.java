@@ -15,7 +15,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -79,10 +78,9 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormattedWithWarped(
+        return GTSplit.splitLocalizedFormattedWithPrefix(
             "gt.blockmachines.transformer_advanced.desc",
             super.getDescription()[0],
-            CommonValues.TEC_MARK_GENERAL,
             16,
             64,
             8,

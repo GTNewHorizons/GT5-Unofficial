@@ -15,7 +15,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -504,13 +503,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aOreDictName) {
             case "plateAlloyCarbon" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, aStack))
-                    .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-                    .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ULV)
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
@@ -564,7 +556,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 TextureFactory.builder()
                     .addIcon(aMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
-                    .stdOrient()
                     .build()
                 :
                 // or copy Block texture

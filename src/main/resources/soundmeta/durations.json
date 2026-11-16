@@ -11,6 +11,9 @@
     "minecraft:records.stal": 150858,
     "minecraft:records.strad": 188168,
     "minecraft:records.wait": 237886,
-    "minecraft:records.ward": 251393
+    "minecraft:records.ward": 251393,
+
+    "biomesoplenty:records.corruption": 183669,
+    "biomesoplenty:records.wanderer": 289245
   }
 }

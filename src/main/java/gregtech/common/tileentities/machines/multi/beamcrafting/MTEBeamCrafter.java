@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -17,19 +18,20 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,6 +53,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -272,63 +275,26 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2"))
-            .addSeparator()
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5",
-                    MAX_BUFFER))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
-                    MAX_PARALLEL))
+        String anyAcceleratorCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_accelerator_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_crafter"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam-crafter"), ImmutableMap.of("max_buffer", formatNumber(MAX_BUFFER), "parallel", formatNumber(MAX_PARALLEL)))
             .addSeparator()
             .addSupportAny()
             .beginStructureBlock(17, 5, 11, true)
-            .addController("Front center, 3rd layer")
-            .addCasing(
-                "224-227",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing("26", "Any Tiered Glass", false)
-            .addCasing(
-                "16",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
-                "Center of both ends of the structure",
-                2)
-            .addEnergyHatch("1+", "Any accelerator casing", 1)
-            .addInputAny("1+", "Any accelerator casing", 1)
-            .addOutputBus("1+", "Any accelerator casing", 1)
-            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("224-227", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
+            .addCasing("26", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"), false)
+            .addMiscHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.center_of_both_ends"), 2)
+            .addEnergyHatch("1+", anyAcceleratorCasing, 1)
+            .addInputAny("1+", anyAcceleratorCasing, 1)
+            .addOutputBus("1+", anyAcceleratorCasing, 1)
+            .addOutputHatch("0+", anyAcceleratorCasing, 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -353,7 +319,20 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected void incrementProgressTime() {
+        contributeToProgress();
+        if (mProgresstime >= mMaxProgresstime) {
+            currentRecipeCurrentAmountA = 0;
+            currentRecipeCurrentAmountB = 0;
+        }
+    }
 
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        absorbInputParticles();
+        super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    private void absorbInputParticles() {
         for (int n = 0; n < this.mInputBeamline.size(); n++) {
             BeamInformation inputParticle = this.getNthInputParticle(n);
             int id = inputParticle.getParticleId();
@@ -363,12 +342,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
             this.mInputBeamline.get(n)
                 .setContents(null);
-        }
-
-        contributeToProgress();
-        if (mProgresstime >= mMaxProgresstime) {
-            currentRecipeCurrentAmountA = 0;
-            currentRecipeCurrentAmountB = 0;
         }
     }
 
@@ -451,7 +424,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+        }.setEuModifier(0.0D) // Set eu/t to 0 for parallel calculation
             .setMaxParallel(MAX_PARALLEL)
             .setUnlimitedTierSkips();
     }

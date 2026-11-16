@@ -12,8 +12,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -106,9 +107,10 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
-            super.getDescription()[0],
+        return GTSplit.splitLocalizedFormattedWithWarped(
             "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
+            GTPPCore.GT_Tooltip.get(),
             4,
             16,
             2,

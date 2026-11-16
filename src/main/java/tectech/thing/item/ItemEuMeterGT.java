@@ -27,7 +27,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
 import tectech.Reference;
 import tectech.TecTech;
-import tectech.util.CommonValues;
 
 public class ItemEuMeterGT extends Item {
 
@@ -153,7 +152,6 @@ public class ItemEuMeterGT extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.TEC_MARK_GENERAL);
         aList.add(translateToLocal("item.em.EuMeterGT.desc.0")); // Measures basic EU related stuff
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.EuMeterGT.desc.1")); // Just right click on
                                                                                            // blocks.

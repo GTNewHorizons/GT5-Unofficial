@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,10 +28,17 @@ import appeng.integration.abstraction.IFMP;
 import appeng.tile.networking.TileCableBus;
 import codechicken.enderstorage.api.EnderStorageManager;
 import codechicken.enderstorage.common.TileFrequencyOwner;
+import codechicken.lib.raytracer.ExtendedMOP;
 import codechicken.lib.raytracer.RayTracer;
+import codechicken.multipart.BlockMultipart;
+import codechicken.multipart.TMultiPart;
+import codechicken.multipart.TSlottedPart;
+import codechicken.multipart.TileMultipart;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
+import mrtjp.projectred.transmission.IBundledCablePart;
+import mrtjp.projectred.transmission.IInsulatedRedwirePart;
 
 /**
  * Used to provide a consistent interface for dealing with colors of blocks for the various spray can items.
@@ -75,6 +83,10 @@ public abstract class ColoredBlockContainer {
      */
     public abstract Optional<Integer> getColor();
 
+    public ColoredBlockContainer getChainInstance(EntityPlayer player, int x, int y, int z, ForgeDirection side) {
+        return getInstance(player, x, y, z, side);
+    }
+
     private ColoredBlockContainer() {}
 
     public static ColoredBlockContainer getInstance(@NotNull EntityPlayer player,
@@ -112,6 +124,23 @@ public abstract class ColoredBlockContainer {
                     return new AE2ColorableTileContainer(colorableTile, side, player);
                 } else if (tileEntity instanceof final IColoredTileEntity coloredTileEntity) {
                     return new GTColoredBlockContainer(coloredTileEntity);
+                }
+
+                if (Mods.ProjectRedTransmission.isModLoaded() && tileEntity instanceof final TileMultipart multipart) {
+                    final MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+                    if (hit instanceof ExtendedMOP && hit.blockX == x && hit.blockY == y && hit.blockZ == z) {
+                        final int index = (Integer) BlockMultipart.reduceMOP(hit)._1();
+                        final List<TMultiPart> parts = multipart.jPartList();
+                        if (index >= 0 && index < parts.size()) {
+                            final TMultiPart part = parts.get(index);
+                            if ((part instanceof IInsulatedRedwirePart || part instanceof IBundledCablePart)
+                                && part instanceof TSlottedPart slotted) {
+                                return new ProjectRedWireContainer(
+                                    part,
+                                    Integer.numberOfTrailingZeros(slotted.getSlotMask()));
+                            }
+                        }
+                    }
                 }
 
                 if (Mods.EnderStorage.isModLoaded()) {
@@ -326,6 +355,52 @@ public abstract class ColoredBlockContainer {
                 return Optional.empty();
             }
             return Optional.of(colorization);
+        }
+    }
+
+    private static class ProjectRedWireContainer extends ColoredBlockContainer {
+
+        private final TMultiPart wire;
+        private final int slot;
+
+        private ProjectRedWireContainer(TMultiPart wire, int slot) {
+            this.wire = wire;
+            this.slot = slot;
+        }
+
+        @Override
+        public ColoredBlockContainer getChainInstance(EntityPlayer player, int x, int y, int z, ForgeDirection side) {
+            final TileEntity tileEntity = player.getEntityWorld()
+                .getTileEntity(x, y, z);
+            if (tileEntity instanceof TileMultipart multipart) {
+                final TMultiPart nextWire = multipart.partMap(slot);
+                if (nextWire != null && wire.getType()
+                    .equals(nextWire.getType())) {
+                    return new ProjectRedWireContainer(nextWire, slot);
+                }
+            }
+            return NULL_INSTANCE;
+        }
+
+        @Override
+        public boolean setColor(int newColor) {
+            final int color = Dyes.transformDyeIndex(newColor);
+            if (wire instanceof IInsulatedRedwirePart insulated) {
+                return insulated.recolour(color);
+            }
+            return ((IBundledCablePart) wire).recolour(color);
+        }
+
+        @Override
+        public boolean removeColor() {
+            return wire instanceof IBundledCablePart bundled && bundled.recolour(-1);
+        }
+
+        @Override
+        public Optional<Integer> getColor() {
+            final int color = wire instanceof IInsulatedRedwirePart insulated ? insulated.getInsulatedColour()
+                : ((IBundledCablePart) wire).getBundledColour();
+            return color == -1 ? Optional.empty() : Optional.of(Dyes.transformDyeIndex(color));
         }
     }
 

@@ -36,7 +36,7 @@ public class GasSiphonRecipes {
         new GasSiphonRecipe("planet.saturn", 5).addFluid(1, Materials.Hydrogen.getGas(18_000))
             .addFluid(2, Materials.Helium.getGas(800))
             .addFluid(3, Materials.Oxygen.getGas(500))
-            .addFluid(4, Materials.LiquidOxygen.getGas(150))
+            .addFluid(4, Materials.LiquidOxygen.getFluid(150))
             .build();
 
         // T5 (-> 0.5 to 2A of LuV)
