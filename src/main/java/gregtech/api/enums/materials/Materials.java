@@ -1642,6 +1642,9 @@ public class Materials {
             .generateShape(BlockShapes.sheetmetal)
             .build();
         Materials.Boron = MaterialLibAPI.newMaterial("gregtech", "Boron", TextureSet.of("gregtech", "DULL"))
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_DURATION, 20)
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_VOLTAGE, 12)
             .setTint(0xFFD2FAD2)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
@@ -3729,6 +3732,9 @@ public class Materials {
             .generateShape(BlockShapes.sheetmetal)
             .build();
         Materials.Americium = MaterialLibAPI.newMaterial("gregtech", "Americium", TextureSet.of("gregtech", "METALLIC"))
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_DURATION, 20)
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_VOLTAGE, (int) TierEU.RECIPE_LuV)
             .setTint(0xFFC8C8C8)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -9438,6 +9444,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "??????(PO₄)")
             .build();
         Materials.Force = MaterialLibAPI.newMaterial("gregtech", "Force", TextureSet.of("gregtech", "DIAMOND"))
+            .setProperty(GTMaterialProperties.PLASMA_COOLING_DURATION, 160)
             .setTint(0xFFFFFF00)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)

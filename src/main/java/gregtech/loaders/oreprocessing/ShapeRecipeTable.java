@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
@@ -39,6 +40,8 @@ public final class ShapeRecipeTable {
 
     /// Registers every row. Runs from `GTMod`'s `MaterialRegistrationEvent` handler.
     public static void register() {
+        MaterialLibAPI.registerPostInitShapeConsumer("gregtech", FluidShapes.fluidPlasma, ProcessingPlasma::generate);
+
         dustSplit(Shapes.dustSmall);
         dustSplit(Shapes.dustTiny);
 
