@@ -98,8 +98,8 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
         long gasAmount = getGasAmount(currentRecipe, stack);
         if (gasAmount >= 0) {
             currentTip.add(
-                EnumChatFormatting.BLUE + translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatFluid(gasAmount))
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.GRAY
+                    + translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatFluid(gasAmount)));
             return currentTip;
         }
 
