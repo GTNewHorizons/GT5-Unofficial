@@ -16,7 +16,7 @@ public enum IDMetaItem02 {
     GelledToluene(10),
     Dynamite(11),
     PlantBall(20),
-    Chaff(21),
+    BioChaff(21),
     Bottle_Purple_Drink(100),
     Bottle_Grape_Juice(101),
     Bottle_Wine(102),

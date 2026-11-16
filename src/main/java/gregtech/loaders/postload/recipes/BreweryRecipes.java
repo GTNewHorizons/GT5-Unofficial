@@ -467,7 +467,7 @@ public class BreweryRecipes implements Runnable {
         // ic2 biomass recipes
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Chaff.get(1))
+                .itemInputs(ItemList.IC2_BioChaff.get(1))
                 .fluidInputs(Materials.Water.getFluid(1_000))
                 .fluidOutputs(Materials.Biomass.getFluid(1_000))
                 .duration(8 * SECONDS + 10 * TICKS)
@@ -477,7 +477,7 @@ public class BreweryRecipes implements Runnable {
             // Would add 2 different amount of water input if IC2 isn't loaded
             if (IndustrialCraft2.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.Chaff.get(1))
+                    .itemInputs(ItemList.IC2_BioChaff.get(1))
                     .fluidInputs(GTModHandler.getDistilledWater(500L))
                     .fluidOutputs(Materials.Biomass.getFluid(1_000))
                     .duration(10 * TICKS)

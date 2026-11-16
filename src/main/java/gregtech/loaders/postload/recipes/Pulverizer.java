@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.util.GTModHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getIC2Item("iridiumOre", 1))
+            .itemInputs(GTModHandler.getIC2Item("iridiumOre", 1))
             .itemOutputs(WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 1))
             .duration(16 * TICKS)
             .eut(4)
@@ -680,7 +681,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Chaff.get(1))
+            .itemInputs(ItemList.IC2_BioChaff.get(1))
             .itemOutputs(new ItemStack(Blocks.dirt, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)

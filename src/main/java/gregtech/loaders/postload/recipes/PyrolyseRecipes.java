@@ -184,7 +184,7 @@ public class PyrolyseRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Chaff.get(4))
+            .itemInputs(ItemList.IC2_BioChaff.get(4))
             .circuit(1)
             .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(Materials.Biomass.getFluid(5_000))
@@ -193,7 +193,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Chaff.get(1))
+            .itemInputs(ItemList.IC2_BioChaff.get(1))
             .circuit(2)
             .fluidInputs(Materials.Water.getFluid(1_500))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1_500))
