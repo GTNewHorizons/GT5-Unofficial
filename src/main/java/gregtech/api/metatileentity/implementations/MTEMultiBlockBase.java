@@ -1823,6 +1823,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return depleteInputQuantity(aLiquid, simulate) >= GTUtility.getFluidAmount(aLiquid);
     }
 
+    /**
+     * Returns the amount that is actually drained
+     *
+     * @param aLiquid  The liquid to drain, will not be modified.
+     * @param simulate Whether to perform the draining
+     * @return The amount that is drained
+     */
     public long depleteInputQuantity(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return 0;
         final FluidStack remaining = aLiquid.copy();
@@ -3688,7 +3695,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             for (FluidStack fluid : mOutputFluids) {
                 if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid, (long) GTUtility.getFluidAmount(fluid), Long::sum);
+                nameToAmount.merge(fluid, (long) GTUtility.getFluidAmount(fluid), GTUtility::addSafe);
             }
 
             final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()

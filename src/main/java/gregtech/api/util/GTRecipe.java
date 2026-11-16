@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
+import static gregtech.api.util.GTUtility.addSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -566,7 +567,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     long totalAvailable = 0;
                     for (FluidStack provided : fluidInputs) {
                         if (provided != null && provided.isFluidEqual(alt)) {
-                            totalAvailable += GTUtility.getFluidAmount(provided);
+                            totalAvailable = addSafe(totalAvailable, GTUtility.getFluidAmount(provided));
                         }
                     }
                     if (totalAvailable > 0 && GTUtility.getFluidAmount(alt) > 0) {
@@ -1339,8 +1340,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     FluidStack fluid = meHatch.getFirstValidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                    fluidConsumptionsFromME
-                        .merge(fluid.getFluid(), (long) GTUtility.getFluidAmount(fluidConsumptions[i]), Long::sum);
+                    fluidConsumptionsFromME.merge(
+                        fluid.getFluid(),
+                        (long) GTUtility.getFluidAmount(fluidConsumptions[i]),
+                        GTUtility::addSafe);
                 }
             }
             // Calculate parallel from ME input hatches
@@ -1367,8 +1370,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
                 if (fluid == null) return 0;
                 if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                currentParallel = Math
-                    .min(currentParallel, (double) GTUtility.getFluidAmount(fluid) / fluidConsumptions[i].amount);
+                currentParallel = Math.min(
+                    currentParallel,
+                    (double) GTUtility.getFluidAmount(fluid) / GTUtility.getFluidAmount(fluidConsumptions[i]));
                 if (currentParallel <= 0) return 0;
             }
             return currentParallel;

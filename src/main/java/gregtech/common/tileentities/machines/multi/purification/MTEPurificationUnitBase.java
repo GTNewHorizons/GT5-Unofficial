@@ -43,7 +43,6 @@ import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LongFluidStack;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -458,11 +457,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 long amount = GTUtility.getFluidAmount(mOutputFluids[0]);
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
-                    FluidStack waterStack = GTModHandler.getDistilledWater(amount);
-                    if (!(waterStack instanceof LongFluidStack)) {
-                        waterStack = GTUtility.createFluidStack(waterStack);
-                        GTUtility.setFluidAmount(waterStack, amount);
-                    }
+                    FluidStack waterStack = GTUtility.createFluidStack(GTModHandler.getDistilledWater(1));
+                    GTUtility.setFluidAmount(waterStack, amount);
 
                     return waterStack;
                 }

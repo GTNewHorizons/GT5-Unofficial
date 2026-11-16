@@ -20,7 +20,6 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +74,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -607,7 +607,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private void doCompress(List<ItemStack> aList) {
-        HashMap<Integer, Long> merged = new HashMap<>();
+        Map<Integer, Long> merged = new Int2LongOpenHashMap();
         for (ItemStack stack : aList) {
             if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
                 .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
