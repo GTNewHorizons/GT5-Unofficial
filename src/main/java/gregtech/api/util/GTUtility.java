@@ -504,10 +504,6 @@ public class GTUtility {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
     }
 
-    public static String getColoredTierNameForTooltip(int voltageIndex) {
-        return wrapFormatting(GTValues.TIER_COLORS[voltageIndex], GTValues.VN[voltageIndex]);
-    }
-
     /**
      * Applies secondary formatting to tooltip text
      *
@@ -1444,7 +1440,7 @@ public class GTUtility {
     }
 
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
+        return (List<NBTTagCompound>) (List<?>) tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -2328,14 +2324,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2346,8 +2342,8 @@ public class GTUtility {
     public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+        for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) list.tagList) {
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 

@@ -9,8 +9,8 @@ Each cycle increases the {color_electron_volt:Beam Energy} by {color_eu_usage:{E
 until the {color_electron_volt:Target Beam Energy} or the {light_purple:maximum number of cycles} is reached
 If the {color_electron_volt:Target Beam Energy} is reached, adds {color_formula:{var:rate_gain}} * {gold:Beam Rate} to the current {gold:Beam Rate}
 Above a {gold:Beam Rate} of {color_formula:{var:nerf_cutoff}}, adds ({color_formula:{var:rate_gain}} * {gold:Beam Rate})^{dark_red:{var:nerf_power}} instead
-{color_eu_usage:Power} cost starts at {color_amperage:1A} of {var:tier} per {gold:Beam Rate} and grows quadratically with the {light_purple:number of completed cycles}
-{color_eu_usage:P} = ({color_amperage:1A} {var:tier}) * {gold:R} * ({light_purple:N}+1)^2
+{color_eu_usage:Power} cost starts at {color_amperage:1A} of {VNF:tier} per {gold:Beam Rate} and grows quadratically with the {light_purple:number of completed cycles}
+{color_eu_usage:P} = ({color_amperage:1A} {VNF:tier}) * {gold:R} * ({light_purple:N}+1)^2
 Switches to Collider mode automatically when the {light_purple:maximum number of cycles} is reached
 {hr}
 {color_mode:Collider mode}

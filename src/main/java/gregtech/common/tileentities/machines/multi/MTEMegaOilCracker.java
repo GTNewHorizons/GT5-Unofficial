@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -52,6 +51,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -202,38 +202,34 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cracker, MOC")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
-                    EnumChatFormatting.DARK_GRAY))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cracker"))
+            .addInfo(TooltipHelper.coloredText(TooltipHelper.italicText(StatCollector.translateToLocal("gt.mbtt.flavor.mega_oil_cracker")), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
                 new ResourceLocation("gregtech", "mega-oil-cracker"),
                 ImmutableMap.<String, Object>builder()
+                    .put("eu_usage_base", EU_USAGE_BASE)
                     .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
                     .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
                     .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
-                    .put("eu_usage_base", formatNumber(EU_USAGE_BASE))
                     .build())
-            .addSeparator()
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(13, 8, 9, true)
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addController("Front bottom center")
-            .addCasing("162", "Any Tiered Glass", true)
-            .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
-            .addCasing("84", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("80", "Heating Coil", true)
-            .addCasing("14", "Naquadah Sheetmetal", false)
-            .addCasing("9", "Steel Pipe Casing", false)
-            .addEnergyHatch("1+", "Any reinforced distillation casing", 1)
-            .addMaintenanceHatch("1", "Any reinforced distillation casing", 1)
-            .addInputBus("0+", "Any reinforced distillation casing", 1)
-            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 2, 3, 4)
-            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 4)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("162", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("145-151", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("84", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("80", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("14", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("9", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_input_hatches"), 2, 3, 4)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_output_hatch"), 2, 4)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)

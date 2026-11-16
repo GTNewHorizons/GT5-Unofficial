@@ -425,8 +425,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         Map<String, Object> ttVars = new HashMap<>();
-        ttVars.put("normalTier", GTUtility.getColoredTierNameForTooltip(NORMAL_MODE_VOLTAGE_INDEX));
-        ttVars.put("swarmerTier", GTUtility.getColoredTierNameForTooltip(SWARMER_MODE_VOLTAGE_INDEX));
+        ttVars.put("normalTier", NORMAL_MODE_VOLTAGE_INDEX);
+        ttVars.put("swarmerTier", SWARMER_MODE_VOLTAGE_INDEX);
         ttVars.put("bee_acceleration", BEE_ACCELERATION);
         ttVars.put("swarmer_jelly_cost", SWARMER_JELLY_COST);
         ttVars.put("normal_seconds", NORMAL_PROCESSING_TICKS / 20);

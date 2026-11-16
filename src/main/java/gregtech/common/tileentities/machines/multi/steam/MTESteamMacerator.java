@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -22,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +81,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
 
     private IStructureDefinition<MTESteamMacerator> STRUCTURE_DEFINITION = null;
 
@@ -176,11 +175,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMacerator>builder()
                 // spotless:off
-                // TODO remove legacy structure by 2.10/2.11
-                .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
-                    { "AAA", "AAA", "AAA" },
-                    { "A~A", "A-A", "AAA" },
-                    { "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
                     {" A ", "CAC", "C~C", "AAA"},
                     {"ABA", "A A", "A A", "AAA"},
@@ -196,6 +190,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .hint(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
@@ -248,28 +243,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        tierMachineCasing = -1;
-        tierGearboxCasing = -1;
-        tierFrame = -1;
-        casingAmount = 0;
-
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
-            // Legacy structure shape matched — commit to it
-            checkCasingMin(errors, casingAmount, 14);
-            if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
-                tierMachine = tierMachineCasing;
-                updateHatchTexture();
-            } else {
-                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
-                return;
-            }
-            checkHasSteamInput(errors);
-            checkHasSteamInputBus(errors);
-            checkHasSteamOutputBus(errors);
-            return;
-        }
-
-        // Try new structure
         tierMachineCasing = -1;
         tierGearboxCasing = -1;
         tierFrame = -1;

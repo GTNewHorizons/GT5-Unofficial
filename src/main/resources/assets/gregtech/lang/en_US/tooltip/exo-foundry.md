@@ -1,5 +1,5 @@
 Will {bold:not} perform {color_mechanic:overclocks} over the Hatch Tier without modules
-Will {bold:not} process {underline:{var:uiv}+} Voltage Tier recipes without modules
+Will {bold:not} process {tier-color:min_tier_where_modules_needed:{VN:min_tier_where_modules_needed}+} Voltage Tier recipes without modules
 Has {color_tier:{var:tiers} Tiers}, depending on the {color_name:Magnetic Chassis}
 Has {color_amount:{var:slots}} Module Slots, based on Machine Tier
 Each Module Slot has {color_amount:{var:options}} different options

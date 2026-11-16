@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -55,6 +53,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -79,6 +78,7 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactory>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -650,41 +650,36 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Ore Processor, IOF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_processor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "integrated-ore-factory"),
                 ImmutableMap.<String, Object>builder()
                     .put("eut_per_ore", RECIPE_EUT)
-                    .put("lubricant_per_ore", formatFluid(LUBRICANT_PER_ORE))
-                    .put("water_per_ore", formatFluid(WATER_PER_ORE))
-                    .put("fluid_unit", getFluidUnit())
+                    .put("lubricant_per_ore", LUBRICANT_PER_ORE)
+                    .put("water_per_ore", WATER_PER_ORE)
                     .build())
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(15, 9, 13, false)
-            .addController("Front center, 3rd layer")
-            .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
-            .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("98", "Iridium Sheetmetal", false)
-            .addCasing("90", "Any Tiered Glass", false)
-            .addCasing("23", "Stainless Steel Frame Box", false)
-            .addCasing("7", "Awakened Draconium Coil Block", false)
-            .addCasing("7", "Titanium Gear Box Casing", false)
-            .addCasing("7", "Large Sieve Grate", false)
-            .addCasing("7", "Grate Machine Casing", false)
-            .addCasing("7", "Centrifuge Casing", false)
-            .addEnergyHatch("1+", "Any stainless steel casing", 1)
-            .addMufflerHatch("1", "Any stainless steel casing", 1)
-            .addInputBus("1+", "Any stainless steel casing", 1)
-            .addInputHatch("1+", "Any stainless steel casing", 1)
-            .addOutputBus("1+", "Any stainless steel casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("462", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addCasing("0-163", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("98", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Iridium), false)
+            .addCasing("90", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("23", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("7", Casings.ElectrumFluxCoilBlock.getLocalizedName(), false)
+            .addCasing("7", Casings.TitaniumGearBoxCasing.getLocalizedName(), false)
+            .addCasing("7", Casings.LargeSieveGrate.getLocalizedName(), false)
+            .addCasing("7", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("7", Casings.CentrifugeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_stainless_steel_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_stainless_steel_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_stainless_steel_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_stainless_steel_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_stainless_steel_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

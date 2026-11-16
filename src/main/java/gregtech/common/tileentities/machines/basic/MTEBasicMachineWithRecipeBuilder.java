@@ -38,6 +38,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private int fluidTankCapacityOverride = 0;
         private int machineAmperageOverride = 0;
         private int machineEUtMultiplier = 1;
+        private boolean deprecated = false;
         private SpecialEffects specialEffect = SpecialEffects.NONE;
 
         public Builder(int id) {
@@ -138,6 +139,12 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         @Override
+        public OptionalStep setDeprecated() {
+            this.deprecated = true;
+            return this;
+        }
+
+        @Override
         public MTEBasicMachineWithRecipe build() {
             String[] finalDescription = description;
             int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0)
@@ -204,7 +211,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
             if (machineAmperageOverride != 0) {
                 machine.setMachineAmperage(machineAmperageOverride);
             }
-            return machine.setMachineEUtMultiplier(machineEUtMultiplier);
+            return machine.setMachineEUtMultiplier(machineEUtMultiplier)
+                .setDeprecated(deprecated);
         }
     }
 
@@ -258,6 +266,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
         OptionalStep setMachineAmperage(int amperage);
 
         OptionalStep setMachineEUtMultiplier(int multiplier);
+
+        OptionalStep setDeprecated();
 
         MTEBasicMachineWithRecipe build();
     }

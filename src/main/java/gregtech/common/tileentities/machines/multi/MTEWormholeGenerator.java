@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -988,10 +987,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wormhole_generator"))
-            .addMarkdown(new ResourceLocation("gregtech", "wormhole-generator"), ImmutableMap.of("efficiency", formatNumber(TRANSFER_EFFICIENCY * 100.0)))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "wormhole-generator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("transfer_efficiency", TRANSFER_EFFICIENCY * 100)
+                    .put("overclock_limit", MAX_OVERCLOCKS)
+                    .build())
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
             .addEnergyHatchGlassTier()
@@ -1009,7 +1012,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 

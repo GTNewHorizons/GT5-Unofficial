@@ -505,7 +505,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
 
         if (this.requiredTier == null) {
             state = NodeState.InternalError;
@@ -652,6 +651,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     return;
                 }
             }
+        } else {
+            RecipeStep nextStep = getCurrentStep();
+            if (nextStep == null) {
+                state = NodeState.InternalError;
+                return;
+            }
+            setRequiredTier(nextStep.nanite);
         }
     }
 
@@ -926,7 +932,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             List<NaniteTier> tiers = new ArrayList<>();
 
             // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
+            for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 

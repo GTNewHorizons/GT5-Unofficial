@@ -48,8 +48,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -70,6 +72,7 @@ import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAutoclave>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -204,22 +207,22 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave, IAC")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.autoclave"))
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("Front bottom center")
-            .addCasing("128-148", "Pressure Containment Casing", false)
-            .addCasing("42", "PTFE Frame Box", false)
-            .addCasing("42", "Any Tiered Glass", false)
-            .addCasing("14", "Pipe Casing", true)
-            .addCasing("7", "Item Pipe Casing", true)
-            .addCasing("7", "Heating Coil", true)
-            .addEnergyHatch("1+", "Any containment casing", 1)
-            .addMaintenanceHatch("1", "Any containment casing", 1)
-            .addInputAny("1+", "Any containment casing", 1)
-            .addOutputAny("1+", "Any containment casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("128-148", Casings.PressureContainmentCasing.getLocalizedName(), false)
+            .addCasing("42", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("42", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("14", StatCollector.translateToLocal("GT5U.MBTT.Tiers.FluidPipe"), true)
+            .addCasing("7", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addCasing("7", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), true)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PIPE_CASING)

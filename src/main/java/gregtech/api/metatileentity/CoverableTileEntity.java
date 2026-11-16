@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.liquidlogged.api.LiquidLoggedAPI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -44,6 +44,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -59,12 +60,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
-    // TODO DEPRECATED: Remove for 2.9. Only kept around for the name remover
-    @Deprecated
-    public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-        .mapToInt(Enum::ordinal)
-        .mapToObj(i -> "mCoverData" + i)
-        .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
 
     // New Cover Information
@@ -77,10 +72,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     // The actual redstone signal per side, direct modifiers of this are required to issue block update for change.
     // Use `setOutputRedstoneSignal` to modify the redstone output and issue block update on the server if changed.
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    protected byte oldRedstoneData = 63;
     // Use `setStrongRedstone` to automatically send block update on change
     private byte mStrongRedstone = 0;
     // To only issue update to sides that has strong redstone set either previously or currently
     private byte oldStrongRedstone = 0;
+
+    /**
+     * Whether the cover panel on a side is open. Persists after the GUI is closed.
+     */
+    public final boolean[] isCoverOpen = new boolean[] { false, false, false, false, false, false };
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -245,6 +247,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 oldCover.onCoverRemoval();
             }
             synchronizeCover(cover, side);
+            if (worldObj != null && !worldObj.isRemote && Mods.LiquidLogged.isModLoaded()) {
+                LiquidLoggedAPI.revalidate(worldObj, xCoord, yCoord, zCoord);
+            }
         }
     }
 
@@ -277,6 +282,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private void applyCover(@NotNull Cover cover, ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
+            if (cover == CoverRegistry.NO_COVER) {
+                isCoverOpen[side.ordinal()] = false;
+            }
 
             validCoversMask &= (byte) ~side.flag;
             if (cover.isValid()) {
@@ -364,6 +372,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * Sets a new value for strong redstone. If the value is changed, block update is issued automatically.
      */
     public final void setStrongRedstone(byte newStrongRedstone) {
+        if (isClientSide()) return;
         if (newStrongRedstone != mStrongRedstone) {
             mStrongRedstone = newStrongRedstone;
             markDirty();
@@ -397,6 +406,19 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         mNeedsBlockUpdate = false;
     }
 
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        if (isClientSide()) return;
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
         final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
@@ -405,6 +427,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int ordinalSide = side.ordinal();
         if (mSidedRedstone[ordinalSide] != cappedStrength) {
             mSidedRedstone[ordinalSide] = cappedStrength;
+            handleSidedRedstoneChangeServer();
             issueBlockUpdate();
             scheduleTexturePacket();
         }

@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -221,4 +222,10 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     public boolean renderAsNormalBlock() {
         return false;
     }
+
+    @Override
+    public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
+    }
+
 }
