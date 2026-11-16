@@ -50,6 +50,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
@@ -61,6 +62,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
     public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
     public static final int NUMBER_OF_INPUTS = 7;
+    // getRandomIntInRange excludes its upper bound, so the largest rolled amount is one below it
+    public static final int MAGMATTER_MIN_TIME = 1, MAGMATTER_MAX_TIME = 49;
+    public static final int MAGMATTER_MIN_SPACE = 51, MAGMATTER_MAX_SPACE = 99;
 
     private int numberOfFluids = 0;
     private int numberOfItems = 0;
@@ -101,7 +105,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
@@ -120,8 +124,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!recipeInProgress || recipeRegenerated) {
-                    powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
-                        .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
+                    powerForRecipe = predictDrainedEnergy(recipe).multiply(BigInteger.valueOf(actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                         setPlasmaRecipe(null);
                         return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
@@ -164,6 +167,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     .multiply(BigInteger.valueOf(duration * actualParallel));
 
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
 
@@ -240,8 +244,8 @@ public class MTEExoticModule extends MTEBaseModule {
         randomizedItemInput = getRandomItemInputs(exoticModuleMagmatterItemMap, 1);
         numberOfItems = 1;
         numberOfFluids = 2;
-        int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
-        int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
+        int timeAmount = GodforgeMath.getRandomIntInRange(MAGMATTER_MIN_TIME, MAGMATTER_MAX_TIME + 1);
+        int spaceAmount = GodforgeMath.getRandomIntInRange(MAGMATTER_MIN_SPACE, MAGMATTER_MAX_SPACE + 1);
         randomizedFluidInput = new FluidStack[] { Materials.Time.getMolten(timeAmount * 1000L),
             Materials.Space.getMolten(spaceAmount * 1000L) };
 

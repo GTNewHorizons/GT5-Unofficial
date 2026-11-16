@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import crazypants.enderio.Log;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
@@ -28,9 +29,10 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/NeutronSensorFont");
+    private static final IIconContainer textureFont = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons
-        .customOptional("icons/NeutronSensorFont_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
     protected boolean inverted = false;
@@ -73,7 +75,7 @@ public class MTENeutronSensor extends MTEHatch implements IDataCopyable {
      * <li>(suffix) is "k", "K", "m", or "M" (optional)</li>
      * <li>(ev) is the string "ev", case-insensitive.</li>
      * </ul>
-     * Note that operators "==" and "!=" can not be converted exactly, as the new threshold supports only a binary
+     * Note that operators "==" and "!=" cannot be converted exactly, as the new threshold supports only a binary
      * comparison (less than, or greater than or equal). Thus "==" is interpreted in the same way as "<=", and "!=" as
      * ">". This shouldn't be a big problem for real setups, because one should probably not be testing for strict
      * equality here anyway. The possible reasonable conditions "==0eV" and "!=0eV" will continue working as before.

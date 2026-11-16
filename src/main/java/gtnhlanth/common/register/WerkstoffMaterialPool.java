@@ -545,17 +545,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID + 47,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff EuropiumSulfide = new Werkstoff(
-        new short[] { 5, 0, 5 },
-        "Europium Sulfide",
-        subscriptNumbers("EuS"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        offsetID + 48,
-        TextureSet.SET_DULL);
-
     public static final Werkstoff UnknownBlend = new Werkstoff(
         new short[] { 0, 0, 5 },
         "Unknown Blend",
@@ -773,9 +762,9 @@ public class WerkstoffMaterialPool implements Runnable {
             .onlyDust(),
         offsetID2 + 17,
         TextureSet.SET_DULL);
-    public static final Werkstoff LanthaniumChloride = new Werkstoff(
+    public static final Werkstoff LanthanumChloride = new Werkstoff(
         new short[] { 82, 112, 102 },
-        "Lanthanium Chloride",
+        "Lanthanum Chloride",
         subscriptNumbers("LaCl3"),
         new Werkstoff.Stats().setElektrolysis(true),
         Werkstoff.Types.COMPOUND,

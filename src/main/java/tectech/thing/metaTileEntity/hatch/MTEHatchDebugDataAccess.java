@@ -11,12 +11,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.util.GTRecipe;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDebugDataAccess extends MTEHatchDataAccess {
 
     public MTEHatchDebugDataAccess(int aID, String aName, String aNameRegional, int aTier) {
@@ -71,7 +72,7 @@ public class MTEHatchDebugDataAccess extends MTEHatchDataAccess {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.0"),
             translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.dataaccess.desc.2") };
     }

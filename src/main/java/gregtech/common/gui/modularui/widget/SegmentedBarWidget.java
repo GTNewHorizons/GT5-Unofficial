@@ -19,22 +19,31 @@ import com.cleanroommc.modularui.widget.sizer.Area;
 
 public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
-    List<SegmentInfo> segments;
+    Supplier<List<SegmentInfo>> segments;
     int maximum;
     int borderSize;
 
     public SegmentedBarWidget(int maximum, int borderSize, SegmentInfo... segments) {
         this.maximum = maximum;
         this.borderSize = borderSize;
-        this.segments = Arrays.stream(segments)
+        this.segments = () -> Arrays.stream(segments)
             .collect(Collectors.toList());
 
         tooltip().setAutoUpdate(true);
         tooltipBuilder(this::createTooltip);
     }
 
+    public SegmentedBarWidget(int maximum, int borderSize, Supplier<List<SegmentInfo>> segments) {
+        this.maximum = maximum;
+        this.borderSize = borderSize;
+        this.segments = segments;
+
+        tooltip().setAutoUpdate(true);
+        tooltipBuilder(this::createTooltip);
+    }
+
     public void createTooltip(RichTooltip builder) {
-        for (SegmentInfo segment : segments) {
+        for (SegmentInfo segment : segments.get()) {
             if (segment.valueSupplier.get() > 0) {
                 builder.addLine(translateToLocal(segment.labelKey) + ": " + segment.valueSupplier.get());
             }
@@ -45,14 +54,15 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
         Area area = getArea();
 
-        segments.sort(
-            Comparator.comparingInt((SegmentInfo s) -> s.valueSupplier.get())
-                .reversed());
+        segments.get()
+            .sort(
+                Comparator.comparingInt((SegmentInfo s) -> s.valueSupplier.get())
+                    .reversed());
 
         int start = borderSize;
 
         GuiDraw.drawRect(0, 0, area.width, area.height, Color.BLACK.main);
-        for (SegmentInfo segment : segments) {
+        for (SegmentInfo segment : segments.get()) {
 
             // If segment value is zero, display nothing. Otherwise, display size relative to maximum with minimum 1
             // pixel.

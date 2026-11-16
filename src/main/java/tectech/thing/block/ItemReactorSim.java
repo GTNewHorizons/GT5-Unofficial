@@ -10,8 +10,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import tectech.util.CommonValues;
-
 /**
  * Created by danie_000 on 30.09.2017.
  */
@@ -25,7 +23,6 @@ public class ItemReactorSim extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(CommonValues.TEC_MARK_GENERAL);
         aList.add(translateToLocal("tile.reactorSim.desc.0")); // Fission Reaction Uncertainty Resolver 9001
         aList.add(
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("tile.reactorSim.desc.1")); // Explodes,

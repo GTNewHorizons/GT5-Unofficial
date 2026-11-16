@@ -4,11 +4,17 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -46,7 +52,11 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
+import cpw.mods.fml.common.Optional;
+import fox.spiteful.avaritia.items.ItemMatterCluster;
+import fox.spiteful.avaritia.items.ItemStackWrapper;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -67,6 +77,103 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
     private int lastTrueCount;
+    private ItemStack lastMatterClusterOutput;
+    private final InsertionState liveInsertionState = new InsertionState(false);
+
+    private final class InsertionState {
+
+        private final boolean simulated;
+        private ItemStack item;
+        private int count;
+        private ItemStack output;
+        private boolean outputDetached;
+
+        private InsertionState(boolean simulated) {
+            this.simulated = simulated;
+            if (simulated) {
+                item = getItemStack();
+                count = getItemCount();
+                output = mInventory[1];
+            }
+        }
+
+        private ItemStack getStoredItem() {
+            return simulated ? item : getItemStack();
+        }
+
+        private void setStoredItem(ItemStack stack) {
+            if (simulated) item = stack;
+            else setItemStack(stack);
+        }
+
+        private int getStoredCount() {
+            return simulated ? count : getItemCount();
+        }
+
+        private void setStoredCount(int amount) {
+            if (simulated) count = amount;
+            else setItemCount(amount);
+        }
+
+        private ItemStack getOutput() {
+            if (simulated && !outputDetached) {
+                output = GTUtility.copyOrNull(output);
+                outputDetached = true;
+            }
+            return simulated ? output : mInventory[1];
+        }
+
+        private void setOutput(ItemStack stack) {
+            if (simulated) {
+                output = stack;
+                outputDetached = true;
+            } else mInventory[1] = stack;
+        }
+
+        private boolean canReplaceOutputWithMatterCluster(ItemStack storedItem, long storageLimit) {
+            ItemStack currentOutput = getOutput();
+            if (currentOutput == null) return true;
+            return GTUtility.areStacksEqual(currentOutput, storedItem)
+                && (long) getStoredCount() + currentOutput.stackSize <= storageLimit;
+        }
+
+        private void reclaimOutput() {
+            ItemStack currentOutput = getOutput();
+            if (currentOutput == null) return;
+            storeMatterClusterContents(currentOutput, currentOutput.stackSize);
+            setOutput(null);
+        }
+
+        private @Nullable ItemStack getMatterClusterTargetItem() {
+            if (getStoredCount() > 0 && getStoredItem() != null) return getStoredItem();
+            ItemStack currentOutput = getOutput();
+            return currentOutput != null && !isMatterCluster(currentOutput) ? currentOutput : null;
+        }
+
+        private void storeMatterClusterContents(ItemStack storedItem, long itemCount) {
+            if (getStoredCount() <= 0) {
+                ItemStack storedItemCopy = storedItem.copy();
+                storedItemCopy.stackSize = 1;
+                setStoredItem(storedItemCopy);
+            }
+            setStoredCount((int) (getStoredCount() + itemCount));
+        }
+    }
+
+    private static final class MatterClusterEntry {
+
+        private final ItemStack item;
+        private final int itemCount;
+        private final int totalItemCount;
+        private final int entryCount;
+
+        private MatterClusterEntry(ItemStack item, int itemCount, int totalItemCount, int entryCount) {
+            this.item = item;
+            this.itemCount = itemCount;
+            this.totalItemCount = totalItemCount;
+            this.entryCount = entryCount;
+        }
+    }
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -75,8 +182,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items", "Use a screwdriver to enable",
-                "voiding items on overflow", "Will keep its contents when harvested", });
+            new String[] {
+                translateToLocalFormatted("GT5U.machines.digitalchest.tooltip", formatNumber(commonSizeCompute(aTier))),
+                translateToLocal("GT5U.machines.digitalchest.tooltip1"),
+                translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
     protected static int commonSizeCompute(int tier) {
@@ -130,11 +239,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isPrioritized(IAEItemStack iaeItemStack) {
+        ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
+        if (isMatterCluster(stack)) {
+            ItemStack targetItem = liveInsertionState.getMatterClusterTargetItem();
+            return targetItem != null && getMatterClusterEntry(stack, targetItem) != null;
+        }
         return meInventoryHandler.isPrioritized(iaeItemStack);
     }
 
     @Override
     public boolean canAccept(IAEItemStack iaeItemStack) {
+        ItemStack stack = iaeItemStack == null ? null : iaeItemStack.getItemStack();
+        if (isMatterCluster(stack)) {
+            return getMatterClusterEntry(stack, liveInsertionState.getMatterClusterTargetItem()) != null;
+        }
         return meInventoryHandler.canAccept(iaeItemStack);
     }
 
@@ -190,11 +308,196 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        if (isMatterCluster(input.getItemStack())) {
+            if (getBaseMetaTileEntity() == null) return input;
+
+            int previousCount = getItemCount();
+            long remaining = insertMatterClusters(
+                input.getItemStack(),
+                input.getStackSize(),
+                mode == Actionable.SIMULATE,
+                false);
+
+            if (mode == Actionable.MODULATE && getItemCount() != previousCount) {
+                getBaseMetaTileEntity().markDirty();
+            }
+            if (remaining <= 0) return null;
+            return input.copy()
+                .setStackSize(remaining);
+        }
+
         IAEItemStack returnStack = meInventoryHandler.injectItems(input, mode, src);
         if (mVoidOverflow) {
             return null;
         }
         return returnStack;
+    }
+
+    private static boolean isMatterCluster(ItemStack stack) {
+        return stack != null && isMatterCluster(stack.getItem());
+    }
+
+    private static boolean isMatterCluster(Item item) {
+        return Mods.Avaritia.isModLoaded() && isMatterClusterLoaded(item);
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static boolean isMatterClusterLoaded(Item item) {
+        return item instanceof ItemMatterCluster;
+    }
+
+    private long insertMatterClusters(ItemStack cluster, long clusterCount, boolean simulate, boolean forced) {
+        return insertMatterClusters(
+            cluster,
+            clusterCount,
+            simulate ? new InsertionState(true) : liveInsertionState,
+            forced);
+    }
+
+    private long insertMatterClusters(ItemStack cluster, long clusterCount, InsertionState state, boolean forced) {
+        if (clusterCount <= 0) return 0;
+
+        ItemStack currentItem = state.getMatterClusterTargetItem();
+        MatterClusterEntry entry = getMatterClusterEntry(cluster, currentItem);
+        long storageLimit = forced ? Integer.MAX_VALUE : getItemCapacity();
+        if (entry == null) return passMatterClusterThrough(cluster, clusterCount, currentItem, storageLimit, state);
+
+        long storedCount = state.getStoredCount();
+        ItemStack currentOutput = state.getOutput();
+        if (GTUtility.areStacksEqual(currentOutput, entry.item)) storedCount += currentOutput.stackSize;
+        long availableSpace = Math.max(0, storageLimit - storedCount);
+
+        long wholeClusters = getWholeClustersToConsume(entry, clusterCount, availableSpace);
+        if (wholeClusters > 0) {
+            long itemsToStore = Math.min(availableSpace, saturatedMultiply(wholeClusters, entry.itemCount));
+            if (itemsToStore > 0) state.storeMatterClusterContents(entry.item, itemsToStore);
+            if (!state.simulated) getBaseMetaTileEntity().markDirty();
+            clusterCount -= wholeClusters;
+            availableSpace -= itemsToStore;
+            if (clusterCount <= 0 || mVoidOverflow) return clusterCount;
+        }
+
+        return insertPartialMatterCluster(
+            cluster,
+            clusterCount,
+            currentItem,
+            entry,
+            availableSpace,
+            storageLimit,
+            state);
+    }
+
+    private long passMatterClusterThrough(ItemStack cluster, long clusterCount, @Nullable ItemStack currentItem,
+        long storageLimit, InsertionState state) {
+        if (currentItem == null || !state.canReplaceOutputWithMatterCluster(currentItem, storageLimit))
+            return clusterCount;
+
+        state.reclaimOutput();
+        ItemStack output = cluster.copy();
+        output.stackSize = 1;
+        state.setOutput(output);
+        if (!state.simulated) {
+            notifyMatterClusterOutputChange();
+            getBaseMetaTileEntity().markDirty();
+        }
+        return clusterCount - 1;
+    }
+
+    private long getWholeClustersToConsume(MatterClusterEntry entry, long clusterCount, long availableSpace) {
+        if (entry.entryCount != 1) return 0;
+        if (mVoidOverflow) return clusterCount;
+        return Math.min(clusterCount, availableSpace / entry.itemCount);
+    }
+
+    private long insertPartialMatterCluster(ItemStack cluster, long clusterCount, @Nullable ItemStack currentItem,
+        MatterClusterEntry entry, long availableSpace, long storageLimit, InsertionState state) {
+        int itemsToConsume = mVoidOverflow ? entry.itemCount : (int) Math.min(entry.itemCount, availableSpace);
+        if (itemsToConsume <= 0) return clusterCount;
+
+        int remainderCount = entry.totalItemCount - itemsToConsume;
+        boolean needsOutput = remainderCount > 0;
+        if (needsOutput && !state.canReplaceOutputWithMatterCluster(entry.item, storageLimit)) return clusterCount;
+
+        int itemsToStore = (int) Math.min(availableSpace, itemsToConsume);
+        if (itemsToStore > 0) state.storeMatterClusterContents(entry.item, itemsToStore);
+
+        if (needsOutput) {
+            state.reclaimOutput();
+            ItemStack remainder = cluster.copy();
+            remainder.stackSize = 1;
+            removeMatterClusterItems(remainder, entry.item, itemsToConsume, remainderCount);
+            state.setOutput(remainder);
+        }
+
+        if (!state.simulated) {
+            notifyMatterClusterOutputChange();
+            getBaseMetaTileEntity().markDirty();
+        }
+        return clusterCount - 1;
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static @Nullable MatterClusterEntry getMatterClusterEntry(ItemStack cluster,
+        @Nullable ItemStack targetItem) {
+        Map<ItemStackWrapper, Integer> contents = ItemMatterCluster.getClusterData(cluster);
+        if (contents.isEmpty()) return null;
+
+        Map.Entry<ItemStackWrapper, Integer> selected = null;
+        long totalItemCount = 0;
+        for (Map.Entry<ItemStackWrapper, Integer> content : contents.entrySet()) {
+            ItemStack item = content.getKey().stack;
+            int itemCount = content.getValue();
+            if (item == null || item.getItem() == null || itemCount <= 0) return null;
+
+            totalItemCount += itemCount;
+            if (totalItemCount > Integer.MAX_VALUE) return null;
+
+            if (shouldSelectMatterClusterEntry(content, selected, targetItem)) selected = content;
+        }
+
+        if (selected == null || ItemMatterCluster.getClusterSize(cluster) != totalItemCount) return null;
+        return new MatterClusterEntry(
+            selected.getKey().stack,
+            selected.getValue(),
+            (int) totalItemCount,
+            contents.size());
+    }
+
+    private static boolean shouldSelectMatterClusterEntry(Map.Entry<ItemStackWrapper, Integer> candidate,
+        @Nullable Map.Entry<ItemStackWrapper, Integer> selected, @Nullable ItemStack targetItem) {
+        if (targetItem != null) return GTUtility.areStacksEqual(targetItem, candidate.getKey().stack);
+        return selected == null || candidate.getValue() > selected.getValue();
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.AVARITIA)
+    private static void removeMatterClusterItems(ItemStack cluster, ItemStack item, int amount, int remainderCount) {
+        Map<ItemStackWrapper, Integer> contents = ItemMatterCluster.getClusterData(cluster);
+        for (Iterator<Map.Entry<ItemStackWrapper, Integer>> iterator = contents.entrySet()
+            .iterator(); iterator.hasNext();) {
+            Map.Entry<ItemStackWrapper, Integer> content = iterator.next();
+            if (!GTUtility.areStacksEqual(content.getKey().stack, item)) continue;
+
+            int remaining = content.getValue() - amount;
+            if (remaining > 0) content.setValue(remaining);
+            else iterator.remove();
+            break;
+        }
+        ItemMatterCluster.setClusterData(cluster, contents, remainderCount);
+    }
+
+    private void notifyMatterClusterOutputChange() {
+        ItemStack currentOutput = isMatterCluster(mInventory[1]) ? mInventory[1] : null;
+        if (lastMatterClusterOutput != null && !GTUtility.areStacksEqual(lastMatterClusterOutput, currentOutput)) {
+            meInventoryHandler.notifyListeners(-lastMatterClusterOutput.stackSize, lastMatterClusterOutput);
+        }
+        if (currentOutput != null && !GTUtility.areStacksEqual(currentOutput, lastMatterClusterOutput)) {
+            meInventoryHandler.notifyListeners(currentOutput.stackSize, currentOutput);
+        }
+        lastMatterClusterOutput = GTUtility.copyOrNull(currentOutput);
+    }
+
+    private static long saturatedMultiply(long left, int right) {
+        return left > Long.MAX_VALUE / right ? Long.MAX_VALUE : left * right;
     }
 
     @Override
@@ -236,22 +539,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 setItemStack(null);
                 setItemCount(0);
             }
-            if (getItemStack() == null && mInventory[0] != null) {
-                setItemStack(mInventory[0].copy());
-            }
+            int savedCount = getItemCount();
+            insertInputItems();
             int count = getItemCount();
             ItemStack stack = getItemStack();
-            int savedCount = count;
-            final int availableSpace = mVoidOverflow ? getMaxItemCount() : getMaxItemCount() - savedCount;
-
-            if ((mInventory[0] != null) && availableSpace > 0 && GTUtility.areStacksEqual(mInventory[0], stack)) {
-                final int stackToMove = Math.min(mInventory[0].stackSize, availableSpace);
-                count = (int) Math.min((long) count + stackToMove, getMaxItemCount());
-                mInventory[0].stackSize -= stackToMove;
-                if (mInventory[0].stackSize <= 0) {
-                    mInventory[0] = null;
-                }
-            }
             if (mInventory[1] == null && stack != null) {
                 mInventory[1] = stack.copy();
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
@@ -274,7 +565,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             if (mInventory[1] != null) {
                 if (GTUtility.areStacksEqual(mInventory[1], stack)) {
                     extraCount = mInventory[1].stackSize;
-                } else if (stack == null || stack.stackSize <= 0) {
+                } else if (!isMatterCluster(mInventory[1]) && (stack == null || stack.stackSize <= 0)) {
                     extraCount = mInventory[1].stackSize;
                     stack = mInventory[1];
                 }
@@ -283,8 +574,28 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             // notifyListeners has a null check on the stack arg
             meInventoryHandler.notifyListeners(count + extraCount - lastTrueCount, stack);
             lastTrueCount = count + extraCount;
+            notifyMatterClusterOutputChange();
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
+    }
+
+    private void insertInputItems() {
+        if (mInventory[0] == null) return;
+
+        if (isMatterCluster(mInventory[0])) {
+            mInventory[0].stackSize = (int) insertMatterClusters(mInventory[0], mInventory[0].stackSize, false, false);
+            if (mInventory[0].stackSize <= 0) mInventory[0] = null;
+            return;
+        }
+
+        if (getItemStack() == null) setItemStack(mInventory[0].copy());
+        int availableSpace = mVoidOverflow ? getMaxItemCount() : getMaxItemCount() - getItemCount();
+        if (availableSpace <= 0 || !GTUtility.areStacksEqual(mInventory[0], getItemStack())) return;
+
+        int stackToMove = Math.min(mInventory[0].stackSize, availableSpace);
+        setItemCount((int) Math.min((long) getItemCount() + stackToMove, getMaxItemCount()));
+        mInventory[0].stackSize -= stackToMove;
+        if (mInventory[0].stackSize <= 0) mInventory[0] = null;
     }
 
     @Override
@@ -369,6 +680,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (GTUtility.areStacksEqual(getItemStack(), mInventory[1])) {
             lastTrueCount += mInventory[1].stackSize;
         }
+        lastMatterClusterOutput = isMatterCluster(mInventory[1]) ? GTUtility.copy(mInventory[1]) : null;
     }
 
     @Override
@@ -383,6 +695,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
+        if (isMatterCluster(aStack)) return mInventory[0] == null;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
         if (getItemStack() == null) return mInventory[1] == null || GTUtility.areStacksEqual(mInventory[1], aStack);
@@ -459,6 +772,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .setSize(71, 45))
             .widget(
                 new SlotWidget(inventoryHandler, 0)
+                    .setChangeListener(() -> { if (!isMatterCluster(mInventory[0])) insertInputItems(); })
                     .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
@@ -495,27 +809,45 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         }
 
         @Override
-        public @Nullable InventoryIterator simulatedSinkIterator() {
+        public @NotNull InventoryIterator simulatedSinkIterator() {
             return new MTEDigitalChestBaseInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots, true);
+        }
+
+        @Override
+        public OptionalInt simulateStore(ImmutableItemStack stack) {
+            if (stack == null || stack.isEmpty()) return ZERO;
+            // Borrowed input tags stay within this synchronous call
+            return OptionalInt.of(
+                store(stack, new MTEDigitalChestBaseInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots, true, true)));
         }
 
         private class MTEDigitalChestBaseInventoryIterator extends AbstractInventoryIterator {
 
             private final boolean simulated;
+            private final boolean borrowInputTag;
+            private final InsertionState insertionState;
 
             public MTEDigitalChestBaseInventoryIterator(int[] slots, int[] allowedSlots, boolean simulated) {
+                this(slots, allowedSlots, simulated, false);
+            }
+
+            private MTEDigitalChestBaseInventoryIterator(int[] slots, int[] allowedSlots, boolean simulated,
+                boolean borrowInputTag) {
                 super(slots, allowedSlots);
                 this.simulated = simulated;
+                this.borrowInputTag = borrowInputTag;
+                insertionState = simulated ? new InsertionState(true) : liveInsertionState;
             }
 
             @Override
             protected ItemStack getStackInSlot(int slot) {
                 switch (slot) {
                     case 0 -> {
-                        return GTUtility.copyAmountUnsafe(getItemCount(), getItemStack());
+                        return GTUtility
+                            .copyAmountUnsafe(insertionState.getStoredCount(), insertionState.getStoredItem());
                     }
                     case 1 -> {
-                        return GTUtility.copy(mInventory[1]);
+                        return GTUtility.copy(insertionState.getOutput());
                     }
                     default -> {
                         return null;
@@ -524,8 +856,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             }
 
             private boolean hasStack() {
-                ItemStack stack = getItemStack();
-                return stack != null && stack.getItem() != null && getItemCount() > 0;
+                ItemStack stack = insertionState.getStoredItem();
+                return stack != null && stack.getItem() != null && insertionState.getStoredCount() > 0;
             }
 
             @Override
@@ -582,12 +914,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public int insert(ImmutableItemStack stack, boolean forced) {
-                int remaining = stack.getStackSize();
+                Integer matterClusterRemainder = tryInsertMatterClusters(stack, forced);
+                if (matterClusterRemainder != null) return matterClusterRemainder;
 
+                int remaining = stack.getStackSize();
                 if (getCurrentSlot() == 1) {
                     int max = getStackSizeLimit(1, stack.toStackFast());
 
-                    ItemStack stored = mInventory[1];
+                    ItemStack stored = insertionState.getOutput();
 
                     if (!ItemUtil.isStackEmpty(stored) && !stack.matches(stored)) {
                         return remaining;
@@ -597,33 +931,47 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                     int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
 
-                    if (!simulated) {
-                        if (stored == null) mInventory[1] = stack.toStackFast(0);
-
-                        mInventory[1].stackSize += toInsert;
-                    }
+                    if (stored == null) insertionState.setOutput(stack.toStackFast(0));
+                    insertionState.getOutput().stackSize += toInsert;
                     remaining -= toInsert;
                 }
 
-                if (hasStack() && !stack.matches(getItemStack())) {
+                if (hasStack() && !stack.matches(insertionState.getStoredItem())) {
                     return remaining;
                 }
 
-                int insertable = Math.min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
+                int insertable = Math
+                    .min((forced ? Integer.MAX_VALUE : getItemCapacity()) - insertionState.getStoredCount(), remaining);
+
+                if (insertionState.getStoredCount() <= 0) {
+                    insertionState.setStoredItem(borrowInputTag ? stack.toStackFast(0) : stack.toStack(0));
+                }
+
+                insertionState.setStoredCount(insertionState.getStoredCount() + insertable);
 
                 if (!simulated) {
-                    if (getItemCount() <= 0) {
-                        setItemStack(stack.toStack(0));
-                    }
-
-                    setItemCount(getItemCount() + insertable);
-
                     meInventoryHandler.notifyListeners(insertable, getItemStack());
 
                     MTEDigitalChestBase.this.markDirty();
                 }
                 remaining -= insertable;
 
+                return remaining;
+            }
+
+            private @Nullable Integer tryInsertMatterClusters(ImmutableItemStack stack, boolean forced) {
+                if (getCurrentSlot() != 0) return null;
+                if (!isMatterCluster(stack.getItem())) return null;
+
+                ItemStack inputStack = stack.toStackFast();
+
+                int previousCount = insertionState.getStoredCount();
+                int remaining = (int) MTEDigitalChestBase.this
+                    .insertMatterClusters(inputStack, stack.getStackSize(), insertionState, forced);
+                if (!simulated && getItemCount() != previousCount) {
+                    meInventoryHandler.notifyListeners(getItemCount() - previousCount, getItemStack());
+                    MTEDigitalChestBase.this.markDirty();
+                }
                 return remaining;
             }
         }

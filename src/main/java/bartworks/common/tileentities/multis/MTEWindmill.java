@@ -24,16 +24,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -76,10 +79,13 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
@@ -134,6 +140,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                 return true;
             }
 
+            if (block == Blocks.stained_hardened_clay) {
+                t.mHardenedClay++;
+                return true;
+            }
+
             return false;
         }
 
@@ -174,26 +185,57 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }}))
         // spotless:on
         .addElement('p', ofBlockAnyMeta(Blocks.planks))
-        .addElement(
-            'c',
-            ofChain(
-                onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
-                ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
-                onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+        .addElement('c', ofChain(onElementPass(t -> t.mHardenedClay++, new IStructureElement<MTEWindmill>() {
 
-                    private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+            @Override
+            public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                return block == Blocks.hardened_clay || block == Blocks.stained_hardened_clay;
+            }
 
-                    @Override
-                    public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
-                        return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
-                    }
+            @Override
+            public boolean couldBeValid(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
 
-                    @Override
-                    public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
-                        ItemStack trigger) {
-                        return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
-                    }
-                })))
+            @Override
+            public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                Item plainItem = Item.getItemFromBlock(Blocks.hardened_clay);
+                Item stainedItem = Item.getItemFromBlock(Blocks.stained_hardened_clay);
+                return BlocksToPlace.create(is -> {
+                    Item item = is.getItem();
+                    return item == plainItem || item == stainedItem;
+                });
+            }
+        }),
+            ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
+            onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+
+                private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+
+                @Override
+                public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
+                    return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                }
+
+                @Override
+                public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
+                    ItemStack trigger) {
+                    return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
+                }
+            })))
         .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
         .addElement('r', new IStructureElement<>() {
@@ -243,55 +285,32 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill, Macerator")
-            .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
-            .addInfo("Macerates up to" + EnumChatFormatting.GOLD + " 16 " + EnumChatFormatting.GRAY + "items at a time")
-            .addInfo("The amount of parallels is determined by " + EnumChatFormatting.AQUA + "Wind Speed")
-            .addInfo("Parallels determine how many items are processed per recipe")
-            .addInfo("Processing time is the same regardless of parallels")
-            .addInfo(
-                EnumChatFormatting.AQUA + "Wind Speed "
-                    + EnumChatFormatting.GRAY
-                    + "can be determined using the "
-                    + EnumChatFormatting.YELLOW
-                    + "Simple Wind Meter")
-            .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
-            .addInfo("Will not work if wind is non-existent or too strong")
-            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD + "2"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.WHITE
-                    + "Low")
-            .addInfo(
-                EnumChatFormatting.GOLD + "4"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Common")
-            .addInfo(
-                EnumChatFormatting.GOLD + "8"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.GOLD
-                    + "Rather strong")
-            .addInfo(
-                EnumChatFormatting.GOLD + "16"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.DARK_RED
-                    + "Very Strong")
+        final String hardenedClay = Blocks.hardened_clay.getLocalizedName();
+        final MarkdownTooltipLoader markdown = MarkdownTooltipLoader.STANDARD;
+        final List<String> windmillInfo = markdown
+            .loadStandardPath(new ResourceLocation("gregtech", "windmill"), Map.of());
+        final String separator = GTUtility
+            .processFormatStacks(EnumChatFormatting.GRAY + markdown.eval("{gray:{hr}}", Map.of()));
+        final int separatorIndex = windmillInfo.indexOf(separator);
+        windmillInfo.add(
+            separatorIndex >= 0 ? separatorIndex : windmillInfo.size(),
+            TooltipHelper.recipeSlotLimit(getItemOutputLimit()));
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.windmill"))
+            .addInfoAll(windmillInfo.toArray(new String[0]))
             .beginStructureBlock(7, 12, 7, true)
-            .addController("Front bottom center")
-            .addCasing("44", "Bricks", false)
-            .addCasing("40-47", "Terracotta", false)
-            .addCasing("100", "Wooden Planks (any)", false)
-            .addCasing("1", "Primitive Kinetic Shaftbox", false)
-            .addOtherStructurePart("Dispenser", "Any Terracotta", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("44", Blocks.brick_block.getLocalizedName(), false)
+            .addCasing("40-47", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", hardenedClay), false)
+            .addCasing("100", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_type", Blocks.planks.getLocalizedName()), false)
+            .addCasing("1", StatCollector.translateToLocal("tile.BWRotorBlock.0.name"), false)
+            .addOtherStructurePart(
+                Blocks.dispenser.getLocalizedName(),
+                StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_block", hardenedClay),
+                1)
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

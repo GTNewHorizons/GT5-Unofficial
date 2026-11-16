@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -193,7 +194,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 2.0D)
             .enablePerfectOverclock()
             .setMaxParallelSupplier(this::getTrueParallel);
     }

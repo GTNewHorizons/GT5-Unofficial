@@ -15,7 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.TierEU;
 import gregtech.common.blocks.ItemCasings;
-import tectech.util.CommonValues;
 
 public class ItemCasingsBA0 extends ItemCasings {
 
@@ -25,11 +24,6 @@ public class ItemCasingsBA0 extends ItemCasings {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
-        if (aStack.getItemDamage() < 15) {
-            tooltip.add(CommonValues.THETA_MOVEMENT);
-        } else {
-            tooltip.add(CommonValues.COSMIC_MARK);
-        }
         switch (aStack.getItemDamage()) {
             case 0: // "Redstone Alloy Primary Tesla Windings"
             case 1: // "MV Superconductor Primary Tesla Windings"

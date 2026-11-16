@@ -135,12 +135,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
-        .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 2))
+        .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 3))
         .addElement(
             'F',
             buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch, Maintenance)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .hint(3)
+                .hint(2)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
 
         .build();
@@ -163,7 +163,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.ObjectHolder");
+
+        private final String name;
+
+        HolderHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -178,6 +184,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         @Override
         public long count(MTEResearchStation t) {
             return t.eHolders.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -246,13 +262,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("52-58", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
-            .addCasing("23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
+            .addCasing("52-59", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
+            .addCasing("21-23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
             .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"), 2)
+            .addMiscHatch("1", StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"), 3)
             .addMiscHatch("1+", StatCollector.translateToLocal("tt.keyword.Structure.DataInput"), StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing_and_more"), 1, 2)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.tooltip.research-station.footer"))
             .toolTipFinisher();

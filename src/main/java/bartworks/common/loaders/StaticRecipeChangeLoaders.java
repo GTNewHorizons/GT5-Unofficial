@@ -46,7 +46,7 @@ public class StaticRecipeChangeLoaders {
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
             GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
             for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
                 GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
             }
         }
@@ -64,7 +64,7 @@ public class StaticRecipeChangeLoaders {
             if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
                 GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
+                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
                 }
             }
     }

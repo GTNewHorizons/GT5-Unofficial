@@ -12,6 +12,8 @@ import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.recipe.GuiRecipe;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -66,17 +68,12 @@ public class TGSFrontend extends RecipeMapFrontend {
         return UIHelper.getGridPositions(Mode.values().length, OUTPUTS_X, OUTPUTS_Y, 2);
     }
 
-    private static final String[] tooltipInputs = { StatCollector.translateToLocal("gt.nei.tgs.tooltip.saw"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.cutter"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.shears"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.knife") };
+    // Lang keys, translated on use so the tooltips follow an in-game language change
+    private static final String[] tooltipInputKeys = { "gt.nei.tgs.tooltip.saw", "gt.nei.tgs.tooltip.cutter",
+        "gt.nei.tgs.tooltip.shears", "gt.nei.tgs.tooltip.knife" };
 
-    private static final String[] tooltipOutputs = { StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsSaw"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsCutter"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsShears"),
-        StatCollector.translateToLocal("gt.nei.tgs.tooltip.needsKnife") };
-    private static final String tooltipSapling = StatCollector.translateToLocal("gt.nei.tgs.tooltip.sapling");
-    private static final String tooltipMultiplier = StatCollector.translateToLocal("gt.nei.tgs.tooltip.multiplier");
+    private static final String[] tooltipOutputKeys = { "gt.nei.tgs.tooltip.needsSaw", "gt.nei.tgs.tooltip.needsCutter",
+        "gt.nei.tgs.tooltip.needsShears", "gt.nei.tgs.tooltip.needsKnife" };
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
@@ -92,9 +89,13 @@ public class TGSFrontend extends RecipeMapFrontend {
          * inputs/outputs in CachedDefaultRecipe.
          */
 
+        // Match by the slot under the mouse, the hovered stack is not the same instance the slot holds
+        GuiRecipe<?> gui = NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>g ? g : null;
+        if (gui == null) return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
+
         // The last input in neiCachedRecipe is always the special slot, this is the input sapling.
-        if (stack == neiCachedRecipe.mInputs.get(neiCachedRecipe.mInputs.size() - 1).item) {
-            currentTip.add(EnumChatFormatting.YELLOW + tooltipSapling);
+        if (gui.isMouseOver(neiCachedRecipe.mInputs.get(neiCachedRecipe.mInputs.size() - 1), 0)) {
+            currentTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.nei.tgs.tooltip.sapling"));
             super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
             return currentTip;
         }
@@ -107,11 +108,15 @@ public class TGSFrontend extends RecipeMapFrontend {
         for (int mode = 0; mode < MODE_VALUES.length; ++mode) {
             if (mode < recipe.mOreDictAlt.length && recipe.mOreDictAlt[mode] != null) {
                 // There is a valid input in this mode.
-                if (slot < neiCachedRecipe.mInputs.size() && stack == neiCachedRecipe.mInputs.get(slot).item) {
+                if (slot < neiCachedRecipe.mInputs.size() && gui.isMouseOver(neiCachedRecipe.mInputs.get(slot), 0)) {
                     int toolMultiplier = MTETreeFarm.getToolMultiplier(stack, MODE_VALUES[mode]);
-                    currentTip.add(EnumChatFormatting.YELLOW + tooltipInputs[mode]);
+                    currentTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal(tooltipInputKeys[mode]));
                     if (toolMultiplier > 0) {
-                        currentTip.add(EnumChatFormatting.YELLOW + tooltipMultiplier + " " + toolMultiplier + "x");
+                        currentTip.add(
+                            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.nei.tgs.tooltip.multiplier")
+                                + " "
+                                + toolMultiplier
+                                + "x");
                     }
                     return currentTip;
                 }
@@ -124,8 +129,8 @@ public class TGSFrontend extends RecipeMapFrontend {
         for (int mode = 0; mode < MODE_VALUES.length; ++mode) {
             if (mode < recipe.mOutputs.length && recipe.mOutputs[mode] != null) {
                 // There is a valid output in this mode.
-                if (slot < neiCachedRecipe.mOutputs.size() && stack == neiCachedRecipe.mOutputs.get(slot).item) {
-                    currentTip.add(EnumChatFormatting.YELLOW + tooltipOutputs[mode]);
+                if (slot < neiCachedRecipe.mOutputs.size() && gui.isMouseOver(neiCachedRecipe.mOutputs.get(slot), 0)) {
+                    currentTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal(tooltipOutputKeys[mode]));
                     return currentTip;
                 }
                 ++slot;

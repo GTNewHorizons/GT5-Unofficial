@@ -6,7 +6,6 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,14 +16,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
-import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private List<RecipeAssemblyLine> recipes = null;
@@ -96,8 +96,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
     }
 
@@ -111,11 +110,9 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                List<RecipeAssemblyLine> oldRecipes = recipes != null ? new ArrayList<>(recipes) : null;
+                boolean isFirstDownload = recipes == null;
                 this.recipes = wirelessDataStore.downloadData(aTick);
-                // Only notify when the available recipe set changed (by content, not count, so a same-size swap of
-                // wireless data sticks still fires), to avoid re-checking every download cycle.
-                if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
+                if (isFirstDownload || wirelessDataStore.hasNewData(aTick)) notifyWatchers();
             }
         }
     }

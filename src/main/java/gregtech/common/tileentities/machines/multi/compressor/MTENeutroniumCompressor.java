@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.compressor;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -21,7 +20,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,6 +53,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTENeutroniumCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -128,24 +131,25 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutronium Compressor")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.neutronium_compressor"))
             .addStaticParallelInfo(8)
-            .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
-            .addInfo("More advanced singularities will require even stronger compression...")
+            .addMarkdown(new ResourceLocation("gregtech", "neutronium-compressor"))
             .beginStructureBlock(11, 11, 11, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("220-242", "Neutronium Casing", false)
-            .addCasing("108", "Naquadah Alloy Frame Box", false)
-            .addCasing("67", "Neutronium Stabilization Casing", false)
-            .addCasing("63", "Active Neutronium Casing", false)
-            .addCasing("25", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any neutronium casing", 1)
-            .addMaintenanceHatch("1", "Any neutronium casing", 1)
-            .addInputAny("1+", "Any neutronium casing", 1)
-            .addOutputBus("1+", "Any neutronium casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("220-242", Casings.NeutroniumCasing.getLocalizedName(), false)
+            .addCasing("108", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("67", Casings.NeutroniumStabilizationCasing.getLocalizedName(), false)
+            .addCasing("63", Casings.ActiveNeutroniumCasing.getLocalizedName(), false)
+            .addCasing("25", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_neutronium_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_neutronium_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_neutronium_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_neutronium_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(Ollie);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

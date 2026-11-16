@@ -43,7 +43,7 @@ public class NightVisionBehavior implements IArmorBehavior {
             context.getPlayer()
                 .removePotionEffect(Potion.blindness.id);
             context.getPlayer()
-                .addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
+                .addPotionEffect(new PotionEffect(Potion.nightVision.id, 230, 0, true));
         } else {
             removeArmorNightVision(context);
         }

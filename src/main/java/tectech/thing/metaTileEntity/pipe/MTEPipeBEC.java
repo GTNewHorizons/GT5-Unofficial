@@ -21,13 +21,13 @@ import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
-import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 
 public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement {
 
@@ -65,8 +65,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                 .toArray(GTValues.emptyStringArray));
     }
 
-    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0xd3ebed);
-    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0x3d3e41);
+    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0x26252e);
+    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0xdee6e6);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,
@@ -87,12 +87,6 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                 .build());
 
         return textures.toArray(new ITexture[0]);
-    }
-
-    @Override
-    protected void checkActive() {
-        mIsActive = network != null && !network.getComponents(BECInventory.class)
-            .isEmpty();
     }
 
     @Override
@@ -123,16 +117,17 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public void onAdjacentBlockChange(int x, int y, int z) {
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeChanged(BECFactoryElement adjacent) {
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -149,6 +144,11 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
                     }
                 }
             }
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
         }
     }
 
@@ -201,6 +201,8 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public void onColorChangeServer(byte aColor) {
+        super.onColorChangeServer(aColor);
+
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (base == null || base.getTimer() == 0) return;

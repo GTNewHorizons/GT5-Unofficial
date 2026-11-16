@@ -26,18 +26,14 @@ import goodgenerator.blocks.tileEntity.MTECoolantTower;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
-import goodgenerator.blocks.tileEntity.MTEFuelRefineFactoryLegacy;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer1;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
-import goodgenerator.blocks.tileEntity.MTEMultiNqGeneratorLegacy;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
-import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbineLegacy;
-import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngineLegacy;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.crossmod.nei.NEIConfig;
@@ -256,14 +252,10 @@ public class Loaders {
             Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/12", // UXV
             Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/13" // MAX
         });
-    public static ItemStack MAR;
-    public static ItemStack FRF;
-    public static ItemStack UCFE;
     public static ItemStack NS;
     public static ItemStack NA;
     public static ItemStack YFT;
     public static ItemStack YFH;
-    public static ItemStack SCTurbine;
     public static ItemStack XHE;
     public static ItemStack PA;
     public static ItemStack LES;
@@ -280,18 +272,6 @@ public class Loaders {
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
-        Loaders.MAR = new MTEMultiNqGeneratorLegacy(
-            MetaTileEntityIDs.MultiNqGenerator.ID,
-            "NaG",
-            "Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new MTEFuelRefineFactoryLegacy(
-            MetaTileEntityIDs.FuelRefineFactory.ID,
-            "FRF",
-            "Naquadah Fuel Refinery").getStackForm(1L);
-        Loaders.UCFE = new MTEUniversalChemicalFuelEngineLegacy(
-            MetaTileEntityIDs.LegacyUniversalChemicalFuelEngine.ID,
-            "UniversalChemicalFuelEngine",
-            "Universal Chemical Fuel Engine").getStackForm(1L);
         int[] neutronAcceleratorIDs = new int[] { MetaTileEntityIDs.NeutronAcceleratorULV.ID,
             MetaTileEntityIDs.NeutronAcceleratorLV.ID, MetaTileEntityIDs.NeutronAcceleratorMV.ID,
             MetaTileEntityIDs.NeutronAcceleratorHV.ID, MetaTileEntityIDs.NeutronAcceleratorEV.ID,
@@ -303,7 +283,7 @@ public class Loaders {
             Loaders.NeutronAccelerators[i] = new MTENeutronAccelerator(
                 neutronAcceleratorIDs[i],
                 "Neutron Accelerator " + GTValues.VN[i],
-                "Neutron Accelerator " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
         Loaders.NS = new MTENeutronSensor(MetaTileEntityIDs.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
@@ -320,10 +300,6 @@ public class Loaders {
             MetaTileEntityIDs.AntimatterHatch.ID,
             "AntimatterHatch",
             "Antimatter Hatch").getStackForm(1L);
-        Loaders.SCTurbine = new MTESupercriticalFluidTurbineLegacy(
-            MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
-            "SupercriticalSteamTurbine",
-            "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
             MetaTileEntityIDs.ExtremeHeatExchanger.ID,
             "ExtremeHeatExchanger",
@@ -449,6 +425,12 @@ public class Loaders {
         GameRegistry.registerItem(huiCircuit, "huiCircuit", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
+
+        Block[] fieldRestrictionCoils = { FRF_Coil_1, FRF_Coil_2, FRF_Coil_3, FRF_Coil_4 };
+        for (int i = 0; i < fieldRestrictionCoils.length; i++) {
+            GTStructureChannels.FIELD_RESTRICTION_COIL
+                .registerAsIndicator(new ItemStack(fieldRestrictionCoils[i]), i + 1);
+        }
 
         GTStructureChannels.PRASS_UNIT_CASING.registerAsIndicator(new ItemStack(impreciseUnitCasing), 1);
         for (int i = 1; i < 6; i++) {

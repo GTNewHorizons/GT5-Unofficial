@@ -61,6 +61,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -82,8 +83,10 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
+import gregtech.api.net.GTPacketRequestOregenPattern;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
@@ -125,6 +128,7 @@ import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NEIFluidRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
@@ -135,6 +139,7 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -301,6 +306,7 @@ public class GTClient extends GTProxy {
             });
         RenderInit.register();
         Pollution.onPostInitClient();
+        NEIFluidRenderer.register();
 
         ModuleRegistrar.instance()
             .registerTooltipRenderer("waila.gt.progress", new TTRenderGTProgressBar());
@@ -379,6 +385,8 @@ public class GTClient extends GTProxy {
         mFirstTick = false;
         GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
         GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+        // The server pushes this on login, ask again now that there is a world in case that push was missed
+        GTValues.NW.sendToServer(new GTPacketRequestOregenPattern());
 
         if (!Minecraft.getMinecraft()
             .isSingleplayer()) {
@@ -403,7 +411,16 @@ public class GTClient extends GTProxy {
         if (GregTech.ID.equals(e.modID)) {
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GTClientPreference();
+            final boolean renderIndicatorsOnHatch = GTMod.proxy.mRenderIndicatorsOnHatch;
             GTPreLoad.loadClientConfig();
+            GTRendererBlock.clearInventoryDisplayListCache();
+            if (renderIndicatorsOnHatch != GTMod.proxy.mRenderIndicatorsOnHatch) {
+                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                    if (GregTechAPI.METATILEENTITIES[i] instanceof CommonMetaTileEntity metaTileEntity) {
+                        metaTileEntity.clearInventoryTextureCache();
+                    }
+                }
+            }
             if (e.isWorldRunning) {
                 GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
                 GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
@@ -616,9 +633,7 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || (stack.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
-                && player.isSneaking());
+            || (ItemMachines.getMetaTileEntity(stack) instanceof MetaPipeEntity && player.isSneaking());
     }
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
@@ -630,6 +645,9 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+        if (event.world.isRemote) {
+            VacuumConveyorPipeClientStateManager.INSTANCE.clear();
+        }
     }
 
     @SubscribeEvent

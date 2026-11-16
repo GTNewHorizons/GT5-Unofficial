@@ -283,7 +283,7 @@ public class CellLoader implements IWerkstoffRunnable {
             }
             if (!ElementSet) return;
 
-            GTOreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
+            GTOreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell));
 
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             BehaviourDataOrb.setDataTitle(scannerOutput, "Elemental-Scan");

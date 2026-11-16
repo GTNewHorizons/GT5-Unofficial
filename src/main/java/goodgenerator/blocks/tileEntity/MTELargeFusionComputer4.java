@@ -1,14 +1,12 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputerPP;
+import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -19,15 +17,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTELargeFusionComputer4 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer4(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -38,41 +37,8 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("Power Overwhelming!!!")
-            .addInfo(
-                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.AQUA
-                    + formatNumber(capableStartupCanonical() / 32 / M)
-                    + "M"
-                    + EnumChatFormatting.GRAY
-                    + " EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo(
-                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
-                    + EnumChatFormatting.GRAY
-                    + " , you can't do it either")
-            .addInfo("Performs 4/4 overclock")
-            .addInfo(createParallelText())
-            .addSupportAny()
-            .beginStructureBlock(47, 7, 47, false)
-            .addController("Middle center, 4th layer")
-            .addCasing("1662-1695", "Fusion Machine Casing Mk-III", false)
-            .addCasing("560", "Compact Fusion Coil Mk-II Prototype", false)
-            .addCasing("128", "Infinity Catalyst Frame Box", false)
-            .addCasing("63-93", "Neutronium Reinforced Borosilicate Glass Block", false)
-            .addEnergyHatch("1-32", "Specific casings on each curve (UHV+)", 2)
-            .addInputHatch("1+", "Specific glass on each side", 1)
-            .addOutputHatch("1+", "Specific glass on each side", 1)
-            .addStructureInfo("")
-            .addStructureFooter("Supports crafting input buffers")
-            .toolTipFinisher();
-        return tt;
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
@@ -126,11 +92,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 9;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.InfinityCatalyst;
     }
@@ -147,11 +108,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 .addIcon(TexturesGtBlock.Casing_Machine_Screen_1)
                 .extFacing()
                 .build());
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override

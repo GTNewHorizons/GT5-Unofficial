@@ -1,19 +1,24 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -22,11 +27,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.common.gui.modularui.hatch.MTEHatchIONodeControllerGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
+
+    private Lazy<List<String>> tooltip = null;
 
     private Mode mode = Mode.PAUSE_INSTANT;
 
@@ -57,6 +64,8 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {
         super(prototype);
+
+        tooltip = prototype.tooltip;
     }
 
     @Override
@@ -66,13 +75,13 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture baseTexture) {
-        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR) };
+        return new ITexture[] { baseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_HATCH_IO_NODE_CONTROLLER) };
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture baseTexture) {
         return new ITexture[] { baseTexture, TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_NANITE_DETECTOR_GLOW)
+            .addIcon(Textures.BlockIcons.OVERLAY_HATCH_IO_NODE_CONTROLLER_GLOW)
             .glow()
             .build() };
     }
@@ -81,8 +90,26 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         return mode;
     }
 
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
     public boolean receivingSignal() {
         return getBaseMetaTileEntity().getRedstone();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "io-node-controller-hatch"),
+                    new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override
@@ -107,34 +134,11 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchIONodeControllerGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
-    }
-
-    private class Gui extends MTEHatchBaseGui<MTEHatchIONodeController> {
-
-        public Gui() {
-            super(MTEHatchIONodeController.this);
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createContentSection(panel, syncManager)
-                .child(SettingsPanel.builder()
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-mode"),
-                        Mode.class,
-                        () -> mode,
-                        v -> mode = v,
-                        (_, _, button) -> button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip())))
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
     }
 }
