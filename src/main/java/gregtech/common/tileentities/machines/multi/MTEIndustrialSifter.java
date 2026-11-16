@@ -76,7 +76,7 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("45-59",Casings.IndustrialSieveCasing.getLocalizedName(), false)
+            .addCasing("45-59", Casings.IndustrialSieveCasing.getLocalizedName(), false)
             .addCasing("19", Casings.LargeSieveGrate.getLocalizedName(), false)
             .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
