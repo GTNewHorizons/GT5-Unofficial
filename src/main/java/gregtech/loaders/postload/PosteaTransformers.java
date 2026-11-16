@@ -60,7 +60,9 @@ public class PosteaTransformers implements Runnable {
     private void registerBartworksMaterialBlockTransformer(String tileEntityId, Block block) {
         TileEntityReplacementManager.tileEntityTransformer(tileEntityId, (tag, world, chunk) -> {
             if (BlockAccessCompat.getBlockIDAtTE(tag, chunk) != Block.getIdFromBlock(block)) return null;
-            return new BlockInfo(block, Short.toUnsignedInt(tag.getShort("m")));
+            short materialId = tag.getShort("m");
+            if (isWerkstoffRemoved(materialId)) return null;
+            return new BlockInfo(block, materialId > 0 ? materialId : BlockAccessCompat.getBlockMetaAtTE(tag, chunk));
         });
     }
 
