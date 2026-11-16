@@ -697,6 +697,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .paddingRight(2)
             .paddingLeft(4)
             .height(getTextBoxToInventoryGap())
+            .mainAxisAlignment(MainAxis.SPACE_BETWEEN)
             .child(createLeftPanelGapRow(parent, syncManager))
             .child(createRightPanelGapRow(parent, syncManager));
     }
@@ -715,10 +716,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return Flow.row()
             .mainAxisAlignment(MainAxis.END)
-            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .reverseLayout(true)
-            .verticalCenter()
-            .rightRel(0)
             .coverChildrenWidth()
             .fullHeight()
             .childIf(multiblock.supportsPowerPanel(), () -> createPowerPanelButton(syncManager, parent));
