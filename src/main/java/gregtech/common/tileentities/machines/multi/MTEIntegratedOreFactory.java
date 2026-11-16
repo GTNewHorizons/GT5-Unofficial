@@ -74,6 +74,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.ints.Int2LongMap;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -607,7 +608,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private void doCompress(List<ItemStack> aList) {
-        Map<Integer, Long> merged = new Int2LongOpenHashMap();
+        Int2LongMap merged = new Int2LongOpenHashMap();
         for (ItemStack stack : aList) {
             if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
                 .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
