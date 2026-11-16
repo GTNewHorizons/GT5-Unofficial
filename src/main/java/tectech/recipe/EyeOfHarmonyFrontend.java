@@ -1,6 +1,7 @@
 package tectech.recipe;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.TTUtility.toExponentForm;
 
@@ -123,10 +124,13 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.Hydrogen.In",
-                    formatNumber(recipe.getHydrogenRequirement())));
+                    formatNumber(recipe.getHydrogenRequirement()),
+                    getFluidUnit()));
             result.add(
-                StatCollector
-                    .translateToLocalFormatted("EOH.Recipe.Helium.In", formatNumber(recipe.getHydrogenRequirement())));
+                StatCollector.translateToLocalFormatted(
+                    "EOH.Recipe.Helium.In",
+                    formatNumber(recipe.getHeliumRequirement()),
+                    getFluidUnit()));
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.SpacetimeTier",

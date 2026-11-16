@@ -13,7 +13,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -24,6 +23,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -50,29 +50,19 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.electricboiler.name",
-            GTValues.getLocalizedLongVoltageName(tier),
-            GTValues.VN[tier]);
+        return StatCollector.translateToLocal("gt.blockmachines.electricboiler.name");
     }
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            GTSplit.splitLocalizedFormatted(
-                "gt.blockmachines.electricboiler.tier.single.tooltip",
-                formatFluid(steamPerSecond),
-                getPollution()),
-            GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        super.addAdditionalTooltipInformation(stack, tooltip);
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.tooltip.electric.tier.s",
-                GTUtility.getColoredTierNameFromTier((byte) tier)));
+        String[] tierLine = new String[] { StatCollector.translateToLocalFormatted(
+            "GT5U.tooltip.electric.tier.s",
+            GTUtility.getColoredTierNameFromTier((byte) tier)) };
+        String[] body = GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.electricboiler.tier.single.tooltip",
+            formatFluid(steamPerSecond),
+            getPollution());
+        return ArrayUtils.addAll(ArrayUtils.addAll(tierLine, body), GTPPCore.GT_Tooltip.get());
     }
 
     @Override
