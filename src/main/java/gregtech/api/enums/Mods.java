@@ -66,6 +66,7 @@ public enum Mods implements IMod {
     Controlling(ModIDs.CONTROLLING),
     CookingForBlockheads(ModIDs.COOKING_FOR_BLOCKHEADS),
     CoreTweaks(ModIDs.CORE_TWEAKS),
+    CosmeticArmorReworked(ModIDs.COSMETIC_ARMOR_REWORKED),
     CraftTweaker(ModIDs.CRAFT_TWEAKER),
     MineTweaker(ModIDs.MINE_TWEAKER),
     CreativeCore(ModIDs.CREATIVE_CORE),
@@ -410,6 +411,7 @@ public enum Mods implements IMod {
         public static final String CONTROLLING = "controlling";
         public static final String COOKING_FOR_BLOCKHEADS = "cookingforblockheads";
         public static final String CORE_TWEAKS = "coretweaks";
+        public static final String COSMETIC_ARMOR_REWORKED = "cosmeticarmorreworked";
         public static final String CRAFT_TWEAKER = "MineTweaker3",
             MINE_TWEAKER = "MineTweaker3";
         public static final String CREATIVE_CORE = "creativecore";
