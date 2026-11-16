@@ -85,7 +85,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
         return gatherItems(new ItemList());
     }
 
-    private IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
+    protected IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
         ItemStack storedStack = machine.getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);
@@ -221,7 +221,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     public void notifyListeners(int count, ItemStack stack) {
-        if (count == 0 || stack == null) return;
+        if (count == 0 || stack == null || listeners.isEmpty()) return;
         ItemList change = new ItemList();
         AEItemStack s = AEItemStack.create(stack);
         s.setStackSize(count);
