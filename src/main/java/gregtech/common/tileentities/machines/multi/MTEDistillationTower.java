@@ -22,9 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -34,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -56,6 +60,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -75,6 +80,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
             .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
             .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LcL", "LLL" }, }))
+            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 3, 12)
             .addElement(
                 'b',
                 ofChain(
@@ -139,23 +145,26 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("DT")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.distillation_tower"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "distillation-tower"),
+                ImmutableMap.<String, Object>builder().build())
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom center")
-            .addCasing("16-79", "Clean Stainless Steel Machine Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
-            .addMaintenanceHatch("1", "Any casing", 1, 2)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("16-79", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("2-11", StatCollector.translateToLocal("gt.mbtt.structure.one_per_layer_except_bottom"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
-            .addStructureFooter("Minimum casings increases with height (7 x h - 5)")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.distillation_min_casings_height"))
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -315,7 +324,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
         }
@@ -329,7 +338,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);

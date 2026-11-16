@@ -163,7 +163,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.ObjectHolder");
+
+        private final String name;
+
+        HolderHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -178,6 +184,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         @Override
         public long count(MTEResearchStation t) {
             return t.eHolders.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

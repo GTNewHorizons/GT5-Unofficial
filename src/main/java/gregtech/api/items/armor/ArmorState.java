@@ -281,7 +281,7 @@ public class ArmorState {
         }
 
         // noinspection unchecked
-        for (NBTTagString str : (List<NBTTagString>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
+        for (NBTTagString str : (List<NBTTagString>) (List<?>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
             try {
                 BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
                 if (state.behaviors.containsKey(name)) {
@@ -299,7 +299,7 @@ public class ArmorState {
         return state;
     }
 
-    private static final String[] KEPT_TAGS = { "display", "ench" };
+    private static final String[] KEPT_TAGS = { "display", "ench", "Lens", "LensIndex" };
 
     public static void save(ArmorContext context) {
         NBTTagCompound oldTag = context.getArmorStack()

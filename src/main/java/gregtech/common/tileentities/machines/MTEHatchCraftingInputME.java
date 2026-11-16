@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_COLORS;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -73,6 +74,7 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
@@ -103,6 +105,7 @@ import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
+import appeng.util.TunnelPatternExpander;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
@@ -118,10 +121,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.ProxiedMteGui.ProxiedMteGuiData;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
@@ -257,7 +262,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             if (patternDetails != null) {
-                for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
+                List<IAEStack<?>> list;
+                try {
+                    final CraftingGridCache cc = this.parentMTE.getProxy().getGrid().getCache(ICraftingGrid.class);
+                    list = TunnelPatternExpander.expandInputs(patternDetails.getAEInputs(), cc, null);
+                } catch (Exception ignored) {
+                    list = List.of(patternDetails.getAEInputs());
+                }
+
+                for (IAEStack<?> singleInput : list) {
                     switch (singleInput) {
                         case null -> {
                             continue;
@@ -332,33 +345,39 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 fluidStack.amount = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
 
                 if (Gregtech.machines.allowCribDropItems && shouldDrop && fluidStack.amount > 0) {
-                    World world = parentMTE.getBaseMetaTileEntity()
-                        .getWorld();
-
-                    ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
-                    if (fluidPacketItemStack == null) continue;
-
-                    EntityItem entityItem = new EntityItem(
-                        world,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        fluidPacketItemStack);
-                    entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
-                    entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    world.spawnEntityInWorld(entityItem);
+                    dropFluid(fluidStack);
                 }
             }
 
             // Delete zero size stacks
             this.isEmpty();
+        }
+
+        void dropFluid(FluidStack fluidStack) {
+            if (fluidStack.amount <= 0) return;
+            World world = parentMTE.getBaseMetaTileEntity()
+                .getWorld();
+
+            ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
+            if (fluidPacketItemStack == null) return;
+
+            EntityItem entityItem = new EntityItem(
+                world,
+                parentMTE.getBaseMetaTileEntity()
+                    .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                fluidPacketItemStack);
+            entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
+            entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
+            entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
+            world.spawnEntityInWorld(entityItem);
+            fluidStack.amount = 0;
         }
 
         private void insertItem(IAEItemStack inserted) {
@@ -458,7 +477,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4 * 9;
+    public static final int MAX_PATTERN_COUNT = 4 * 9;
     private static final int SLOT_MANUAL_SIZE = 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
@@ -512,8 +531,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_ME_CRAFTING_INPUT_COLORS[color + 1]);
         return new ITexture[] { aBaseTexture,
-            TextureFactory.of(supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS) };
+            TextureFactory.of(supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS),
+            coloredPipeOverlay };
     }
 
     @Override
@@ -967,6 +989,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
     }
 
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings,
+        ProxiedMteGuiData proxyData) {
+        return new MTEHatchCraftingInputMEGui(this, proxyData).build(data, syncManager, uiSettings);
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
@@ -1134,11 +1161,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 NBTTagCompound item = inventory.getCompoundTagAt(i);
                 String name = item.getString("name");
                 long amount = item.getLong("amount");
-                currenttip.add(
-                    name + ": "
-                        + EnumChatFormatting.GOLD
-                        + ReadableNumberConverter.INSTANCE.toWideReadableForm(amount)
-                        + EnumChatFormatting.RESET);
+                currenttip.add(GTWaila.getStackListLine(name, amount));
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -1284,6 +1307,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
         return IntStream.range(0, internalInventory.length)
             .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesInOrder(int[] indices) {
+        return Arrays.stream(indices)
             .mapToObj(i -> internalInventory[i])
             .filter(Objects::nonNull)
             .iterator();
@@ -1445,9 +1475,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             if (slot.getPatternDetails() == null) continue;
 
-            IAEItemStack[] outputs = slot.getPatternDetails()
-                .getCondensedOutputs();
-            list.add(outputs[0].getItemStack());
+            IAEStack<?> output = slot.getPatternDetails()
+                .getCondensedAEOutputs()[0];
+            ItemStack stack = output.getItemStackForNEI();
+            if (stack == null) continue;
+            stack.stackSize = (int) Math.min(Integer.MAX_VALUE, output.getStackSize());
+            list.add(stack);
         }
         return list;
     }

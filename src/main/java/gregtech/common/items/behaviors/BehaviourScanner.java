@@ -1,5 +1,8 @@
 package gregtech.common.items.behaviors;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.api.enums.GTValues.D1;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,12 @@ public class BehaviourScanner extends BehaviourNone {
     /** Deserializes a component from NBT, returns null if the tag is missing or malformed. */
     private static IChatComponent componentFromNBT(NBTTagCompound tag) {
         if (!tag.hasKey("s")) return null;
-        return IChatComponent.Serializer.func_150699_a(tag.getString("s"));
+        try {
+            return IChatComponent.Serializer.func_150699_a(tag.getString("s"));
+        } catch (RuntimeException e) {
+            if (D1) GT_FML_LOGGER.error("Malformed scan line in NBT", e);
+            return null;
+        }
     }
 
     @Override

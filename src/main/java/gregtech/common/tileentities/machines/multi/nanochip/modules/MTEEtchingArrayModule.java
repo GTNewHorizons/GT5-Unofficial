@@ -47,7 +47,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtchingArrayModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ETCHING_OFFSET_X = 3;
     protected static final int ETCHING_OFFSET_Y = 4;
     protected static final int ETCHING_OFFSET_Z = 0;

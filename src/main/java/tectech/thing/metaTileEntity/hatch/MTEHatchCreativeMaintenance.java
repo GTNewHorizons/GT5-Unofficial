@@ -21,7 +21,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
@@ -40,9 +39,9 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.THETA_MOVEMENT,
-            translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.0"), // For automatically maintaining
-                                                                              // Multiblocks
+        return new String[] { translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.0"), // For automatically
+                                                                                                // maintaining
+            // Multiblocks
             translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.1"), // Does fix everything but itself.
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.maintenance.desc.2") // Fixing is
                                                                                                        // for plebs!

@@ -123,7 +123,7 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_Foolish);
         addRecipe(ItemList.Ice_Cream_LawnbaseSpecial);
         addRecipe(ItemList.Ice_Cream_LunarLander);
-        addRecipe(ItemList.Ice_Cream_NaquadaNutSwirl);
+        addRecipe(ItemList.Ice_Cream_NaquadahNutSwirl);
         addRecipe(ItemList.Ice_Cream_NaquadriaPlasmaParfait);
         addRecipe(ItemList.Ice_Cream_NetherStarNutCrunch);
         addRecipe(ItemList.Ice_Cream_NutsAndBolts);

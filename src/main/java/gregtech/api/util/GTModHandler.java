@@ -616,13 +616,12 @@ public class GTModHandler {
      * <p/>
      * Lowercase Letters are reserved for Tools. They are as follows:
      * <p/>
-     * 'b' ToolDictNames.craftingToolBlade 'c' ToolDictNames.craftingToolCrowbar, 'd'
-     * ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile, 'h'
-     * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
-     * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
-     * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
-     * 'x' ToolDictNames.craftingToolWireCutter,
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
         return addCraftingRecipe(aResult, 0, aRecipe);
@@ -638,13 +637,12 @@ public class GTModHandler {
      * <p/>
      * Lowercase Letters are reserved for Tools. They are as follows:
      * <p/>
-     * 'b' ToolDictNames.craftingToolBlade 'c' ToolDictNames.craftingToolCrowbar, 'd'
-     * ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile, 'h'
-     * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
-     * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
-     * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
-     * 'x' ToolDictNames.craftingToolWireCutter,
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
@@ -719,7 +717,7 @@ public class GTModHandler {
                     case  6 -> ItemList.Hull_LuV;
                     case  7 -> ItemList.Hull_ZPM;
                     case  8 -> ItemList.Hull_UV;
-                    default -> ItemList.Hull_MAX;
+                    default -> ItemList.Hull_UHV;
                 };
 
                 case WIRE -> switch (machineTier) {
@@ -1059,10 +1057,6 @@ public class GTModHandler {
                     case 'i' -> {
                         tRecipeList.add(c);
                         tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
-                    }
-                    case 'j' -> {
-                        tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
                     }
                     case 'k' -> {
                         tRecipeList.add(c);
