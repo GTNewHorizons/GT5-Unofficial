@@ -77,6 +77,7 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
 
         return super.createRightPanelGapRow(parent, syncManager).child(
             createDisableableToggleButton(
+                syncManager,
                 overclockSyncer,
                 () -> true,
                 GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_OFF,
