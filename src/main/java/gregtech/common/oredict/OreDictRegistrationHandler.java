@@ -248,7 +248,7 @@ public final class OreDictRegistrationHandler {
 
         Materials material = prefix.isMaterialBased() ? Materials.get(materialName) : Materials._NULL;
 
-        OreDictAliases.registerAliases(oreName, stack);
+        OreDictAliases.registerAliases(oreName, stack, prefix, materialName);
         handleSpecialRegistration(stack, prefix, material, materialName);
         if (material.hasAlias()) {
             API.setAliases(stack, material.getAliasKey());

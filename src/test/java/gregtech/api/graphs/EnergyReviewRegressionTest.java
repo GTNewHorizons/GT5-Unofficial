@@ -16,6 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -31,7 +32,8 @@ class EnergyReviewRegressionTest {
     @CsvSource({ "false, false", "false, true", "true, false", "true, true" })
     void removingOrReplacingBlockingCoverUnlocksExistingGraph(boolean compressed, boolean replace) {
         BaseMetaPipeEntity.clearManagedCables();
-        try (var servers = mockStatic(MinecraftServer.class)) {
+        // attachCover queries Mods.LiquidLogged, which needs FML's Loader.
+        try (var servers = mockStatic(MinecraftServer.class); var loader = mockStatic(Loader.class)) {
             servers.when(MinecraftServer::getServer)
                 .thenReturn(mock(MinecraftServer.class));
             World world = mock(World.class);

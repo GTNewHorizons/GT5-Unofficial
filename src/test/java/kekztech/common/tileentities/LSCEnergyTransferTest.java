@@ -119,7 +119,7 @@ class LSCEnergyTransferTest {
         var capacitors = MTELapotronicSuperCapacitor.class.getDeclaredField("capacitors");
         capacitors.setAccessible(true);
         ((int[]) capacitors.get(lsc))[4] = 1;
-        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap;
+        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP;
         lsc.setCapacity(target.add(BigInteger.valueOf(100)));
         lsc.setStored(target.add(BigInteger.valueOf(50)));
         lsc.setWireless_mode(true);
@@ -162,7 +162,7 @@ class LSCEnergyTransferTest {
         var capacitors = MTELapotronicSuperCapacitor.class.getDeclaredField("capacitors");
         capacitors.setAccessible(true);
         ((int[]) capacitors.get(lsc))[4] = 1;
-        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap;
+        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP;
         BigInteger starting = target.add(BigInteger.valueOf(1_000_000_000_000L));
         lsc.setCapacity(starting);
         lsc.setStored(starting);
@@ -225,9 +225,9 @@ class LSCEnergyTransferTest {
         var capacitors = MTELapotronicSuperCapacitor.class.getDeclaredField("capacitors");
         capacitors.setAccessible(true);
         ((int[]) capacitors.get(lsc))[9] = 1;
-        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap;
+        BigInteger target = kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_WIRELESS_EU_CAP;
         BigInteger transferred = new BigInteger(amount);
-        lsc.setCapacity(kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
+        lsc.setCapacity(kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit.UMV_CAP_STORAGE);
         lsc.setStored(target.add(transferred));
         lsc.setWireless_mode(true);
         lsc.setCounter(Integer.MAX_VALUE - 1);

@@ -21,6 +21,7 @@ public enum TooltipTier {
     TURBINE("GT5U.MBTT.Tiers.Turbine"),
     GLASS("GT5U.MBTT.Tiers.Glass"),
     COMPONENT_ASSEMBLY_LINE_CASING("GT5U.MBTT.Tiers.ComponentAssemblyLineCasing"),
+    FIELD_RESTRICTION_COIL("GT5U.MBTT.Tiers.FieldRestrictionCoil"),
 
     ;
 

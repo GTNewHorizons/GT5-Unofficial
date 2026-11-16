@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -33,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +42,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -52,6 +53,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
@@ -91,6 +93,7 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -580,61 +583,31 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Forge, DTPF")
-            .addInfo("Transcending Dimensional Boundaries.")
-            .addInfo(
-                "Takes " + EnumChatFormatting.RED
-                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
-                    + EnumChatFormatting.GRAY
-                    + " hours of continuous run time to fully breach dimensional")
-            .addInfo(
-                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * maximum_discount)
-                    + "%")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + formatNumber(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime")
-            .addSeparator()
-            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
-            .addInfo(
-                "allowing " + EnumChatFormatting.GOLD
-                    + "Dimensional Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "to occur. To reach the required stability threshold,")
-            .addInfo(
-                "a " + EnumChatFormatting.AQUA
-                    + "Transdimensional Alignment Matrix "
-                    + EnumChatFormatting.GRAY
-                    + "must be placed in the controller")
-            .addInfo(
-                "When " + EnumChatFormatting.GOLD
-                    + "Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "is active, it allows the forge to perform "
-                    + EnumChatFormatting.RED
-                    + "Perfect Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_forge"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "plasma-forge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("hours", formatNumber(max_efficiency_time_in_ticks / (3600 * 20)))
+                    .put("max_discount", formatNumber(100 * maximum_discount))
+                    .put("decay_rate", formatNumber(efficiency_decay_rate))
+                    .build())
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
-            .addController("Middle of the structure, 3rd layer")
-            .addCasing("2121", "Dimensionally Transcendent Casing", false)
-            .addCasing("2112", "Heating Coil", true)
-            .addCasing("1250-1270", "Dimensional Injection Casing", false)
-            .addCasing("120", "Dimensional Bridge", false)
-            .addEnergyHatch("1-2", "Any injection casing", 1)
-            .addInputAny("1+", "Any injection casing", 1)
-            .addOutputAny("1+", "Any injection casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_3rd_layer"))
+            .addCasing("2121", Casings.DimensionallyTranscendentCasing.getLocalizedName(), false)
+            .addCasing("2112", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), true)
+            .addCasing("1250-1270", Casings.DimensionalInjectionCasing.getLocalizedName(), false)
+            .addCasing("120", Casings.DimensionalBridge.getLocalizedName(), false)
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .toolTipFinisher(AuthorColen);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

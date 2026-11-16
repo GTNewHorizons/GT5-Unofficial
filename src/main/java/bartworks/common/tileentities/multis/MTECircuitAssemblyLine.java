@@ -43,6 +43,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -110,12 +111,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
-    /**
-     * This field correspond to the old way of storing imprints in CALs. This is left for backward compatible purposes.
-     * This has been deprecated during the 2.9 dev cycle.
-     */
-    @Deprecated
-    public static final String IMPRINT_KEY = "Type";
     public static final String IMPRINT_ID_KEY = "id_imprint";
     protected static final String LENGTH_KEY = "Length";
 
@@ -138,6 +133,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 2, 7)
         .addElement(
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
@@ -261,18 +257,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey(IMPRINT_KEY)) {// old NBT migration code
-            String name = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(IMPRINT_KEY))
-                .getUnlocalizedName();
-            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
-            }
-        } else {
-            // IDs here will make sure we never shift again
-            if (aNBT.hasKey(IMPRINT_ID_KEY)) {
-                int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
-            }
+        if (aNBT.hasKey(IMPRINT_ID_KEY)) {
+            int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
+            this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
         }
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("RunningMode")) {
@@ -315,13 +302,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
-        GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("chat.cal.mode." + machineMode);
+    public String getMachineModeKey() {
+        return "chat.cal.mode." + machineMode;
     }
 
     @Override
@@ -555,7 +542,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
@@ -568,7 +555,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int built;
         built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivalBuildPiece(STRUCTURE_PIECE_NEXT_HINT, stackSize, -i, 0, 0, elementBudget, env, false, true);

@@ -9,6 +9,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -33,9 +34,11 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private String overlays;
         private boolean hasInputFluidSlot = false;
         private boolean hasOutputFluidSlot = false;
+        private boolean showRecipeOutputLimitTooltip = false;
         private int fluidTankCapacityOverride = 0;
         private int machineAmperageOverride = 0;
         private int machineEUtMultiplier = 1;
+        private boolean deprecated = false;
         private SpecialEffects specialEffect = SpecialEffects.NONE;
 
         public Builder(int id) {
@@ -78,6 +81,12 @@ public final class MTEBasicMachineWithRecipeBuilder {
         public SoundStep setSlotsCount(int inputSlotCount, int outputSlotCount) {
             this.inputSlotCount = inputSlotCount;
             this.outputSlotCount = outputSlotCount;
+            return this;
+        }
+
+        @Override
+        public SoundStep setRecipeOutputLimitTooltip() {
+            this.showRecipeOutputLimitTooltip = true;
             return this;
         }
 
@@ -130,9 +139,16 @@ public final class MTEBasicMachineWithRecipeBuilder {
         }
 
         @Override
+        public OptionalStep setDeprecated() {
+            this.deprecated = true;
+            return this;
+        }
+
+        @Override
         public MTEBasicMachineWithRecipe build() {
             String[] finalDescription = description;
-            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0);
+            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0)
+                + (showRecipeOutputLimitTooltip ? 1 : 0);
             if (extraDescriptionLines > 0) {
                 finalDescription = Arrays.copyOf(description, description.length + extraDescriptionLines);
                 int descriptionIndex = description.length;
@@ -153,6 +169,10 @@ public final class MTEBasicMachineWithRecipeBuilder {
                         + machineAmperageOverride
                         + "A"
                         + EnumChatFormatting.RESET;
+                    descriptionIndex++;
+                }
+                if (showRecipeOutputLimitTooltip) {
+                    finalDescription[descriptionIndex] = TooltipHelper.recipeSlotLimit(outputSlotCount);
                 }
             }
             MTEBasicMachineWithRecipe machine;
@@ -191,7 +211,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
             if (machineAmperageOverride != 0) {
                 machine.setMachineAmperage(machineAmperageOverride);
             }
-            return machine.setMachineEUtMultiplier(machineEUtMultiplier);
+            return machine.setMachineEUtMultiplier(machineEUtMultiplier)
+                .setDeprecated(deprecated);
         }
     }
 
@@ -224,6 +245,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
 
     public interface SoundStep {
 
+        SoundStep setRecipeOutputLimitTooltip();
+
         OverlaysStep setSound(SoundResource sound);
     }
 
@@ -243,6 +266,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
         OptionalStep setMachineAmperage(int amperage);
 
         OptionalStep setMachineEUtMultiplier(int multiplier);
+
+        OptionalStep setDeprecated();
 
         MTEBasicMachineWithRecipe build();
     }

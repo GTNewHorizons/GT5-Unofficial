@@ -1,4 +1,4 @@
-{gray:{hr}}
-Use a {blue:Programmed Circuit} to specify which recipe to run
-{blue:1}=Cobble, {blue:2}=Stone, {blue:3}=Obsidian, {blue:4}=Basalt
-{blue:5}=Deepslate, {blue:6}=Netherrack, {blue:7}=Endstone
+{hr}
+Use a {color_name:Programmed Circuit} to specify which recipe to run
+{color_mode:1}=Cobble, {color_mode:2}=Stone, {color_mode:3}=Obsidian, {color_mode:4}=Basalt
+{color_mode:5}=Deepslate, {color_mode:6}=Netherrack, {color_mode:7}=Endstone

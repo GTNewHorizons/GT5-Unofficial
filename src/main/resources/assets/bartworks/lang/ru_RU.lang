@@ -127,13 +127,10 @@ tooltip.rotor.3.name=Скорость:
 tooltip.rotor.4.name=Выход:
 tooltip.cp.0.name=Имеет Схему внутри?
 
-tooltip.bw.0.name=Добавлено
-tooltip.bw.1.name=Добавлено §abartimaeusnek -
 tooltip.bw.yes.name=Да
 tooltip.bw.no.name=Нет
 tooltip.bw.tier.name=Тир:
 tooltip.bw.empty.name=Пусто
-tooltip.bw.mb_via.name=%s§7 через §2BartWorks
 
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
@@ -212,8 +209,6 @@ nei.biovat.output.tooltip=Выдаёт до 1,001x количества в за�
 tile.diode.name=Кабельный диод
 tile.energydistributor.name=Распределитель энергии
 tile.acidgenerator.name=Кислотный генератор
-tile.bw.mbf.name=Мега электрическая доменная печь
-tile.bw.mvf.name=Мега вакуумный холодильник
 tile.biolab.name=Биолаборатория
 tile.biovat.name=Бактериальный чан
 tile.radiohatch.name=Радио шлюз
@@ -263,8 +258,8 @@ BW.NEI.display.radhatch.1=Масса: %s кг
 BW.NEI.display.radhatch.2=Время: %s сек
 
 tooltip.cal.imprintedWith=Imprinted with: §e%s
-chat.cal.mode.0=Режим: Сборочная линия электросхем
-chat.cal.mode.1=Режим: Сборщик электросхем
+chat.cal.mode.0=Сборочная линия электросхем
+chat.cal.mode.1=Сборщик электросхем
 #Liquids
 
 # bio name

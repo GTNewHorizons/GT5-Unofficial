@@ -15147,7 +15147,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadCalciumCarbide() {
-        return new MaterialBuilder().setName("CacliumCarbide")
+        return new MaterialBuilder().setName("CalciumCarbide")
             .setDefaultLocalName("Calcium Carbide")
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyeGray)

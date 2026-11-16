@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemEnderFluidLinkCover extends Item {
 
@@ -29,7 +28,6 @@ public final class ItemEnderFluidLinkCover extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.tm.enderfluidlinkcover.desc.0")); // Ender-Fluid-Enables Machines!
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.enderfluidlinkcover.desc.1")); // Use on any side
                                                                                                      // of a fluid tank

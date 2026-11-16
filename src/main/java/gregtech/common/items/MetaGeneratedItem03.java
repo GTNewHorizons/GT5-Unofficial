@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -318,7 +317,6 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -2025,7 +2023,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerMetaMaterials();
 
         registerAllTieredTooltips();
-        registerAllAnimatedTooltips();
         initOrePrefixes();
         initOreDictUnificatorEntries();
         registerCovers();
@@ -2170,12 +2167,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
-    }
-
-    private void registerAllAnimatedTooltips() {
-        addItemTooltip(
-            ItemList.Transdimensional_Alignment_Matrix.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
     }
 
     private void initOreDictUnificatorEntries() {

@@ -48,7 +48,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Potato_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Purple_Drink;
 import static gregtech.common.items.IDMetaItem02.Bottle_Reed_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Rum;
-import static gregtech.common.items.IDMetaItem02.Bottle_Salty_Water;
+import static gregtech.common.items.IDMetaItem02.Bottle_Salt_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Scotch;
 import static gregtech.common.items.IDMetaItem02.Bottle_Snitches_Glitch_Sauce;
 import static gregtech.common.items.IDMetaItem02.Bottle_Vinegar;
@@ -798,12 +798,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-        ItemList.Bottle_Salty_Water.set(
+        ItemList.Bottle_Salt_Water.set(
             addItemWithLocalizationKeys(
-                Bottle_Salty_Water.ID,
-                "gt.item.bottle.salty_water.name",
-                "gt.item.bottle.salty_water.tooltip",
-                SubTag.INVISIBLE,
+                Bottle_Salt_Water.ID,
+                "gt.item.bottle.salt_water.name",
+                "gt.item.bottle.salt_water.tooltip",
+                OrePrefixes.bottle.get(Materials.SaltWater),
                 new GTFoodStat(
                     1,
                     0.0F,

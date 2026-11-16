@@ -7,7 +7,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.nei.formatter.FuelSpecialValueFormatter;
+import gregtech.api.recipe.maps.FuelFrontend;
 
 public class BartWorksRecipeMaps {
 
@@ -53,8 +53,8 @@ public class BartWorksRecipeMaps {
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FuelBackend> acidGenFuels = RecipeMapBuilder.of("bw.fuels.acidgens", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(0, 0, 1, 1)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> circuitAssemblyLineRecipes = RecipeMapBuilder.of("bw.recipe.cal")
         .maxIO(6, 1, 1, 0)

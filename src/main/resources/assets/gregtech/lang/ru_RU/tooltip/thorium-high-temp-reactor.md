@@ -1,11 +1,11 @@
 Нагревает хладагент радиоактивным распадом пеллет TRISO
-Для запуска загрузите не менее {gold:{var:min_pebbles} пеллет} и {yellow:{var:helium} {var:unit} гелия}
+Для запуска загрузите не менее {gold:{var:min_pebbles} пеллет} и {yellow:{var:helium} {L} гелия}
 Если пеллет меньше максимума в {var:max_pebbles}, эффективность снижается
-{gray:{hr}}
+{hr}
 Чем ниже эффективность, тем выше стоимость энергии и меньше горячего хладагента
-{white:Стоимость энергии (EU/t) =} {aqua:3,840 / Эффективность}
-{white:Горячий хладагент ({var:unit}/т) =} {red:{var:coolant_rate} * Эффективность}
-{gray:{hr}}
+{color_eu_usage:Стоимость энергии ({EU/t})}{color_formula: = {var:power_usage} / Эффективность}
+{color_hot:Горячий хладагент ({L}/т)}{color_formula: = {var:coolant_rate} * Эффективность}
+{hr}
 Каждая операция длится {light_purple:{var:duration} ч} независимо от числа пеллет
 В начале расходует до {gold:{var:consumption}%} хранимых {gold:пеллет} и весь {yellow:гелий}
 В конце выдаёт выгоревшие пеллеты TRISO

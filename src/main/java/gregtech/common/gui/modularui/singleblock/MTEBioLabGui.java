@@ -37,7 +37,7 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
     }
 
     @Override
-    protected Flow createTopRightCornerFlow() {
+    protected Flow createTopRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         // this is needed to properly position the logo to the left of the power and muffler buttons
         return Flow.row()
             .coverChildren()
