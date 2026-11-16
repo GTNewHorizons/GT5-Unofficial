@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
@@ -156,7 +157,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     finalDescription[descriptionIndex++] = EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.MBTT.PowerUsage")
                         + ": "
-                        + EnumChatFormatting.RED
+                        + EnumChatFormatting.AQUA
                         + (machineEUtMultiplier * 100)
                         + "%"
                         + EnumChatFormatting.RESET;
@@ -165,7 +166,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     finalDescription[descriptionIndex] = EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.MBTT.BaseAmperage")
                         + ": "
-                        + EnumChatFormatting.YELLOW
+                        + GTValues.TIER_COLORS[tier]
                         + machineAmperageOverride
                         + "A"
                         + EnumChatFormatting.RESET;

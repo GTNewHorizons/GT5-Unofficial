@@ -1918,7 +1918,7 @@ GT5U.providesgashazmatprotection=Provides gas protection.
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
-GT5U.MBTT.PowerUsage=Power Usage
+GT5U.MBTT.PowerUsage=EU Usage
 GT5U.MBTT.BaseAmperage=Base Amperage
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions

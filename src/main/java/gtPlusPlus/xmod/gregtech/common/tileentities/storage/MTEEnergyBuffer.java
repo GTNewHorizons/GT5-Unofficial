@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -52,8 +53,11 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils
-            .addAll(GTSplit.splitLocalized("gt.blockmachines.energybuffer.desc"), GTPPCore.GT_Tooltip.get());
+        return ArrayUtils.addAll(
+            GTSplit.splitLocalizedFormatted(
+                "gt.blockmachines.energybuffer.desc",
+                GTValues.TIER_COLORS[mTier] + formatNumber(aCurrentOutputAmperage) + "A" + EnumChatFormatting.GRAY),
+            GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -259,25 +263,14 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;
         final double roundOff = Math.round(c * 100.00) / 100.00;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             playerIn,
-            "Energy: " + formatNumber(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + formatNumber(maxAmperesOut()) + "A");
+            "gtpp.chat.energy_buffer.stored",
+            formatNumber(tempStorage),
+            GTValues.VN[this.mTier],
+            formatNumber(roundOff));
+        GTUtility.sendChatTrans(playerIn, "gtpp.chat.energy_buffer.amperage", formatNumber(maxAmperesOut()));
     }
-    // Utils.LOG_WARNING("Begin Show Energy");
-    /*
-     * //Utils.LOG_INFO("getProgresstime: "+tempStorage+"  maxProgresstime: "+maxEUStore()+"  C: "+c);
-     * Utils.LOG_INFO("getProgressTime: "+getProgresstime()); Utils.LOG_INFO("maxProgressTime: "+maxProgresstime());
-     * Utils.LOG_INFO("getMinimumStoredEU: "+getMinimumStoredEU()); Utils.LOG_INFO("maxEUStore: "+maxEUStore());
-     */
-    /*
-     * final long d = (tempStorage * 100L) / maxEUStore();
-     * Utils.LOG_INFO("getProgresstime: "+tempStorage+"  maxProgresstime: "+maxEUStore()+"  D: "+d); final double
-     * roundOff2 = Math.round(d * 100.00) / 100.00; Utils.messagePlayer(playerIn, "Energy: " + tempStorage +
-     * " EU at "+V[mTier]+"v ("+roundOff2+"%)"); Utils.LOG_WARNING("Making new instance of Guihandler"); GuiHandler
-     * block = new GuiHandler(); Utils.LOG_WARNING("Guihandler.toString(): "+block.toString());
-     * block.getClientGuiElement(1, playerIn, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-     */
 
     @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
@@ -375,6 +368,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             aTest = 1;
         }
         aCurrentOutputAmperage = aTest;
-        GTUtility.sendChatToPlayer(aPlayer, "Now handling " + aCurrentOutputAmperage + " Amps.");
+        GTUtility
+            .sendChatTrans(aPlayer, "gtpp.chat.energy_buffer.amperage_changed", formatNumber(aCurrentOutputAmperage));
     }
 }
