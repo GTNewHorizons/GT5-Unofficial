@@ -159,7 +159,7 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         public boolean explosiveFoodDamage;
 
-        @Config.Comment("If true, players can climb the uncovered horizontal sides of frame boxes like ladders.")
+        @Config.Comment("If true, entities can climb the uncovered horizontal sides of frame boxes like ladders.")
         @Config.DefaultBoolean(true)
         @Config.Name("ClimbableFrameBox")
         @Config.Sync

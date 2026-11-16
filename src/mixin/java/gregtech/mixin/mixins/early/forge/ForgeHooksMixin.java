@@ -1,9 +1,12 @@
 package gregtech.mixin.mixins.early.forge;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -12,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
+import gregtech.api.interfaces.IBlockClimbableFromSide;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -49,6 +53,39 @@ public class ForgeHooksMixin {
             }
         }
         return original;
+    }
+
+    /**
+     * Lets an entity climb a block side it touches, as it climbs a ladder.
+     *
+     * @param original the default ladder state (the default return value)
+     * @param block    the block at the feet of the entity
+     * @param world    the world the entity is in
+     * @param x        the x coordinate of the block
+     * @param y        the y coordinate of the block
+     * @param z        the z coordinate of the block
+     * @param entity   the entity to check
+     * @return true if the entity is on a ladder or touches a climbable block side
+     */
+    @ModifyReturnValue(method = "isLivingOnLadder", at = @At("RETURN"))
+    private static boolean gt$isLivingOnLadder(boolean original, Block block, World world, int x, int y, int z,
+        EntityLivingBase entity) {
+        if (original) {
+            return true;
+        }
+        final AxisAlignedBB box = entity.boundingBox;
+        for (int cellY = MathHelper.floor_double(box.minY); cellY < box.maxY; cellY++) {
+            for (int cellX = MathHelper.floor_double(box.minX); cellX < box.maxX; cellX++) {
+                for (int cellZ = MathHelper.floor_double(box.minZ); cellZ < box.maxZ; cellZ++) {
+                    final Block cellBlock = world.getBlock(cellX, cellY, cellZ);
+                    if (cellBlock instanceof IBlockClimbableFromSide
+                        && cellBlock.isLadder(world, cellX, cellY, cellZ, entity)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }

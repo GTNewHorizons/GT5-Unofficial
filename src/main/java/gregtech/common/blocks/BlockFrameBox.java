@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -27,6 +28,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IBlockClimbableFromSide;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -38,16 +40,17 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.block.ClimbingHelper;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.GTRendererBlock;
 
-public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
+public class BlockFrameBox extends BlockContainer implements IBlockWithTextures, IBlockClimbableFromSide {
 
     public static final int MATERIAL_MASK = 0xFFF;
     public static final int MTE_BIT = 0x1000;
 
     protected final String mUnlocalizedName;
+
+    private static final double CLIMB_INSET = 1D / 16D;
 
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
@@ -248,9 +251,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
-        if (Gregtech.general.climbableFrameBox) {
-            ClimbingHelper.onEntityCollided(aWorld, aX, aY, aZ, collider);
-        }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             gtTE.getMetaTileEntity()
@@ -258,6 +258,24 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public boolean isLadder(IBlockAccess world, int x, int y, int z, EntityLivingBase entity) {
+        return Gregtech.general.climbableFrameBox;
+    }
+
+    /**
+     * Collision box of a frame box whose horizontal sides are climbable.
+     */
+    public static AxisAlignedBB getClimbableBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(
+            x + CLIMB_INSET,
+            y,
+            z + CLIMB_INSET,
+            x + 1.0D - CLIMB_INSET,
+            y + 1.0D,
+            z + 1.0D - CLIMB_INSET);
     }
 
     @Override
@@ -309,7 +327,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
                 .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         if (Gregtech.general.climbableFrameBox) {
-            return ClimbingHelper.getClimbableBox(aX, aY, aZ);
+            return getClimbableBox(aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
