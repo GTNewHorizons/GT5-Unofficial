@@ -7613,7 +7613,7 @@ public class MaterialsInit {
     }
 
     private static Materials loadDistilledWater() {
-        return new MaterialBuilder().setName("DistilledWater")
+        return new MaterialBuilder().setName("ic2distilledwater")
             .setDefaultLocalName("Distilled Water")
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLightBlue)
