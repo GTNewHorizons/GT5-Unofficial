@@ -61,6 +61,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             3,
             new String[] {
                 translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
+                translateToLocalFormatted(
+                    "GT5U.machines.digitaltank.autooutput.rate",
+                    formatNumber(autoOutputLimit(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -455,7 +458,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTank == null) return;
 
-            FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
+            FluidStack tDrained = drain(autoOutputLimit(mTier), false);
             if (tDrained == null) return;
 
             int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
@@ -463,6 +466,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
             }
         }
+    }
+
+    private static int autoOutputLimit(int tier) {
+        return 20 * (1 << (3 + 2 * tierPump(tier)));
     }
 
     @Override
