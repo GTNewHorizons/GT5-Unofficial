@@ -10,7 +10,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
-import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui;
 
 public class PacketHandler {
@@ -21,7 +20,6 @@ public class PacketHandler {
 
     public static void init() {
         registerMessage(PacketVolumetricFlaskGui.class, PacketVolumetricFlaskGui.class);
-        registerMessage(PacketTurbineHatchUpdate.class, PacketTurbineHatchUpdate.class);
     }
 
     /**
