@@ -43,7 +43,7 @@ public class MTENeutronActivatorGui extends TTMultiblockBaseGui<MTENeutronActiva
     public boolean showMaxParallelRow() {
         return false;
     }
-    
+
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
