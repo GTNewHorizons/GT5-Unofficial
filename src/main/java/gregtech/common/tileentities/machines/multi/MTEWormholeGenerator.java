@@ -190,10 +190,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         this.mAllowOverclocks = mAllowOverclocks;
     }
 
-    public WormholeLink getLink() {
-        return mLink;
-    }
-
     @Override
     public boolean supportsPowerPanel() {
         return false;
@@ -793,7 +789,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         }
     }
 
-    public static class WormholeLink {
+    private static class WormholeLink {
 
         private final static Map<Long, WormholeLink> WORMHOLE_GENERATORS = new MapMaker().weakValues()
             .makeMap();
@@ -1157,6 +1153,30 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEWormholeGeneratorGui(this);
+    }
+
+    public String getStatus() {
+        if (mLink == null) {
+            return "GT5U.gui.text.wormhole_generator.missing_entangled_singularity";
+        }
+
+        if (!mLink.isFormed()) {
+            return "GT5U.gui.text.wormhole_generator.status.no_destination";
+        }
+
+        if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
+            return "GT5U.gui.text.wormhole_generator.status.decaying";
+        }
+
+        if (mLink.mWormholeEnergy > 0) {
+            return "GT5U.gui.text.wormhole_generator.status.active";
+        }
+
+        return "GT5U.gui.text.wormhole_generator.status.inactive";
+    }
+
+    public double getWormholeEnergy() {
+        return mLink == null ? -1 : mLink.mWormholeEnergy;
     }
 
     // #endregion
