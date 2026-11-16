@@ -38,10 +38,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
             GregtechItemList.Controller_Vacuum_Furnace.get(1),
             RecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
-        API.removeRecipeCatalyst(
-            GregtechItemList.Controller_IndustrialRockBreaker.get(1),
-            RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
-
         API.removeRecipeCatalyst(ItemList.Boldarnator.get(1), RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
 
         // Hide Flasks

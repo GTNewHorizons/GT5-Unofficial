@@ -112,12 +112,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
-    /**
-     * This field correspond to the old way of storing imprints in CALs. This is left for backward compatible purposes.
-     * This has been deprecated during the 2.9 dev cycle.
-     */
-    @Deprecated
-    public static final String IMPRINT_KEY = "Type";
     public static final String IMPRINT_ID_KEY = "id_imprint";
     protected static final String LENGTH_KEY = "Length";
 
@@ -264,18 +258,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey(IMPRINT_KEY)) {// old NBT migration code
-            String name = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(IMPRINT_KEY))
-                .getUnlocalizedName();
-            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
-            }
-        } else {
-            // IDs here will make sure we never shift again
-            if (aNBT.hasKey(IMPRINT_ID_KEY)) {
-                int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
-            }
+        if (aNBT.hasKey(IMPRINT_ID_KEY)) {
+            int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
+            this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
         }
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("RunningMode")) {

@@ -969,7 +969,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_OreWasher.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
-                ItemList.Hull_MAX.get(1),
+                ItemList.Hull_UHV.get(1),
                 ItemList.Electric_Motor_UHV.get(32),
                 ItemList.Electric_Piston_UHV.get(8),
                 ItemList.Electric_Pump_UHV.get(16),
