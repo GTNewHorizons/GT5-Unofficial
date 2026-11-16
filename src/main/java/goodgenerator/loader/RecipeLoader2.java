@@ -1217,7 +1217,7 @@ public class RecipeLoader2 {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Casing_MAX.get(3),
+                    ItemList.Casing_UHV.get(3),
                     ItemList.Field_Generator_ZPM.get(2),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 4),
                     ItemRefer.HiC_T3.get(1),

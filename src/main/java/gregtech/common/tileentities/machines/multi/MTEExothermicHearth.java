@@ -216,7 +216,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("1800-1904", Casings.HearthCasing.getLocalizedName(), false)
+            .addCasing("1800-1900", Casings.HearthCasing.getLocalizedName(), false)
             .addCasing("937", Casings.HeatProofMachineCasing.getLocalizedName(), false)
             .addCasing("864", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("780", Casings.ThermalContainmentCasing.getLocalizedName(), false)
@@ -522,6 +522,6 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MEGA_BLAST_FURNACE_LOOP;
+        return SoundResource.GT_MACHINES_EXOTHERMIC_HEARTH_LOOP;
     }
 }

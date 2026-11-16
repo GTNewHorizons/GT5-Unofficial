@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
@@ -132,7 +134,8 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cracker, OCU")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.oil_cracker"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "oil-cracker"),
                 ImmutableMap.<String, Object>builder()
@@ -143,16 +146,16 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
                     .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
                     .build())
             .beginStructureBlock(5, 3, 3, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("18-20", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("16", "Heating Coil", true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("18-20", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addStructureHint("GT5U.cracker.io_side")
-            .addEnergyHatch("1+", "Any casing", 1, 2, 3)
-            .addMaintenanceHatch("1", "Any casing", 1, 2, 3)
-            .addInputBus("0+", "Any middle casing", 1)
-            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 1, 2, 3)
-            .addOutputHatch("1", "Any side casing opposite the hydrocarbon", 2, 3)
-            .addAir("Interior of the structure")
+            .addEnergyHatch("1+", anyCasing, 1, 2, 3)
+            .addMaintenanceHatch("1", anyCasing, 1, 2, 3)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_middle_casing"), 1)
+            .addInputHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_input_hatches"), 1, 2, 3)
+            .addOutputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.mega_oil_cracker_output_hatch"), 2, 3)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
