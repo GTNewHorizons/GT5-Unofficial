@@ -251,12 +251,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
-
-    protected final List<MTEHatchInputBeamline> mBeamlineInputHatches = new ArrayList<>();
-    protected final List<MTEHatchOutputBeamline> mBeamlineOutputHatches = new ArrayList<>();
-    protected final List<MTEBusInputFocus> mFocusInputBuses = new ArrayList<>();
-
-    protected final List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
+    protected List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
 
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
@@ -563,9 +558,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
         mPyrotheumHatches.clear();
-        mBeamlineInputHatches.clear();
-        mBeamlineOutputHatches.clear();
-        mFocusInputBuses.clear();
         mElementalDataOrbHatches.clear();
         doPeriodicChecks = false;
 
