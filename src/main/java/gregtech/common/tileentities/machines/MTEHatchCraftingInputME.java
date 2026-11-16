@@ -345,33 +345,39 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 GTUtility.setFluidAmount(fluidStack, rest != null && rest.getStackSize() > 0 ? rest.getStackSize() : 0);
 
                 if (Gregtech.machines.allowCribDropItems && shouldDrop && GTUtility.getFluidAmount(fluidStack) > 0) {
-                    World world = parentMTE.getBaseMetaTileEntity()
-                        .getWorld();
-
-                    ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
-                    if (fluidPacketItemStack == null) continue;
-
-                    EntityItem entityItem = new EntityItem(
-                        world,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        fluidPacketItemStack);
-                    entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
-                    entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    world.spawnEntityInWorld(entityItem);
+                    dropFluid(fluidStack);
                 }
             }
 
             // Delete zero size stacks
             this.isEmpty();
+        }
+
+        void dropFluid(FluidStack fluidStack) {
+            if (GTUtility.getFluidAmount(fluidStack) <= 0) return;
+            World world = parentMTE.getBaseMetaTileEntity()
+                .getWorld();
+
+            ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
+            if (fluidPacketItemStack == null) return;
+
+            EntityItem entityItem = new EntityItem(
+                world,
+                parentMTE.getBaseMetaTileEntity()
+                    .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                fluidPacketItemStack);
+            entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
+            entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
+            entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
+            world.spawnEntityInWorld(entityItem);
+            GTUtility.setFluidAmount(fluidStack, 0);
         }
 
         private void insertItem(IAEItemStack inserted) {

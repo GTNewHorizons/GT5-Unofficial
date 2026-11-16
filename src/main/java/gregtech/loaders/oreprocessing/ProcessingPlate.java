@@ -556,7 +556,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 TextureFactory.builder()
                     .addIcon(aMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
-                    .stdOrient()
                     .build()
                 :
                 // or copy Block texture
