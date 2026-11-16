@@ -2,10 +2,9 @@ package gregtech.common.gui.modularui.hatch;
 
 import java.util.Locale;
 
-import net.minecraft.util.StatCollector;
-
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
@@ -32,14 +31,13 @@ public final class MTEHatchCraftingInputSlaveGui {
             button.stateOverlay(order.ordinal(), getOrderIcon(order));
             button.tooltipBuilder(order.ordinal(), tooltip -> {
                 tooltip.addLine(
-                    StatCollector.translateToLocalFormatted(
+                    IKey.lang(
                         "GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.current",
-                        StatCollector.translateToLocal(MTEHatchCraftingInputSlave.getRecipeOrderLangKey(order))));
-                tooltip.addLine(StatCollector.translateToLocal(getOrderDescriptionKey(order)));
+                        IKey.lang(order.getLangKey())
+                            .get()));
+                tooltip.addLine(IKey.lang(getOrderDescriptionKey(order)));
                 if (order == RecipeOrder.RANDOM) {
-                    tooltip.addLine(
-                        StatCollector
-                            .translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.scanner"));
+                    tooltip.addLine(IKey.lang("GT5U.gui.tooltip.hatch.crafting_input_slave.recipe_order.scanner"));
                 }
             });
         }

@@ -62,9 +62,19 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     private int[] randomRecipeOrder;
 
     public enum RecipeOrder {
+
         NORMAL,
         REVERSED,
-        RANDOM
+        RANDOM;
+
+        public String getLangKey() {
+            return "GT5U.hatch.crafting_input_slave.recipe_order." + name().toLowerCase(Locale.ROOT);
+        }
+
+        public static RecipeOrder fromOrdinal(byte ordinal) {
+            final RecipeOrder[] orders = values();
+            return ordinal >= 0 && ordinal < orders.length ? orders[ordinal] : NORMAL;
+        }
     }
 
     public MTEHatchCraftingInputSlave(int aID, String aName, String aNameRegional) {
@@ -118,7 +128,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             masterSet = true;
         }
         if (aNBT.hasKey("recipeOrder")) {
-            recipeOrder = fromOrdinal(aNBT.getByte("recipeOrder"));
+            recipeOrder = RecipeOrder.fromOrdinal(aNBT.getByte("recipeOrder"));
         } else {
             recipeOrder = aNBT.getBoolean("reverseRecipes") ? RecipeOrder.REVERSED : RecipeOrder.NORMAL;
         }
@@ -135,7 +145,6 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             aNBT.setTag("master", masterNBT);
         }
         aNBT.setByte("recipeOrder", (byte) recipeOrder.ordinal());
-        aNBT.setBoolean("reverseRecipes", recipeOrder == RecipeOrder.REVERSED);
     }
 
     @Override
@@ -155,7 +164,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
         ret.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.crafting_input_slave.recipeOrder",
-                IGregTechDeviceInformation.translatable(getRecipeOrderLangKey())));
+                IGregTechDeviceInformation.translatable(recipeOrder.getLangKey())));
         ret.add(
             IGregTechDeviceInformation
                 .encode("GT5U.infodata.hatch.crafting_input_slave.patternOrder", getRecipeOrderInfo()));
@@ -333,7 +342,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             trySetMasterFromCoord(masterNBT.getInteger("x"), masterNBT.getInteger("y"), masterNBT.getInteger("z"));
         }
         if (nbt.hasKey("recipeOrder")) {
-            recipeOrder = fromOrdinal(nbt.getByte("recipeOrder"));
+            recipeOrder = RecipeOrder.fromOrdinal(nbt.getByte("recipeOrder"));
         } else {
             recipeOrder = nbt.getBoolean("reverseRecipes") ? RecipeOrder.REVERSED : RecipeOrder.NORMAL;
         }
@@ -352,7 +361,6 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             tag.setTag("master", masterNBT);
         }
         tag.setByte("recipeOrder", (byte) recipeOrder.ordinal());
-        tag.setBoolean("reverseRecipes", recipeOrder == RecipeOrder.REVERSED);
         return tag;
     }
 
@@ -377,7 +385,9 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
         currenttip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.hatch.crafting_input_slave.recipeOrder",
-                StatCollector.translateToLocal(getRecipeOrderLangKey(fromOrdinal(tag.getByte("recipeOrder"))))));
+                StatCollector.translateToLocal(
+                    RecipeOrder.fromOrdinal(tag.getByte("recipeOrder"))
+                        .getLangKey())));
 
         if (tag.hasKey("masterName")) {
             currenttip.add(EnumChatFormatting.GOLD + tag.getString("masterName") + EnumChatFormatting.RESET);
@@ -429,20 +439,6 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
         return builder.toString();
     }
 
-    private String getRecipeOrderLangKey() {
-        return getRecipeOrderLangKey(recipeOrder);
-    }
-
-    public static String getRecipeOrderLangKey(RecipeOrder order) {
-        return "GT5U.hatch.crafting_input_slave.recipe_order." + order.name()
-            .toLowerCase(Locale.ROOT);
-    }
-
-    private static RecipeOrder fromOrdinal(byte ordinal) {
-        final RecipeOrder[] orders = RecipeOrder.values();
-        return ordinal >= 0 && ordinal < orders.length ? orders[ordinal] : RecipeOrder.NORMAL;
-    }
-
     private int[] getRandomRecipeOrder() {
         if (randomRecipeOrder == null) {
             final int[] order = new int[MTEHatchCraftingInputME.MAX_PATTERN_COUNT];
@@ -473,7 +469,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
             GTUtility.sendChatTrans(
                 aPlayer,
                 "GT5U.hatch.crafting_input_slave.recipe_order.current",
-                new ChatComponentTranslation(getRecipeOrderLangKey()));
+                new ChatComponentTranslation(recipeOrder.getLangKey()));
         }
         // not calling super.onScrewdriverRightClick, because input filter is irrelevant for a proxy hatch
     }
