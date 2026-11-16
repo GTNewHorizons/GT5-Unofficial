@@ -81,7 +81,6 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -92,6 +91,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTECircuitAssemblyLineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
@@ -671,8 +671,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_ASSEMBLER_MODE,
-            GTGuiTextures.OVERLAY_BUTTON_PRECISE_MODE);
+        return new MTECircuitAssemblyLineGui(this);
     }
 }
