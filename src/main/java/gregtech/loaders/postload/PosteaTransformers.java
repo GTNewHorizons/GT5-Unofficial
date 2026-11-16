@@ -4,16 +4,19 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizons.postea.api.BlockAccessCompat;
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -39,10 +42,26 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerBartworksMaterialBlockTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerBartworksMaterialBlockTransformers() {
+        registerBartworksMaterialBlockTransformer("bw.werkstoffblockTE", WerkstoffLoader.BWBlocks);
+        registerBartworksMaterialBlockTransformer("bw.werkstoffblockcasingTE", WerkstoffLoader.BWBlockCasings);
+        registerBartworksMaterialBlockTransformer(
+            "bw.werkstoffblockscasingadvancedTE",
+            WerkstoffLoader.BWBlockCasingsAdvanced);
+    }
+
+    private void registerBartworksMaterialBlockTransformer(String tileEntityId, Block block) {
+        TileEntityReplacementManager.tileEntityTransformer(tileEntityId, (tag, world, chunk) -> {
+            if (BlockAccessCompat.getBlockIDAtTE(tag, chunk) != Block.getIdFromBlock(block)) return null;
+            return new BlockInfo(block, Short.toUnsignedInt(tag.getShort("m")));
+        });
     }
 
     private void registerIC2ItemTransformers() {
