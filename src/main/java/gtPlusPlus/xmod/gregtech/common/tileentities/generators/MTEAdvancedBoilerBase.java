@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
@@ -12,10 +13,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -25,6 +28,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateName
 public class MTEAdvancedBoilerBase extends MTEBoiler {
 
     private static final int STEAM_PER_SECOND = 750;
@@ -44,6 +48,15 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.electricboiler.name",
+            GTValues.getLocalizedLongVoltageName(tier),
+            GTValues.VN[tier]);
+    }
+
+    @Override
     public String[] getDescription() {
         return ArrayUtils.addAll(
             GTSplit.splitLocalizedFormatted(
@@ -51,6 +64,15 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                 formatFluid(steamPerSecond),
                 getPollution()),
             GTPPCore.GT_Tooltip.get());
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.electric.tier.s",
+                GTUtility.getColoredTierNameFromTier((byte) tier)));
     }
 
     @Override

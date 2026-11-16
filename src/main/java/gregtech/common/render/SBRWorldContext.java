@@ -91,6 +91,11 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
 
     private boolean usingCeleritas;
 
+    /**
+     * {@link RenderBlocks#enableAO} as it was before {@link #setup}, restored in {@link #doCleanup}.
+     */
+    private boolean prevEnableAO;
+
     private SBRWorldContext() {}
 
     /**
@@ -136,6 +141,7 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
         this.x = x;
         this.y = y;
         this.z = z;
+        this.prevEnableAO = renderBlocks.enableAO;
         this.renderBlocks.useInventoryTint = false;
         populatesLightingCaches();
         reset();
@@ -209,6 +215,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     @Override
     public void doCleanup() {
         this.renderBlocks.useInventoryTint = true;
+        // reset() modifies enableAO, so restore it
+        this.renderBlocks.enableAO = prevEnableAO;
         super.doCleanup();
         this.blockAccess = null;
     }

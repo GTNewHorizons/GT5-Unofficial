@@ -317,23 +317,9 @@ gt.blockmachines.multimachine.tm.teslaCoil.name=特斯拉电塔
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=迟滞低设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=迟滞高设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=特斯拉电塔传输半径设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3=特斯拉收发器传输半径设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4=加强特斯拉线圈帽传输半径设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5=输出电压设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6=输出电流设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7=最小扫描时间设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8=过载设置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9=闲置
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0=特斯拉电塔传输半径显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1=特斯拉收发器传输半径显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2=加强特斯拉线圈帽传输半径显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3=输出电压显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4=输出电流显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=能量容量显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=已存储能量显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=充能进度显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=扫描时间显示
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=最高输出电流显示
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
 
@@ -342,8 +328,8 @@ gt.blockmachines.multimachine.em.computer.name=量子计算机
 gt.blockmachines.multimachine.em.computer.desc=你需要它来处理上面的这串数字
 gt.blockmachines.multimachine.em.computer.cfgi.0=超频比
 gt.blockmachines.multimachine.em.computer.cfgi.1=过压比
-gt.blockmachines.multimachine.em.computer.cfgo.0=当前最大热量
-gt.blockmachines.multimachine.em.computer.cfgo.1=生成算力
+gt.blockmachines.multimachine.em.computer.cfgo.0=当前最大热量: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=生成算力: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=数据库
 
