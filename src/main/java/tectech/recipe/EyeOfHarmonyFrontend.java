@@ -151,7 +151,7 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
                         0xffffff,
                         0.5f,
                         true,
-                        Alignment.BottomRight);
+                        Alignment.BottomLeft);
                 }
             }
         }
