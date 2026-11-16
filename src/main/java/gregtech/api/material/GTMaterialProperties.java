@@ -77,6 +77,8 @@ public class GTMaterialProperties {
         .of("gregtech", "lanthanideDecomposition", false);
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
+    /// The mass used to scale reverse macerator recipe durations. Atomic mass is used when unset.
+    public static final Property<Long> MACERATION_MASS = Property.of("gregtech", "macerationMass");
     /// A declared atomic mass that replaces the [MaterialAtomics] composition formula for this material.
     /// Composition sums over components still use their computed values.
     public static final Property<Long> MASS = Property.of("gregtech", "mass");
@@ -109,6 +111,12 @@ public class GTMaterialProperties {
     public static final Property<List<MaterialRefStack>> ORE_BYPRODUCTS = Property.of("gregtech", "oreByProducts");
     /// The harvest level of this material's ore, in place of its [#TOOL_QUALITY]; its small ore takes one less.
     public static final Property<Integer> ORE_HARVEST_LEVEL = Property.of("gregtech", "oreHarvestLevel");
+    /// The plasma and cooled-fluid volume in mB per vacuum freezer operation.
+    public static final Property<Integer> PLASMA_COOLING_AMOUNT = Property.of("gregtech", "plasmaCoolingAmount", 1000);
+    /// The plasma cooling duration in ticks for [#PLASMA_COOLING_AMOUNT], in place of twice the material's mass.
+    public static final Property<Integer> PLASMA_COOLING_DURATION = Property.of("gregtech", "plasmaCoolingDuration");
+    /// The EU/t of plasma cooling, in place of MV.
+    public static final Property<Integer> PLASMA_COOLING_VOLTAGE = Property.of("gregtech", "plasmaCoolingVoltage", 120);
     public static final Property<Float> PLASMA_MULTIPLIER = Property.of("gregtech", "plasmaMultiplier");
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
         .of("gregtech", "processingMaterialTierEU", 0);

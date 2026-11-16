@@ -495,7 +495,9 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            tAmount += tMaterial.amount * MaterialUtils.mass(tMaterial.material);
+            Long mass = tMaterial.material == null ? null
+                : tMaterial.material.getProperty(GTMaterialProperties.MACERATION_MASS);
+            tAmount += tMaterial.amount * (mass == null ? MaterialUtils.mass(tMaterial.material) : mass);
         }
 
         {

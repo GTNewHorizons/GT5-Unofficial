@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -68,8 +69,18 @@ public class ProcessingNugget implements PartRecipeGenerator {
         }
 
         GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
-        GTRecipeRegistrator
-            .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
+        if (material == Materials.Zirconium) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(stack)
+                .itemOutputs(MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dustTiny, 1))
+                .duration(10 * TICKS)
+                .eut(2)
+                .recipeCategory(RecipeCategories.maceratorRecycling)
+                .addTo(maceratorRecipes);
+        } else {
+            GTRecipeRegistrator
+                .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
+        }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING) && material.hasShape(Shapes.ingot)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Mold_Nugget.get(0L))

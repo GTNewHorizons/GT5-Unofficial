@@ -246,23 +246,6 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
         }
 
-        // Plasma Freezing
-        {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Americium, CellShapes.cellPlasma, 1))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Americium, CellShapes.cellMolten, 1))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LuV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, INGOTS))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidMolten, INGOTS))
-                .duration(1 * SECONDS)
-                .eut(12)
-                .addTo(vacuumFreezerRecipes);
-        }
-
         // hot transcendent metal ingot cooling
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ingotHot, 1))
@@ -302,13 +285,6 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidPlasma, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidMolten, 1_000))
-            .duration(8 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(vacuumFreezerRecipes);
     }
 
     private void addProtoHalkonitePartRecipe(Shape shape, final int multiplier) {
@@ -329,6 +305,5 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
-
     }
 }

@@ -3,8 +3,6 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
@@ -19,7 +17,6 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
@@ -434,15 +431,6 @@ public class ProcessingCell implements PartRecipeGenerator {
                             .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * MaterialUtils.mass(material)))
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
-                    }
-                    ItemStack cell = MaterialParts.stack(OrePrefixes.cell, material, 1L);
-                    if (cell != null) {
-                        RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, stack))
-                            .itemOutputs(cell)
-                            .duration(((int) Math.max(MaterialUtils.mass(material) * 2L, 1L)) * TICKS)
-                            .eut(TierEU.RECIPE_MV)
-                            .addTo(vacuumFreezerRecipes);
                     }
                 }
             }
