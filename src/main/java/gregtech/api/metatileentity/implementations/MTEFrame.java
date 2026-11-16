@@ -1,7 +1,12 @@
 package gregtech.api.metatileentity.implementations;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -16,7 +21,9 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.block.ClimbingHelper;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.config.Gregtech;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
@@ -97,6 +104,47 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     @Override
     public float getCollisionThickness() {
         return 1.0F;
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
+        List<AxisAlignedBB> outputAABB, Entity collider) {
+        if (!Gregtech.general.climbableFrameBox) {
+            super.addCollisionBoxesToList(world, x, y, z, inputAABB, outputAABB, collider);
+            return;
+        }
+        final IGregTechTileEntity baseEntity = getBaseMetaTileEntity();
+        final double climbableMinX = ClimbingHelper.getClimbableMin(x);
+        final double climbableMaxX = ClimbingHelper.getClimbableMax(x);
+        final double climbableMaxY = ClimbingHelper.getClimbableMax(y);
+        final double climbableMinZ = ClimbingHelper.getClimbableMin(z);
+        final double climbableMaxZ = ClimbingHelper.getClimbableMax(z);
+        final double minX = baseEntity.hasCoverAtSide(ForgeDirection.WEST) ? x : climbableMinX;
+        final double maxX = baseEntity.hasCoverAtSide(ForgeDirection.EAST) ? x + 1D : climbableMaxX;
+        final double minZ = baseEntity.hasCoverAtSide(ForgeDirection.NORTH) ? z : climbableMinZ;
+        final double maxZ = baseEntity.hasCoverAtSide(ForgeDirection.SOUTH) ? z + 1D : climbableMaxZ;
+        final double maxY = baseEntity.hasCoverAtSide(ForgeDirection.UP) ? y + 1D : climbableMaxY;
+        // WEST|EAST x Axis
+        addIntersecting(
+            AxisAlignedBB.getBoundingBox(minX, y, climbableMinZ, maxX, climbableMaxY, climbableMaxZ),
+            inputAABB,
+            outputAABB);
+        // NORTH|SOUTH z Axis
+        addIntersecting(
+            AxisAlignedBB.getBoundingBox(climbableMinX, y, minZ, climbableMaxX, climbableMaxY, maxZ),
+            inputAABB,
+            outputAABB);
+        // DOWN|UP y Axis
+        addIntersecting(
+            AxisAlignedBB.getBoundingBox(climbableMinX, y, climbableMinZ, climbableMaxX, maxY, climbableMaxZ),
+            inputAABB,
+            outputAABB);
+    }
+
+    private static void addIntersecting(AxisAlignedBB box, AxisAlignedBB mask, List<AxisAlignedBB> boxes) {
+        if (mask.intersectsWith(box)) {
+            boxes.add(box);
+        }
     }
 
     @Override

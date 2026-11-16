@@ -38,6 +38,8 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.block.ClimbingHelper;
+import gregtech.common.config.Gregtech;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
@@ -246,6 +248,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
 
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
+        if (Gregtech.general.climbableFrameBox) {
+            ClimbingHelper.onEntityCollided(aWorld, aX, aY, aZ, collider);
+        }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             gtTE.getMetaTileEntity()
@@ -302,6 +307,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             return gtTE.getMetaTileEntity()
                 .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        }
+        if (Gregtech.general.climbableFrameBox) {
+            return ClimbingHelper.getClimbableBox(aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }

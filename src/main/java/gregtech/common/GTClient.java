@@ -104,6 +104,7 @@ import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
+import gregtech.client.handler.FrameBoxClimbHandler;
 import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
@@ -160,6 +161,7 @@ public class GTClient extends GTProxy {
 
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
     public final MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
+    public final FrameBoxClimbHandler frameBoxClimbHandler = new FrameBoxClimbHandler();
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
     public final boolean fixedBottomFaceUV;
@@ -281,6 +283,9 @@ public class GTClient extends GTProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new CondensateAnimationTickHandler());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(frameBoxClimbHandler);
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
