@@ -736,7 +736,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 13000)
             .addTo(blastFurnaceRecipes);
-
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {
