@@ -510,11 +510,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean alwaysReloadChunkloaders;
 
-        @Config.Comment("If true, then digital chest with AE2 storage bus will be accessible only through AE2")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean disableDigitalChestsExternalAccess;
-
         @Config.Comment("If true, machines can explode.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

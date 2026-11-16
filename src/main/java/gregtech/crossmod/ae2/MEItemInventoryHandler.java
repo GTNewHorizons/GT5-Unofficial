@@ -233,15 +233,20 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     public boolean hasActiveMEConnection() {
-        if (listeners.isEmpty()) return false;
-        for (Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> e : listeners.entrySet()) {
-            if ((e.getKey() instanceof IPart)) {
-                IGridNode n = ((IPart) e.getKey()).getGridNode();
-                if (n != null && n.isActive()) return true;
+        boolean active = false;
+        for (var iterator = listeners.entrySet()
+            .iterator(); iterator.hasNext();) {
+            var entry = iterator.next();
+            if (!entry.getKey()
+                .isValid(entry.getValue())) {
+                iterator.remove();
+                continue;
+            }
+            if (entry.getKey() instanceof IPart part) {
+                IGridNode node = part.getGridNode();
+                if (node != null && node.isActive()) active = true;
             }
         }
-        // if there are no active storage buses - clear the listeners
-        listeners.clear();
-        return false;
+        return active;
     }
 }

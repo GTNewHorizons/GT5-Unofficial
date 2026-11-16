@@ -378,7 +378,6 @@ public class GTPreLoad {
         GTValues.enableChunkloaders = Gregtech.machines.enableChunkloaders;
         GTValues.alwaysReloadChunkloaders = Gregtech.machines.alwaysReloadChunkloaders;
         GTValues.debugChunkloaders = Gregtech.debug.debugChunkloaders;
-        GTValues.disableDigitalChestsExternalAccess = Gregtech.machines.disableDigitalChestsExternalAccess;
         GregTechAPI.sMachineExplosions = Gregtech.machines.machineExplosions;
         GregTechAPI.sMachineFlammable = Gregtech.machines.machineFlammable;
         GregTechAPI.sMachineNonWrenchExplosions = Gregtech.machines.machineNonWrenchExplosions;

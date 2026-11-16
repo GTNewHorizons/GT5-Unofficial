@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -18,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -39,6 +41,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -55,9 +58,10 @@ import appeng.api.storage.data.IItemList;
 import cpw.mods.fml.common.Optional;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import fox.spiteful.avaritia.items.ItemStackWrapper;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -70,10 +74,11 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IDataCopyable {
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
+    private boolean blockExternalAccess;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
     private int lastTrueCount;
@@ -600,8 +605,61 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            if (aBaseMetaTileEntity.isServerSide()) {
+                boolean pasted = pasteCopiedData(aPlayer, dataStick.stackTagCompound);
+                aPlayer.addChatMessage(
+                    new ChatComponentTranslation(
+                        pasted ? "GT5U.gui.text.data_stick.loaded" : "GT5U.gui.text.data_stick.invalid"));
+            }
+            return true;
+        }
         openGui(aPlayer);
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName(translateToLocal("GT5U.machines.digitalchest.data_stick.name"));
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound data = new NBTTagCompound();
+        data.setString("type", getCopiedDataIdentifier(player));
+        data.setBoolean("blockExternalAccess", blockExternalAccess);
+        return data;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null || !getCopiedDataIdentifier(player).equals(nbt.getString("type"))
+            || !nbt.hasKey("blockExternalAccess", Constants.NBT.TAG_BYTE)) return false;
+        setBlockExternalAccess(nbt.getBoolean("blockExternalAccess"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return "digitalChestAccess";
+    }
+
+    private void setBlockExternalAccess(boolean value) {
+        blockExternalAccess = value;
+        markDirty();
+    }
+
+    private boolean isExternalAccessBlocked() {
+        return blockExternalAccess && meInventoryHandler.hasActiveMEConnection();
     }
 
     @Override
@@ -667,6 +725,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
+        aNBT.setBoolean("blockExternalAccess", blockExternalAccess);
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        if (blockExternalAccess) aNBT.setBoolean("blockExternalAccess", true);
     }
 
     @Override
@@ -676,6 +741,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
+        blockExternalAccess = aNBT.getBoolean("blockExternalAccess");
         lastTrueCount = getItemCount();
         if (GTUtility.areStacksEqual(getItemStack(), mInventory[1])) {
             lastTrueCount += mInventory[1].stackSize;
@@ -686,14 +752,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
+        if (isExternalAccessBlocked()) return false;
         return aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
+        if (isExternalAccessBlocked()) return false;
         if (aIndex != 0) return false;
         if (isMatterCluster(aStack)) return mInventory[0] == null;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
@@ -793,6 +859,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(
+                new CycleButtonWidget().setToggle(() -> blockExternalAccess, this::setBlockExternalAccess)
+                    .setStaticTexture(GTUITextures.OVERLAY_BUTTON_LOCK)
+                    .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
+                    .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitalchest.block_external_access"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(151, 16)
+                    .setSize(18, 18))
+            .widget(
                 new FakeSyncWidget.IntegerSyncer(
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
@@ -862,6 +936,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public ItemStack extract(int amount, boolean forced) {
+                if (!forced && isExternalAccessBlocked()) return null;
                 switch (getCurrentSlot()) {
                     case 0 -> {
                         int toExtract = Math.min(amount, getItemCount());
@@ -914,6 +989,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public int insert(ImmutableItemStack stack, boolean forced) {
+                if (!forced && isExternalAccessBlocked()) return stack.getStackSize();
                 Integer matterClusterRemainder = tryInsertMatterClusters(stack, forced);
                 if (matterClusterRemainder != null) return matterClusterRemainder;
 
