@@ -66,6 +66,7 @@ public enum Mods implements IMod {
     Controlling(ModIDs.CONTROLLING),
     CookingForBlockheads(ModIDs.COOKING_FOR_BLOCKHEADS),
     CoreTweaks(ModIDs.CORE_TWEAKS),
+    CosmeticArmorReworked(ModIDs.COSMETIC_ARMOR_REWORKED),
     CraftTweaker(ModIDs.CRAFT_TWEAKER),
     MineTweaker(ModIDs.MINE_TWEAKER),
     CreativeCore(ModIDs.CREATIVE_CORE),
@@ -89,6 +90,7 @@ public enum Mods implements IMod {
     Fether(ModIDs.FETHER),
     FindIt(ModIDs.FIND_IT),
     FloodLights(ModIDs.FLOOD_LIGHTS),
+    LiquidLogged(ModIDs.LIQUID_LOGGED),
     ForbiddenMagic(ModIDs.FORBIDDEN_MAGIC),
     Forestry(ModIDs.FORESTRY),
     ForgeMicroblocks(ModIDs.FORGE_MICROBLOCKS),
@@ -410,6 +412,7 @@ public enum Mods implements IMod {
         public static final String CONTROLLING = "controlling";
         public static final String COOKING_FOR_BLOCKHEADS = "cookingforblockheads";
         public static final String CORE_TWEAKS = "coretweaks";
+        public static final String COSMETIC_ARMOR_REWORKED = "cosmeticarmorreworked";
         public static final String CRAFT_TWEAKER = "MineTweaker3",
             MINE_TWEAKER = "MineTweaker3";
         public static final String CREATIVE_CORE = "creativecore";
@@ -433,6 +436,7 @@ public enum Mods implements IMod {
         public static final String FETHER = "fether";
         public static final String FIND_IT = "findit";
         public static final String FLOOD_LIGHTS = "FloodLights";
+        public static final String LIQUID_LOGGED = "liquidlogged";
         public static final String FORBIDDEN_MAGIC = "ForbiddenMagic";
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";

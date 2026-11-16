@@ -2,6 +2,8 @@ package tectech.mechanics.boseEinsteinCondensate;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraftforge.fluids.Fluid;
@@ -13,12 +15,16 @@ import gregtech.api.factory.GraphRouteTracker;
 import gregtech.api.factory.routing.VisitorResult;
 import gregtech.api.factory.standard.StandardFactoryNetwork;
 import gregtech.api.util.GTUtility;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBEC;
 
 public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork, BECFactoryElement, BECFactoryGrid> {
 
     private static final AtomicInteger NETWORK_ID = new AtomicInteger(0);
 
     public final int id = NETWORK_ID.getAndAdd(1);
+
+    private int storageCount = 0;
+    private final Set<MTEPipeBEC> allPipes = new LinkedHashSet<>();
 
     public final GraphRouteTracker<BECFactoryElement, BECFactoryNetwork, BECFactoryGrid, NotableBECFactoryElement, BECRouteInfo> routeTracker = new GraphRouteTracker<>(
         NotableBECFactoryElement.class,
@@ -30,6 +36,17 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
         routeTracker.onElementAdded(element);
         routeTracker.invalidateRoutes();
+        if (element instanceof MTEPipeBEC pipe) {
+            allPipes.add(pipe);
+            pipe.setActive(storageCount > 0);
+        } else if (element instanceof BECInventory) {
+            if (storageCount == 0) {
+                for (MTEPipeBEC pipe : allPipes) {
+                    pipe.setActive(true);
+                }
+            }
+            storageCount++;
+        }
     }
 
     @Override
@@ -38,6 +55,17 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
         routeTracker.onElementRemoved(element);
         routeTracker.invalidateRoutes();
+        if (element instanceof MTEPipeBEC pipe) {
+            allPipes.remove(pipe);
+            pipe.setActive(false);
+        } else if (element instanceof BECInventory) {
+            storageCount--;
+            if (storageCount == 0) {
+                for (MTEPipeBEC pipe : allPipes) {
+                    pipe.setActive(false);
+                }
+            }
+        }
     }
 
     @Override
