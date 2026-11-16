@@ -18,10 +18,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonWidgets;
+import gregtech.common.config.Client;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTabButton;
 
@@ -177,7 +179,17 @@ public final class GTBaseGuiBuilder {
     }
 
     private @NotNull CoverTabButton getCoverTabButton(ICoverable coverable, ForgeDirection side) {
-        CoverTabButton button = new CoverTabButton(coverable, side);
+        CoverTabButton button = new CoverTabButton(coverable, side) {
+
+            @Override
+            public void afterInit() {
+                if (!Client.iface.autoOpenCovers) return;
+                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return;
+                if (coverableTileEntity.isCoverOpen[side.ordinal()]) {
+                    togglePanel();
+                }
+            }
+        };
         button.setPanel(getCoverPanel(button, coverable, side));
         return button;
     }
@@ -195,12 +207,23 @@ public final class GTBaseGuiBuilder {
             posGuiData.getZ(),
             side,
             true);
+        ButtonWidget<?> buttonWidget = ButtonWidget.panelCloseButton();
+        buttonWidget.onMousePressed(mouseButton -> {
+            if (mouseButton == 0 || mouseButton == 1) {
+                buttonWidget.getPanel()
+                    .closeIfOpen();
+                if (!(coverable instanceof CoverableTileEntity coverableTileEntity)) return true;
+                coverableTileEntity.isCoverOpen[side.ordinal()] = false;
+                return true;
+            }
+            return false;
+        });
         return syncManager.syncedPanel(
             panelKey,
             true,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
                 .buildPopUpUI(coverGuiData, panelKey, syncManager, uiSettings, button)
-                .child(ButtonWidget.panelCloseButton()));
+                .child(buttonWidget));
     }
 
     private IWidget createGhostCircuitSlot() {

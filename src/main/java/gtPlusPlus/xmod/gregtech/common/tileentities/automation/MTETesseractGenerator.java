@@ -594,12 +594,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        // TODO Auto-generated method stub
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         // Utils.LOG_WARNING("Ticking Generator. 0");
         if (this.getBaseMetaTileEntity()
