@@ -296,7 +296,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             ItemStack targetItem = getMatterClusterTargetItem();
             return targetItem != null && getMatterClusterEntry(stack, targetItem) != null;
         }
-        return sameItemType(getTargetItemType(), stack);
+        return iaeItemStack != null && matchesAERequest(iaeItemStack, getTargetItemType());
     }
 
     @Override
@@ -369,6 +369,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             remaining = bufferInputItems(item, input.getStackSize(), state);
             if (mode == Actionable.MODULATE) notifyInventoryChanges();
         } else {
+            if (item.getTagCompound() == null) {
+                ItemStack target = getTargetItemType();
+                // Restore the empty tag stripped by AE
+                if (target != null && target.getTagCompound() != null && matchesAERequest(input, target)) {
+                    item = item.copy();
+                    item.setTagCompound(new NBTTagCompound());
+                }
+            }
             remaining = insertExternalItems(item, input.getStackSize(), state, false);
         }
         return remaining == 0 ? null
@@ -587,7 +595,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (stored == null || request.getItem() != stored.getItem()
             || request.getItemDamage() != ItemUtil.getStackMeta(stored)) return false;
         NBTTagCompound tag = stored.getTagCompound();
-        // AE represents an empty compound as no tag, including in extraction requests
+        // AE represents an empty compound as no tag
         return request.getTagCompound() == null ? tag == null || tag.hasNoTags()
             : request.getTagCompound()
                 .equals(tag);
@@ -1015,7 +1023,15 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public ItemStack[] getStoredItemData() {
-        return mInventory;
+        ItemStack[] contents = mInventory.clone();
+        ItemStack stored = getItemStack();
+        int count = getItemCount();
+        contents[2] = null;
+        if (stored != null && count > 0) {
+            contents[2] = stored.copy();
+            contents[2].stackSize = Math.min(stored.getMaxStackSize(), count);
+        }
+        return contents;
     }
 
     protected abstract String localizedChestName();
