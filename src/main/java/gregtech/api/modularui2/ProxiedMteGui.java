@@ -34,6 +34,7 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
@@ -57,6 +58,10 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
         GuiManager.open(GUI, new ProxiedMteGuiData(player, mte), player);
     }
 
+    public static void open(MetaTileEntity mte, EntityPlayerMP player, MetaTileEntity originMTE) {
+        GuiManager.open(GUI, new ProxiedMteGuiData(player, mte, originMTE), player);
+    }
+
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(ProxiedMteGuiData data, ModularPanel mainPanel) {
         return new GTModularScreen(mainPanel, mte.getGuiTheme());
@@ -76,10 +81,10 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 }
         });
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
-        ModularPanel panel = mte.buildUI(
-            new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord()),
-            syncManager,
-            uiSettings);
+        PosGuiData posGuiData = new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+        ModularPanel panel = mte instanceof MTEHatchCraftingInputME buffer
+            ? buffer.buildUI(posGuiData, syncManager, uiSettings, data)
+            : mte.buildUI(posGuiData, syncManager, uiSettings);
 
         UUID playerUUID = (syncManager.isClient()) ? null
             : data.getPlayer()
@@ -120,14 +125,22 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
     final public static class ProxiedMteGuiData extends GuiData {
 
         final private @Nullable MetaTileEntity serverMTE;
+        final private @Nullable MetaTileEntity originMTE;
+        final private boolean hasOrigin;
         final private int mid;
         final private int x;
         final private int y;
         final private int z;
 
         public ProxiedMteGuiData(EntityPlayer player, MetaTileEntity serverMTE) {
+            this(player, serverMTE, null);
+        }
+
+        public ProxiedMteGuiData(EntityPlayer player, MetaTileEntity serverMTE, @Nullable MetaTileEntity originMTE) {
             super(player);
             this.serverMTE = serverMTE;
+            this.originMTE = originMTE;
+            this.hasOrigin = originMTE != null;
             IGregTechTileEntity base = serverMTE.getBaseMetaTileEntity();
             this.mid = base.getMetaTileID();
             this.x = base.getXCoord();
@@ -135,9 +148,11 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             this.z = base.getZCoord();
         }
 
-        public ProxiedMteGuiData(EntityPlayer player, int mid, int x, int y, int z) {
+        public ProxiedMteGuiData(EntityPlayer player, int mid, int x, int y, int z, boolean hasOrigin) {
             super(player);
             this.serverMTE = null;
+            this.originMTE = null;
+            this.hasOrigin = hasOrigin;
             this.mid = mid;
             this.x = x;
             this.y = y;
@@ -146,6 +161,14 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
         public @Nullable MetaTileEntity getServerMTE() {
             return serverMTE;
+        }
+
+        public @Nullable MetaTileEntity getOriginMTE() {
+            return originMTE;
+        }
+
+        public boolean hasOrigin() {
+            return hasOrigin;
         }
 
         public int getMetaId() {
@@ -205,6 +228,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             buffer.writeInt(guiData.getX());
             buffer.writeInt(guiData.getY());
             buffer.writeInt(guiData.getZ());
+            buffer.writeBoolean(guiData.hasOrigin());
         }
 
         @Override
@@ -214,7 +238,8 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 buffer.readInt(),
                 buffer.readInt(),
                 buffer.readInt(),
-                buffer.readInt());
+                buffer.readInt(),
+                buffer.readBoolean());
         }
     }
 }

@@ -717,7 +717,7 @@ public class GTModHandler {
                     case  6 -> ItemList.Hull_LuV;
                     case  7 -> ItemList.Hull_ZPM;
                     case  8 -> ItemList.Hull_UV;
-                    default -> ItemList.Hull_MAX;
+                    default -> ItemList.Hull_UHV;
                 };
 
                 case WIRE -> switch (machineTier) {
