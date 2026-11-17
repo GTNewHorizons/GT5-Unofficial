@@ -63,7 +63,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.API.enums.CircuitImprint;
-import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -92,6 +91,8 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTECircuitAssemblyLineGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -308,13 +309,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public String getMachineModeKey() {
-        return "chat.cal.mode." + machineMode;
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(BWUITextures.OVERLAY_BUTTON_LINE_MODE);
-        machineModeIcons.add(BWUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
+        return "GT5U.CIRCUIT_ASSEMBLY_LINE.mode." + machineMode;
     }
 
     @Override
@@ -589,11 +584,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
@@ -655,11 +645,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
-        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
+        if (tag.hasKey("ImprintedWith") && tag.getInteger("modeId") == 0) {
             list.add(
                 StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", tag.getString("ImprintedWith")));
         }
@@ -670,7 +656,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int z) {
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
-        tag.setInteger("mode", machineMode);
+        tag.setString("mode", getMachineModeName());
+        tag.setInteger("modeId", machineMode);
     }
 
     @Override
@@ -680,5 +667,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             case MACHINEMODE_ASSEMBLER -> true;
             default -> throw new IllegalStateException("Unexpected value: " + machineMode);
         };
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTECircuitAssemblyLineGui(this);
     }
 }
