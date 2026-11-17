@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 
 public class FuelRecipes implements Runnable {

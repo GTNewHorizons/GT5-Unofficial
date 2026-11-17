@@ -317,7 +317,6 @@ public class DistilleryRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
-
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(getFluidStack("potion.wheatyjuice", 75))
