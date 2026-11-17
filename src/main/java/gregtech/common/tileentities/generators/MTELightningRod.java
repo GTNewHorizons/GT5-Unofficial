@@ -69,17 +69,18 @@ public class MTELightningRod extends MTETieredMachineBlock {
             this.mTextures);
     }
 
+    private static final Block[] sRodBlocks = new Block[6];
+
     private static Block getRodBlock(int tier) {
-        switch (tier) {
-            case 3:
-                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "StainlessSteelBars");
-            case 4:
-                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "TitaniumBars");
-            case 5:
-                return GameRegistry.findBlock(NewHorizonsCoreMod.ID, "TungstenSteelBars");
-            default:
-                return null;
+        if (tier < 3 || tier > 5) return null;
+        if (sRodBlocks[tier] == null) {
+            sRodBlocks[tier] = GameRegistry.findBlock(NewHorizonsCoreMod.ID, switch (tier) {
+                case 3 -> "StainlessSteelBars";
+                case 4 -> "TitaniumBars";
+                default -> "TungstenSteelBars";
+            });
         }
+        return sRodBlocks[tier];
     }
 
     @Override
