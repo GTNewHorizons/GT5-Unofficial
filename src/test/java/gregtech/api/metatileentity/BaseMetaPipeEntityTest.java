@@ -134,7 +134,7 @@ class BaseMetaPipeEntityTest {
         MTECable addon = new MTECable("addon", 0.5f, null, 0, 4, 128, false, false) {
 
             @Override
-            protected void checkConnections() {
+            public void checkConnections() {
                 connectionChecks[0]++;
             }
         };
