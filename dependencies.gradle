@@ -72,6 +72,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:Backhand:1.9.0:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Dashboard:1.0.13:api")
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.10.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.6.0:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.6.0:dev') { transitive = false }
@@ -83,6 +84,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ArchitectureCraft:1.13.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.18.1-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.5.0:dev") { transitive = false }
+
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.8.0:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
