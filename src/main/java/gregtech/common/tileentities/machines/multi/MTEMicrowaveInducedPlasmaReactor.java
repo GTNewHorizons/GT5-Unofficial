@@ -179,8 +179,8 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
     }
 
     private int getSolenoidTier() {
-        return Math
-            .clamp(solenoidLevel == null ? MIN_SOLENOID_TIER : solenoidLevel, MIN_SOLENOID_TIER, MAX_SOLENOID_TIER);
+        if (solenoidLevel == null) return MIN_SOLENOID_TIER;
+        return Math.clamp(solenoidLevel, MIN_SOLENOID_TIER, MAX_SOLENOID_TIER);
     }
 
     private int getTierIndex() {
