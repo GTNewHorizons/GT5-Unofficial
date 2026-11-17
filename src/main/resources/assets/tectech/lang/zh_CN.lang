@@ -575,7 +575,7 @@ tt.keyphrase.Hint_Details=提示细节
 
 #debug boom
 tt.keyword.BOOM=BOOM!
-tt.keyword.Destination=目标
+tt.keyword.Id=目标
 tt.keyword.Weight=质量
 tt.keyword.Source=来源
 tt.keyword.Progress=过程
