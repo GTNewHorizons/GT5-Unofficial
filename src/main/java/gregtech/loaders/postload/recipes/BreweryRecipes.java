@@ -474,16 +474,13 @@ public class BreweryRecipes implements Runnable {
                 .eut(4)
                 .addTo(brewingRecipes);
 
-            // Would add 2 different amount of water input if IC2 isn't loaded
-            if (IndustrialCraft2.isModLoaded()) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.IC2_BioChaff.get(1))
-                    .fluidInputs(GTModHandler.getDistilledWater(500L))
-                    .fluidOutputs(Materials.Biomass.getFluid(1_000))
-                    .duration(10 * TICKS)
-                    .eut((int) TierEU.RECIPE_LV)
-                    .addTo(brewingRecipes);
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_BioChaff.get(1))
+                .fluidInputs(GTModHandler.getDistilledWater(500L))
+                .fluidOutputs(Materials.Biomass.getFluid(1_000))
+                .duration(10 * TICKS)
+                .eut((int) TierEU.RECIPE_LV)
+                .addTo(brewingRecipes);
         }
 
         // potion brewing 2
