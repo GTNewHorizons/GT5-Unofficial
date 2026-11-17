@@ -349,7 +349,7 @@ public class MTEMicrowave extends TTMultiblockBase
             "gt.blockmachines.multimachine.tm.microwave.cfgi.0",
             POWER_PARAMETER,
             () -> 300,
-            () -> 1000);
+            () -> Integer.MAX_VALUE);
 
         timerParameter = new IntegerParameter(
             360,

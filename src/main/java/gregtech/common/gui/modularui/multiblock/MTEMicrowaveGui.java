@@ -7,7 +7,6 @@ import net.minecraft.util.StatCollector;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -33,7 +32,6 @@ public class MTEMicrowaveGui extends TTMultiblockBaseGui<MTEMicrowave> {
                     () -> StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.tm.microwave.damage",
                         formatNumber(multiblock.getDamageForPower(powerSyncer.getIntValue()))))
-                    .color(Color.WHITE.main)
                     .asWidget()
                     .marginTop(2))
             .child(
@@ -42,7 +40,6 @@ public class MTEMicrowaveGui extends TTMultiblockBaseGui<MTEMicrowave> {
                         "gt.blockmachines.multimachine.tm.microwave.timer",
                         formatNumber(remainingSyncer.getIntValue()),
                         formatNumber(timerSyncer.getIntValue())))
-                    .color(Color.WHITE.main)
                     .asWidget());
     }
 
@@ -52,5 +49,10 @@ public class MTEMicrowaveGui extends TTMultiblockBaseGui<MTEMicrowave> {
 
         syncManager
             .syncValue("timerProgress", new IntSyncValue(multiblock::getTimerProgress, multiblock::setTimerProgress));
+    }
+
+    @Override
+    public boolean showMaxParallelRow() {
+        return false;
     }
 }
