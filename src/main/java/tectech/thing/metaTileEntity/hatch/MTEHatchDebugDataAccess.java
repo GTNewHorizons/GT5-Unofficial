@@ -23,6 +23,9 @@ import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDebugDataAccess extends MTEHatchDataBase implements IALRecipeInputHatch {
 
+    public static final ALRecipeDataPacket DEBUG_DATA_PACKET = new ALRecipeDataPacket(
+        ImmutableList.copyOf(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes));
+
     public MTEHatchDebugDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.debug.tt.dataaccess.desc"));
     }
@@ -38,7 +41,7 @@ public class MTEHatchDebugDataAccess extends MTEHatchDataBase implements IALReci
 
     @Override
     public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
-        return new ALRecipeDataPacket(ImmutableList.copyOf(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes));
+        return DEBUG_DATA_PACKET;
     }
 
     @Override
