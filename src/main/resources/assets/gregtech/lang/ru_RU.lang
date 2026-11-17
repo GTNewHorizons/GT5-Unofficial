@@ -385,7 +385,6 @@ gt.blockmachines.hatch.datainass.wireless.tier.12.name=Беспроводной 
 gt.blockmachines.hatch.dataout.wireless.tier.12.name=Серверный шлюз облачных вычислений
 gt.blockmachines.hatch.dataout.wireless.tier.12.tooltip=Беспроводной вывод данных из мультиблока
 gt.blockmachines.hatch.dataoutass.wireless.tier.12.name=Беспроводной разъем для банка данных
-gt.blockmachines.hatch.dataoutass.wireless.tier.12.tooltip=§9Tec§1Tech§9: Elemental Matter\nБеспроводной квантовый вывод данных из мультиблока\nВысокоскоростное подключение к интернету
 gt.blockmachines.hatch.degasifiercontrol.name=Люк управления дегазатором
 gt.blockmachines.hatch.degasifiercontrol.tooltip=Может быть установлен в установку остаточной дегазации и деконтаминации воды.\nВыводит уровень сигнал красного камня на основе текущего управляющего сигнала.
 gt.blockmachines.hatch.dronedownlink.name=Модуля связи с дроном
@@ -1937,9 +1936,8 @@ GT5U.MBTT.BulkCatalystHousing=Объёмное хранилище катализ
 GT5U.MBTT.CapacitorHatch=Шлюз конденсатора
 GT5U.MBTT.ComputerRackHatch=Стойка квантового компьютера
 GT5U.MBTT.ObjectHolder=Держатель образцов
-GT5U.MBTT.DataAccessHatch=Шлюз доступа к данным
-GT5U.MBTT.AssemblyLineReception=Входной разъём сборочной линии
-GT5U.MBTT.DataBankTransmission=Выходной разъём банка данных
+GT5U.MBTT.DataInputHatch=Входной люк для флешек
+GT5U.MBTT.DataOutputHatch=Выходной люк для флешек
 GT5U.MBTT.ElectrodeDetectorHatch=Шлюз-детектор электрода
 GT5U.MBTT.ElectrodeHatch=Шлюз электрода
 GT5U.MBTT.HeatSensorHatch=Тепловой датчик
@@ -7872,7 +7870,6 @@ GT5U.tooltip.pollution.produces.rocket.ignited=При поджигании пр�
 GT5U.tooltip.pollution.produces.rocket.flying=Производит %d загрязнения/секунду во время полета
 
 # GT structure hints
-GT5U.tooltip.structure.data_access_hatch=Шлюз доступа к данным
 GT5U.tooltip.structure.electromagnet_housing=Отсек для электромагнитов
 GT5U.tooltip.structure.laser_source_hatch=Источник лазера
 GT5U.tooltip.structure.heating_coil=Нагревательная катушка
@@ -9851,7 +9848,7 @@ gt.blockmachines.waterpump.controller.tier.single.name=Водяная помпа
 gt.blockmachines.hatch.dataaccess.adv.name=Продвинутый шлюз доступа к данным
 gt.blockmachines.hatch.dataaccess.auto.name=Автоматизированный шлюз доступа к данным
 gt.blockmachines.hatch.dataaccess.name=Шлюз доступа к данным
-gt.blockmachines.hatch.dataaccess.desc=Доступ к данным для мультиблоков\nДобавляет %s дополнительных слотов для Флешек
+gt.blockmachines.hatch.dataaccess.desc=Тип машины: §eВходной люк для флешек, DSIH§r\nПредоставляет рецепты сборочным линиям, продвинутым сборочным линиям и банкам данных\nСлоты для флешек: §e%s§r
 
 # Tools
 gt.metatool.empty.name=%s (Без заряда)

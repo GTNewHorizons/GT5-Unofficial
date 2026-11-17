@@ -40,6 +40,8 @@ GT5U.MBTT.StructureHint=多种可选方块或任意等级方块
 GT5U.MBTT.Air=必须留空
 GT5U.MBTT.AirIntakeHatch=进气仓
 GT5U.MBTT.CokeOvenHatch=焦炉仓
+GT5U.MBTT.DataInputHatch=闪存输入仓
+GT5U.MBTT.DataOutputHatch=闪存输出仓
 GT5U.MBTT.SuperChest=超级/量子箱
 GT5U.MBTT.Tiers.MachineCasing=机械方块
 GT5U.MBTT.Tiers.MetalMachineCasing=金属机械方块
@@ -1682,7 +1684,6 @@ gt.blockmachines.hatch.datainass.wireless.tier.12.name=装配线无线接收接�
 gt.blockmachines.hatch.dataout.wireless.tier.12.name=云算力数据服务仓
 gt.blockmachines.hatch.dataout.wireless.tier.12.tooltip=多方块机器的无线算力输出端
 gt.blockmachines.hatch.dataoutass.wireless.tier.12.name=数据库无线发送接口
-gt.blockmachines.hatch.dataoutass.wireless.tier.12.tooltip=§9Tec§1Tech§9：万物基石\n多方块机器的无线配方数据输出端\n高速网络连接
 gt.blockmachines.hatch.degasifiercontrol.name=除气机控制仓
 gt.blockmachines.hatch.degasifiercontrol.tooltip=可安装于除气机净化单元。\n基于当前控制信号输出对应强度的红石信号。
 gt.blockmachines.hatch.dronedownlink.name=无人机下行模块
@@ -1850,7 +1851,7 @@ gt.blockmachines.automation.buffer.rate.single.desc=每%2$s秒输出1组（64个
 gt.blockmachines.hatch.dataaccess.adv.name=进阶数据访问仓
 gt.blockmachines.hatch.dataaccess.auto.name=自动数据访问仓
 gt.blockmachines.hatch.dataaccess.name=数据访问仓
-gt.blockmachines.hatch.dataaccess.desc=多方块机器的数据访问接口\n增加%s个额外的格子以放置闪存
+gt.blockmachines.hatch.dataaccess.desc=机器类型：§e闪存输入仓，DSIH§r\n为装配线、进阶装配线和数据库提供配方\n闪存槽位：§e%s§r
 
 # Tools
 gt.metatool.empty.name=%s（空）

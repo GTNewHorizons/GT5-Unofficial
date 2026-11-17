@@ -16,6 +16,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility.ItemId;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
@@ -40,7 +42,7 @@ class ALRecipeDataPacketTest {
     }
 
     private static ALRecipeDataPacket roundTrip(ALRecipeDataPacket packet) {
-        return new ALRecipeDataPacket(packet.toNbt());
+        return new ALRecipeDataPacket(packet.toNBT());
     }
 
     private static Set<RecipeAssemblyLine> asSet(RecipeAssemblyLine[] content) {
@@ -55,15 +57,15 @@ class ALRecipeDataPacketTest {
     @Test
     void duplicateOutputReachesFixpoint() {
         assertNotNull(duplicateOutputGroup);
-        ALRecipeDataPacket packet = new ALRecipeDataPacket(new RecipeAssemblyLine[] { duplicateOutputGroup.get(0) });
+        ALRecipeDataPacket packet = new ALRecipeDataPacket(ImmutableList.of(duplicateOutputGroup.get(0)));
 
         ALRecipeDataPacket once = roundTrip(packet);
-        assertEquals(duplicateOutputGroup.size(), once.getContent().length);
-        assertEquals(new HashSet<>(duplicateOutputGroup), asSet(once.getContent()));
+        assertEquals(duplicateOutputGroup.size(), once.contents.size());
+        assertEquals(new HashSet<>(duplicateOutputGroup), new HashSet<>(once.contents));
 
         ALRecipeDataPacket twice = roundTrip(once);
-        assertEquals(once.getContent().length, twice.getContent().length);
-        assertEquals(asSet(once.getContent()), asSet(twice.getContent()));
+        assertEquals(once.contents.size(), twice.contents.size());
+        assertEquals(new HashSet<>(once.contents), new HashSet<>(twice.contents));
     }
 
     @Test
@@ -72,25 +74,25 @@ class ALRecipeDataPacketTest {
         RecipeAssemblyLine[] bloated = new RecipeAssemblyLine[8];
         Arrays.fill(bloated, duplicateOutputGroup.get(0));
 
-        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(bloated));
-        assertEquals(duplicateOutputGroup.size(), once.getContent().length);
-        assertEquals(new HashSet<>(duplicateOutputGroup), asSet(once.getContent()));
+        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableList.copyOf(bloated)));
+        assertEquals(duplicateOutputGroup.size(), once.contents.size());
+        assertEquals(new HashSet<>(duplicateOutputGroup), new HashSet<>(once.contents));
     }
 
     @Test
     void uniqueOutputIsLossless() {
         assertNotNull(uniqueOutputRecipe);
-        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(new RecipeAssemblyLine[] { uniqueOutputRecipe }));
-        assertEquals(1, once.getContent().length);
-        assertSame(uniqueOutputRecipe, once.getContent()[0]);
+        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableList.of(uniqueOutputRecipe)));
+        assertEquals(1, once.contents.size());
+        assertSame(uniqueOutputRecipe, once.contents.getFirst());
     }
 
     @Test
     void allPacketsShrinkBelowRegisteredRecipeCount() {
         int total = RecipeAssemblyLine.sAssemblylineRecipes.size();
         assertTrue(total > 0);
-        RecipeAssemblyLine[] everything = RecipeAssemblyLine.sAssemblylineRecipes.toArray(new RecipeAssemblyLine[0]);
-        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(everything));
-        assertTrue(once.getContent().length <= total);
+        ALRecipeDataPacket once = roundTrip(
+            new ALRecipeDataPacket(ImmutableList.copyOf(RecipeAssemblyLine.sAssemblylineRecipes)));
+        assertTrue(once.contents.size() <= total);
     }
 }
