@@ -19,13 +19,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import ic2.core.WorldData;
 
 public class ItemSimpleWindMeter extends Item {
@@ -62,14 +63,12 @@ public class ItemSimpleWindMeter extends Item {
             || WorldData.get(world).windSim == null) return itemStack;
 
         float windStrength = (float) WorldData.get(world).windSim.getWindAt(entityPlayer.posY);
-        String windS = windStrength < 1f ? StatCollector.translateToLocal("tooltip.windmeter.2.name")
-            : windStrength < 10f ? StatCollector.translateToLocal("tooltip.windmeter.3.name")
-                : windStrength < 20f ? StatCollector.translateToLocal("tooltip.windmeter.4.name")
-                    : windStrength < 30f ? StatCollector.translateToLocal("tooltip.windmeter.5.name")
-                        : windStrength < 50f ? StatCollector.translateToLocal("tooltip.windmeter.6.name")
-                            : StatCollector.translateToLocal("tooltip.windmeter.7.name");
-        entityPlayer.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocal("tooltip.windmeter.8.name") + " " + windS + "."));
+        String windSKey = windStrength < 1f ? "tooltip.windmeter.2.name"
+            : windStrength < 10f ? "tooltip.windmeter.3.name"
+                : windStrength < 20f ? "tooltip.windmeter.4.name"
+                    : windStrength < 30f ? "tooltip.windmeter.5.name"
+                        : windStrength < 50f ? "tooltip.windmeter.6.name" : "tooltip.windmeter.7.name";
+        GTUtility.sendChatTrans(entityPlayer, "tooltip.windmeter.8.name.s", new ChatComponentTranslation(windSKey));
         itemStack.damageItem(1, entityPlayer);
         return itemStack;
     }

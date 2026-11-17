@@ -1,12 +1,8 @@
 {gray:{hr}}
-{gold:Обычные семена:}
-Минимальный тир вольтажа: {var:minVoltageTier}
-Начиная с {var:startingSlotCount} слота
-На каждом тире после {var:minVoltageTier}, слоты умножаются на {var:slotPerTierMultiplier}
-Каждый слот добавляет {var:seedCapacityPerSlot} семени к общей вместимости семян
-Длительность процесса: 5 сек
-Время процесса делится на количество тиров после {var:minVoltageTierMinus1} (Минимум 1 сек)
-Все культуры выращиваются в конце операции
-Не сбрасывает семена
-Может потреблять до {var:maxFertilizerUsagePerSeed} удобрений на семя за цикл
-Прирост за удобрение: {var:fertilizerBonus}
+{gold:Обычные семена}:
+Минимальный тир вольтажа: {green:{var:minVoltageTier}}
+Начинает с {green:{var:startingSlotCount}} слота, слоты умножаются на {green:{var:slotPerTierMultiplier}} за каждый тир после {green:{var:minVoltageTier}}
+Каждый слот вмещает {green:{var:seedCapacityPerSlot}} семян
+Длительность процесса: {green:5 с}, делится на число тиров после {green:{var:minVoltageTierMinus1}} (минимум {green:1 с})
+Культуры вырастают в конце операции, семена не выпадают
+Удобрения: до {green:{var:maxFertilizerUsagePerSeed}} на семя за цикл, прирост {green:{var:fertilizerBonus}} за каждое

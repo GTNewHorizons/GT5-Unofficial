@@ -43,7 +43,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -72,10 +71,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    /** Extra heat granted for every voltage tier above {@link #HEAT_BONUS_START_TIER} */
+    /** Extra heat granted for every voltage tier above {@link #BASE_TIER_FOR_HEAT_INCREASE} */
     public static final int HEAT_PER_VOLTAGE_TIER = 100;
     /** Voltage tier above which the per-tier heat bonus starts */
-    public static final int HEAT_BONUS_START_TIER = VoltageIndex.MV;
+    public static final int BASE_TIER_FOR_HEAT_INCREASE = VoltageIndex.MV;
 
     private int mHeatingCapacity = 0;
 
@@ -128,11 +127,13 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_ebf"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
-                ImmutableMap.of(
-                    "heat_per_tier", formatNumber(HEAT_PER_VOLTAGE_TIER),
-                    "start_tier", GTValues.VN[HEAT_BONUS_START_TIER],
-                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
-                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
+                ImmutableMap.<String, Object>builder()
+                    .put("heat_per_tier", HEAT_PER_VOLTAGE_TIER)
+                    .put("eu_reduction", OverclockCalculator.DEFAULT_HEAT_DISCOUNT_PERCENT_FOR_TOOLTIPS)
+                    .put("eu_reduction_heat", OverclockCalculator.HEAT_DISCOUNT_THRESHOLD)
+                    .put("heat_per_poc", OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
+                    .put("base_tier_for_heat_increase", BASE_TIER_FOR_HEAT_INCREASE)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -224,7 +225,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         checkHasAnyOutput(errors);
 
         this.mHeatingCapacity = (int) getCoilLevel().getHeat()
-            + HEAT_PER_VOLTAGE_TIER * (GTUtility.getTier(getMaxInputVoltage()) - HEAT_BONUS_START_TIER);
+            + HEAT_PER_VOLTAGE_TIER * (GTUtility.getTier(getMaxInputVoltage()) - BASE_TIER_FOR_HEAT_INCREASE);
     }
 
     @Override

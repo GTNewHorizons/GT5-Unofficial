@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -52,6 +51,7 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -162,20 +162,20 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     .put("helium", formatNumber(HELIUM_NEEDED))
                     .put("min_pebbles", formatNumber(MIN_CAPACITY_TO_START))
                     .put("max_pebbles", formatNumber(MAX_CAPACITY))
+                    .put("power_usage", formatNumber(POWER_USAGE))
                     .put("consumption", formatNumber(FUEL_CONSUMPTION_RATE * 100))
                     .put("coolant_rate", formatNumber(COOLANT_PER_TICK))
-                    .put("unit", getFluidUnit())
                     .put("duration", formatNumber(OPERATION_DURATION_TICKS / 20 / 60 / 60))
                     .build())
             .beginStructureBlock(11, 12, 11, true)
-            .addController("Front bottom center")
-            .addCasing("500-531", "Radiation Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("1+", "Any top casing", 2)
-            .addInputHatch("1+", "Any top casing", 2)
-            .addOutputBus("1+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("500-531", Casings.RadiationProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

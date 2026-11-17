@@ -21,10 +21,10 @@ import gregtech.common.gui.modularui.UIHelper;
 @MethodsReturnNonnullByDefault
 public class LargeNEIFrontend extends RecipeMapFrontend {
 
-    private static final int xDirMaxCount = 3;
-    private static final int yOrigin = 8;
+    protected static final int xDirMaxCount = 3;
+    protected static final int yOrigin = 8;
 
-    private final int itemRowCount;
+    protected final int itemRowCount;
     private final int fluidRowCount;
 
     public LargeNEIFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,

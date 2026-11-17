@@ -198,7 +198,21 @@ public class ItemIntegratedCircuit extends GTGenericItem
     }
 
     private static String getConfigurationString(int aMetaData) {
-        return getModeString(aMetaData) + " " + (byte) (aMetaData & 0xFF);
+        return StatCollector.translateToLocalFormatted(
+            "gt.integrated_circuit.configuration",
+            getModeString(aMetaData),
+            (byte) (aMetaData & 0xFF));
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        int configuration = getDamage(aStack);
+        String suffix = (configuration & 0xFF00) == 0 ? Integer.toString(configuration & 0xFF)
+            : getConfigurationString(configuration);
+        return StatCollector.translateToLocalFormatted(
+            "gt.integrated_circuit.configured.name",
+            super.getItemStackDisplayName(aStack),
+            suffix);
     }
 
     @Override

@@ -1,5 +1,7 @@
-You can use some fluids to reduce recipe time. Place the circuit in the Input Bus
-Increases Heat by {red:{var:heat_per_tier}K} for every {white:Voltage} Tier past {aqua:{var:start_tier}}
-Reduces {aqua:EU Usage} by {white:5%} every {red:{var:discount_heat}K} above the recipe requirement
-Every {red:{var:perfect_oc_heat}K} over the recipe requirement grants 1 {light_purple:Perfect Overclock}
-That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)
+Base {color_heat:Heat} is determined by the {color_name:Heating Coils}
+Heat increases by {color_heat:+{var:heat_per_tier}{K}} for every {color_name:Voltage} Tier past {VNF:base_tier_for_heat_increase}
+{hr}
+Every {color_heat:{var:eu_reduction_heat}{K}} above the recipe requirement reduces {EU} Usage by {color_eu_usage:{var:eu_reduction}%}
+Every {color_heat:{var:heat_per_poc}{K}} above the recipe requirement grants {color_mechanic:1 Perfect Overclock}
+{color_mechanic:Perfect Overclocks} increase speed by {color_speed:4x} instead of {color_speed:2x} (100% energy efficient)
+{color_note:Certain fluids also reduce the base recipe duration}

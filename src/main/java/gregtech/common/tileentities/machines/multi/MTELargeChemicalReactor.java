@@ -24,6 +24,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -56,6 +59,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeChemicalReactor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,21 +110,19 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, LCR")
-            .addInfo("Accepts fluids instead of fluid cells")
-            .addInfo("Can perform several direct recipes that skip intermediate compounds")
-            .addPerfectOCInfo()
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.large_chemical_reactor"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"))
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("8-22", "Chemically Inert Machine Casing", false)
-            .addCasing("1", "PTFE Pipe Casing", false)
-            .addCasing("1", "Heating Coil", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("8-22", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("1", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing("1", StatCollector.translateToLocal("GT5U.structure.heating_coil"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Heating Coil can be any tier and on any side")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.heating_coil_any_tier_any_side"))
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -89,16 +90,16 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 3, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("58", "IV Machine Casing", false)
-            .addCasing("0-32", "Thermally Insulated Casing", false)
-            .addEnergyHatch("2", "Bottom insulated casings", 5)
-            .addMaintenanceHatch("1", "Casing behind controller", 1)
-            .addMufflerHatch("2", "Top insulated casings", 4)
-            .addInputBus("0+", "Any left side insulated casing", 2)
-            .addInputHatch("0+", "Any left side insulated casing", 2)
-            .addOutputBus("0+", "Any right side insulated casing", 3)
-            .addOutputHatch("0+", "Any right side insulated casing", 3)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("58", Casings.IVMachineCasing.getLocalizedName(), false)
+            .addCasing("0-32", Casings.ThermallyInsulatedCasing.getLocalizedName(), false)
+            .addEnergyHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.bottom_insulated_casings"), 5)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.casing_behind_controller"), 1)
+            .addMufflerHatch("2", StatCollector.translateToLocal("gt.mbtt.structure.top_insulated_casings"), 4)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_left_side_insulated_casing"), 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_left_side_insulated_casing"), 2)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_right_side_insulated_casing"), 3)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_right_side_insulated_casing"), 3)
             .toolTipFinisher();
         // spotless:on
         return tt;

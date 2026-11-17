@@ -15,7 +15,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemTeslaStaff extends Item {
 
@@ -28,7 +27,6 @@ public final class ItemTeslaStaff extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.tm.teslaStaff.desc"));
     }
 

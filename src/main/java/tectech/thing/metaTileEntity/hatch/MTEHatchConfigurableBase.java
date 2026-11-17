@@ -45,8 +45,12 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
 
         if (igte == null || igte.isDead()) return;
 
+        ForgeDirection front = igte.getFrontFacing();
+
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            if (dir != front) {
+                igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            }
         }
 
         igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (power));
