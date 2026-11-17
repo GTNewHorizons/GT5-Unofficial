@@ -111,6 +111,7 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
+import gregtech.crossmod.liquidlogged.GTFluidHolders;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
@@ -189,6 +190,7 @@ import ic2.api.recipe.RecipeOutput;
         + "after:TConstruct;"
         + "after:Translocator;"
         + "after:gendustry;"
+        + "after:dashboard@[1.0.13,);"
         + "after:etfuturum;"
         + "before:computronics;")
 public class GTMod {
@@ -386,6 +388,10 @@ public class GTMod {
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
         DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
+
+        if (Mods.LiquidLogged.isModLoaded()) {
+            GTFluidHolders.register();
+        }
 
         if (GregTechAPI.sLoadStarted) {
             return;

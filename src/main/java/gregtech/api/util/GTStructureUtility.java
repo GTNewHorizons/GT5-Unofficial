@@ -65,6 +65,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -79,6 +80,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.crossmod.liquidlogged.WaterlogHelper;
 import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -195,7 +197,46 @@ public class GTStructureUtility {
                 }
             }
         }
+        if (allFilled && Mods.LiquidLogged.isModLoaded()) {
+            waterlogBlocksNextToWater(tile, facing, structure, offsetX, offsetY, offsetZ, waterChar);
+        }
         return allFilled;
+    }
+
+    private static void waterlogBlocksNextToWater(IGregTechTileEntity tile, ExtendedFacing facing, String[][] structure,
+        int offsetX, int offsetY, int offsetZ, char waterChar) {
+        for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+            String[] layers = structure[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    // Same-layer neighbours only, so frames above the water line stay dry
+                    if (row.charAt(charX) == waterChar || !hasCharNextTo(structure, sliceZ, layerY, charX, waterChar))
+                        continue;
+
+                    int[] abc = new int[] { charX - offsetX, layerY - offsetY, sliceZ - offsetZ };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    facing.getWorldOffset(abc, xyz);
+                    WaterlogHelper.waterlog(
+                        tile.getWorld(),
+                        tile.getXCoord() + xyz[0],
+                        tile.getYCoord() + xyz[1],
+                        tile.getZCoord() + xyz[2]);
+                }
+            }
+        }
+    }
+
+    private static boolean hasCharNextTo(String[][] structure, int sliceZ, int layerY, int charX, char c) {
+        return isCharAt(structure, sliceZ - 1, layerY, charX, c) || isCharAt(structure, sliceZ + 1, layerY, charX, c)
+            || isCharAt(structure, sliceZ, layerY, charX - 1, c)
+            || isCharAt(structure, sliceZ, layerY, charX + 1, c);
+    }
+
+    private static boolean isCharAt(String[][] structure, int sliceZ, int layerY, int charX, char c) {
+        if (sliceZ < 0 || sliceZ >= structure.length || layerY >= structure[sliceZ].length) return false;
+        String row = structure[sliceZ][layerY];
+        return charX >= 0 && charX < row.length() && row.charAt(charX) == c;
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
