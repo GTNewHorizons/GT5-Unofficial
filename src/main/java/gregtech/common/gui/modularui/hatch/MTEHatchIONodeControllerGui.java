@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
@@ -20,6 +21,11 @@ public class MTEHatchIONodeControllerGui extends MTEHatchBaseGui<MTEHatchIONodeC
 
     public MTEHatchIONodeControllerGui(MTEHatchIONodeController machine) {
         super(machine);
+    }
+
+    @Override
+    protected int getBasePanelHeight() {
+        return super.getBasePanelHeight() + SLOT_SIZE / 2;
     }
 
     protected EnumSyncValue<MTEHatchIONodeController.Control, ?> getControlSync(PanelSyncManager syncManager) {
@@ -88,20 +94,29 @@ public class MTEHatchIONodeControllerGui extends MTEHatchBaseGui<MTEHatchIONodeC
         // spotless:off
         return new ParentWidget<>().fullWidth()
             .child(SettingsPanel.builder()
-                .addEnumCycleButton(
-                    IKey.lang("GT5U.gui.text.bec-mode"),
-                    MTEHatchIONodeController.ParallelMode.class,
-                    machine::getParallelMode,
-                    machine::setParallelMode,
-                    (_, _, button) -> button.tooltip(
-                        (MTEHatchIONodeController.ParallelMode parallelMode) -> new RichTooltip().add(parallelMode.getTooltip())))
+                .addReadout(
+                    IKey.lang("GT5U.gui.text.control-parallel.mantissa"),
+                    new IntSyncValue(machine::signalReceived),
+                    amount -> IKey.str(NumberFormatUtil.formatNumber(amount))
+                )
+                .addReadout(
+                    IKey.lang("GT5U.gui.text.control-parallel.exponent"),
+                    new IntSyncValue(machine::getParallelExponent),
+                    amount -> IKey.str(NumberFormatUtil.formatNumber(amount))
+                )
                 .addReadout(
                     IKey.lang("GT5U.gui.text.control-parallel.parallel"),
-                    new IntSyncValue(machine::signalReceived),
+                    new IntSyncValue(machine::getParallel),
                     amount -> IKey.str(NumberFormatUtil.formatNumber(amount))
                 )
                 .build(panel, syncManager, getContentHolderHeight())
                 .horizontalCenter());
         // spotless:on
+    }
+
+    @Override
+    protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
+        return super.createCircuitSlot(syncManager).setEnabledIf(
+            widget -> getControlSync(syncManager).getValue() == MTEHatchIONodeController.Control.PARALLEL);
     }
 }

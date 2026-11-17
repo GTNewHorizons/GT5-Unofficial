@@ -1,9 +1,12 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import static gregtech.api.util.GTUtility.mulSafe;
+
 import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -21,6 +24,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -31,14 +35,14 @@ import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.MTEHatchIONodeControllerGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
-public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
+public class MTEHatchIONodeController extends MTEHatchConfigurableBase implements IConfigurationCircuitSupport {
 
     private Lazy<List<String>> tooltip = null;
 
     private Control control = Control.PAUSE;
 
     private PauseMode pauseMode = PauseMode.PAUSE_INSTANT;
-    private ParallelMode parallelMode = ParallelMode.PARALLEL_ADD;
+    private int parallelExponent;
 
     public enum Control {
 
@@ -82,33 +86,12 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         }
     }
 
-    public enum ParallelMode {
-
-        PARALLEL_ADD,
-        PARALLEL_MULTIPLY;
-
-        @Override
-        public String toString() {
-            return switch (this) {
-                case PARALLEL_ADD -> StatCollector.translateToLocal("GT5U.gui.text.parallel-add");
-                case PARALLEL_MULTIPLY -> StatCollector.translateToLocal("GT5U.gui.text.parallel-multiply");
-            };
-        }
-
-        public String getTooltip() {
-            return switch (this) {
-                case PARALLEL_ADD -> StatCollector.translateToLocal("GT5U.gui.text.parallel-add.tooltip");
-                case PARALLEL_MULTIPLY -> StatCollector.translateToLocal("GT5U.gui.text.parallel-multiply.tooltip");
-            };
-        }
-    }
-
     public MTEHatchIONodeController(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UIV, null);
+        super(aID, aName, VoltageIndex.UIV, 1, null);
     }
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {
-        super(prototype);
+        super(prototype, 1);
 
         tooltip = prototype.tooltip;
     }
@@ -143,16 +126,8 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         return pauseMode;
     }
 
-    public ParallelMode getParallelMode() {
-        return parallelMode;
-    }
-
     public void setPauseMode(PauseMode pauseMode) {
         this.pauseMode = pauseMode;
-    }
-
-    public void setParallelMode(ParallelMode parallelMode) {
-        this.parallelMode = parallelMode;
     }
 
     public boolean receivingSignal() {
@@ -161,6 +136,44 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     public byte signalReceived() {
         return getBaseMetaTileEntity().getStrongestRedstone();
+    }
+
+    public int getParallelExponent() {
+        return parallelExponent;
+    }
+
+    public int getParallel() {
+        return mulSafe(signalReceived(), (int) Math.pow(16, parallelExponent));
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return 0;
+    }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
+    public int getCircuitSlotX() {
+        return 0;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 0;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+
+        if (baseMetaTileEntity.hasInventoryBeenModified()) {
+            ItemStack circuit = getStackInSlot(0);
+            parallelExponent = circuit != null ? circuit.getItemDamage() : 0;
+        }
     }
 
     @Override
@@ -186,14 +199,12 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
     protected void saveConfig(NBTTagCompound aNBT) {
         aNBT.setInteger("control", control.ordinal());
         aNBT.setInteger("mode", pauseMode.ordinal());
-        aNBT.setInteger("parallelMode", parallelMode.ordinal());
     }
 
     @Override
     protected void loadConfig(@Nullable NBTTagCompound aNBT) {
         control = Control.values()[aNBT == null ? 0 : aNBT.getInteger("control")];
         pauseMode = PauseMode.values()[aNBT == null ? 0 : aNBT.getInteger("mode")];
-        parallelMode = ParallelMode.values()[aNBT == null ? 0 : aNBT.getInteger("parallelMode")];
     }
 
     @Override

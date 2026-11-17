@@ -7,8 +7,7 @@ They can also start a new recipe but idle immediately before making any progress
 {hr}
 {color_mode:Parallel Control}
 Controls the max parallel for {color_key:{item:gregtech:gt.blockmachines:15757}} when processing recipes
-The {color_parallel:Parallel} value is retrieved from the strength of the received redstone signal
-{color_parallel:Parallel} with value {color_amount:0} will be ignored
-{color_name:Add Parallel} will sum up all other parallels together
-{color_name:Multiply Parallel} will multiply all other parallels together
-{color_parallel:Max Parallel}{color_formula: = Multiplied Parallels + Summed Parallels}
+The {color_mechanic:Mantissa} value is based on the strength of the received redstone signal
+The {color_mechanic:Exponent} value is based on the supplied ghost circuit number
+{color_parallel:Parallel}{color_formula: = Mantissa × 16^Exponent}
+Multiple {color_key:{item:gregtech:gt.blockmachines:15759}} can be used and their {color_parallel:Parallel} values will be summed up together
