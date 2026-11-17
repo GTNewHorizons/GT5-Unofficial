@@ -96,7 +96,6 @@ public class CropRenderer extends EntityFX {
             RenderBlocks.getInstance()
                 .renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
         }
-
         tessellator.draw();
     }
 
