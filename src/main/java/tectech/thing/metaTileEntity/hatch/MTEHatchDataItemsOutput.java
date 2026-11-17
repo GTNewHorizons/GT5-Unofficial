@@ -66,6 +66,11 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
+    public ALRecipeDataPacket getQueued() {
+        return q;
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isOutputFacing(side);
     }

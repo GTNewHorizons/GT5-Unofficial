@@ -94,10 +94,6 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         return isOutputFacing(side);
     }
 
-    public void providePacket(QuantumDataPacket packet) {
-        this.q = packet;
-    }
-
     @Override
     public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState justConnectionCheck) {
         var result = super.moveAround(aBaseMetaTileEntity, justConnectionCheck);
@@ -114,11 +110,6 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
             }
         }
         return result;
-    }
-
-    @Override
-    protected void resetHistory() {
-        computation = 0;
     }
 
     @Override

@@ -32,7 +32,7 @@ import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
+public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe<ALRecipeDataPacket> {
 
     public boolean delDelay = true;
     private List<RecipeAssemblyLine> recipes;
@@ -113,11 +113,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source) {
-        return null;
-    }
-
-    public void setContents(ALRecipeDataPacket iIn) {
+    public void setContent(ALRecipeDataPacket iIn) {
         List<RecipeAssemblyLine> oldRecipes = recipes;
         if (iIn == null) {
             recipes = null;
@@ -181,7 +177,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                 if (delDelay) {
                     delDelay = false;
                 } else {
-                    setContents(null);
+                    setContent(null);
                 }
             }
         }
@@ -195,8 +191,16 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
+    public IConnectsToDataPipe<ALRecipeDataPacket> getLastConnected() {
+        return null;
+    }
+
+    @Override
+    public void setLastConnected(IConnectsToDataPipe<ALRecipeDataPacket> connected) {}
+
+    @Override
+    public ALRecipeDataPacket getQueued() {
+        return null;
     }
 
     @Override

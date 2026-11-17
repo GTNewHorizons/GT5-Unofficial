@@ -334,7 +334,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 if (pendingPacket == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
-                di.setContents(null);
+                di.setContent(null);
             }
         }
 
@@ -370,7 +370,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             long packetSize = pack.getContent() / eOutputData.size();
 
             for (MTEHatchDataOutput o : eOutputData) {
-                o.providePacket(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
+                o.setContent(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
             }
         }
     }

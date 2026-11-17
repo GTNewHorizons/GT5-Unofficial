@@ -254,7 +254,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
                 if (pendingPacket == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
-                di.setContents(null);
+                di.setContent(null);
             }
         }
 
