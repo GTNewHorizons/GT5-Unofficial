@@ -60,6 +60,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -129,8 +130,14 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         tt.addMachineType(getMachineType())
             .addMarkdown(
                 new ResourceLocation("gregtech", "power-sub-station"),
-                ImmutableMap
-                    .of("energy_tax", ENERGY_TAX, "min_height", CELL_HEIGHT_MIN + 2, "max_height", CELL_HEIGHT_MAX + 2))
+                ImmutableMap.<String, Object>builder()
+                    .put("energy_tax", ENERGY_TAX)
+                    .put("min_height", CELL_HEIGHT_MIN + 2)
+                    .put("max_height", CELL_HEIGHT_MAX + 2)
+                    .put("min_tier", VoltageIndex.HV)
+                    .put("max_tier_voltage", VoltageIndex.UHV)
+                    .put("max_tier", VoltageIndex.MAX)
+                    .build())
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasingInfoMin(Casings.SubStationExternalCasing.getLocalizedName(), 10, false)
             .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
