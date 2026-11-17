@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -35,6 +35,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +43,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
@@ -71,10 +73,12 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.config.Other;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -123,6 +127,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
      * Bitmask for whether disable fluid input form each side.
      */
     public byte mDisableInput = 0;
+
+    protected final FluidPipeThermalState mThermals = new FluidPipeThermalState(this);
     private String mPrefixKey;
     private String materialKeyOverride;
     private boolean shouldSkipMaterialTooltip = false;
@@ -195,15 +201,34 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             textures.add(getRestrictorTexture(borderMask));
         }
 
+        final ITexture frost = getFrostTexture(base);
+        if (frost != null) textures.add(frost);
+
         return textures.toArray(new ITexture[0]);
     }
 
+    /** @return the frost drawn over this pipe while it's frosted, or null */
+    private @Nullable ITexture getFrostTexture(IGregTechTileEntity base) {
+        if (!Client.render.renderFluidPipeThermalEffects || !base.isClientSide()
+            || !(base instanceof BaseMetaPipeEntity pipeTile)) return null;
+        final int step = FluidPipeThermals.getFrostStep(mThermals.getShownLevel());
+        if (step == 0) return null;
+        return GTMod.proxy.getPipeFrostTexture(this, pipeTile.getConnections() & 63, step);
+    }
+
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        return getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, mMaterial.mRGBa, connected, colorIndex);
+        return getBaseTexture(
+            mThickNess,
+            mPipeAmount,
+            mMaterial.mIconSet,
+            mMaterial.mRGBa,
+            connected,
+            colorIndex,
+            mThermals.getRenderedLevel());
     }
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
-        boolean connected, int colorIndex) {
+        boolean connected, int colorIndex, int thermalLevel) {
         IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
 
         if (!connected) {
@@ -226,7 +251,28 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         rgba = Dyes.getModulation(colorIndex, rgba);
 
+        if (Client.render.renderFluidPipeThermalEffects) rgba = FluidPipeThermals.getTint(rgba, thermalLevel);
         return TextureFactory.of(texture, rgba);
+    }
+
+    /**
+     * @return the connected sides that carry on into a fluid pipe at least as thick as this one, one bit per
+     *         {@link ForgeDirection}. Glow and frost are left open on these sides so runs of pipe look seamless.
+     */
+    public int getJoinedSides(IBlockAccess world, int x, int y, int z, int connections) {
+        int joined = 0;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if ((connections & side.flag) == 0) continue;
+            final TileEntity neighbour = world.getTileEntity(x + side.offsetX, y + side.offsetY, z + side.offsetZ);
+            if (neighbour instanceof BaseMetaPipeEntity pipeTile
+                && pipeTile.getMetaTileEntity() instanceof MTEFluidPipe other
+                && other.getCollisionThickness() >= getCollisionThickness() - 0.01F) joined |= side.flag;
+        }
+        return joined;
+    }
+
+    public FluidPipeThermalState getThermals() {
+        return mThermals;
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {
@@ -242,6 +288,18 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     @Override
     public byte getUpdateData() {
         return mDisableInput;
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        mThermals.writeToStream(buffer);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mThermals.readFromStream(buffer);
     }
 
     @Override
@@ -269,6 +327,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         for (int i = 0; i < mPipeAmount; i++) if (mFluids[i] != null)
             aNBT.setTag("mFluid" + (i == 0 ? "" : i), mFluids[i].writeToNBT(new NBTTagCompound()));
         aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
+        mThermals.saveNBTData(aNBT);
         if (GTMod.proxy.gt6Pipe) {
             aNBT.setByte("mConnections", mConnections);
             aNBT.setByte("mDisableInput", mDisableInput);
@@ -280,31 +339,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         for (int i = 0; i < mPipeAmount; i++)
             mFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid" + (i == 0 ? "" : i)));
         mLastReceivedFrom = aNBT.getByte("mLastReceivedFrom");
+        mThermals.loadNBTData(aNBT);
         if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
             mDisableInput = aNBT.getByte("mDisableInput");
-        }
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        if ((((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0
-            && aEntity instanceof EntityLivingBase) {
-            for (FluidStack tFluid : mFluids) {
-                if (tFluid != null) {
-                    final int tTemperature = tFluid.getFluid()
-                        .getTemperature(tFluid);
-                    if (tTemperature > 320
-                        && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity)) {
-                        GTUtility.applyHeatDamage((EntityLivingBase) aEntity, (tTemperature - 300) / 50.0F);
-                        break;
-                    } else if (tTemperature < 260
-                        && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity)) {
-                            GTUtility.applyFrostDamage((EntityLivingBase) aEntity, (270 - tTemperature) / 25.0F);
-                            break;
-                        }
-                }
-            }
         }
     }
 
@@ -317,6 +355,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aTick % 5 == 0) {
+            mThermals.update(aBaseMetaTileEntity);
+
             mLastReceivedFrom &= 63;
             if (mLastReceivedFrom == 63) {
                 mLastReceivedFrom = 0;
@@ -368,7 +408,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                 .isGaseous(tFluid)) {
                 tFluid.amount -= 5;
                 sendSound((byte) 9);
-                if (tTemperature > 320) {
+                if (tTemperature > FluidPipeThermals.HEAT_DAMAGE_TEMPERATURE) {
                     for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             EntityLivingBase.class,
@@ -381,7 +421,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                                 getBaseMetaTileEntity().getZCoord() + 3))) {
                         GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                     }
-                } else if (tTemperature < 260) {
+                } else if (tTemperature < FluidPipeThermals.FROST_DAMAGE_TEMPERATURE) {
                     for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             EntityLivingBase.class,
@@ -1017,6 +1057,15 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             currenttip.add(
                 StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
         }
+
+        mThermals.addWailaBody(currenttip, accessor.getNBTData());
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        mThermals.getWailaNBTData(tag);
     }
 
     private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,

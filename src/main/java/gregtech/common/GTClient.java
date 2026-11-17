@@ -76,8 +76,10 @@ import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.IUpdatePlayerMovement;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -85,6 +87,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.GTPacketRequestOregenPattern;
 import gregtech.api.net.cape.GTPacketSetCape;
@@ -102,6 +105,8 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
+import gregtech.client.PipeFrostTexture;
+import gregtech.client.PipeThermalEffectsRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderDrone;
@@ -273,6 +278,12 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
+        final PipeThermalEffectsRenderer pipeThermalEffects = new PipeThermalEffectsRenderer();
+        MinecraftForge.EVENT_BUS.register(pipeThermalEffects);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(pipeThermalEffects);
+
         WorldOverlayRenderer.init();
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
@@ -358,6 +369,21 @@ public class GTClient extends GTProxy {
     @Override
     public void reloadNEICache() {
         mReloadCount++;
+    }
+
+    @Override
+    public void trackThermalPipe(IGregTechTileEntity pipe) {
+        PipeThermalEffectsRenderer.track(pipe);
+    }
+
+    @Override
+    public void rebuildThermalPipe(IGregTechTileEntity pipe) {
+        PipeThermalEffectsRenderer.queueRebuild(pipe);
+    }
+
+    @Override
+    public ITexture getPipeFrostTexture(MTEFluidPipe pipe, int connections, int step) {
+        return new PipeFrostTexture(pipe, connections, step);
     }
 
     @Override
