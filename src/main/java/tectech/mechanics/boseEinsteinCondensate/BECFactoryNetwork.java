@@ -1,6 +1,7 @@
 package tectech.mechanics.boseEinsteinCondensate;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,6 +24,11 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
     public final GraphRouteTracker<BECFactoryElement, BECFactoryNetwork, BECFactoryGrid, NotableBECFactoryElement, BECRouteInfo> routeTracker = new GraphRouteTracker<>(
         NotableBECFactoryElement.class,
         new BECRouteInfo(0));
+
+    private final HashMap<NotableBECFactoryElement, Set<Fluid>> reachableCondensate = new HashMap<>();
+    private int condensateVersion;
+    private int cachedRouteVersion = -1;
+    private int cachedCondensateVersion;
 
     @Override
     public void addElement(BECFactoryElement element) {
@@ -161,8 +167,35 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         return storedCondensate;
     }
 
+    /// Must be called when a storage gains or loses a condensate type, or when a diode's filters change.
+    public void invalidateReachableCondensate() {
+        condensateVersion++;
+    }
+
     /// Returns the number of 'contaminants' in the network.
     public int getSlowdowns(NotableBECFactoryElement drainer, Collection<Fluid> validCondensate) {
+        int slowdowns = 0;
+
+        for (Fluid condensate : getReachableCondensate(drainer)) {
+            if (!validCondensate.contains(condensate)) slowdowns++;
+        }
+
+        return slowdowns;
+    }
+
+    /// The condensate types held by storages the drainer can reach. Cached until the routes or the stored condensate
+    /// types change.
+    private Set<Fluid> getReachableCondensate(NotableBECFactoryElement drainer) {
+        if (cachedRouteVersion != routeTracker.getVersion() || cachedCondensateVersion != condensateVersion) {
+            reachableCondensate.clear();
+            cachedRouteVersion = routeTracker.getVersion();
+            cachedCondensateVersion = condensateVersion;
+        }
+
+        return reachableCondensate.computeIfAbsent(drainer, this::findReachableCondensate);
+    }
+
+    private Set<Fluid> findReachableCondensate(NotableBECFactoryElement drainer) {
         HashSet<Fluid> contained = new HashSet<>();
 
         // Find all fluids in the network (dumb scan, we don't care if we can actually access them)
@@ -172,13 +205,7 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
                     .keySet());
         }
 
-        // Don't bother checking for the presence of valid condensate
-        validCondensate.forEach(contained::remove);
-
-        // No invalid condensate anywhere in the network. Unlikely for big setups, but it's certainly possible.
-        if (contained.isEmpty()) return 0;
-
-        HashSet<Fluid> contaminants = new HashSet<>();
+        HashSet<Fluid> reachable = new HashSet<>();
 
         MutableBoolean found = new MutableBoolean();
 
@@ -186,7 +213,6 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
             found.setValue(false);
 
             // Scan the network until we find a storage that contains the current condensate
-            // If we find it, it's a contaminant, and it should slow assembling down
             routeTracker.iterateNetworkBFS(drainer, step -> {
                 if (!step.node()
                     .allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
@@ -203,12 +229,10 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
             });
 
             if (found.booleanValue()) {
-                // Use a set to prevent several storages with contaminant from slowing processing down excessively
-                // We only care about unique contaminant
-                contaminants.add(condensate);
+                reachable.add(condensate);
             }
         }
 
-        return contaminants.size();
+        return reachable;
     }
 }
