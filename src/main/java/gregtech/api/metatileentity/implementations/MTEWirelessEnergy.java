@@ -19,7 +19,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.WirelessNetworkManager;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -95,11 +95,11 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         // UUID of the owner.
         owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-        SpaceProjectManager.checkOrCreateTeam(owner_uuid);
+        WirelessNetworkManager.processInitialSettings(getBaseMetaTileEntity());
 
         tryFetchingEnergy();
 
-        GTMod.proxy.wirelessEnergyHatchManager.addHatch(this);
+        GTMod.proxy.wirelessNetworkManager.addHatch(this);
     }
 
     @Override
