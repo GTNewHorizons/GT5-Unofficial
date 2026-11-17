@@ -716,11 +716,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         private StructureSize size;
 
         public StructureSize finish() {
+            StructureSize size = this.size;
+            this.size = null;
             // When `size` is null, for whatever reason the piece method was never called, which never called [#visit].
             // We'll just fall back to the default behaviour in this case - play the sound at the center with the
             // default radius.
             // This usually happens when a multi has its own structure check logic.
-            if (this.size == null) return null;
+            if (size == null) return null;
 
             size.centerX = (size.minX + size.maxX) * 0.5f;
             size.centerY = (size.minY + size.maxY) * 0.5f;
