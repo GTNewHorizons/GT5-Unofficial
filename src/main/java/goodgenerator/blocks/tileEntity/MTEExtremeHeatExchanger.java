@@ -54,6 +54,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -273,7 +274,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
-            if (circuit_config >= 1 && circuit_config <= 25) {
+            if (circuit_config >= 1 && circuit_config <= ItemIntegratedCircuit.MAX_CIRCUIT_NUMBER) {
                 penalty = (circuit_config - 1) * penalty_per_config;
                 transformed_threshold -= (shs_reduction_per_config * (circuit_config - 1));
             }
