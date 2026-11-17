@@ -310,14 +310,14 @@ public class MTELaserCutter extends MTEExtendedPowerMultiBlockBase<MTELaserCutte
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Laser Cutter, LC")
+        return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("gt.recipe.laser_cutter"))
             .beginStructureBlock(7, 6, 5, false)
-            .addController("Front bottom center")
-            .addEnergyHatch("1+", "Any Casing", 1)
-            .addMaintenanceHatch("1", "Any Casing", 1)
-            .addInputHatch("1+", "Any Casing", 1)
-            .addInputBus("1+", "Any Casing", 1)
-            .addOutputBus("1+", "Any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),

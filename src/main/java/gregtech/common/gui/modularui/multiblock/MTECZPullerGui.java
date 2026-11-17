@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -11,7 +13,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
@@ -32,7 +33,7 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("Type", new StringSyncValue(base::getBufferMaterialName));
+        syncManager.syncValue("Type", new StringSyncValue(base::getBufferMaterialTranslationKey));
         syncManager.syncValue("Amount", new IntSyncValue(base::getStoredMaterialAmount));
         syncManager
             .syncValue("Preheated", new BooleanSyncValue(base::isPreheatedMode, base::setPreheatedMode).allowC2S());
@@ -50,20 +51,16 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             new ToggleButton().syncHandler("Preheated")
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
-                .tooltip(true, tooltip -> tooltip.add("Preheat mode: heating power scales with coil tier"))
-                .tooltip(false, tooltip -> tooltip.add("Heat on demand: 120 EU/t while heating"))
+                .tooltip(true, tooltip -> tooltip.addLine(IKey.lang("GT5U.cz_puller.gui.preheat_tooltip")))
+                .tooltip(false, tooltip -> tooltip.addLine(IKey.lang("GT5U.cz_puller.gui.on_demand_tooltip")))
                 .size(18, 18))
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                if (!storagePanel.isPanelOpen()) {
-                    storagePanel.openPanel();
-                } else {
-                    storagePanel.closePanel();
-                }
+                storagePanel.togglePanel();
                 return true;
             })
                 .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
                 .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add("Internal growth storage"))
+                .tooltip(tooltip -> tooltip.addLine(IKey.lang("GT5U.cz_puller.gui.storage_tooltip")))
                 .left(-20)
                 .marginBottom(2)
                 .size(18, 18));
@@ -76,14 +73,16 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             .topRel(0)
             .size(180, 84);
 
-        StringSyncValue typeSyncer = (StringSyncValue) syncManager.getSyncHandler("Type:0");
-        IntSyncValue amountSyncer = (IntSyncValue) syncManager.getSyncHandler("Amount:0");
-        IntSyncValue gasSyncer = (IntSyncValue) syncManager.getSyncHandler("Gas:0");
-        StringSyncValue gasNameSyncer = (StringSyncValue) syncManager.getSyncHandler("GasName:0");
-        IntSyncValue capacitySyncer = (IntSyncValue) syncManager.getSyncHandler("Capacity:0");
+        StringSyncValue typeSyncer = syncManager.findSyncHandler("Type", StringSyncValue.class);
+        IntSyncValue amountSyncer = syncManager.findSyncHandler("Amount", IntSyncValue.class);
+        IntSyncValue gasSyncer = syncManager.findSyncHandler("Gas", IntSyncValue.class);
+        StringSyncValue gasNameSyncer = syncManager.findSyncHandler("GasName", StringSyncValue.class);
+        IntSyncValue capacitySyncer = syncManager.findSyncHandler("Capacity", IntSyncValue.class);
 
         ui.child(
-            new TextWidget<>(IKey.str("CZ Puller Storage")).textAlign(Alignment.Center)
+            IKey.lang("GT5U.cz_puller.gui.storage_title")
+                .asWidget()
+                .textAlign(Alignment.Center)
                 .pos(8, 7)
                 .size(150, 12));
 
@@ -91,40 +90,49 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             .pos(8, 24)
             .size(164, 26)
             .childPadding(1)
-            .child(new TextWidget<>(IKey.dynamic(() -> {
+            .child(IKey.dynamic(() -> {
                 String materialName = typeSyncer.getValue();
-                String material = "Silicon".equals(materialName) ? "Si"
-                    : "Microwaved Silicon".equals(materialName) ? "MW-Si" : materialName;
-                return String.format("Material: %s", material);
-            })))
+                String material = "GT5U.cz_puller.material.silicon".equals(materialName) ? "Si"
+                    : "GT5U.cz_puller.material.microwaved_silicon".equals(materialName) ? "MW-Si"
+                        : StatCollector.translateToLocal(materialName);
+                return StatCollector.translateToLocalFormatted("GT5U.cz_puller.gui.material", material);
+            })
+                .asWidget())
             .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> String
-                            .format("Amount: %d/%d dust", amountSyncer.getValue(), capacitySyncer.getValue()))));
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.cz_puller.gui.amount",
+                        amountSyncer.getValue(),
+                        capacitySyncer.getValue()))
+                    .asWidget());
         ui.child(infoColumn);
 
         ProgressWidget storageFill = new ProgressWidget().value(new DoubleSyncValue(() -> {
             int capacity = capacitySyncer.getIntValue();
-            return capacity <= 0 ? 0.0 : Math.clamp((double) amountSyncer.getIntValue() / capacity, 0.0, 1.0);
+            return capacity <= 0 ? 0.0 : Math.clamp(amountSyncer.getDoubleValue() / capacity, 0.0, 1.0);
         }))
             .direction(ProgressWidget.Direction.RIGHT)
             .texture(GTGuiTextures.PROGRESSBAR_STORED_EU, 147)
             .pos(8, 53)
             .size(160, 10)
             .tooltip(
-                tooltip -> tooltip.add(
-                    String.format(
-                        "Internal storage: %d / %d dust",
-                        amountSyncer.getIntValue(),
-                        capacitySyncer.getIntValue())));
+                tooltip -> tooltip.addLine(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.cz_puller.gui.storage_amount",
+                            amountSyncer.getIntValue(),
+                            capacitySyncer.getIntValue()))));
         ui.child(storageFill);
         ui.child(
-            new TextWidget<>(
-                IKey.dynamic(() -> String.format("Gas (%s): %dL", gasNameSyncer.getValue(), gasSyncer.getValue())))
-                    .textAlign(Alignment.Center)
-                    .pos(8, 67)
-                    .size(164, 12));
+            IKey.dynamic(
+                () -> StatCollector.translateToLocalFormatted(
+                    "GT5U.cz_puller.gui.gas",
+                    gasNameSyncer.getValue(),
+                    gasSyncer.getValue()))
+                .asWidget()
+                .textAlign(Alignment.Center)
+                .pos(8, 67)
+                .size(164, 12));
         return ui;
     }
 }

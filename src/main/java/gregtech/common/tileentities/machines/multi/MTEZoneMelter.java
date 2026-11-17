@@ -215,15 +215,15 @@ public class MTEZoneMelter extends MTEExtendedPowerMultiBlockBase<MTEZoneMelter>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Zone Melter, ZM")
+        return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("gt.recipe.zone_melter"))
             .beginStructureBlock(13, 7, 7, false)
-            .addController("Front center")
-            .addEnergyHatch("1+", "Any Casing", 1)
-            .addMaintenanceHatch("1", "Any Casing", 1)
-            .addMufflerHatch("1", "Top center", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center"), 2)
             .addInputBus("1", "Left/Right side", 3)
             .addOutputBus("1", "Left/Right side", 3)
-            .addCasing("88", "Any Tiered Glass", true)
+            .addCasing("88", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("80", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("48", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("36", "Solenoid Superconductor Coil", true)

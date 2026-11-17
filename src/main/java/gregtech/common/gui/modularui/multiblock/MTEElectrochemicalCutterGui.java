@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -35,13 +37,14 @@ public class MTEElectrochemicalCutterGui extends MTEMultiBlockBaseGui<MTEElectro
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> machineFormed.getBoolValue()
-                            ? "Solution tank: " + solutionAmount.getIntValue() + "/1024 L"
-                            : "")).color(Color.WHITE.main))
+                        () -> machineFormed.getBoolValue() ? StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.solution_tank_amount",
+                            solutionAmount.getIntValue()) : "")).color(Color.WHITE.main))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> machineFormed.getBoolValue() ? "Estimated success chance: " + chance.getIntValue() + "%"
+                        () -> machineFormed.getBoolValue() ? StatCollector
+                            .translateToLocalFormatted("GT5U.gui.text.estimated_success_chance", chance.getIntValue())
                             : "")).color(Color.WHITE.main));
     }
 }

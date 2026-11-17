@@ -7,7 +7,13 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_FACILITY_METADATA;
+import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE;
+import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE_ANOMALY;
+import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE_NONE;
+import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE_PARTICLES;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.MAX_COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.STRUCTURE_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -57,7 +63,6 @@ import gregtech.common.gui.modularui.multiblock.MTEWaferDopingFacilityGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHeatSensor;
-import gregtech.loaders.postload.recipes.WaferDopingFacilityMetadata;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -1204,14 +1209,12 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                WaferDopingFacilityMetadata metadata = recipe
-                    .getMetadataOrDefault(WAFER_DOPING_FACILITY_METADATA, WaferDopingFacilityMetadata.DEFAULT);
-                int recipeTier = metadata.structureTier;
+                int recipeTier = recipe.getMetadataOrDefault(STRUCTURE_TIER, 1);
                 pendingRecipeTier = recipeTier;
                 if (recipeTier < 1 || recipeTier > structureTier) return CheckRecipeResultRegistry.NO_RECIPE;
                 if (recipeTier >= 2) {
-                    activeMinimumTemperature = metadata.minimumTemperature;
-                    activeMaximumTemperature = metadata.maximumTemperature;
+                    activeMinimumTemperature = recipe.getMetadataOrDefault(COIL_HEAT, 0);
+                    activeMaximumTemperature = recipe.getMetadataOrDefault(MAX_COIL_HEAT, 0);
                     if (activeMinimumTemperature <= 0 || activeMaximumTemperature <= activeMinimumTemperature
                         || getCurrentTemperature() < activeMinimumTemperature)
                         return CheckRecipeResultRegistry.NO_RECIPE;
@@ -1220,13 +1223,14 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
                     activeMaximumTemperature = 0;
                 }
                 if (recipeTier >= 3 && (!hasThreeDistinctSignalFluids())) return CheckRecipeResultRegistry.NO_RECIPE;
-                pendingParticleMode = metadata.particleMode;
+                pendingParticleMode = recipe
+                    .getMetadataOrDefault(WAFER_DOPING_PARTICLE_MODE, WAFER_DOPING_PARTICLE_MODE_NONE);
                 pendingParticleMultiplier = 0;
                 if (recipeTier >= 4) {
-                    if (pendingParticleMode == WaferDopingFacilityMetadata.PARTICLE_MODE_PARTICLES) {
+                    if (pendingParticleMode == WAFER_DOPING_PARTICLE_MODE_PARTICLES) {
                         pendingParticleMultiplier = calculateParticleMultiplier(
                             countItem(Particle.getBaseParticle(Particle.UNKNOWN)));
-                    } else if (pendingParticleMode == WaferDopingFacilityMetadata.PARTICLE_MODE_ANOMALY) {
+                    } else if (pendingParticleMode == WAFER_DOPING_PARTICLE_MODE_ANOMALY) {
                         int available = calculateParticleMultiplier(
                             countItem(GregtechItemList.Laser_Lens_Special.get(0)));
                         if (available > 0) {
@@ -1234,8 +1238,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
                             if (pendingConsumeAnomaly) pendingParticleMultiplier = available;
                         }
                     }
-                    if (pendingParticleMultiplier <= 0
-                        && pendingParticleMode != WaferDopingFacilityMetadata.PARTICLE_MODE_ANOMALY) {
+                    if (pendingParticleMultiplier <= 0 && pendingParticleMode != WAFER_DOPING_PARTICLE_MODE_ANOMALY) {
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                 }
@@ -1244,23 +1247,17 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
             @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                int recipeTier = Math.clamp(
-                    recipe.getMetadataOrDefault(
-                        WAFER_DOPING_FACILITY_METADATA,
-                        WaferDopingFacilityMetadata.DEFAULT).structureTier,
-                    1,
-                    4);
+                int recipeTier = Math.clamp(recipe.getMetadataOrDefault(STRUCTURE_TIER, 1), 1, 4);
                 int tickDuration = calculateProcessingTicks(structureTier, recipeTier);
                 return super.createOverclockCalculator(recipe).setDuration(tickDuration)
+                    .setHeatOC(false)
                     .setMaxOverclocks(0);
             }
 
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 int maxParallel = structureTier >= 2 ? requestedParallel : 1;
-                if (recipe.getMetadataOrDefault(
-                    WAFER_DOPING_FACILITY_METADATA,
-                    WaferDopingFacilityMetadata.DEFAULT).structureTier >= 4) {
+                if (recipe.getMetadataOrDefault(STRUCTURE_TIER, 1) >= 4) {
                     maxParallel *= Math.max(1, pendingParticleMultiplier);
                 }
                 return super.createParallelHelper(recipe).setMaxParallel(Math.min(1_024, maxParallel));
@@ -1348,9 +1345,9 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             return result;
 
         activeParticleMultiplier = pendingParticleMultiplier;
-        if (pendingParticleMode == WaferDopingFacilityMetadata.PARTICLE_MODE_PARTICLES) {
+        if (pendingParticleMode == WAFER_DOPING_PARTICLE_MODE_PARTICLES) {
             consumeItem(Particle.getBaseParticle(Particle.UNKNOWN), activeParticleMultiplier);
-        } else if (pendingParticleMode == WaferDopingFacilityMetadata.PARTICLE_MODE_ANOMALY && pendingConsumeAnomaly) {
+        } else if (pendingParticleMode == WAFER_DOPING_PARTICLE_MODE_ANOMALY && pendingConsumeAnomaly) {
             consumeItem(GregtechItemList.Laser_Lens_Special.get(0), activeParticleMultiplier);
         }
         return result;
@@ -1598,13 +1595,13 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Wafer Doping Facility, WDF")
+        return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("GT5U.wafer_doping.name"))
             .beginStructureBlock(50, 15, 45, false)
-            .addController("Front bottom center")
-            .addEnergyHatch("1+", "Any Casing", 1)
-            .addInputBus("1+", "Any Casing", 1)
-            .addOutputBus("1+", "Any Casing", 1)
-            .addMaintenanceHatch("1+", "Any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMiscHatch("1", "Heat Sensor Hatch", "Specified Position", 2)
             .addInputHatch("1", "Input Hatch for Signal Fluid", 3)
             .addMiscHatch("1", "Doping Control Hatch", "Specified Position", 4)

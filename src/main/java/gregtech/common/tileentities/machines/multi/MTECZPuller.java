@@ -211,27 +211,27 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("CZ Puller, CZP")
+        return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("GT5U.cz_puller.name"))
             .beginStructureBlock(11, 11, 11, false)
-            .addController("Front bottom center")
-            .addEnergyHatch("1+", "Any bottom Casing", 1)
-            .addInputBus("1+", "Any bottom Casing", 1)
-            .addInputHatch("1+", "Any bottom Casing", 1)
-            .addOutputBus("1+", "Any bottom Casing", 1)
-            .addMaintenanceHatch("1", "Any bottom Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addInputBus("1", "Dedicated seed-crystal bus position", 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
             .addCasing("40+", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
             .addCasing("24", "Steel Frame Box", false)
             .addCasing("24", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
-            .addCasing("5", "Item Pipe Casing", true)
+            .addCasing("5", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
             .addCasing("120+", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
             .addCasing("84", "Superconductor Base ZPM Frame Box", false)
             .addCasing("64", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
-            .addCasing("24", "Item Pipe Casing", true)
+            .addCasing("24", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
             .addCasing("22", "Attuned Tengam Frame Box", false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
@@ -505,17 +505,6 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         if (temperatureHalfUnits >= targetTemperature * 2) temperatureHeatingRemainder = 0;
     }
 
-    private static final class SeedSelection {
-
-        private final ItemStack seed;
-        private final CZPullerRecipes.GrowthRecipe material;
-
-        private SeedSelection(ItemStack seed, CZPullerRecipes.GrowthRecipe material) {
-            this.seed = seed;
-            this.material = material;
-        }
-    }
-
     private SeedSelection findSeedSelection() {
         if (seedInputBus == null || seedInputBus.mInventory == null) return null;
         for (ItemStack stack : seedInputBus.mInventory) {
@@ -683,8 +672,9 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         return bufferAmount;
     }
 
-    public String getBufferMaterialName() {
-        return bufferMaterial == null ? "Empty" : bufferMaterial.displayName;
+    public String getBufferMaterialTranslationKey() {
+        return bufferMaterial == null ? "GT5U.cz_puller.material.empty"
+            : "GT5U.cz_puller.material." + bufferMaterial.id;
     }
 
     public int getBufferCapacity() {
@@ -787,7 +777,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("czBufferMaterial", getBufferMaterialName());
+        tag.setString("czBufferMaterial", getBufferMaterialTranslationKey());
         tag.setInteger("czBufferAmount", bufferAmount);
         tag.setInteger("czBufferCapacity", capacityLimit);
         tag.setInteger("czTemperature", currentTemperature);
@@ -799,13 +789,21 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        tooltip.add("Growth material: " + tag.getString("czBufferMaterial"));
         tooltip.add(
-            "Internal material: " + tag.getInteger("czBufferAmount")
-                + " / "
-                + tag.getInteger("czBufferCapacity")
-                + " dust");
+            StatCollector.translateToLocalFormatted(
+                "GT5U.cz_puller.waila.growth_material",
+                StatCollector.translateToLocal(tag.getString("czBufferMaterial"))));
         tooltip.add(
-            "Temperature: " + tag.getInteger("czTemperature") + " / " + tag.getInteger("czTargetTemperature") + " K");
+            StatCollector.translateToLocalFormatted(
+                "GT5U.cz_puller.waila.internal_material",
+                tag.getInteger("czBufferAmount"),
+                tag.getInteger("czBufferCapacity")));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.cz_puller.waila.temperature",
+                tag.getInteger("czTemperature"),
+                tag.getInteger("czTargetTemperature")));
     }
+
+    private record SeedSelection(ItemStack seed, CZPullerRecipes.GrowthRecipe material) {}
 }

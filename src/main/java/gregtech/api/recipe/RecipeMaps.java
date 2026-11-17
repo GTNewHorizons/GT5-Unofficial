@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
+import static gregtech.api.util.GTRecipeConstants.STRUCTURE_TIER;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GTUtility.clamp;
@@ -127,8 +128,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
-import gregtech.loaders.postload.recipes.CZPullerMetadata;
-import gregtech.loaders.postload.recipes.WaferDopingFacilityMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
@@ -2243,8 +2242,11 @@ public final class RecipeMaps {
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
         .build();
 
-    public static final RecipeMetadataKey<CZPullerMetadata> CZ_PULLER_METADATA = SimpleRecipeMetadataKey
-        .create(CZPullerMetadata.class, "cz_puller_metadata");
+    public static final RecipeMetadataKey<Integer> WAFER_DOPING_PARTICLE_MODE = SimpleRecipeMetadataKey
+        .create(Integer.class, "wafer_doping_particle_mode");
+    public static final int WAFER_DOPING_PARTICLE_MODE_NONE = 0;
+    public static final int WAFER_DOPING_PARTICLE_MODE_PARTICLES = 1;
+    public static final int WAFER_DOPING_PARTICLE_MODE_ANOMALY = 2;
 
     public static final RecipeMap<RecipeMapBackend> czPullerRecipes = RecipeMapBuilder.of("gt.recipe.cz_puller")
         .maxIO(2, 1, 1, 0)
@@ -2275,19 +2277,12 @@ public final class RecipeMaps {
         .frontend(ElectrochemicalCutterRecipeFrontend::new)
         .build();
 
-    public static final RecipeMetadataKey<WaferDopingFacilityMetadata> WAFER_DOPING_FACILITY_METADATA = SimpleRecipeMetadataKey
-        .create(WaferDopingFacilityMetadata.class, "wafer_doping_facility_metadata");
-
     public static final RecipeMap<RecipeMapBackend> waferDopingFacilityRecipes = RecipeMapBuilder
         .of("gt.recipe.wafer_doping_facility")
         .maxIO(4, 1, 0, 0)
         .minInputs(2, 0)
         .neiRecipeComparator(
-            Comparator
-                .<GTRecipe>comparingInt(
-                    recipe -> recipe.getMetadataOrDefault(
-                        WAFER_DOPING_FACILITY_METADATA,
-                        WaferDopingFacilityMetadata.DEFAULT).structureTier)
+            Comparator.<GTRecipe>comparingInt(recipe -> recipe.getMetadataOrDefault(STRUCTURE_TIER, 1))
                 .thenComparing(GTRecipe::compareTo))
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .neiHandlerInfo(builder -> builder.setHeight(190))

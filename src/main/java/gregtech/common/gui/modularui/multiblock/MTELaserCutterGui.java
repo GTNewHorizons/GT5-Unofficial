@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -31,7 +33,10 @@ public class MTELaserCutterGui extends MTEMultiBlockBaseGui<MTELaserCutter> {
         StringSyncValue coolingFluid = syncManager.findSyncHandler("coolingFluid", StringSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent).child(
             new TextWidget<>(
-                IKey.dynamic(() -> machineFormed.getBoolValue() ? "Cooling fluid: " + coolingFluid.getValue() : ""))
-                    .color(Color.WHITE.main));
+                IKey.dynamic(
+                    () -> machineFormed.getBoolValue()
+                        ? StatCollector
+                            .translateToLocalFormatted("GT5U.gui.text.cooling_fluid", coolingFluid.getValue())
+                        : "")).color(Color.WHITE.main));
     }
 }

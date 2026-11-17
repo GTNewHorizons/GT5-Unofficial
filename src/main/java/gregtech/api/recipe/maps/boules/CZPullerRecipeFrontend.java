@@ -1,18 +1,19 @@
 package gregtech.api.recipe.maps.boules;
 
-import static gregtech.api.recipe.RecipeMaps.CZ_PULLER_METADATA;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.STRUCTURE_TIER;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Size;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.loaders.postload.recipes.CZPullerMetadata;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
@@ -27,10 +28,10 @@ public final class CZPullerRecipeFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
-        CZPullerMetadata metadata = recipeInfo.recipe
-            .getMetadataOrDefault(CZ_PULLER_METADATA, CZPullerMetadata.DEFAULT);
-        String[] lines = { "Structure tier: " + metadata.structureTier,
-            "Min. Temperature: " + metadata.temperature + "K" };
+        int structureTier = recipeInfo.recipe.getMetadataOrDefault(STRUCTURE_TIER, 1);
+        int temperature = recipeInfo.recipe.getMetadataOrDefault(COIL_HEAT, 0);
+        String[] lines = { StatCollector.translateToLocalFormatted("GT5U.text.structure_tier", structureTier),
+            StatCollector.translateToLocalFormatted("GT5U.text.minimum_temperature", temperature) };
         for (String line : lines) {
             for (String wrappedLine : Minecraft.getMinecraft().fontRenderer
                 .listFormattedStringToWidth(EnumChatFormatting.BLACK + line, DESCRIPTION_WIDTH)) {

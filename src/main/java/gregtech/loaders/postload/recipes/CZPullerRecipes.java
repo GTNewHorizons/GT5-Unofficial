@@ -1,7 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMaps.CZ_PULLER_METADATA;
 import static gregtech.api.recipe.RecipeMaps.czPullerRecipes;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.STRUCTURE_TIER;
 
 import java.util.List;
 
@@ -19,7 +20,6 @@ public final class CZPullerRecipes implements Runnable {
 
     public static final GrowthRecipe SILICON = new GrowthRecipe(
         "silicon",
-        "Silicon",
         Materials.Silicon.getDust(1),
         ItemList.Silicon_Seed_Crystal.get(1),
         Materials.Nitrogen.getGas(1),
@@ -35,7 +35,6 @@ public final class CZPullerRecipes implements Runnable {
 
     public static final GrowthRecipe MICROWAVED_SILICON = new GrowthRecipe(
         "microwaved_silicon",
-        "Microwaved Silicon",
         ItemList.Microwaved_Silicon_Dust.get(1),
         ItemList.Microwaved_Silicon_Seed_Crystal.get(1),
         Materials.Helium.getGas(1),
@@ -51,7 +50,6 @@ public final class CZPullerRecipes implements Runnable {
 
     public static final GrowthRecipe ALGAAS = new GrowthRecipe(
         "algaas",
-        "AlGaAs",
         ItemList.AlGaAs_Dust.get(1),
         ItemList.AlGaAs_Seed_Crystal.get(1),
         Materials.UUMatter.getFluid(1),
@@ -77,12 +75,8 @@ public final class CZPullerRecipes implements Runnable {
             .itemOutputs(ItemList.Crude_Silicon_Boule.get(1))
             .duration(240 * GTRecipeBuilder.SECONDS)
             .eut(120)
-            .metadata(
-                CZ_PULLER_METADATA,
-                CZPullerMetadata.builder()
-                    .structureTier(1)
-                    .temperature(2_500)
-                    .build())
+            .metadata(STRUCTURE_TIER, 1)
+            .metadata(COIL_HEAT, 2_500)
             .addTo(czPullerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -91,12 +85,8 @@ public final class CZPullerRecipes implements Runnable {
             .itemOutputs(ItemList.Crude_Microwaved_Silicon_Boule.get(1))
             .duration(360 * GTRecipeBuilder.SECONDS)
             .eut(480)
-            .metadata(
-                CZ_PULLER_METADATA,
-                CZPullerMetadata.builder()
-                    .structureTier(1)
-                    .temperature(2_500)
-                    .build())
+            .metadata(STRUCTURE_TIER, 1)
+            .metadata(COIL_HEAT, 2_500)
             .addTo(czPullerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -105,19 +95,14 @@ public final class CZPullerRecipes implements Runnable {
             .itemOutputs(ItemList.Crude_AlGaAs_Boule.get(1))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(7_864_320)
-            .metadata(
-                CZ_PULLER_METADATA,
-                CZPullerMetadata.builder()
-                    .structureTier(2)
-                    .temperature(10_000)
-                    .build())
+            .metadata(STRUCTURE_TIER, 2)
+            .metadata(COIL_HEAT, 10_000)
             .addTo(czPullerRecipes);
     }
 
     public static final class GrowthRecipe {
 
         public final String id;
-        public final String displayName;
         public final ItemStack materialDust;
         public final ItemStack seed;
         public final FluidStack growthFluid;
@@ -127,16 +112,14 @@ public final class CZPullerRecipes implements Runnable {
         public final int requiredStructureTier;
         public final int targetTemperature;
         public final int energyTier;
-        public final int eut;
+        public final long eut;
         public final int durationTicks;
         public final HeatingCoilLevel minimumCoil;
 
-        private GrowthRecipe(String id, String displayName, ItemStack materialDust, ItemStack seed,
-            FluidStack growthFluid, ItemList bouleOutput, int materialAmount, int gasAmountMb,
-            int requiredStructureTier, int targetTemperature, int energyTier, int eut, int durationTicks,
-            HeatingCoilLevel minimumCoil) {
+        private GrowthRecipe(String id, ItemStack materialDust, ItemStack seed, FluidStack growthFluid,
+            ItemList bouleOutput, int materialAmount, int gasAmountMb, int requiredStructureTier, int targetTemperature,
+            int energyTier, long eut, int durationTicks, HeatingCoilLevel minimumCoil) {
             this.id = id;
-            this.displayName = displayName;
             this.materialDust = materialDust.copy();
             this.seed = seed.copy();
             this.growthFluid = growthFluid.copy();

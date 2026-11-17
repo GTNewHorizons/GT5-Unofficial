@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
@@ -20,7 +21,7 @@ public class MTEHatchDopingControl extends MTEHatch {
     private static final IIconContainer OVERLAY_GLOW = Textures.BlockIcons.OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW;
 
     public MTEHatchDopingControl(int id, String name, String regionalName, int tier) {
-        super(id, name, regionalName, tier, 0, "Outputs the chemical requested by the Wafer Doping Facility");
+        super(id, name, regionalName, tier, 0, StatCollector.translateToLocal("GT5U.hatch.doping_control.description"));
     }
 
     public MTEHatchDopingControl(String name, int tier, String[] description, ITexture[][][] textures) {
@@ -64,8 +65,8 @@ public class MTEHatchDopingControl extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in the Wafer Doping Facility.",
-            "Outputs the redstone strength for the chemical currently requested." };
+        return new String[] { StatCollector.translateToLocal("GT5U.hatch.doping_control.tooltip.installation"),
+            StatCollector.translateToLocal("GT5U.hatch.doping_control.tooltip.output") };
     }
 
     @Override

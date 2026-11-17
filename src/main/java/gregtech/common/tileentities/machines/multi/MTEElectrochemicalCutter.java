@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -310,15 +311,16 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Electrochemical Cutter, ECC")
+        return new MultiblockTooltipBuilder()
+            .addMachineType(StatCollector.translateToLocal("gt.recipe.electrochemical_cutter"))
             .beginStructureBlock(13, 7, 13, false)
-            .addController("Front bottom center")
-            .addInputBus("1+", "Any Casing", 1)
-            .addOutputBus("1+", "Any Casing", 1)
-            .addInputHatch("1+", "Any Casing", 1)
-            .addOutputHatch("1+", "Any Casing", 1)
-            .addMaintenanceHatch("1", "Any Casing", 1)
-            .addEnergyHatch("1+", "Any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .toolTipFinisher();
     }
 

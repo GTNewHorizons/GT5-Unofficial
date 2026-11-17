@@ -6,6 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Size;
 
@@ -31,9 +32,11 @@ public final class LaserCutterRecipeFrontend extends RecipeMapFrontend {
     protected void drawMetadataInfo(RecipeDisplayInfo recipeInfo) {
         GTRecipe recipe = recipeInfo.recipe;
         int recipeTier = GTUtility.getTier(recipe.mEUt);
-        String coolant = recipeTier <= VoltageIndex.LuV ? "Coolant"
-            : recipeTier <= VoltageIndex.UV ? "Super Coolant" : "Liquid Helium";
-        String line = EnumChatFormatting.BLACK + "Coolant: " + coolant;
+        String coolant = recipeTier <= VoltageIndex.LuV ? StatCollector.translateToLocal("GT5U.recipe.text.coolant")
+            : recipeTier <= VoltageIndex.UV ? StatCollector.translateToLocal("GT5U.recipe.text.super_coolant")
+                : StatCollector.translateToLocal("GT5U.recipe.text.liquid_helium");
+        String line = EnumChatFormatting.BLACK
+            + StatCollector.translateToLocalFormatted("GT5U.recipe.text.coolant_requirement", coolant);
         List<String> wrappedLines = Minecraft.getMinecraft().fontRenderer
             .listFormattedStringToWidth(line, DESCRIPTION_WIDTH);
         for (String wrappedLine : wrappedLines) {

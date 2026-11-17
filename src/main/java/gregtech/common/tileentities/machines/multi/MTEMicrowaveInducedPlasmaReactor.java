@@ -17,6 +17,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -300,9 +301,9 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Microwave Induced Plasma Reactor, MIPR")
+        return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("gt.recipe.mipr"))
             .beginStructureBlock(21, 9, 9, false)
-            .addController("Front center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addEnergyHatch("1+", "Any Magical Machine Casing", 1)
             .addMaintenanceHatch("1", "Any Magical Machine Casing", 1)
             .addInputBus("1", "Left Middle", 2)

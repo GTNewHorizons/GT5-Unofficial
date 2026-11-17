@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -50,29 +52,59 @@ public class MTEWaferDopingFacilityGui extends MTEMultiBlockBaseGui<MTEWaferDopi
         IntSyncValue tempFailed = syncManager.findSyncHandler("waferTempFailed", IntSyncValue.class);
         IntSyncValue signalFailed = syncManager.findSyncHandler("waferSignalFailed", IntSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent)
-            .child(new TextWidget<>(IKey.dynamic(() -> "Structure tier: " + tier.getIntValue())))
-            .child(new TextWidget<>(IKey.dynamic(() -> "Progress: " + progress.getIntValue() + " ticks")))
-            .child(new TextWidget<>(IKey.dynamic(() -> "Parallel target N (0-64): " + parallel.getIntValue())))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.text.structure_tier", tier.getIntValue()))))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector
+                            .translateToLocalFormatted("GT5U.wafer_doping.gui.progress", progress.getIntValue()))))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector
+                            .translateToLocalFormatted("GT5U.wafer_doping.gui.parallel", parallel.getIntValue()))))
             .child(
                 new TextFieldWidget().setFormatAsInteger(true)
                     .value(parallel)
                     .width(48)
                     .height(14))
-            .child(new TextWidget<>(IKey.dynamic(() -> "Particle multiplier M: " + multiplier.getIntValue())))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> "Temperature: " + temperature.getIntValue()
-                            + " K ("
-                            + minTemperature.getIntValue()
-                            + "-"
-                            + maxTemperature.getIntValue()
-                            + ")")))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.wafer_doping.gui.particle_multiplier",
+                            multiplier.getIntValue()))))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> "Chemical signal: " + signal.getIntValue() + " / " + signalTime.getIntValue() + " s")))
-            .child(new TextWidget<>(IKey.dynamic(() -> "Temperature failed: " + (tempFailed.getIntValue() != 0))))
-            .child(new TextWidget<>(IKey.dynamic(() -> "Signal check failed: " + (signalFailed.getIntValue() != 0))));
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.wafer_doping.gui.temperature",
+                            temperature.getIntValue(),
+                            minTemperature.getIntValue(),
+                            maxTemperature.getIntValue()))))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.wafer_doping.gui.chemical_signal",
+                            signal.getIntValue(),
+                            signalTime.getIntValue()))))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.wafer_doping.gui.temperature_failed",
+                            StatCollector.translateToLocal(
+                                tempFailed.getIntValue() == 0 ? "GT5U.generic.false" : "GT5U.generic.true")))))
+            .child(
+                new TextWidget<>(
+                    IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.wafer_doping.gui.signal_failed",
+                            StatCollector.translateToLocal(
+                                signalFailed.getIntValue() == 0 ? "GT5U.generic.false" : "GT5U.generic.true")))));
     }
 }
