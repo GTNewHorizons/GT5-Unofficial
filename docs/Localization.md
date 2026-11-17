@@ -87,6 +87,9 @@ IKey.lang("gt.gui.tick_rate", tickRate)
 tooltip.addLine(IKey.lang("gt.gui.my_tooltip"))
 ```
 
+> **MUI2 color note**
+> Using `.color()` in ModularUI2 guis, hardcodes the color. Use (in priority order) [Theme](https://github.com/GTNewHorizons/GT5-Unofficial/blob/master/src/main/java/gregtech/api/modularui2/GTGuiThemes.java), `EnumChatFormatting`, [ColorResource (GtnhLib)](https://github.com/GTNewHorizons/GTNHLib/blob/master/src/main/java/com/gtnewhorizon/gtnhlib/color/ColorResource.java), or `§` codes in lang file (multi-color sequence).
+
 ---
 
 ## 2. Text Formatting
