@@ -70,6 +70,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -552,7 +553,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 return mEnergyHatches.add(tHatch);
             }
             case MTEHatchEnergyMulti tHatch -> {
-                if (tHatch.getClass() != MTEHatchEnergyMulti.class) return false;
+                if (tHatch.getClass() != MTEHatchEnergyMulti.class
+                    && !(tHatch instanceof MTEHatchWirelessMulti)) {
+                    return false;
+                }
                 if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return eEnergyMulti.add(tHatch);
