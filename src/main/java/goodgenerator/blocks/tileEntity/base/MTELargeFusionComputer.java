@@ -33,12 +33,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -72,6 +66,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTELargeFusionComputerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -84,6 +80,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public abstract class MTELargeFusionComputer extends TTMultiblockBase
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
+    // TODO remove after 2.9
     public Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the batch setting */
@@ -608,41 +605,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
-    protected long energyStorageCache;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocal("gui.LargeFusion.0") + " " + numberFormat.format(energyStorageCache) + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocal("gui.LargeFusion.1") + " " + numberFormat.format(getEUVar()) + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
-    }
-
     @Override
     protected void parametersInstantiation_EM() {
         batchSetting = parametrization.getGroup(9, false)
             .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    @Override
-    protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
     }
 
     @Override
@@ -759,4 +725,14 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
         "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
         "                   CC     CC                   ", "                    FCIBICF                    ", };
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeFusionComputerGui(this);
+    }
 }
