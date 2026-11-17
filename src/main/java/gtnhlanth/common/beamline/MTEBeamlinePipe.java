@@ -41,7 +41,8 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         return false;
     }
 
-    protected void checkConnections() {
+    @Override
+    public void checkConnections() {
         mCheckConnections = false;
         mConnections = 0;
 
