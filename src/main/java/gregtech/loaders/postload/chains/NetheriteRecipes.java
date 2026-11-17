@@ -164,9 +164,9 @@ public class NetheriteRecipes {
         {
             GTValues.RA.stdBuilder() // Dim Prismarine
                 .itemInputs(
-                    GregtechItemList.RedAlgaeBiomass.get(16),
+                    GregtechItemList.RedAlgaeBiomass.get(32),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
-                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4000))
+                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
                 .itemOutputs(ItemList.Dim_Prismarine.get(16))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -174,9 +174,9 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
                 .itemInputs(
-                    GregtechItemList.RedAlgaeBiomass.get(16),
+                    GregtechItemList.RedAlgaeBiomass.get(32),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
-                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(4000))
+                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
                 .itemOutputs(ItemList.Dim_Prismarine.get(32))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
