@@ -10713,3 +10713,12 @@ Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
 Material.polyvinylchloride.itempipe.newname=PVC
 Material.redstone.fluidpipe.newname=High Pressure
 Material.wood.fluidpipe.newname=Wooden
+
+# Mech armor augment names
+GT5U.armor.part.name.Haste=Augment: Kinetic Actuators
+GT5U.armor.part.tooltip.Haste=Speeds up mining while active
+GT5U.armor.behavior.Haste=Haste
+key.gt.toggle_haste=Toggle Haste
+GT5U.armor.part.name.AutoFeeder=Augment: Nutrient Dispenser
+GT5U.armor.part.tooltip.AutoFeeder=Eats food from your inventory when you get hungry
+GT5U.armor.behavior.AutoFeeder=Auto-Feeder
