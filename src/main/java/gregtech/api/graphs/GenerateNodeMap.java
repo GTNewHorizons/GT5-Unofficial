@@ -57,6 +57,8 @@ public abstract class GenerateNodeMap {
     protected void generateNextNode(BaseMetaPipeEntity aPipe, Node aPipeNode, ForgeDirection aInvalidSide,
         int aNextNodeValue, ArrayList<ConsumerNode> tConsumers, HashSet<Node> tNodeMap) {
         final MetaPipeEntity tMetaPipe = (MetaPipeEntity) aPipe.getMetaTileEntity();
+        // The side we came from always holds the previous pipe or source.
+        int occupiedSides = aInvalidSide == ForgeDirection.UNKNOWN ? 0 : aInvalidSide.flag;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side == aInvalidSide) {
                 continue;
@@ -64,6 +66,7 @@ public abstract class GenerateNodeMap {
             if (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(side)) continue;
             final TileEntity tNextTileEntity = aPipe.getTileEntityAtSide(side);
             if (tNextTileEntity == null) continue;
+            occupiedSides |= side.flag;
             final ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
             Node tNextNode = null;
@@ -94,6 +97,7 @@ public abstract class GenerateNodeMap {
                 aPipeNode.mUnroutedPaths.add(path);
             }
         }
+        aPipe.setOccupiedConnectedSides(occupiedSides);
         aPipe.reloadLocks();
     }
 

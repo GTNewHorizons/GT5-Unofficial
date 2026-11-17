@@ -75,6 +75,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     private final boolean cableBaseType;
     private boolean managedCableInitialized;
     private boolean connectionCheckPending;
+    // Connected sides that had a tile entity when the graph last walked this node.
+    private int occupiedConnectedSides;
 
     public Node getNode() {
         return node;
@@ -82,6 +84,19 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     public void setNode(Node node) {
         this.node = node;
+    }
+
+    /** Recorded by the graph walk so neighbour updates can spot endpoints added or removed at open connections. */
+    public void setOccupiedConnectedSides(int sides) {
+        occupiedConnectedSides = sides;
+    }
+
+    private int scanOccupiedConnectedSides() {
+        int sides = 0;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (mMetaTileEntity.isConnectedAtSide(side) && getTileEntityAtSide(side) != null) sides |= side.flag;
+        }
+        return sides;
     }
 
     public NodePath getNodePath() {
@@ -1359,6 +1374,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     public void onNeighborBlockChange(int aX, int aY, int aZ) {
+        // A placed tile entity doesn't always fire onNeighborChange, so drop cached "nothing here" markers.
+        clearNullMarkersFromTileEntityBuffer();
         if (canAccessData()) {
             final IMetaTileEntity meta = getMetaTileEntity();
             if (meta instanceof MetaPipeEntity pipe) {
@@ -1367,6 +1384,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 // However; don't do it immediately in case the world isn't finished loading
                 // (This caused issues with AE2 GTEU p2p connections.
                 pipe.setCheckConnections();
+            }
+            // An endpoint placed at or removed from an already-open connection leaves the connection bits unchanged.
+            if (node != null && meta instanceof MTECable && isServerSide()) {
+                final int sides = scanOccupiedConnectedSides();
+                if (sides != occupiedConnectedSides) {
+                    occupiedConnectedSides = sides;
+                    node.invalidateNodeMap();
+                }
             }
         }
     }

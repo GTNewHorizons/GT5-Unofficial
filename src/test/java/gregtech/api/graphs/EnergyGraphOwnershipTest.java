@@ -27,6 +27,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import ic2.api.energy.tile.IEnergySink;
@@ -168,6 +169,59 @@ class EnergyGraphOwnershipTest {
         GenerateNodeMap.clearNodeMap(replacement, -1);
         assertNull(base.getNode());
         assertNull(base.getNodePath());
+    }
+
+    @Test
+    void receiverPlacedAtOpenConnectionIsDiscovered() {
+        BaseMetaPipeEntity root = pipe(0, 0, WEST, EAST);
+        pipe(1, 0, WEST, EAST);
+        BaseMetaPipeEntity end = pipe(2, 0, WEST, EAST);
+        tick.set(1);
+        assertEquals(0, offer(root));
+        Node graph = end.getNode();
+        assertNotNull(graph, "A cable connected towards air ends the run as a node");
+
+        end.onNeighborBlockChange(2, 64, 0);
+        assertTrue(graph.isNodeMapValid(), "Unrelated neighbour updates must not invalidate the graph");
+
+        receiver(3, 0, new AtomicLong());
+        end.onNeighborBlockChange(2, 64, 0);
+        assertFalse(graph.isNodeMapValid());
+        tick.addAndGet(10);
+        assertEquals(1, offer(root));
+    }
+
+    @Test
+    void transformerRoleChangeRefreshesAdjacentGraph() throws Exception {
+        BaseMetaPipeEntity root = pipe(0, 0, WEST, EAST);
+        BaseMetaTileEntity base = new BaseMetaTileEntity();
+        base.xCoord = -1;
+        base.yCoord = 64;
+        base.setWorldObj(world);
+        new MTETransformer("transformer-test", 1, new String[0], null).setBaseMetaTileEntity(base);
+        tiles.put(key(-1, 0), base);
+        var updateFaces = BaseMetaTileEntity.class.getDeclaredMethod("updateActiveEUIOFaces");
+        updateFaces.setAccessible(true);
+        updateFaces.invoke(base);
+
+        tick.set(1);
+        offer(root);
+        Node graph = root.getNode();
+        assertTrue(
+            graph.mConsumers.stream()
+                .noneMatch(c -> c.mTileEntity == base),
+            "East face starts as output");
+        updateFaces.invoke(base);
+        assertTrue(graph.isNodeMapValid(), "Unchanged faces must not invalidate the graph");
+
+        base.disableWorking();
+        updateFaces.invoke(base);
+        assertFalse(graph.isNodeMapValid());
+        tick.addAndGet(10);
+        offer(root);
+        assertTrue(
+            root.getNode().mConsumers.stream()
+                .anyMatch(c -> c.mTileEntity == base));
     }
 
     private static String key(int x, int z) {

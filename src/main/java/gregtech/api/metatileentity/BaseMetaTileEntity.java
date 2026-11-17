@@ -97,6 +97,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
+    // Inputs in bits 0-5, outputs in bits 6-11; -1 until first computed.
+    private int activeEUFaceMask = -1;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
@@ -439,10 +441,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (!mMetaTileEntity.isEnetOutput() && !mMetaTileEntity.isEnetInput()) {
             return;
         }
+        int mask = 0;
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             int ordinalSide = side.ordinal();
-            mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
-            mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+            final boolean input = isEnergyInputSide(side);
+            final boolean output = isEnergyOutputSide(side);
+            mActiveEUInputs[ordinalSide] = input;
+            mActiveEUOutputs[ordinalSide] = output;
+            if (input) mask |= side.flag;
+            if (output) mask |= side.flag << 6;
+        }
+        // Role changes (transformer mode, covers) don't touch cable connections, so the graph must be told.
+        if (mask != activeEUFaceMask) {
+            if (activeEUFaceMask != -1) requestCableUpdate();
+            activeEUFaceMask = mask;
         }
     }
 
