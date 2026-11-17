@@ -120,7 +120,9 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     'E',
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
-                            .anyOf(HatchElement.EnergyMulti.or(gregtech.api.enums.HatchElement.Energy))
+                            .anyOf(
+                                gregtech.api.enums.HatchElement.MultiAmpEnergy
+                                    .or(gregtech.api.enums.HatchElement.Energy))
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.tier(), Integer.MAX_VALUE))
@@ -193,7 +195,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     .put("eu_per_oc", fod.getEUtIncreasePerOC())
                     .put("time_per_oc", fod.getDurationDecreasePerOC())
                     .build())
-            .addSupportAny()
+            .addSupportMultiAmp()
             .beginStructureBlock(47, 7, 47, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
             .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
@@ -550,6 +552,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 return mEnergyHatches.add(tHatch);
             }
             case MTEHatchEnergyMulti tHatch -> {
+                if (tHatch.getClass() != MTEHatchEnergyMulti.class) return false;
                 if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return eEnergyMulti.add(tHatch);
