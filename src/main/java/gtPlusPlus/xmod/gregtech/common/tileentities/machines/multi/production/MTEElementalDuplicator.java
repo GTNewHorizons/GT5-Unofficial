@@ -37,7 +37,9 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -155,6 +157,10 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
+        int hatchCount = mElementalDataOrbHatches.size();
+        if (hatchCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, ElementalDataOrbHatch, hatchCount, 1));
+        }
         checkCasingMin(errors, casingAmount, 120);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
@@ -212,16 +218,6 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondElementalDuplicator;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
-                clearHatches();
-            }
-        }
     }
 
     @Override
