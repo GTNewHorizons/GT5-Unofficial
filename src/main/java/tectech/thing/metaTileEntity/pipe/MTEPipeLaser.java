@@ -92,7 +92,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @ApiStatus.OverrideOnly
-    protected void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -159,7 +159,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
-    protected boolean deferCheckConnection() {
+    public boolean deferCheckConnection() {
         return false;
     }
 

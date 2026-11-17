@@ -16,7 +16,8 @@ public class UpgradeModularSlot extends ModularSlot {
         super(itemHandler, index);
 
         changeListener((_, _, client, init) -> {
-            if (!client && !init) {
+            // the slot is emptied when the machine is removed while the GUI is open; nothing to update then
+            if (!client && !init && apiary.getBaseMetaTileEntity() != null) {
                 apiary.getBaseMetaTileEntity()
                     .markInventoryBeenModified();
                 apiary.updateModifiers();

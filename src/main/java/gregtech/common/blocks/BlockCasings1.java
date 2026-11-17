@@ -52,7 +52,7 @@ public class BlockCasings1 extends BlockCasingsAbstract
         register(6, ItemList.Casing_LuV);
         register(7, ItemList.Casing_ZPM);
         register(8, ItemList.Casing_UV);
-        register(9, ItemList.Casing_MAX);
+        register(9, ItemList.Casing_UHV);
         register(10, ItemList.Casing_BronzePlatedBricks);
         register(11, ItemList.Casing_HeatProof);
         register(12, ItemList.Casing_Dim_Trans);
