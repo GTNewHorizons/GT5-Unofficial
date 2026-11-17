@@ -3,6 +3,8 @@ package kubatech.api.eig;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -195,32 +197,26 @@ public class EIGDropTable {
         return ret;
     }
 
-    /**
-     * Consumes drops with drop counts above 1 and returns a list of the consumed item stacks.
-     *
-     * @return The list of consumed items;
-     */
-    public ItemStack @NotNull [] getDrops() {
-        // doesn't need to filter for less than 0 so that the EIG displays the progress of incomplete items.
-        return this.dropTable.entrySet()
-            .parallelStream()
-            .map(EIGDropTable::computeDrops)
-            .toArray(ItemStack[]::new);
-    }
+    private static final ItemStack[] NO_DROPS = new ItemStack[0];
 
     /**
-     * Consumes the items in the entry and returns the consumed item without removing partial items.
+     * Consumes drops with drop counts above 1 and returns a list of the consumed item stacks
      *
-     * @param entry The entry to consume from
-     * @return The item tha twas removed.
+     * @return the list of consumed items
      */
-    private static @NotNull ItemStack computeDrops(Map.@NotNull Entry<ItemStack, Double> entry) {
-        ItemStack copied = entry.getKey()
-            .copy();
-        copied.stackSize = (int) Math.floor(entry.getValue());
-        if (entry.getValue() >= 1.0d) {
-            entry.setValue(entry.getValue() % 1);
+    public ItemStack @NotNull [] getDrops() {
+        List<ItemStack> drops = null;
+        for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
+            final double value = entry.getValue();
+            if (value < 1.0d) continue;
+            if (drops == null) drops = new ArrayList<>();
+            final ItemStack copied = entry.getKey()
+                .copy();
+            copied.stackSize = (int) Math.floor(value);
+            entry.setValue(value % 1);
+            drops.add(copied);
         }
-        return copied;
+        return drops == null ? NO_DROPS : drops.toArray(NO_DROPS);
     }
+
 }

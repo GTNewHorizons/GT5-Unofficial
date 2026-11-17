@@ -138,12 +138,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             val -> usedSeedCount = val);
         syncManager.syncValue("eigUsedSeedCount", usedSeedCountSyncer);
 
-        syncManager.syncValue(
-            "eigActive",
-            new com.cleanroommc.modularui.value.sync.BooleanSyncValue(
-                baseMetaTileEntity::isActive,
-                val -> machineActive = val));
-
         seedClickSyncer = new IntSyncValue(() -> 0, this::handleSeedClick).allowC2S();
         syncManager.syncValue("eigSeedClick", seedClickSyncer);
 
@@ -162,15 +156,14 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         });
 
         if (!syncManager.isClient()) {
-            seedListSyncer.setChangeListener(
-                () -> notifySeedInventoryUpdate(
-                    seedListSyncer.getValue()
-                        .size()));
-            maxSeedTypesSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
-            maxSeedCountSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
-            usedSeedTypesSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
-            usedSeedCountSyncer.setChangeListener(() -> notifySeedInventoryUpdate(buildSeedSlotList().size()));
+            final Runnable onCountChange = () -> notifySeedInventoryUpdate(multiblock.buckets.size());
+            seedListSyncer.setChangeListener(onCountChange);
+            maxSeedTypesSyncer.setChangeListener(onCountChange);
+            maxSeedCountSyncer.setChangeListener(onCountChange);
+            usedSeedTypesSyncer.setChangeListener(onCountChange);
+            usedSeedCountSyncer.setChangeListener(onCountChange);
         }
+
     }
 
     private List<GTHelper.StackableItemSlot> buildSeedSlotList() {
@@ -381,8 +374,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         } else if (shift) {
             // Extract to inventory
             var bucket = multiblock.buckets.get(slotIdx);
-            int maxRemove = bucket.getSeedStack()
-                .getMaxStackSize();
+            int maxRemove = bucket.getSeedMaxStackSize();
             ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
             if (outputs == null || outputs.length == 0) return;
             if (bucket.getSeedCount() <= 0) multiblock.buckets.remove(slotIdx);
@@ -403,8 +395,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             } else {
                 // Extract to cursor
                 var bucket = multiblock.buckets.get(slotIdx);
-                int maxRemove = bucket.getSeedStack()
-                    .getMaxStackSize();
+                int maxRemove = bucket.getSeedMaxStackSize();
                 ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
                 if (outputs == null || outputs.length == 0) return;
                 if (bucket.getSeedCount() <= 0) multiblock.buckets.remove(slotIdx);
