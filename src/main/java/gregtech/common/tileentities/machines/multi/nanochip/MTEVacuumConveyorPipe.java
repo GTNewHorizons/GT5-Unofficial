@@ -173,7 +173,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    protected void checkConnections() {
+    public void checkConnections() {
         mCheckConnections = false;
         mConnections = 0;
 
