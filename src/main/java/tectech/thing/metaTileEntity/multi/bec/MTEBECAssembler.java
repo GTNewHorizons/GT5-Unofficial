@@ -35,7 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -250,7 +249,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public List<MTEBECIONode> getIONodes(boolean skipCache) {
         boolean isValid = !skipCache && ioNodes != null
             && ioNodes.stream()
-                .allMatch(MetaTileEntity::isValid);
+                .allMatch(ioNode -> ioNode.isValid() && ioNode.mMachine);
 
         if (isValid) return ioNodes;
 
