@@ -243,7 +243,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addCasing("35-58", Casings.LaserContainmentCasing.getLocalizedName(), false)
             .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
             .addCasing("3", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing("1", new ItemStack(GregTechAPI.sLaserRender).getDisplayName(), false)
+            .addCasing("1", GregTechAPI.sLaserRender.getLocalizedName(), false)
             .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.casing_above_glass"), 2)
             .addEnergyHatch("1+", anyCasing, 1)
             .addMaintenanceHatch("1", anyCasing, 1)
