@@ -20,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
 
 public class PosteaTransformers implements Runnable {
@@ -32,16 +33,46 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
-        registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2ItemTransformers() {
+        // These are used to convert ic2 items to their new counterparts.
+        // I.e. Uranium235, Uranium238, Plutonium, ect.
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran238",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemUran235small",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Uranium235, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutonium",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutoniumsmall",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+            true);
     }
 
     private void registerIC2BlocksTransformer() {
@@ -114,14 +145,6 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
-    }
-
-    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
-    private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -286,6 +309,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -298,6 +322,5 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
-
     }
 }
