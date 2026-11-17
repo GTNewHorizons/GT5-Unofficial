@@ -91,7 +91,8 @@ public enum SoundResource {
 
     GT_MACHINES_MULTI_PRECISE_LOOP(247, GregTech.ID, "machines.MTEPreciseAssembler"),
     GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP(248, GregTech.ID, "machines.MTEIndustrialWashPlant"),
-    GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP(249, GregTech.ID, "machines.MTEMegaVacuumFreezer"),
+    // used to be MTEMegaVacuumFreezer
+    GT_MACHINES_ENDOTHERMIC_FRIDGE_LOOP(249, GregTech.ID, "machines.MTEEndothermicFridge"),
     GT_MACHINES_MULTI_VACUUM_FREEZER_LOOP(250, GregTech.ID, "machines.MTEVacuumFreezer"),
     GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP(251, GregTech.ID, "machines.MTEExtremeEntityCrusher"),
     GT_MACHINES_CUTTING_MACHINE_LOOP(252, GregTech.ID, "machines.MTEIndustrialCuttingMachine"),
@@ -102,9 +103,10 @@ public enum SoundResource {
     GT_MACHINES_SIFTER_LOOP(257, GregTech.ID, "machines.MTEIndustrialSifter"),
     GT_MACHINES_EYE_OF_HARMONY_LOOP(258, GregTech.ID, "machines.MTEEyeOfHarmony"),
     GT_MACHINES_EBF_LOOP(259, GregTech.ID, "machines.MTEElectricBlastFurnace"),
-    GT_MACHINES_ADV_FREEZER_LOOP(260, GregTech.ID, "machines.MTEIndustrialVacuumFreezer"),
+    GT_MACHINES_CRYOGENIC_FREEZER_LOOP(260, GregTech.ID, "machines.MTEIndustrialVacuumFreezer"),
     GT_MACHINES_GOD_FORGE_LOOP(261, GregTech.ID, "machines.MTEForgeOfGods"),
-    GT_MACHINES_MEGA_BLAST_FURNACE_LOOP(262, GregTech.ID, "machines.MTEMegaBlastFurnace"),
+    // used to be MTEMegaBlastFurnace
+    GT_MACHINES_EXOTHERMIC_HEARTH_LOOP(262, GregTech.ID, "machines.MTEExothermicHearth"),
     GT_MACHINES_OIL_DRILL_LOOP(263, GregTech.ID, "machines.MTEOilDrillBase"),
     GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP(264, GregTech.ID, "machines.MTEQuantumForceTransformer"),
     GT_MACHINES_ADV_EBF_LOOP(265, GregTech.ID, "machines.MTEAdvEBF"),

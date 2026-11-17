@@ -131,6 +131,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
             .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.heat_resistant_proof_coke_oven_casing"), true)
+            .addCasing("7", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addCasing("19", Casings.StructuralCokeOvenCasing.getLocalizedName(), false)

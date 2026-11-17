@@ -39,10 +39,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
@@ -59,12 +55,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     /** Energy consumption of the module (1A UHV) */
     public static final long ENERGY_CONSUMPTION = (int) GTValues.VP[9];
 
-    /** Input parameters */
-    private Parameters.Group.ParameterIn[] parallelSettings;
-    private Parameters.Group.ParameterIn[] gasTypeSettings;
-    private Parameters.Group.ParameterIn[] planetTypeSettings;
-    private Parameters.Group.ParameterIn batchSetting;
-
     /** New MUI2 parameters */
     private IntegerParameter batchParameter;
     private CompositeParameter[] recipeParameters;
@@ -74,35 +64,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
 
     public static final int PUMP_BATCH_MIN = 1;
     public static final int PUMP_BATCH_MAX = 128;
-    /** Name of the planet type setting */
-    private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-        p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
-            + (p.hatchId() / 2 + 1); // Planet
-    // Type
-    /** Status of the planet type setting */
-    private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
-    /** Name of the gas type setting */
-    private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-        p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
-            + (p.hatchId() / 2 + 1); // Gas
-    // Type
-    /** Status of the gas type setting */
-    private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
-    /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-        p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
-            + (p.hatchId() / 2 + 1); // Parallels
-    /** Status of the parallel setting */
-    private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
-    /** Name of the batch setting */
-    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
-    /** Status of the batch setting */
-    private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), PUMP_BATCH_MIN, 0, 32, PUMP_BATCH_MAX);
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -183,17 +144,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     }
 
     @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
-
-        batchParameter.setValue((int) legacyInput.getDouble(String.valueOf(19)));
-
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            planetTypeParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2)));
-            gasTypeParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2 + 10)));
-            parallelParameters[i].setValue((int) legacyInput.getDouble(String.valueOf(i * 2 + 1)));
-        }
-    }
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
 
     @Override
     public List<Parameter<?, ?>> getParameters() {
@@ -302,28 +253,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
      * @return Number of possible parallel recipes
      */
     public abstract int getParallelRecipes();
-
-    /**
-     * Instantiate parameters of the controller
-     */
-    @Override
-    protected void parametersInstantiation_EM() {
-        super.parametersInstantiation_EM();
-        int parallels = getParallelRecipes();
-        planetTypeSettings = new Parameters.Group.ParameterIn[parallels];
-        gasTypeSettings = new Parameters.Group.ParameterIn[parallels];
-        parallelSettings = new Parameters.Group.ParameterIn[parallels];
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            planetTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
-            gasTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
-            parallelSettings[i] = parametrization.getGroup(i * 2 + 1, false)
-                .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
-        }
-        batchSetting = parametrization.getGroup(9, false)
-            .makeInParameter(1, PUMP_BATCH_MIN, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
 
     /** Texture that will be displayed on the side of the module */
     protected static IIconContainer engraving;
