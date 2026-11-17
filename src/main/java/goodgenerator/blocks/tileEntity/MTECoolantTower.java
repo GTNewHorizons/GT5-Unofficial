@@ -116,7 +116,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
             .addMarkdown(new ResourceLocation("gregtech", "coolant-tower"))
             .beginStructureBlock(11, 13, 11, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("252-277", StatCollector.translateToLocal("gt.blockconcretes.8.name"), false)
+            .addCasing("252-277", StatCollector.translateToLocal("gt.blockconcretes.any"), false)
             .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenCarbide), false)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
