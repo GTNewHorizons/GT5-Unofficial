@@ -342,9 +342,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_METAL);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM);
     }
 
     @Override
@@ -502,9 +502,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         MTEMultiBlockBaseGui<?> gui = super.getGui();
         if (EtFuturumRequiem.isModLoaded()) gui.withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_METAL,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM);
         return gui;
     }
 

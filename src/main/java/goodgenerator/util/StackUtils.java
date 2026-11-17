@@ -87,36 +87,35 @@ public class StackUtils {
     }
 
     public static FluidStack getTieredFluid(int aTier, int aAmount) {
-        switch (aTier) {
-            case 0: // ULV
-                return Materials.RedAlloy.getMolten(aAmount);
-            case 1: // LV
-                return Materials.TinAlloy.getMolten(aAmount);
-            case 2: // MV
-                return Materials.RoseGold.getMolten(aAmount);
-            case 3: // HV
-                return GGMaterial.zircaloy4.getMolten(aAmount);
-            case 4: // EV
-                return GGMaterial.incoloy903.getMolten(aAmount);
-            case 5: // IV
-                return GGMaterial.titaniumBetaC.getMolten(aAmount);
-            case 6: // LuV
-                return GGMaterial.artheriumSn.getMolten(aAmount);
-            case 7: // ZPM
-                return GGMaterial.dalisenite.getMolten(aAmount);
-            case 8: // UV
-                return GGMaterial.tairitsu.getMolten(aAmount);
-            case 9: // UHV
-                return GGMaterial.preciousMetalAlloy.getMolten(aAmount);
-            case 10: // UEV
-                return GGMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
-            case 11: // UIV
-                return GGMaterial.metastableOganesson.getMolten(aAmount);
-            case 12: // UMV
-                return Materials.SpaceTime.getMolten(aAmount);
-            default:
-                return GGMaterial.shirabon.getMolten(aAmount);
-        }
+        return switch (aTier) {
+            case 0 -> // ULV
+                Materials.RedAlloy.getMolten(aAmount);
+            case 1 -> // LV
+                Materials.TinAlloy.getMolten(aAmount);
+            case 2 -> // MV
+                Materials.RoseGold.getMolten(aAmount);
+            case 3 -> // HV
+                GGMaterial.zircaloy4.getMolten(aAmount);
+            case 4 -> // EV
+                GGMaterial.incoloy903.getMolten(aAmount);
+            case 5 -> // IV
+                GGMaterial.titaniumBetaC.getMolten(aAmount);
+            case 6 -> // LuV
+                GGMaterial.artheriumSn.getMolten(aAmount);
+            case 7 -> // ZPM
+                GGMaterial.dalisenite.getMolten(aAmount);
+            case 8 -> // UV
+                GGMaterial.tairitsu.getMolten(aAmount);
+            case 9 -> // UHV
+                GGMaterial.preciousMetalAlloy.getMolten(aAmount);
+            case 10 -> // UEV
+                GGMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
+            case 11 -> // UIV
+                GGMaterial.metastableOganesson.getMolten(aAmount);
+            case 12 -> // UMV
+                Materials.SpaceTime.getMolten(aAmount);
+            default -> GGMaterial.shirabon.getMolten(aAmount);
+        };
     }
 
     // === Copied from AE2FC to avoid hard dep ===

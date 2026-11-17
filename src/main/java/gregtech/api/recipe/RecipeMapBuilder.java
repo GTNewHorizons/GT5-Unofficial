@@ -64,7 +64,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend, call
      * {@link #frontend} for the created builder object.
      *
-     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key for NEI recipe
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as the translation key for NEI
+     *                        recipe
      *                        GUI header, so add localization for it if needed.
      * @return New builder object.
      */
@@ -74,9 +75,10 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Constructs builder object for {@link RecipeMap}.
+     * Constructs a builder object for {@link RecipeMap}.
      *
-     * @param unlocalizedName Unique identifier for the recipemap. This is also used as translation key for NEI recipe
+     * @param unlocalizedName Unique identifier for the recipemap. This is also used as the translation key for NEI
+     *                        recipe
      *                        GUI header, so add localization for it if needed.
      * @return New builder object.
      */
@@ -104,7 +106,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Whether this recipemap should check for equality of special slot when searching recipe.
+     * Whether this recipemap should check for equality of special slot when searching a recipe.
      */
     public RecipeMapBuilder<B> specialSlotSensitive() {
         backendPropertiesBuilder.specialSlotSensitive();
@@ -340,7 +342,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Configures this recipemap to use special slot. This means special slot shows up on NEI and tooltip for special
+     * Configures this recipemap to use the special slot. This means the special slot shows up on NEI and a tooltip for
+     * the special
      * slot on basic machine GUI indicates it has actual usage.
      */
     public RecipeMapBuilder<B> useSpecialSlot() {
@@ -419,7 +422,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     // region frontend NEI properties
 
     /**
-     * Stops adding dedicated NEI recipe page for this recipemap. This does not prevent adding transferrect for the
+     * Stops adding a dedicated NEI recipe page for this recipemap. This does not prevent adding transferrect for the
      * machine GUI.
      */
     public RecipeMapBuilder<B> disableRegisterNEI() {
@@ -428,13 +431,15 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Sets properties of NEI handler info this recipemap belongs to. You can specify icon shown on recipe tab, handler
-     * height, number of recipes per page, etc. Either use supplied template or return newly constructed one.
+     * Sets properties of NEI handler info this recipemap belongs to. You can specify the icon shown on the recipe tab,
+     * handler
+     * height, number of recipes per page, etc. Either use the supplied template or return a newly constructed one.
      * <p>
      * Invocation of the builder creator is delayed until the actual registration (FMLLoadCompleteEvent), so you can
-     * safely use itemstack that doesn't exist as of recipemap initialization.
+     * safely use an item stack that doesn't exist as of recipemap initialization.
      * <p>
-     * If this method is not used, handler icon will be inferred from recipe catalysts associated with this recipemap.
+     * If this method is not used, the handler icon will be inferred from recipe catalysts associated with this
+     * recipemap.
      * <p>
      * Precisely, what's registered to NEI is {@link RecipeCategory}, not RecipeMap. However, handler info supplied by
      * this method will be used for default category where most of the recipes belong to.
@@ -471,8 +476,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Sets whether to show oredict equivalent item outputs on NEI.
      */
-    public RecipeMapBuilder<B> unificateOutputNEI(boolean unificateOutputNEI) {
-        neiPropertiesBuilder.unificateOutput(unificateOutputNEI);
+    public RecipeMapBuilder<B> unificateOutputNEI(boolean unifyOutputNEI) {
+        neiPropertiesBuilder.unificateOutput(unifyOutputNEI);
         return this;
     }
 

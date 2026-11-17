@@ -64,7 +64,7 @@ import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IDebuggableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -92,7 +92,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main TileEntity for EVERYTHING.
  */
 public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IActionHost, IGridProxyable,
-    IAlignmentProvider, IConstructableProvider, IDebugableTileEntity, ICustomNameObject {
+    IAlignmentProvider, IConstructableProvider, IDebuggableTileEntity, ICustomNameObject {
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
@@ -1301,9 +1301,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         return false;
     }
 
-    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
+    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecisely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || (mOwnerName.isEmpty()))
+        if (aCheckPrecisely || privateAccess() || (mOwnerName.isEmpty()))
             if ((mOwnerName.isEmpty()) && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());
@@ -2117,7 +2117,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     /**
      * Shifts the machine Inventory index according to the change in Input/Output Slots. This is NOT done automatically.
-     * If you want to change slot count for a machine this method needs to be adapted. Currently this method only works
+     * If you want to change the slot count for a machine, this method needs to be adapted. Currently, this method only
+     * works
      * for MTEBasicMachine
      *
      * @param slotIndex  The original Inventory index

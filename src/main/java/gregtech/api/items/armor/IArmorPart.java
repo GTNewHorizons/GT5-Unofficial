@@ -11,7 +11,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
-// An armor part. May be a frame, core, or augment.
+// An armor part. Maybe a frame, core, or augment.
 public interface IArmorPart {
 
     ItemStack getItem(int amount);

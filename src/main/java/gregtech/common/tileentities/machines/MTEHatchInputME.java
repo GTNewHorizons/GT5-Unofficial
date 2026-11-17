@@ -246,10 +246,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 newSlot.extracted = newStack = curr.getFluidStack();
                 newSlot.extractedAmount = newSlot.extracted.amount;
             }
-            boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
+            boolean sameType = GTUtility.areFluidsEqual(oldStack, newStack);
             if (newStack != null) {
                 // lower amount/disappearance is not considered 'new fluids'
-                if (sametype) {
+                if (sameType) {
                     if (newStack.amount > oldStack.amount) {
                         justHadNewFluids = true; // same type, higher amount
                     }
@@ -257,7 +257,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     justHadNewFluids = true; // different type
                 }
             }
-            if (!((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sameType)) {
                 configChanged = true;
             }
             index++;

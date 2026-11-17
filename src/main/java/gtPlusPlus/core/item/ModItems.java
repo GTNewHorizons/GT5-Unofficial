@@ -79,7 +79,7 @@ public final class ModItems {
 
     public static Item itemCustomBook;
     public static IonParticles itemIonParticleBase;
-    public static StandardBaseParticles itemStandarParticleBase;
+    public static StandardBaseParticles itemStandardParticleBase;
     public static ItemDummyResearch itemDummyResearch;
 
     public static void init() {
@@ -94,7 +94,7 @@ public final class ModItems {
         new ItemCustomSpawnEgg();
         itemCustomBook = new ItemBaseBook();
         itemIonParticleBase = new IonParticles();
-        itemStandarParticleBase = new StandardBaseParticles();
+        itemStandardParticleBase = new StandardBaseParticles();
 
         GregtechItemList.MagicFeather.set(new ItemMagicFeather());
 

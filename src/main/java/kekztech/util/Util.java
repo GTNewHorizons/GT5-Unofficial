@@ -33,7 +33,7 @@ public class Util {
     public static ItemStack getStackofAmountFromOreDict(String oredictName, final int amount) {
         final ArrayList<ItemStack> list = OreDictionary.getOres(oredictName);
         if (!list.isEmpty()) {
-            final ItemStack ret = list.get(0)
+            final ItemStack ret = list.getFirst()
                 .copy();
             ret.stackSize = amount;
             return ret;

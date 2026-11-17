@@ -2,6 +2,7 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -289,7 +290,7 @@ public final class MaterialMisc {
         -1,
         -1,
         false,
-        "Sr(OH)\u2082",
+        StringUtils.subscript("Sr(OH)2"),
         0,
         false,
         new MaterialStack(MaterialsElements.getInstance().STRONTIUM, 1),
@@ -334,7 +335,7 @@ public final class MaterialMisc {
     public static final Material DICHLOROACETIC_ACID = new Material(
         "Dichloroacetic Acid",
         MaterialState.PURE_LIQUID, // State
-        new short[] { 190, 160, 60 }, // Material Colour
+        new short[] { 190, 160, 60 }, // Material Color
         13, // Melting Point in C
         194, // Boiling Point in C
         -1, // Protons

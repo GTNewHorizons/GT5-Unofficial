@@ -40,7 +40,7 @@ import com.google.gson.JsonSerializer;
 public class NBTPersist {
 
     /**
-     * Converts an nbt tag to json.
+     * Converts a nbt tag to json.
      * Does not preserve the specific types of the tags, but the returned data will be sane and generally correct.
      * Compatible with Gson.
      */
@@ -240,7 +240,7 @@ public class NBTPersist {
     }
 
     /**
-     * Converts an nbt tag to json.
+     * Converts a nbt tag to json.
      * Preserves types exactly. Not compatible with gson loading.
      */
     @SuppressWarnings("unchecked")

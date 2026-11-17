@@ -138,10 +138,10 @@ public abstract class EntityToxinball extends EntityFireball {
                     && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f, f, f);
-                    MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3, vec31);
+                    MovingObjectPosition mop = axisalignedbb.calculateIntercept(vec3, vec31);
 
-                    if (movingobjectposition1 != null) {
-                        double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
+                    if (mop != null) {
+                        double d1 = vec3.distanceTo(mop.hitVec);
 
                         if (d1 < d0 || d0 == 0.0D) {
                             entity = entity1;

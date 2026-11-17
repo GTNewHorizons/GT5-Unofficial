@@ -120,7 +120,7 @@ public abstract class GenerateNodeMap {
                 generateNextNode(tPipe, tPipeNode, tInvalidSide, aNextNodeValue, aConsumers, aNodeMap);
         } else if (addConsumer(aTileEntity, oppositeSide, aNextNodeValue, aConsumers)) {
             final int oppositeSideOrdinal = oppositeSide.ordinal();
-            final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
+            final ConsumerNode tConsumeNode = aConsumers.getLast();
             tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
             tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
             final Lock lock = new Lock();

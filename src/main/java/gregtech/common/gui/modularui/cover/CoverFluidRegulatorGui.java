@@ -99,7 +99,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                     .asWidget())
             .child(
                 makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi).allowC2S())
-                    .numbersInt(this::valiateTickRate, () -> TICK_RATE_MIN, () -> TICK_RATE_MAX)
+                    .numbersInt(this::validateTickRate, () -> TICK_RATE_MIN, () -> TICK_RATE_MAX)
                     .defaultNumber(20))
             .child(
                 IKey.lang("gt.interact.desc.fluid_regulator.Ticks")
@@ -109,7 +109,7 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     /**
      * This extra validation is required to make sure we don't exceed the maximum transfer rate of the cover
      */
-    private int valiateTickRate(int val) {
+    private int validateTickRate(int val) {
         final int speed = cover.getSpeed();
         final long transferRate = cover.getTransferRate();
         if (Math.abs(speed) > transferRate * val) {

@@ -737,7 +737,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
         tMutation.requireResource("blockIndium");
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(39, "Venus")); // Venus Dim
-        // Earlier mutation for geting ichorium
+        // Earlier mutation for getting ichorium
         tMutation = dis.registerMutation(SILVER, OSMIUM, 1);
         tMutation.requireResource("blockArcanite");
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(60, "Bedrock")); // Thaumic Tinkerer
@@ -2304,7 +2304,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(BARNARDA, DIVIDED, 3, 2);
         if (GalaxySpace.isModLoaded()) {
             tMutation.requireResource(GameRegistry.findBlock(GalaxySpace.ID, "barnardaEgrunt"), 0);
-            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(81, "Barnard E")); // "Barnard E Dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(81, "Barnard E")); // Barnard E Dim
         }
     }),
     BARNARDAF(GTBranchDefinition.PLANET, "BarnardaF", false, new Color(0x0D5A0D), new Color(0x1e0b49), beeSpecies -> {
@@ -2316,7 +2316,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(BARNARDA, NEUTRONIUM, 3, 2);
         if (GalaxySpace.isModLoaded()) {
             tMutation.requireResource(GameRegistry.findBlock(GalaxySpace.ID, "barnardaFgrunt"), 0);
-            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(82, "Barnard F")); // "Barnard F Dim
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(82, "Barnard F")); // Barnard F Dim
         }
     }),
     VEGA(GTBranchDefinition.PLANET, "Vega", false, new Color(0x1A2036), new Color(0xB5C0DE), beeSpecies -> {
@@ -2901,8 +2901,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }
 
     /**
-     * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die Mutationsrate als Bruch mit chance /
-     * chanceDivider This new function allows Mutation percentages under 1%. Set them as a fraction with chance /
+     * This new function allows Mutation percentages under 1%. Set them as a fraction with chance /
      * chanceDivider
      */
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,

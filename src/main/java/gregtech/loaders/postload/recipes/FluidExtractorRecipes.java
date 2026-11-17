@@ -558,7 +558,7 @@ public class FluidExtractorRecipes implements Runnable {
                 .eut(TierEU.RECIPE_IV)
                 .addTo(fluidExtractionRecipes);
 
-            // krpton
+            // krypton
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 136))
                 .fluidOutputs(getFluidStack("krypton", 250))

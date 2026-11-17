@@ -619,7 +619,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // endregion crop visuals rendering
 
     /**
-     * Calculates the total amount of seeds in the EIG
+     * Calculates the total number of seeds in the EIG
      *
      * @return The number of seeds in the EIG.
      */

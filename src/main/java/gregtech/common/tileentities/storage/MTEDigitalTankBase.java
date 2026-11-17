@@ -531,9 +531,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         NBTTagCompound tag = accessor.getNBTData();
         FluidStack fluid = tag.hasKey("mFluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("mFluid")) : null;
         if (fluid != null && fluid.amount >= 0) {
-            currenttip.remove(0);
-            currenttip.add(
-                0,
+            currenttip.removeFirst();
+            currenttip.addFirst(
                 SpecialChars.getRenderString(
                     "waila.fluid",
                     fluid.getFluid()
@@ -542,7 +541,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     fluid.amount + "",
                     getRealCapacity() + ""));
         } else {
-            currenttip.add(0, StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
+            currenttip.addFirst(StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
         }
     }
 

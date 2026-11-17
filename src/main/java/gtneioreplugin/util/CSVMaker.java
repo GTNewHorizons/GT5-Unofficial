@@ -25,18 +25,18 @@ public class CSVMaker implements Runnable {
                 .iterator();
             List<SmallOre> SmallOreVeins = new ArrayList<>();
             while (it.hasNext()) {
-                SmallOre oremix = new SmallOre();
+                SmallOre oreMix = new SmallOre();
 
                 Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper> pair = it.next();
                 GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
 
-                oremix.setOreName(oreLayer.oreGenName);
-                oremix.setOreMaterial(oreLayer.material.getInternalName());
-                oremix.setHeight(oreLayer.worldGenHeightRange);
-                oremix.setAmount(oreLayer.amountPerChunk);
-                oremix.setDims(oreLayer.enabledDims);
+                oreMix.setOreName(oreLayer.oreGenName);
+                oreMix.setOreMaterial(oreLayer.material.getInternalName());
+                oreMix.setHeight(oreLayer.worldGenHeightRange);
+                oreMix.setAmount(oreLayer.amountPerChunk);
+                oreMix.setDims(oreLayer.enabledDims);
 
-                SmallOreVeins.add(oremix);
+                SmallOreVeins.add(oreMix);
 
                 it.remove(); // avoids a ConcurrentModificationException
             }

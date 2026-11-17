@@ -147,8 +147,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
                     .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
             }
             case SINGLE_SOURCE -> {
-                if (signals.values()
-                    .isEmpty()) {
+                if (signals.isEmpty()) {
                     return 0;
                 }
                 return signals.values()

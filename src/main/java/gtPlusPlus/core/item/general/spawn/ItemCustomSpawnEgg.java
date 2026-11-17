@@ -82,10 +82,12 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
     }
 
     /**
-     * Callback for item usage. If the item does something special on right clicking,
+     * Callback for item usage. If the item does something special on right-clicking,
      * <p>
-     * he will have one of those. Return True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+     * He will have one of those. Return True if something happens and false if it doesn't. This is for ITEMS, not
+     * BLOCKS
      */
+    // Who is he? I don't know. My brain collecting warp.
     @Override
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
         int par5, int par6, int par7, float par8, float par9, float par10) {

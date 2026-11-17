@@ -93,8 +93,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     @Override
     public int getColor() {
-        return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
-            | Math.max(0, Math.min(255, colorRGBA[2]));
+        return (Math.clamp(colorRGBA[0], 0, 255) << 16) | (Math.clamp(colorRGBA[1], 0, 255) << 8)
+            | Math.clamp(colorRGBA[2], 0, 255);
     }
 
     // ----- IGTFluid interface implementations -----
@@ -183,17 +183,17 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         return this;
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] oreprefixNames) {
-        return Arrays.stream(oreprefixNames)
-            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] orePrefixNames) {
+        return Arrays.stream(orePrefixNames)
+            .anyMatch(orePrefixName -> addLocalizedNameHasOreprefix(material, orePrefixName));
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String oreprefixName) {
-        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
-        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, material.getDefaultLocalName())
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String orePrefixName) {
+        final String removedFormat = orePrefixName.replace("%s", "");
+        if (defaultLocalName.contains(removedFormat)) {
+            if (String.format(orePrefixName, material.getDefaultLocalName())
                 .equals(defaultLocalName)) {
-                localizedName = () -> OrePrefixes.getLocalizedNameForItem(oreprefixName, "%s", material);
+                localizedName = () -> OrePrefixes.getLocalizedNameForItem(orePrefixName, "%s", material);
                 return true;
             }
         }
@@ -201,12 +201,12 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
-     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
+     * Check if the localized name matches the material name, or if it matches any of the ore prefix formatted material
      * names. If neither matches, add a key for localized.
      *
      * @param material material from GT/BW/GT++
      *
-     * @implNote The method checks for the following oreprefix patterns:
+     * @implNote The method checks for the following ore prefix patterns:
      *           <ul>
      *           <li>Molten %s</li>
      *           <li>%s Plasma</li>
@@ -217,7 +217,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      *           <li>Severely Hydro-Cracked %s</li>
      *           <li>Severely Steam-Cracked %s</li>
      *           </ul>
-     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
+     *           If a pattern matches, it uses formatted localization with the appropriate ore prefix key.
      */
     @Override
     public IGTRegisteredFluid addLocalizedName(IOreMaterial material) {

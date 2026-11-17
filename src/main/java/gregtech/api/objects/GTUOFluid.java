@@ -61,11 +61,11 @@ public class GTUOFluid {
 
     public int getRandomAmount(Random aRandom) { // generates some random ass number that correlates to extraction
                                                  // speeds
-        int smax = (int) Math.floor(Math.pow(MaxAmount * 100.d * DIVIDER, 0.2d)); // use scaled max and min values for
+        int sMax = (int) Math.floor(Math.pow(MaxAmount * 100.d * DIVIDER, 0.2d)); // use scaled max and min values for
                                                                                   // the randomness to make high values
-                                                                                  // more rare.
-        double smin = Math.pow(MinAmount * 100.d * DIVIDER, 0.2d);
-        double samount = Math.max(smin, aRandom.nextInt(smax) + aRandom.nextDouble());
-        return (int) (GTUtility.powInt(samount, 5) / 100); // reverses the computation above
+                                                                                  // rarer.
+        double sMin = Math.pow(MinAmount * 100.d * DIVIDER, 0.2d);
+        double sAmount = Math.max(sMin, aRandom.nextInt(sMax) + aRandom.nextDouble());
+        return (int) (GTUtility.powInt(sAmount, 5) / 100); // reverses the computation above
     }
 }

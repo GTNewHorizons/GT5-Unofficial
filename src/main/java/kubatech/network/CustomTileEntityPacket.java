@@ -41,17 +41,17 @@ import kubatech.kubatech;
 public class CustomTileEntityPacket implements IMessage {
 
     public int w, x, y, z;
-    public final ByteBuf customdata = Unpooled.buffer();
+    public final ByteBuf customData = Unpooled.buffer();
 
     @SuppressWarnings("unused")
     public CustomTileEntityPacket() {}
 
-    public CustomTileEntityPacket(TileEntity te, byte[] customdata) {
+    public CustomTileEntityPacket(TileEntity te, byte[] customData) {
         this.w = te.getWorldObj().provider.dimensionId;
         this.x = te.xCoord;
         this.y = te.yCoord;
         this.z = te.zCoord;
-        if (customdata != null && customdata.length > 0) this.customdata.writeBytes(customdata);
+        if (customData != null && customData.length > 0) this.customData.writeBytes(customData);
     }
 
     public void sendToAllAround(int range) {
@@ -61,19 +61,19 @@ public class CustomTileEntityPacket implements IMessage {
     // Helper methods
 
     public void resetHelperData() {
-        customdata.clear();
+        customData.clear();
     }
 
     public void addData(byte[] data) {
-        customdata.writeBytes(data);
+        customData.writeBytes(data);
     }
 
     public void addData(byte data) {
-        customdata.writeByte(data);
+        customData.writeByte(data);
     }
 
     public void addData(int data) {
-        customdata.writeInt(data);
+        customData.writeInt(data);
     }
 
     public void addData(String data) {
@@ -83,11 +83,11 @@ public class CustomTileEntityPacket implements IMessage {
     }
 
     public void addData(boolean data) {
-        customdata.writeBoolean(data);
+        customData.writeBoolean(data);
     }
 
     public void getData(byte[] bytes) {
-        customdata.readBytes(bytes);
+        customData.readBytes(bytes);
     }
 
     public byte[] getData(int len) {
@@ -97,7 +97,7 @@ public class CustomTileEntityPacket implements IMessage {
     }
 
     public int getDataInt() {
-        return customdata.readInt();
+        return customData.readInt();
     }
 
     public String getDataString() {
@@ -105,7 +105,7 @@ public class CustomTileEntityPacket implements IMessage {
     }
 
     public boolean getDataBoolean() {
-        return customdata.readBoolean();
+        return customData.readBoolean();
     }
 
     @Override
@@ -114,8 +114,8 @@ public class CustomTileEntityPacket implements IMessage {
         x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();
-        customdata.clear();
-        buf.readBytes(customdata, buf.readInt());
+        customData.clear();
+        buf.readBytes(customData, buf.readInt());
     }
 
     @Override
@@ -124,8 +124,8 @@ public class CustomTileEntityPacket implements IMessage {
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeInt(customdata.readableBytes());
-        buf.writeBytes(customdata);
+        buf.writeInt(customData.readableBytes());
+        buf.writeBytes(customData);
     }
 
     public static class Handler implements IMessageHandler<CustomTileEntityPacket, IMessage> {
@@ -145,10 +145,10 @@ public class CustomTileEntityPacket implements IMessage {
                 IMetaTileEntity mte = ((IGregTechTileEntity) e).getMetaTileEntity();
                 if (mte == null) return null;
                 if (!(mte instanceof CustomTileEntityPacketHandler)) return null;
-                ((CustomTileEntityPacketHandler) mte).HandleCustomPacket(message);
+                ((CustomTileEntityPacketHandler) mte).handleCustomPacket(message);
                 return null;
             } else if (!(e instanceof CustomTileEntityPacketHandler)) return null;
-            ((CustomTileEntityPacketHandler) e).HandleCustomPacket(message);
+            ((CustomTileEntityPacketHandler) e).handleCustomPacket(message);
             return null;
         }
     }

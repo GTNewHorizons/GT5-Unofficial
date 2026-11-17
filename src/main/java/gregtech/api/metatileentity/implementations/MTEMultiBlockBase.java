@@ -413,7 +413,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mTotalRunTime = aNBT.getLong("mTotalRunTime");
         mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
         recipesDone = aNBT.getLong("recipesDone");
-        // If the key doesn't exist it should default true
+        // If the key doesn't exist, it should default true
         alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
         makePowerfailEvents = !aNBT.hasKey("makePowerfailEvents") || aNBT.getBoolean("makePowerfailEvents");
@@ -440,7 +440,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 else getBaseMetaTileEntity().disableWorking();
             }
         }
-        // Item NBT (e.g. from setItemNBT) may lack this key, keep the configured default then
+        // Item NBT (e.g., from setItemNBT) may lack this key, keep the configured default then
         if (aNBT.hasKey(BATCH_MODE_NBT_KEY)) batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
@@ -520,7 +520,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Set the structure as having changed, and trigger an update.
+     * Set the structure as having changed and trigger an update.
      */
     public void onStructureChange() {
         mStructureChanged = true;
@@ -532,7 +532,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * ClearHatches as a part of structure check. If your multiblock has any hatches that need clearing override this
+     * ClearHatches as a part of the structure check. If your multiblock has any hatches that need to be cleared,
+     * override this
      * method, call super, and clear your own hatches
      */
     public void clearHatches() {
@@ -713,7 +714,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
                 boolean tDidRepair = false;
 
-                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintainance();
+                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintenance();
 
                 // For each tool, only if needed, collect the tool flags
                 // that this Maintenance Hatch has provided
@@ -737,12 +738,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Starts checking recipe with some operations needed to actually run the check. Overriding this without due care
-     * may result in dupe of items, hence it's marked as final.
+     * Starts checking for recipes with some operations needed to actually run the check. Overriding this without due
+     * care
+     * may result in dupe of items; hence it's marked as final.
      * <p>
      * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
      *
-     * @return If successfully found recipe and/or started processing
+     * @return If successfully found a recipe and/or started processing
      */
     protected final boolean checkRecipe() {
         startRecipeProcessing();
@@ -782,7 +784,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
         // instead of being polled on a periodic timer.
         if (recipeCheckImmediately) {
-            // An immediate push (new inputs, drained output, user/structure change) always runs, and covers any
+            // An immediate push (new inputs, drained output, user/structure change) always runs and covers any
             // pending throttled push too.
             recipeCheckImmediately = false;
             recipeCheckThrottled = false;
@@ -814,7 +816,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void onDisableWorking() {
-        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
             ddl.findConnection(this)
                 .ifPresent(conn -> {
                     conn.setActive(false);
@@ -825,7 +827,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void onEnableWorking() {
-        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
             ddl.findConnection(this)
                 .ifPresent(conn -> conn.setActive(true));
         }
@@ -843,7 +845,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (mProgresstime >= mMaxProgresstime) {
                         // Record production data
                         if (!mMaintenanceHatches.isEmpty()
-                            && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+                            && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
                             MTEDroneCentre centre = ddl.getCentre();
                             if (centre != null) {
                                 ProductionRecord pdr = centre.productionDataRecorder;
@@ -851,17 +853,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
-                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
+                        // Unused so commented out, for future use maybe?
+                        // boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
+                        // boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
                         mOutputItems = null;
                         mOutputFluids = null;
                         outputAfterRecipe();
-                        mEfficiency = Math.max(
-                            0,
-                            Math.min(
-                                mEfficiency + mEfficiencyIncrease,
-                                getMaxEfficiency(getControllerSlot())
-                                    - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                        int maxEfficiency = getMaxEfficiency(getControllerSlot())
+                            - ((getIdealStatus() - getRepairStatus()) * 1000);
+                        mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, maxEfficiency);
                         mOutputItems = null;
                         mProgresstime = 0;
                         mMaxProgresstime = 0;
@@ -914,10 +914,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return false;
         } else if (mMufflerHatches.size() == 1) {
             // One muffler, use simple method for performance.
-            MTEHatchMuffler muffler = mMufflerHatches.get(0);
+            MTEHatchMuffler muffler = mMufflerHatches.getFirst();
             if (muffler == null || !muffler.isValid()) {
                 // Muffler invalid. Fail.
-                mMufflerHatches.remove(0);
+                mMufflerHatches.removeFirst();
                 return false;
             } else {
                 if (muffler.polluteEnvironment(this, VENT_AMOUNT)) {
@@ -1057,7 +1057,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return Sound that will be played once, when the recipe check was valid
+     * @return Sound that will be played once when the recipe check was valid
      */
     protected SoundResource getProcessStartSound() {
         return null;
@@ -1096,7 +1096,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Check the ItemStack in the controller slot.
      *
      * @param aStack the ItemStack in the controller slot.
-     * @return {@code true} if the item is valid for this machine or the machine doesn't have restrictions on the
+     * @return {@code true} if the item is valid for this machine, or the machine doesn't have restrictions on the
      *         controller slot.
      */
     public boolean isCorrectMachinePart(@Nullable ItemStack aStack) {
@@ -1182,8 +1182,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use. If
-     * return value is successful, inputs are consumed.
+     * Iterates over hatches and tries to find a recipe. Assume {@link #processingLogic} is already set up for use. If
+     * the return value is successful, inputs are consumed.
      */
     @Nonnull
     protected CheckRecipeResult doCheckRecipe() {
@@ -1210,7 +1210,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         // try to cache the possible recipes from pattern
                         if (slot instanceof IDualInputInventoryWithPattern withPattern) {
                             if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
-                                // move on to next slots if it returns false, which means there is no possible recipes
+                                // move on to next slots if it returns false, which means there are no possible recipes
                                 // with given pattern.
                                 continue;
                             }
@@ -1336,10 +1336,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Performs additional check for {@link #processingLogic} after all the calculations are done. As many as checks
-     * should be done inside of custom {@link ProcessingLogic}, which you can specify with
+     * should be done inside custom {@link ProcessingLogic}, which you can specify with
      * {@link #createProcessingLogic()}, because when this method is called, inputs might have been already consumed.
-     * However, certain checks cannot be done like that; Checking energy overflow should be suppressed for long-power
-     * machines for example.
+     * However, certain checks cannot be done like that; Checking energy overflow should be suppressed for machines
+     * using long-power, for example.
      *
      * @return Modified (or not modified) result
      */
@@ -1389,7 +1389,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Gets the maximum efficiency of this machine with current state.
+     * Gets the maximum efficiency of this machine with its current state.
      * <p>
      * The ItemStack argument is supposed to be the one in the controller slot, but in some implementation, it directly
      * gives {@code null}.
@@ -1403,7 +1403,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
+     * Gets the pollution this Device outputs to a Muffler per tick (10,000 = one Pollution Block)
      *
      * @param aStack what is in controller
      */
@@ -1668,7 +1668,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Sums up voltage of energy hatches. Amperage does not matter.
+     * Sums up the voltage of all valid energy hatches. Amperage does not matter.
      */
     public long getMaxInputVoltage() {
         long rVoltage = 0;
@@ -1713,7 +1713,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public long getInputVoltageTier() {
         long rTier = 0;
         if (!mEnergyHatches.isEmpty()) {
-            rTier = mEnergyHatches.get(0)
+            rTier = mEnergyHatches.getFirst()
                 .getInputTier();
             for (int i = 1; i < mEnergyHatches.size(); i++) {
                 if (mEnergyHatches.get(i)
@@ -1734,7 +1734,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .getStoredEU(),
                 aEU);
             tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(tDrain, false);// basicly copied from
+                .decreaseStoredEnergyUnits(tDrain, false);// basically copied from
                                                           // ExoticEnergyInputHelper, makes
                                                           // machine
                                                           // use all hatches for power
@@ -1828,7 +1828,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Returns the amount that is actually drained
      *
-     * @param aLiquid  The liquid to drain, will not be modified.
+     * @param aLiquid  The liquid to drain, may not be modified.
      * @param simulate Whether to perform the draining
      * @return The amount that is drained
      */
@@ -2069,7 +2069,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Anything that is usually separated off in {@link #getStoredInputs()} (like crafting input bus/buffer) is also
+     * Anything usually separated off in {@link #getStoredInputs()} (like crafting input bus/buffer) is also
      * included here.
      */
     public ArrayList<ItemStack> getAllStoredInputs() {
@@ -2440,7 +2440,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             case null -> {
                 return false;
             }
-            case MTEHatchSteamBusOutput mteHatchSteamBusOutput -> {
+            case MTEHatchSteamBusOutput _ -> {
                 return false;
             }
             case MTEHatchOutputBus hatch -> {
@@ -3127,7 +3127,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return 1;
     }
 
-    // True if the slot with index aSlot may be interacted with through automation
+    /**
+     * @param aSlot slot index
+     * @return {@code true}, if the slot with index aSlot may be interacted with through automation
+     */
     protected boolean supportsSlotAutomation(int aSlot) {
         return false;
     }
@@ -3184,7 +3187,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Util method for DT-like structure to collect list of output hatches.
+     * Util method for DT-like structure to collect a list of output hatches.
      */
     protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(FluidStack[] toOutput,
         List<List<T>> hatchesByLayer) {
@@ -3290,8 +3293,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
      *
-     * @return Get real parallel count based on the maximum and the limit imposed in the power panel. Always returns at
-     *         least 1.
+     * @return Gets the real parallel count based on the maximum and the limit imposed in the power panel. Always
+     *         returns at least 1.
      */
     public final int getTrueParallel() {
         return Math.max(
@@ -3550,7 +3553,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+            (size, _) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
                 .add(
                     Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
                         .add(w - 3, 0)));
@@ -3581,8 +3584,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds
                 // are
                 // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
-                powerPanelMaxParallel = (int) Math
-                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                powerPanelMaxParallel = (int) Math.clamp(val, alwaysMaxParallel ? maxParallel : 1, maxParallel);
                 return powerPanelMaxParallel;
             })
             .setDefaultValue(powerPanelMaxParallel)
@@ -3605,15 +3607,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             new TextWidget(translateToLocal("GT5U.gui.text.powerfail_events")).setPos(7, 59)
                 .setSize(85, 16));
         builder.widget(
-            new CheckboxWidget(() -> makePowerfailEvents, (_cb, checked) -> makePowerfailEvents = checked)
-                .setPos(92, 59)
+            new CheckboxWidget(() -> makePowerfailEvents, (_, checked) -> makePowerfailEvents = checked).setPos(92, 59)
                 .setSize(16, 16));
 
         return builder.build();
     }
 
     public ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
-        Widget button = new CheckboxWidget(() -> alwaysMaxParallel, (_cb, checked) -> {
+        Widget button = new CheckboxWidget(() -> alwaysMaxParallel, (_, checked) -> {
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = checked;
@@ -3843,6 +3844,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return translateToLocalFormatted("GT5U.gui.text.progress_detail", percent, current, max) + "\n";
     }
 
+    /**
+     * Overload {@link #getGui()} and return your MUI2 GUI Implementation.
+     */
+    @Deprecated(since = "2.9", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = ">2.9")
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0);
@@ -3853,61 +3859,62 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
+
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.wrench"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mWrench && mMachine))
+                    .setEnabled(_ -> !mWrench && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.screwdriver"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mScrewdriver && mMachine))
+                    .setEnabled(_ -> !mScrewdriver && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soft_mallet"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftMallet && mMachine))
+                    .setEnabled(_ -> !mSoftMallet && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.hammer"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mHardHammer && mMachine))
+                    .setEnabled(_ -> !mHardHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soldering"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSolderingTool && mMachine))
+                    .setEnabled(_ -> !mSolderingTool && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
             .widget(
                 new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.crowbar"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mCrowbar && mMachine))
+                    .setEnabled(_ -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements.widget(
             new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
+                .setEnabled(_ -> (getErrorDisplayID() & 128) != 0));
         screenElements.widget(
             new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
+                .setEnabled(_ -> (getErrorDisplayID() & 256) != 0));
 
         if (showMachineStatusInGUI()) {
             screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+                    .setEnabled(_ -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
                 .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
                 .widget(
                     new FakeSyncWidget.BooleanSyncer(
@@ -3915,14 +3922,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         val -> getBaseMetaTileEntity().setActive(val)));
             screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+                    .setEnabled(_ -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
             screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+                    .setEnabled(_ -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
             screenElements.widget(
                 new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+                    .setEnabled(_ -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         }
 
         screenElements.widget(TextWidget.dynamicString(() -> {
@@ -3936,7 +3943,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setSynced(false)
             .setTextAlignment(Alignment.CenterLeft)
             .setEnabled(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                _ -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
             .widget(new FakeSyncWidget.LongSyncer(() -> mTotalRunTime, time -> mTotalRunTime = time))
             .widget(new FakeSyncWidget.LongSyncer(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
@@ -3947,7 +3954,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(
-                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    _ -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                         && GTUtility.isStringValid(
                             getBaseMetaTileEntity().getLastShutDownReason()
                                 .getDisplayString())
@@ -3968,7 +3975,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(
-                    widget -> shouldDisplayCheckRecipeResult()
+                    _ -> shouldDisplayCheckRecipeResult()
                         && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
                         && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
                             || checkRecipeResult.persistsOnShutdown())))
@@ -3981,7 +3988,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setTextAlignment(new Alignment(-1, -1))
                     .setSize(180, 12)
                     .setEnabled(
-                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        _ -> (mOutputFluids != null && mOutputFluids.length > 0)
                             || (mOutputItems != null && mOutputItems.length > 0)
                             || (mMaxProgresstime > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
@@ -4028,7 +4035,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             new TextWidget(translateToLocal("GT5U.gui.multimachine.missing_turbine_rotor"))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> {
+                .setEnabled(_ -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
                     if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbineBase) {
                         final ItemStack tItem = inventorySlot.getMcSlot()

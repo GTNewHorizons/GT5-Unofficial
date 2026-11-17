@@ -72,9 +72,9 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int zmin = 0, zmax = 6;
+        int zMin = 0, zMax = 6;
         int i = 0;
-        for (int x = -1; x <= 1; x++) for (int z = zmin; z <= zmax; z++) {
+        for (int x = -1; x <= 1; x++) for (int z = zMin; z <= zMax; z++) {
             double[] abc = new double[] { x, 0, z };
             double[] xyz = new double[] { 0, 0, 0 };
             facing.getWorldOffset(abc, xyz);

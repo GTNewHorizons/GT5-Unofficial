@@ -154,31 +154,19 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        switch (meta) {
-            case 0:
-                return (side < 2) ? iconBaseTop : iconBaseSide;
-            case 1:
-                return (side < 2) ? iconLapoIVTop : iconLapoIVSide;
-            case 2:
-                return (side < 2) ? iconLapoLuVTop : iconLapoLuVSide;
-            case 3:
-                return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
-            case 4:
-                return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
-            case 5:
-                return (side < 2) ? iconUltimateTop : iconUltimateSide;
-            case 6:
-                return (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
-            case 7:
-                return (side < 2) ? iconLapoEVTop : iconLapoEVSide;
-            case 8:
-                return (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
-            case 9:
-                return (side < 2) ? iconUltimateInsaneTop : iconUltimateInsaneSide;
-            case 10:
-                return (side < 2) ? iconUltimateMegaTop : iconUltimateMegaSide;
-            default:
-                return iconUltimateTop;
-        }
+        return switch (meta) {
+            case 0 -> (side < 2) ? iconBaseTop : iconBaseSide;
+            case 1 -> (side < 2) ? iconLapoIVTop : iconLapoIVSide;
+            case 2 -> (side < 2) ? iconLapoLuVTop : iconLapoLuVSide;
+            case 3 -> (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
+            case 4 -> (side < 2) ? iconLapoUVTop : iconLapoUVSide;
+            case 5 -> (side < 2) ? iconUltimateTop : iconUltimateSide;
+            case 6 -> (side < 2) ? iconLapoEmptyTop : iconLapoEmptySide;
+            case 7 -> (side < 2) ? iconLapoEVTop : iconLapoEVSide;
+            case 8 -> (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
+            case 9 -> (side < 2) ? iconUltimateInsaneTop : iconUltimateInsaneSide;
+            case 10 -> (side < 2) ? iconUltimateMegaTop : iconUltimateMegaSide;
+            default -> iconUltimateTop;
+        };
     }
 }

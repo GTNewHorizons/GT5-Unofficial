@@ -40,8 +40,8 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
             blockType,
             StringUtils.sanitizeString(material.getUnlocalizedName()),
             net.minecraft.block.material.Material.rock,
-            Math.min(Math.max(material.tier, 1), 6));
-        int aMaterialTierForMining = Math.min(Math.max(material.tier, 1), 6);
+            Math.clamp(material.tier, 1, 6));
+        int aMaterialTierForMining = Math.clamp(material.tier, 1, 6);
         this.blockMaterial = material;
         this.setHardness(1.0f * aMaterialTierForMining);
         this.setResistance(6.0F);

@@ -454,7 +454,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_DISTILLATION_TOWER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_DISTILLING);
     }
 }

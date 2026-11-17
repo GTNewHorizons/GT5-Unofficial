@@ -53,7 +53,7 @@ public class FluidEjectionHelper {
     }
 
     /**
-     * Ejects a single stack, removes the ejected fluids from the stack, and returns the amount of fluids that were
+     * Ejects a single stack, removes the ejected fluids from the stack, and returns the number of fluids that were
      * removed.
      *
      * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
@@ -69,8 +69,8 @@ public class FluidEjectionHelper {
     }
 
     /**
-     * Ejects fluids into the contained output hatch transactions, and calculates the number of parallels that were
-     * successfully ran.
+     * Ejects fluids into the contained output hatch transactions and calculates the number of parallels that were
+     * successfully run.
      *
      * @param outputs           The fluids to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of fluids to eject. This param is not modified.
@@ -123,7 +123,7 @@ public class FluidEjectionHelper {
 
             PeekingIterator<IOutputHatchTransaction> outputHatches = output.outputs;
 
-            // Loop until there are no more output hatches for this fluid, or until all of its stacks have been ejected.
+            // Loop until there are no more output hatches for this fluid or until all of its stacks have been ejected.
             while (outputHatches.hasNext() && output.remainingAmount > 0) {
                 IOutputHatchTransaction transaction = outputHatches.peek();
 
@@ -153,7 +153,7 @@ public class FluidEjectionHelper {
         if (fluidProtectionEnabled) {
             // If we care about protecting the fluids, reduce the starting parallels by however many batches of fluids
             // were ejected.
-            // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
+            // Otherwise, we can just tell the multi to run the full amount, and it'll void everything that doesn't fit.
 
             for (FluidParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;

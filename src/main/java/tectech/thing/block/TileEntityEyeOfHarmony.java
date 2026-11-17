@@ -1,11 +1,9 @@
 package tectech.thing.block;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -114,8 +112,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
-    private static final Set<String> BLACKLISTED_PLANETS = Collections
-        .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
+    private static final Set<String> BLACKLISTED_PLANETS = Set.of("Tf", "Ow", "ED", "EA", "VA");
     // Map of strings to blocks
     private static final Map<String, Block> PLANETS = new HashMap<>();
 

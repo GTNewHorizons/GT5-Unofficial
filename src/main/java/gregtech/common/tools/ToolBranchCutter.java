@@ -47,12 +47,11 @@ public class ToolBranchCutter extends GTTool {
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         if (aBlock.getMaterial() == Material.leaves) {
-            aEvent.dropChance = Math.min(
-                1.0F,
-                Math.max(
-                    aEvent.dropChance,
-                    (aStack.getItem()
-                        .getHarvestLevel(aStack, "") + 1) * 0.2F));
+            aEvent.dropChance = Math.clamp(
+                aEvent.dropChance,
+                (aStack.getItem()
+                    .getHarvestLevel(aStack, "") + 1) * 0.2F,
+                1.0F);
             if (aBlock == Blocks.leaves) {
                 aDrops.clear();
                 if (((aMetaData & 0x3) == 0) && (aPlayer.worldObj.rand.nextInt(9) <= aFortune * 2)) {

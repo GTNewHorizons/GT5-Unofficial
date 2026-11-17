@@ -33,7 +33,7 @@ public final class CoverPlacer {
     }
 
     /**
-     * If it lets you rightclick the Machine normally
+     * If it lets you right-click the Machine normally
      */
     public boolean isGuiClickable() {
         return isGuiClickable;

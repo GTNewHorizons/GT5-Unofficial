@@ -25,7 +25,7 @@ public class CokeAndPyrolyseOven {
 
     public static void postInit() {
         // Wood to Charcoal
-        // Try use all woods found
+        // Try to use all woods found
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 20))
             .circuit(20)

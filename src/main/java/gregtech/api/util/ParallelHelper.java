@@ -296,7 +296,7 @@ public class ParallelHelper {
     }
 
     /**
-     * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
+     * Finishes the GT_ParallelHelper. Anything changed after this will not affect anything
      */
     @Nonnull
     public ParallelHelper build() {

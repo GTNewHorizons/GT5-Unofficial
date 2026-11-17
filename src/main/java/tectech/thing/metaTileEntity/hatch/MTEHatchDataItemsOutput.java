@@ -144,7 +144,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
 
         lines.sort(String::compareTo);
 
-        lines.add(0, "tt.keyphrase.AL_Recipe_Header");
+        lines.addFirst("tt.keyphrase.AL_Recipe_Header");
 
         return lines.toArray(new String[0]);
     }

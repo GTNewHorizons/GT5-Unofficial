@@ -12,7 +12,7 @@ import toxiceverglades.world.WorldProviderMod;
 public class DimensionEverglades {
 
     public Object instance;
-    public static int DIMID = Configuration.worldgen.EVERGLADES_ID;
+    public static int DIM_ID = Configuration.worldgen.EVERGLADES_ID;
     public static BlockEvergladesPortal portalBlock;
     public static ItemEvergladesPortalTrigger portalItem;
     public static Block blockTopLayer;
@@ -23,7 +23,7 @@ public class DimensionEverglades {
     public static Block blockPortalFrame;
 
     public void load() {
-        DimensionManager.registerProviderType(DIMID, WorldProviderMod.class, false);
-        DimensionManager.registerDimension(DIMID, DIMID);
+        DimensionManager.registerProviderType(DIM_ID, WorldProviderMod.class, false);
+        DimensionManager.registerDimension(DIM_ID, DIM_ID);
     }
 }

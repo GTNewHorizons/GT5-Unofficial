@@ -15,12 +15,12 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.CoverFluidfilter;
+import gregtech.common.covers.CoverFluidFilter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
+public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidFilter> {
 
     private static final int startX = 10;
     private static final int startY = 25;
@@ -32,8 +32,8 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
     }
 
     @Override
-    protected CoverFluidfilter adaptCover(Cover cover) {
-        if (cover instanceof CoverFluidfilter adapterCover) {
+    protected CoverFluidFilter adaptCover(Cover cover) {
+        if (cover instanceof CoverFluidFilter adapterCover) {
             return adapterCover;
         }
         return null;
@@ -84,7 +84,7 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
                             .addTooltip(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlacklistFluid"))
                             .setPos(spaceX * 1, spaceY * 1))
-                    .addFollower(new CoverDataFollowerSlotWidget<CoverFluidfilter>(new ItemStackHandler(), 0, true) {
+                    .addFollower(new CoverDataFollowerSlotWidget<CoverFluidFilter>(new ItemStackHandler(), 0, true) {
 
                         @Override
                         protected void putClickedStack(ItemStack stack, int mouseButton) {
@@ -120,7 +120,7 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
                 new TextWidget(StatCollector.translateToLocal("gt.interact.desc.FluidFilter.BlockFlow"))
                     .setPos(startX + spaceX * 2, 3 + startY + spaceY * 2))
             .widget(TextWidget.dynamicString(() -> {
-                CoverFluidfilter cover = getCover();
+                CoverFluidFilter cover = getCover();
                 if (cover != null) {
                     ItemStack fluidDisplay = getFluidDisplayItem(cover);
                     if (fluidDisplay != null) {
@@ -155,7 +155,7 @@ public class FluidFilterUIFactory extends CoverUIFactory<CoverFluidfilter> {
         };
     }
 
-    private ItemStack getFluidDisplayItem(CoverFluidfilter coverData) {
+    private ItemStack getFluidDisplayItem(CoverFluidFilter coverData) {
         if (coverData == null) return null;
         Fluid fluid = FluidRegistry.getFluid(coverData.getFluidId());
         return GTUtility.getFluidDisplayStack(fluid);

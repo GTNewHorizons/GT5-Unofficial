@@ -35,11 +35,11 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     @Override
-    // Links the goggles to the right clicked LSC
-    // This is only called by the client and when a block is right clicked. onItemRightClick called if false returned
+    // Links the goggles to the right-clicked LSC
+    // This is only called by the client and when a block is right-clicked. onItemRightClick called if false returned
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
         int ordinalSide, float hitX, float hitY, float hitZ) {
-        // Shift right click -> Player wants to unlink goggles so skip to onItemRightClick
+        // Shift right click -> Player wants to unlink goggles, so skip to onItemRightClick
         if (player.isSneaking()) {
             return false;
         }

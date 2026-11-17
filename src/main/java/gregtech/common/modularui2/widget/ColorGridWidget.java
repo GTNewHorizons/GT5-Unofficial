@@ -196,7 +196,7 @@ public class ColorGridWidget extends Flow {
 
     protected void onToggled() {
         if (selected.size() > maxSelected) {
-            int target = selected.get(0);
+            int target = selected.getFirst();
             IWidget targetChild = getChildren().get(target / 4)
                 .getChildren()
                 .get(target % 4);
@@ -206,8 +206,9 @@ public class ColorGridWidget extends Flow {
     }
 
     /**
-     * @return The name of the current selected color at i.
+     * @return The name of the current selected color at the given index
      */
+    // TODO: needs translation key for "None"
     public String getName(int i) {
         if (i >= getAmountSelected()) return "None";
         int select = selected.get(i);

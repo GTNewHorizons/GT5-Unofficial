@@ -272,8 +272,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                                                 aBaseMetaTileEntity.setActive(false);
                                             }
                                         } // End of pollution removal block.
-                                    } // End of valid air sides block.
-                                } // End of valid toolstats block.
+                                    } // End of valid airsides block.
+                                } // End of valid tool stats block.
                             } // End of correct inventory item block.
                         }
                     } else if (!aBaseMetaTileEntity.isActive()) {
@@ -376,7 +376,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     // Delete broken rotor if in HE mode
                     if (!mSaveRotor) mInventory[SLOT_ROTOR] = null;
                     else if (mInventory[getOutputSlot()] == null) {
-                        // Move damaged rotor to output if not occupied if in LE mode
+                        // Move damaged rotor to output if not occupied, if in LE mode
                         mInventory[getOutputSlot()] = mInventory[SLOT_ROTOR];
                         this.mInventory[SLOT_ROTOR] = null;
                     }

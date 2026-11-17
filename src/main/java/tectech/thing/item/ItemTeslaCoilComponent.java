@@ -31,8 +31,8 @@ public final class ItemTeslaCoilComponent extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.itemTeslaComponent.desc")); // Tesla bois need
-                                                                                                  // these!
+        // Tesla bois need these!
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.itemTeslaComponent.desc"));
     }
 
     @Override

@@ -8,11 +8,11 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.Invertable;
+import gregtech.common.covers.Invertible;
 
 public class RowHelper {
 
-    public static Flow makeInvertRedstoneRow(Invertable cover) {
+    public static Flow makeInvertRedstoneRow(Invertible cover) {
         BooleanSyncValue isInvertedSyncValue = new BooleanSyncValue(cover::isInverted, cover::setInverted).allowC2S();
         return Flow.row()
             .name("invert_redstone")

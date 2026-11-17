@@ -12,11 +12,11 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 public enum RecipeCategorySetting {
 
     /**
-     * Show the category in separated NEI tab.
+     * Show the category in a separated NEI tab.
      */
     ENABLE,
     /**
-     * The category is merged to default one for the recipemap.
+     * The category is merged to the default one for the recipemap.
      */
     MERGE,
     /**

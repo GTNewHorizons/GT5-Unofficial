@@ -59,7 +59,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     @Override
     public void updateEntity() {
 
-        // Try do chesty stuff
+        // Try to do chesty stuff
         try {
             this.updateEntityChest();
         } catch (Exception ignored) {

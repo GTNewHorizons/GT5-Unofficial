@@ -339,11 +339,11 @@ public enum GregtechItemList implements IItemContainer {
 
     // Big Steam Macerator
     Controller_SteamMaceratorMulti,
-    // Bit Steam Washer
+    // Big Steam Washer
     Controller_SteamWasherMulti,
     // Big Steam Centrifuge
     Controller_SteamCentrifugeMulti,
-    // Bit Steam Forge Hammer
+    // Big Steam Forge Hammer
     Controller_SteamForgeHammerMulti,
     // Big Steam Mixer
     Controller_SteamMixerMulti,

@@ -22,8 +22,8 @@ public enum MBFrameType implements IBeeModifier {
     USELESS("Useless", 100, 1f, 0f, 1f, 0f, 1f), // production was 1x, now +0
 
     // Frame Items added by bartimaeusnek
-    DECAYING("Decaying", 240, 1f, 1f, 1f, 0f, 10f), // enhanches decay to 10x // production was 1x, now +0
-    SLOWING("Slowing", 175, 1f, 0.5f, 2f, -0.5f, 1f), // reduces mutation, production rate and enhanches lifespan //
+    DECAYING("Decaying", 240, 1f, 1f, 1f, 0f, 10f), // enhances decay to 10x // production was 1x, now +0
+    SLOWING("Slowing", 175, 1f, 0.5f, 2f, -0.5f, 1f), // reduces mutation, production rate and enhances lifespan //
                                                       // production was 0.5x, now -0.5
     STABILIZING("Stabilizing", 60, 1f, 0.1f, 1f, -0.9f, 0.5f), // reduces mutation, production and decay // production
                                                                // was 0.1x, now -0.9

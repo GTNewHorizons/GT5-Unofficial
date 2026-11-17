@@ -11,7 +11,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTESemiFluidGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTELargeSemifluidGenerator;
 
-public class GregtechSemiFluidgenerators {
+public class GregtechSemiFluidGenerators {
 
     public static void run() {
         GregtechItemList.Generator_SemiFluid_LV.set(

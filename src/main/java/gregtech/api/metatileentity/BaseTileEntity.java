@@ -82,9 +82,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
      */
     private final TileEntity[] mBufferedTileEntities = new TileEntity[6];
     /**
-     * If this TileEntity checks for the Chunk to be loaded before returning World based values. The AdvPump hacks this
-     * to false to ensure everything runs properly even when far Chunks are not actively loaded. But anything else
-     * should not cause worfin' Chunks, uhh I mean orphan Chunks.
+     * If this TileEntity checks for the chunk to be loaded before returning world-based values. The AdvPump hacks this
+     * to false, ensuring everything runs properly even when far Chunks are not actively loaded. But anything else
+     * should not cause worfin' chunks; uhh, I mean orphan chunks.
      */
     public boolean ignoreUnloadedChunks = true;
     /**
@@ -446,7 +446,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         if (crossedChunkBorder(tX, tZ)) {
             // never trust the "nothing here" marker across a chunk border
             // loading the neighbor chunk fires no block update
-            // the marker would stick forever and we would never see its tile entities.
+            // the marker would stick forever, and we would never see its tile entities.
             mBufferedTileEntities[ordinalSide] = null;
             if (ignoreUnloadedChunks && !worldObj.blockExists(tX, tY, tZ)) return null;
         } else if (mBufferedTileEntities[ordinalSide] == this) return null;

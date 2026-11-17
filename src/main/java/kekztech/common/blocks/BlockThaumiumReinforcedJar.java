@@ -80,11 +80,9 @@ public class BlockThaumiumReinforcedJar extends BlockJar {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
         final TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityThaumiumReinforcedJar) {
-            final TileEntityThaumiumReinforcedJar ite = (TileEntityThaumiumReinforcedJar) te;
+        if (te instanceof TileEntityThaumiumReinforcedJar ite) {
             breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
-        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar) {
-            final TileEntityThaumiumReinforcedVoidJar ite = (TileEntityThaumiumReinforcedVoidJar) te;
+        } else if (te instanceof TileEntityThaumiumReinforcedVoidJar ite) {
             breakBlockWarpy(world, x, y, z, ite.amount, 50, 1.0F);
         }
         super.breakBlock(world, x, y, z, par5, par6);
@@ -218,8 +216,7 @@ public class BlockThaumiumReinforcedJar extends BlockJar {
         final ArrayList<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(this, 1, (meta == 3) ? 3 : 0));
         final TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityThaumiumReinforcedJar) {
-            final TileEntityThaumiumReinforcedJar ite = (TileEntityThaumiumReinforcedJar) te;
+        if (te instanceof TileEntityThaumiumReinforcedJar ite) {
             if (ite.aspectFilter != null) {
                 final ItemStack droppedLabel = new ItemStack(ConfigItems.itemResource, 1, 13);
                 droppedLabel.setTagCompound(new NBTTagCompound());

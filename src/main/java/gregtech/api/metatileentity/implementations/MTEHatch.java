@@ -19,9 +19,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -315,11 +317,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips
             .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        final String[] suffixs = additionalTooltips.toArray(new String[0]);
+        final String[] suffixes = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
-            return GTSplit.splitLocalizedWithSuffix(key, suffixs);
+            return GTSplit.splitLocalizedWithSuffix(key, suffixes);
         }
-        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
+        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixes, formatted);
     }
 
     public static void addColorChannelInfo(List<String> tooltip, byte color) {

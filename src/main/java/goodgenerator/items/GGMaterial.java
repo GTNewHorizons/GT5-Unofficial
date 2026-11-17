@@ -11,6 +11,7 @@ import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 
+// TODO: UPPER_SNAKE_CASE as per java conventions, even java-lized Snake_Case would be fine imo
 public class GGMaterial implements Runnable {
 
     protected static final int OffsetID = 10001;
@@ -531,7 +532,7 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 41,
         TextureSet.SET_FLUID);
-    /* These materials will be enable when they are removed in GregTech */
+    /* These materials will be enabled when they are removed in GregTech */
     /*
      * public static final Werkstoff praseodymium = new Werkstoff( new short[]{0xff,0xff,0xff}, "praseodymium", "Pr",
      * new Werkstoff.Stats(), Werkstoff.Types.ELEMENT, new

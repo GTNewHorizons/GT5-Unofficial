@@ -115,7 +115,7 @@ public class CoverArmGui extends CoverBaseGui<CoverArm> {
 
         int adjacentMaxSlot = getMaxExternalSlot();
 
-        return String.valueOf(Math.max(-1, Math.min(slotId, adjacentMaxSlot)));
+        return String.valueOf(Math.clamp(slotId, -1, adjacentMaxSlot));
     }
 
     // Stolen from ArmUIFactory to check what the max slot id is for the adjacent tile

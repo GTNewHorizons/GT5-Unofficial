@@ -133,35 +133,18 @@ public class DynamicDimensionConfig {
     public static String getLootChestTable(AsteroidConfig pACfg) {
         String tLootTable = ChestGenHooks.MINESHAFT_CORRIDOR;
 
-        switch (pACfg.LootChestTable) {
-            case 2:
-                tLootTable = ChestGenHooks.PYRAMID_DESERT_CHEST;
-                break;
-            case 3:
-                tLootTable = ChestGenHooks.PYRAMID_JUNGLE_CHEST;
-                break;
-            case 4:
-                tLootTable = ChestGenHooks.PYRAMID_JUNGLE_DISPENSER;
-                break;
-            case 5:
-                tLootTable = ChestGenHooks.STRONGHOLD_CORRIDOR;
-                break;
-            case 6:
-                tLootTable = ChestGenHooks.STRONGHOLD_LIBRARY;
-                break;
-            case 7:
-                tLootTable = ChestGenHooks.STRONGHOLD_CROSSING;
-                break;
-            case 8:
-                tLootTable = ChestGenHooks.VILLAGE_BLACKSMITH;
-                break;
-            case 9:
-                tLootTable = ChestGenHooks.BONUS_CHEST;
-                break;
-            case 10:
-                tLootTable = ChestGenHooks.DUNGEON_CHEST;
-                break;
-        }
+        tLootTable = switch (pACfg.LootChestTable) {
+            case 2 -> ChestGenHooks.PYRAMID_DESERT_CHEST;
+            case 3 -> ChestGenHooks.PYRAMID_JUNGLE_CHEST;
+            case 4 -> ChestGenHooks.PYRAMID_JUNGLE_DISPENSER;
+            case 5 -> ChestGenHooks.STRONGHOLD_CORRIDOR;
+            case 6 -> ChestGenHooks.STRONGHOLD_LIBRARY;
+            case 7 -> ChestGenHooks.STRONGHOLD_CROSSING;
+            case 8 -> ChestGenHooks.VILLAGE_BLACKSMITH;
+            case 9 -> ChestGenHooks.BONUS_CHEST;
+            case 10 -> ChestGenHooks.DUNGEON_CHEST;
+            default -> tLootTable;
+        };
 
         return tLootTable;
     }

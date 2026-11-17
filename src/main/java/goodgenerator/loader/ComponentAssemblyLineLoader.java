@@ -53,7 +53,7 @@ import gregtech.api.util.GTUtility;
  * <ul>
  *     <li>For Item order, match the Assembly Line/Assembler recipe.
  *     <li>For Fluid order, put Solder material first, then Lubricant material, then order by descending amount.
- *     <li>Duplicated recipes for multiple inputs (i.e., SBR vs Silicone) should be respected.
+ *     <li>Duplicated recipes for multiple inputs (i.e., SBR vs. Silicone) should be respected.
  *     <li>Multiply all inputs by 48x, but output 64 at a time.
  * </ul>
  * Item conversion rules (in case of odd numbers, round down):
@@ -1893,7 +1893,7 @@ public class ComponentAssemblyLineLoader {
      * - When breaking down MHDCSM parts into fluid with usual rules, add an equal amount of Eternity as well.
      * - Gather the total number of UHV circuits that would have been used, reduce by 25%, then add as circuit wraps.
      * - Put these added UHV circuits in the middle, approximately where they would go if this recipe took circuits.
-     *   If this recipe does take circuits, put them directly after higher tiered circuits.
+     *   If this recipe does take circuits, put them directly after higher-tiered circuits.
      */
     private static void uxvRecipes() {
         // Motor
@@ -2080,7 +2080,7 @@ public class ComponentAssemblyLineLoader {
     // spotless:on
 
     // CoAL recipes regularly require overly large ItemStacks, this lets use cleanly and
-    // conveniently get over-sized stacks of many different types of items with different storages.
+    // conveniently get oversized stacks of many different types of items with different storages.
     private static ItemStack get(OrePrefixes prefix, Object material, int amount) {
         if (material instanceof Werkstoff w) {
             return GTUtility.copyAmountUnsafe(amount, w.get(prefix, 1));

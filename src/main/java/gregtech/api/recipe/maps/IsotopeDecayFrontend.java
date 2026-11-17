@@ -32,28 +32,28 @@ public class IsotopeDecayFrontend extends RecipeMapFrontend {
             case BetaPlus -> StatCollector.translateToLocal("GT5U.gui.text.beta-plus");
         }));
 
-        double halflife = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.HALF_LIFE, 1d);
-        double perStackSecond = 64d / halflife;
+        double halftime = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.HALF_LIFE, 1d);
+        double perStackSecond = 64d / halftime;
 
         String unit = StatCollector.translateToLocal("GTPP.time.seconds")
             .toLowerCase();
 
-        if (halflife > (60d * 60d * 24d)) {
-            halflife /= 60d * 60d * 24d;
+        if (halftime > (60d * 60d * 24d)) {
+            halftime /= 60d * 60d * 24d;
             unit = StatCollector.translateToLocal("GTPP.time.days")
                 .toLowerCase();
-        } else if (halflife > (60d * 60d)) {
-            halflife /= 60d * 60d;
+        } else if (halftime > (60d * 60d)) {
+            halftime /= 60d * 60d;
             unit = StatCollector.translateToLocal("GTPP.time.hours")
                 .toLowerCase();
-        } else if (halflife > 60d) {
-            halflife /= 60d;
+        } else if (halftime > 60d) {
+            halftime /= 60d;
             unit = StatCollector.translateToLocal("GTPP.time.minutes")
                 .toLowerCase();
         }
 
         recipeInfo
-            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.half-life", formatNumber(halflife), unit));
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.half-life", formatNumber(halftime), unit));
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted("GT5U.gui.text.isotope-prod-per-s", formatNumber(perStackSecond)));
 

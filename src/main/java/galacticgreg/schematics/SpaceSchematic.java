@@ -17,7 +17,7 @@ import galacticgreg.api.StructureInformation;
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with
  * GalacticGreg itself, and never if you're a mod developer and want to add support for GGreg to your mod. However, feel
- * free to copy this code to your own mod to implement structures. If you have questions, find me on github and ask
+ * free to copy this code to your own mod to implement structures. If you have questions, find me on GitHub and ask
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "SpaceSchematic")

@@ -326,8 +326,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
         @Override
         public IGTHatchAdder<? super MTEBECMultiblockBase<?>> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchBEC hatch) {
                     hatch.updateTexture(id);

@@ -34,6 +34,6 @@ public class UVTreatmentLensCycle {
     }
 
     public ItemStack first() {
-        return lenses.get(0);
+        return lenses.getFirst();
     }
 }

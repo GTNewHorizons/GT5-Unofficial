@@ -387,8 +387,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
         @Override
         public IGTHatchAdder<MTEBECAssembler> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);

@@ -158,14 +158,14 @@ public class EntitySickBlaze extends EntityMob {
                     this.worldObj.playAuxSFXAtEntity(null, 1009, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
 
                     for (int i = 0; i < 1; ++i) {
-                        EntityToxinballSmall entitysmalltoxinball = new EntityToxinballSmall(
+                        EntityToxinballSmall entityToxinballSmall = new EntityToxinballSmall(
                             this.worldObj,
                             this,
                             d0 + this.rand.nextGaussian() * f1,
                             d1,
                             d2 + this.rand.nextGaussian() * f1);
-                        entitysmalltoxinball.posY = this.posY + this.height / 2.0F + 0.5D;
-                        this.worldObj.spawnEntityInWorld(entitysmalltoxinball);
+                        entityToxinballSmall.posY = this.posY + this.height / 2.0F + 0.5D;
+                        this.worldObj.spawnEntityInWorld(entityToxinballSmall);
                     }
                 }
             }

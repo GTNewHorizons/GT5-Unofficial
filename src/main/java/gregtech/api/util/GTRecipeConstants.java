@@ -619,15 +619,15 @@ public class GTRecipeConstants {
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(fluidInput, true, false);
         }
         Scanning scanningData = builder.getMetadataOrDefault(SCANNING, new Scanning(0, 0));
-        tPersistentHash = tPersistentHash * 31 + scanningData.time;
-        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage;
+        tPersistentHash = tPersistentHash * 31 + scanningData.time();
+        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage();
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
         GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
-            scanningData.time,
-            (int) scanningData.voltage,
+            scanningData.time(),
+            (int) scanningData.voltage(),
             r.mInputs,
             r.mFluidInputs,
             aOutput,
@@ -643,8 +643,8 @@ public class GTRecipeConstants {
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
                 .special(tRecipe.newDataStickForNEI("Writes Research result", 1))
-                .duration(scanningData.time)
-                .eut(scanningData.voltage)
+                .duration(scanningData.time())
+                .eut(scanningData.voltage())
                 .specialValue(-201) // means it's scanned
                 .ignoreCollision()
                 .fake()
@@ -723,8 +723,8 @@ public class GTRecipeConstants {
     });
 
     /**
-     * Just like any normal assembler recipe, however it accepts one input item to be oredicted. Pass in the item to
-     * oredict via {@link #OREDICT_INPUT}. It will be used along all other item inputs as input of this recipe.
+     * Just like any normal assembler recipe, however, it accepts one input item to be oredicted. Pass in the item to
+     * oredict via {@link #OREDICT_INPUT}. It will be used along with all other item inputs as input of this recipe.
      */
     public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();

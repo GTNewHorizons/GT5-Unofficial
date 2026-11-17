@@ -84,7 +84,7 @@ public class MTEChestBuffer extends MTEBuffer {
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aTimer % tickRate[mTier] > 0) return;
 
-        // mSuccess will be negative if the call is caused by the %200 aTimer, always try to push. Otherwise it will be
+        // mSuccess will be negative if the call is caused by the %200 aTimer, always try to push. Otherwise, it will be
         // positive.
         // For the first 6 ticks after a successful move (49->44), push every tick. Then go to every 5 ticks.
         if ((mSuccess <= 0) || (mSuccess > 43) || ((mSuccess % 5) == 0)) {

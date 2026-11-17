@@ -121,17 +121,17 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public int maxLogStackSize;
 
-        @Config.Comment("Controls the stacksize of every oredicted prefix based items used for blocks (if that even makes sense)")
+        @Config.Comment("Controls the stacksize of every oredict prefix based items used for blocks (if that even makes sense)")
         @Config.DefaultInt(64)
         @Config.RequiresMcRestart
         public int maxOtherBlocksStackSize;
 
-        @Config.Comment("Controls the stacksize of oredicted planks.")
+        @Config.Comment("Controls the stacksize of oredict planks.")
         @Config.DefaultInt(64)
         @Config.RequiresMcRestart
         public int maxPlankStackSize;
 
-        @Config.Comment("Controls the stacksize of oredicted items used in ore treatment.")
+        @Config.Comment("Controls the stacksize of oredict items used in ore treatment.")
         @Config.DefaultInt(64)
         @Config.RequiresMcRestart
         public int maxOreStackSize;
@@ -204,7 +204,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean multiThreadedSounds;
 
-        @Config.Comment("Max entity amount in the same block for entity craming.")
+        @Config.Comment("Max entity amount in the same block for entity cramming.")
         @Config.DefaultInt(6)
         @Config.RequiresMcRestart
         public int maxEqualEntitiesAtOneSpot;
@@ -229,7 +229,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean increaseDungeonLoot;
 
-        @Config.Comment("If true, spawns an axe at the start in adventure mode. Does nothing if the advanture mode isn't forced.")
+        @Config.Comment("If true, spawns an axe at the start in adventure mode. Does nothing if the adventure mode isn't forced.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean axeWhenAdventure;
@@ -239,7 +239,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, enables the item oredification of the items in the inventory.")
+        @Config.Comment("If true, enables the item oredict unification of the items in the inventory.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean inventoryUnification;

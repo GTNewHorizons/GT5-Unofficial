@@ -154,7 +154,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        // the mold is a ghost item and the circuit is a configuration slot, neither may be dropped or picked up
+        // the mold is a ghost item, and the circuit is a configuration slot, neither may be dropped nor picked up
         return aIndex != moldSlot && aIndex != circuitSlot && super.isValidSlot(aIndex);
     }
 

@@ -55,13 +55,13 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
     private static IVertexArrayObject antimatterModel;
     private static IVertexArrayObject containerModel;
     private static IVertexArrayObject ringModel;
-    private static final float modelNormalize = .5f;
+    private static final float MODEL_NORMALIZE = .5f;
 
     // Protomatter Beam
-    private static final int particleCount = 32;
-    private static final int beamVertexCount = particleCount * 6 * 6;
+    private static final int PARTICLE_COUNT = 32;
+    private static final int BEAM_VERTEX_COUNT = PARTICLE_COUNT * 6 * 6;
 
-    private static final float[] promomatterVerticies = {
+    private static final float[] PROTOMATTER_VERTICES = {
         // Front Face
         -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f,
         // Back Face
@@ -77,10 +77,10 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
     private static final ShaderRecipe PROTOMATTER = ShaderRecipe.of(GoodGenerator.resourceDomain, "protomatter")
         .required("u_Time", "u_Scale", "u_Color", "u_SpiralRadius")
-        .constantArray("u_Vertices", 3, promomatterVerticies)
-        .constant("u_CubeCount", particleCount)
+        .constantArray("u_Vertices", 3, PROTOMATTER_VERTICES)
+        .constant("u_CubeCount", PARTICLE_COUNT)
         .modelUniform("u_ModelMatrix")
-        .attributeless("a_VertexID", beamVertexCount);
+        .attributeless("a_VertexID", BEAM_VERTEX_COUNT);
 
     private static final Uniform PM_TIME = PROTOMATTER.uniform("u_Time");
     private static final Uniform PM_SCALE = PROTOMATTER.uniform("u_Scale");
@@ -181,10 +181,10 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
             .rotateX((float) Math.toRadians((angle / 8) % 360));
 
         float snapshotSize = tile.coreScaleSnapshot;
-        snapshotSize *= modelNormalize;
+        snapshotSize *= MODEL_NORMALIZE;
         float coreSizeSnapshot = Math.min(snapshotSize, TileAntimatter.maximalRadius / (1 + tile.spikeFactor));
         float targetSize = tile.coreScale;
-        targetSize *= modelNormalize;
+        targetSize *= MODEL_NORMALIZE;
         float coreSize = Math.min(targetSize, TileAntimatter.maximalRadius / (1 + tile.spikeFactor));
 
         // Wrap before float conversion to preserve sub-tick precision.
@@ -225,7 +225,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
             TileAntimatter.protoR,
             TileAntimatter.protoG,
             TileAntimatter.protoB);
-        GL20.glUniform1f(protomatterShader.loc(PM_SPIRAL_RADIUS), tile.getSpiralRadius(modelNormalize));
+        GL20.glUniform1f(protomatterShader.loc(PM_SPIRAL_RADIUS), tile.getSpiralRadius(MODEL_NORMALIZE));
 
         tileRotation(tile, x, y, z);
         protomatterShader.uploadModel(modelMatrix);

@@ -410,8 +410,8 @@ public class GTRecipeRegistrator {
     }
 
     private static boolean isNoOpReverseArcSmelting(ItemStack input, List<ItemStack> outputs) {
-        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.get(0))
-            && input.stackSize == outputs.get(0).stackSize;
+        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.getFirst())
+            && input.stackSize == outputs.getFirst().stackSize;
     }
 
     private static Set<Materials> getArcSmeltingGases(List<ItemStack> outputs) {
@@ -526,12 +526,12 @@ public class GTRecipeRegistrator {
         Sapphire, Steel, IronWood, Steeleaf, Knightmetal, Thaumium, DarkSteel, };
 
     /**
-     * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing
-     * Ingots, Gems etc.
+     * You give this Function a Material, and it will scan almost everything for adding recycling Recipes and replacing
+     * Ingots, Gems, etc.
      *
-     * @param aMats            Materials, for example an Ingot or a Gem.
+     * @param aMats            Materials, for example, an Ingot or a Gem.
      * @param aPlate           the Plate referenced to aMat
-     * @param aRecipeReplacing allows to replace the Recipe with a Plate variant
+     * @param aRecipeReplacing allows replacing the Recipe with a Plate variant
      */
     public static synchronized void registerUsagesForMaterials(String aPlate, boolean aRecipeReplacing,
         ItemStack... aMats) {
@@ -746,8 +746,8 @@ public class GTRecipeRegistrator {
      *
      * @param aMaterial    material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
-     * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing then aEUt will be
-     *                     overriden with it.
+     * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing, then aEUt will be
+     *                     overridden with it.
      */
     public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
         registerWiremillRecipes(

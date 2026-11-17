@@ -145,13 +145,13 @@ public class CraftingRecipes implements Runnable {
 
         for (int i = 0; i < 4; i++) {
             Materials cable = cables[i + 2];
-            ItemStack machinehull = ItemList.MACHINE_HULLS[i + 2].get(1L);
+            ItemStack machineHull = ItemList.MACHINE_HULLS[i + 2].get(1L);
             GTModHandler.addCraftingRecipe(
                 ItemRegistry.acidGens[i],
                 RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                     | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "HRH", "HCH", "HKH", 'H', bats[i], 'K',
-                    GTOreDictUnificator.get(OrePrefixes.cableGt01, cable, 1L), 'C', machinehull, 'R', chreac[i] });
+                    GTOreDictUnificator.get(OrePrefixes.cableGt01, cable, 1L), 'C', machineHull, 'R', chreac[i] });
         }
 
         GTModHandler.addCraftingRecipe(
@@ -167,45 +167,45 @@ public class CraftingRecipes implements Runnable {
                 ItemStack hull = hulls[i] instanceof Materials
                     ? GTOreDictUnificator.get(OrePrefixes.plate, hulls[i], 1L)
                     : ((Werkstoff) hulls[i]).get(OrePrefixes.plate);
-                ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
+                ItemStack machineHull = ItemList.MACHINE_HULLS[i].get(1L);
 
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.energyDistributor[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "PWP", "WCW", "PWP", 'W', GTOreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L),
-                        'P', hull, 'C', machinehull });
+                        'P', hull, 'C', machineHull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode12A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
-                        GTOreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L), 'P', hull, 'C', machinehull });
+                        GTOreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L), 'P', hull, 'C', machineHull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode8A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
-                        GTOreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L), 'P', hull, 'C', machinehull });
+                        GTOreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L), 'P', hull, 'C', machineHull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode4A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
-                        GTOreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L), 'P', hull, 'C', machinehull });
+                        GTOreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L), 'P', hull, 'C', machineHull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode2A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
-                        GTOreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L), 'P', hull, 'C', machinehull });
+                        GTOreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L), 'P', hull, 'C', machineHull });
                 GTModHandler.addCraftingRecipe(
                     ItemRegistry.diode16A[i],
                     RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED
                         | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "WHW", "DCD", "PDP", 'H', OrePrefixes.componentCircuit.get(Materials.Inductor), 'D',
                         OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
-                        GTOreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L), 'P', hull, 'C', machinehull });
+                        GTOreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L), 'P', hull, 'C', machineHull });
 
             } catch (ArrayIndexOutOfBoundsException ignored) {
 

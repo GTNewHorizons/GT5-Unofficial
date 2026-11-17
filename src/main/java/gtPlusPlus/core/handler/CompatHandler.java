@@ -58,7 +58,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransf
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidGenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarTower;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamMultis;
@@ -120,7 +120,7 @@ public class CompatHandler {
         GregtechSimpleWasher.run();
         GregtechRTG.run();
         GregtechHiAmpTransformer.run();
-        GregtechSemiFluidgenerators.run();
+        GregtechSemiFluidGenerators.run();
         GregtechWirelessChargers.run();
         GregtechFactoryGradeReplacementMultis.run();
         GregtechThaumcraftDevices.run();

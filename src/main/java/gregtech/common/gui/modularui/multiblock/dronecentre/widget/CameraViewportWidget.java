@@ -394,8 +394,8 @@ public class CameraViewportWidget extends ParentWidget<CameraViewportWidget> imp
         }
 
         @Override
-        public int getNBTInteger(NBTTagCompound tag, String keyname) {
-            return tag != null ? tag.getInteger(keyname) : 0;
+        public int getNBTInteger(NBTTagCompound tag, String key) {
+            return tag != null ? tag.getInteger(key) : 0;
         }
 
         @Override

@@ -51,7 +51,7 @@ public final class TextureFactory {
     }
 
     /**
-     * @Deprecated This method is a no-op. There's no reason to call this.
+     * @deprecated This method is a no-op. There's no reason to call this.
      */
     @Deprecated
     public static ITexture of(final ITexture texture) {

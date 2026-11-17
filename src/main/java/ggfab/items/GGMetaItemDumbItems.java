@@ -44,9 +44,9 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
-     * @param aEnglish    The Default Localized Name of the created Item
-     * @param aToolTip    The Default ToolTip of the created Item, you can also insert null for having no ToolTip
+     * @param aID         The id of the assigned item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aEnglish    The default localized name of the created item
+     * @param aToolTip    The default ToolTip of the created item, you can also insert null for having no ToolTip
      * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
      * @return An ItemStack containing the newly created Item.
      */

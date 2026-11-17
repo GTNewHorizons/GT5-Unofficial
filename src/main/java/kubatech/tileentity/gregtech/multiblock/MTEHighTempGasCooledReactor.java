@@ -99,7 +99,7 @@ import kubatech.loaders.item.htgritem.HTGRItem;
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
 
-    private static final int BASECASINGINDEX = Casings.IVMachineCasing.textureId;
+    private static final int BASE_CASING_INDEX = Casings.IVMachineCasing.textureId;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
@@ -519,7 +519,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && !this.empty) {
-            boolean updateneeded = false;
+            boolean updateNeeded = false;
             if (this.heliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED) {
                 this.startRecipeProcessing();
                 FluidStack fluidStack = this.getInputFromHatch(heliumInputHatch, Materials.Helium.getGas(1));
@@ -528,7 +528,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
                     fluidStack.amount -= toGet;
                     this.heliumSupply += toGet;
-                    updateneeded = true;
+                    updateNeeded = true;
                 }
                 this.endRecipeProcessing();
             }
@@ -537,15 +537,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     if (itemStack == null || itemStack.getItem() != HTGRItem.TRISO) continue;
                     Materials m = HTGRItem.getItemMaterial(itemStack);
-                    int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
-                    this.fuelsupply += toget;
-                    itemStack.stackSize -= toget;
-                    mStoredFuels.merge(m, (double) toget, Double::sum);
-                    updateneeded = true;
+                    int toGet = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
+                    this.fuelsupply += toGet;
+                    itemStack.stackSize -= toGet;
+                    mStoredFuels.merge(m, (double) toGet, Double::sum);
+                    updateNeeded = true;
                 }
                 this.endRecipeProcessing();
             }
-            if (updateneeded) this.updateSlots();
+            if (updateNeeded) this.updateSlots();
         }
     }
 
@@ -702,20 +702,20 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         {
-            int takecoolant = this.coolanttaking;
-            int drainedamount = 0;
+            int takeCoolant = this.coolanttaking;
+            int drainedAmount = 0;
 
             FluidStack tLiquid = getInputFromHatch(coolantInputHatch, GTModHandler.getIC2Coolant(1));
             if (tLiquid != null) {
-                int toDrain = Math.min(takecoolant, tLiquid.amount);
+                int toDrain = Math.min(takeCoolant, tLiquid.amount);
                 FluidStack drained = coolantInputHatch.drain(toDrain, true);
-                drainedamount += drained.amount;
+                drainedAmount += drained.amount;
             }
 
-            if (drainedamount > 0) {
-                addOutputToHatch(coolantOutputHatch, FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+            if (drainedAmount > 0) {
+                addOutputToHatch(coolantOutputHatch, FluidRegistry.getFluidStack("ic2hotcoolant", drainedAmount));
 
-                double eff = drainedamount / ((double) this.coolanttaking);
+                double eff = drainedAmount / ((double) this.coolanttaking);
                 double addedTime = (int) (this.mMaxProgresstime * COOLANT_SPEEDUP
                     * eff
                     * this.heliumSupply
@@ -832,7 +832,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         ForgeDirection forgeDirection, int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == forgeDirection) {
             if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASECASINGINDEX),
+                Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASE_CASING_INDEX),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
                     .extFacing()
@@ -843,7 +843,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     .glow()
                     .build() };
             return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASECASINGINDEX),
+                Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASE_CASING_INDEX),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
                     .extFacing()
@@ -855,7 +855,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     .build() };
         }
         return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASECASINGINDEX) };
+            Textures.BlockIcons.getCasingTextureForId(MTEHighTempGasCooledReactor.BASE_CASING_INDEX) };
     }
 
     @Override

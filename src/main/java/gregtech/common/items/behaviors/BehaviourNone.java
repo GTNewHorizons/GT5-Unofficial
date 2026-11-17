@@ -66,8 +66,8 @@ public class BehaviourNone implements IItemBehaviour<MetaBaseItem> {
     public ItemStack onDispense(MetaBaseItem aItem, IBlockSource aSource, ItemStack aStack) {
         EnumFacing enumfacing = BlockDispenser.func_149937_b(aSource.getBlockMetadata());
         IPosition iposition = BlockDispenser.func_149939_a(aSource);
-        ItemStack itemstack1 = aStack.splitStack(1);
-        BehaviorDefaultDispenseItem.doDispense(aSource.getWorld(), itemstack1, 6, enumfacing, iposition);
+        ItemStack splitStack = aStack.splitStack(1);
+        BehaviorDefaultDispenseItem.doDispense(aSource.getWorld(), splitStack, 6, enumfacing, iposition);
         return aStack;
     }
 

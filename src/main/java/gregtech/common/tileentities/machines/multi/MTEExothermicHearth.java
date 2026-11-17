@@ -316,7 +316,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     public boolean onRunningTick(ItemStack aStack) {
         // every HEATUP_INTERVAL_TICKS, increment the parallel modifier.
         runningTickCounter++;
-        if (runningTickCounter % 20 == 0) { // drain pyrotheum and crash machine if enough isnt supplied
+        if (runningTickCounter % 20 == 0) {
+            // drain pyrotheum and crash the machine if not enough was supplied
             if (isPyroSupplied) {
                 final FluidStack pyrotheum = new FluidStack(
                     TFFluids.fluidPyrotheum,

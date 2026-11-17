@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -366,9 +367,7 @@ public final class RecipeChangeAudit {
     private static JsonArray sorted(JsonArray values) {
         List<JsonElement> sorted = new ArrayList<>();
         values.forEach(sorted::add);
-        sorted.sort(
-            (left, right) -> GSON.toJson(left)
-                .compareTo(GSON.toJson(right)));
+        sorted.sort(Comparator.comparing(GSON::toJson));
         JsonArray result = new JsonArray();
         sorted.forEach(result::add);
         return result;

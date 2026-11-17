@@ -27,12 +27,12 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     public final boolean sMox;
     public final float sHeatBonus;
 
-    public ItemRadioactiveCellIC(String aUnlocalized, String aEnglish, int aCellcount, int maxDamage, float aEnergy,
+    public ItemRadioactiveCellIC(String langKey, String english, int cellCount, int maxDamage, float aEnergy,
         int aRadiation, float aHeat, ItemStack aDepleted, boolean aMox, float aHeatBonus) {
-        super(aUnlocalized, aEnglish, aCellcount);
+        super(langKey, english, cellCount);
         setMaxStackSize(64);
         this.maxDmg = maxDamage;
-        this.numberOfCells = aCellcount;
+        this.numberOfCells = cellCount;
         this.sEnergy = aEnergy;
         this.sRadiation = aRadiation;
         this.sHeat = aHeat;
@@ -42,7 +42,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
         if (aDepleted != null && aEnergy > 0 && aHeat > 0) {
             // avoid adding depleted cells to recipe map
 
-            int pulses = aCellcount / 2 + 1;
+            int pulses = cellCount / 2 + 1;
 
             // for the mysterious constant 5.0f,
             // see ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric.getOfferedEnergy
@@ -54,16 +54,16 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                 .setNEIDesc(
                     StatCollector
                         .translateToLocal(aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
-                    StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
-                    aCellcount == 1 ? StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.heat.0", aHeat / 2f)
+                    StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", cellCount),
+                    cellCount == 1 ? StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.heat.0", aHeat / 2f)
                         : StatCollector.translateToLocalFormatted(
                             "GT5U.nei.nuclear.heat.1",
-                            aHeat * aCellcount / 2f,
+                            aHeat * cellCount / 2f,
                             pulses,
                             pulses + 1),
                     StatCollector.translateToLocalFormatted(
                         "GT5U.nei.nuclear.energy",
-                        aEnergy * aCellcount * pulses * nukePowerMult,
+                        aEnergy * cellCount * pulses * nukePowerMult,
                         aEnergy * nukePowerMult))
                 .duration(0)
                 .eut(0)
@@ -118,14 +118,11 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
-                    dheat = ((IReactorComponent) heatAcceptors.get(0).stack.getItem()).alterHeat(
-                        reactor,
-                        heatAcceptors.get(0).stack,
-                        heatAcceptors.get(0).x,
-                        heatAcceptors.get(0).y,
-                        dheat);
+                    ItemStackCoord heatAcceptor = heatAcceptors.getFirst();
+                    dheat = ((IReactorComponent) heatAcceptor.stack.getItem())
+                        .alterHeat(reactor, heatAcceptor.stack, heatAcceptor.x, heatAcceptor.y, dheat);
                     heat += dheat;
-                    heatAcceptors.remove(0);
+                    heatAcceptors.removeFirst();
                 }
                 if (heat > 0) {
                     reactor.addHeat(heat);
@@ -141,8 +138,8 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
 
     protected int getFinalHeat(IReactor reactor, ItemStack stack, int x, int y, int heat) {
         if (sMox && reactor.isFluidCooled()) {
-            float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
-            if (breedereffectiveness > 0.5D) {
+            float breederEffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
+            if (breederEffectiveness > 0.5D) {
                 heat *= 2;
             }
         }
@@ -162,8 +159,8 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
         int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
             if (sMox) {
-                float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
-                float ReaktorOutput = this.sHeatBonus * breedereffectiveness + 1.0F;
+                float breederEffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
+                float ReaktorOutput = this.sHeatBonus * breederEffectiveness + 1.0F;
                 reactor.addOutput(ReaktorOutput * this.sEnergy);
             } else {
                 reactor.addOutput(1.0F * this.sEnergy);

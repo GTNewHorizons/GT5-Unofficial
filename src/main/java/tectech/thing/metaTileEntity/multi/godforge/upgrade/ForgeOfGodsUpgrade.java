@@ -21,6 +21,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.data.UpgradeColor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 
+@SuppressWarnings("SpellCheckingInspection")
 public enum ForgeOfGodsUpgrade {
 
     START,

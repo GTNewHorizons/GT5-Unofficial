@@ -452,7 +452,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     /*
-     * With batch mode enabled (true by default from config), HP steam multi processing times get rounded and look weird
+     * With batch mode enabled (true by default from config), HP steam-multi processing times get rounded and look weird
      * Setting to false makes it look normal. Steam multis can't process every tick anyway
      */
     @Override

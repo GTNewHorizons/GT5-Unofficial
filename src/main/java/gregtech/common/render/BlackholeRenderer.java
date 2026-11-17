@@ -145,7 +145,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         float startTime = tile.getStartTime();
         float scaleF = timer - startTime;
-        // If this is false we're shrinking, so subtract from 40 to translate to reversed scaling
+        // If this is false, we're shrinking, so subtract from 40 to translate to reversed scaling
         if (!tile.getScaling()) {
             scaleF = 40 - scaleF;
         }

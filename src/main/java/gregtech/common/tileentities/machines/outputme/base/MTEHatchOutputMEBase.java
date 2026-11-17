@@ -98,7 +98,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
         EntityPlayer getLastClickedPlayer();
 
-        IMEInventory<T> getNetworkInvtory() throws GridAccessException;
+        IMEInventory<T> getNetworkInventory() throws GridAccessException;
 
         NBTTagCompound saveStackToNBT(T stack);
 
@@ -521,7 +521,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         }
         try {
             final IEnergySource energy = proxy.getEnergy();
-            IMEInventory<T> sg = (cacheMode && cell != null) ? cell : env.getNetworkInvtory();
+            IMEInventory<T> sg = (cacheMode && cell != null) ? cell : env.getNetworkInventory();
             BaseActionSource source = env.getActionSource();
             cache.updateAll((stack, amount) -> {
                 stack.setStackSize(amount);

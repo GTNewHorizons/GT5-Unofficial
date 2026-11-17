@@ -16,7 +16,6 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
@@ -64,7 +63,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
 
     @Override
     public float getDensity() {
-        return GTUtility.clamp(mAmount / 64.0f, 0f, 1f);
+        return Math.clamp(mAmount / 64.0f, 0f, 1f);
     }
 
     @Override

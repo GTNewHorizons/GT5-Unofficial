@@ -55,7 +55,7 @@ public class BehaviourTrowel extends BehaviourNone {
         final int count = candidates.size();
         int chosenSlot;
         if (count == 1) {
-            chosenSlot = candidates.get(0);
+            chosenSlot = candidates.getFirst();
         } else {
             chosenSlot = candidates.get(ThreadLocalRandom.current().nextInt(count));
         }

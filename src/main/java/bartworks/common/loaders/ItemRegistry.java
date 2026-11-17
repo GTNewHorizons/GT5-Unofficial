@@ -32,7 +32,7 @@ import bartworks.common.items.BWItemBlocks;
 import bartworks.common.items.ItemCircuitProgrammer;
 import bartworks.common.items.ItemRockCutter;
 import bartworks.common.items.ItemSimpleWindMeter;
-import bartworks.common.items.ItemStonageRotors;
+import bartworks.common.items.ItemStoneAgeRotors;
 import bartworks.common.items.ItemTeslaStaff;
 import bartworks.common.items.SimpleIconItem;
 import bartworks.common.items.SimpleSubItemClass;
@@ -73,7 +73,7 @@ public class ItemRegistry {
         Material.wood,
         TileEntityRotorBlock.class,
         "BWRotorBlock");
-    public static final Item LEATHER_ROTOR = new ItemStonageRotors(
+    public static final Item LEATHER_ROTOR = new ItemStoneAgeRotors(
         7,
         0.15f,
         5,
@@ -85,7 +85,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorLeather.png"),
         "BW_LeatherRotor",
         "rotors/itemRotorLeather");
-    public static final Item WOOL_ROTOR = new ItemStonageRotors(
+    public static final Item WOOL_ROTOR = new ItemStoneAgeRotors(
         7,
         0.18f,
         3,
@@ -97,7 +97,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorWool.png"),
         "BW_WoolRotor",
         "rotors/itemRotorWool");
-    public static final Item PAPER_ROTOR = new ItemStonageRotors(
+    public static final Item PAPER_ROTOR = new ItemStoneAgeRotors(
         7,
         0.2f,
         12,
@@ -109,7 +109,7 @@ public class ItemRegistry {
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorPaper.png"),
         "BW_PaperRotor",
         "rotors/itemRotorPaper");
-    public static final Item COMBINED_ROTOR = new ItemStonageRotors(
+    public static final Item COMBINED_ROTOR = new ItemStoneAgeRotors(
         9,
         0.22f,
         7,
@@ -164,6 +164,7 @@ public class ItemRegistry {
 
         MainMod.BIO_TAB);
 
+    @Deprecated
     public static final Block bw_deprecatedglass = new BWBlocksGlass(
         "BW_GlasBlocks",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
@@ -179,6 +180,7 @@ public class ItemRegistry {
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
         MainMod.BIO_TAB);
+    @Deprecated
     public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
         new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },

@@ -175,11 +175,9 @@ public class BlockIchorJar extends BlockJar {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
         final TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityIchorJar) {
-            final TileEntityIchorJar ite = (TileEntityIchorJar) te;
+        if (te instanceof TileEntityIchorJar ite) {
             breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
-        } else if (te instanceof TileEntityIchorVoidJar) {
-            final TileEntityIchorVoidJar ite = (TileEntityIchorVoidJar) te;
+        } else if (te instanceof TileEntityIchorVoidJar ite) {
             breakBlockWarpy(world, x, y, z, ite.amount, 200, 6.0F);
         }
         super.breakBlock(world, x, y, z, par5, par6);

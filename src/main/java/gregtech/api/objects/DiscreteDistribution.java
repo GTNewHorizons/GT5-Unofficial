@@ -8,7 +8,7 @@ import java.util.Deque;
  * <p>
  * An implementation of the alias method implemented using Vose's algorithm.
  * The alias method allows for efficient sampling of random values from a
- * discrete probability distribution (i.e. rolling a loaded die) in O(1) time
+ * discrete probability distribution (i.e., rolling a loaded die) in O(1) time
  * each after O(n) preprocessing time.
  * <p>
  * For a complete writeup on the alias method, including the intuition and
@@ -49,7 +49,7 @@ public final class DiscreteDistribution {
         final double average = 1.0 / weights.length;
 
         /*
-         * Make a copy of the probabilities list, since we will be making
+         * Make a copy of the probability list, since we will be making
          * changes to it.
          */
         weights = weights.clone();

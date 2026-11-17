@@ -16,9 +16,9 @@ public class FluidRegistryHandler {
     /**
      *
      * Luminosity .setLuminosity(luminosity) How much light does the fluid emit. Default: 0, Lava uses 15 Density
-     * .setDensity(density) How dense is the fluid, the only effect is whether or not a fluid replaces another fluid
+     * .setDensity(density) How dense is the fluid, the only effect is whether a fluid replaces another fluid
      * when they flow into each other. Default: 1000, the density of water at 4 degrees Celsius in kg/m³ Temperature
-     * .setTemperature(temp) How hot, or cold is the fluid. Has currently no effect. Default: 295, the "normal" room
+     * .setTemperature(temp) How hot or cold is the fluid. Currently, it has no effect. Default: 295, the "normal" room
      * temperature in degrees Kelvin, this is approximately 72°F or 22°C. Viscosity .setViscosity(viscosity) How thick
      * the fluid is. Determines how fast it flows. Default: 1000 for water, lava uses 6000 Is Gaseous
      * .setGaseous(boolean) Indicates if the fluid is gaseous. Used for rendering. Default: false

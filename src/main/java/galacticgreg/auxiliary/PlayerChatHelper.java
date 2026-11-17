@@ -16,7 +16,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be GREEN
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendInfo(ICommandSender pCommandSender, String pMessage) {
@@ -26,7 +26,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be RED
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendError(ICommandSender pCommandSender, String pMessage) {
@@ -36,7 +36,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be YELLOW
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendWarn(ICommandSender pCommandSender, String pMessage) {
@@ -74,7 +74,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be DARK_GREEN
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be DARK_GREEN
      *
      * @param pPlayer
      * @param pMessage
@@ -84,7 +84,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be AQUA
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be AQUA
      *
      * @param pPlayer
      * @param pMessage
@@ -94,7 +94,7 @@ public class PlayerChatHelper {
     }
 
     /**
-     * Meant for ingame notifications that are being send to a player, not an admin/op Color will be DARK_PURPLE
+     * Meant for in-game notifications that are being sent to a player, not an admin/op Color will be DARK_PURPLE
      *
      * @param pPlayer
      * @param pMessage

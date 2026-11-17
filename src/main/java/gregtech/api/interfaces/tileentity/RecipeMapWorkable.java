@@ -29,7 +29,7 @@ public interface RecipeMapWorkable {
      * If the machine supports multiple recipemaps by switching mode, override this method so that it will be displayed
      * as NEI recipe catalyst on all the supported recipemaps.
      *
-     * @return List of possible {@link RecipeMap}s this machine can execute. Must not contain null element.
+     * @return List of possible {@link RecipeMap}s this machine can execute. Must not contain null elements.
      */
     @Nonnull
     default Collection<RecipeMap<?>> getAvailableRecipeMaps() {

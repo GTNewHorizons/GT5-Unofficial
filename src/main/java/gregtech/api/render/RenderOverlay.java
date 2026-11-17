@@ -30,21 +30,22 @@ import gregtech.mixin.interfaces.accessors.ChunkCacheAccessor;
  * overlayed block would have, be it textures or covers.
  *
  * All overlays must have an owner, and each owner can have at most one ITexture assigned to each render location.
- * Different overlays from different owners will be rendered in the zlevel specified, with biggest zlevel meaning
- * rendered on top. The exact render order remain unspecified if multiple overlay has the same zlevel.
+ * Different overlays from different owners will be rendered in the zlevel specified, with the biggest zlevel meaning
+ * rendered on top. The exact render order remains unspecified if multiple overlays have the same zlevel.
  *
- * read methods are thread safe, but write methods are only supposed to be called on main thread only.
+ * Read methods are thread safe, but write methods are only supposed to be called on the main thread only.
  *
- * Current supported blocks include all subclasses of {@link gregtech.common.blocks.BlockCasingsAbstract} and meta tile
- * entities that is rendered as a full block (e.g. very large pipes, frames or hatches) To add support to a new type of
- * block... * if it's a simple dumb block, i.e. render type of 0, just switch to
+ * Current supported blocks include all subclasses of {@link gregtech.common.blocks.BlockCasingsAbstract} and meta-tile
+ * entities that is rendered as a full block (e.g., very large pipes, frames, or hatches) To add support to a new type
+ * of
+ * block... * if it's a simple dumb block, i.e., render type of 0, switch to
  * {@link gregtech.common.render.GTRendererCasing} * if it already has a ISBRH/TESR, you need to render the overlay of
  * each side after your blocks' main texture of each side rendered
  *
  * {@link OverlayTicket OverlayTickets} returned by set methods will strongly hold a reference to RenderOverlay
- * instances. Do not keep them around indefinitely or else there will be a memory leak
+ * instances. Do not keep them around indefinitely, or else there will be a memory leak
  *
- * This obviously doesn't work on server side...
+ * This obviously doesn't work on the server side...
  */
 public class RenderOverlay {
 

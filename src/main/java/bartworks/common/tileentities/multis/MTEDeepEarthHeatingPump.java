@@ -143,8 +143,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID);
     }
 
     @Override
@@ -253,12 +253,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         return true;
     }
 
-    private boolean consumeFluid(Fluid fluid, long ammount) {
+    private boolean consumeFluid(Fluid fluid, long amount) {
         Fluid distilledWater = GTModHandler.getDistilledWater(1)
             .getFluid();
-        if (ammount > Integer.MAX_VALUE) {
-            int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
-            Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));
+        if (amount > Integer.MAX_VALUE) {
+            int[] tmp = new int[(int) (amount / Integer.MAX_VALUE)];
+            Arrays.fill(tmp, (int) (amount / Integer.MAX_VALUE));
             for (int i = 0; i < tmp.length; i++) {
                 for (MTEHatchInput ih : this.mInputHatches) {
                     FluidStack fluidStack = ih.getFluid();
@@ -268,7 +268,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                             .equals(distilledWater)
                         : fluidStack.getFluid()
                             .equals(fluid)))
-                        tmp[i] -= ih.drain((int) ammount, true).amount;
+                        tmp[i] -= ih.drain((int) amount, true).amount;
                     if (tmp[i] <= 0) break;
                 }
             }
@@ -276,7 +276,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             return tmp[tmp.length - 1] <= 0;
         }
 
-        long tmp = ammount;
+        long tmp = amount;
         for (MTEHatchInput ih : this.mInputHatches) {
             FluidStack fluidStack = ih.getFluid();
             if (fluidStack != null && (fluid.equals(FluidRegistry.WATER) ? fluidStack.getFluid()
@@ -285,7 +285,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     .equals(distilledWater)
                 : fluidStack.getFluid()
                     .equals(fluid)))
-                tmp -= ih.drain((int) ammount, true).amount;
+                tmp -= ih.drain((int) amount, true).amount;
             if (tmp <= 0) return true;
         }
         return false;
@@ -313,7 +313,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEDrillerBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_STEAM,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_STEAM,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_LPF_FLUID);
     }
 }

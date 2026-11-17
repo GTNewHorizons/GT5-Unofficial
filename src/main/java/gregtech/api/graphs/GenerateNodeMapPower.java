@@ -58,24 +58,20 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             aConsumers.add(tConsumerNode);
             return true;
         } else if (aTileEntity instanceof IEnergySink sink) {
-            // ic2 wants the tilentity next to it of that side not going to add a bunch of arguments just for ic2
-            // crossborder checks to not load chuncks just to make sure
+            // ic2 wants the tile entity next to it of that side not going to add a bunch of arguments just for ic2
+            // crossborder checks to not load chunks just to make sure
             int dX = aTileEntity.xCoord + side.offsetX;
             int dY = aTileEntity.yCoord + side.offsetY;
             int dZ = aTileEntity.zCoord + side.offsetZ;
-            boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
+            boolean crossesChunks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
             TileEntity tNextTo = null;
-            if (!crossesChuncks || !aTileEntity.getWorldObj()
+            if (!crossesChunks || !aTileEntity.getWorldObj()
                 .blockExists(dX, dY, dZ))
                 tNextTo = aTileEntity.getWorldObj()
                     .getTileEntity(dX, dY, dZ);
 
             if (sink.acceptsEnergyFrom(tNextTo, side)) {
-                ConsumerNode tConsumerNode = new NodeEnergySink(
-                    aNodeValue,
-                    (IEnergySink) aTileEntity,
-                    side,
-                    aConsumers);
+                ConsumerNode tConsumerNode = new NodeEnergySink(aNodeValue, sink, side, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }

@@ -278,7 +278,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
                     "Cell item for fluid " + fluidName
                         + " has already been created, but the fluid doesn't exist during postload");
             } else {
-                // fluid doesn't exist and this item has not been referenced
+                // fluid doesn't exist, and this item has not been referenced
                 return;
             }
         }

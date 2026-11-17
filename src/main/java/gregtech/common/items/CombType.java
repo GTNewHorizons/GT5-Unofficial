@@ -9,6 +9,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 
+// TODO: Rename them to UPPER_SNAKE_CASE or java-lized Snake_Case
 public enum CombType {
 
     // Organic Line
@@ -181,7 +182,8 @@ public enum CombType {
     NITROGEN(137, "nitrogen", true, Materials.Nitrogen, 100, 0xA52A2A, 0xFFC832, ItemComb.Voltage.MV),
     OXYGEN(138, "oxygen", true, Materials.Oxygen, 100, 0x8F8FFF, 0xFFFFFF, ItemComb.Voltage.MV),
     HYDROGEN(139, "hydrogen", true, Materials.Hydrogen, 100, 0xFF1493, 0xFFFFFF, ItemComb.Voltage.MV),
-    // Those are supposed to be in the organic branch, but that would require shifting all comb IDs and we don't want to
+    // Those are supposed to be in the organic branch, but that would require shifting all comb IDs, and we don't want
+    // to
     // risk it.
     PHOSPHORUS(140, "phosphorus", true, Materials.Phosphorus, 100, 0xC1C1F6, 0xFFC826, ItemComb.Voltage.HV),
     MICA(141, "mica", true, Materials.Mica, 100, 0x8A97B0, 0x2F3641, ItemComb.Voltage.HV),

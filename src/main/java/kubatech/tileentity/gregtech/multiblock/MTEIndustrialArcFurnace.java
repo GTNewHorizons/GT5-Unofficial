@@ -542,8 +542,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return super.getGui().withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ARC,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_PLASMA_ARC,
             GTGuiTextures.TT_OVERLAY_BUTTON_FURNACE_MODE);
     }
 
@@ -877,8 +877,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     if (found == null) return Stream.of();
                     GTRecipe copy = found.copy()
                         .setEUt(
-                            (int) Math
-                                .min((long) found.mEUt * (long) BLAST_MODE_POWER_MULTIPLIER, (long) Integer.MAX_VALUE));
+                            (int) Math.min((long) found.mEUt * (long) BLAST_MODE_POWER_MULTIPLIER, Integer.MAX_VALUE));
                     copy.mCanBeBuffered = false;
                     return Stream.of(copy);
                 }

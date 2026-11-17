@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.ItemList.Cover_WirelessNeedsMaintainance;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -63,7 +64,7 @@ import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitt
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessActivityDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessFluidDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessItemDetector;
-import static gregtech.common.items.IDMetaItem02.Cover_WirelessNeedsMaintainance;
+import static gregtech.common.items.IDMetaItem02.Cover_WirelessNeedsMaintenance;
 import static gregtech.common.items.IDMetaItem02.Display_ITS_FREE;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_00;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_01;
@@ -3455,9 +3456,9 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
-        ItemList.Cover_WirelessNeedsMaintainance.set(
+        Cover_WirelessNeedsMaintainance.set(
             addItemWithLocalizationKeys(
-                Cover_WirelessNeedsMaintainance.ID,
+                Cover_WirelessNeedsMaintenance.ID,
                 "gt.item.cover.wireless_needs_maintenance.name",
                 "gt.item.cover.wireless_needs_maintenance.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 4L),
@@ -3681,7 +3682,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         RA.stdBuilder()
             .itemInputs(ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L))
             .circuit(1)
-            .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
+            .itemOutputs(Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -4066,7 +4067,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
 
         CoverRegistry.registerCover(
-            ItemList.Cover_WirelessNeedsMaintainance.get(1L),
+            Cover_WirelessNeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
             context -> new CoverWirelessMaintenanceDetector(
                 context,

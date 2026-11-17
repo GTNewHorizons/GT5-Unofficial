@@ -217,9 +217,9 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                 secondWater = fluid.get(1);
             } else if (fluid.size() == 1) {
                 if (firstWater == null) {
-                    firstWater = fluid.get(0);
+                    firstWater = fluid.getFirst();
                 } else {
-                    secondWater = fluid.get(0);
+                    secondWater = fluid.getFirst();
                 }
             }
         }

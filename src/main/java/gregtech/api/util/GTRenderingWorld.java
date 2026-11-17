@@ -36,7 +36,7 @@ public class GTRenderingWorld implements IBlockAccess {
     /**
      * Per-face meta override used by CTM textures during rendering to ensure each facade side
      * reports its own meta to the CTM icon lookup, regardless of what is stored in {@link #infos}.
-     * ThreadLocal to support Angelica's multi-threaded rendering. Set/cleared around each icon query.
+     * ThreadLocal to support Angelica's multithreaded rendering. Set/cleared around each icon query.
      * Layout: [x, y, z, meta]; x == Integer.MIN_VALUE means no override is active.
      */
     private static final ThreadLocal<int[]> META_OVERRIDE = ThreadLocal

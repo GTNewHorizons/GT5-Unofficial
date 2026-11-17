@@ -16,7 +16,12 @@ package bartworks.util;
 /*
  * Faster implementations for Math stuff
  */
+
+/**
+ * @deprecated use {@link Math} if possible or migrate the necessary functions to {@link gregtech.api.util.GTUtility}
+ */
 @SuppressWarnings("unused")
+@Deprecated
 public class MathUtils {
 
     public static long floorLong(double x) {
@@ -71,20 +76,36 @@ public class MathUtils {
         return min >= inner ? min : inner;
     }
 
+    /**
+     * @deprecated {@link Math#clamp(long, int, int)}
+     */
+    @Deprecated
     public static int clamp(int amount, int min, int max) {
-        return Math.max(min, Math.min(amount, max));
+        return Math.clamp(amount, min, max);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(long, long, long)}
+     */
+    @Deprecated
     public static long clamp(long amount, long min, long max) {
-        return Math.max(min, Math.min(amount, max));
+        return Math.clamp(amount, min, max);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(float, float, float)}
+     */
+    @Deprecated
     public static float clamp(float amount, float min, float max) {
-        return Math.max(min, Math.min(amount, max));
+        return Math.clamp(amount, min, max);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(double, double, double)} )}
+     */
+    @Deprecated
     public static double clamp(double amount, double min, double max) {
-        return Math.max(min, Math.min(amount, max));
+        return Math.clamp(amount, min, max);
     }
 
     public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
@@ -111,6 +132,6 @@ public class MathUtils {
         float x2 = x * x;
         float a = x * (135135.0f + x2 * (17325.0f + x2 * (378.0f + x2)));
         float b = 135135.0f + x2 * (62370.0f + x2 * (3150.0f + x2 * 28.0f));
-        return clamp(a / b, -1, 1);
+        return Math.clamp(a / b, -1, 1);
     }
 }

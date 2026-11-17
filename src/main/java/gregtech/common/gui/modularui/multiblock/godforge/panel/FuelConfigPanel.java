@@ -71,7 +71,7 @@ public class FuelConfigPanel {
         panel.child(
             GTGuiTextures.PICTURE_INFO.asWidget()
                 .size(10)
-                .pos(SIZE_W - 10 - 4, 24) // i KNOW... its not really relative to anything tho...
+                .pos(SIZE_W - 10 - 4, 24) // I KNOW... it's not really relative to anything tho...
                 .tooltip(t -> {
                     t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.0"));
                     t.addLine(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.1"));

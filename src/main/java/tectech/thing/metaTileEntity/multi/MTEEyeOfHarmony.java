@@ -890,7 +890,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         {
             if (mInputBusses.size() != 1) {
                 errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, InputBus, mInputBusses.size(), 1));
-            } else if (mInputBusses.get(0) instanceof MTEHatchInputBusME) {
+            } else if (mInputBusses.getFirst() instanceof MTEHatchInputBusME) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_bus_not_allowed"));
             }
         }
@@ -1102,7 +1102,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Get circuit damage, clamp it and then use it later for overclocking.
         currentCircuitMultiplier = 0;
-        for (ItemStack itemStack : mInputBusses.get(0)
+        for (ItemStack itemStack : mInputBusses.getFirst()
             .getRealInventory()) {
             if (GTUtility.isAnyIntegratedCircuit(itemStack)) {
                 currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
@@ -1110,7 +1110,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             }
         }
 
-        for (ItemStack itemStack : mInputBusses.get(0)
+        for (ItemStack itemStack : mInputBusses.getFirst()
             .getRealInventory()) {
             if (astralArrayAmount >= ASTRAL_ARRAY_LIMIT) break;
             if (itemStack != null && itemStack.isItemEqual(CustomItemList.astralArrayFabricator.get(1))) {
@@ -1233,7 +1233,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         outputItems = recipeObject.getOutputItems();
 
         // Star matter is always the last element in the array.
-        starMatter = new FluidStackLong(outputFluids.get(outputFluids.size() - 1));
+        starMatter = new FluidStackLong(outputFluids.getLast());
 
         // And stellar plasma is the second last.
         stellarPlasma = new FluidStackLong(outputFluids.get(outputFluids.size() - 2));

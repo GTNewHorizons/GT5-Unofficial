@@ -68,8 +68,8 @@ public final class BWAtmosphereManager {
     }
 
     public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount) {
-        Pair<ISubTagContainer, Integer> toadd = Pair.of(gas, amount);
-        BWAtmosphereManager.gasConcentration.put(worldID, toadd);
+        Pair<ISubTagContainer, Integer> toAdd = Pair.of(gas, amount);
+        BWAtmosphereManager.gasConcentration.put(worldID, toAdd);
     }
 
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer> toPut) {
@@ -79,7 +79,7 @@ public final class BWAtmosphereManager {
     @SafeVarargs
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer>... toPut) {
         Arrays.stream(toPut)
-            .forEach(toadd -> BWAtmosphereManager.gasConcentration.put(worldID, toadd));
+            .forEach(toAdd -> BWAtmosphereManager.gasConcentration.put(worldID, toAdd));
     }
 
     private static boolean addGCGasToWorld(int worldID, IAtmosphericGas gas, int aNumber, int aMaxNumber) {

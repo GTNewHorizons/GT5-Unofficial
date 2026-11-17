@@ -88,7 +88,7 @@ public class ItemDrop extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(DropType.VALUES.length - 1, stack.getItemDamage()));
+        int meta = Math.clamp(stack.getItemDamage(), 0, DropType.VALUES.length - 1);
         int colour = DropType.VALUES[meta].getColours()[0];
 
         if (pass >= 1) {

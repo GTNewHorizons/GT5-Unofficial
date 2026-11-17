@@ -738,10 +738,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 newSlot.extracted = newStack = curr.getItemStack();
                 newSlot.extractedAmount = newSlot.extracted.stackSize;
             }
-            boolean sametype = GTUtility.areStacksEqual(oldStack, newStack);
+            boolean sameType = GTUtility.areStacksEqual(oldStack, newStack);
             if (newStack != null) {
                 // lower amount/disappearance is not considered 'new items'
-                if (sametype) {
+                if (sameType) {
                     if (newStack.stackSize > oldStack.stackSize) {
                         justHadNewItems = true; // same type, higher amount
                     }
@@ -749,7 +749,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     justHadNewItems = true; // different type
                 }
             }
-            if (!((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sameType)) {
                 configChanged = true;
             }
             index++;

@@ -237,7 +237,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
         InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(_ -> {
-            // This is copied 1:1 from MetaTileEntity code because i didn't want to hook into onWrenchRightClick
+            // This is copied 1:1 from MetaTileEntity code because I didn't want to hook into onWrenchRightClick
             if (!baseMetaTileEntity.isValidFacing(direction)) {
                 return;
             }

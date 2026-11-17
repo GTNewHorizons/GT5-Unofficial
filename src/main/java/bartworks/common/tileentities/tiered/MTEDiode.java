@@ -60,7 +60,7 @@ public class MTEDiode extends MTEBasicHull {
 
     public MTEDiode(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        this.maxAmps = this.getAmpsfromMeta(aID);
+        this.maxAmps = this.getAmpsFromMeta(aID);
         this.aAmps = this.maxAmps;
     }
 
@@ -73,7 +73,7 @@ public class MTEDiode extends MTEBasicHull {
         super.onFirstTick(aBaseMetaTileEntity);
         if (this.maxAmps == 0 && !this.getBaseMetaTileEntity()
             .getWorld().isRemote) {
-            this.maxAmps = this.getAmpsfromMeta(
+            this.maxAmps = this.getAmpsFromMeta(
                 this.getBaseMetaTileEntity()
                     .getMetaTileID());
             this.aAmps = this.maxAmps;
@@ -141,7 +141,7 @@ public class MTEDiode extends MTEBasicHull {
         return diode;
     }
 
-    private long getAmpsfromMeta(int meta) {
+    private long getAmpsFromMeta(int meta) {
         if (meta >= Diode2A_ULV.ID && meta <= Diode2A_MAX.ID) return 2L;
         if (meta >= Diode4A_ULV.ID && meta <= Diode4A_MAX.ID) return 4L;
         if (meta >= Diode8A_ULV.ID && meta <= Diode8A_MAX.ID) return 8L;

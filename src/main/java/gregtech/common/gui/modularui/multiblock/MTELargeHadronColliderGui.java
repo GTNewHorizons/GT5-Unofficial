@@ -50,8 +50,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_COLLIDER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_ACCELERATOR,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_COLLIDER);
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "playerTargetBeamEnergyeV",

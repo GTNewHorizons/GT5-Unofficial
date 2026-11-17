@@ -64,10 +64,10 @@ public class BWUtil {
         if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;
         String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
-        String matname = "";
+        String matName = "";
         if (BWUtil.checkStackAndPrefix(itemStack))
-            matname = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
-        return ret.replace("%material", matname);
+            matName = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+        return ret.replace("%material", matName);
     }
 
     public static void set2DCoordTo1DArray(int indexX, int indexY, int sizeY, Object value, Object[] array) {
@@ -557,7 +557,7 @@ public class BWUtil {
                 continue;
             }
 
-            Object first = list.get(0);
+            Object first = list.getFirst();
             if (!(first instanceof ItemStack stack)) {
                 return false;
             }

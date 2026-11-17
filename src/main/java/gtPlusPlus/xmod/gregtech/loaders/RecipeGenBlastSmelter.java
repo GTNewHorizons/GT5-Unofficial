@@ -80,8 +80,8 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         int mTotalPartsCounter = M.smallestStackSizeWhenProcessing;
 
         if (M.getComposites() != null) {
-            for (final gtPlusPlus.core.material.MaterialStack ternkfsdf : M.getComposites()) {
-                if (ternkfsdf != null) {
+            for (final gtPlusPlus.core.material.MaterialStack mat : M.getComposites()) {
+                if (mat != null) {
                     mMaterialListSize++;
                 }
             }
@@ -138,11 +138,11 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     .get(irc)
                     .getDustStack(r)) == null) {
                 if (r > 0 && r <= 100) {
-                    final int mathmatics = (r * 1000);
+                    final int mathematics = (r * 1000);
                     componentsFluid = M.getComposites()
                         .get(irc)
                         .getStackMaterial()
-                        .getFluidStack(mathmatics);
+                        .getFluidStack(mathematics);
                 }
             } else {
                 components[irc] = M.getComposites()

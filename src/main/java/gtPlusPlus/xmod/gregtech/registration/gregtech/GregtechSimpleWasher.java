@@ -87,10 +87,11 @@ public class GregtechSimpleWasher {
             8);
     }
 
-    private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
+    private static void registerSimpleWasher(GregtechItemList washer, int id, String langKey, String localized,
+        int tier) {
         washer.set(
             MTEBasicMachineWithRecipeBuilder.builder(id)
-                .setName(unloc, loc)
+                .setName(langKey, localized)
                 .setTier(tier)
                 .setDescription(
                     new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() })

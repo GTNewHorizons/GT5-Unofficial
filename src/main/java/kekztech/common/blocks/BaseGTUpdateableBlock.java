@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import gregtech.api.GregTechAPI;
 
 /**
- * Any blocks that are used as structure parts for GregTech multi machines have to inherit from this class. Otherwise
+ * Any blocks that are used as structure parts for GregTech multi machines have to inherit from this class. Otherwise,
  * the checkMachine() method that verifies a machine's structure won't be called correctly.
  */
 public abstract class BaseGTUpdateableBlock extends Block {

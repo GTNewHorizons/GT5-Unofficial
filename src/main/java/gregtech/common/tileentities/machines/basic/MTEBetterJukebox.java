@@ -101,7 +101,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             128, // LV
             160, // MV
             320, // HV
-            9001, // EV, alreadu unlimited here - this value is ignored
+            9001, // EV, already unlimited here - this value is ignored
             9002, // IV, already unlimited here - this value is ignored
         };
 

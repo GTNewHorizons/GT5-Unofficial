@@ -35,7 +35,7 @@ import tectech.util.CommonValues;
 public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchEnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, null, aAmp); // Energy injecting terminal for Multiblocks
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp); // Energy-injecting terminal for Multiblocks
     }
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
