@@ -4812,7 +4812,7 @@ gt.interact.desc.Energy_Detector.eu_stored.tooltip=§fЭлектро-храни�
 ## GT Credit
 gt.item.credit.copper.name=Медная GT монета
 gt.item.credit.copper.tooltip=0.125 монет
-gt.item.credit.cupronickel.name=Мельхиоровая GT монета
+gt.item.credit.cupronickel.name=Купроникелевая GT монета
 gt.item.credit.cupronickel.tooltip=1 монета
 gt.item.credit.silver.name=Серебряная GT монета
 gt.item.credit.silver.tooltip=8 монет
@@ -10000,6 +10000,29 @@ Material.universium.flavorText=Разрыв в измерение за пред�
 Material.uuamplifier.flavorText=Ускоряет генератор материи
 Material.uumatter.flavorText=Универсальная материя
 Material.whitedwarfmatter.flavorText=Сердце мёртвой звезды
+
+# Material inflection overrides
+Material.adamantium.adj_m_nom=Адамантиевый
+Material.ammonium.adj_m_nom=Аммониевый
+Material.bismutite.adj_m_nom=Висмутитовый
+Material.blackplutonium.adj_m_nom=Чёрный плутониевый
+Material.cosmicneutronium.adj_m_nom=Космический нейтрониевый
+Material.cruderhodiummetal.adj_m_nom=Неочищенный металлический родиевый
+Material.cupronickel.adj_m_nom=Купроникелевый
+Material.deuterium.adj_m_nom=Дейтериевый
+Material.draconic.adj_m_nom=Дракониевый
+Material.draconiumawakened.adj_m_nom=Пробуждённый дракониевый
+Material.enrichedholmium.adj_m_nom=Обогащённый гольмиевый
+Material.helium.adj_m_nom=Гелиевый
+Material.inertnaquadria.adj_m_nom=Инертный наквадриевый
+Material.liquidhelium.adj_m_nom=Жидкий гелиевый
+Material.reprecipitatedpalladium.adj_m_nom=Переосаждённый палладиевый
+Material.reprecipitatedrhodium.adj_m_nom=Переосаждённый родиевый
+Material.rhodium-platedpalladium.adj_m_nom=Родированный палладиевый
+Material.samariummagnetic.adj_m_nom=Намагниченный самариевый
+Material.siliconsolargrade.adj_m_nom=Очищенный поликристаллический кремниевый
+Material.tritium.adj_m_nom=Тритиевый
+Material.vanadiumgallium.adj_m_nom=Ванадий-галлиевый
 
 # Material pipe names
 Material.plastic.fluidpipe.newname=Полиэтилен
