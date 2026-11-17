@@ -33,7 +33,6 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
-        registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
@@ -146,14 +145,6 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
-    }
-
-    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
-    private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -318,6 +309,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -330,6 +322,5 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
-
     }
 }

@@ -28,7 +28,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
 
     private final ICoverable coverable;
     private final ForgeDirection side;
-    private IPanelHandler panel;
+    public IPanelHandler panel;
 
     public CoverTabButton(ICoverable coverable, ForgeDirection side) {
         this.coverable = coverable;
@@ -55,7 +55,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
         this.panel = panel;
     }
 
-    private void togglePanel() {
+    public void togglePanel() {
         if (panel == null) return;
         if (panel.isPanelOpen()) {
             panel.closePanel();

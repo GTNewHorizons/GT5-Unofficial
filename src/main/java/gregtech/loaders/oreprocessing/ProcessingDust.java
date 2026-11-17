@@ -125,7 +125,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
                         && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null
                         && (aMaterial != Materials.Clay)
-                        && (aMaterial != Materials.Netherrack)) {
+                        && (aMaterial != Materials.Netherrack)
+                        && (aMaterial != Materials.Prismarine)) {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, aStack))

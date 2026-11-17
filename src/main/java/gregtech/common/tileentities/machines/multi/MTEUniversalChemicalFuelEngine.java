@@ -359,10 +359,10 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_DIESEL_ENGINE,
-            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override
