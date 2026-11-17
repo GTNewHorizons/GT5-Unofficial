@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.StatCollector;
 
@@ -14,6 +15,7 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -44,16 +46,13 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
                 .asWidget());
 
         // diameter
-        textColumn.child(IKey.dynamic(() -> {
-            // LV power = 1 angstrom in diameter
-            double radius = Math.sqrt(wormholeEnergySyncer.getDoubleValue() / 20.0 / 32.0);
-
-            return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.wormhole_generator.diameter",
-                formatNumber((long) (radius * 2)));
-        })
-            .asWidget()
-            .setEnabledIf(_ -> wormholeEnergySyncer.getDoubleValue() > 0));
+        textColumn.child(
+            IKey.dynamic(
+                () -> StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.wormhole_generator.diameter",
+                    formatNumber((long) multiblock.getWormholeDiameter(wormholeEnergySyncer.getDoubleValue()))))
+                .asWidget()
+                .setEnabledIf(_ -> wormholeEnergySyncer.getDoubleValue() > 0));
 
         // max i/o
         textColumn.child(
@@ -61,7 +60,7 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
                 () -> StatCollector
                     .translateToLocalFormatted(
                         "GT5U.gui.text.wormhole_generator.max_io",
-                        formatNumber((long) (wormholeEnergySyncer.getDoubleValue() / 20)))
+                        formatNumber(wormholeEnergySyncer.getDoubleValue() / 20))
                     .replace("\\n", "\n"))
                 .asWidget()
                 .setEnabledIf(_ -> wormholeEnergySyncer.getDoubleValue() > 0));
@@ -76,13 +75,11 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
             multiblock::setAllowOverclocks).allowC2S();
 
         return super.createRightPanelGapRow(parent, syncManager).child(
-            createDisableableToggleButton(
-                syncManager,
-                overclockSyncer,
-                () -> true,
-                GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_OFF,
-                GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_ON,
-                t -> createOverclockTooltip(t, overclockSyncer)));
+            new ToggleButton().value(overclockSyncer)
+                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_OFF)
+                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_ON)
+                .tooltipBuilder(t -> createOverclockTooltip(t, overclockSyncer))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
     private void createOverclockTooltip(RichTooltip t, BooleanSyncValue overclockSyncer) {

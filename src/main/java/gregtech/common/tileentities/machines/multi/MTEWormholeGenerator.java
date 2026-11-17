@@ -1073,10 +1073,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
                 }
 
-                double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
                 data.add(
-                    IGregTechDeviceInformation
-                        .encode("GT5U.infodata.wormhole_generator.diameter", formatNumber((long) (radius * 2))));
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.wormhole_generator.diameter",
+                        formatNumber((long) (getWormholeDiameter(mLink.mWormholeEnergy)))));
 
                 data.add(
                     IGregTechDeviceInformation.encode(
@@ -1177,6 +1177,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     public double getWormholeEnergy() {
         return mLink == null ? -1 : mLink.mWormholeEnergy;
+    }
+
+    public double getWormholeDiameter(double energy) {
+        // LV power = 1 angstrom in diameter
+        return Math.sqrt(energy / 20 / 32 * 2);
     }
 
     // #endregion
