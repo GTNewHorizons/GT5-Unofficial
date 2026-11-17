@@ -303,19 +303,20 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
+            .fluidInputs(Materials.Biomass.getFluid(40))
+            .fluidOutputs(Materials.Ethanol.getFluid(20))
+            .duration(16 * TICKS)
+            .eut(24)
+            .addTo(distilleryRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(2)
             .fluidInputs(Materials.Biomass.getFluid(20))
             .fluidOutputs(Materials.Biogas.getGas(32))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(Materials.Biomass.getFluid(40))
-            .fluidOutputs(Materials.Ethanol.getFluid(20))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)
@@ -598,8 +599,8 @@ public class DistilleryRecipes implements Runnable {
             .itemOutputs(fertOutput)
             .fluidInputs(Materials.Biomass.getFluid(3_000))
             .fluidOutputs(
-                Materials.Biogas.getGas(8_000),
                 Materials.Ethanol.getFluid(1_800),
+                Materials.Biogas.getGas(8_000),
                 Materials.Water.getFluid(125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
