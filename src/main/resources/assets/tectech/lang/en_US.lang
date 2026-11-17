@@ -295,8 +295,8 @@ gt.blockmachines.hatch.datainasswireless.desc=Machine Type: §eData Stick Input 
 gt.blockmachines.hatch.dataoutass.name=Data Bank Transmission Connector
 gt.blockmachines.hatch.dataoutass.desc=Machine Type: §eData Stick Output Hatch, DSOH§r\nReceives Assembly Line recipes from a Data Bank.\nSends Assembly Line recipes to an Assembly Line Reception Connector via Optical Fiber Cables\n§bMust be painted to work§r
 
-gt.blockmachines.hatch.wirelessdataoutass.name=Wireless Assembly Line Transmission Connector
-gt.blockmachines.hatch.wirelessdataoutass.desc=Machine Type: §eData Stick Output Hatch, DSOH§r\nReceives Assembly Line recipes from a Data Bank.\nUploads Assembly Line recipes to your GT team's wireless recipe network\nUpdates every 10 seconds
+gt.blockmachines.hatch.dataoutasswireless.name=Wireless Data Bank Transmission Connector
+gt.blockmachines.hatch.dataoutasswireless.desc=Machine Type: §eData Stick Output Hatch, DSOH§r\nReceives Assembly Line recipes from a Data Bank.\nUploads Assembly Line recipes to your GT team's wireless recipe network\nUpdates every 10 seconds
 
 gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
 gt.blockmachines.hatch.rack.desc.0=4 Slot Rack

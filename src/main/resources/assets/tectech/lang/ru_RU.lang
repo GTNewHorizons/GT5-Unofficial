@@ -298,8 +298,8 @@ gt.blockmachines.hatch.datainasswireless.desc=Тип машины: §eВходн
 gt.blockmachines.hatch.dataoutass.name=Выходной разъём для банка данных
 gt.blockmachines.hatch.dataoutass.desc=Тип машины: §eВыходной люк для флешек, DSOH§r\nПолучает рецепты сборочной линии от банка данных.\nОтправляет рецепты сборочной линии во входной разъём сборочной линии через оптоволоконные кабели\n§bДолжно быть окрашено для работы§r
 
-gt.blockmachines.hatch.wirelessdataoutass.name=Беспроводной выходной разъём для банка данных
-gt.blockmachines.hatch.wirelessdataoutass.desc=Тип машины: §eВыходной люк для флешек, DSOH§r\nПолучает рецепты сборочной линии от банка данных.\nЗагружает рецепты сборочной линии в беспроводную сеть рецептов вашей команды GT\nОбновляется каждые 10 секунд
+gt.blockmachines.hatch.dataoutasswireless.name=Беспроводной выходной разъём для банка данных
+gt.blockmachines.hatch.dataoutasswireless.desc=Тип машины: §eВыходной люк для флешек, DSOH§r\nПолучает рецепты сборочной линии от банка данных.\nЗагружает рецепты сборочной линии в беспроводную сеть рецептов вашей команды GT\nОбновляется каждые 10 секунд
 
 gt.blockmachines.hatch.rack.tier.08.name=Стойка квантового компьютера
 gt.blockmachines.hatch.rack.desc.0=4-слотовая серверная стойка

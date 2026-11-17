@@ -37,7 +37,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatchDataBase implements
             aNameRegional,
             aTier,
             0,
-            GTSplit.splitLocalized("gt.blockmachines.hatch.wirelessdataoutass.desc"));
+            GTSplit.splitLocalized("gt.blockmachines.hatch.dataoutasswireless.desc"));
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

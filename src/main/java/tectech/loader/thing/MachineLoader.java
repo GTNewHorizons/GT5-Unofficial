@@ -1413,13 +1413,13 @@ public class MachineLoader implements Runnable {
             new MTEHatchWirelessDataItemsInput(
                 WirelessAssemblylineSlaveConnector.ID,
                 "hatch.datainass.wireless.tier.12",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.name"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datainasswireless.name"),
                 10).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsOutput(
                 WirelessDataBankMasterConnector.ID,
                 "hatch.dataoutass.wireless.tier.12",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.datainasswireless.name"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutasswireless.name"),
                 10).getStackForm(1L));
         rack_Hatch.set(new MTEHatchRack(ComputerRack.ID, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
         holder_Hatch.set(
