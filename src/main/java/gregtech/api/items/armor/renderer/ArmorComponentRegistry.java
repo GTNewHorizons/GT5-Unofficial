@@ -1,5 +1,7 @@
 package gregtech.api.items.armor.renderer;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,10 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.Gson;
-
-import gregtech.GTMod;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class ArmorComponentRegistry {
 

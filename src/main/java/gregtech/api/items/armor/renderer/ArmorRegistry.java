@@ -1,5 +1,7 @@
 package gregtech.api.items.armor.renderer;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 
-import gregtech.GTMod;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
-
 public class ArmorRegistry {
 
     private static final Map<String, VoxelArmorRenderer> modelCache = new HashMap<>();
 
     public static VoxelArmorRenderer getOrCompileModel(ArmorComponent baseArmor, List<ArmorComponent> augments,
         float scale) {
+        if (baseArmor == null) return null;
+
         StringBuilder keyBuilder = new StringBuilder(baseArmor.componentId);
         if (augments != null && !augments.isEmpty()) {
             List<String> sortedAugments = augments.stream()
@@ -63,6 +63,9 @@ public class ArmorRegistry {
     public static void clearCache() {
         for (VoxelArmorRenderer renderer : modelCache.values()) {
             renderer.deleteOpenGLData();
+            Minecraft.getMinecraft()
+                .getTextureManager()
+                .deleteTexture(renderer.getCompiledTexture());
         }
 
         modelCache.clear();

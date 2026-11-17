@@ -1,10 +1,7 @@
 package gregtech.api.items.armor.renderer;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -16,9 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class VoxelArmorRenderer extends ModelBiped {
-
-    private static final Set<VoxelArmorRenderer> ALL_INSTANCES = Collections
-        .newSetFromMap(new WeakHashMap<VoxelArmorRenderer, Boolean>());
 
     private final ResourceLocation compiledTexture;
 
@@ -33,8 +27,10 @@ public class VoxelArmorRenderer extends ModelBiped {
         super(scale, 0, 64, 64);
         this.rawModel = compiledModel;
         this.compiledTexture = compiledTexture;
+    }
 
-        ALL_INSTANCES.add(this);
+    public ResourceLocation getCompiledTexture() {
+        return compiledTexture;
     }
 
     private void drawFace(Tessellator tess, float[] uv, float[] uvSize, int texWidth, int texHeight, float trX,
@@ -232,13 +228,5 @@ public class VoxelArmorRenderer extends ModelBiped {
         }
         this.displayLists.clear();
         this.isCompiled = false;
-    }
-
-    public static void invalidateAllRenderers() {
-        for (VoxelArmorRenderer renderer : ALL_INSTANCES) {
-            if (renderer != null) {
-                renderer.deleteOpenGLData();
-            }
-        }
     }
 }

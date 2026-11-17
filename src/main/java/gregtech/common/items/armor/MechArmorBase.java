@@ -1,6 +1,10 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_BOOTS;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_CHEST;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_HELMET;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
@@ -77,17 +81,13 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
     net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
-    public boolean USE_3D_MODELS = true;
+    // TODO: später als Config-Option
+    private static final boolean USE_3D_MODELS = true;
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
 
     protected String type;
-
-    @SideOnly(Side.CLIENT)
-    private ModelMechArmor modelLegs;
-    @SideOnly(Side.CLIENT)
-    private ModelMechArmor modelOther;
 
     public static final String MECH_FRAME_KEY = "frame";
     public static final String MECH_CORE_KEY = "core";
@@ -274,9 +274,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         tooltip.replaceAll(GTUtility::processFormatStacks);
     }
 
-    private ArmorComponent getBaseComponent(ItemStack stack) {
-        ArmorState state = ArmorState.load(stack);
-
+    @SideOnly(Side.CLIENT)
+    private ArmorComponent getBaseComponent(ArmorState state) {
         String frameName = (state != null && state.frame != null) ? state.frame.name()
             .toLowerCase() : "frameless";
         String armorTypeName = getArmorType().name()
@@ -287,9 +286,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         return ArmorComponentRegistry.getComponent(componentId);
     }
 
-    private List<ArmorComponent> getActiveAugments(ItemStack stack) {
+    @SideOnly(Side.CLIENT)
+    private List<ArmorComponent> getActiveAugments(ArmorState state) {
         List<ArmorComponent> activeAugments = new ArrayList<>();
-        ArmorState state = ArmorState.load(stack);
 
         if (state == null || state.augments == null) {
             return activeAugments;
@@ -323,92 +322,52 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_combined1.png");
     }
 
-    private void setupVanillaVisibilities(ModelBiped model, int armorSlot) {
-        model.bipedHead.showModel = (armorSlot == 0);
-        model.bipedBody.showModel = (armorSlot == 1 || armorSlot == 2);
-        model.bipedLeftArm.showModel = (armorSlot == 1);
-        model.bipedRightArm.showModel = (armorSlot == 1);
-        model.bipedLeftLeg.showModel = (armorSlot == 2 || armorSlot == 3);
-        model.bipedRightLeg.showModel = (armorSlot == 2 || armorSlot == 3);
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        if (USE_3D_MODELS) {
-            ArmorComponent baseArmor = getBaseComponent(itemStack);
-            List<ArmorComponent> augments = getActiveAugments(itemStack);
+        if (!USE_3D_MODELS) return null;
 
-            float scale = (armorSlot == 2) ? 0.25F : 0.5F;
+        VoxelArmorRenderer model = getOrCompile3DModel(itemStack, armorSlot);
+        if (model == null) return null;
 
-            VoxelArmorRenderer model = ArmorRegistry.getOrCompileModel(baseArmor, augments, scale);
+        setupVisibleBodyParts(model, armorSlot);
+        copyPoseFromEntity(model, entityLiving);
+        return model;
+    }
 
-            if (model != null) {
-                setupVanillaVisibilities(model, armorSlot);
-
-                if (entityLiving instanceof EntityPlayer player) {
-                    model.isSneak = player.isSneaking();
-                    model.isRiding = player.isRiding();
-                    model.heldItemRight = player.getCurrentEquippedItem() != null ? 1 : 0;
-
-                    model.aimedBow = player.getItemInUse() != null && player.getItemInUse()
-                        .getItem() instanceof ItemBow;
-                }
-
-                return model;
-            }
-        }
-
-        if (modelLegs == null) modelLegs = new ModelMechArmor(0.25F);
-        if (modelOther == null) modelOther = new ModelMechArmor(0.5F);
-
-        ModelMechArmor model = (armorSlot == 2) ? modelLegs : modelOther;
-
-        if (getFrame(itemStack) != null) {
-            model.setColor(getFrame(itemStack).getColor());
-        } else {
-            model.setColor(new short[] { -1 });
-        }
-
-        model.bipedHead.showModel = (armorType == 0);
-        model.bipedHeadwear.showModel = (armorType == 0);
-        model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
-        model.bipedLeftArm.showModel = (armorType == 1);
-        model.bipedRightArm.showModel = (armorType == 1);
-        model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
-        model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
-
+    @SideOnly(Side.CLIENT)
+    private VoxelArmorRenderer getOrCompile3DModel(ItemStack itemStack, int armorSlot) {
         ArmorState state = ArmorState.load(itemStack);
 
-        model.jettank1.showModel = (armorSlot == 1 && state.hasBehavior(BehaviorName.Jetpack));
+        ArmorComponent baseArmor = getBaseComponent(state);
+        if (baseArmor == null) return null;
 
-        model.core1.showModel = false;
-        model.core2.showModel = false;
-        model.core3.showModel = false;
-        model.core4.showModel = false;
-        if (state.core != null) {
-            switch (state.core.getTier()) {
-                case 1 -> model.core1.showModel = true;
-                case 2 -> model.core2.showModel = true;
-                case 3 -> model.core3.showModel = true;
-                case 4 -> model.core4.showModel = true;
-            }
-        }
+        List<ArmorComponent> augments = getActiveAugments(state);
+        float scale = (armorSlot == REGISTER_LEGS) ? 0.25F : 0.5F;
 
-        if (entityLiving != null) {
-            model.isSneak = entityLiving.isSneaking();
+        return ArmorRegistry.getOrCompileModel(baseArmor, augments, scale);
+    }
 
-            model.isRiding = entityLiving.isRiding();
-            model.isChild = entityLiving.isChild();
+    @SideOnly(Side.CLIENT)
+    private static void setupVisibleBodyParts(ModelBiped model, int armorSlot) {
+        model.bipedHead.showModel = (armorSlot == REGISTER_HELMET);
+        model.bipedBody.showModel = (armorSlot == REGISTER_CHEST || armorSlot == REGISTER_LEGS);
+        model.bipedLeftArm.showModel = (armorSlot == REGISTER_CHEST);
+        model.bipedRightArm.showModel = (armorSlot == REGISTER_CHEST);
+        model.bipedLeftLeg.showModel = (armorSlot == REGISTER_LEGS || armorSlot == REGISTER_BOOTS);
+        model.bipedRightLeg.showModel = (armorSlot == REGISTER_LEGS || armorSlot == REGISTER_BOOTS);
+    }
 
-            model.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 : 0;
+    @SideOnly(Side.CLIENT)
+    private static void copyPoseFromEntity(ModelBiped model, EntityLivingBase entityLiving) {
+        if (entityLiving == null) return;
 
-            if (entityLiving instanceof EntityPlayer player) {
-                model.aimedBow = player.getItemInUseDuration() > 0;
-            }
-        }
-
-        return model;
+        model.isSneak = entityLiving.isSneaking();
+        model.isRiding = entityLiving.isRiding();
+        model.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 : 0;
+        model.aimedBow = entityLiving instanceof EntityPlayer player && player.getItemInUse() != null
+            && player.getItemInUse()
+                .getItem() instanceof ItemBow;
     }
 
     protected Cores getCore(ItemStack stack) {

@@ -1,14 +1,12 @@
 package gregtech.api.items.armor.renderer;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-
-import gregtech.GTMod;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class CommandReloadArmor extends CommandBase {
 
@@ -32,9 +30,8 @@ public class CommandReloadArmor extends CommandBase {
         long startTime = System.currentTimeMillis();
 
         try {
-            ArmorComponentRegistry.loadAllAssets();
-            VoxelArmorRenderer.invalidateAllRenderers();
             ArmorRegistry.clearCache();
+            ArmorComponentRegistry.loadAllAssets();
 
             long duration = System.currentTimeMillis() - startTime;
 
