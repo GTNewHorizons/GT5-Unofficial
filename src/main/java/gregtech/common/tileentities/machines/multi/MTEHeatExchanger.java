@@ -56,6 +56,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -93,9 +94,9 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 .buildAndChain(
                     onElementPass(MTEHeatExchanger::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
         .build();
-    public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
+    public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-24)
     private static final int BASE_SH_THRESHOLD = 4000; // L per second, scaled by the coolant
-    private static final int SH_THRESHOLD_REDUCTION_PER_CONFIG = 150; // L per second per circuitry level (1-25)
+    private static final int SH_THRESHOLD_REDUCTION_PER_CONFIG = 150; // L per second per circuitry level (1-24)
     private static final float BASE_STEAM_MULTIPLIER = 20f; // scaled by the coolant
     private static final int MIN_CIRCUIT_CONFIG = 1; // circuit level without penalty or threshold reduction
 
@@ -221,13 +222,13 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         float efficiency = 1f; // default: operate at 100% efficiency with no integrated circuitry
         int shs_reduction_per_config = SH_THRESHOLD_REDUCTION_PER_CONFIG; // reduce threshold 150L/s per circuitry level
         float steam_output_multiplier = BASE_STEAM_MULTIPLIER; // default: multiply output by 4 * 10 (boosted x5)
-        float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
+        float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-24).
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
-            if (circuit_config >= MIN_CIRCUIT_CONFIG && circuit_config <= 25) {
+            if (circuit_config >= MIN_CIRCUIT_CONFIG && circuit_config <= ItemIntegratedCircuit.MAX_CIRCUIT_NUMBER) {
                 // If so, apply the penalty and reduce the threshold.
                 penalty = (circuit_config - MIN_CIRCUIT_CONFIG) * penalty_per_config;
                 superheated_threshold -= shs_reduction_per_config * (circuit_config - MIN_CIRCUIT_CONFIG);
