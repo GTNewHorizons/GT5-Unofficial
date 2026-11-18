@@ -316,7 +316,6 @@ public enum StoneType implements IStoneType {
 
             texturesTemp[side.ordinal()] = TextureFactory.builder()
                 .addIcon(container)
-                .stdOrient()
                 .build();
         }
 

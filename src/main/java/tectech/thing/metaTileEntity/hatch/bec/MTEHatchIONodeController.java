@@ -11,13 +11,10 @@ import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.GTValues;
@@ -31,8 +28,7 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
+import gregtech.common.gui.modularui.hatch.MTEHatchIONodeControllerGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
@@ -94,6 +90,10 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         return mode;
     }
 
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
     public boolean receivingSignal() {
         return getBaseMetaTileEntity().getRedstone();
     }
@@ -134,34 +134,11 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchIONodeControllerGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
-    }
-
-    private class Gui extends MTEHatchBaseGui<MTEHatchIONodeController> {
-
-        public Gui() {
-            super(MTEHatchIONodeController.this);
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createContentSection(panel, syncManager)
-                .child(SettingsPanel.builder()
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-mode"),
-                        Mode.class,
-                        () -> mode,
-                        v -> mode = v,
-                        (_, _, button) -> button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip())))
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
     }
 }
