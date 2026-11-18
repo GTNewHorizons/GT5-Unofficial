@@ -31,7 +31,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,6 +38,8 @@ import gregtech.api.render.TextureFactory;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
+
+    private static final int[] DEFAULT_SLOTS = { 0 };
 
     public MTELongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -146,6 +147,11 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
         return false;
     }
 
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
     // // Relay Sided Inventories
     //
 
@@ -164,7 +170,7 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
             }
         }
 
-        return GTValues.emptyIntArray;
+        return DEFAULT_SLOTS;
     }
 
     @Override
