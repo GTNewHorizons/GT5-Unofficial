@@ -558,7 +558,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
                 final ExtendedFacing extendedFacing = this.getExtendedFacing();
-                final int[] abc = new int[3];
+                final int[] abc = new int[] { 0, -1, 0 };
                 final int[] xyz = new int[3];
                 int didPlace = 0;
                 // try to till the dirt and place the water
@@ -566,7 +566,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     for (int z = 1; z <= 7; z++) {
                         if (didPlace >= 3) return;
                         abc[0] = x;
-                        abc[1] = -1;
                         abc[2] = z;
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
@@ -590,7 +589,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     for (int z = 1; z <= 7; z++) {
                         if (didPlace >= 3) return;
                         abc[0] = x;
-                        abc[1] = -1;
                         abc[2] = z;
                         extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
@@ -816,9 +814,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
             if (consumedFertilizer == maxFertilizerToConsume) break;
         }
-        double multiplier = maxFertilizerToConsume <= 0 ? 1.d
-            : 1.d
-                + (((double) consumedFertilizer / (double) maxFertilizerToConsume) * EIG_BALANCE_MAX_FERTILIZER_BOOST);
+        double multiplier = 1.0d;
+        if (maxFertilizerToConsume > 0) {
+            double ratio = (double) consumedFertilizer / maxFertilizerToConsume;
+            multiplier += ratio * EIG_BALANCE_MAX_FERTILIZER_BOOST;
+        }
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
