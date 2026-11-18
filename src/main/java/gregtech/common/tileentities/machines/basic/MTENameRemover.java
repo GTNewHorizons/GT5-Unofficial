@@ -18,7 +18,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -187,9 +186,6 @@ public class MTENameRemover extends MTEBasicMachine {
                 removeTag(nbt, "mMuffler");
                 removeTag(nbt, "mLockUpgrade");
                 removeTag(nbt, "gt.covers");
-                for (String key : CoverableTileEntity.COVER_DATA_NBT_KEYS) {
-                    removeTag(nbt, key);
-                }
             }
             if (nbt.hasNoTags()) {
                 output.setTagCompound(null);

@@ -295,6 +295,9 @@ public class BECRecipes implements Runnable {
     }
 
     public void runLateRecipes() {
+        if (!EternalSingularity.isModLoaded()) {
+            return;
+        }
         ItemStack SuperdenseBedrockium = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 1);
         // Shielding Casing
         addBecUnsafe(
