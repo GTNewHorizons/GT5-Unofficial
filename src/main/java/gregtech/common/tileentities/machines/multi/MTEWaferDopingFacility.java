@@ -7,16 +7,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ZPM;
 import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE;
 import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE_ANOMALY;
 import static gregtech.api.recipe.RecipeMaps.WAFER_DOPING_PARTICLE_MODE_NONE;
@@ -999,20 +989,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
                 .buildAndChain(Casings.HeatProofMachineCasing.asElement()))
         .addElement(
             'Y',
-            buildHatchAdder(MTEWaferDopingFacility.class)
-                .hatchIds(
-                    INPUT_BUS_ULV.ID,
-                    INPUT_BUS_LV.ID,
-                    INPUT_BUS_MV.ID,
-                    INPUT_BUS_HV.ID,
-                    INPUT_BUS_EV.ID,
-                    INPUT_BUS_IV.ID,
-                    INPUT_BUS_LuV.ID,
-                    INPUT_BUS_ZPM.ID,
-                    INPUT_BUS_UV.ID,
-                    INPUT_BUS_UHV.ID)
+            buildHatchAdder(MTEWaferDopingFacility.class).atLeast(InputBus)
                 .adder(MTEWaferDopingFacility::addParticleInputBus)
-                .continueIfSuccess()
                 .casingIndex(Casings.ShieldedAcceleratorCasing.textureId)
                 .hint(5)
                 .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
@@ -1218,11 +1196,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     private boolean addParticleInputBus(IGregTechTileEntity tile, int casingTexture) {
-        if (tile == null || particleInputBus != null
-            || tile.getMetaTileEntity() == null
-            || tile.getMetaTileEntity()
-                .getClass() != MTEHatchInputBus.class
-            || !(tile.getMetaTileEntity() instanceof MTEHatchInputBus bus)) return false;
+        if (tile == null || particleInputBus != null || !(tile.getMetaTileEntity() instanceof MTEHatchInputBus bus))
+            return false;
         if (!addInputBusToMachineList(tile, casingTexture)) return false;
         particleInputBus = bus;
         return true;
@@ -1609,8 +1584,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
     @Override
     public int survivalConstruct(ItemStack stack, int budget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
         int tier = stack == null ? 1 : Math.clamp(stack.stackSize, 1, 4);
+        if (mMachine && structureTier >= tier) return -1;
         String piece = tier == 1 ? TIER_1 : tier == 2 ? TIER_2 : tier == 3 ? TIER_3 : TIER_4;
         int offsetX = tier == 1 ? OFFSET_X_1 : tier == 2 ? OFFSET_X_2 : tier == 3 ? OFFSET_X_3 : OFFSET_X_4;
         int offsetY = tier == 1 ? OFFSET_Y_1 : tier == 2 ? OFFSET_Y_2 : tier == 3 ? OFFSET_Y_3 : OFFSET_Y_4;
