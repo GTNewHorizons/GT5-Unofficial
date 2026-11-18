@@ -50,15 +50,11 @@ public interface IVoidable {
 
     List<IOutputBus> getOutputBusses();
 
-    List<IOutputHatch> getOutputHatches();
-
     /**
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
-    default List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
-        return getOutputHatches();
-    }
+    List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput);
 
     /**
      * @return How many slots of items this machine can output per recipe. Item outputs whose slot number exceeding this

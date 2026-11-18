@@ -1870,7 +1870,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean addFluidOutput(FluidStack stack, @Nullable List<FluidStack> remaining) {
-        return addFluidOutput(stack, getOutputHatches(), protectsExcessFluid(), remaining);
+        return addFluidOutput(
+            stack,
+            getOutputHatches(Collections.singletonList(stack)),
+            protectsExcessFluid(),
+            remaining);
     }
 
     protected boolean addFluidOutput(FluidStack stack, List<? extends IOutputHatch> hatches, boolean protectFluids,
@@ -3441,7 +3445,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches() {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         ArrayList<IOutputHatch> totalHatches = new ArrayList<>(filterValidMTEs(mOutputHatches));
         totalHatches.removeIf(hatch -> hatch instanceof MTEHatchVoid voidHatch && !voidHatch.isFluidLocked());
         return totalHatches;
