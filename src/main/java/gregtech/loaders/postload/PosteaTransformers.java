@@ -33,7 +33,6 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
-        registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
@@ -74,6 +73,15 @@ public class PosteaTransformers implements Runnable {
             "IC2:itemPlutoniumsmall",
             GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
             true);
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemFuelPlantBall", ItemList.IC2_Plantball.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemBiochaff", ItemList.IC2_BioChaff.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemDynamite", ItemList.Dynamite.get(1));
+
+        // Cells
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 6, Materials.Biomass.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 7, Materials.Biogas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 12, Materials.DistilledWater.getCells(1));
     }
 
     private void registerIC2BlocksTransformer() {
@@ -146,14 +154,6 @@ public class PosteaTransformers implements Runnable {
             tag.setInteger("Damage", indexInMaterialList);
             return true;
         });
-    }
-
-    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
-    private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -318,6 +318,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -330,6 +331,5 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
-
     }
 }
