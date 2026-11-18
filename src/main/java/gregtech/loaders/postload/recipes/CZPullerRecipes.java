@@ -20,7 +20,7 @@ public final class CZPullerRecipes implements Runnable {
 
     public static final GrowthRecipe SILICON = new GrowthRecipe(
         "silicon",
-        Materials.Silicon.getDust(1),
+        Materials.SiliconSG.getDust(1),
         ItemList.Silicon_Seed_Crystal.get(1),
         Materials.Nitrogen.getGas(1),
         ItemList.Crude_Silicon_Boule,
@@ -70,7 +70,7 @@ public final class CZPullerRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Silicon.getDust(64), ItemList.Silicon_Seed_Crystal.get(1))
+            .itemInputs(Materials.SiliconSG.getDust(64), ItemList.Silicon_Seed_Crystal.get(1))
             .fluidInputs(Materials.Nitrogen.getGas(8_000))
             .itemOutputs(ItemList.Crude_Silicon_Boule.get(1))
             .duration(240 * GTRecipeBuilder.SECONDS)

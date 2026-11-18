@@ -62,6 +62,8 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTECZPullerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.loaders.postload.recipes.CZPullerRecipes;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -79,6 +81,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     private static final int TIER_1_TANK_CAPACITY = 1_024;
     private static final int TIER_2_TANK_CAPACITY = 65_536;
     private static final int HEAT_EU_PER_TICK = 120;
+    private static final int COOLING_HALF_UNITS_PER_SECOND = 20;
 
     private static final int OFFSET_X_1 = 2;
     private static final int OFFSET_Y_1 = 8;
@@ -299,7 +302,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
             selection.material.energyTier);
         int parallel = Math.min(maxParallel, countSeeds(selection.seed));
         parallel = Math.min(parallel, bufferAmount / selection.material.materialAmount);
-        parallel = Math.min(parallel, countAvailableGas(selection.material) / selection.material.gasAmountMb);
+        parallel = Math.min(parallel, getAvailableGasParallel(selection.material, parallel));
         if (parallel < 1) return CheckRecipeResultRegistry.NO_RECIPE;
         long totalEu = (long) selection.material.eut * parallel;
         if (totalEu > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -341,8 +344,16 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         return coilLevel == null || coilLevel.ordinal() < material.minimumCoil.ordinal();
     }
 
-    private int countAvailableGas(CZPullerRecipes.GrowthRecipe material) {
-        return countAvailableFluid(material.growthFluid(1));
+    private int getAvailableGasParallel(CZPullerRecipes.GrowthRecipe material, int parallelLimit) {
+        int low = 0;
+        int high = Math.min(parallelLimit, Integer.MAX_VALUE / material.gasAmountMb);
+        while (low < high) {
+            int candidate = low + (high - low + 1) / 2;
+            FluidStack required = material.growthFluid(material.gasAmountMb * candidate);
+            if (depleteInput(required, true)) low = candidate;
+            else high = candidate - 1;
+        }
+        return low;
     }
 
     private int countAvailableFluid(FluidStack required) {
@@ -356,8 +367,10 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     private int countAvailableDust(CZPullerRecipes.GrowthRecipe material) {
         int total = 0;
         for (MTEHatchInputBus bus : mInputBusses) {
-            if (bus == null || bus.mInventory == null) continue;
-            for (ItemStack stack : bus.mInventory) {
+            if (bus == null || bus.getBaseMetaTileEntity() == null) continue;
+            IGregTechTileEntity busTile = bus.getBaseMetaTileEntity();
+            for (int slot = 0; slot < busTile.getSizeInventory(); slot++) {
+                ItemStack stack = busTile.getStackInSlot(slot);
                 if (isSameItem(stack, material.materialDust)) {
                     total = (int) Math.min(Integer.MAX_VALUE, (long) total + stack.stackSize);
                 }
@@ -380,16 +393,18 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         int transferLimit = remaining;
         if (transferLimit <= 0) return false;
         for (MTEHatchInputBus bus : mInputBusses) {
-            if (bus == null || bus.mInventory == null || remaining == 0) continue;
-            for (int i = 0; i < bus.mInventory.length && remaining > 0; i++) {
-                ItemStack stack = bus.mInventory[i];
+            if (bus == null || bus.getBaseMetaTileEntity() == null || remaining == 0) continue;
+            IGregTechTileEntity busTile = bus.getBaseMetaTileEntity();
+            for (int i = 0; i < busTile.getSizeInventory() && remaining > 0; i++) {
+                ItemStack stack = busTile.getStackInSlot(i);
                 if (!isSameItem(stack, material.materialDust)) continue;
                 int moved = Math.min(stack.stackSize, remaining);
                 stack.stackSize -= moved;
                 remaining -= moved;
-                if (stack.stackSize <= 0) bus.mInventory[i] = null;
+                if (stack.stackSize <= 0 && !(bus instanceof MTEHatchInputBusME))
+                    busTile.setInventorySlotContents(i, null);
             }
-            bus.updateSlots();
+            if (!(bus instanceof MTEHatchInputBusME)) bus.updateSlots();
         }
         int accepted = transferLimit - remaining;
         if (accepted > 0) {
@@ -400,28 +415,27 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     }
 
     private CZPullerRecipes.GrowthRecipe chooseHeatingMaterial() {
-        SeedSelection seed = findSeedSelection();
         if (bufferMaterial != null) {
-            if (bufferMaterial.requiredStructureTier > structureTier) return null;
-            if (seed != null) {
-                if (seed.material != bufferMaterial
-                    || bufferAmount + countAvailableDust(bufferMaterial) < bufferMaterial.materialAmount
-                    || countAvailableGas(bufferMaterial) < bufferMaterial.gasAmountMb
-                    || countSeeds(seed.seed) == 0
-                    || GTUtility.getTier(getMaxInputVoltage()) < bufferMaterial.energyTier) return null;
-                return bufferMaterial;
-            }
-            if (preheatedMode && bufferAmount > 0) return bufferMaterial;
-            return capacityLimit > bufferAmount && countAvailableDust(bufferMaterial) > 0 ? bufferMaterial : null;
-        }
-
-        CZPullerRecipes.GrowthRecipe input = seed == null ? findInputDustMaterial() : seed.material;
-        if (input == null || input.requiredStructureTier > structureTier) return null;
-        if (seed != null && countAvailableDust(input) < input.materialAmount) return null;
-        if (seed != null && countAvailableGas(input) < input.gasAmountMb) return null;
-        if (seed != null && (countSeeds(seed.seed) == 0 || GTUtility.getTier(getMaxInputVoltage()) < input.energyTier))
+            if (bufferMaterial.requiredStructureTier <= structureTier) return bufferMaterial;
             return null;
-        return input;
+        }
+        CZPullerRecipes.GrowthRecipe input = findInputDustMaterial();
+        if (input != null) return input;
+        return preheatedMode ? getDefaultPreheatMaterial() : null;
+    }
+
+    private CZPullerRecipes.GrowthRecipe getDefaultPreheatMaterial() {
+        for (CZPullerRecipes.GrowthRecipe material : CZPullerRecipes.ALL) {
+            if (material.requiredStructureTier == structureTier && !isCoilBelowMinimum(material)) return material;
+        }
+        for (CZPullerRecipes.GrowthRecipe material : CZPullerRecipes.ALL) {
+            if (material.requiredStructureTier < structureTier && !isCoilBelowMinimum(material)) return material;
+        }
+        return null;
+    }
+
+    private boolean hasMaterialForHeating(CZPullerRecipes.GrowthRecipe material) {
+        return (bufferMaterial == material && bufferAmount > 0) || countAvailableDust(material) > 0;
     }
 
     private void updateCZProcess(IGregTechTileEntity base, long tick) {
@@ -437,10 +451,15 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
             return;
         }
         targetTemperature = material.targetTemperature;
+        if (preheatedMode && currentTemperature > targetTemperature) {
+            targetTemperature = currentTemperature;
+        }
         long coilTierIndex = getCoilTierIndex();
         if (currentTemperature > targetTemperature) {
             if (tick % 20 == 0) {
-                temperatureHalfUnits = Math.max(targetTemperature * 2, temperatureHalfUnits - 2);
+                temperatureHeatingRemainder = 0;
+                temperatureHalfUnits = Math
+                    .max(targetTemperature * 2, temperatureHalfUnits - COOLING_HALF_UNITS_PER_SECOND);
                 currentTemperature = temperatureHalfUnits / 2;
             }
             return;
@@ -456,12 +475,18 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         }
         long heatEu = preheatedMode ? 30L * (1L << Math.min(30, (int) coilTierIndex)) : HEAT_EU_PER_TICK;
         FluidStack heatMaintainingGas = null;
-        if (preheatedMode && tick % 20 == 0) {
-            heatMaintainingGas = material.growthFluid((int) (10L * coilTierIndex));
-            if (heatMaintainingGas == null || !depleteInput(heatMaintainingGas, true)) return;
+        if (preheatedMode && tick % 20 == 0 && hasMaterialForHeating(material)) {
+            FluidStack offeredGas = material.growthFluid((int) (10L * coilTierIndex));
+            if (depleteInput(offeredGas, true)) heatMaintainingGas = offeredGas;
         }
-        if (heatEu > Integer.MAX_VALUE || !drainEnergyInput((int) heatEu)) return;
-        if (heatMaintainingGas != null && !depleteInput(heatMaintainingGas)) return;
+        if (heatEu > Integer.MAX_VALUE || !drainEnergyInput((int) heatEu)) {
+            coolDown(tick);
+            return;
+        }
+        if (heatMaintainingGas != null && !depleteInput(heatMaintainingGas)) {
+            coolDown(tick);
+            return;
+        }
         boolean wasBelowTarget = currentTemperature < targetTemperature;
         if (wasBelowTarget) heatTemperature(coilTierIndex);
         boolean reachedTarget = wasBelowTarget && currentTemperature >= targetTemperature;
@@ -473,9 +498,9 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
 
     private boolean maintainPreheatedTemperature(CZPullerRecipes.GrowthRecipe material, long coilTierIndex, long tick) {
         FluidStack maintainingFluid = null;
-        if (tick % 20 == 0) {
-            maintainingFluid = material.growthFluid((int) (10L * coilTierIndex));
-            if (!depleteInput(maintainingFluid, true)) return false;
+        if (tick % 20 == 0 && hasMaterialForHeating(material)) {
+            FluidStack offeredGas = material.growthFluid((int) (10L * coilTierIndex));
+            if (depleteInput(offeredGas, true)) maintainingFluid = offeredGas;
         }
 
         long maintenanceEu = 30L * (1L << Math.min(30, (int) coilTierIndex));
@@ -486,7 +511,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     private void coolDown(long tick) {
         if (tick % 20 == 0) {
             temperatureHeatingRemainder = 0;
-            temperatureHalfUnits = Math.max(0, temperatureHalfUnits - 2);
+            temperatureHalfUnits = Math.max(0, temperatureHalfUnits - COOLING_HALF_UNITS_PER_SECOND);
             currentTemperature = temperatureHalfUnits / 2;
         }
     }
@@ -506,11 +531,14 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     }
 
     private SeedSelection findSeedSelection() {
-        if (seedInputBus == null || seedInputBus.mInventory == null) return null;
-        for (ItemStack stack : seedInputBus.mInventory) {
-            if (stack == null || stack.stackSize <= 0) continue;
-            for (CZPullerRecipes.GrowthRecipe material : CZPullerRecipes.ALL) {
-                if (isSameItem(stack, material.seed)) return new SeedSelection(material.seed, material);
+        if (seedInputBus == null || seedInputBus.getBaseMetaTileEntity() == null) return null;
+        IGregTechTileEntity busTile = seedInputBus.getBaseMetaTileEntity();
+        for (int slot = 0; slot < busTile.getSizeInventory(); slot++) {
+            ItemStack stack = busTile.getStackInSlot(slot);
+            if (stack != null && stack.stackSize > 0) {
+                for (CZPullerRecipes.GrowthRecipe material : CZPullerRecipes.ALL) {
+                    if (isSameItem(stack, material.seed)) return new SeedSelection(material.seed, material);
+                }
             }
         }
         return null;
@@ -524,24 +552,30 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
 
     private int countSeeds(ItemStack seed) {
         int count = 0;
-        if (seedInputBus == null || seedInputBus.mInventory == null) return 0;
-        for (ItemStack stack : seedInputBus.mInventory) {
+        if (seedInputBus == null || seedInputBus.getBaseMetaTileEntity() == null) return 0;
+        IGregTechTileEntity busTile = seedInputBus.getBaseMetaTileEntity();
+        for (int slot = 0; slot < busTile.getSizeInventory(); slot++) {
+            ItemStack stack = busTile.getStackInSlot(slot);
             if (isSameItem(stack, seed)) count = (int) Math.min(Integer.MAX_VALUE, (long) count + stack.stackSize);
         }
         return count;
     }
 
     private boolean consumeSeeds(ItemStack seed, int count) {
+        if (seedInputBus == null || seedInputBus.getBaseMetaTileEntity() == null) return false;
+        IGregTechTileEntity busTile = seedInputBus.getBaseMetaTileEntity();
         int remaining = count;
-        for (int i = 0; i < seedInputBus.mInventory.length && remaining > 0; i++) {
-            ItemStack stack = seedInputBus.mInventory[i];
+        for (int i = 0; i < busTile.getSizeInventory() && remaining > 0; i++) {
+            ItemStack stack = busTile.getStackInSlot(i);
             if (!isSameItem(stack, seed)) continue;
             int used = Math.min(stack.stackSize, remaining);
             stack.stackSize -= used;
             remaining -= used;
-            if (stack.stackSize <= 0) seedInputBus.mInventory[i] = null;
+            if (stack.stackSize <= 0 && !(seedInputBus instanceof MTEHatchInputBusME)) {
+                busTile.setInventorySlotContents(i, null);
+            }
         }
-        seedInputBus.updateSlots();
+        if (!(seedInputBus instanceof MTEHatchInputBusME)) seedInputBus.updateSlots();
         return remaining == 0;
     }
 
@@ -746,15 +780,38 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            updateCZProcess(aBaseMetaTileEntity, aTick);
+            boolean hasStockingBus = mInputBusses.stream()
+                .anyMatch(MTEHatchInputBusME.class::isInstance) || seedInputBus instanceof MTEHatchInputBusME;
+            boolean startedStockingBusProcessing = hasStockingBus && mMaxProgresstime <= 0;
+            if (startedStockingBusProcessing) startRecipeProcessing();
+            try {
+                updateCZProcess(aBaseMetaTileEntity, aTick);
+            } finally {
+                if (startedStockingBusProcessing) endRecipeProcessing();
+            }
             if (mMachine && aTick % 20 == 0
                 && mMaxProgresstime <= 0
                 && bufferMaterial != null
                 && bufferAmount > 0
-                && currentTemperature >= bufferMaterial.targetTemperature
-                && findSeedSelection() != null) {
+                && currentTemperature >= bufferMaterial.targetTemperature) {
                 scheduleRecipeCheckImmediate();
             }
+        }
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (seedInputBus instanceof MTEHatchInputBusME stockingBus && !mInputBusses.contains(seedInputBus)) {
+            stockingBus.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (seedInputBus instanceof IRecipeProcessingAwareHatch stockingBus && !mInputBusses.contains(seedInputBus)) {
+            setResultIfFailure(stockingBus.endRecipeProcessing(this));
         }
     }
 
