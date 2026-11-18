@@ -17,7 +17,6 @@ import com.google.common.collect.PeekingIterator;
 import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 
 public class FluidEjectionHelper {
@@ -28,10 +27,6 @@ public class FluidEjectionHelper {
         OutputHatchType.class);
 
     private boolean active = true;
-
-    public FluidEjectionHelper(IVoidable voidable) {
-        this(voidable.getOutputHatches(), voidable.protectsExcessFluid());
-    }
 
     public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids) {
         this(hatches, protectFluids, false);

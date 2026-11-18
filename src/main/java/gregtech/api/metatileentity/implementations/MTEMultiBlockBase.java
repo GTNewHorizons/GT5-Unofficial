@@ -1826,7 +1826,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         int initial = stack.amount;
 
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(this);
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(
+            getOutputHatches(Collections.singletonList(stack)),
+            protectsExcessFluid());
         ejectionHelper.ejectStack(stack);
 
         if (stack.amount == 0) {
