@@ -65,6 +65,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -120,6 +121,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -535,8 +537,6 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
-        ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
-        ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
@@ -915,6 +915,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
+        BaseMetaPipeEntity.clearManagedCables();
         // spotless:off
         if (wirelessChargerManager != null) {
             FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
@@ -1190,6 +1191,7 @@ public class GTProxy implements IFuelHandler {
             } else {
                 TICK_LOCK.unlock();
                 RunnableMachineUpdate.endTick();
+                BaseMetaPipeEntity.tickManagedCables();
                 RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
@@ -1273,6 +1275,14 @@ public class GTProxy implements IFuelHandler {
             if (tileEntity instanceof IGregTechTileEntity) {
                 tileEntity.onChunkUnload();
             }
+        }
+        BaseMetaPipeEntity.unloadManagedCables(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+        for (Object tileEntity : event.getChunk().chunkTileEntityMap.values()) {
+            if (tileEntity instanceof BaseMetaPipeEntity pipe) pipe.onChunkLoad();
         }
     }
 
