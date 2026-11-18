@@ -37,18 +37,28 @@ public interface IConnectsToDataPipe<T> {
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof MTEPipeData) {
-            ((MTEPipeData) meta).markUsed();
-            // noinspection rawtypes,unchecked
-            return (IConnectsToDataPipe) meta;
-        } else if (meta instanceof MTEHatchDataInput hatchDataInput && hatchDataInput.getColorization() == color
-            && hatchDataInput.canConnectData(
-                base.getFrontFacing()
-                    .getOpposite())) {
-                        // noinspection unchecked
-                        return (IConnectsToDataPipe<T>) meta;
-                    }
-        return null;
+        return switch (meta) {
+            case MTEPipeData pipe -> {
+                pipe.markUsed();
+                // noinspection rawtypes,unchecked
+                yield (IConnectsToDataPipe) pipe;
+            }
+            case MTEHatchDataInput dataInput -> {
+                if (dataInput.getColorization() == color && dataInput.canConnectData(base.getFrontFacing().getOpposite())) {
+                    // noinspection unchecked
+                    yield (IConnectsToDataPipe<T>) dataInput;
+                }
+                yield null;
+            }
+            case MTEHatchDataItemsInput stickInput -> {
+                if (stickInput.getColorization() == color && stickInput.canConnectData(base.getFrontFacing().getOpposite())) {
+                    // noinspection unchecked
+                    yield (IConnectsToDataPipe<T>) stickInput;
+                }
+                yield null;
+            }
+            default -> null;
+        };
     }
 
     /**
@@ -66,8 +76,10 @@ public interface IConnectsToDataPipe<T> {
         var result = CheckState.UNKNOWN;
         setLastConnected(null);
         int range = 0;
+        boolean isDataOutput = this instanceof MTEHatchDataOutput;
+        boolean isStickOutput = this instanceof MTEHatchDataItemsOutput;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
-            if (next instanceof MTEHatchDataItemsInput dataItemsInput) {
+            if (isStickOutput && next instanceof MTEHatchDataItemsInput dataItemsInput) {
                 if (checkState == CheckState.NEW_DATA) {
                     result = CheckState.NEW_DATA;
                 } else {
@@ -76,7 +88,7 @@ public interface IConnectsToDataPipe<T> {
                 dataItemsInput.setContent((ALRecipeDataPacket) this.getQueued());
                 setLastConnected(next);
                 break;
-            } else if (next instanceof MTEHatchDataInput dataInput) {
+            } else if (isDataOutput && next instanceof MTEHatchDataInput dataInput) {
                 if (checkState == CheckState.NEW_DATA) {
                     result = CheckState.NEW_DATA;
                 } else {
