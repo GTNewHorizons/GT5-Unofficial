@@ -1,5 +1,6 @@
 package gregtech.api.objects;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Dimensions.AlphaCentauriBb;
 import static gregtech.api.enums.Dimensions.BarnardaC;
 import static gregtech.api.enums.Dimensions.BarnardaE;
@@ -96,7 +97,7 @@ public class GTUODimensionList {
         try {
             return java.util.Arrays.binarySearch(blackList, aDimensionId) >= 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
             return false;
         }
     }

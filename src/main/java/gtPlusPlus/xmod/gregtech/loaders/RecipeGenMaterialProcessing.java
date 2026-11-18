@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,12 +52,12 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
         }
 
         if (material.getMaterialComposites().length > 1) {
-            final int tVoltageMultiplier = material.vVoltageMultiplier;
+            final int tVoltageMultiplier = material.voltageMultiplier;
             int[] partSizes = new int[99];
-            if (material.vSmallestRatio != null) {
-                partSizes = new int[material.vSmallestRatio.length];
-                for (int hu = 0; hu < material.vSmallestRatio.length; hu++) {
-                    partSizes[hu] = (int) material.vSmallestRatio[hu];
+            if (material.smallestRatio != null) {
+                partSizes = new int[material.smallestRatio.length];
+                for (int hu = 0; hu < material.smallestRatio.length; hu++) {
+                    partSizes[hu] = (int) material.smallestRatio[hu];
                 }
             }
             ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
@@ -88,8 +89,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = RecipeGenOre.getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -134,7 +134,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration((tVoltageMultiplier / 10) * SECONDS)
@@ -156,8 +156,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = RecipeGenOre.getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -201,7 +200,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration(20 * (tVoltageMultiplier / 10))

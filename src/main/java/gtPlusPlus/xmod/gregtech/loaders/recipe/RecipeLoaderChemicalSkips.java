@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -15,7 +16,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -157,7 +157,7 @@ public class RecipeLoaderChemicalSkips {
             .addTo(quantumForceTransformerRecipes);
         // Early Rubbers/Cable Materials
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Carbon.getDust(64))
+            .itemInputs(Materials.Sulfur.getDust(32), Materials.Carbon.getDust(32))
             .fluidInputs(
                 Materials.Oxygen.getGas(16_000),
                 Materials.Hydrogen.getGas(16_000),
@@ -207,7 +207,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Titanium.getDust(64),
                 Materials.TungstenSteel.getDust(64),
                 Materials.Tantalum.getDust(64),
-                Materials.Indium.getDust(64),
+                MaterialsElements.getInstance().RHENIUM.getDust(64),
                 Materials.Niobium.getDust(64),
                 MaterialsElements.getInstance().HAFNIUM.getDust(64))
             .duration(20 * SECONDS)

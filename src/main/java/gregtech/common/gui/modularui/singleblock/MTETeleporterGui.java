@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -71,13 +73,13 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
             isDimRow && machine.hasDimensionalTeleportCapability(),
             () -> GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.asWidget()
                 .setEnabledIf($ -> GTUtility.isRealDimension(value.getIntValue()))
-                .tooltip(t -> t.addLine(GTUtility.translate("GT5U.gui.text.dim.valid")))
+                .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.dim.valid")))
                 .decoration());
         row.childIf(
             isDimRow && machine.hasDimensionalTeleportCapability(),
             () -> GTGuiTextures.OVERLAY_BUTTON_CROSS.asWidget()
                 .setEnabledIf($ -> !GTUtility.isRealDimension(value.getIntValue()))
-                .tooltip(t -> t.addLine(GTUtility.translate("GT5U.gui.text.dim.invalid")))
+                .tooltip(t -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.dim.invalid")))
                 .decoration());
 
         return row;

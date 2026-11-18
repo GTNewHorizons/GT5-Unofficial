@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -20,7 +21,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.common.CommonButtons;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.synchandler.NBTSerializableSyncHandler;
 import gregtech.common.gui.modularui.util.AEItemSlot;
@@ -78,7 +78,7 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
                 }
                 return true;
             })
-            .addTooltipLine(GTUtility.translate("GT5U.gui.button.compressed_bus_settings"))
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.gui.button.compressed_bus_settings"))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 

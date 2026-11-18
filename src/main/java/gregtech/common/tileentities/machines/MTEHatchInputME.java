@@ -61,13 +61,13 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -81,6 +81,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -108,7 +109,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private boolean expediteRecipeCheck = false;
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -148,6 +148,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
+                if (justHadNewFluids) {
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
+                    justHadNewFluids = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -166,20 +171,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (igte == null || !igte.isAllowedToWork()) return false;
 
-        AENetworkProxy proxy = getProxy();
-
-        if (!proxy.isActive()) return false;
-
-        return true;
+        this.proxyCheckup();
+        return getProxy().isActive();
     }
 
     @Override
     public void onEnableWorking() {
         super.onEnableWorking();
 
-        if (expediteRecipeCheck) {
-            justHadNewFluids = true;
-        }
+        justHadNewFluids = true;
     }
 
     @Override
@@ -257,7 +257,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     justHadNewFluids = true; // different type
                 }
             }
-            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sametype)) {
                 configChanged = true;
             }
             index++;
@@ -343,24 +343,18 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewFluids;
-            justHadNewFluids = false;
-            return ret;
-        }
-        return false;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
     }
 
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-        configureWatchers();
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
 
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
@@ -392,6 +386,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Outside of processing a recipe, we need to extract everything manually
             Slot slot = getMatchingSlot(fluid, false);
             if (slot == null) return null;
+            // AE can't use 0 for exist check, just assume exist
+            // Other hatch also don't have existence check
+            if (amount == 0) return new FluidStack(fluid, 0);
 
             IAEFluidStack request = AEFluidStack.create(fluid);
             request.setStackSize(amount);
@@ -408,7 +405,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 return null;
             }
 
-            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            IAEFluidStack result;
+            if (doDrain) {
+                result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+                updateAllInformationSlots();
+            } else {
+                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+            }
 
             return result == null ? null : result.getFluidStack();
         }
@@ -422,6 +425,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         updateAllInformationSlots();
     }
 
+    // Sometimes onFirstTick() going too late
+    private void proxyCheckup() {
+        final AENetworkProxy proxy = getProxy();
+        if (!proxy.isReady()) proxy.onReady();
+    }
+
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -430,12 +439,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         IEnergyGrid energy;
 
         try {
-            AENetworkProxy proxy = getProxy();
-
             // on some setup endRecipeProcessing() somehow runs before onFirstTick();
             // test world
             // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
-            if (!proxy.isReady()) proxy.onReady();
+            this.proxyCheckup();
+            AENetworkProxy proxy = getProxy();
 
             sg = proxy.getStorage()
                 .getFluidInventory();
@@ -532,11 +540,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -566,26 +569,32 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return getProxy().isActive();
     }
 
+    @OCMethod
     public int getMinAutoPullAmount() {
         return minAutoPullAmount;
     }
 
+    @OCMethod
     public void setMinAutoPullAmount(int minAutoPullAmount) {
         this.minAutoPullAmount = minAutoPullAmount;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullFluidList() {
         return autoPullFluidList;
     }
 
+    @OCMethod
     public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
@@ -601,11 +610,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 refreshFluidList();
             }
         }
-    }
-
-    @Override
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
     }
 
     protected void updateAllInformationSlots() {
@@ -624,6 +628,31 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
+        // the new fluid and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
+    }
+
+    @OCMethod
+    public FluidStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, FluidStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -654,6 +683,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -759,7 +789,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
 
@@ -785,11 +814,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {
@@ -817,7 +845,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) slots[tag.getInteger("index")] = slot;
@@ -852,7 +880,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
             autoPullRefreshTime = nbt.getInteger("refreshTime");
-            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -865,6 +892,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (fs == null) continue;
                 slots[i] = new Slot(fs);
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -884,7 +913,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
-        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setByte("color", this.getColor());
 
         if (!autoPullFluidList) {
@@ -1036,11 +1064,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchInputMEGui(this, slots).build(guiData, syncManager, uiSettings);
     }
@@ -1067,11 +1090,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            if (expediteRecipeCheck) for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEFluidStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEFluidStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1084,6 +1110,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
         StorageChannel chan) {
-        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewFluids = true;
+        if (diffStack.getStackSize() > 0) {
+            justHadNewFluids = true;
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
+        }
     }
 }

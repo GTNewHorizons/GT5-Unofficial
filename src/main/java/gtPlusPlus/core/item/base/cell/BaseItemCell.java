@@ -26,8 +26,8 @@ public class BaseItemCell extends BaseItemComponent {
 
         if (this.componentMaterial.getRGBA()[3] <= 1) {
             return this.componentColour;
-        } else {
-            return getMaterialCustomColor(this.componentMaterial);
         }
+        // See BaseItemComponent.getColorFromItemStack: animated materials ship baked textures, rendered untinted.
+        return Utils.rgbtoHexValue(255, 255, 255);
     }
 }

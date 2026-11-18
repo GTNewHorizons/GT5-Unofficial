@@ -12,7 +12,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -20,25 +20,30 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBendingMachine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
     private static final int OFFSET_X = 1;
@@ -80,21 +85,20 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bending Machine, IBM")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bending_machine"))
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 3, 3, false)
-            .addController("Front left, 2nd layer")
-            .addCasingInfoMin("Metalworking Machine Casing", 4, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 3, false)
-            .addCasingInfoExactly("Forming Core", 9, false)
-            .addCasingInfoExactly("Titanium Frame Box", 6, false)
-            .addInputBus("Any Metalworking Machine Casing", 1)
-            .addOutputBus("Any Metalworking Machine Casing", 1)
-            .addEnergyHatch("Any Metalworking Machine Casing", 1)
-            .addMaintenanceHatch("Any Metalworking Machine Casing", 1)
-            .addMufflerHatch("Any Metalworking Machine Casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("4-15", Casings.MaterialPressCasing.getLocalizedName(), false)
+            .addCasing("9", Casings.FormingCore.getLocalizedName(), false)
+            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Titanium), false)
+            .addCasing("3", Casings.TitaniumGearBoxCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -136,36 +140,29 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         checkHasOutputBus(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.MaterialPressCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialPlatePressActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialPlatePressActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.MaterialPressCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialPlatePress)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialPlatePressGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.MaterialPressCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialPlatePress,
+            TexturesGtBlock.oMCDIndustrialPlatePressGlow,
+            TexturesGtBlock.oMCDIndustrialPlatePressActive,
+            TexturesGtBlock.oMCDIndustrialPlatePressActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.MaterialPressCasing.getCasingTexture();
     }
 
     @Override
@@ -180,7 +177,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 6.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -196,11 +193,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

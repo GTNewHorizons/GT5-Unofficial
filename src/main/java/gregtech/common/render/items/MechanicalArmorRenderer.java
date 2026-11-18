@@ -14,7 +14,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.items.armor.ArmorState;
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import gregtech.common.items.armor.MechArmorBase;
 import gregtech.common.render.GTRenderUtil;
 
@@ -75,9 +75,9 @@ public class MechanicalArmorRenderer implements IItemRenderer {
                 GL11.glColor4f(1, 1, 1, 1);
             }
 
-            for (IArmorBehavior behavior : state.behaviors.values()) {
-                if (behavior.getModularArmorTexture() != null) {
-                    GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
+            for (Augments augment : state.augments.values()) {
+                if (augment.getTexture(armorItem.getArmorType()) != null) {
+                    GTRenderUtil.renderItem(type, augment.getTexture(armorItem.getArmorType()));
                 }
             }
         }

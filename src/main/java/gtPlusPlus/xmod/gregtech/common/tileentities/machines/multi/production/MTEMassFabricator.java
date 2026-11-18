@@ -26,16 +26,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
@@ -55,19 +59,19 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> implements ISurvivalConstructable {
-
-    public static String mCasingName1 = "Matter Fabricator Casing";
-    public static String mCasingName2 = "Containment Casing";
-    public static String mCasingName3 = "Matter Generation Coil";
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
+    private static final int SCRAP_PARALLELS = 64;
+    private static final int UU_PARALLELS_PER_TIER = 8;
+    // Chance out of 10000, so 1000 is 10%
+    private static final int SCRAP_CHANCE_PER_TIER = 1000;
 
     private int mCasing;
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
@@ -82,32 +86,38 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineType() {
-        return "Mass Fabricator, Recycler";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.mass_fabricator");
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mass-fabricator"),
+                ImmutableMap.of(
+                    "scrap_parallels",
+                    SCRAP_PARALLELS,
+                    "uu_parallels",
+                    UU_PARALLELS_PER_TIER,
+                    "scrap_chance",
+                    SCRAP_CHANCE_PER_TIER / 100))
             .addStaticSpeedInfo(1f)
             .addStaticEuEffInfo(0.8f)
-            .addInfo("Produces UU-A, UU-M & Scrap")
-            .addInfo("Change mode with screwdriver")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin(mCasingName3, 9, false)
-            .addCasingInfoMin(mCasingName2, 24, false)
-            .addCasingInfoMin(mCasingName1, 36, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("35-44", Casings.MatterFabricatorCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.ContainmentCasing.getLocalizedName(), false)
+            .addCasing("9", Casings.MatterGenerationCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fabricator_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
@@ -177,10 +187,16 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         if (!checkPiece(mName, 2, 3, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 36);
-        checkHatch(errors);
+        checkCasingMin(errors, mCasing, 35);
         checkHasEnergyHatch(errors);
-        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+
+        if (machineMode == MODE_SCRAP) {
+            checkHasOutputBus(errors);
+        } else {
+            checkHasOutputHatch(errors);
+        }
     }
 
     @Override
@@ -198,13 +214,13 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
      */
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : GTPPRecipeMaps.multiblockMassFabricatorRecipes;
+        return machineMode == MODE_SCRAP ? RecipeMaps.recyclerRecipes : RecipeMaps.multiblockMassFabricatorRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.recyclerRecipes, GTPPRecipeMaps.multiblockMassFabricatorRecipes);
+        return Arrays.asList(RecipeMaps.recyclerRecipes, RecipeMaps.multiblockMassFabricatorRecipes);
     }
 
     @Override
@@ -233,10 +249,14 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                                 .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
                             GTRecipe recipe = new GTRecipe(
                                 new ItemStack[] { GTUtility.copyAmount(1, item) },
-                                aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                                aPotentialOutput == null ? null
+                                    : new ItemStack[] { aPotentialOutput, aPotentialOutput },
                                 null,
                                 null,
-                                new int[] { 2000 },
+                                new int[] { 1250 + GTUtility.getTier(getMaxInputVoltage()) * SCRAP_CHANCE_PER_TIER,
+                                    Math.max(
+                                        1250 + GTUtility.getTier(getMaxInputVoltage()) * SCRAP_CHANCE_PER_TIER - 10000,
+                                        0) },
                                 null,
                                 null,
                                 null,
@@ -251,7 +271,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8F)
+        }.setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -263,7 +283,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public int getMaxParallelRecipes() {
-        return machineMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
+        return machineMode == MODE_SCRAP ? SCRAP_PARALLELS
+            : UU_PARALLELS_PER_TIER * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
     @Override
@@ -283,9 +304,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -13,14 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
@@ -46,17 +49,24 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENetworkSwitch extends TTMultiblockBase
-    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
+    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch>, IParametrized {
 
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
 
+    // TODO remove after 2.9
     private static final INameFunction<MTENetworkSwitch> DEST_NAME = MTENetworkSwitch::getDestName;
     private static final IStatusFunction<MTENetworkSwitch> DEST_STATUS = MTENetworkSwitch::getDestStatus;
 
@@ -65,6 +75,13 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     protected Parameters.Group.ParameterIn[] dst;
     protected Parameters.Group.ParameterIn[] weight;
+
+    public static final int GROUP_COUNT = 10;
+    private CompositeParameter[] hatchParameters;
+    private IntegerParameter[] idParameters;
+    private DoubleParameter[] weightParameters;
+
+    private @Nullable QuantumDataPacket pendingPacket;
 
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -122,10 +139,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         structure.checkStructure(this, errors);
-        checkHasAnyEnergy(errors);
-        checkHasMaintenanceHatch(errors);
         checkHasDataInput(errors);
         checkHasDataOutput(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -141,34 +158,38 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        if (pendingPacket != null) {
+            nbt.setTag("pendingPacket", pendingPacket.toNbt());
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        if (nbt.getTag("pendingPacket") instanceof NBTTagCompound pkt) {
+            pendingPacket = new QuantumDataPacket(pkt);
+        }
+    }
+
+    @Override
     public MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitch> tt = new StructureWrapperTooltipBuilder<>(structure);
-
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"));
-
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"));
-        tt.addSeparator();
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.3"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.4"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.5"));
-
-        tt.addTecTechHatchInfo();
-
-        tt.beginStructureBlock();
-        tt.addController(translateToLocal("tt.keyword.Structure.FrontCenter"));
-
-        tt.addCasingInfoAuto(Casings.ComputerCasing);
-        tt.addCasingInfoAuto(Casings.AdvancedComputerCasing);
-
-        tt.addHatch(Casings.AdvancedComputerCasing, InputData, 1);
-        tt.addHatch(Casings.ComputerCasing, OutputData, 1, 2);
-        tt.addHatch(Casings.ComputerCasing, Energy, 1, 2);
-        tt.addHatch(Casings.ComputerCasing, Maintenance, 1, 2);
-
-        tt.toolTipFinisher();
-
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
+            .addMarkdown(new ResourceLocation("gregtech", "network-switch"))
+            .addSupportAny()
+            .beginStructureBlock(3, 3, 3, false)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("0-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -230,9 +251,21 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         short thingsActive = 0;
+        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
         for (MTEHatchDataInput di : eInputData) {
             if (di.q != null) {
                 thingsActive++;
+                if (di.q.contains(getPos())) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                pendingPacket = pendingPacket.unifyPacketWith(di.q);
+                if (pendingPacket == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                di.setContents(null);
             }
         }
 
@@ -249,41 +282,23 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (!eOutputData.isEmpty()) {
+        if (!eOutputData.isEmpty() && pendingPacket != null) {
             double total = 0;
             double weight;
             for (int i = 0; i < 10; i++) { // each param pair
-                weight = this.weight[i].get();
-                if (weight > 0 && dst[i].get() >= 0) {
+                weight = this.weightParameters[i].getValue();
+                if (weight > 0 && idParameters[i].getValue() >= 0) {
                     total += weight; // Total weighted div
                 }
             }
 
-            Vec3Impl pos = new Vec3Impl(
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord());
-
-            QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
-            if (pack == null) {
-                return;
-            }
-            for (MTEHatchDataInput hatch : eInputData) {
-                if (hatch.q == null || hatch.q.contains(pos)) {
-                    continue;
-                }
-                pack = pack.unifyPacketWith(hatch.q);
-                if (pack == null) {
-                    return;
-                }
-            }
-
-            long remaining = pack.getContent();
+            long totalComputation = pendingPacket.getContent();
+            long remainingComputation = totalComputation;
 
             double dest;
             for (int i = 0; i < 10; i++) {
-                dest = dst[i].get();
-                weight = this.weight[i].get();
+                dest = idParameters[i].getValue();
+                weight = this.weightParameters[i].getValue();
                 if (weight > 0 && dest >= 0) {
                     int outIndex = (int) dest - 1;
                     if (outIndex < 0 || outIndex >= eOutputData.size()) {
@@ -292,17 +307,18 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     MTEHatchDataOutput out = eOutputData.get(outIndex);
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
-                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
+                            out.q = new QuantumDataPacket(remainingComputation).unifyTraceWith(pendingPacket);
                             break;
                         }
                     } else {
-                        long part = (long) Math.floor(pack.getContent() * weight / total);
+                        long part = (long) Math.floor(totalComputation * weight / total);
                         if (part > 0) {
-                            remaining -= part;
-                            if (remaining > 0) {
-                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
-                            } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
+                            remainingComputation -= part;
+                            if (remainingComputation > 0) {
+                                out.q = new QuantumDataPacket(part).unifyTraceWith(pendingPacket);
+                            } else if (part + remainingComputation > 0) {
+                                out.q = new QuantumDataPacket(part + remainingComputation)
+                                    .unifyTraceWith(pendingPacket);
                                 break;
                             } else {
                                 break;
@@ -311,11 +327,56 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     }
                 }
             }
+
+            pendingPacket = null;
         }
     }
 
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public void initParameters() {
+        idParameters = new IntegerParameter[GROUP_COUNT];
+        weightParameters = new DoubleParameter[GROUP_COUNT];
+        hatchParameters = new CompositeParameter[GROUP_COUNT];
+
+        for (int i = 0; i < GROUP_COUNT; i++) {
+            idParameters[i] = new IntegerParameter(i + 1, "tt.keyword.Id", "id", () -> 1, () -> Integer.MAX_VALUE);
+
+            weightParameters[i] = new DoubleParameter(
+                0.,
+                "tt.keyword.Weight",
+                "weight",
+                () -> 0.,
+                () -> Double.MAX_VALUE);
+
+            hatchParameters[i] = new CompositeParameter(
+                List.of(idParameters[i], weightParameters[i]),
+                "tt.keyword.Hatch",
+                "hatch" + i,
+                i + 1);
+        }
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        for (int i = 0; i < GROUP_COUNT; i++) {
+            idParameters[i].setValue(oldParams.getInteger(String.valueOf(i)));
+            weightParameters[i].setValue(oldParams.getDouble(String.valueOf(10 + i)));
+        }
+    }
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(hatchParameters);
     }
 }

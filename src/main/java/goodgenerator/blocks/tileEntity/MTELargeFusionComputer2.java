@@ -1,26 +1,21 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
@@ -40,45 +35,6 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer2(String name) {
         super(name);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("More Power!!!!")
-            .addInfo(
-                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.AQUA
-                    + formatNumber(capableStartupCanonical() / 32 / M)
-                    + "M"
-                    + EnumChatFormatting.GRAY
-                    + " EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo(
-                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
-                    + EnumChatFormatting.GRAY
-                    + " , you can't do it either")
-            .addInfo(createParallelText())
-            .addTecTechHatchInfo()
-            .beginStructureBlock(47, 7, 47, false)
-            .addCasingInfoMin("Fusion Machine Casing", 1664, false)
-            .addCasingInfoMin("Compact Fusion Coil", 560, false)
-            .addCasingInfoMin("Duranium Frame Box", 128, false)
-            .addCasingInfoMin("Iridium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block number 2", 2)
-            .addInputHatch("1-16, Hint block number 1", 1)
-            .addOutputHatch("1-16, Hint block number 1", 1)
-            .addStructureInfo("Supports Crafting Input Buffer")
-            .addStructureInfo(
-                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
-                    + EnumChatFormatting.GRAY
-                    + " or better")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override
@@ -122,18 +78,8 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 7;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.Duranium;
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override
@@ -144,11 +90,6 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     @Override
     public ITexture getTextureOverlay() {
         return textureOverlay;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("LargeFusion2.hint", 9);
     }
 
     @Override

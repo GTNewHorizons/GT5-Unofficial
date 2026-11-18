@@ -10,6 +10,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -18,7 +19,6 @@ import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class MBItemFrame extends Item implements IHiveFrame {
@@ -46,7 +46,7 @@ public class MBItemFrame extends Item implements IHiveFrame {
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
         final boolean adv) {
         if (!this.toolTipKey.isEmpty()) {
-            list.add(EnumChatFormatting.GRAY + GTUtility.translate(this.toolTipKey));
+            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(this.toolTipKey));
         }
         super.addInformation(stack, aPlayer, list, adv);
     }

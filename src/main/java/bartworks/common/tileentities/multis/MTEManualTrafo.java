@@ -31,6 +31,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,9 +46,11 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -54,7 +58,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -62,7 +65,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private byte mode;
     private int mTiers;
@@ -142,26 +147,30 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transformer")
-            .addInfo("Operates in 4 diffrent modes:")
-            .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
-            .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
-            .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
-            .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
+        final String winding = new ItemStack(BW_BLOCKS[2], 1, 1).getDisplayName();
+        final String anyBottomCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing");
+        final String touchingWinding = StatCollector
+            .translateToLocalFormatted("GT5U.tooltip.manual_trafo.touching_winding", winding);
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.transformer"))
+            .addMarkdown(new ResourceLocation("gregtech", "manual-trafo"))
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("MV Machine Casing", 0, false)
-            .addOtherStructurePart("Transformer-Winding Block", "1 Layer for each tier transformed")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Block", "Middle of Transformer-Winding Block")
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addDynamoHatch("Any top layer Casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasingInfoMin(Casings.MVMachineCasing.getLocalizedName(), 0, false)
+            .addOtherStructurePart(winding, StatCollector.translateToLocal("GT5U.tooltip.manual_trafo.winding_layers"))
+            .addOtherStructurePart(
+                new ItemStack(BW_BLOCKS[2], 1, 0).getDisplayName(),
+                StatCollector.translateToLocalFormatted("GT5U.tooltip.manual_trafo.ferrite_position", winding))
+            .addMaintenanceHatch(anyBottomCasing, 1)
+            .addEnergyHatch(anyBottomCasing, 1)
+            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
             .addStructureInfo("")
-            .addStructureInfo("Tapped Mode :")
-            .addEnergyHatch("Touching Transformer-Winding Block", 3)
-            .addDynamoHatch("Touching Transformer-Winding Block", 3)
-            .addStructureInfo("Hatches touching Transformer-Winding Block must be tiered from bottom to top")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.tooltip.manual_trafo.tapped_mode"))
+            .addEnergyHatch(touchingWinding, 3)
+            .addDynamoHatch(touchingWinding, 3)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("GT5U.tooltip.manual_trafo.tapped_hatch_tiers", winding))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -331,30 +340,22 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> im
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override

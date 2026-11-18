@@ -1,9 +1,9 @@
 package gregtech.api.gui.modularui;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -43,6 +43,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bee_drone");
     public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bee_queen");
+    public static final UITexture OVERLAY_SLOT_UPGRADE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/slot_upgrade");
     public static final UITexture OVERLAY_SLOT_BENDER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bender");
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/box");
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/boxed");
@@ -110,7 +111,7 @@ public class GTUITextures {
 
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
         .mapToObj(i -> UITexture.fullImage(GregTech.ID, "gui/overlay_slot/number_" + i))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     // spotless:off
@@ -168,6 +169,7 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_LHC_W = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_weak");
     public static final UITexture PROGRESSBAR_LHC_S = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_strong");
     public static final UITexture PROGRESSBAR_LHC_G = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_gravity");
+    public static final UITexture PROGRESSBAR_FLUID_REACTOR = UITexture.fullImage(GTPlusPlus.ID, "gui/progressbar/fluid_reactor");
 
     public static final UITexture TAB_COVER_NORMAL = UITexture.fullImage(GregTech.ID, "gui/tab/cover_normal");
     public static final UITexture TAB_COVER_HIGHLIGHT = UITexture.fullImage(GregTech.ID, "gui/tab/cover_highlight");
@@ -282,8 +284,11 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/LiquidMode_off");
 
     // These icons are for mode switching machine modes
+    // region begin unused
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
+    // region end unused
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
@@ -292,10 +297,6 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture.fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture.fullImage(GregTech.ID, "gui/overlay_button/muffle_on");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/muffle_off");

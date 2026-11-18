@@ -20,16 +20,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -54,8 +57,12 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialAlloySmelter>
     implements ISurvivalConstructable {
+
+    /** Coil heat needed for each perfect overclock */
+    private static final int HEAT_PER_PERFECT_OVERCLOCK = 900;
 
     public static int CASING_TEXTURE_ID;
     private HeatingCoilLevel mHeatingCapacity;
@@ -115,29 +122,34 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
 
     @Override
     public String getMachineType() {
-        return "Alloy Smelter";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.alloy_smelter");
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.alloy_smelter"))
+            .addInfo(StatCollector.translateToLocalFormatted("GT5U.MBTT.Parallel.Base", TooltipHelper.parallelText(StatCollector.translateToLocal("gt.mbtt.formula.voltage_tier_times_coil_tier"))))
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
-            .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-alloy-smelter"),
+                ImmutableMap.of("heat_per_poc", HEAT_PER_PERFECT_OVERCLOCK))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coil", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("5-12", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.IntegralEncasementEV.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -188,10 +200,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-        checkCasingMin(errors, mCasing, 8);
+        checkCasingMin(errors, mCasing, 5);
         mLevel = getCoilLevel().getTier() + 1;
-        checkHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }
@@ -211,10 +224,10 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                 return super.createOverclockCalculator(recipe).setDurationModifier(100.0 / (100 + 5 * mLevel))
                     .setHeatOC(true)
                     .setRecipeHeat(0)
-                    // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
-                    // every
-                    // 900
-                    .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
+                    // Scale coil heat so that every HEAT_PER_PERFECT_OVERCLOCK of it counts as one heat OC
+                    .setMachineHeat(
+                        (int) (getCoilLevel().getHeat() * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD
+                            / HEAT_PER_PERFECT_OVERCLOCK));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -232,25 +245,22 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         return true;
     }
 
-    public float getSpeedBonus() {
-        return (float) 1 / (1 + 0.05f * mLevel);
+    public double getSpeedBonus() {
+        return 1.0D / (1.0D + 0.05D * mLevel);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setFloat("speedBonus", getSpeedBonus());
+        tag.setDouble("speedBonus", getSpeedBonus());
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format(Math.max(0, 100 / tag.getFloat("speedBonus")))

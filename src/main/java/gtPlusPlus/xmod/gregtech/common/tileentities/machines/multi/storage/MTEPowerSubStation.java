@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -32,6 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -54,9 +56,11 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -82,6 +86,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> implements ISurvivalConstructable {
 
     private enum TopState {
@@ -116,26 +121,29 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
     @Override
     public String getMachineType() {
-        return "Energy Buffer, PSS";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.energy_buffer");
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
-            .addInfo("Does not require maintenance")
-            .addInfo(
-                "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
-            .addInfo("Hatches can be placed nearly anywhere")
-            .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
-            .addInfo("Supports voltages >= UHV using MAX tier components")
-            .addController("Front bottom center")
-            .addCasingInfoMin("Sub-Station External Casing", 10, false)
-            .addDynamoHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.PSS_CELL)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "power-sub-station"),
+                ImmutableMap.<String, Object>builder()
+                    .put("energy_tax", ENERGY_TAX)
+                    .put("min_height", CELL_HEIGHT_MIN + 2)
+                    .put("max_height", CELL_HEIGHT_MAX + 2)
+                    .put("min_tier", VoltageIndex.HV)
+                    .put("max_tier_voltage", VoltageIndex.UHV)
+                    .put("max_tier", VoltageIndex.MAX)
+                    .build())
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasingInfoMin(Casings.SubStationExternalCasing.getLocalizedName(), 10, false)
+            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addSubChannel(GTStructureChannels.PSS_CELL)
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -461,17 +469,22 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else {
-                if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+            switch (aMetaTileEntity) {
+                case MTEHatchEnergy mteHatchEnergy -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                }
+                case MTEHatchDynamo mteHatchDynamo -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case MTEHatchMaintenance mteHatchMaintenance -> {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case null, default -> {
+                    if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    }
                 }
             }
         }
@@ -655,18 +668,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public long getMinimumStoredEU() {
         return 0;
-    }
-
-    @Override
-    public void explodeMultiblock() {
-        // TODO Auto-generated method stub
-        super.explodeMultiblock();
-    }
-
-    @Override
-    public void doExplosion(long aExplosionPower) {
-        // TODO Auto-generated method stub
-        super.doExplosion(aExplosionPower);
     }
 
     @Override

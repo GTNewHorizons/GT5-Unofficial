@@ -211,7 +211,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 }
                 this.tickCount++;
             }
-        } catch (final Exception t) {}
+        } catch (final Exception ignored) {}
     }
 
     @Override

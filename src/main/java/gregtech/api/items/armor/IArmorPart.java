@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
@@ -32,5 +33,9 @@ public interface IArmorPart {
 
     Collection<BehaviorName> getRequiredBehaviors();
 
+    Collection<BehaviorName> getRequiredBehaviorsOr();
+
     Collection<BehaviorName> getIncompatibleBehaviors();
+
+    Collection<ItemList> getIncompatibleAugments();
 }

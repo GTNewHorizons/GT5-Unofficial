@@ -25,7 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,19 +39,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -66,6 +62,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTELargeEssentiaSmelteryGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.Pollution;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -75,14 +73,17 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_On");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_Off");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("icons/LargeEssentiaSmeltery_Off_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -163,9 +164,9 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         }
         if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
         checkCasingMin(errors, mCasing, 24);
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
-        checkHasAnyEnergy(errors);
         if (mEssentiaOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_essentia_output_hatch"));
         }
@@ -230,61 +231,42 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil")
-            .addInfo("Advanced Essentia smelting technology")
-            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon")
-            .addTecTechHatchInfo()
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.essentia_smeltery_les"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-essentia-smeltery"))
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
-            .addController("Front center")
-            .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint block number 1")
-            .addInputBus("Hint block number 1")
-            .addInputHatch("Hint block number 1")
-            .addEnergyHatch("Hint block number 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block number 1")
-            .addMufflerHatch("Hint block number 2")
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("24-84", StatCollector.translateToLocal("magicCasing.0.name"), false)
+            .addCasing("12-28", StatCollector.translateToLocal("essentiaCell.name"), true)
+            .addCasing("6-14", StatCollector.translateToLocal("tile.blockCosmeticOpaque.2.name"), false)
+            .addCasing("3-7", StatCollector.translateToLocal("tile.advAlchFurnace.name"), false)
+            .addCasing("3-7", StatCollector.translateToLocal("essentiaFilterCasing.0.name"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMufflerHatch("3-7", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("essentiaOutputHatch.0.name"), StatCollector.translateToLocal("gt.mbtt.structure.any_magic_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.LES_ESSENTIA_CELL)
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeEssentiaSmeltery.hint", 8);
     }
 
     @Override
     public String[] getInfoData() {
         String[] origData = super.getInfoData();
         String[] info = Arrays.copyOf(origData, origData.length + 1);
-        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
-            + EnumChatFormatting.YELLOW
-            + Math.round(this.mParallel)
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.node_power")
-            + " "
-            + EnumChatFormatting.RED
-            + this.nodePower
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
-            + " "
-            + EnumChatFormatting.AQUA
-            + this.nodePurificationEfficiency
-            + "%"
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
-            + " "
-            + EnumChatFormatting.GRAY
-            + this.nodeIncrease
-            + "%"
-            + EnumChatFormatting.RESET;
+        info[origData.length] = IGregTechDeviceInformation.encode(
+            "gg.infodata.les.stats",
+            Math.round(this.mParallel),
+            this.nodePower,
+            this.nodePurificationEfficiency,
+            this.nodeIncrease);
         return info;
     }
 
@@ -321,22 +303,6 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (!this.isFullPower()) return;
         super.runMachine(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                            "gg.gui.text.large_essentia_smeltery.requires",
-                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
-                                + EnumChatFormatting.WHITE))
-                    .setTextAlignment((Alignment.CenterLeft)))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
 
     @Override
@@ -384,7 +350,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
                 break;
             } else {
                 this.mOutputAspects.add(getEssentia(fluidStack, p));
-                fluidStack.amount -= p;
+                fluidStack.amount -= p * 1000;
                 break;
             }
         }
@@ -451,7 +417,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         this.mOutputAspects.aspects.clear();
     }
 
-    private int expectedPower() {
+    public int expectedPower() {
         int maxEnergyInputTier_EM = this.getMaxEnergyInputTier_EM();
         return (int) (maxEnergyInputTier_EM * maxEnergyInputTier_EM * NODE_COST_MULTIPLIER);
     }
@@ -600,7 +566,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
-        if (mMufflerHatches.size() == 0) {
+        if (mMufflerHatches.isEmpty()) {
             // No muffler present. Fail.
             return false;
         }
@@ -644,5 +610,20 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeEssentiaSmelteryGui(this);
     }
 }

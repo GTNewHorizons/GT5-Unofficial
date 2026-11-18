@@ -167,7 +167,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
                 }
             }
 
-            if (!any) return false;
+            return any;
         }
 
         return true;

@@ -25,7 +25,7 @@ public final class WirelessEnergyHatchGuiHelper {
                 .numbersInt(0, maxAmperage)
                 .formatAsInteger(true)
                 .setTextAlignment(Alignment.Center)
-                .setMaxLength((int) Math.ceil(Math.log10(maxAmperage)))
+                .setMaxLength(20)
                 .scrollValues(1, 64, 4, 16)
                 .width(70));
 

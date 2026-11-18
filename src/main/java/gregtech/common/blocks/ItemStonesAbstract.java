@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class ItemStonesAbstract extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        if (aStack.getItemDamage() == WILDCARD) return translateToLocal("gt.block.any_sub_block");
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override

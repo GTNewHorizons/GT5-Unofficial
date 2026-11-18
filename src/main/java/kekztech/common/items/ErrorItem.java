@@ -11,8 +11,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import kekztech.KekzCore;
 
 public class ErrorItem extends Item {
 
@@ -30,7 +30,7 @@ public class ErrorItem extends Item {
         super.setUnlocalizedName(unlocalizedName);
         super.setCreativeTab(CreativeTabs.tabMisc);
         super.setMaxStackSize(64);
-        super.setTextureName(KekzCore.MODID + ":" + "Error");
+        super.setTextureName(Mods.ModIDs.KEKZ_TECH + ":" + "Error");
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
 

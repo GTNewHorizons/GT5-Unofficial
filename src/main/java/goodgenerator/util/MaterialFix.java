@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -149,11 +150,11 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 2,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateDouble, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "P", "P", "h", 'P', tMaterial.get(OrePrefixes.plate, 1) });
             }
             if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
@@ -166,7 +167,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 3))
@@ -177,11 +178,11 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "B", "P", "h", 'P', tMaterial.get(OrePrefixes.plate, 1), 'B',
                         tMaterial.get(OrePrefixes.plateDouble, 1) });
             }
@@ -195,7 +196,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 9))
@@ -206,7 +207,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
 
                 if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
@@ -219,7 +220,7 @@ public class MaterialFix {
                                 tMaterial.getStats()
                                     .getMass() * 3,
                                 1L) * TICKS)
-                        .eut(TierEU.RECIPE_MV / 2)
+                        .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                         .addTo(benderRecipes);
                 }
             }
@@ -227,14 +228,14 @@ public class MaterialFix {
                 if (tMaterial.hasItemType(OrePrefixes.stick)) {
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
-                        GTModHandler.RecipeBits.BUFFERED,
+                        GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                         new Object[] { "PhP", 'P', tMaterial.get(OrePrefixes.stick, 1) });
                 }
             }
             if (tMaterial.hasItemType(OrePrefixes.spring)) {
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.spring, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", " P ", 'P', tMaterial.get(OrePrefixes.stickLong, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stickLong, 1))
@@ -251,7 +252,7 @@ public class MaterialFix {
             if (tMaterial.hasItemType(OrePrefixes.springSmall)) {
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.springSmall, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", 'P', tMaterial.get(OrePrefixes.stick, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.stick, 1))

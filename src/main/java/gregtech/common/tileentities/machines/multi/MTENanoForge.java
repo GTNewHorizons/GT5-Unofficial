@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -24,12 +24,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -42,12 +43,15 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -59,7 +63,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -75,8 +78,9 @@ import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -341,16 +345,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(
             'V',
-            buildHatchAdder(MTENanoForge.class).atLeast(
-                ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
-                .hint(1)
+            buildHatchAdder(MTENanoForge.class)
+                .atLeast(ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Energy.or(ExoticEnergy), 1))
+                .hint(2)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
         .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('Z', ofBlock(Blocks.air, 0))
+        .addElement('Z', isAir())
         .build();
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
@@ -391,42 +395,25 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] {
-                BlockIcons.getCasingTextureForId(
-                    GTUtility.getCasingTextureIndex(
-                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                        mSpecialTier < 4 ? 10 : 6)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] {
-                BlockIcons.getCasingTextureForId(
-                    GTUtility.getCasingTextureIndex(
-                        mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                        mSpecialTier < 4 ? 10 : 6)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { BlockIcons.getCasingTextureForId(
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ASSEMBLY_LINE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_GLOW,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return BlockIcons.getCasingTextureForId(
             GTUtility.getCasingTextureIndex(
                 mSpecialTier < 4 ? GregTechAPI.sBlockCasings8 : GregTechAPI.sBlockCasings13,
-                mSpecialTier < 4 ? 10 : 6)) };
+                mSpecialTier < 4 ? 10 : 6));
     }
 
     @Override
@@ -577,20 +564,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (mMaxProgresstime > 0) {
                         tile.setRunning(true);
                         tile.setTimer(tile.getTimer() + deltaT);
-                        if (timer >= 10) {
-                            tile.setTimerServer(tile.getTimer());
-                            timer = 0;
-                        }
                     } else {
                         tile.setRunning(false);
                         tile.setTimer(tile.getTimer() - deltaT);
                         if (tile.getTimer() < 0) {
                             tile.setTimer(0);
                         }
-                        if (timer >= 10) {
-                            tile.setTimerServer(tile.getTimer());
-                            timer = 0;
-                        }
+                    }
+                    if (timer >= 10) {
+                        tile.setTimerServer(tile.getTimer());
+                        timer = 0;
                     }
                 }
             }
@@ -621,7 +604,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
-            checkCasingMin(errors, casingAmount, 2784);
+            checkCasingMin(errors, casingAmount, 2780);
             if (renderActive) {
                 if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 50, 0, errors)) {
                     mSpecialTier = 4;
@@ -652,12 +635,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             }
 
             if (!errors.isEmpty()) return;
+            checkHasMaintenanceHatch(errors);
         }
         if (mSpecialTier == 0) {
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
             return;
         }
-        checkHasMaintenanceHatch(errors);
+
         checkExoticAndNormalEnergyHatches(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
@@ -731,10 +715,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSpecialTier = (byte) trigger.stackSize;
-        if (mSpecialTier == 4) {
-            buildPiece(STRUCTURE_PIECE_TIER4_BASE, trigger, false, 20, 33, 0);
-            buildPiece(STRUCTURE_PIECE_TIER4_RENDER, trigger, false, 20, 50, 0);
-        }
+        ItemStack nanite = switch (trigger.stackSize) {
+            case 1 -> Materials.Carbon.getNanite(1);
+            case 2 -> Materials.Neutronium.getNanite(1);
+            case 3 -> Materials.TranscendentMetal.getNanite(1);
+            default -> Materials.Eternity.getNanite(1);
+        };
+        setInventorySlotContents(getControllerSlotIndex(), nanite);
     }
 
     @Override
@@ -759,84 +746,55 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites")
-            .addInfo("Each tier requires some structural changes")
-            .addInfo("Machine tier depends on Nanite in controller slot")
-            .addInfo("Tier 4 has additional mechanics, check the controller")
-            .addSeparator()
-            .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
-            .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
-            .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
-            .addSeparator()
-            .addInfo(
-                "Performs " + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " on lower-tier recipes")
-            .addTecTechHatchInfo()
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.nanite_fabricator"))
+            .addMarkdown(new ResourceLocation("gregtech", "nano-forge"))
             .addUnlimitedTierSkips()
-            .beginStructureBlock(30, 38, 13, false)
-            .addController("Front bottom center")
-            .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
-            .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
-            .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
-            .addStructureInfo(getTieredText("0", "16", "32") + "Assembly Line Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Tier " + EnumChatFormatting.DARK_GREEN
-                    + "4 "
-                    + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks")
-            .addStructureInfo("Check the NEI preview for specifics")
-            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 0
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input buses")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output buses")
-            .toolTipFinisher(AuthorBlueWeabo);
+            .addSupportAny()
+            .beginStructureBlock(41, 52, 41, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addStructureInfo(EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted("gt.mbtt.structure.requires_in_controller", OrePrefixes.nanite.getLocalizedNameForItem(Materials.Carbon)))
+            .addCasing("468-523", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("170", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two") + " " + EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.adds_to_tier", 1))
+            .addStructureInfo(EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted("gt.mbtt.structure.requires_in_controller", OrePrefixes.nanite.getLocalizedNameForItem(Materials.Neutronium)))
+            .addCasing("148", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("16", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three") + " " + EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.adds_to_tier", 2))
+            .addStructureInfo(EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted("gt.mbtt.structure.requires_in_controller", OrePrefixes.nanite.getLocalizedNameForItem(Materials.TranscendentMetal)))
+            .addCasing("228", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("84", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
+            .addCasing("16", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four") + " " + EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.mbtt.structure.new_structure"))
+            .addStructureInfo(EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted("gt.mbtt.structure.requires_in_controller", OrePrefixes.nanite.getLocalizedNameForItem(Materials.Eternity)))
+            .addCasing("3208", Casings.NaniteShieldingGlass.getLocalizedName(), false)
+            .addCasing("2780-2792", Casings.MagneticAnchorCasing.getLocalizedName(), false)
+            .addCasing("1452", Casings.PrecisionFieldSyncCasing.getLocalizedName(), false)
+            .addCasing("943", Casings.FieldEnergyAbsorberCasing.getLocalizedName(), false)
+            .addCasing("871", Casings.LoadbearingDistributionCasing.getLocalizedName(), false)
+            .addCasing("582", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.MagMatter), false)
+            .addCasing("349", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("171", Casings.NaniteReplicationFramework.getLocalizedName(), false)
+            .addCasing("170", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addCasing("166", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.WhiteDwarfMatter), false)
+            .addCasing("147", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.BlackDwarfMatter), false)
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.any_anchor_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_anchor_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_anchor_casing"), 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

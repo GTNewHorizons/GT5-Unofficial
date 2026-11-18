@@ -1,5 +1,7 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,7 +31,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerDisconnectionFromClient
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
-import gregtech.api.util.GTLog;
 
 @EventBusSubscriber
 @ParametersAreNonnullByDefault
@@ -41,14 +42,14 @@ public class GTCapesLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Downloading Cape List");
+        GT_FML_LOGGER.debug("GTMod: Downloading Cape List");
         downloadGTNHUUIDCapes();
         downloadGregoriusCapes();
         if (Mods.GalacticraftCore.isModLoaded()) {
             downloadGalacticraftCapes();
         }
         if (Mods.GalaxySpace.isModLoaded()) {
-            downloadGalaxySpaceCapes();
+            addGalaxySpaceCapes();
         }
         addHarcodedCapes();
     }
@@ -109,7 +110,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
@@ -120,7 +121,7 @@ public class GTCapesLoader implements Runnable {
                 putName(scanner.nextLine());
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
@@ -133,29 +134,27 @@ public class GTCapesLoader implements Runnable {
                 if (parts.length == 2) {
                     putName(parts[0], parts[1] + "GC");
                 } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
+                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
-    private static void downloadGalaxySpaceCapes() {
-        String url = "https://demigods.at.ua/capes.txt";
-        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    putName(parts[0], parts[1] + "GS");
-                } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
-        }
+    private static void addGalaxySpaceCapes() {
+        // From https://demigods.at.ua/capes.txt. Hardcoded because it was failing a lot since weeks now
+        putName("BlesseNtumble", "capeDevGS");
+        putName("BlesseNumble", "capeGrayCGS");
+        putName("MEGADesantnic", "capeBlueGS");
+        putName("izlow", "capeCyanGS");
+        putName("AlexSocol", "capeGrayCGS");
+        putName("Bagomot", "capeDarkGreenGS");
+        putName("juh9870", "capeRedGS");
+        putName("FriendlyDevil", "capeLightBlueGS");
+        putName("KETZALCOATL", "capeLightBlueGS");
+        putName("Dixil", "capeBlueGS");
+        putName("Pashok123321", "capeBlueGS");
     }
 
     private static void addHarcodedCapes() {

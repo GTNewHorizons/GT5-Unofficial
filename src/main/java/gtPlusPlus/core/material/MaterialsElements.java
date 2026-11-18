@@ -472,7 +472,7 @@ public final class MaterialsElements {
         public static final Material CELESTIAL_TUNGSTEN = new Material(
             "Celestial Tungsten",
             MaterialState.SOLID,
-            TextureSet.SET_REFINED,
+            TextureSet.SET_CELESTIAL_TUNGSTEN,
             new short[] { 50, 50, 50, 2 },
             INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
             INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
@@ -484,7 +484,7 @@ public final class MaterialsElements {
         public static final Material ASTRAL_TITANIUM = new Material(
             "Astral Titanium",
             MaterialState.SOLID,
-            TextureSet.SET_REFINED,
+            TextureSet.SET_ASTRAL_TITANIUM,
             new short[] { 220, 160, 240, 2 },
             INSTANCE.TITANIUM.getMeltingPointC() + 7500,
             INSTANCE.TITANIUM.getBoilingPointC() + 7500,
@@ -496,6 +496,7 @@ public final class MaterialsElements {
         public static final Material CHRONOMATIC_GLASS = new Material(
             "Chromatic Glass",
             MaterialState.SOLID,
+            TextureSet.SET_CHROMATIC_GLASS,
             new short[] { 255, 255, 255, 3 },
             9200,
             17550,

@@ -56,6 +56,7 @@ import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import io.netty.buffer.ByteBuf;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
@@ -211,18 +212,16 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-        data.setByte("mRotation", (byte) rotation.getIndex());
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeByte(rotation.getIndex());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        rotation = Rotation.byIndex(data.getByte("mRotation"));
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        rotation = Rotation.byIndex(buffer.readByte());
     }
 
     @Override
@@ -475,9 +474,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            if (IsAutoMaintenanceInput(aStack)) {
-                return true;
-            }
+            return IsAutoMaintenanceInput(aStack);
         }
         return false;
     }
@@ -550,5 +547,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return IsAutoMaintenanceInput(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

@@ -57,8 +57,8 @@ public class ItemVolumetricFlask extends GTGenericItem
     @SideOnly(Side.CLIENT)
     public IIcon iconWindow;
 
-    public ItemVolumetricFlask(String unlocalized, String english, int maxCapacity) {
-        super(unlocalized, english, null);
+    public ItemVolumetricFlask(String unlocalized, int maxCapacity) {
+        super(unlocalized, unlocalized, null);
         this.maxCapacity = maxCapacity;
         unlocalFlaskName = unlocalized;
         setMaxStackSize(64);

@@ -19,7 +19,7 @@ public class GTItemSink extends InventoryItemSink {
     private final IMetaTileEntity imte;
 
     public GTItemSink(IMetaTileEntity imte, ForgeDirection side) {
-        super(imte, side);
+        super(imte.getBaseMetaTileEntity(), side);
         this.imte = imte;
     }
 
@@ -53,7 +53,7 @@ public class GTItemSink extends InventoryItemSink {
         int existingMaxStack = stack == null ? 64 : stack.getMaxStackSize();
 
         if (invStackLimit > 64) {
-            return invStackLimit / 64 * existingMaxStack;
+            return Math.min(invStackLimit, GTUtility.longToInt((long) (invStackLimit / 64) * existingMaxStack));
         } else {
             return Math.min(invStackLimit, existingMaxStack);
         }

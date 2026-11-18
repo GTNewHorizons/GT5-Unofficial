@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -65,13 +63,8 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(getDimension())
-                .filter(this::isValidStack)
                 .build()
                 .center());
-    }
-
-    protected boolean isValidStack(ItemStack itemStack) {
-        return true;
     }
 
     @Override

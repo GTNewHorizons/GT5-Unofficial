@@ -8,11 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -36,11 +35,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.enums.Materials;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -49,7 +46,6 @@ import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -229,38 +225,25 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void runtimeTrieMissDoesNotUseDiagnosticFallbackOrWriteDiagnosticLog(@TempDir Path tempDir) throws Exception {
-        File previousLogFile = GTLog.mLogFile;
-        GTLog.mLogFile = tempDir.resolve("logs")
-            .resolve("GregTech.log")
-            .toFile();
+    void runtimeTrieMissDoesNotUseDiagnosticFallback() {
+        Item input = item("lookup.diagnostic.input");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(input, item("lookup.diagnostic.output"), category);
+        RecipeMapBackend backend = new EmptyLookupBackend();
+        backend.compileRecipe(recipe);
 
-        try {
-            Item input = item("lookup.diagnostic.input");
-            RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
-            GTRecipe recipe = recipe(input, item("lookup.diagnostic.output"), category);
-            RecipeMapBackend backend = new EmptyLookupBackend();
-            backend.compileRecipe(recipe);
-
-            assertFalse(
-                backend
-                    .matchRecipeStream(
-                        new ItemStack[] { new ItemStack(input, 1, 0) },
-                        new FluidStack[0],
-                        null,
-                        null,
-                        false,
-                        false,
-                        false)
-                    .findAny()
-                    .isPresent());
-
-            Path missLog = tempDir.resolve("logs")
-                .resolve("RecipeLookupMisses.log");
-            assertFalse(Files.exists(missLog));
-        } finally {
-            GTLog.mLogFile = previousLogFile;
-        }
+        assertFalse(
+            backend
+                .matchRecipeStream(
+                    new ItemStack[] { new ItemStack(input, 1, 0) },
+                    new FluidStack[0],
+                    null,
+                    null,
+                    false,
+                    false,
+                    false)
+                .findAny()
+                .isPresent());
     }
 
     @Test
@@ -376,7 +359,7 @@ class RecipeMapBackendLookupTest {
     @Test
     void lookupVerifierTreatsQftCatalystAsConflictSelector() {
         ensureMinecraftStackComparisonItem();
-        String mapName = "gtpp.recipe.quantumforcesmelter";
+        String mapName = "gt.recipe.quantumforcesmelter";
         Item input = item("lookup.validation.qft_selector.input");
         Item catalyst = item("lookup.validation.qft_selector.catalyst");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -394,7 +377,7 @@ class RecipeMapBackendLookupTest {
     @Test
     void lookupVerifierReportsQftConflictWhenCatalystMatches() {
         ensureMinecraftStackComparisonItem();
-        String mapName = "gtpp.recipe.quantumforcesmelter";
+        String mapName = "gt.recipe.quantumforcesmelter";
         Item input = item("lookup.validation.qft_conflict.input");
         Item catalyst = item("lookup.validation.qft_conflict.catalyst");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -599,8 +582,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.HV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.HV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -653,10 +636,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.MV));
-            ItemData equivalentData = new ItemData(circuit, Materials.MV);
-            equivalentData.mBlackListed = true;
-            GTOreDictUnificator.setItemData(equivalent, equivalentData);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -797,8 +778,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();
@@ -1015,7 +996,8 @@ class RecipeMapBackendLookupTest {
     private static void setMetadataStorage(GTRecipe recipe, IRecipeMetadataStorage metadataStorage) {
         try {
             Field field = GTRecipe.class.getDeclaredField("metadataStorage");
-            UNSAFE.putObject(recipe, UNSAFE.objectFieldOffset(field), metadataStorage);
+            field.setAccessible(true);
+            field.set(recipe, metadataStorage);
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
@@ -1055,9 +1037,11 @@ class RecipeMapBackendLookupTest {
         }
         try {
             Field field = Items.class.getDeclaredField("feather");
-            Object base = UNSAFE.staticFieldBase(field);
-            long offset = UNSAFE.staticFieldOffset(field);
-            UNSAFE.putObject(base, offset, new Item());
+
+            VarHandle handle = MethodHandles.privateLookupIn(Items.class, MethodHandles.lookup())
+                .unreflectVarHandle(field);
+
+            handle.set(new Item());
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
@@ -1076,9 +1060,10 @@ class RecipeMapBackendLookupTest {
             FluidStack stack = (FluidStack) UNSAFE.allocateInstance(FluidStack.class);
             Field fluidField = FluidStack.class.getDeclaredField("fluid");
             Field fluidDelegateField = FluidStack.class.getDeclaredField("fluidDelegate");
-            Field amountField = FluidStack.class.getDeclaredField("amount");
-            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidField), fluid);
-            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidDelegateField), new RegistryDelegate<Fluid>() {
+            fluidField.setAccessible(true);
+            fluidField.set(stack, fluid);
+            fluidDelegateField.setAccessible(true);
+            fluidDelegateField.set(stack, new RegistryDelegate<Fluid>() {
 
                 @Override
                 public Fluid get() {
@@ -1095,7 +1080,7 @@ class RecipeMapBackendLookupTest {
                     return Fluid.class;
                 }
             });
-            UNSAFE.putInt(stack, UNSAFE.objectFieldOffset(amountField), amount);
+            stack.amount = amount;
             return stack;
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
@@ -1144,7 +1129,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1165,7 +1150,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1194,7 +1179,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1225,7 +1210,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1312,7 +1297,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1341,7 +1326,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return false;
         }

@@ -12,7 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -36,6 +38,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEXLTurbineGas extends MTEXLTurbineBase {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -171,36 +174,33 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
+    public boolean requiresOutputHatch() {
+        return false;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine, XLGT")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addTecTechHatchInfo()
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.gas_turbine", "XLGT"))
+            .addMarkdown(new ResourceLocation("gregtech", "xl-gas-turbine"))
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 26, false)
-            .addController("Front center")
-            .addCasingInfoMin("Reinforced Gas Turbine Casing", 340, false)
-            .addCasingInfoExactly("Any Tiered Glass", 104, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 80, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 76, false)
-            .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addCasingInfoExactly("Steel Gear Box", 7, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addMufflerHatch("Any Turbine Casing (x4)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
+            .beginStructureBlock(9, 9, 26, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_5th_layer"))
+            .addCasing(minCasingAmount() + "-346", getCasing().getLocalizedName(), false)
+            .addCasing("104", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("80", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("76", getRotorCasing().getLocalizedName(), false)
+            .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
+            .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
+            .addCasing("7", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addMufflerHatch("4", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -208,11 +208,6 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     @Override
     public int minCasingAmount() {
         return 340;
-    }
-
-    @Override
-    public boolean requiresMufflerHatch() {
-        return true;
     }
 
     @Override

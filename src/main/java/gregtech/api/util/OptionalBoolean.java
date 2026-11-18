@@ -11,9 +11,7 @@ public enum OptionalBoolean implements BooleanSupplier {
     @Override
     public boolean getAsBoolean() {
         return switch (this) {
-            case NONE -> {
-                throw new IllegalStateException("OptionalBoolean was not present");
-            }
+            case NONE -> throw new IllegalStateException("OptionalBoolean was not present");
             case FALSE -> false;
             case TRUE -> true;
         };

@@ -9,11 +9,11 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.ItemCasings;
-import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
 public class BlockDEFCCasing extends BlockCasingsAbstract {
@@ -50,7 +50,7 @@ public class BlockDEFCCasing extends BlockCasingsAbstract {
     public void registerBlockIcons(IIconRegister aIconRegister) {
         texture = new IIcon[6];
         for (int i = 0; i < texture.length; i++) {
-            texture[i] = aIconRegister.registerIcon(Tags.MODID + ":casing/defc_" + i);
+            texture[i] = aIconRegister.registerIcon(Mods.ModIDs.KUBA_TECH + ":casing/defc_" + i);
         }
     }
 }

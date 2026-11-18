@@ -1,9 +1,8 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
+import static gregtech.api.items.armor.behaviors.BehaviorName.Levitation;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,11 +20,6 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     }
 
     @Override
-    public IIcon getModularArmorTexture() {
-        return creativeFlightAugment;
-    }
-
-    @Override
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
@@ -37,6 +31,10 @@ public class CreativeFlightBehavior implements IArmorBehavior {
             if (!player.capabilities.allowFlying) {
                 player.capabilities.allowFlying = true;
                 player.sendPlayerAbilities();
+            }
+
+            if (context.isBehaviorActive(Levitation)) {
+                player.capabilities.isFlying = true;
             }
         } else if (!player.capabilities.isCreativeMode) {
             player.capabilities.isFlying = false;

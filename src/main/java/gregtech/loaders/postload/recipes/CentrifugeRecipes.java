@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -13,7 +14,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GTBees.combs;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -88,10 +88,10 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1))
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 6),
+                WerkstoffLoader.PDMetallicPowder.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrOsLeachResidue.get(OrePrefixes.dust, 2))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
             .duration(2 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -484,8 +484,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 9))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1))
+                GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2),
+                GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2))
             .outputChances(5000, 1000)
             .duration(24 * MINUTES)
             .eut(320)
@@ -494,8 +494,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 4))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1))
+                GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2),
+                GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2))
             .outputChances(2000, 3000)
             .duration(21 * MINUTES + 20 * SECONDS)
             .eut(640)
@@ -535,7 +535,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 36))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 2),
                 new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
             .fluidOutputs(Materials.Helium.getGas(4_320))

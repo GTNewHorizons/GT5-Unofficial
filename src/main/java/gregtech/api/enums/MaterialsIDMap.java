@@ -1,6 +1,6 @@
 package gregtech.api.enums;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
@@ -96,6 +96,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(113, Materials.ExcitedDTPC);
         r(114, Materials.InactiveCosmicSolder);
         r(115, Materials.BoundlessCosmicSolder);
+        r(116, Materials.ComputationBase);
         r(118, Materials.NetherAir);
         r(119, Materials.NetherSemiFluid);
         r(120, Materials.NefariousGas);
@@ -169,6 +170,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(189, Materials.Shijima);
         r(190, Materials.Churitsu);
         r(191, Materials.PoisonousSlurry);
+        r(192, Materials.Amalgatite);
         r(201, Materials.Manasteel);
         r(202, Materials.Terrasteel);
         r(203, Materials.ElvenElementium);
@@ -185,6 +187,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(242, Materials.WeedEX9000);
         r(243, Materials.PotassiumHydroxide);
         r(244, Materials.CaesiumHydroxide);
+        r(245, Materials.Biogas);
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);
@@ -511,6 +514,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(702, Materials.Ice);
         r(703, Materials.UUMatter);
         r(704, Materials.Biomass);
+        r(705, Materials.DistilledWater);
         r(706, Materials.Ethanol);
         r(707, Materials.Oil);
         r(708, Materials.Diesel);
@@ -793,6 +797,6 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
     private void r(int ID, Materials material) {
         final Materials prevMaterial = put(ID, material);
         if (prevMaterial == null) return;
-        GTMod.GT_FML_LOGGER.warn("Material '{}' with ID {} was replaced by '{}'.", prevMaterial, ID, material);
+        GTLoggers.GT_FML_LOGGER.warn("Material '{}' with ID {} was replaced by '{}'.", prevMaterial, ID, material);
     }
 }

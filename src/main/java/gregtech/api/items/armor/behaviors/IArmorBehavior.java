@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import gregtech.GTMod;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.util.GTUtility;
 
 public interface IArmorBehavior {
     /*
@@ -29,14 +29,6 @@ public interface IArmorBehavior {
      * Gets this behavior's name. This is used to check for behavior presence and equality.
      */
     BehaviorName getName();
-
-    /**
-     * Used in renderItem to get the texture that will be drawn onto modular armor. Ignore if this behavior is not
-     * intended to dynamically change a texture.
-     */
-    default IIcon getModularArmorTexture() {
-        return null;
-    }
 
     /**
      * Called every tick that this behavior's armor item is equipped.
@@ -58,10 +50,14 @@ public interface IArmorBehavior {
      */
     default void onBehaviorActivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
+            if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+                ChatComponentTranslation chatComponent = new ChatComponentTranslation(
+                    "GT5U.armor.message.enabled",
+                    getDisplayName());
+                chatComponent.getChatStyle()
+                    .setColor(GRAY);
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
+            }
         }
     }
 
@@ -70,10 +66,14 @@ public interface IArmorBehavior {
      */
     default void onBehaviorDeactivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
+            if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+                ChatComponentTranslation chatComponent = new ChatComponentTranslation(
+                    "GT5U.armor.message.disabled",
+                    getDisplayName());
+                chatComponent.getChatStyle()
+                    .setColor(GRAY);
+                GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
+            }
         }
     }
 
@@ -114,7 +114,6 @@ public interface IArmorBehavior {
      */
     @NotNull
     default IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        GTMod.GT_FML_LOGGER.warn("Tried to merge armor behavior that does not support stacking! {} -> {}", other, this);
         return this;
     }
 

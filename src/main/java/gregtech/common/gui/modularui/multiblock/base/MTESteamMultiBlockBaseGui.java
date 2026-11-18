@@ -5,10 +5,8 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
 
-import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.common.gui.modularui.widget.CircularGaugeDrawable;
+import gregtech.common.gui.modularui.widget.SteamGaugeWidget;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 
 public class MTESteamMultiBlockBaseGui extends MTEMultiBlockBaseGui<MTESteamMultiBlockBase<?>> {
@@ -24,22 +22,8 @@ public class MTESteamMultiBlockBaseGui extends MTEMultiBlockBaseGui<MTESteamMult
         IntSyncValue maxSteamSyncer = new IntSyncValue(multiblock::getTotalSteamCapacity);
         syncManager.syncValue("maxSteam", maxSteamSyncer);
 
-        return super.build(guiData, syncManager, uiSettings)
-            .child(
-                new Widget<>().widgetTheme(GTWidgetThemes.STEAM_GAUGE)
-                    .size(48, 42)
-                    .left(-48)
-                    .top(8)
-                    .tooltipDynamic(
-                        t -> t.addLine(
-                            String.format("%s/%sL Steam", steamStoredSyncer.getValue(), maxSteamSyncer.getValue())))
-                    .tooltipAutoUpdate(true))
-            .child(
-                new CircularGaugeDrawable(() -> (float) steamStoredSyncer.getValue() / maxSteamSyncer.getValue())
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.STEAM_GAUGE_NEEDLE)
-                    .size(18, 4)
-                    .left(-48 + 21)
-                    .top(8 + 21));
+        return super.build(guiData, syncManager, uiSettings).child(
+            new SteamGaugeWidget(steamStoredSyncer, maxSteamSyncer).rightRel(1)
+                .top(8));
     }
 }

@@ -32,14 +32,6 @@ public final class GTTextureBuilder implements ITextureBuilder {
     }
 
     @Override
-    @Deprecated
-    // TODO remove this (extFacing is false by default)
-    public ITextureBuilder stdOrient() {
-        this.extFacing = false;
-        return this;
-    }
-
-    @Override
     public ITextureBuilder extFacing() {
         this.extFacing = true;
         return this;
@@ -47,7 +39,12 @@ public final class GTTextureBuilder implements ITextureBuilder {
 
     @Override
     public ITextureBuilder glow() {
-        glow = true;
+        return glow(true);
+    }
+
+    @Override
+    public ITextureBuilder glow(boolean glow) {
+        this.glow = glow;
         return this;
     }
 

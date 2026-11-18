@@ -51,7 +51,6 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -70,6 +69,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELESU extends MTEMultiBlockBase {
 
     private static final byte TEXID_SIDE = 0;
@@ -187,7 +187,6 @@ public class MTELESU extends MTEMultiBlockBase {
             .split(";");
         Collections.addAll(e, dsc);
         e.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
-        e.add(BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
         return e.toArray(new String[0]);
     }
 
@@ -410,26 +409,21 @@ public class MTELESU extends MTEMultiBlockBase {
             .setActive(true);
 
         long finishedTime = System.nanoTime();
-        // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
+
         if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
-            "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
-                + "ns / "
-                + (finishedTime - startingTime) / 1000000
-                + "ms) Owner:"
-                + this.getBaseMetaTileEntity()
-                    .getOwnerName()
-                + " Check at x:"
-                + this.getBaseMetaTileEntity()
-                    .getXCoord()
-                + " y:"
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " z:"
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIM-ID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId);
+            "LESU LookUp took longer than 5ms!({}ns / {}ms) Owner:{} Check at x:{} y:{} z:{} DIM-ID: {}",
+            finishedTime - startingTime,
+            (finishedTime - startingTime) / 1000000,
+            this.getBaseMetaTileEntity()
+                .getOwnerName(),
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord(),
+            this.getBaseMetaTileEntity()
+                .getWorld().provider.dimensionId);
     }
 
     public World getWorld() {

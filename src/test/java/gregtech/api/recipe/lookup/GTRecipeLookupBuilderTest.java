@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -22,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.enums.Materials;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import sun.misc.Unsafe;
@@ -140,8 +141,8 @@ class GTRecipeLookupBuilderTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
             GTRecipe recipe = recipe(new ItemStack[] { equivalent }, null);
 
@@ -320,9 +321,11 @@ class GTRecipeLookupBuilderTest {
         }
         try {
             Field field = Items.class.getDeclaredField("feather");
-            Object base = UNSAFE.staticFieldBase(field);
-            long offset = UNSAFE.staticFieldOffset(field);
-            UNSAFE.putObject(base, offset, new Item());
+
+            VarHandle handle = MethodHandles.privateLookupIn(Items.class, MethodHandles.lookup())
+                .unreflectVarHandle(field);
+
+            handle.set(new Item());
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }

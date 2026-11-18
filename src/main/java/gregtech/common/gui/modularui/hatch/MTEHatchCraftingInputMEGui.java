@@ -3,6 +3,10 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.tileentities.machines.MTEHatchCraftingInputME.SLOT_MANUAL_START;
 
+import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -15,9 +19,8 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import appeng.api.implementations.ICraftingPatternItem;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
+import gregtech.api.modularui2.ProxiedMteGui.ProxiedMteGuiData;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.PatternSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
@@ -32,8 +35,15 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     private static final int MANUAL_SLOT_ROW = 3;
     private static final int MANUAL_SLOT_PER_ROW = 3;
 
+    private final @Nullable ProxiedMteGuiData proxyData;
+
     public MTEHatchCraftingInputMEGui(MTEHatchCraftingInputME hatch) {
+        this(hatch, null);
+    }
+
+    public MTEHatchCraftingInputMEGui(MTEHatchCraftingInputME hatch, @Nullable ProxiedMteGuiData proxyData) {
         super(hatch);
+        this.proxyData = proxyData;
     }
 
     @Override
@@ -53,14 +63,12 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .gridOfWidthHeight(
                 PATTERN_SLOT_PER_ROW,
                 PATTERN_SLOT_ROW,
-                ($x, $y, index) -> new PatternSlot().slot(
-                    new ModularSlot(machine.inventoryHandler, index)
-                        .filter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .changeListener((itemStack, onlyAmount, client, init) -> {
-                            if (!client) {
-                                machine.onPatternChange(index, itemStack);
-                            }
-                        })
+                ($x, $y, index) -> new PatternSlot()
+                    .slot(new ModularSlot(machine.inventoryHandler, index).changeListener((itemStack, _, client, _) -> {
+                        if (!client) {
+                            machine.onPatternChange(index, itemStack);
+                        }
+                    })
                         .slotGroup(PATTERN_INV_NAME)));
     }
 
@@ -70,7 +78,21 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .child(createShowPatternButton())
             .child(createExportButton())
             .child(createDoublePatternButton())
-            .child(createManualItemsButton(syncManager));
+            .child(createManualItemsButton(syncManager))
+            .childIf(machine.allowSelectCircuit(), () -> createCircuitSlot(syncManager));
+    }
+
+    @Override
+    protected boolean doesAddCircuitSlot() {
+        return false;
+    }
+
+    @Override
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomRightCornerFlow(panel, syncManager).childIf(
+            proxyData != null && proxyData.hasOrigin(),
+            () -> MTEHatchCraftingInputSlaveGui.createRecipeOrderButton(proxyData.getOriginMTE())
+                .size(SLOT_SIZE));
     }
 
     private ToggleButton createOptimizerButton() {
@@ -80,9 +102,13 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ToggleButton().value(optimizerSync)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
-            .addTooltipLine(GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern"))
-            .addTooltip(true, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable"))
-            .addTooltip(false, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern"))
+            .addTooltip(
+                true,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable"))
+            .addTooltip(
+                false,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled"));
     }
 
     private ToggleButton createShowPatternButton() {
@@ -93,8 +119,12 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
         return new ToggleButton().value(showPatternSync)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
-            .addTooltip(true, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.show_pattern.enable"))
-            .addTooltip(false, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled"));
+            .addTooltip(
+                true,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.show_pattern.enable"))
+            .addTooltip(
+                false,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled"));
     }
 
     private ButtonWidget<?> createExportButton() {
@@ -106,7 +136,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ButtonWidget<>().syncHandler(exportSyncHandler)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT)
-            .addTooltipLine(GTUtility.translate("GT5U.gui.tooltip.hatch.crafting_input_me.export"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.export"));
     }
 
     private ButtonWidget<?> createDoublePatternButton() {
@@ -120,7 +150,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ButtonWidget<>().syncHandler(doubleSyncHandler)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_X2)
-            .addTooltipLine(GTUtility.translate("gui.tooltips.appliedenergistics2.DoublePatterns"));
+            .addTooltipLine(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns"));
     }
 
     private ButtonWidget<?> createManualItemsButton(PanelSyncManager syncManager) {
@@ -128,7 +158,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .syncedPanel("manual_slots_panel", true, (manager, handler) -> createManualSlotUI(manager));
 
         return new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE)
-            .addTooltipLine(GTUtility.translate("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
+            .addTooltipLine(
+                StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
             .onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();

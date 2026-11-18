@@ -33,7 +33,7 @@ public class TecTechRecipeMaps {
 
         public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
             ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
-            long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            long aComputation, int aAmperage, long aComputationRequiredPerSec) {
             super(aResearchItem, aResearchTime, aResearchVoltage, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
             this.mComputation = aComputation;
             this.mAmperage = aAmperage;
@@ -42,7 +42,7 @@ public class TecTechRecipeMaps {
 
         public TTResearchStationALRecipe(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage,
             ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt,
-            ItemStack[][] aAlt, long aComputation, int aAmperage, int aComputationRequiredPerSec) {
+            ItemStack[][] aAlt, long aComputation, int aAmperage, long aComputationRequiredPerSec) {
             super(
                 aResearchItem,
                 aResearchTime,
@@ -71,7 +71,7 @@ public class TecTechRecipeMaps {
             EyeOfHarmonyFrontend.maxFluidOutputs)
         .minInputs(1, 0)
         .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-        .progressBarPos(78, 24 + 2)
+        .progressBarPos(75, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
             builder -> builder.setHeight(326)
@@ -111,10 +111,12 @@ public class TecTechRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> godforgeExoticMatterRecipes = RecipeMapBuilder
         .of("gt.recipe.fog_exotic")
-        .maxIO(1, 1, 2, 1)
+        .maxIO(0, 0, GodforgeExoticFrontend.MAX_FLUID_INPUTS, 1)
+        .minInputs(0, 1)
         .progressBar(TecTechUITextures.PROGRESSBAR_GODFORGE_PLASMA, ProgressBar.Direction.RIGHT)
-        .progressBarPos(78, 33)
-        .neiTransferRect(78, 33, 20, 20)
+        .progressBarPos(GodforgeExoticFrontend.ARROW_X, GodforgeExoticFrontend.ARROW_Y)
+        .neiTransferRect(GodforgeExoticFrontend.ARROW_X, GodforgeExoticFrontend.ARROW_Y, 20, 20)
+        .neiHandlerInfo(builder -> builder.setHeight(150))
         .frontend(GodforgeExoticFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> godforgeMoltenRecipes = RecipeMapBuilder.of("gt.recipe.fog_molten")
@@ -156,7 +158,12 @@ public class TecTechRecipeMaps {
                 NaniteTier[] tiers = recipe.getMetadata(GTRecipeConstants.NANITE_TIERS);
 
                 if (tiers != null && tiers.length != recipe.mInputs.length) {
-                    throw new IllegalArgumentException("nanite tiers length must match item input length");
+                    throw new IllegalArgumentException(
+                        "Nanite tiers length " + tiers.length
+                            + " must match item input length "
+                            + recipe.mInputs.length
+                            + " in recipe starting with "
+                            + recipe.mInputs[0].getDisplayName());
                 }
 
                 recipe.getMetadataStorage()

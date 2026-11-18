@@ -158,7 +158,7 @@ public class GodforgeMath {
             baseParallel = 512;
         }
         if (module instanceof MTEPlasmaModule) {
-            baseParallel = 384;
+            baseParallel = 512;
         }
         if (module instanceof MTEExoticModule) {
             baseParallel = 64;
@@ -278,7 +278,7 @@ public class GodforgeMath {
 
         if (data.isUpgradeActive(GGEBE)) {
             if (module instanceof MTEPlasmaModule) {
-                overclockTimeFactor = 2.3;
+                overclockTimeFactor = 4 - (double) 25000 / module.getHeat();
             } else {
                 overclockTimeFactor = 2.15;
             }

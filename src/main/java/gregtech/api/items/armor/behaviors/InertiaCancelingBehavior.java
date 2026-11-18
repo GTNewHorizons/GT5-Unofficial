@@ -1,8 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
-
-import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,11 +8,14 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
 
     public static final InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
+
+    private static final double DAMPING_FACTOR = 0.5;
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
@@ -31,7 +31,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(INERTIA_CANCELING_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override
@@ -39,12 +39,17 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
         if (!context.isRemote()) return;
 
         EntityPlayer player = context.getPlayer();
+        boolean creativeFlight = player.capabilities.isFlying;
+        boolean jetpackHovering = context.isBehaviorActive(BehaviorName.JetpackHover) && !player.onGround;
 
-        if (context.isBehaviorActive(BehaviorName.InertiaCanceling) && player.moveForward == 0
-            && player.moveStrafing == 0
-            && player.capabilities.isFlying) {
-            player.motionX *= 0.5;
-            player.motionZ *= 0.5;
+        if (!context.isBehaviorActive(BehaviorName.InertiaCanceling) || player.moveForward != 0
+            || player.moveStrafing != 0
+            || !(creativeFlight || jetpackHovering)) {
+            return;
         }
+
+        double retained = 1.0 - DAMPING_FACTOR;
+        player.motionX *= retained;
+        player.motionZ *= retained;
     }
 }

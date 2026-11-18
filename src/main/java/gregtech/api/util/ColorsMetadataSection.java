@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class ColorsMetadataSection implements IMetadataSection {
             try {
                 if (!hex.isEmpty()) colorValue = Integer.parseUnsignedInt(hex, 16);
             } catch (final NumberFormatException e) {
-                GTLog.err.println("Couldn't format color correctly of " + key + " -> " + hex);
+                GT_FML_LOGGER.error("Couldn't format color correctly of {} -> {}", key, hex);
             }
             intMap.put(key, colorValue);
         }

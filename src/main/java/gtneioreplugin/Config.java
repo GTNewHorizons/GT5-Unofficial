@@ -1,6 +1,8 @@
 package gtneioreplugin;
 
-@com.gtnewhorizon.gtnhlib.config.Config(modid = GTNEIOrePlugin.MODID, filename = GTNEIOrePlugin.MODID)
+import gregtech.api.enums.Mods;
+
+@com.gtnewhorizon.gtnhlib.config.Config(modid = Mods.ModIDs.N_E_I_ORE_PLUGIN, filename = Mods.ModIDs.N_E_I_ORE_PLUGIN)
 public class Config {
 
     @com.gtnewhorizon.gtnhlib.config.Config.Comment("if true, generate both csv files.")

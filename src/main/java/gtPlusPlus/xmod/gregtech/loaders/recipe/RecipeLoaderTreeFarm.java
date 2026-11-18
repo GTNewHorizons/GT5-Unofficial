@@ -12,7 +12,6 @@ import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class RecipeLoaderTreeFarm {
 
@@ -53,7 +52,6 @@ public class RecipeLoaderTreeFarm {
 
     private static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
-        MTETreeFarmLegacy.registerTreeProducts(saplingIn, log, saplingOut, leaves, fruit);
         MTETreeFarm.registerTreeProducts(saplingIn, log, saplingOut, leaves, fruit);
     }
 
@@ -93,6 +91,10 @@ public class RecipeLoaderTreeFarm {
             new ItemStack(Blocks.log2, 1, 1),
             new ItemStack(Blocks.leaves2, 1, 1),
             new ItemStack(Items.apple, 1, 0));
+
+        if (!Mods.EtFuturumRequiem.isModLoaded()) {
+            return;
+        }
 
         registerTreeProducts( // Brown Mushroom
             new ItemStack(Blocks.brown_mushroom, 1, 0),

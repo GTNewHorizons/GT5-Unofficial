@@ -15,7 +15,6 @@ import net.minecraft.util.StatCollector;
 
 import baubles.api.BaubleType;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -46,9 +45,6 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
-            GameRegistry.registerItem(this, aUnlocalName);
-        }
     }
 
     public abstract String getTextureNameForBauble();

@@ -3,14 +3,23 @@ package tectech.thing.metaTileEntity.hatch.bec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
+
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -20,6 +29,7 @@ import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElement {
 
     private BECFactoryNetwork network;
+    private Lazy<List<String>> tooltip = null;
 
     private final HashSet<MTEBECMultiblockBase<?>> controllers = new HashSet<>();
 
@@ -45,7 +55,7 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("Network: " + (network == null ? "None" : network.id));
+        data.add("BEC Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -74,6 +84,19 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     }
 
     @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-hatch"), new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
+    }
+
+    @Override
     public BECFactoryNetwork getNetwork() {
         return network;
     }
@@ -95,6 +118,15 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     @Override
     public void onRemoval() {
         super.onRemoval();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
 
         if (GTUtility.isServer()) {
             BECFactoryGrid.INSTANCE.removeElement(this);

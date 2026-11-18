@@ -7,11 +7,12 @@ import net.minecraft.block.Block;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFusionComputer2 extends MTEFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
@@ -36,11 +37,6 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
     @Override
     public int tier() {
         return 7;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 320006000L * (Math.min(16, this.mEnergyHatches.size())) / 16L;
     }
 
     @Override
@@ -71,27 +67,6 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
     @Override
     public int getFusionCoilMeta() {
         return 7;
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("It's over 9000!!!")
-            .addInfo("§b8,192§7 EU/t and §b20M§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoRange("Fusion Machine Casing", 79, 123, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Fusion Coil Block", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified Casing", 2)
-            .addInputHatch("2-16, Specified Casing", 1)
-            .addOutputHatch("1-16, Specified Casing", 3)
-            .addStructureInfo("ALL Hatches must be ZPM or better")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override

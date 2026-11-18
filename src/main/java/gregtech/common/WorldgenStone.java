@@ -1,10 +1,10 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugStones;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -16,32 +16,20 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.ores.OreManager;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class WorldgenStone extends GTWorldgen {
 
-    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
-                                                                                                                         // the
-                                                                                                                         // sizes
-                                                                                                                         // towards
-                                                                                                                         // skinnier
-                                                                                                                         // boulders,
-                                                                                                                         // ie
-                                                                                                                         // more
-                                                                                                                         // "shafts"
-                                                                                                                         // than
-                                                                                                                         // dikes
-                                                                                                                         // or
-                                                                                                                         // sills.
+    // Bias the sizes towards skinnier boulders, ie more "shafts" than dikes or sills.
+    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 
     public final int mBlockMeta, mAmount, mSize, mMinY, mMaxY, mProbability, mDimensionType;
     public final Block mBlock;
     public final Collection<String> mBiomeList;
     public final boolean mAllowToGenerateinVoid;
 
-    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
+    public Long2ObjectOpenHashMap<StoneSeeds> validStoneSeeds = new Long2ObjectOpenHashMap<>(1024);
 
     static class StoneSeeds {
 
@@ -114,8 +102,8 @@ public class WorldgenStone extends GTWorldgen {
                         validStoneSeeds.put(hash, new StoneSeeds(true));
                         // Add to generation list
                         stones.add(new ValidSeeds(x, z));
-                        if (debugStones) GTLog.out.println(
-                            "New stoneseed=" + mWorldGenName + " x=" + x + " z=" + z + " realSize=" + realSize);
+                        if (debugStones) GT_FML_LOGGER
+                            .debug("New stoneseed={} x={} z={} realSize={}", mWorldGenName, x, z, realSize);
                     } else {
                         validStoneSeeds.put(hash, new StoneSeeds(false));
                     }
@@ -132,10 +120,11 @@ public class WorldgenStone extends GTWorldgen {
         IStoneType stoneType = StoneType.findStoneType(mBlock, mBlockMeta);
 
         boolean result = !stones.isEmpty();
-        // Now process each oreseed vs this requested chunk
-        for (; !stones.isEmpty(); stones.remove(0)) {
-            int x = stones.get(0).mX * 16;
-            int z = stones.get(0).mZ * 16;
+        for (ValidSeeds stone : stones) {
+            int seedChunkX = stone.mX;
+            int seedChunkZ = stone.mZ;
+            int x = seedChunkX * 16;
+            int z = seedChunkZ * 16;
 
             stoneRNG.setSeed(
                 aWorld.getSeed()
@@ -177,31 +166,17 @@ public class WorldgenStone extends GTWorldgen {
                 // If the (tY-ySize) of the stoneseed is air in the current chunk, mark the seed empty and move on.
                 if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8)
                     .isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
-                    if (debugStones) GTLog.out.println(
-                        mWorldGenName + " tX="
-                            + tX
-                            + " tY="
-                            + tY
-                            + " tZ="
-                            + tZ
-                            + " realSize="
-                            + realSize
-                            + " xSize="
-                            + realSize / xSize
-                            + " ySize="
-                            + realSize / ySize
-                            + " zSize="
-                            + realSize / zSize
-                            + " tMinY="
-                            + tMinY
-                            + " tMaxY="
-                            + tMaxY
-                            + " - Skipped because first requesting chunk would not contain this stone");
+                    // spotless:off
+                    if (debugStones)
+                        GT_FML_LOGGER.debug("{} tX={} tY={} tZ={} realSize={} xSize={} ySize={} zSize={} tMinY={} tMaxY={} - Skipped because first requesting chunk would not contain this stone%n",
+                            mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, tMinY, tMaxY);
+                    // spotless:on
                     long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
-                        | (((long) x & 0x000000000fffffffL) << 28)
-                        | ((long) z & 0x000000000fffffffL));
+                        | (((long) seedChunkX & 0x000000000fffffffL) << 28)
+                        | ((long) seedChunkZ & 0x000000000fffffffL));
                     validStoneSeeds.remove(hash);
                     validStoneSeeds.put(hash, new StoneSeeds(false));
+                    continue;
                 }
 
                 // Chop the boundaries by the parts that intersect with the current chunk
@@ -211,35 +186,11 @@ public class WorldgenStone extends GTWorldgen {
                 int sZ = Math.max(tMinZ, aChunkZ + 8);
                 int nZ = Math.min(tMaxZ, aChunkZ + 8 + 16);
 
-                if (debugStones) {
-                    GTLog.out.println(
-                        mWorldGenName + " tX="
-                            + tX
-                            + " tY="
-                            + tY
-                            + " tZ="
-                            + tZ
-                            + " realSize="
-                            + realSize
-                            + " xSize="
-                            + realSize / xSize
-                            + " ySize="
-                            + realSize / ySize
-                            + " zSize="
-                            + realSize / zSize
-                            + " wX="
-                            + wX
-                            + " eX="
-                            + eX
-                            + " tMinY="
-                            + tMinY
-                            + " tMaxY="
-                            + tMaxY
-                            + " sZ="
-                            + sZ
-                            + " nZ="
-                            + nZ);
-                }
+                // spotless:off
+                if (debugStones)
+                    GT_FML_LOGGER.debug("{} tX={} tY={} tZ={} realSize={} xSize={} ySize={} zSize={} wX={} eX={} tMinY={} tMaxY={} sZ={} nZ={}",
+                        mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, wX, eX, tMinY, tMaxY, sZ, nZ);
+                // spotless:on
 
                 double rightHandSide = realSize * realSize + 1; // Precalc the right hand side
                 for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom up layer up. Maybe better on
@@ -280,10 +231,6 @@ public class WorldgenStone extends GTWorldgen {
                                     continue;
                                 }
                                 // spotless:on
-
-                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
-                                    continue;
-                                }
                             }
                         }
                     }

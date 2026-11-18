@@ -27,7 +27,7 @@ public enum SmallOreDrops {
     private final OrePrefixes fallback;
     private final int weight;
 
-    private SmallOreDrops(OrePrefixes primary, OrePrefixes fallback, int weight) {
+    SmallOreDrops(OrePrefixes primary, OrePrefixes fallback, int weight) {
         this.primary = primary;
         this.fallback = fallback;
         this.weight = weight;

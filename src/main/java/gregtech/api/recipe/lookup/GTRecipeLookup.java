@@ -7,12 +7,19 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import gregtech.api.util.GTRecipe;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.util.FieldsAreNonnullByDefault;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class GTRecipeLookup {
 
     private final GTRecipeLookupBranch rootBranch = new GTRecipeLookupBranch();
@@ -22,14 +29,10 @@ public final class GTRecipeLookup {
         if (frozen) {
             throw new UnsupportedOperationException("built recipe lookup is immutable");
         }
-        Objects.requireNonNull(recipe, "recipe");
-        validateIngredients(ingredients);
-
         addRecursive(recipe, ingredients, rootBranch, 0);
     }
 
     public Iterator<GTRecipe> iterator(List<GTRecipeLookupIngredient> ingredients) {
-        validateRuntimeIngredients(ingredients);
         return new RecipeIterator(rootBranch, ingredients);
     }
 
@@ -41,12 +44,11 @@ public final class GTRecipeLookup {
         GTRecipeLookupBranch branch, int index) {
         boolean lastIngredient = index == ingredients.size() - 1;
         for (GTRecipeLookupIngredient ingredient : ingredients.get(index)) {
-            Map<GTRecipeLookupIngredient, Node> nodes = branch.nodesFor(ingredient);
-            Node node = nodes.get(ingredient);
+            Node node = branch.getNode(ingredient);
 
             if (lastIngredient) {
                 if (node == null) {
-                    nodes.put(ingredient, Node.leaf(recipe));
+                    branch.putNode(ingredient, Node.leaf(recipe));
                     continue;
                 }
                 if (!node.containsRecipe(recipe)) {
@@ -58,8 +60,8 @@ public final class GTRecipeLookup {
             GTRecipeLookupBranch childBranch;
             if (node == null) {
                 childBranch = new GTRecipeLookupBranch();
-                nodes.put(ingredient, Node.branch(childBranch));
-            } else if (node.hasBranch()) {
+                branch.putNode(ingredient, Node.branch(childBranch));
+            } else if (node.branch != null) {
                 childBranch = node.branch;
             } else {
                 childBranch = new GTRecipeLookupBranch();
@@ -70,42 +72,15 @@ public final class GTRecipeLookup {
         }
     }
 
-    private static void validateIngredients(List<List<GTRecipeLookupIngredient>> ingredients) {
-        Objects.requireNonNull(ingredients, "ingredients");
-        if (ingredients.isEmpty()) {
-            throw new IllegalArgumentException("ingredients must not be empty");
-        }
-        for (List<GTRecipeLookupIngredient> group : ingredients) {
-            Objects.requireNonNull(group, "ingredient group");
-            if (group.isEmpty()) {
-                throw new IllegalArgumentException("ingredient group must not be empty");
-            }
-            for (GTRecipeLookupIngredient ingredient : group) {
-                Objects.requireNonNull(ingredient, "ingredient");
-            }
-        }
-    }
-
-    private static void validateRuntimeIngredients(List<GTRecipeLookupIngredient> ingredients) {
-        Objects.requireNonNull(ingredients, "ingredients");
-        if (ingredients.isEmpty()) {
-            throw new IllegalArgumentException("ingredients must not be empty");
-        }
-        for (GTRecipeLookupIngredient ingredient : ingredients) {
-            Objects.requireNonNull(ingredient, "ingredient");
-        }
-    }
-
     static final class Node {
 
-        private List<GTRecipe> recipes;
-        private GTRecipeLookupBranch branch;
+        private @Nullable GTRecipe recipe;
+        private @Nullable List<GTRecipe> additionalRecipes;
+        private @Nullable GTRecipeLookupBranch branch;
 
         static Node leaf(GTRecipe recipe) {
             Node node = new Node();
-            List<GTRecipe> recipes = new ArrayList<>(1);
-            recipes.add(recipe);
-            node.recipes = recipes;
+            node.recipe = recipe;
             return node;
         }
 
@@ -115,23 +90,20 @@ public final class GTRecipeLookup {
             return node;
         }
 
-        boolean hasBranch() {
-            return branch != null;
-        }
-
-        boolean hasRecipes() {
-            return recipes != null && !recipes.isEmpty();
-        }
-
         void addRecipe(GTRecipe recipe) {
-            if (recipes == null) {
-                recipes = new ArrayList<>(1);
+            if (this.recipe == null) {
+                this.recipe = recipe;
+                return;
             }
-            recipes.add(recipe);
+            if (additionalRecipes == null) {
+                additionalRecipes = new ArrayList<>(1);
+            }
+            additionalRecipes.add(recipe);
         }
 
         boolean containsRecipe(GTRecipe recipe) {
-            return recipes != null && recipes.contains(recipe);
+            return Objects.equals(recipe, this.recipe)
+                || additionalRecipes != null && additionalRecipes.contains(recipe);
         }
     }
 
@@ -150,8 +122,7 @@ public final class GTRecipeLookup {
         private final List<GTRecipeLookupIngredient> ingredients;
         private final Deque<SearchFrame> stack = new ArrayDeque<>();
         private Iterator<GTRecipe> leafIterator = Collections.emptyIterator();
-        private GTRecipe nextRecipe;
-        private boolean hasCachedNext;
+        private @Nullable GTRecipe nextRecipe;
 
         private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
             this.ingredients = new ArrayList<>(new LinkedHashSet<>(ingredients));
@@ -160,25 +131,26 @@ public final class GTRecipeLookup {
 
         @Override
         public boolean hasNext() {
-            if (!hasCachedNext) {
+            if (nextRecipe == null) {
                 nextRecipe = findNext();
-                hasCachedNext = true;
             }
             return nextRecipe != null;
         }
 
         @Override
         public GTRecipe next() {
-            if (!hasNext()) {
+            if (nextRecipe == null) {
+                nextRecipe = findNext();
+            }
+            if (nextRecipe == null) {
                 throw new NoSuchElementException();
             }
             GTRecipe result = nextRecipe;
             nextRecipe = null;
-            hasCachedNext = false;
             return result;
         }
 
-        private GTRecipe findNext() {
+        private @Nullable GTRecipe findNext() {
             while (true) {
                 if (leafIterator.hasNext()) {
                     return leafIterator.next();
@@ -201,12 +173,15 @@ public final class GTRecipeLookup {
                     continue;
                 }
 
-                if (node.hasBranch()) {
+                if (node.branch != null) {
                     stack.push(new SearchFrame(node.branch));
                 }
 
-                if (node.hasRecipes()) {
-                    leafIterator = node.recipes.iterator();
+                if (node.recipe != null) {
+                    if (node.additionalRecipes != null) {
+                        leafIterator = node.additionalRecipes.iterator();
+                    }
+                    return node.recipe;
                 }
             }
         }

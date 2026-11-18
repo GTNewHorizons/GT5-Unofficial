@@ -5,6 +5,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
@@ -17,11 +18,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.material.Material;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
@@ -47,7 +45,6 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
-        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(fluid);
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
@@ -55,9 +52,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
                 .getIconFromDamage(item.getItemDamage());
             int tint;
             CondensateType condensate = CondensateType.getCondensateType(fluid);
-            if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
-                tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
-            } else if (condensate != null) {
+            if (condensate != null) {
                 tint = CondensateType.getRenderColor(fluid);
             } else {
                 tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
@@ -77,9 +72,15 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             tess.draw();
 
             if (condensate != null) {
-                Minecraft.getMinecraft()
-                    .getTextureManager()
-                    .bindTexture(CondensateAnimationTickHandler.texture);
+                if (CondensateType.MHDCSM.equals(condensate)) {
+                    Minecraft.getMinecraft()
+                        .getTextureManager()
+                        .bindTexture(CondensateAnimationTickHandler.textureBorderless);
+                } else {
+                    Minecraft.getMinecraft()
+                        .getTextureManager()
+                        .bindTexture(CondensateAnimationTickHandler.texture);
+                }
                 GL11.glColor4f(1f, 1f, 1f, 1f);
                 final float vMin = CondensateAnimationTickHandler.currentFrame / 64f;
                 final float vMax = (CondensateAnimationTickHandler.currentFrame + 1) / 64f;
@@ -92,19 +93,18 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             }
         }
 
-        if (item.getTagCompound() == null) {
+        NBTTagCompound tagCompound = item.getTagCompound();
+        if (tagCompound == null) {
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             return;
         }
 
         // Render Fluid amount text
-        long fluidAmount = item.getTagCompound()
-            .getLong("mFluidDisplayAmount");
-        if (fluidAmount > 0L && !item.getTagCompound()
-            .getBoolean("mHideStackSize")) {
+        long fluidAmount = tagCompound.getLong("mFluidDisplayAmount");
+        if (fluidAmount > 0L && !tagCompound.getBoolean("mHideStackSize")) {
+            // L is used intentionally, because it takes less space than mB
             String amountString;
-
             if (fluidAmount < 10_000) {
                 amountString = fluidAmount + "L";
             } else {

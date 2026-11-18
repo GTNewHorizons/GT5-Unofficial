@@ -15,20 +15,23 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
-import tectech.util.CommonValues;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchObjectHolder extends MTEHatch {
+public class MTEHatchObjectHolder extends MTEHatch implements ISmartInputHatch {
 
     private static IIconContainer EM_H;
     private static IIconContainer EM_H_ACTIVE;
@@ -40,7 +43,7 @@ public class MTEHatchObjectHolder extends MTEHatch {
             aNameRegional,
             aTier,
             1,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
     }
 
@@ -52,8 +55,8 @@ public class MTEHatchObjectHolder extends MTEHatch {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_HOLDER");
     }
 
     @Override
@@ -120,5 +123,18 @@ public class MTEHatchObjectHolder extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchObjectHolderGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+        if (baseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
     }
 }

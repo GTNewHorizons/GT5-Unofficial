@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -72,13 +73,20 @@ public final class BlockQuantumGlass extends Block {
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
         Block block = worldIn.getBlock(x, y, z);
-        return block != this; // && super.shouldSideBeRendered(worldIn, x, y, z,
-        // side);
+        return block != this;
     }
 
     @Override
     public int getRenderType() {
         return renderID;
+    }
+
+    @Override
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
+        ForgeDirection dir = ForgeDirection.values()[side];
+        return shouldSideBeRendered(worldIn, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, side)
+            ? super.getIcon(worldIn, x, y, z, side)
+            : null;
     }
 
     @Override

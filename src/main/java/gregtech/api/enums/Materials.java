@@ -351,6 +351,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     // region Not possible to determine exact Components
     public static Materials Antimatter;
     public static Materials Biomass;
+    public static Materials Biogas;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
     public static Materials Chili;
@@ -522,6 +523,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SodiumSulfide;
     public static Materials Titaniumtetrachloride;
     public static Materials Water, Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+    public static Materials DistilledWater;
     public static Materials Zincite;
     // endregion
 
@@ -1102,6 +1104,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Churitsu;
     public static Materials InactiveCosmicSolder;
     public static Materials BoundlessCosmicSolder;
+    public static Materials ComputationBase;
     // endregion
 
     // region GTNH Materials
@@ -1122,6 +1125,13 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Epidote;
     public static Materials UnformedHexanite;
     public static Materials Hexanite;
+    // endregion
+
+    // region Lab Grown Gems (cgc)
+    // endregion
+
+    // region Chimera Gems (cgc)
+    public static Materials Amalgatite;
     // endregion
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
@@ -1235,6 +1245,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private boolean mCanBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
+    private boolean hasGlowingOre = false;
+    private String aliasKey = "";
+    private boolean hasAlias = false;
 
     protected Materials(
         // spotless:off
@@ -1281,7 +1294,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Supplier<Materials> pendingArcSmeltingInto,
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
-        LinkedHashSet<SubTag> subTags
+        LinkedHashSet<SubTag> subTags,
+        boolean hasGlowingOre,
+        String aliasKey
         // spotless:on
     ) {
 
@@ -1308,7 +1323,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors
@@ -1394,7 +1409,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         mOreMultiplier = oreMultiplier;
         mUnifiable = unifiable;
 
-        // No clue what is going on here...
         int numberOfComponents = 0;
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1409,7 +1423,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             }
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
+        if (mMeltingPoint < 0 && numberOfComponents > 1) mMeltingPoint = tMeltingPoint / numberOfComponents;
 
         numberOfComponents *= densityMultiplier;
         numberOfComponents /= densityDivider;
@@ -1419,6 +1433,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             }
         } else {
             mAspects.addAll(aspects);
+        }
+        this.hasGlowingOre = hasGlowingOre;
+
+        if (!aliasKey.isEmpty()) {
+            this.aliasKey = aliasKey;
+            this.hasAlias = true;
         }
     }
 
@@ -1625,6 +1645,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Materials.ExoHalkonite.renderer = new InfinityRenderer();
         Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
+        Materials.Amalgatite.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -1809,14 +1830,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
-    /**
-     * @deprecated Always returns false, apparently.
-     */
-    @Deprecated
-    public boolean isRadioactive() {
-        return false;
-    }
-
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
         if (mMaterialList.isEmpty()) return Element.Tc.getProtons();
@@ -1935,10 +1948,14 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
      */
     public boolean contains(ItemStack... aStacks) {
         if (aStacks == null || aStacks.length == 0) return false;
-        return mMaterialItems.stream()
-            .anyMatch(
-                tStack -> Arrays.stream(aStacks)
-                    .anyMatch(aStack -> GTUtility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())));
+        for (int i = 0, size = mMaterialItems.size(); i < size; i++) {
+            ItemStack materialItem = mMaterialItems.get(i);
+            boolean ignoreNBT = !materialItem.hasTagCompound();
+            for (int j = 0; j < aStacks.length; j++) {
+                if (GTUtility.areStacksEqual(aStacks[j], materialItem, ignoreNBT)) return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -2194,7 +2211,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     public int getLiquidTemperature() {
-        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
+        return mMeltingPoint == -1 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {
@@ -2315,5 +2332,17 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public ItemStack getNanite(int amount) {
         return GTOreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
+
+    public boolean hasGlowingOre() {
+        return hasGlowingOre;
+    }
+
+    public boolean hasAlias() {
+        return this.hasAlias;
+    }
+
+    public String getAliasKey() {
+        return this.aliasKey;
     }
 }

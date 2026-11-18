@@ -20,9 +20,11 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -34,21 +36,26 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven>
+    implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final float SPEED_BONUS_PER_COIL_TIER = 2.0f;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -99,55 +106,46 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coke Oven")
-            .addInfo("Industrial Charcoal producer")
-            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("EU/t is not affected by Coil tier")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coke_oven"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pyrolyse-oven"),
+                ImmutableMap.<String, Object>of("speed_bonus", (1.0F / SPEED_BONUS_PER_COIL_TIER) * 100))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 6, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Pyrolyse Oven Casing", 60, false)
-            .addCasingInfoExactly("Heating Coil", 12, true)
-            .addCasingInfoExactly("Steel Frame Box", 2, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
-            .addCasingInfoExactly("Steel Firebox Casing", 4, false)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addMufflerHatch("Any top layer Casing", 2)
-            .addInputBus("Any top layer Casing", 2)
-            .addInputHatch("Any top layer Casing", 2)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any bottom layer Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ya9yu")
+            .beginStructureBlock(7, 6, 5, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("60-68", Casings.PyrolyseOvenCasing.getLocalizedName(), false)
+            .addCasing("12", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("8", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.SteelFireboxCasing.getLocalizedName(), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_PYROLYSE_OVEN,
+            OVERLAY_FRONT_PYROLYSE_OVEN_GLOW,
+            OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE,
+            OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.PyrolyseOvenCasing.getCasingTexture();
     }
 
     @Override
@@ -178,7 +176,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     }
 
     public double getSpeedBonus() {
-        return 2f / (1 + coilHeat.getTier());
+        return SPEED_BONUS_PER_COIL_TIER / (1.0D + coilHeat.getTier());
     }
 
     @Override
@@ -187,11 +185,11 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 60);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
-        checkHasEnergyHatch(errors);
         checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -1,8 +1,5 @@
 package gtnhintergalactic.render;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -13,20 +10,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.joml.Math;
+import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.common.render.shader.RenderState;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.ShaderRecipe;
+import gregtech.common.render.shader.SharedShaders;
+import gregtech.common.render.shader.Uniform;
 import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.block.BlockSpaceElevatorCable;
 import gtnhintergalactic.config.IGConfig;
@@ -47,14 +48,14 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         "textures/models/climber.png");
 
     /** Model of the climber */
-    private static IModelCustom modelCustom;
+    private static IVertexArrayObject modelCustom;
     /** Offset of the climber from the Space Elevator Cable block */
     private static final int CLIMBER_OFFSET = 50;
     /** Min Y level that the climber should have */
     private static final int MIN_CLIMBER_HEIGHT = 100;
 
-    /** Used for lazy loading of the shader and buffer objects */
-    boolean isInitialized = false;
+    private static boolean isInitialized = false;
+    private static boolean hasFailed = false;
 
     /** Distance from center to edge of cable octagon */
     private static final float LONG_DISTANCE = (1.0f + Math.sqrt(2.0f)) / 5.4f;
@@ -69,32 +70,84 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final float[] edgeZ = { SHORT_DISTANCE, -SHORT_DISTANCE, -LONG_DISTANCE, -LONG_DISTANCE,
         -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
 
-    private static ShaderProgram cableProgram;
-    private static int uModelProjectionMatrix;
-    private static int uBlockTex;
-    private static int uSectionHeight;
-    private static int uTime;
-    private static int uBaseY;
-    private static int uGlowU;
-    private static int uGlowV;
-    private static int uUV;
-    private static int aVertexID = -1;
-    private static int vertexIDBuffer = -1;
-
-    private static final FloatBuffer bufModelViewProjection = BufferUtils.createFloatBuffer(16);
     private static final Matrix4fStack modelProjection = new Matrix4fStack(2);
+    private static final Matrix4f climberMatrix = new Matrix4f();
 
     private static final float SIDE = 2.0f / 5.4f;
     private static final float SECTION_HEIGHT = 8 * SIDE;
     private static final int SECTIONS = (int) Math.ceil(CABLE_HEIGHT / SECTION_HEIGHT);
     private static final int VERTEX_COUNT = 48 * 4 * SECTIONS;
 
-    /**
-     * Create a new render for the space elevator cable
-     */
-    public RenderSpaceElevatorCable() {
-        modelCustom = AdvancedModelLoader
-            .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
+    private static ShaderHandle cableShader;
+    private static Uniform cableBaseY;
+    private static Uniform cableTime;
+
+    public static void reload() {
+        isInitialized = false;
+        hasFailed = false;
+        release();
+
+        if (!SharedShaders.ready()) {
+            hasFailed = true;
+            return;
+        }
+
+        try {
+            modelCustom = WavefrontVBOBuilder.compileToVBO(
+                new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"),
+                SharedShaders.textured()
+                    .vertexFormat());
+        } catch (RuntimeException e) {
+            GTNHIntergalactic.LOG.error("Failed to load space elevator climber model", e);
+            release();
+            hasFailed = true;
+            return;
+        }
+
+        final float minU = BlockSpaceElevatorCable.textures[0].getMinU();
+        final float maxU = BlockSpaceElevatorCable.textures[0].getMaxU();
+        final float minV = BlockSpaceElevatorCable.textures[0].getMinV();
+        final float maxV = BlockSpaceElevatorCable.textures[0].getMaxV();
+
+        final float glowMinU = Math.lerp(minU, maxU, 7f / 16f);
+        final float glowMaxU = Math.lerp(minU, maxU, 9f / 16f);
+        final float glowMinV = Math.lerp(minV, maxV, 7f / 16f);
+        final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
+
+        // Atlas coordinates only exist after texture stitch
+        final ShaderRecipe cable = ShaderRecipe.of(GTNHIntergalactic.ASSET_PREFIX, "spacecable")
+            .required("u_BaseY", "u_Time")
+            .constant("u_SectionHeight", SECTION_HEIGHT)
+            .constant("u_GlowU", glowMinU, glowMaxU)
+            .constant("u_GlowV", glowMinV, glowMaxV)
+            .constantArray("u_UV", 2, minU, minV, maxU, maxV)
+            .sampler("u_BlockTex", OpenGlHelper.defaultTexUnit - GL13.GL_TEXTURE0)
+            .modelUniform("u_ModelProjection")
+            .attributeless("vertexId", VERTEX_COUNT);
+
+        cableBaseY = cable.uniform("u_BaseY");
+        cableTime = cable.uniform("u_Time");
+        cableShader = cable.bake();
+
+        if (!cableShader.isValid()) {
+            GTNHIntergalactic.LOG.error("Failed to initialize space elevator cable shader");
+            release();
+            hasFailed = true;
+            return;
+        }
+
+        isInitialized = true;
+    }
+
+    private static void release() {
+        if (cableShader != null) {
+            cableShader.release();
+            cableShader = null;
+        }
+        if (modelCustom != null) {
+            modelCustom.delete();
+            modelCustom = null;
+        }
     }
 
     /**
@@ -110,6 +163,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!IGConfig.spaceElevator.isCableRenderingEnabled) return;
         if (!(tile instanceof TileEntitySpaceElevatorCable)) return;
+        if (hasFailed || !isInitialized) return;
 
         final TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
 
@@ -117,38 +171,43 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
 
         renderCable(tile, x, y, z, timeSinceLastTick);
 
-        {
-            GL11.glPushMatrix();
-            // If the Space Elevator is build on a low Y level the climber should reach a minimum height
-            GL11.glTranslated(
-                x + 0.5,
-                y + 0.5
+        climberMatrix.identity()
+            .translate(
+                (float) x + 0.5f,
+                (float) (y + 0.5
                     + cableTile.getClimberHeight()
-                    + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT : CLIMBER_OFFSET),
-                z + 0.5);
-            GL11.glRotated(cableTile.getClimberRotation(), 0.0, 1.0, 0.0);
-            renderClimber();
-            GL11.glPopMatrix();
-        }
+                    + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT : CLIMBER_OFFSET)),
+                (float) z + 0.5f)
+            .rotateY((float) Math.toRadians(cableTile.getClimberRotation()))
+            .scale(4);
+        renderClimber();
     }
 
     /**
      * Render the climber
      */
     private void renderClimber() {
+        final boolean blendWas = GL11.glGetBoolean(GL11.GL_BLEND);
+        final boolean cullWas = GL11.glGetBoolean(GL11.GL_CULL_FACE);
+        final long blendFuncWas = RenderState.savedBlendFunc();
+
         // Initiate open GL for proper climber rendering
-        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         this.bindTexture(climberTexture);
-        GL11.glScaled(4, 4, 4);
-        // Draw the climber
-        modelCustom.renderAll();
+
+        final ShaderHandle shader = SharedShaders.textured();
+        shader.use();
+        GL20.glUniform4f(shader.loc(SharedShaders.U_TINT), 1f, 1f, 1f, 1f);
+        shader.uploadModel(climberMatrix);
+        modelCustom.render();
+        ShaderProgram.clear();
+
         // Reset open GL
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_LIGHTING);
+        RenderState.restore(GL11.GL_BLEND, blendWas);
+        RenderState.restore(GL11.GL_CULL_FACE, cullWas);
+        RenderState.restoreBlendFunc(blendFuncWas);
     }
 
     /**
@@ -162,90 +221,24 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         this.bindTexture(TextureMap.locationBlocksTexture);
 
-        if (!isInitialized) {
-            // Draw the cable
-            final float minU = BlockSpaceElevatorCable.textures[0].getMinU();
-            final float maxU = BlockSpaceElevatorCable.textures[0].getMaxU();
-            final float minV = BlockSpaceElevatorCable.textures[0].getMinV();
-            final float maxV = BlockSpaceElevatorCable.textures[0].getMaxV();
-
-            final float glowMinU = Math.lerp(minU, maxU, 7f / 16f);
-            final float glowMaxU = Math.lerp(minU, maxU, 9f / 16f);
-            final float glowMinV = Math.lerp(minV, maxV, 7f / 16f);
-            final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
-
-            cableProgram = new ShaderProgram(
-                "gtnhintergalactic",
-                "shaders/spacecable.vert.glsl",
-                "shaders/spacecable.frag.glsl");
-            cableProgram.use();
-
-            aVertexID = cableProgram.getAttribLocation("vertexId");
-
-            uModelProjectionMatrix = cableProgram.getUniformLocation("u_ModelProjection");
-            uBlockTex = cableProgram.getUniformLocation("u_BlockTex");
-            uSectionHeight = cableProgram.getUniformLocation("u_SectionHeight");
-            uTime = cableProgram.getUniformLocation("u_Time");
-            uBaseY = cableProgram.getUniformLocation("u_BaseY");
-            uGlowU = cableProgram.getUniformLocation("u_GlowU");
-            uGlowV = cableProgram.getUniformLocation("u_GlowV");
-            uUV = cableProgram.getUniformLocation("u_UV");
-
-            vertexIDBuffer = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexIDBuffer);
-            // Make a 3x-sized buffer to act as a vec3 position input to the shader.
-            // Without a position input, the draw causes undefined behaviour in GL 2.x
-            final ByteBuffer vertexIDData = BufferUtils.createByteBuffer(VERTEX_COUNT * 4 * 3);
-            for (int i = 0; i < VERTEX_COUNT * 3; i++) {
-                vertexIDData.putFloat(i * 4, (float) i);
-            }
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexIDData, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
-            final FloatBuffer uvBuffer = BufferUtils.createFloatBuffer(4);
-            uvBuffer.put(0, minU);
-            uvBuffer.put(1, minV);
-            uvBuffer.put(2, maxU);
-            uvBuffer.put(3, maxV);
-
-            GL20.glUniform1f(uSectionHeight, SECTION_HEIGHT);
-            GL20.glUniform1i(uBlockTex, OpenGlHelper.defaultTexUnit - GL13.GL_TEXTURE0);
-            GL20.glUniform2f(uGlowU, glowMinU, glowMaxU);
-            GL20.glUniform2f(uGlowV, glowMinV, glowMaxV);
-            GL20.glUniform2(uUV, uvBuffer);
-
-            ShaderProgram.clear();
-
-            isInitialized = true;
-
-        }
-
-        cableProgram.use();
+        cableShader.use();
         GL20.glUniform1f(
-            uTime,
+            cableShader.loc(cableTime),
             ((tile.getWorldObj()
                 .getWorldInfo()
                 .getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
-        GL20.glUniform1i(uBaseY, (int) y - 23);
+        GL20.glUniform1i(cableShader.loc(cableBaseY), (int) y - 23);
 
         modelProjection.identity();
         modelProjection.translate((float) x, (float) (y - 23), (float) z);
 
+        final boolean cullWas = GL11.glGetBoolean(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_CULL_FACE);
-        modelProjection.get(0, bufModelViewProjection);
-        GL20.glUniformMatrix4(uModelProjectionMatrix, false, bufModelViewProjection);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexIDBuffer);
-        GL20.glVertexAttribPointer(aVertexID, 1, GL11.GL_FLOAT, false, 0, 0);
-        GL20.glEnableVertexAttribArray(aVertexID);
-        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        cableShader.uploadModel(modelProjection);
 
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, VERTEX_COUNT);
+        cableShader.draw();
 
-        GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-        GL20.glDisableVertexAttribArray(aVertexID);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL11.glEnable(GL11.GL_CULL_FACE);
+        RenderState.restore(GL11.GL_CULL_FACE, cullWas);
         ShaderProgram.clear();
     }
 

@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.hatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -80,9 +79,7 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         parent.child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
                 .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
-                .filter(
-                    itemStack -> machine.isValidItem(itemStack) && !isActiveSyncer.getBoolValue()
-                        && heatSyncer.getIntValue() <= 0)
+                .filter(_ -> !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0)
                 .modularSlotSupplier(
                     LimitedExtractionSlot
                         .supplier(() -> !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0))
@@ -91,11 +88,6 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
                 .minElementMargin(2));
 
         return parent;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override

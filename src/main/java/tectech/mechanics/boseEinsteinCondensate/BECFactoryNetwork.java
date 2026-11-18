@@ -1,7 +1,10 @@
 package tectech.mechanics.boseEinsteinCondensate;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraftforge.fluids.Fluid;
@@ -13,6 +16,7 @@ import gregtech.api.factory.GraphRouteTracker;
 import gregtech.api.factory.routing.VisitorResult;
 import gregtech.api.factory.standard.StandardFactoryNetwork;
 import gregtech.api.util.GTUtility;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBEC;
 
 public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork, BECFactoryElement, BECFactoryGrid> {
 
@@ -20,18 +24,35 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
     public final int id = NETWORK_ID.getAndAdd(1);
 
+    private int storageCount = 0;
+    private final Set<MTEPipeBEC> allPipes = new LinkedHashSet<>();
+
     public final GraphRouteTracker<BECFactoryElement, BECFactoryNetwork, BECFactoryGrid, NotableBECFactoryElement, BECRouteInfo> routeTracker = new GraphRouteTracker<>(
         NotableBECFactoryElement.class,
         new BECRouteInfo(0));
 
-    private boolean networkChanged = false;
+    private final HashMap<NotableBECFactoryElement, Set<Fluid>> reachableCondensate = new HashMap<>();
+    private int condensateVersion;
+    private int cachedRouteVersion = -1;
+    private int cachedCondensateVersion;
 
     @Override
     public void addElement(BECFactoryElement element) {
         super.addElement(element);
 
         routeTracker.onElementAdded(element);
-        networkChanged = true;
+        routeTracker.invalidateRoutes();
+        if (element instanceof MTEPipeBEC pipe) {
+            allPipes.add(pipe);
+            pipe.setActive(storageCount > 0);
+        } else if (element instanceof BECInventory) {
+            if (storageCount == 0) {
+                for (MTEPipeBEC pipe : allPipes) {
+                    pipe.setActive(true);
+                }
+            }
+            storageCount++;
+        }
     }
 
     @Override
@@ -39,26 +60,29 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         super.removeElement(element);
 
         routeTracker.onElementRemoved(element);
-        networkChanged = true;
+        routeTracker.invalidateRoutes();
+        if (element instanceof MTEPipeBEC pipe) {
+            allPipes.remove(pipe);
+            pipe.setActive(false);
+        } else if (element instanceof BECInventory) {
+            storageCount--;
+            if (storageCount == 0) {
+                for (MTEPipeBEC pipe : allPipes) {
+                    pipe.setActive(false);
+                }
+            }
+        }
     }
 
     @Override
     public void onElementUpdated(BECFactoryElement element, boolean topologyChanged) {
         if (topologyChanged) {
-            networkChanged = true;
+            routeTracker.invalidateRoutes();
         }
     }
 
     public void invalidateRoutes() {
-        networkChanged = true;
-    }
-
-    void onPostTick() {
-        if (networkChanged) {
-            networkChanged = false;
-
-            routeTracker.updateEdges();
-        }
+        routeTracker.invalidateRoutes();
     }
 
     /// Drains condensate from the network and decrements the sizes in the request stacks as condensate is extracted.
@@ -104,6 +128,8 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
 
             if (remaining == 1) {
                 split = input.getStackSize();
+            } else if (totalCapacity <= 0) {
+                split = GTUtility.ceil((double) input.getStackSize() / remaining);
             } else {
                 double weight = inv.getCondensateCapacity() / totalCapacity;
                 totalCapacity -= inv.getCondensateCapacity();
@@ -169,8 +195,35 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
         return storedCondensate;
     }
 
+    /// Must be called when a storage gains or loses a condensate type, or when a diode's filters change.
+    public void invalidateReachableCondensate() {
+        condensateVersion++;
+    }
+
     /// Returns the number of 'contaminants' in the network.
     public int getSlowdowns(NotableBECFactoryElement drainer, Collection<Fluid> validCondensate) {
+        int slowdowns = 0;
+
+        for (Fluid condensate : getReachableCondensate(drainer)) {
+            if (!validCondensate.contains(condensate)) slowdowns++;
+        }
+
+        return slowdowns;
+    }
+
+    /// The condensate types held by storages the drainer can reach. Cached until the routes or the stored condensate
+    /// types change.
+    private Set<Fluid> getReachableCondensate(NotableBECFactoryElement drainer) {
+        if (cachedRouteVersion != routeTracker.getVersion() || cachedCondensateVersion != condensateVersion) {
+            reachableCondensate.clear();
+            cachedRouteVersion = routeTracker.getVersion();
+            cachedCondensateVersion = condensateVersion;
+        }
+
+        return reachableCondensate.computeIfAbsent(drainer, this::findReachableCondensate);
+    }
+
+    private Set<Fluid> findReachableCondensate(NotableBECFactoryElement drainer) {
         HashSet<Fluid> contained = new HashSet<>();
 
         // Find all fluids in the network (dumb scan, we don't care if we can actually access them)
@@ -180,13 +233,7 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
                     .keySet());
         }
 
-        // Don't bother checking for the presence of valid condensate
-        validCondensate.forEach(contained::remove);
-
-        // No invalid condensate anywhere in the network. Unlikely for big setups, but it's certainly possible.
-        if (contained.isEmpty()) return 0;
-
-        HashSet<Fluid> contaminants = new HashSet<>();
+        HashSet<Fluid> reachable = new HashSet<>();
 
         MutableBoolean found = new MutableBoolean();
 
@@ -194,7 +241,6 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
             found.setValue(false);
 
             // Scan the network until we find a storage that contains the current condensate
-            // If we find it, it's a contaminant, and it should slow assembling down
             routeTracker.iterateNetworkBFS(drainer, step -> {
                 if (!step.node()
                     .allowsCondensateThrough(condensate)) return VisitorResult.SkipNode;
@@ -211,12 +257,10 @@ public class BECFactoryNetwork extends StandardFactoryNetwork<BECFactoryNetwork,
             });
 
             if (found.booleanValue()) {
-                // Use a set to prevent several storages with contaminant from slowing processing down excessively
-                // We only care about unique contaminant
-                contaminants.add(condensate);
+                reachable.add(condensate);
             }
         }
 
-        return contaminants.size();
+        return reachable;
     }
 }

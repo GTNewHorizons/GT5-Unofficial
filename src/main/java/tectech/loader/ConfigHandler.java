@@ -4,7 +4,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.ModIDs.TECTECH, filename = "tectech")
+@Config(modid = Mods.ModIDs.TECTECH, filename = Mods.ModIDs.TECTECH)
 @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
 @Config.RequiresMcRestart
 public class ConfigHandler {
@@ -70,6 +70,11 @@ public class ConfigHandler {
         @Config.DefaultEnum("Scientific")
         @Config.RequiresMcRestart
         public EOHNumberFormat EOH_NOTATION = EOHNumberFormat.Scientific;
+
+        @Config.Comment({ "Eye of Harmony planet rendering cache size." })
+        @Config.DefaultInt(128)
+        @Config.RangeInt(min = 1, max = 1024)
+        public int EOH_ORBIT_MESH_CACHE_SIZE;
 
         public enum EOHNumberFormat {
             Numerical,

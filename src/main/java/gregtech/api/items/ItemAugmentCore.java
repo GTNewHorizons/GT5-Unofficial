@@ -12,10 +12,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
-import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
@@ -44,8 +44,9 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
     @Override
     protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
         desc.add(
-            GRAY + GTUtility
-                .translate("GT5U.armor.tooltip.energycore", core.getRarity().rarityColor.toString() + core.getTier()));
+            GRAY + StatCollector.translateToLocalFormatted(
+                "GT5U.armor.tooltip.energycore",
+                core.getRarity().rarityColor.toString() + core.getTier()));
 
         addSeparatorIfNeeded(desc);
 
@@ -64,7 +65,8 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
         addSeparatorIfNeeded(desc);
 
         desc.add(
-            EnumChatFormatting.AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
+            EnumChatFormatting.AQUA
+                + StatCollector.translateToLocalFormatted("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
 
         addSeparatorIfNeeded(desc);
     }

@@ -64,7 +64,7 @@ public interface IOreMaterial extends ISubTagContainer {
         }
     }
 
-    public static IOreMaterial findMaterial(String name) {
+    static IOreMaterial findMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
 
         if (bw != null) return bw;
