@@ -4,3 +4,4 @@ Factory Grade Auto Chisel
 {color_mode:CRIB}: Set the target block with the pattern output
 {color_mode:Input Bus}: Set the target block with a programmed circuit (see {color_name:NEI})
 Supports {blue:ArchitectureCraft} shapes as target blocks
+{color_mode:Chisel Bus} without a set target and {color_mode:Input Bus} without a circuit default to next block in group
