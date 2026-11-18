@@ -10769,7 +10769,6 @@ GT5U.cz_puller.gui.storage_title=Czochralski Puller Storage
 GT5U.cz_puller.gui.material=Material: %s
 GT5U.cz_puller.gui.amount=Amount: %d/%d dust
 GT5U.cz_puller.gui.storage_amount=Internal storage: %d / %d dust
-GT5U.cz_puller.gui.gas=Gas (%s): %dL
 GT5U.wafer_doping.gui.progress=Progress: %d ticks
 GT5U.wafer_doping.gui.parallel=Parallel target N (0-64): %d
 GT5U.wafer_doping.gui.particle_multiplier=Particle multiplier M: %d

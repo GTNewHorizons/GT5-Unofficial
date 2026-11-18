@@ -37,8 +37,6 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
         syncManager.syncValue("Amount", new IntSyncValue(base::getStoredMaterialAmount));
         syncManager
             .syncValue("Preheated", new BooleanSyncValue(base::isPreheatedMode, base::setPreheatedMode).allowC2S());
-        syncManager.syncValue("Gas", new IntSyncValue(base::getStoredGasAmount));
-        syncManager.syncValue("GasName", new StringSyncValue(base::getStoredGasName));
         syncManager.syncValue("Capacity", new IntSyncValue(base::getBufferCapacity));
         syncManager.syncValue("DumpBuffer", new IntSyncValue(() -> 0, value -> base.dumpBuffer()).allowC2S());
     }
@@ -72,12 +70,10 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             .relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(180, 110);
+            .size(180, 94);
 
         StringSyncValue typeSyncer = syncManager.findSyncHandler("Type", StringSyncValue.class);
         IntSyncValue amountSyncer = syncManager.findSyncHandler("Amount", IntSyncValue.class);
-        IntSyncValue gasSyncer = syncManager.findSyncHandler("Gas", IntSyncValue.class);
-        StringSyncValue gasNameSyncer = syncManager.findSyncHandler("GasName", StringSyncValue.class);
         IntSyncValue capacitySyncer = syncManager.findSyncHandler("Capacity", IntSyncValue.class);
         IntSyncValue dumpBufferSyncer = syncManager.findSyncHandler("DumpBuffer", IntSyncValue.class);
 
@@ -126,23 +122,13 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
                             capacitySyncer.getIntValue()))));
         ui.child(storageFill);
         ui.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocalFormatted(
-                    "GT5U.cz_puller.gui.gas",
-                    gasNameSyncer.getValue(),
-                    gasSyncer.getValue()))
-                .asWidget()
-                .textAlign(Alignment.Center)
-                .pos(8, 67)
-                .size(164, 12));
-        ui.child(
             new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
                 .overlay(IKey.str("Dump"))
                 .onMousePressed(mouse -> {
                     dumpBufferSyncer.setIntValue(dumpBufferSyncer.getIntValue() + 1);
                     return true;
                 })
-                .pos(8, 83)
+                .pos(8, 67)
                 .size(160, 18));
         return ui;
     }
