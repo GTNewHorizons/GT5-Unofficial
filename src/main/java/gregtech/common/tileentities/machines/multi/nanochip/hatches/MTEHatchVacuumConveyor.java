@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -283,5 +285,12 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             }
         }
         return info.toArray(new String[] {});
+    }
+
+    @Override
+    public @Nullable List<ItemStack> getItemsForHoloGlasses() {
+        if (this.contents == null) return null;
+
+        return contents.getRealItemRepresentations();
     }
 }

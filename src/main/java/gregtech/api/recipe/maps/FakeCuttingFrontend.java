@@ -13,11 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import codechicken.nei.recipe.StackInfo;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.loaders.postload.recipes.FakeCuttingSpecialInfo;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -40,7 +40,7 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
 
-        FluidStack fluid = GTUtility.getFluidFromContainerOrFluidDisplay(stack);
+        FluidStack fluid = StackInfo.getFluid(stack);
         if (fluid == null) return currentTip;
 
         GTRecipe currentRecipe = neiCachedRecipe.mRecipe;

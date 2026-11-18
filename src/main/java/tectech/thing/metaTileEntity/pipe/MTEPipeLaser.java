@@ -28,7 +28,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel {
@@ -93,7 +92,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @ApiStatus.OverrideOnly
-    protected void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -160,7 +159,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
-    protected boolean deferCheckConnection() {
+    public boolean deferCheckConnection() {
         return false;
     }
 
@@ -210,7 +209,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
+        return new String[] { translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
             // tunneling
             // device.
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD

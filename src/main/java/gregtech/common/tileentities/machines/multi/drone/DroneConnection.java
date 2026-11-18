@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class DroneConnection {
 
@@ -34,7 +35,7 @@ public class DroneConnection {
 
     private String customName;
     private boolean machineStatus;
-    private String shutdownReason;
+    private ShutDownReason shutdownReason;
     private boolean isSelected;
     private long groupMask;
 
@@ -63,8 +64,7 @@ public class DroneConnection {
         this.groupMask = centre.getConnectionGroups(uuid);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
-            .getLastShutDownReason()
-            .getDisplayString();
+            .getLastShutDownReason();
     }
 
     public DroneConnection(NBTTagCompound aNBT) {
@@ -86,7 +86,10 @@ public class DroneConnection {
         this.unlocalizedName = aNBT.getString("unlocalizedName");
         this.uuid = UUID.fromString(aNBT.getString("uuid"));
         this.machineStatus = aNBT.getBoolean("machineStatus");
-        this.shutdownReason = aNBT.getString("shutdownReason");
+        // The reason travels as its id plus its own data, so the client can localize it itself
+        this.shutdownReason = ShutDownReasonRegistry.getSampleFromRegistry(aNBT.getString("shutdownReasonId"))
+            .newInstance();
+        this.shutdownReason.readFromNBT(aNBT.getCompoundTag("shutdownReason"));
         this.isSelected = aNBT.getBoolean("isSelected");
         this.groupMask = aNBT.getLong("groupMask");
         if (!NetworkUtils.isClient()) {
@@ -146,11 +149,12 @@ public class DroneConnection {
     }
 
     public boolean isMachineShutdown() {
-        return !shutdownReason.isEmpty() && !machineStatus;
+        return !getShutdownReason().isEmpty() && !machineStatus;
     }
 
+    /** Localized on the client, so the player sees it in their own language. */
     public String getShutdownReason() {
-        return shutdownReason;
+        return shutdownReason.getDisplayString();
     }
 
     public NBTTagCompound writeToNBT() {
@@ -165,7 +169,8 @@ public class DroneConnection {
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
         aNBT.setBoolean("machineStatus", machineStatus);
-        aNBT.setString("shutdownReason", shutdownReason);
+        aNBT.setString("shutdownReasonId", shutdownReason.getID());
+        aNBT.setTag("shutdownReason", shutdownReason.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("isSelected", isSelected);
         aNBT.setLong("groupMask", groupMask);
         return aNBT;
@@ -191,7 +196,7 @@ public class DroneConnection {
     }
 
     public void setShutdownReason(ShutDownReason reason) {
-        shutdownReason = reason.getDisplayString();
+        shutdownReason = reason;
     }
 
     public static DroneConnection deserialize(PacketBuffer buf) throws IOException {
@@ -204,11 +209,22 @@ public class DroneConnection {
         buf.writeNBTTagCompoundToBuffer(connection.writeToNBT());
     }
 
+    /**
+     * Reasons have no equals, and every simple reason shares the same id, so their data is compared instead. This runs
+     * on the server, so it must not localize anything.
+     */
+    private static boolean haveSameShutdownReason(DroneConnection a, DroneConnection b) {
+        if (!a.shutdownReason.getID()
+            .equals(b.shutdownReason.getID())) return false;
+        return a.shutdownReason.writeToNBT(new NBTTagCompound())
+            .equals(b.shutdownReason.writeToNBT(new NBTTagCompound()));
+    }
+
     public static boolean areEqual(DroneConnection a, DroneConnection b) {
         if (a == null || b == null) return false;
         return a.customName.equals(b.customName) && a.isSelected == b.isSelected
             && a.machineStatus == b.machineStatus
-            && a.shutdownReason.equals(b.shutdownReason)
+            && haveSameShutdownReason(a, b)
             && a.groupMask == b.groupMask;
     }
 

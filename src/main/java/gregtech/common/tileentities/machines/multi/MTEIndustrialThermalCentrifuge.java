@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -17,9 +18,11 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -30,6 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -43,12 +47,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -85,41 +88,36 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Thermal Centrifuge, LTR")
-            .addBulkMachineInfo(BASE_PARALLELS, (float) BASE_SPEED_BONUS, (float) BASE_EU_MULTIPLIER)
-            .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
-            .addInfo(
-                String.format(
-                    "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
-            .addInfo(
-                String.format(
-                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                    EnumChatFormatting.ITALIC,
-                    BASE_EU_MULTIPLIER,
-                    HEATING_COIL_EU_MULTIPLIER,
-                    EnumChatFormatting.GRAY))
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.thermal_centrifuge"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-thermal-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", formatNumber(BASE_PARALLELS))
+                    .put("parallels_bonus", formatNumber(PARALLELS_PER_SOLENOID))
+                    .put("speed", formatNumber(BASE_SPEED_BONUS * 100))
+                    .put("speed_bonus", formatNumber(SPEED_PER_COIL * 100))
+                    .put("eu_eff", formatNumber(BASE_EU_MULTIPLIER * 100))
+                    .put("eu_eff_bonus", formatNumber(HEATING_COIL_EU_MULTIPLIER))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 6, false)
-            .addController("Front bottom center")
-            .addCasing("85-92", "Thermal Processing Casing", false)
-            .addCasing("20", "Red Steel Frame Box", false)
-            .addCasing("16", "Heating Coil", true)
-            .addCasing("6", "Solenoid Superconducting Coil", true)
-            .addCasing("6", "Any Tiered Glass", false)
-            .addCasing("4", "Heat Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any thermal casing", 1)
-            .addMaintenanceHatch("1", "Any thermal casing", 1)
-            .addMufflerHatch("1", "Any thermal casing", 1)
-            .addInputBus("1+", "Any thermal casing", 1)
-            .addOutputBus("1+", "Any thermal casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("85-92", Casings.ThermalProcessingCasing.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.RedSteel), false)
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("6", StatCollector.translateToLocal("gt.blockcasings.cyclotron_coils.name"), true)
+            .addCasing("6", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("4", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.SOLENOID)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
         return tt;
     }
@@ -269,7 +267,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     }
 
     public double getSpeedBonus() {
-        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
+        return 1.0D / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public double getEUMultiplier() {

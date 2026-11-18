@@ -106,7 +106,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return defaultFacing;
     }
 
-    private void clearNullMarkersFromTileEntityBuffer() {
+    protected void clearNullMarkersFromTileEntityBuffer() {
         for (int i = 0; i < mBufferedTileEntities.length; i++)
             if (mBufferedTileEntities[i] == this) mBufferedTileEntities[i] = null;
     }
@@ -520,7 +520,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
                 // update if it was / is strong powered.
                 if (((((mStrongRedstone | oStrongRedstone) >>> dir.ordinal()) & 1) != 0)
-                    && getBlock(x1, y1, z1).isNormalCube()) {
+                    && getBlock(x1, y1, z1).shouldCheckWeakPower(worldObj, x1, y1, z1, dir.ordinal())) {
                     final int skipUpdateSide = dir.getOpposite()
                         .ordinal(); // Don't update this block. Still updates
                                     // diagonal blocks twice if conditions
@@ -873,10 +873,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             }
 
             @Override
+            public boolean onMouseScroll(int direction) {
+                return super.onMouseScroll(GTMod.proxy.invertCircuitScrollDirection ? -direction : direction);
+            }
+
+            @Override
             protected void phantomScroll(int direction) {
-                if (GTMod.proxy.invertCircuitScrollDirection) {
-                    phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
-                } else phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
+                phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
             }
 
             @Override

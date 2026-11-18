@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.CalciumFluoride;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -864,6 +865,14 @@ public class ElectrolyzerRecipes implements Runnable {
             .fluidInputs(CalciumChloride.getFluidOrGas(3_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))
             .fluidOutputs(Materials.Chlorine.getGas(2_000))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(CalciumFluoride.getFluidOrGas(3_000))
+            .itemOutputs(Materials.Calcium.getDust(1))
+            .fluidOutputs(Materials.Fluorine.getGas(2_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

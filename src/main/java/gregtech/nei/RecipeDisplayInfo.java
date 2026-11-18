@@ -62,6 +62,10 @@ public class RecipeDisplayInfo {
         this.neiTextColorOverride = neiTextColorOverride;
     }
 
+    public int getYPos() {
+        return yPos;
+    }
+
     /**
      * Draws text.
      */

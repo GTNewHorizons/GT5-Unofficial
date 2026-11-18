@@ -1,7 +1,5 @@
 package gregtech.loaders.preload;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
@@ -46,7 +44,6 @@ import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -152,7 +149,6 @@ import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
-import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
@@ -160,8 +156,6 @@ import gregtech.common.tileentities.machines.multi.MTEEndothermicFridge;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExothermicHearth;
 import gregtech.common.tileentities.machines.multi.MTEExtremeCombustionEngine;
-import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngineLegacy;
-import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
@@ -192,25 +186,16 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialSifter;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialThermalCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
-import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactoryLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronzeLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitaniumLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteelLegacy;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeCombustionEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteamLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasmaLegacy;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteamLegacy;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
@@ -228,7 +213,6 @@ import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill3;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill4;
 import gregtech.common.tileentities.machines.multi.MTEOilDrillInfinite;
-import gregtech.common.tileentities.machines.multi.MTEOilDrillInfiniteLegacy;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
@@ -264,7 +248,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
@@ -366,99 +350,52 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 PURIFICATION_PLANT_CONTROLLER.ID,
                 "multimachine.purificationplant",
                 "Water Purification Plant").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationPlant.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitClarifier.set(
             new MTEPurificationUnitClarifier(
                 PURIFICATION_UNIT_CLARIFIER.ID,
                 "multimachine.purificationunitclarifier",
                 "Clarifier Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitClarifier.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitFlocculator.set(
             new MTEPurificationUnitFlocculation(
                 PURIFICATION_UNIT_FLOCCULATOR.ID,
                 "multimachine.purificationunitflocculator",
                 "Flocculation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitFlocculator.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new MTEPurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
                 "pH Neutralization Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitPhAdjustment.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new MTEPurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,
                 "multimachine.purificationunitozonation",
                 "Ozonation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitOzonation.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
             new MTEPurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
                 "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitPlasmaHeater.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new MTEPurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
                 "multimachine.purificationunituvtreatment",
                 "High Energy Laser Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitUVTreatment.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new MTEPurificationUnitDegasser(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
                 "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitDegasifier.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
             new MTEPurificationUnitBaryonicPerfection(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
                 "multimachine.purificationunitextractor",
                 "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
-        addItemTooltip(
-            ItemList.Machine_Multi_PurificationUnitParticleExtractor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.Hatch_DegasifierControl.set(
             new MTEHatchDegasifierControl(
                 HATCH_DEGASIFIER_CONTROL.ID,
                 "hatch.degasifiercontrol",
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Bronze.set(
-            new MTELargeBoilerBronzeLegacy(
-                LARGE_BRONZE_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.bronze",
-                "Large Bronze Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Steel.set(
-            new MTELargeBoilerSteelLegacy(
-                LARGE_STEEL_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.steel",
-                "Large Steel Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Titanium.set(
-            new MTELargeBoilerTitaniumLegacy(
-                LARGE_TITANIUM_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.titanium",
-                "Large Titanium Boiler").getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
-            new MTELargeBoilerTungstenSteelLegacy(
-                LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER.ID,
-                "multimachine.boiler.tungstensteel",
-                "Large Tungstensteel Boiler").getStackForm(1L));
         ItemList.FusionComputer_LuV.set(
             new MTEFusionComputer1(FUSION_CONTROLLER_MKI.ID, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
                 .getStackForm(1L));
@@ -478,38 +415,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 DISTILLATION_TOWER_CONTROLLER.ID,
                 "multimachine.distillationtower",
                 "Distillation Tower").getStackForm(1L));
-        ItemList.Ore_Processor.set(
-            new MTEIntegratedOreFactoryLegacy(
-                INTEGRATED_ORE_FACTORY_CONTROLLER.ID,
-                "multimachine.oreprocessor",
-                "Integrated Ore Factory").getStackForm(1L));
 
-        ItemList.LargeSteamTurbine.set(
-            new MTELargeTurbineSteamLegacy(
-                LARGE_STEAM_TURBINE_CONTROLLER.ID,
-                "multimachine.largeturbine",
-                "Large Steam Turbine").getStackForm(1L));
-        ItemList.LargeGasTurbine.set(
-            new MTELargeTurbineGasLegacy(
-                LARGE_GAS_TURBINE_CONTROLLER.ID,
-                "multimachine.largegasturbine",
-                "Large Gas Turbine").getStackForm(1L));
-        ItemList.LargeHPSteamTurbine.set(
-            new MTELargeTurbineHPSteamLegacy(
-                LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
-                "multimachine.largehpturbine",
-                "Large HP Steam Turbine").getStackForm(1L));
         ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
             new MTETranscendentPlasmaMixer(
                 TRANSCENDENT_PLASMA_MIXER_CONTROLLER.ID,
                 "multimachine.transcendentplasmamixer",
                 "Transcendent Plasma Mixer").getStackForm(1));
 
-        ItemList.LargePlasmaTurbine.set(
-            new MTELargeTurbinePlasmaLegacy(
-                LARGE_PLASMA_TURBINE_CONTROLLER.ID,
-                "multimachine.largeplasmaturbine",
-                "Large Plasma Turbine").getStackForm(1L));
         ItemList.Machine_Multi_HeatExchanger.set(
             new MTEHeatExchanger(
                 LARGE_HEAT_EXCHANGER_CONTROLLER.ID,
@@ -534,11 +446,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.OilDrill4.set(
             new MTEOilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Fluid Drilling Rig IV")
                 .getStackForm(1));
-        ItemList.OilDrillInfinite.set(
-            new MTEOilDrillInfiniteLegacy(
-                MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
-                "multimachine.oildrillinfinite",
-                "Infinite Fluid Drilling Rig").getStackForm(1));
 
         ItemList.ConcreteBackfiller1.set(
             new MTEConcreteBackfiller1(
@@ -563,9 +470,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEOreDrillingPlant4(ORE_DRILL_MKIV_CONTROLLER.ID, "multimachine.oredrill4", "Ore Drilling Plant IV")
                 .getStackForm(1));
 
-        ItemList.PyrolyseOven.set(
-            new MTEPyrolyseOvenLegacy(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven")
-                .getStackForm(1));
         ItemList.OilCracker.set(
             new MTEOilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
 
@@ -576,16 +480,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Assemblyline.set(
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembly Line")
                 .getStackForm(1L));
-        ItemList.Machine_Multi_DieselEngine.set(
-            new MTEDieselEngineLegacy(
-                COMBUSTION_ENGINE_CONTROLLER.ID,
-                "multimachine.dieselengine",
-                "Large Combustion Engine").getStackForm(1L));
-        ItemList.Machine_Multi_ExtremeDieselEngine.set(
-            new MTEExtremeDieselEngineLegacy(
-                EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
-                "multimachine.extremedieselengine",
-                "Extreme Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_Cleanroom.set(
             new MTECleanroom(CLEANROOM_CONTROLLER.ID, "multimachine.cleanroom", "Cleanroom Controller")
                 .getStackForm(1));
@@ -603,8 +497,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
-        ItemList.Machine_Multi_DroneCentre
-            .set(new MTEDroneCentre(Drone_Centre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
+        ItemList.DroneCentre
+            .set(new MTEDroneCentre(DroneCentre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
 
         ItemList.Machine_Multi_IndustrialElectromagneticSeparator.set(
             new MTEIndustrialElectromagneticSeparator(
@@ -615,9 +509,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Canner
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
-        ItemList.Machine_Fluid_Shaper.set(
-            new MTEFluidShaper(MULTI_FLUID_SHAPER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
-                .getStackForm(1));
         ItemList.Machine_Mass_Solidifier.set(
             new MTEMassSolidifier(
                 MULTI_MASS_SOLIDIFIER_CONTROLLER.ID,
@@ -625,9 +516,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Mass Solidifier").getStackForm(1));
         ItemList.Machine_Multi_ExoFoundry.set(
             new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_ExoFoundry.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom, GTAuthors.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -678,9 +566,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_Multi_Spinmatron.set(
             new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_Spinmatron.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom, GTAuthors.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
@@ -723,7 +608,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Large Neutralization Engine").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
-        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTAuthors.AuthorThree));
 
         if (Thaumcraft.isModLoaded() && ElectroMagicTools.isModLoaded()) {
             ItemList.MagicalMaintenanceHatch.set(
@@ -732,9 +616,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                     "hatch.maintenance.magic",
                     "Vis-Regulated Maintenance Hatch",
                     5).getStackForm(1));
-            addItemTooltip(
-                ItemList.MagicalMaintenanceHatch.get(1),
-                GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorJude));
         }
 
         ItemList.Machine_Multi_NanochipAssemblyComplex.set(
@@ -742,97 +623,61 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_ASSEMBLY_CONTROLLER.ID,
                 "multimachine.nanochipassemblycomplex",
                 "Nanochip Assembly Complex").getStackForm(1));
-        addItemTooltip(
-            ItemList.Machine_Multi_NanochipAssemblyComplex.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_AssemblyMatrix.set(
             new MTEAssemblyMatrixModule(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
                 "multimachine.nanochipmodule.assemblymatrix",
                 "Nanochip Assembly Matrix").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_AssemblyMatrix.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_PartProcessor.set(
             new MTEPartProcessorModule(
                 NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
-                "Part Preparation Apparatus").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_PartProcessor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
+                "Part Processing Apparatus").getStackForm(1));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
                 NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.boadprocessor",
                 "Full-Board Immersion Device").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_BoardProcessor.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNoc));
         ItemList.NanoChipModule_EtchingArray.set(
             new MTEEtchingArrayModule(
                 NANOCHIP_MODULE_ETCHING_ARRAY.ID,
                 "multimachine.nanochipmodule.etchingarray",
                 "Ultra-high Energy Etching Array").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_EtchingArray.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_CuttingChamber.set(
             new MTECuttingChamberModule(
                 NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
                 "multimachine.nanochipmodule.cuttingchamber",
                 "Nanoprecision Cutting Chamber").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_CuttingChamber.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_WireTracer.set(
             new MTEWireTracerModule(
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_WireTracer.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_SuperconductorSplitter.set(
             new MTESuperconductorSplitterModule(
                 NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
                 "multimachine.nanochipmodule.superconductorsplitter",
                 "Superconductive Strand Splitter").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_SuperconductorSplitter.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_Splitter.set(
             new MTESplitterModule(
                 NANOCHIP_MODULE_SPLITTER.ID,
                 "multimachine.nanochipmodule.splitter",
                 "Nanopart Splitter").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_Splitter.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_OpticalOrganizer.set(
             new MTEOpticalOrganizerModule(
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_OpticalOrganizer.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.fancyAuthorChrom));
         ItemList.NanoChipModule_EncasementWrapper.set(
             new MTEEncasementWrapperModule(
                 NANOCHIP_MODULE_ENCASEMENT_WRAPPER.ID,
                 "multimachine.nanochipmodule.encasementwrapper",
                 "Nanometer Encasement Wrapper").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_EncasementWrapper.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BiologicalCoordinator.set(
             new MTEBiologicalCoordinationModule(
                 NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
                 "multimachine.nanochipmodule.biologicalcoordinator",
                 "Accelerated Biological Coordinator").getStackForm(1));
-        addItemTooltip(
-            ItemList.NanoChipModule_BiologicalCoordinator.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -1049,9 +894,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.oildrillinfinite",
                 "Infinite Fluid Drilling Rig").getStackForm(1));
 
-        ItemList.DroneCentre
-            .set(new MTEDroneCentre(DroneCentre.ID, "multimachine_DroneCentre", "Drone Centre").getStackForm(1));
-
         ItemList.IntegratedOreFactory.set(
             new MTEIntegratedOreFactory(IntegratedOreFactory.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
                 .getStackForm(1L));
@@ -1186,7 +1028,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_IV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_IV.ID)
-                .setName("basicmachine.unboxinator.tier.05", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.05", "Advanced Unpackager IV")
                 .setTier(5)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1198,7 +1040,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_LuV.ID)
-                .setName("basicmachine.unboxinator.tier.06", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.06", "Elite Unpackager")
                 .setTier(6)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1210,7 +1052,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_ZPM.ID)
-                .setName("basicmachine.unboxinator.tier.07", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.07", "Elite Unpackager II")
                 .setTier(7)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1222,7 +1064,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_UV.ID)
-                .setName("basicmachine.unboxinator.tier.08", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.08", "Ultimate Unboxinator")
                 .setTier(8)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1720,7 +1562,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamAlloySmelterSteel(
                 HP_STEAM_ALLOY_SMELTER.ID,
                 "hpmachine.alloysmelter",
-                "High Pressure Alloy Smelter").getStackForm(1L));
+                "High Pressure Steam Alloy Smelter").getStackForm(1L));
     }
 
     private static void registerLocker() {
@@ -1780,14 +1622,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_EV_Boxinator.set(
             new MTEBoxinator(PACKAGER_EV.ID, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
                 .getStackForm(1L));
-        ItemList.Machine_IV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
-        ItemList.Machine_LuV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
-        ItemList.Machine_ZPM_Boxinator
-            .set(new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
-        ItemList.Machine_UV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+        ItemList.Machine_IV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Advanced Packager IV", 5)
+                .getStackForm(1L));
+        ItemList.Machine_LuV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Elite Packager", 6).getStackForm(1L));
+        ItemList.Machine_ZPM_Boxinator.set(
+            new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Elite Packager II", 7)
+                .getStackForm(1L));
+        ItemList.Machine_UV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Ultimate Boxinator", 8)
+                .getStackForm(1L));
     }
 
     private static void registerRockBreaker() {
@@ -2002,19 +1847,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_LuV.ID,
                 "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
+                "Elite Monster Repellator",
                 6).getStackForm(1L));
         ItemList.MobRep_ZPM.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_ZPM.ID,
                 "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
+                "Elite Monster Repellator II",
                 7).getStackForm(1L));
         ItemList.MobRep_UV.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_UV.ID,
                 "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
+                "Ultimate Monster Banisher",
                 8).getStackForm(1L));
     }
 
@@ -2383,7 +2228,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hull_LuV.set(new MTEBasicHull(HULL_LuV.ID, "hull.tier.06", "", 6).getStackForm(1L));
         ItemList.Hull_ZPM.set(new MTEBasicHull(HULL_ZPM.ID, "hull.tier.07", "", 7).getStackForm(1L));
         ItemList.Hull_UV.set(new MTEBasicHull(HULL_UV.ID, "hull.tier.08", "", 8).getStackForm(1L));
-        ItemList.Hull_MAX.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
+        ItemList.Hull_UHV.set(new MTEBasicHull(HULL_UHV.ID, "hull.tier.09", "", 9).getStackForm(1L));
 
         ItemList.Hull_UEV.set(new MTEBasicHull(HULL_UEV.ID, "hull.tier.10", "", 10).getStackForm(1L));
 
@@ -2917,6 +2762,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2930,6 +2776,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2943,6 +2790,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2956,6 +2804,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2969,6 +2818,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2982,6 +2832,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2995,6 +2846,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -3008,6 +2860,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -3021,6 +2874,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -3034,6 +2888,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -3047,6 +2902,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -3060,6 +2916,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
     }
@@ -5867,6 +5724,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 1)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("MACERATOR")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5880,6 +5738,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 1)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("MACERATOR")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5893,6 +5752,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 2)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5906,6 +5766,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 3)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5919,6 +5780,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5932,6 +5794,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5945,6 +5808,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5958,6 +5822,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5971,6 +5836,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5984,6 +5850,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -5997,6 +5864,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -6010,6 +5878,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
+                .setRecipeOutputLimitTooltip()
                 .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
                 .setOverlays("PULVERIZER")
                 .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
@@ -6654,7 +6523,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_LuV.ID)
-                .setName("basicmachine.printer.tier.06", "Advanced Printer V")
+                .setName("basicmachine.printer.tier.06", "Elite Printer")
                 .setTier(6)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6668,7 +6537,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_ZPM.ID)
-                .setName("basicmachine.printer.tier.07", "Advanced Printer VI")
+                .setName("basicmachine.printer.tier.07", "Elite Printer II")
                 .setTier(7)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6682,7 +6551,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_UV.ID)
-                .setName("basicmachine.printer.tier.08", "Advanced Printer VII")
+                .setName("basicmachine.printer.tier.08", "Ultimate Printing Press")
                 .setTier(8)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -7484,7 +7353,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(1)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7497,7 +7366,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(2)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7510,7 +7379,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(3)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7523,7 +7392,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(4)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7536,7 +7405,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(5)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7549,7 +7418,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(6)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7562,7 +7431,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(7)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7575,7 +7444,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(8)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7588,7 +7457,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(9)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7601,7 +7470,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(10)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7614,7 +7483,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(11)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7627,7 +7496,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setTier(12)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
-                .setSlotsCount(2, 6)
+                .setSlotsCount(2, 9)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
                 .setOverlays("CENTRIFUGE")
                 .setFluidSlots(true, true)
@@ -7648,6 +7517,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7661,6 +7531,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7674,6 +7545,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7687,6 +7559,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7700,6 +7573,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7713,6 +7587,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7726,6 +7601,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7739,6 +7615,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7752,6 +7629,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7765,6 +7643,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7778,6 +7657,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7791,6 +7671,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
     }
@@ -8820,7 +8701,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_LuV.ID)
-                .setName("basicmachine.circuitassembler.tier.06", "Advanced Circuit Assembler V")
+                .setName("basicmachine.circuitassembler.tier.06", "Elite Circuit Assembler")
                 .setTier(6)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8833,7 +8714,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_ZPM.ID)
-                .setName("basicmachine.circuitassembler.tier.07", "Advanced Circuit Assembler VI")
+                .setName("basicmachine.circuitassembler.tier.07", "Elite Circuit Assembler II")
                 .setTier(7)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8846,7 +8727,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UV.ID)
-                .setName("basicmachine.circuitassembler.tier.08", "Advanced Circuit Assembler VII")
+                .setName("basicmachine.circuitassembler.tier.08", "Ultimate Circuit Architect")
                 .setTier(8)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8859,7 +8740,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUHV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UHV.ID)
-                .setName("basicmachine.circuitassembler.tier.09", "Ultimate Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.09", "Epic Circuit Architect")
                 .setTier(9)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8872,7 +8753,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUEV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UEV.ID)
-                .setName("basicmachine.circuitassembler.tier.10", "Ultimate Circuit Assembling Machine II")
+                .setName("basicmachine.circuitassembler.tier.10", "Epic Circuit Architect II")
                 .setTier(10)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8885,7 +8766,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUIV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UIV.ID)
-                .setName("basicmachine.circuitassembler.tier.11", "Ultimate Circuit Assembling Machine III")
+                .setName("basicmachine.circuitassembler.tier.11", "Epic Circuit Architect III")
                 .setTier(11)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8898,7 +8779,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUMV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UMV.ID)
-                .setName("basicmachine.circuitassembler.tier.12", "Ultimate Circuit Assembling Machine IV")
+                .setName("basicmachine.circuitassembler.tier.12", "Epic Circuit Architect IV")
                 .setTier(12)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8911,7 +8792,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUXV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UXV.ID)
-                .setName("basicmachine.circuitassembler.tier.13", "Ultimate Circuit Assembling Machine V")
+                .setName("basicmachine.circuitassembler.tier.13", "Epic Circuit Architect V")
                 .setTier(13)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8924,7 +8805,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerMAX.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_MAX.ID)
-                .setName("basicmachine.circuitassembler.tier.14", "MAX Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.14", "Legendary Circuit Architect")
                 .setTier(14)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -9347,17 +9228,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Input.get(1L), "gt.alias.vci");
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Output.get(1L), "gt.alias.vco");
         ItemList.Hatch_Splitter_Level.set(
-            new MTEHatchSplitterRedstone(
+            new MTEHatchNanochipRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
-                "hatch.splitter.redstone",
-                "Splitter Redstone Input",
+                "hatch.nanochip.redstone",
+                "Nanochip Redstone Input Hatch",
                 10).getStackForm(1));
 
         ItemList.VacuumConveyorPipe

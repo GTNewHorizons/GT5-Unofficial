@@ -20,11 +20,11 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
@@ -49,7 +49,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
+        return GTSplit.splitLocalizedWithSuffix("gt.blockmachines.input_bus_turbine.desc", GTPPCore.GT_Tooltip.get());
     }
 
     private MTEMultiBlockBase mParent = null;
@@ -73,9 +73,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTEMultiBlockBase aTurb
-                    && (aMetaTileEntity instanceof MTELargeTurbineLegacy
-                        || aMetaTileEntity instanceof MTELargeTurbineBase)) {
+                if (aMetaTileEntity instanceof MTELargeTurbineBase aTurb) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;

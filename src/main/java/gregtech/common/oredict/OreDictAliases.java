@@ -11,6 +11,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTOreDictUnificator;
 
 /**
@@ -78,6 +79,7 @@ final class OreDictAliases {
         aliasToOreDict(OrePrefixes.dust, Materials.Salt, "itemSalt");
         aliasToOreDict(OrePrefixes.dust, Materials.Wood, "pulpWood");
         aliasToOreDict(OrePrefixes.dust, Materials.Wheat, "foodFlour");
+        aliasToOreDict(OrePrefixes.dust, Materials.CalciumCarbide, "dustCacliumCarbide"); // for migration purposes
 
         aliasToOreDict(OrePrefixes.ingot, Materials.Rubber, "itemRubber");
 
@@ -93,7 +95,11 @@ final class OreDictAliases {
 
     private OreDictAliases() {}
 
-    static void registerAliases(String oreName, ItemStack stack) {
+    static void registerAliases(String oreName, ItemStack stack, OrePrefixes prefix, String materialName) {
+        if (prefix != OrePrefixes.ore && StoneType.STONE_TYPES_BY_PREFIX.containsKey(prefix)) {
+            GTOreDictUnificator.registerOre("variantOre" + materialName, stack);
+        }
+
         List<Consumer<ItemStack>> actions = ALIASES.get(oreName);
         if (actions != null) {
             for (Consumer<ItemStack> action : actions) {

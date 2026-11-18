@@ -25,6 +25,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.StackInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
@@ -181,17 +182,10 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        Fluid fluid = null;
-        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
-        if (containerFluid != null) {
-            fluid = containerFluid.getFluid();
-        }
-        if (fluid == null) {
-            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
-            if (displayFluid != null) {
-                fluid = displayFluid.getFluid();
-            }
-        }
+        FluidStack fluidStack = StackInfo.getFluid(result);
+        if (fluidStack == null) return;
+
+        Fluid fluid = fluidStack.getFluid();
         if (fluid == null) return;
 
         for (Map.Entry<String, GasSiphonRecipes.GasSiphonRecipe> entry : GasSiphonRecipes.RECIPES.entrySet()) {
@@ -308,7 +302,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
          * @param outputAmount Output amount of the operation
          */
         private CachedSiphonRecipe(String planet, int depth, Fluid output, int outputAmount, int eut) {
-            targetFluidDisplay = new PositionedStack(GTUtility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
+            targetFluidDisplay = new PositionedStack(new FluidStack(output, 0), getGuiWidth() - 19, 0);
             this.planet = planet;
             this.depth = depth;
             amount = outputAmount;

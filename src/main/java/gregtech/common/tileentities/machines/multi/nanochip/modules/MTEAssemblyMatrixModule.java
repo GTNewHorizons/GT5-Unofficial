@@ -290,6 +290,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
+    public boolean getDefaultInputSeparationMode() {
+        return false;
+    }
+
+    @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setInteger("tier", machineTier);

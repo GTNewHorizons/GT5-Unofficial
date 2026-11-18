@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.GregTechAPI.sBlockMetal6;
@@ -39,6 +38,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -59,6 +60,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompressor> implements ISurvivalConstructable {
 
     public MTESteamCompressor(String aName) {
@@ -76,11 +78,10 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
 
     @Override
     public String getMachineType() {
-        return "Compressor";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.compressor");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
 
     private IStructureDefinition<MTESteamCompressor> STRUCTURE_DEFINITION = null;
 
@@ -189,10 +190,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamCompressor>builder()
                 // spotless:off
-                .addShape(STRUCTURE_PIECE_LEGACY, transpose( new String[][] {
-                    { "AAA", "AAA", "AAA", "AAA" },
-                    { "A~A", "A-A", "A-A", "AAA" },
-                    { "AAA", "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][]{
                     {"CCC", "C~C", "CCC"},
                     {"AAA", "AAA", "AAA"},
@@ -268,31 +265,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         tierPipeCasing = -1;
         casingAmount = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
-            // Legacy structure shape matched — commit to it
-            checkCasingMin(errors, casingAmount, 14);
-            if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
-                tierMachine = tierMachineCasing;
-                updateHatchTexture();
-            } else {
-                // We *could* also check for modern structure
-                // However, since this pass checkPiece for legacy, most likely this cannot happen anyway
-                // This branch means that the component tier mismatched
-                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
-                return;
-            }
-            checkHasSteamInput(errors);
-            checkHasSteamInputBus(errors);
-            checkHasSteamOutputBus(errors);
-            return;
-        }
-
-        // Try new structure
-        tierMachineCasing = -1;
-        tierBlock = -1;
-        tierPipeCasing = -1;
-        casingAmount = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
         checkCasingMin(errors, casingAmount, 14);
@@ -354,29 +326,29 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(3, 3, 7, true)
-            .addController("Front center, 2nd layer")
-            .addSteamHatch("1", "Any normal casing", 1)
-            .addSteamInputBus("1+", "Any normal casing", 1)
-            .addSteamOutputBus("1+", "Any normal casing", 1)
-            .addInputHatch("0+", "Any normal casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addSteamInputBus("1+", anyNormalCasing, 1)
+            .addSteamOutputBus("1+", anyNormalCasing, 1)
+            .addInputHatch("0+", anyNormalCasing, 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
-            .addCasing("14-27", "Bronze Plated Bricks", false)
-            .addCasing("10", "Bronze Pipe Casing", false)
-            .addCasing("6", "Block of Iron", false)
+            .addCasing("14-27", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("10", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("6", OrePrefixes.block.getLocalizedNameForItem(Materials.Iron), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
-            .addCasing("14-27", "Solid Steel Machine Casing", false)
-            .addCasing("10", "Steel Pipe Casing", false)
-            .addCasing("6", "Block of Steel", false)
+            .addCasing("14-27", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("6", OrePrefixes.block.getLocalizedNameForItem(Materials.Steel), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }

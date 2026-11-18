@@ -69,6 +69,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -96,6 +97,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
+    // Inputs in bits 0-5, outputs in bits 6-11; -1 until first computed.
+    private int activeEUFaceMask = -1;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
@@ -335,7 +338,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
                     handleUpdateDataChangeServer();
-                    handleSidedRedstoneChangeServer();
 
                     if (mLightValue != oldLightValue) {
                         updateLightValue();
@@ -439,10 +441,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (!mMetaTileEntity.isEnetOutput() && !mMetaTileEntity.isEnetInput()) {
             return;
         }
+        int mask = 0;
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             int ordinalSide = side.ordinal();
-            mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
-            mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+            final boolean input = isEnergyInputSide(side);
+            final boolean output = isEnergyOutputSide(side);
+            mActiveEUInputs[ordinalSide] = input;
+            mActiveEUOutputs[ordinalSide] = output;
+            if (input) mask |= side.flag;
+            if (output) mask |= side.flag << 6;
+        }
+        // Role changes (transformer mode, covers) don't touch cable connections, so the graph must be told.
+        if (mask != activeEUFaceMask) {
+            if (activeEUFaceMask != -1) requestCableUpdate();
+            activeEUFaceMask = mask;
         }
     }
 
@@ -602,8 +614,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Handles cable power node updates
      */
     private void handleCableUpdates() {
+        if (mTickTimer == 1) invalidatePowerNodeMaps();
         if (mTickTimer > 20 && cableUpdateDelay == 0) {
-            generatePowerNodes();
+            generatePowerNodes(false);
         }
         cableUpdateDelay--;
     }
@@ -839,7 +852,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
-            cableUpdateDelay = 10;
+            requestCableUpdate();
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
@@ -912,6 +925,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void invalidate() {
         tileEntityInvalid = false;
         leaveEnet();
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             invalidateAE();
             mMetaTileEntity.onRemoval();
@@ -922,6 +936,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public void onUnload() {
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
@@ -1119,6 +1134,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     public void generatePowerNodes() {
+        generatePowerNodes(true);
+    }
+
+    private void generatePowerNodes(boolean forceRefresh) {
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer()
                 .getTickCounter();
@@ -1127,10 +1146,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(side);
                     if (TE instanceof BaseMetaPipeEntity pipe
                         && (pipe.getConnections() & side.getOpposite().flag) != 0) {
-                        final Node node = pipe.getNode();
+                        final Node node = pipe.getNodeMap();
                         if (node == null) {
                             new GenerateNodeMapPower(pipe);
-                        } else if (node.mCreationTime != time) {
+                        } else if ((!node.isNodeMapValid() || forceRefresh) && node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node, -1);
                             new GenerateNodeMapPower(pipe);
                         }
@@ -1142,6 +1161,31 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     public void setCableUpdateDelay(int delay) {
         cableUpdateDelay = delay;
+    }
+
+    private void requestCableUpdate() {
+        invalidatePowerNodeMaps();
+        setCableUpdateDelay(10);
+    }
+
+    private void invalidatePowerNodeMaps() {
+        invalidatePowerNodeMaps(false);
+    }
+
+    private void invalidatePowerNodeMaps(boolean scheduleRebuild) {
+        if (worldObj == null || worldObj.isRemote) return;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (!worldObj.blockExists(getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1))) continue;
+            final IGregTechTileEntity tileEntity = getIGregTechTileEntityAtSide(side);
+            if (tileEntity instanceof BaseMetaPipeEntity pipe && pipe.getMetaTileEntity() instanceof MTECable
+                && (pipe.getConnections() & side.getOpposite().flag) != 0) {
+                final Node node = pipe.getNodeMap();
+                if (node != null) node.invalidateNodeMap();
+                if (scheduleRebuild) {
+                    GregTechAPI.causeCableUpdate(worldObj, pipe.xCoord, pipe.yCoord, pipe.zCoord);
+                }
+            }
+        }
     }
 
     @Override
@@ -1416,6 +1460,46 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = !hasCoverAtSide(side) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        final boolean hasPermission = !privateAccess() || (isServerSide() && aPlayer.getUniqueID()
+            .equals(getOwnerUuid()));
+
+        if (tCurrentItem != null && hasPermission) {
+            if (!hasCoverAtSide(effectiveSide)) {
+                if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
+                    if (CoverRegistry.getCoverPlacer(tCurrentItem)
+                        .isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                        && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+
+                        CoverRegistry.getCoverPlacer(tCurrentItem)
+                            .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
+
+                        if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
+                        if (isServerSide()) {
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
+                            issueTileUpdate();
+                        } else {
+                            issueTextureUpdate();
+                        }
+                    }
+                    return true;
+                }
+            } else {
+                if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                    if (isServerSide()) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
+                            dropCover(effectiveSide, side);
+                        }
+                    } else {
+                        detachCover(effectiveSide);
+                        issueTextureUpdate();
+                    }
+                    return true;
+                }
+            }
+        }
+
         if (isClientSide()) {
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
@@ -1426,9 +1510,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
 
         if (isServerSide()) {
-            if (!privateAccess() || aPlayer.getDisplayName()
-                .equalsIgnoreCase(getOwnerName())) {
-                final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+            if (hasPermission) {
                 if (tCurrentItem != null) {
                     final boolean isHardHammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList);
                     final boolean isJackhammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList);
@@ -1443,12 +1525,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                            cableUpdateDelay = 10;
+                            requestCableUpdate();
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                cableUpdateDelay = 10;
+                                requestCableUpdate();
                             }
 
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1545,7 +1627,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         }
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 
@@ -1558,52 +1640,28 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 
-                    if (!hasCoverAtSide(effectiveSide)) {
-                        if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
-                            if (CoverRegistry.getCoverPlacer(tCurrentItem)
-                                .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+                    if (isHardHammer || isJackhammer) {
+                        // Configuration of delicate electronics calls for a tool with precision and subtlety.
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            if (effectiveSideCover.isValid()) {
+                                if (effectiveSideCover.allowsTickRateAddition()) {
+                                    effectiveSideCover.onCoverJackhammer(aPlayer);
+                                    sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
-                                CoverRegistry.getCoverPlacer(tCurrentItem)
-                                    .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
-
-                                if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                issueTileUpdate();
-                            }
-                            return true;
-                        }
-                    } else {
-                        if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
-                                dropCover(effectiveSide, side);
+                                } else {
+                                    GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
+                                }
                                 if (tCurrentItem.stackSize == 0)
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
-                            }
-                            return true;
-                        } else if (isHardHammer || isJackhammer) {
-                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                if (effectiveSideCover.isValid()) {
-                                    if (effectiveSideCover.allowsTickRateAddition()) {
-                                        effectiveSideCover.onCoverJackhammer(aPlayer);
-                                        sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
-
-                                    } else {
-                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
-                                    }
-                                    if (tCurrentItem.stackSize == 0)
-                                        ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
-                                    return true;
-                                }
+                                return true;
                             }
                         }
                     }
+
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
                     return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);

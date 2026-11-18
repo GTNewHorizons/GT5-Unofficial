@@ -37,6 +37,10 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
         this.fluidStack = fluidStack;
     }
 
+    public boolean isEmpty() {
+        return fluidStack == null || fluidStack.amount <= 0;
+    }
+
     @Override
     public int fill(ForgeDirection side, FluidStack fluidStackIn, boolean doFill) {
         int filledFluid = 0;

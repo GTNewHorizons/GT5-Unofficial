@@ -7,7 +7,6 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationDegasifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
@@ -20,7 +19,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
-import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
@@ -40,6 +38,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitOzonation;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import gtPlusPlus.core.material.Particle;
 
@@ -120,7 +119,7 @@ public class PurifiedWaterRecipes {
                 .duration(duration)
                 .ignoreCollision()
                 .eut(TierEU.RECIPE_LuV)
-                .metadata(BASE_CHANCE, tier * 20.0f)
+                .metadata(BASE_CHANCE, tier * MTEPurificationUnitOzonation.SUCCESS_PER_OZONE_DOUBLING)
                 .addTo(purificationOzonationRecipes);
         }
 
@@ -296,24 +295,6 @@ public class PurifiedWaterRecipes {
                 // now,
                 // and we can't really add a new one specifically for this (... for now)
                 .addTo(laserEngraverRecipes);
-        }
-
-        // Initial aligned quark catalysts, these are not meant to be done often, and simply exist to get you started
-        final ItemStack[] quarks = new ItemStack[] { // make sure these are in the same order as the list above
-            Particle.getBaseParticle(Particle.UP), Particle.getBaseParticle(Particle.DOWN),
-            Particle.getBaseParticle(Particle.BOTTOM), Particle.getBaseParticle(Particle.TOP),
-            Particle.getBaseParticle(Particle.STRANGE), Particle.getBaseParticle(Particle.CHARM) };
-
-        for (int i = 0; i < catalystInputs.length; ++i) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
-                .fluidInputs(Materials.ExcitedDTRC.getFluid(10_000))
-                .itemOutputs(catalystInputs[i])
-                .fluidOutputs(Materials.DTR.getFluid(5_000))
-                .metadata(COIL_HEAT, 10800)
-                .eut(TierEU.RECIPE_UMV)
-                .duration(5 * MINUTES)
-                .addTo(plasmaForgeRecipes);
         }
 
         // Recipe for quark catalyst housing

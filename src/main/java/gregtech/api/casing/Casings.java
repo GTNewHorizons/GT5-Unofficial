@@ -520,9 +520,17 @@ public enum Casings implements ICasing {
 
 
     // Block Casings 14
-    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
-    FridgeCasing(()->GregTechAPI.sBlockCasings14,4,gt(16,7,4)),
-    NaquadahReinforcedDistillationCasing(()->GregTechAPI.sBlockCasings14,5,gt(16,7,5)),
+    HearthCasing
+        (() -> GregTechAPI.sBlockCasings14,3, gt(16,7,3)),
+    FridgeCasing
+        (() -> GregTechAPI.sBlockCasings14,4, gt(16,7,4)),
+    NaquadahReinforcedDistillationCasing
+        (() -> GregTechAPI.sBlockCasings14,5, gt(16,7,5)),
+    ExtruderMachineCasing
+        (() -> GregTechAPI.sBlockCasings14,6, gt(16,7,6)),
+    TensionResistantMachineCasing
+        (() -> GregTechAPI.sBlockCasings14,7, gt(16,7,7)),
+
     // Block Reinforced
     TungstenSteelReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,3,211),
@@ -896,21 +904,21 @@ public enum Casings implements ICasing {
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
-        (() -> ModBlocks.blockSpecialMultiCasings, 0, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 0, -1),
     ResonanceChamber2
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 1, -1),
     ResonanceChamber3
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 2, -1),
     ResonanceChamber4
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 3, -1),
     Modulator1
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 4, -1),
     Modulator2
-        (() -> ModBlocks.blockSpecialMultiCasings, 5, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 5, -1),
     Modulator3
-        (() -> ModBlocks.blockSpecialMultiCasings, 6, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 6, -1),
     Modulator4
-        (() -> ModBlocks.blockSpecialMultiCasings, 7, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 7, -1),
 
     // GregtechMetaSpecialMachineCasings
     StrongBronzeMachineCasing
