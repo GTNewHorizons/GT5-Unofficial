@@ -932,7 +932,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             List<NaniteTier> tiers = new ArrayList<>();
 
             // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
+            for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 
@@ -1131,6 +1131,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                     self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
+
+                    MTEHatchLoS other = hatch.getConnectedHatch();
+                    if (other != null && other.getOwner() instanceof MTEBECAssembler assembler) {
+                        assembler.getIONodes(true);
+                    }
 
                     return true;
                 } else {

@@ -201,9 +201,7 @@ public class GTModHandler {
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(long aAmount) {
-        FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
-        return tFluid;
+        return Materials.DistilledWater.getFluid(aAmount);
     }
 
     /**
@@ -717,7 +715,7 @@ public class GTModHandler {
                     case  6 -> ItemList.Hull_LuV;
                     case  7 -> ItemList.Hull_ZPM;
                     case  8 -> ItemList.Hull_UV;
-                    default -> ItemList.Hull_MAX;
+                    default -> ItemList.Hull_UHV;
                 };
 
                 case WIRE -> switch (machineTier) {

@@ -11,6 +11,7 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.render.MetaGeneratedToolRenderer;
@@ -24,10 +25,18 @@ public class ToolboxRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack itemStack, final ItemRenderType type) {
-        return type == ItemRenderType.EQUIPPED_FIRST_PERSON && itemStack != null
-            && itemStack.getItem() instanceof ItemGTToolbox
-            && (ToolboxUtil.getSelectedToolType(itemStack)
-                .isPresent() || (ItemStackNBT.hasKey(itemStack, ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY)));
+        if (itemStack == null || type != ItemRenderType.EQUIPPED_FIRST_PERSON) {
+            return false;
+        }
+
+        if (ItemStackNBT.hasKey(itemStack, ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY)) {
+            return true;
+        }
+
+        return itemStack.getItem() instanceof ItemGTToolbox && ToolboxUtil.getSelectedTool(itemStack)
+            .map(toolStack -> toolStack.getItem() instanceof MetaGeneratedTool)
+            .orElse(false);
+
     }
 
     @Override

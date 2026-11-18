@@ -1493,15 +1493,6 @@ public class RecipeLoader {
             .eut(33_000)
             .addTo(electrolyzerRecipes);
 
-        // EuS = Eu + S
-        // TODO old recipe. for compat only. remove material and recipe half a year later, i.e. after September 2023.
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.EuropiumSulfide.get(OrePrefixes.dust, 2))
-            .itemOutputs(Materials.Europium.getDust(1), Materials.Sulfur.getDust(1))
-            .duration(30 * SECONDS)
-            .eut(33_000)
-            .addTo(electrolyzerRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1))
             .itemOutputs(WerkstoffMaterialPool.MonaziteHeterogenousHalogenicRareEarthMixture.get(OrePrefixes.dust, 1))
