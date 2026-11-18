@@ -262,7 +262,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures,
     @Override
     public boolean isClimbableSide(IBlockAccess world, int x, int y, int z, ForgeDirection side,
         EntityLivingBase entity) {
-        return Gregtech.general.climbableFrameBox
+        return entity instanceof EntityPlayer && Gregtech.general.climbableFrameBox
             && !(world.getTileEntity(x, y, z) instanceof ICoverable coverable && coverable.hasCoverAtSide(side));
     }
 
