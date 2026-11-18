@@ -72,7 +72,7 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
     private static final String[][] structure = transpose(
         new String[][] {
             { "             ", "             ", "   C     C   ", "  CCDDDDDCC  ", "   D     D   ", "   D     D   ",
-                "   D     D   ", "   D     D   ", "   D     D   ", "   CDDDDDC   ", "             ", "             ",
+                "   D     D   ", "   D     D   ", "   D     D   ", "  CCDDDDDCC  ", "   C     C   ", "             ",
                 "             " },
             { "             ", "   CEEEEEC   ", "  CCEEEEECC  ", " CCCCCCCCCCC ", " EEDEEEEEDEE ", " EECEEEEECEE ",
                 " EEDEEEEEDEE ", " EECEEEEECEE ", " EEDEEEEEDEE ", " CCCCCCCCCCC ", "  CCEEEEECC  ", "   CEEEEEC   ",
