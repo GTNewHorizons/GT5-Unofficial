@@ -75,7 +75,7 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
-    protected void checkConnections() {
+    public void checkConnections() {
         mCheckConnections = false;
         mConnections = 0;
 
