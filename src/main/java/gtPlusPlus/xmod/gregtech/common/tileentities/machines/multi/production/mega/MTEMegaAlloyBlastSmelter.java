@@ -22,6 +22,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
@@ -57,16 +60,17 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEMegaAlloyBlastSmelter>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int MAX_PARALLELS = 256;
+    private static final float SPEED_BONUS_PER_COIL_TIER = 0.05f;
+    private static final double ENERGY_DISCOUNT_PER_COIL_TIER = 0.05;
     private HeatingCoilLevel coilLevel;
     private int glassTier = -1;
     private double speedBonus = 1;
@@ -243,7 +247,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             speedBonus = 1;
             return;
         }
-        speedBonus = 1 - 0.05f * bonusTier;
+        speedBonus = 1 - SPEED_BONUS_PER_COIL_TIER * bonusTier;
     }
 
     private void calculateEnergyDiscount(HeatingCoilLevel lvl, GTRecipe recipe) {
@@ -253,7 +257,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             energyDiscount = 1;
             return;
         }
-        energyDiscount = GTUtility.powInt(0.95, tierDifference);
+        energyDiscount = GTUtility.powInt(1 - ENERGY_DISCOUNT_PER_COIL_TIER, tierDifference);
     }
 
     @Override
@@ -269,38 +273,34 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Alloy Cooker, MABS")
-            .addInfo(
-                TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"all it does is make metals hot\""),
-                    EnumChatFormatting.DARK_GRAY))
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.speedText("-5%") + " Recipe Time per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above TPV (additive)")
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.tierText(TooltipTier.COIL)
-                    + " Tier above the Recipe Tier (multiplicative)")
-            .addSeparator()
-            .addInfo("Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS) + " Tier")
-            .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_fluid_alloy_cooker"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-alloy-blast-smelter"),
+                ImmutableMap.of(
+                    "parallels",
+                    Configuration.Multiblocks.megaMachinesMax,
+                    "speed_bonus",
+                    Math.round(SPEED_BONUS_PER_COIL_TIER * 100),
+                    "energy_discount",
+                    Math.round(ENERGY_DISCOUNT_PER_COIL_TIER * 100)))
             .addSeparator()
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, true)
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addController("Front center, 4th layer")
-            .addCasing("360", "Heating Coil", true)
-            .addCasing("339", "Any Tiered Glass", true)
-            .addCasing("129-220", "Blast Smelter Casing Block", false)
-            .addCasing("56", "Blast Smelter Heat Containment Coil", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any casing around controller", 2)
-            .addMufflerHatch("1", "Top center casing", 3)
-            .addInputAny("1+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("360", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("339", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("129-220", Casings.BlastSmelterCasing.getLocalizedName(), false)
+            .addCasing("56", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing_around_controller"),
+                2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 3)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
