@@ -75,7 +75,7 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
     }
 
     @Override
-    protected void checkConnections() {
+    public void checkConnections() {
         mCheckConnections = false;
         mConnections = 0;
 
@@ -94,11 +94,6 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
                 }
             }
         }
-    }
-
-    @Override
-    protected boolean checkActive() {
-        return getBaseMetaTileEntity().getTimer() % 200 > 100;
     }
 
     private TestFactoryNetwork network;

@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.V;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -663,6 +664,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public final int realStackSize;
         public final boolean renderRealStackSize;
         public List<Badge> customBadge;
+        boolean scrollManaged;
+        private List<Badge> defaultBadges;
 
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSizes, int x,
             int y) {
@@ -703,7 +706,44 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<Badge> getBadges() {
-            return this.customBadge;
+            if (!scrollManaged) return this.customBadge;
+
+            // A list that is empty while the stack is hidden, because NEI keeps the list it gets
+            return new AbstractList<>() {
+
+                private List<Badge> current() {
+                    return NEIScrollArea.isShown(FixedPositionedStack.this) ? shownBadges() : Collections.emptyList();
+                }
+
+                @Override
+                public Badge get(int index) {
+                    return current().get(index);
+                }
+
+                @Override
+                public int size() {
+                    return current().size();
+                }
+            };
+        }
+
+        // The badges NEI picks when a stack has none of its own
+        private List<Badge> shownBadges() {
+            if (customBadge != null) return customBadge;
+            if (defaultBadges == null) {
+                if (mIsInput && StackInfo.getAmount(item) == 0) {
+                    defaultBadges = Collections.singletonList(Badge.notConsumed());
+                } else if (mIsInput && chance == 0) {
+                    defaultBadges = Collections.singletonList(Badge.notConsumedParallel());
+                } else if (chance != PositionedStack.CHANCE_FULL) {
+                    float chanceFraction = chance / (float) PositionedStack.CHANCE_FULL;
+                    defaultBadges = Collections.singletonList(
+                        mIsInput ? Badge.consumeChance(chanceFraction) : Badge.outputChance(chanceFraction));
+                } else {
+                    defaultBadges = Collections.emptyList();
+                }
+            }
+            return defaultBadges;
         }
 
         public boolean isNotConsumed() {
