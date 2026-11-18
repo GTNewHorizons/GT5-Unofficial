@@ -28,8 +28,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -38,6 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -47,6 +48,8 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -73,7 +76,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -81,6 +83,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
 @SuppressWarnings("SpellCheckingInspection")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -93,6 +96,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
+    private static final int PLASMA_PER_FOCUS_TIER = 4;
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off
     // y-axis offset by +0.5 to counter the coordinate adjustment when rendering
@@ -183,39 +187,22 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Quantum Force Transformer, QFT")
-            .addInfo("Allows Complex processing lines to be performed instantly in one step")
-            .addSeparator()
-            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum Recipe Tier")
-            .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
-            .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
-            .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))
-            .addSeparator()
-            .addInfo(focusText("Shielding Core") + " Tier determines " + focusText("Focusing") + " Bonuses")
-            .addInfo("Put a circuit in the controller to specify the focused output, based on NEI order")
-            .addInfo("If Input Separation is on: put the circuit in the circuit slot of the bus")
-            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L "+EnumChatFormatting.BLUE+"Neptunium Plasma" +EnumChatFormatting.GRAY+" to "+focusText("focus"))
-            .addInfo("The better the " + focusText("Focus Tier") + ", the " + focusText("stronger") + " the effect")
-            .addInfo(focusText("Focused") + " Output will have its " + EnumChatFormatting.AQUA + "probability boosted" + EnumChatFormatting.GRAY + ", with other output's being reduced evenly by the total boost")
-            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
-            .addSeparator()
-            .addInfo("Use a screwdriver to enable "+EnumChatFormatting.BLUE+"Fluid mode")
-            .addInfo("Sneak + screwdriver to disable animations")
-            .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.quantum_force_transformer"))
+            .addMarkdown(new ResourceLocation("gregtech", "quantum-force-transformer"), ImmutableMap.of("plasma", PLASMA_PER_FOCUS_TIER))
             .addUnlimitedTierSkips()
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Front bottom center of central column")
-            .addCasing("236", "Pulse Manipulator Casing", true)
-            .addCasing("224", "Force Field Glass", false)
-            .addCasing("177", "Quantum Force Conductor", false)
-            .addCasing("80-149", "Bulk Production Frame", false)
-            .addCasing("142", "Shielding Core Casing", true)
-            .addMiscHatch("1+", "Bulk Catalyst Housing", "Any bottom casing", 1)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addInputAny("1+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any top casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center_of_central_column"))
+            .addCasing("236", StatCollector.translateToLocal("gt.mbtt.structure.pulse_manipulator_casing"), true)
+            .addCasing("224", Casings.ForceFieldGlass.getLocalizedName(), false)
+            .addCasing("177", Casings.QuantumForceTransformerCoilCasing.getLocalizedName(), false)
+            .addCasing("80-149", Casings.BulkProductionFrame.getLocalizedName(), false)
+            .addCasing("142", StatCollector.translateToLocal("gt.mbtt.structure.shielding_core_casing"), true)
+            .addMiscHatch("1+", ItemList.Hatch_Catalyst_Bulk.get(1).getDisplayName(), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.QFT_MANIPULATOR)
             .addSubChannel(GTStructureChannels.QFT_SHIELDING)
@@ -516,7 +503,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         }
 
         if (runningTick % 20 == 0) {
-            int amount = (int) (getFocusingTier() * 4
+            int amount = (int) (getFocusingTier() * PLASMA_PER_FOCUS_TIER
                 * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
 
             if (doNeptunium || doFermium) {
@@ -844,14 +831,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
-    }
-
-    private String catalystText(String text) {
-        return String.format("%s%s%s", EnumChatFormatting.LIGHT_PURPLE, text, EnumChatFormatting.GRAY);
-    }
-
-    private String focusText(String text) {
-        return String.format("%s%s%s", EnumChatFormatting.GREEN, text, EnumChatFormatting.GRAY);
     }
 
 }
