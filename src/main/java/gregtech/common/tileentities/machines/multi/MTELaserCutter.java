@@ -245,7 +245,7 @@ public class MTELaserCutter extends MTEExtendedPowerMultiBlockBase<MTELaserCutte
     @Override
     public boolean onRunningTick(ItemStack stack) {
         if (coolingFluid == null) return false;
-        boolean consumeCooling = (mProgresstime + 1) % 20 == 0;
+        boolean consumeCooling = (mProgresstime + 1) % 20 == 0 || mProgresstime + 1 >= mMaxProgresstime;
         int amount = consumeCooling ? getCoolingUsePerSecond() : 0;
         if (consumeCooling && !depleteInput(new FluidStack(coolingFluid, amount), true)) {
             stopMachine(ShutDownReasonRegistry.NONE);

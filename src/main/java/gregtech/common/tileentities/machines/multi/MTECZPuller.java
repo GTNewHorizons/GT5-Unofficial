@@ -672,6 +672,11 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         return bufferAmount;
     }
 
+    public void dumpBuffer() {
+        bufferMaterial = null;
+        bufferAmount = 0;
+    }
+
     public String getBufferMaterialTranslationKey() {
         return bufferMaterial == null ? "GT5U.cz_puller.material.empty"
             : "GT5U.cz_puller.material." + bufferMaterial.id;

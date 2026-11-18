@@ -40,6 +40,7 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
         syncManager.syncValue("Gas", new IntSyncValue(base::getStoredGasAmount));
         syncManager.syncValue("GasName", new StringSyncValue(base::getStoredGasName));
         syncManager.syncValue("Capacity", new IntSyncValue(base::getBufferCapacity));
+        syncManager.syncValue("DumpBuffer", new IntSyncValue(() -> 0, value -> base.dumpBuffer()).allowC2S());
     }
 
     @Override
@@ -71,13 +72,14 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             .relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(180, 84);
+            .size(180, 110);
 
         StringSyncValue typeSyncer = syncManager.findSyncHandler("Type", StringSyncValue.class);
         IntSyncValue amountSyncer = syncManager.findSyncHandler("Amount", IntSyncValue.class);
         IntSyncValue gasSyncer = syncManager.findSyncHandler("Gas", IntSyncValue.class);
         StringSyncValue gasNameSyncer = syncManager.findSyncHandler("GasName", StringSyncValue.class);
         IntSyncValue capacitySyncer = syncManager.findSyncHandler("Capacity", IntSyncValue.class);
+        IntSyncValue dumpBufferSyncer = syncManager.findSyncHandler("DumpBuffer", IntSyncValue.class);
 
         ui.child(
             IKey.lang("GT5U.cz_puller.gui.storage_title")
@@ -133,6 +135,15 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
                 .textAlign(Alignment.Center)
                 .pos(8, 67)
                 .size(164, 12));
+        ui.child(
+            new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
+                .overlay(IKey.str("Dump"))
+                .onMousePressed(mouse -> {
+                    dumpBufferSyncer.setIntValue(dumpBufferSyncer.getIntValue() + 1);
+                    return true;
+                })
+                .pos(8, 83)
+                .size(160, 18));
         return ui;
     }
 }

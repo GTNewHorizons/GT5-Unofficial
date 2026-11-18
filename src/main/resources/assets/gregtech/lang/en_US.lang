@@ -3308,6 +3308,7 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+GT5U.gui.button.dump=Dump contents
 GT5U.chat.voiding_mode_set=Voiding Mode: %s
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.mode_switch=Mode Switch
@@ -3374,7 +3375,7 @@ GT5U.gui.button.calculator=Open Machine Calculator
 GT5U.gui.button.probtable=Open Probabilities
 
 GT5U.gui.text.rangedvalue=Range: %s-%s
-GT5U.gui.text.solution_tank_amount=Solution tank: %d/1024 L
+GT5U.gui.text.solution_tank_amount=Solution tank: %d/1024 kL
 GT5U.gui.text.estimated_success_chance=Estimated success chance: %d%%
 GT5U.gui.text.cooling_fluid=Cooling fluid: %s
 GT5U.gui.text.lockedvalue=Locked: %s

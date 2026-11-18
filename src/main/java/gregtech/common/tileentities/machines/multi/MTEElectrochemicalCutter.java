@@ -65,9 +65,9 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int OFFSET_X = 6;
     private static final int OFFSET_Y = 5;
     private static final int OFFSET_Z = 0;
-    private static final int SOLUTION_CAPACITY_MB = 1_024;
-    private static final int MINIMUM_SOLUTION_MB = 256;
-    private static final int PEAK_SOLUTION_MB = 512;
+    private static final int SOLUTION_CAPACITY_MB = 1_024_000;
+    private static final int MINIMUM_SOLUTION_MB = 256_000;
+    private static final int PEAK_SOLUTION_MB = 512_000;
     private boolean needsWaterFill = false;
     private static final String[][] structure = transpose(
         new String[][] {
@@ -112,6 +112,7 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
     private FluidStack solutionTank;
     private int cycleMinSolution;
     private int cycleMaxSolution;
+    private long solutionDumpButtonUntilTick;
 
     public MTEElectrochemicalCutter(int id, String name, String regionalName) {
         super(id, name, regionalName);
@@ -190,7 +191,7 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean onRunningTick(ItemStack stack) {
-        boolean consumeSolution = (mProgresstime + 1) % 20 == 0;
+        boolean consumeSolution = (mProgresstime + 1) % 20 == 0 || mProgresstime + 1 >= mMaxProgresstime;
         int requestedMb = consumeSolution ? 1 + getBaseMetaTileEntity().getWorld().rand.nextInt(4) : 0;
         if (!super.onRunningTick(stack)) return false;
         if (consumeSolution) {
@@ -222,7 +223,7 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
     public void onPostTick(IGregTechTileEntity base, long tick) {
         super.onPostTick(base, tick);
         if (!base.isServerSide() || tick % 20 != 0) return;
-        if (mMaxProgresstime <= 0) collectSolutionFluid();
+        collectSolutionFluid();
         if (base.isServerSide() && needsWaterFill) {
             if (GTStructureUtility
                 .fillStructureWithWater(base, getExtendedFacing(), structure, OFFSET_X, OFFSET_Y, OFFSET_Z, 'F')) {
@@ -285,6 +286,19 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
 
     public int getSolutionAmount() {
         return solutionTank == null ? 0 : solutionTank.amount;
+    }
+
+    public void dumpSolution() {
+        solutionTank = null;
+        cycleMinSolution = 0;
+        cycleMaxSolution = 0;
+        solutionDumpButtonUntilTick = getBaseMetaTileEntity().getWorld()
+            .getTotalWorldTime() + 10;
+    }
+
+    public boolean isSolutionDumpButtonActive() {
+        return getBaseMetaTileEntity().getWorld()
+            .getTotalWorldTime() < solutionDumpButtonUntilTick;
     }
 
     public int getSuccessChancePercent() {

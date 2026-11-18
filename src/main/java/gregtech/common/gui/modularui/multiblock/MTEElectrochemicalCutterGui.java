@@ -11,7 +11,10 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEElectrochemicalCutter;
 
@@ -26,6 +29,20 @@ public class MTEElectrochemicalCutterGui extends MTEMultiBlockBaseGui<MTEElectro
         super.registerSyncValues(syncManager);
         syncManager.syncValue("successChance", new IntSyncValue(multiblock::getSuccessChancePercent));
         syncManager.syncValue("solutionAmount", new IntSyncValue(multiblock::getSolutionAmount));
+        syncManager.syncValue(
+            "dumpSolutionButton",
+            new BooleanSyncValue(
+                multiblock::isSolutionDumpButtonActive,
+                value -> { if (value) multiblock.dumpSolution(); }).allowC2S());
+    }
+
+    @Override
+    protected Flow createButtonColumn(ModularPanel parent, PanelSyncManager syncManager) {
+        return super.createButtonColumn(parent, syncManager).child(
+            new ToggleButton().syncHandler("dumpSolutionButton")
+                .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN)
+                .tooltip(tooltip -> tooltip.addLine(IKey.lang("GT5U.gui.button.dump")))
+                .size(18, 18));
     }
 
     @Override
