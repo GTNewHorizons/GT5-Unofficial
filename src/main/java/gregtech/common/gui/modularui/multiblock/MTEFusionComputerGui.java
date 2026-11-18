@@ -73,4 +73,9 @@ public class MTEFusionComputerGui extends MTEMultiBlockBaseGui<MTEFusionComputer
         });
         return progress;
     }
+
+    @Override
+    public boolean showMaxParallelRow() {
+        return false;
+    }
 }
