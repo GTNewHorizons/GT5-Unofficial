@@ -6,7 +6,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -24,7 +24,7 @@ import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 public class MTEHatchDebugDataAccess extends MTEHatchDataBase implements IALRecipeInputHatch {
 
     public static final ALRecipeDataPacket DEBUG_DATA_PACKET = new ALRecipeDataPacket(
-        ImmutableList.copyOf(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes));
+        ImmutableSet.copyOf(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes));
 
     public MTEHatchDebugDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.debug.tt.dataaccess.desc"));

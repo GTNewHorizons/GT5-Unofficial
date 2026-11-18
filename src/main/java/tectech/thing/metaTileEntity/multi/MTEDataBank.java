@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -35,7 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
@@ -170,7 +169,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         ALRecipeDataPacket packet = ALRecipeDataPacket.EMPTY_PACKET;
 
         if (!availableRecipes.isEmpty()) {
-            packet = new ALRecipeDataPacket(ImmutableList.copyOf(availableRecipes));
+            packet = new ALRecipeDataPacket(ImmutableSet.copyOf(availableRecipes));
         }
 
         updateDataOutputs(packet);
@@ -180,8 +179,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         for (IALRecipeOutputHatch recipeOutputHatch : recipeOutputHatches) {
             if (!recipeOutputHatch.isValid()) continue;
 
-            if (dataPacket.equals(previous)) continue;
-            hatch.enqueueAndMove(dataPacket);
+            // if (dataPacket.equals(previous)) continue;
+            // hatch.enqueueAndMove(dataPacket);
         }
     }
 

@@ -15,7 +15,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -141,7 +141,7 @@ public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputH
                 recipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
 
-            this.cachedRecipes = new ALRecipeDataPacket(ImmutableList.copyOf(recipes));
+            this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(recipes));
         }
 
         return cachedRecipes;

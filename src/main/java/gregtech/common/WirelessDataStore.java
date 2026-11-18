@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import net.minecraft.server.MinecraftServer;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -72,7 +72,7 @@ public class WirelessDataStore {
                 }
             }
 
-            this.cachedRecipes = new ALRecipeDataPacket(ImmutableList.copyOf(union));
+            this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(union));
         }
 
         return cachedRecipes;

@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,6 +115,6 @@ public abstract class MTEHatchDataBase extends MTEHatch {
         int bSize = b == null ? 0 : b.contents.size();
         if (aSize != bSize) return true;
         if (aSize == 0) return false;
-        return !new HashSet<>(a.contents).equals(new HashSet<>(b.contents));
+        return !a.contents.equals(b.contents);
     }
 }

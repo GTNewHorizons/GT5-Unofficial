@@ -5,14 +5,12 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.LinkedHashSet;
+import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-
-import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -21,8 +19,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTSplit;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
@@ -83,7 +79,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     }
 
     @Override
-    public void setContents(@NotNull ALRecipeDataPacket newRecipes) {
+    public void setContent(@Nullable ALRecipeDataPacket newRecipes) {
         ALRecipeDataPacket oldRecipes = this.cachedRecipes;
 
         if (newRecipes.isEmpty()) {
@@ -111,14 +107,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        NBTTagCompound stacksTag = new NBTTagCompound();
-
-        int count = cachedRecipes.contents.size();
-        stacksTag.setInteger("count", count);
-        for (int i = 0; i < count; i++) {
-            stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(cachedRecipes.contents.get(i)));
-        }
-
+        NBTTagCompound stacksTag = getAssemblyLineRecipes().toNBT();
         aNBT.setTag("data_stacks", stacksTag);
     }
 
@@ -127,17 +116,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
         super.loadNBTData(aNBT);
 
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
-        int count = stacksTag.getInteger("count");
-
-        if (count > 0) {
-            LinkedHashSet<RecipeAssemblyLine> loaded = new LinkedHashSet<>();
-
-            for (int i = 0; i < count; i++) {
-                loaded.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
-            }
-
-            this.cachedRecipes = new ALRecipeDataPacket(ImmutableList.copyOf(loaded));
-        }
+        this.cachedRecipes = new ALRecipeDataPacket(stacksTag);
     }
 
     @Override

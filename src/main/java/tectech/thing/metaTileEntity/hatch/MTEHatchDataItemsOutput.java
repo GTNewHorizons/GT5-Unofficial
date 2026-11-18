@@ -2,6 +2,8 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,9 +22,12 @@ import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALRecipeOutputHatch, IConnectsToDataPipe<ALRecipeDataPacket> {
+public class MTEHatchDataItemsOutput extends MTEHatchDataBase
+    implements IALRecipeOutputHatch, IConnectsToDataPipe<ALRecipeDataPacket> {
 
     public ALRecipeDataPacket previousPacket = null;
+    private ALRecipeDataPacket q = null;
+    private IConnectsToDataPipe<ALRecipeDataPacket> lastConnected = null;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.hatch.dataoutass.desc"));
@@ -89,8 +94,24 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
     }
 
     @Override
+    public @Nullable IConnectsToDataPipe<ALRecipeDataPacket> getLastConnected() {
+        return lastConnected;
+    }
+
+    @Override
+    public void setLastConnected(@Nullable IConnectsToDataPipe<ALRecipeDataPacket> connected) {
+        lastConnected = connected;
+    }
+
+    @Override
     public ALRecipeDataPacket getQueued() {
         return q;
+    }
+
+    @Override
+    public void setContent(@Nullable ALRecipeDataPacket content) {
+        this.q = content;
+        moveAround(getBaseMetaTileEntity(), CheckState.NEW_DATA);
     }
 
     @Override
@@ -100,7 +121,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
 
     @Override
     public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
-        var result = super.moveAround(aBaseMetaTileEntity, checkState);
+        var result = IConnectsToDataPipe.super.moveAround(aBaseMetaTileEntity, checkState);
 
         switch (result) {
             // these states should not modify this hatch or the connected one
@@ -129,6 +150,6 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
 
     @Override
     public void setAssemblyLineRecipes(ALRecipeDataPacket packet) {
-        this.previousPacket = packet;
+        setContent(packet);
     }
 }
