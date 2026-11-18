@@ -9,12 +9,12 @@ public class MTEHatchVoidGui extends MTEHatchOutputGui {
     }
 
     @Override
-    protected boolean supportsFluidScreen() {
+    protected boolean supportsScreen() {
         return false;
     }
 
     @Override
-    protected boolean supportsFluidIOColumn() {
+    protected boolean supportsScreenIOColumn() {
         return false;
     }
 }

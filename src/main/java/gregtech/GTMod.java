@@ -190,6 +190,7 @@ import ic2.api.recipe.RecipeOutput;
         + "after:TConstruct;"
         + "after:Translocator;"
         + "after:gendustry;"
+        + "after:dashboard@[1.0.13,);"
         + "after:etfuturum;"
         + "before:computronics;")
 public class GTMod {
@@ -275,7 +276,7 @@ public class GTMod {
         }
 
         for (int i = 4; i < 12; i++) {
-            GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
+            GregTechAPI.registerTileEntityConstructor(i, BaseMetaPipeEntity::new);
         }
 
         UnificationOreAdapter.load();
