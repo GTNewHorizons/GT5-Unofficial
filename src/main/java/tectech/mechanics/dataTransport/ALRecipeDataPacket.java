@@ -4,64 +4,59 @@ import java.util.LinkedHashSet;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 
-public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
+public class ALRecipeDataPacket {
 
-    public ALRecipeDataPacket(RecipeAssemblyLine[] content) {
-        super(content);
+    public static final RecipeAssemblyLine[] EMPTY_ARRAY = new RecipeAssemblyLine[0];
+    public static final ALRecipeDataPacket EMPTY_PACKET = new ALRecipeDataPacket(ImmutableList.of());
+
+    public final ImmutableList<RecipeAssemblyLine> contents;
+
+    public ALRecipeDataPacket(ImmutableList<RecipeAssemblyLine> contents) {
+        this.contents = contents;
     }
 
     public ALRecipeDataPacket(NBTTagCompound compound) {
-        super(compound);
-    }
+        NBTTagCompound qContent = compound.getCompoundTag("qContent");
 
-    @Override
-    protected RecipeAssemblyLine[] contentFromNBT(NBTTagCompound nbt) {
-        int count = nbt.getInteger("count");
+        int count = qContent.getInteger("count");
 
         if (count > 0) {
             // loadRecipe returns every recipe sharing the saved output and lists don't dedupe
             LinkedHashSet<RecipeAssemblyLine> recipes = new LinkedHashSet<>();
 
             for (int i = 0; i < count; i++) {
-                recipes.addAll(AssemblyLineUtils.loadRecipe(nbt.getCompoundTag(Integer.toString(i))));
+                recipes.addAll(AssemblyLineUtils.loadRecipe(qContent.getCompoundTag(Integer.toString(i))));
             }
 
-            return recipes.toArray(new RecipeAssemblyLine[0]);
+            this.contents = ImmutableList.copyOf(recipes);
+        } else {
+            this.contents = ImmutableList.of();
         }
-
-        return new RecipeAssemblyLine[0];
     }
 
-    @Override
-    protected NBTTagCompound contentToNBT() {
+    public boolean isEmpty() {
+        return contents.isEmpty();
+    }
+
+    public NBTTagCompound toNBT() {
+        NBTTagCompound root = new NBTTagCompound();
+
         NBTTagCompound compound = new NBTTagCompound();
+        root.setTag("qContent", compound);
 
-        if (content != null && content.length > 0) {
-            compound.setInteger("count", content.length);
+        if (!contents.isEmpty()) {
+            compound.setInteger("count", contents.size());
 
-            for (int i = 0; i < content.length; i++) {
-                compound.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(content[i]));
+            for (int i = 0; i < contents.size(); i++) {
+                compound.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(contents.get(i)));
             }
         }
 
-        return compound;
-    }
-
-    @Override
-    public boolean extraCheck() {
-        return true;
-    }
-
-    @Override
-    protected RecipeAssemblyLine[] unifyContentWith(RecipeAssemblyLine[] content) {
-        throw new NoSuchMethodError("Unavailable to unify item stack data packet");
-    }
-
-    @Override
-    public String getContentString() {
-        return "Stack Count: " + (content == null ? 0 : content.length);
+        return root;
     }
 }

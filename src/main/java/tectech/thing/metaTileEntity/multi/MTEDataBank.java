@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -15,18 +14,17 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -43,29 +41,23 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.WirelessComputationPacket;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
+import tectech.mechanics.dataTransport.IALRecipeInputHatch;
+import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
-import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
 
-    // region variables
-    private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
-    private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
-    private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
+    private final ArrayList<IALRecipeInputHatch> recipeInputHatches = new ArrayList<>();
+    private final ArrayList<IALRecipeOutputHatch> recipeOutputHatches = new ArrayList<>();
     private boolean slave = false;
-    private boolean wirelessModeEnabled = false;
-    // endregion
 
     private static final IStructureDefinition<MTEDataBank> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEDataBank>builder()
@@ -84,15 +76,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 0)))
         .addElement(
             'D',
-            buildHatchAdder(MTEDataBank.class)
-                .atLeast(
-                    DataBankHatches.OutboundConnector,
-                    DataBankHatches.InboundConnector,
-                    DataBankHatches.WirelessOutboundConnector)
+            buildHatchAdder(MTEDataBank.class).atLeast(DataBankHatches.DataOutputHatch)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(2)
                 .buildAndChain(
-                    DataBankHatches.DataStick
+                    DataBankHatches.DataInputHatch
                         .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 1, 2, TTCasingsContainer.sBlockCasingsTT, 1)))
         .build();
     // endregion
@@ -124,9 +112,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addCasing("0-6", translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("GT5U.MBTT.DataInputHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("1+", translateToLocal("GT5U.MBTT.DataOutputHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
             .addStructureInfo("")
             .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
             .toolTipFinisher();
@@ -139,10 +126,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         List<StructureError> errors) {
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
-        if (eDataAccessHatches.isEmpty()) {
+        if (recipeInputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_access"));
         }
-        if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
+        if (recipeOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_output"));
         }
         checkHasAnyEnergy(errors);
@@ -152,18 +139,16 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void clearHatches() {
         super.clearHatches();
-        eDataAccessHatches.clear();
-        eStacksDataOutputs.clear();
-        eWirelessStacksDataOutputs.clear();
+        recipeInputHatches.clear();
+        recipeOutputHatches.clear();
     }
 
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        if (!eDataAccessHatches.isEmpty() && (!eStacksDataOutputs.isEmpty() || !eWirelessStacksDataOutputs.isEmpty())) {
+        if (!recipeInputHatches.isEmpty() && !recipeOutputHatches.isEmpty()) {
             mEUt = -(int) V[slave ? 6 : 4];
-            eAmpereFlow = 1
-                + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
+            eAmpereFlow = 1 + (long) recipeOutputHatches.size() * recipeInputHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             this.lEUt = this.mEUt;
@@ -174,37 +159,29 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
-        HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
+        LinkedHashSet<RecipeAssemblyLine> availableRecipes = new LinkedHashSet<>();
 
-        for (MTEHatchDataAccess dataAccess : validMTEList(eDataAccessHatches)) {
-            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
+        for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
+            if (!recipeInputHatch.isValid()) continue;
+
+            availableRecipes.addAll(recipeInputHatch.getAssemblyLineRecipes().contents);
         }
 
-        ALRecipeDataPacket dataPacket = null;
+        ALRecipeDataPacket packet = ALRecipeDataPacket.EMPTY_PACKET;
+
         if (!availableRecipes.isEmpty()) {
-            RecipeAssemblyLine[] recipeArray = availableRecipes.toArray(new RecipeAssemblyLine[0]);
-            dataPacket = new ALRecipeDataPacket(recipeArray);
+            packet = new ALRecipeDataPacket(ImmutableList.copyOf(availableRecipes));
         }
 
-        updateDataOutputs(dataPacket);
+        updateDataOutputs(packet);
     }
 
     private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
-        for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-            // only update the hatch if it's different packet than the last one
-            if (hatch.previousPacket == dataPacket) continue;
-            hatch.enqueueAndMove(dataPacket);
-        }
+        for (IALRecipeOutputHatch recipeOutputHatch : recipeOutputHatches) {
+            if (!recipeOutputHatch.isValid()) continue;
 
-        if (wirelessModeEnabled) {
-            for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
-                if (hatch.dataPacket == dataPacket) continue;
-                hatch.dataPacket = dataPacket;
-            }
-        } else {
-            for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
-                hatch.dataPacket = null;
-            }
+            if (dataPacket.equals(previous)) continue;
+            hatch.enqueueAndMove(dataPacket);
         }
     }
 
@@ -223,69 +200,34 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
-    public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
+    public final boolean addDataBankHatchToMachineList(IGregTechTileEntity hatchIGTE, int casingIndex) {
+        if (hatchIGTE == null) {
             return false;
         }
 
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        switch (aMetaTileEntity) {
+        switch (hatchIGTE.getMetaTileEntity()) {
             case null -> {
                 return false;
             }
-            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
-                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
-                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
+            case IALRecipeInputHatch inputHatch -> {
+                inputHatch.updateTexture(casingIndex);
+
+                if (inputHatch instanceof MTEHatchDataItemsInput) {
+                    // inputs are chained from another databank, increase required per-hatch EU/t
+                    slave = true;
+                }
+
+                return recipeInputHatches.add(inputHatch);
             }
-            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
-                mteHatchDataItemsOutput.updateTexture(aBaseCasingIndex);
-                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
-            }
-            case MTEHatchDataItemsInput mteDataItemInput -> {
-                mteDataItemInput.updateTexture(aBaseCasingIndex);
-                slave = true;
-                return eDataAccessHatches.add(mteDataItemInput);
-            }
-            case MTEHatchDataAccess mteDatastickHatch -> {
-                mteDatastickHatch.updateTexture(aBaseCasingIndex);
-                return eDataAccessHatches.add(mteDatastickHatch);
+            case IALRecipeOutputHatch outputHatch -> {
+                outputHatch.updateTexture(casingIndex);
+                return recipeOutputHatches.add(outputHatch);
             }
             default -> {
             }
         }
 
         return false;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            wirelessModeEnabled = !wirelessModeEnabled;
-            if (wirelessModeEnabled) {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
-                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
-                WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
-            }
-        }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("wirelessModeEnabled")) {
-            wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
-        } else {
-            wirelessModeEnabled = false;
-        }
     }
 
     @Override
@@ -306,32 +248,18 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick("GT5U.MBTT.DataAccessHatch", MTEHatchDataAccess.class) {
+        DataInputHatch("GT5U.MBTT.DataInputHatch", IALRecipeInputHatch.class) {
 
             @Override
             public long count(MTEDataBank t) {
-                return t.eDataAccessHatches.size();
+                return t.recipeInputHatches.size();
             }
         },
-        OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
+        DataOutputHatch("GT5U.MBTT.DataOutputHatch", IALRecipeOutputHatch.class) {
 
             @Override
             public long count(MTEDataBank t) {
-                return t.eStacksDataOutputs.size();
-            }
-        },
-        InboundConnector("GT5U.MBTT.AssemblyLineReception", MTEHatchDataItemsInput.class) {
-
-            @Override
-            public long count(MTEDataBank t) {
-                return t.eDataAccessHatches.size();
-            }
-        },
-        WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
-
-            @Override
-            public long count(MTEDataBank t) {
-                return t.eWirelessStacksDataOutputs.size();
+                return t.recipeOutputHatches.size();
             }
         };
 

@@ -289,21 +289,17 @@ gt.blockmachines.hatch.dataout.desc.0=Квантовый вывод данных
 gt.blockmachines.hatch.dataout.desc.1=Высокоскоростное оптоволоконное соединение.
 gt.blockmachines.hatch.dataout.desc.2=Должно быть окрашено для работы
 
-gt.blockmachines.hatch.datainass.tier.07.name=Входной разъём для Сборочной линии
-gt.blockmachines.hatch.datainass.desc.0=Квантовый ввод данных в мультиблок
-gt.blockmachines.hatch.datainass.desc.1=Высокоскоростное оптоволоконное соединение.
-gt.blockmachines.hatch.datainass.desc.2=Должно быть окрашено для работы
+gt.blockmachines.hatch.datainass.name=Входной разъём для сборочной линии
+gt.blockmachines.hatch.datainass.desc=Тип машины: §eВходной люк для флешек, DSIH§r\nПолучает рецепты сборочной линии от выходного разъёма банка данных\nПредоставляет рецепты сборочным линиям, продвинутым сборочным линиям и банкам данных\nПодключается к выходному разъёму банка данных через оптоволоконные кабели\nМожет использоваться для последовательного соединения банков данных ценой повышенного энергопотребления на каждый люк.\n§bДолжно быть окрашено для работы§r
 
-gt.blockmachines.hatch.datainasswireless.desc.0=Беспроводной квантовый ввод данных в мультиблок
-gt.blockmachines.hatch.datainasswireless.desc.1=Высокоскоростное подключение к интернету
+gt.blockmachines.hatch.datainasswireless.name=Беспроводной входной разъём для сборочной линии
+gt.blockmachines.hatch.datainasswireless.desc=Тип машины: §eВходной люк для флешек, DSIH§r\nПолучает рецепты сборочной линии из беспроводной сети рецептов вашей команды GT\nПредоставляет рецепты сборочным линиям, продвинутым сборочным линиям и банкам данных\nОбновляется каждые 10 секунд
 
-gt.blockmachines.hatch.dataoutass.tier.07.name=Выходной разъём для банка данных
-gt.blockmachines.hatch.dataoutass.desc.0=Квантовый вывод данных из мультиблока
-gt.blockmachines.hatch.dataoutass.desc.1=Высокоскоростное оптоволоконное соединение.
-gt.blockmachines.hatch.dataoutass.desc.2=Должно быть окрашено для работы
+gt.blockmachines.hatch.dataoutass.name=Выходной разъём для банка данных
+gt.blockmachines.hatch.dataoutass.desc=Тип машины: §eВыходной люк для флешек, DSOH§r\nПолучает рецепты сборочной линии от банка данных.\nОтправляет рецепты сборочной линии во входной разъём сборочной линии через оптоволоконные кабели\n§bДолжно быть окрашено для работы§r
 
-gt.blockmachines.hatch.wirelessdataoutass.desc.0=Беспроводной квантовый вывод данных из мультиблока
-gt.blockmachines.hatch.wirelessdataoutass.desc.1=Высокоскоростное подключение к интернету
+gt.blockmachines.hatch.dataoutasswireless.name=Беспроводной выходной разъём для банка данных
+gt.blockmachines.hatch.dataoutasswireless.desc=Тип машины: §eВыходной люк для флешек, DSOH§r\nПолучает рецепты сборочной линии от банка данных.\nЗагружает рецепты сборочной линии в беспроводную сеть рецептов вашей команды GT\nОбновляется каждые 10 секунд
 
 gt.blockmachines.hatch.rack.tier.08.name=Стойка квантового компьютера
 gt.blockmachines.hatch.rack.desc.0=4-слотовая серверная стойка
@@ -1054,6 +1050,8 @@ gt.blockmachines.debug.tt.genny.desc.2=Просто потому что я хо�
 gt.blockmachines.debug.tt.genny.desc.3=С помощью отвертки переключите его в режим лазера
 gt.blockmachines.debug.tt.certain.desc.0=Чувствуя себя уверенным, наверняка
 gt.blockmachines.debug.tt.certain.desc.1=Кот Шрёдингера сбежал из коробки
+gt.blockmachines.debug.tt.dataaccess.name=Отладочный шлюз доступа к данным
+gt.blockmachines.debug.tt.dataaccess.desc=Тип машины: §eВходной люк для флешек, DSIH§r\nПредоставляет все рецепты сборочной линии\nИспользуется в сборочной линии, продвинутой сборочной линии и банке данных\n§cТолько для тестирования и разработки, может вызывать лаги при чрезмерном использовании§r
 
 GT5U.gui.text.recipe_result.computing=§aComputing
 GT5U.gui.text.recipe_result.providing_data=§aProviding Data

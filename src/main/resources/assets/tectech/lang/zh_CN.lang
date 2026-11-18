@@ -184,15 +184,17 @@ gt.blockmachines.hatch.dataout.desc.0=多方块机器的数据输出
 gt.blockmachines.hatch.dataout.desc.1=高速光纤接口
 gt.blockmachines.hatch.dataout.desc.2=启用前必须涂色
 
-gt.blockmachines.hatch.datainass.tier.07.name=装配线数据库接口
-gt.blockmachines.hatch.datainass.desc.0=多方块机器的数据输入
-gt.blockmachines.hatch.datainass.desc.1=高速光纤接口
-gt.blockmachines.hatch.datainass.desc.2=启用前必须涂色
+gt.blockmachines.hatch.datainass.name=装配线数据库接口
+gt.blockmachines.hatch.datainass.desc=机器类型：§e闪存输入仓，DSIH§r\n从数据库主接口接收装配线配方\n为装配线、进阶装配线和数据库提供配方\n通过光缆连接至数据库主接口\n可用于串联多个数据库，但每个仓的耗电量会更高。\n§b启用前必须涂色§r
 
-gt.blockmachines.hatch.dataoutass.tier.07.name=数据库主接口
-gt.blockmachines.hatch.dataoutass.desc.0=多方块机器的数据输出
-gt.blockmachines.hatch.dataoutass.desc.1=高速光纤接口
-gt.blockmachines.hatch.dataoutass.desc.2=启用前必须涂色
+gt.blockmachines.hatch.datainasswireless.name=装配线无线接收接口
+gt.blockmachines.hatch.datainasswireless.desc=机器类型：§e闪存输入仓，DSIH§r\n从你的GT团队的无线配方网络接收装配线配方\n为装配线、进阶装配线和数据库提供配方\n每10秒更新一次
+
+gt.blockmachines.hatch.dataoutass.name=数据库主接口
+gt.blockmachines.hatch.dataoutass.desc=机器类型：§e闪存输出仓，DSOH§r\n从数据库接收装配线配方。\n通过光缆将装配线配方发送至装配线数据库接口\n§b启用前必须涂色§r
+
+gt.blockmachines.hatch.dataoutasswireless.name=数据库无线发送接口
+gt.blockmachines.hatch.dataoutasswireless.desc=机器类型：§e闪存输出仓，DSOH§r\n从数据库接收装配线配方。\n将装配线配方上传至你的GT团队的无线配方网络\n每10秒更新一次
 
 gt.blockmachines.hatch.rack.tier.08.name=计算机箱
 gt.blockmachines.hatch.rack.desc.0=4插槽机箱
@@ -512,6 +514,8 @@ gt.blockmachines.debug.tt.genny.desc.0=凭空而生的能量
 gt.blockmachines.debug.tt.genny.desc.1=一个无限的能源生产/消耗设备
 gt.blockmachines.debug.tt.genny.desc.2=我只是想要一个...
 gt.blockmachines.debug.tt.genny.desc.3=使用螺丝刀将其切换为激光模式.
+gt.blockmachines.debug.tt.dataaccess.name=Debug数据访问仓
+gt.blockmachines.debug.tt.dataaccess.desc=机器类型：§e闪存输入仓，DSIH§r\n提供所有装配线配方\n用于装配线、进阶装配线和数据库\n§c仅供测试和开发使用，过度使用可能导致世界卡顿§r
 
 #Keywords and phrases
 #Example: ID:3
