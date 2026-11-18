@@ -110,9 +110,9 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
             .addCasing("20", Casings.FormingCore.getLocalizedName(), false)
             .addCasing("3-7", Casings.ExtruderMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
-            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
             .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_extrusion_bus"), StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .toolTipFinisher();
