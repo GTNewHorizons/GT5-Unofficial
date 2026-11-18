@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -261,8 +260,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures,
 
     @Override
     public boolean isClimbableSide(IBlockAccess world, int x, int y, int z, ForgeDirection side,
-        EntityLivingBase entity) {
-        return entity instanceof EntityPlayer && Gregtech.general.climbableFrameBox
+        EntityPlayer entityPlayer) {
+        return Gregtech.general.climbableFrameBox
             && !(world.getTileEntity(x, y, z) instanceof ICoverable coverable && coverable.hasCoverAtSide(side));
     }
 
