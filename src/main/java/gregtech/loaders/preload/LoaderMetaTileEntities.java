@@ -220,7 +220,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
 import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
-import gregtech.common.tileentities.machines.multi.MTEPyrolyseOvenLegacy;
 import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
