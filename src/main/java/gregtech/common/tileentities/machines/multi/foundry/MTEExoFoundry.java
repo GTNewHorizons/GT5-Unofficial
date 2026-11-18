@@ -52,7 +52,6 @@ import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
