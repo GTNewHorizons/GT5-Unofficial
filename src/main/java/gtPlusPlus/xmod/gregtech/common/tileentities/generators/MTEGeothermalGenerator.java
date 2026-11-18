@@ -35,8 +35,8 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
         return ArrayUtils.addAll(
             GTSplit.splitLocalizedFormatted(
                 "gt.blockmachines.advancedgenerator.geothermalfuel.desc",
-                this.getEfficiency(),
-                this.getPollution()),
+                this.getPollution(),
+                this.getEfficiency()),
             GTPPCore.GT_Tooltip.get());
     }
 

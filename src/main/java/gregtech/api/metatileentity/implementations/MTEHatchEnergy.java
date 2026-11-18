@@ -106,6 +106,7 @@ public class MTEHatchEnergy extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch.desc");
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.energy_hatch.desc", GTValues.TIER_COLORS[mTier] + "2A");
     }
 }

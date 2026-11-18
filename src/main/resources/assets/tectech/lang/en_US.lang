@@ -250,7 +250,7 @@ gt.blockmachines.hatch.dynamomulti.desc=Multiple Ampere Energy Extractor for Mul
 
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.desc=Energy extracting terminal for Multiblocks
-gt.blockmachines.hatch.screwdrivertooltip=Use screwdriver to adjust amperage
+gt.blockmachines.hatch.screwdrivertooltip=Use a §fScrewdriver§7 to adjust amperage
 
 gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
 gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch
@@ -1162,7 +1162,7 @@ tt.nei.eoh.solid_mass=Percentage of Solid Mass: %s%%
 tt.nei.eoh.item_count=Item Count: %s
 tt.nei.fog_exotic.weight=Weight: %s
 tt.nei.fog_exotic.chance=Request chance: %s%%
-tt.nei.fog_exotic.random_amount=Random amount: %s-%s L
+tt.nei.fog_exotic.random_amount=Random amount: %s-%s%s
 tt.nei.fog_exotic.picks=Requests %s random plasma
 tt.nei.fog_exotic.rules=See the controller for details
 tt.nei.research.max_eu=Max EU: %s EU
@@ -1903,16 +1903,16 @@ tt.gui.tooltip.full_led_desc.unused=Unused
 EOH_Controller_PlanetBlock=Current Planet Block: %s
 EOH_Controller_AstralArrayAmount=Stored Astral Arrays: %s
 
-EOH.Recipe.Hydrogen.In=Hydrogen: %s L
-EOH.Recipe.Helium.In=Helium: %s L
+EOH.Recipe.Hydrogen.In=Hydrogen: %s%s
+EOH.Recipe.Helium.In=Helium: %s%s
 EOH.Recipe.SpacetimeTier=Spacetime Tier: %s
 EOH.Recipe.EU.Out=EU Output: %s EU
 EOH.Recipe.EU.In=EU Input: %s EU
 EOH.Recipe.BaseRecipeChance=Base Recipe Chance: %s%%
 EOH.Recipe.RecipeEnergyEfficiency=Recipe Energy Efficiency: %s%%
 
-gt.blockmachines.dynamo_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
-gt.blockmachines.energy_hatch.wireless=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
+gt.blockmachines.dynamo_hatch.wireless=Does not connect to wires, deposits EU into the network
+gt.blockmachines.energy_hatch.wireless=Does not connect to wires, withdraws EU from the network
 
 gt.godforgecasing.0.name=Singularity Reinforced Stellar Shielding Casing
 gt.godforgecasing.1.name=Celestial Matter Guidance Casing

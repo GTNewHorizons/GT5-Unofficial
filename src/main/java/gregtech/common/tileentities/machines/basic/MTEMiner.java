@@ -60,11 +60,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.miner.tooltip",
+            RADIUS[mTier] * 2 + 1,
+            RADIUS[mTier] * 2 + 1,
+            mTier,
             ENERGY[mTier],
-            SPEED[mTier] / 20,
-            (RADIUS[mTier] * 2 + 1),
-            (RADIUS[mTier] * 2 + 1),
-            mTier);
+            SPEED[mTier] / 20);
     }
 
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {

@@ -2,11 +2,7 @@ package gtPlusPlus.core.item.general;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -33,22 +29,15 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
 
     @Override
     public String getItemStackDisplayName(final ItemStack stack) {
-        return super.getItemStackDisplayName(stack) /* +" ["+GT_Values.VN[this.coreTier-1]+"]." */;
+        return StatCollector.translateToLocalFormatted(
+            "gtpp.energy_core.name",
+            GTValues.getLocalizedLongVoltageName(this.coreTier - 1));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
-    }
-
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
-        final boolean adv) {
-        list.add(
-            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                "gtpp.tooltip.buffer_core.key_crafting_component",
-                GTValues.VN[this.coreTier - 1]));
     }
 
     @Override

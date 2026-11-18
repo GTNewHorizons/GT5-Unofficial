@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import java.util.List;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -23,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
@@ -36,11 +36,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     private final int tier;
 
     public MTEAdvancedBoilerBase(int aID, String aNameRegional, int tier) {
-        super(
-            aID,
-            "electricboiler." + tier + ".tier.single",
-            aNameRegional,
-            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+        super(aID, "electricboiler." + tier + ".tier.single", aNameRegional, "");
         this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
@@ -54,30 +50,19 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.electricboiler.name",
-            GTValues.getLocalizedLongVoltageName(tier),
-            GTValues.VN[tier]);
+        return StatCollector.translateToLocal("gt.blockmachines.electricboiler.name");
     }
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Produces " + getPollution() + " pollution/sec",
-            "Consumes fuel only when temperature is less than 100C",
-            "Fuel with burn time greater than 500 is more efficient.",
-            "Doesn't explode if there's no water",
-            GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        super.addAdditionalTooltipInformation(stack, tooltip);
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.tooltip.electric.tier.s",
-                GTUtility.getColoredTierNameFromTier((byte) tier)));
+        String[] tierLine = new String[] { StatCollector.translateToLocalFormatted(
+            "GT5U.tooltip.electric.tier.s",
+            GTUtility.getColoredTierNameFromTier((byte) tier)) };
+        String[] body = GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.electricboiler.tier.single.tooltip",
+            formatFluid(steamPerSecond),
+            getPollution());
+        return ArrayUtils.addAll(ArrayUtils.addAll(tierLine, body), GTPPCore.GT_Tooltip.get());
     }
 
     @Override

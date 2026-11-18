@@ -55,8 +55,14 @@ public class MTEHatchMuffler extends MTEHatch {
     @Override
     public String[] getDescription() {
         String[] description = GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(calculatePollutionReduction(100)));
+            .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(getPollutionReduction()));
         return mTier > 1 ? TooltipHelper.pollutionDisabledTooltip(description) : description;
+    }
+
+    /** Percentage of pollution removed, e.g. 12.5 for 12.5%. */
+    public float getPollutionReduction() {
+        if (mTier < 2) return 0F;
+        return 12.5F * (mTier - 1F);
     }
 
     @Override

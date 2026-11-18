@@ -78,13 +78,15 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public String[] getDescription() {
+        String inColor = GTValues.TIER_COLORS[mTier];
+        String outColor = GTValues.TIER_COLORS[Math.min(mTier + 1, GTValues.TIER_COLORS.length - 1)];
         return GTSplit.splitLocalizedFormattedWithPrefix(
             "gt.blockmachines.transformer_advanced.desc",
             super.getDescription()[0],
-            16,
-            64,
-            8,
-            32);
+            inColor + 16,
+            outColor + 64,
+            inColor + 8,
+            outColor + 32);
     }
 
     @Override

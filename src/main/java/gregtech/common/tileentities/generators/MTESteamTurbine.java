@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK_ACTIVE;
@@ -66,10 +67,12 @@ public class MTESteamTurbine extends MTEBasicGenerator {
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicgenerator.steamturbine.tooltip",
-            String.valueOf(600 / getEfficiency()),
+            getFluidUnit(),
             String.valueOf(
                 (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
-                    / (600 / getEfficiency()))));
+                    / (600 / getEfficiency()))),
+            getFluidUnit(),
+            String.valueOf(600 / getEfficiency()));
     }
 
     @Override

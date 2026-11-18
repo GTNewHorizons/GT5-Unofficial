@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +30,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.singleblock.MTETieredTankGui;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -39,15 +38,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMetaTile {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            3,
-            StatCollector.translateToLocalFormatted(
-                "gtpp.tiered_tank.desc.capacity",
-                TooltipHelper.fluidText((int) (GTUtility.powInt(2, aTier) * 32000))));
+        super(aID, aName, aNameRegional, aTier, 3, "");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -66,12 +57,12 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
     @Override
     public String[] getDescription() {
-        List<String> description = new ArrayList<>(Arrays.asList(this.mDescriptionArray));
+        List<String> description = new ArrayList<>();
 
         description.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.tooltip.electric.tier.s",
-                GTUtility.getColoredTierNameFromTier(mTier)));
+                "gtpp.tiered_tank.desc.capacity",
+                formatNumber((int) (GTUtility.powInt(2, mTier) * 32000)) + getFluidUnit()));
         description.add(StatCollector.translateToLocal("gtpp.tiered_tank.desc.portable"));
 
         if (this.mFluid != null) {
@@ -79,7 +70,8 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
                 StatCollector.translateToLocalFormatted(
                     "gtpp.tiered_tank.desc.fluid",
                     mFluid.getLocalizedName(),
-                    formatNumber(mFluid.amount)));
+                    formatNumber(mFluid.amount),
+                    getFluidUnit()));
         }
 
         description.add(GTPPCore.GT_Tooltip.get());
@@ -112,8 +104,10 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
                         .translateToLocalFormatted("gtpp.tiered_tank.tooltip.contains", tContents.getLocalizedName()));
 
                 tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gtpp.tiered_tank.tooltip.amount", formatNumber(tContents.amount)));
+                    StatCollector.translateToLocalFormatted(
+                        "gtpp.tiered_tank.tooltip.amount",
+                        formatNumber(tContents.amount),
+                        getFluidUnit()));
             }
         }
     }
@@ -154,13 +148,13 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
         if (this.mFluid == null) {
             return new String[] {
                 IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
-                "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty", 0 + "L",
-                this.getCapacity() + "L" };
+                "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty",
+                formatNumber(0) + getFluidUnit(), formatNumber(this.getCapacity()) + getFluidUnit() };
         }
         return new String[] {
             IGregTechDeviceInformation.encode("gtpp.infodata.tiered_tank.name", GTValues.VN[this.mTier]),
-            "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(), this.mFluid.amount + "L",
-            this.getCapacity() + "L" };
+            "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(),
+            formatNumber(this.mFluid.amount) + getFluidUnit(), formatNumber(this.getCapacity()) + getFluidUnit() };
     }
 
     @Override

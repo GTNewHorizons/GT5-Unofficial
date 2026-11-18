@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class ItemBoilerChassis extends Item {
@@ -53,6 +54,8 @@ public class ItemBoilerChassis extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        return StatCollector.translateToLocalFormatted("item.itemBoilerChassis.name", tItem.getItemDamage());
+        return StatCollector.translateToLocalFormatted(
+            "gtpp.boiler_chassis.name",
+            GTValues.getLocalizedLongVoltageName(tItem.getItemDamage() + 1));
     }
 }

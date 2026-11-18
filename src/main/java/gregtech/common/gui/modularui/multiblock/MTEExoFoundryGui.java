@@ -1,8 +1,9 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.GTValues.formattingCodes;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleLimitText;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createTierLine;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -560,6 +561,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
         FoundryModule module = FoundryModule.values()[moduleIndex];
+        if (module != FoundryModule.UNSET) t.addLine(createTierLine(module.voltageTier));
         String name = module.color + module.getDisplayName();
         t.addLine(name);
         t.textColor(Color.GREY.main);
@@ -587,12 +589,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.parallel.tooltip1",
                         TooltipTier.VOLTAGE.getValue()));
-                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip2"));
-                t.addLine(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.parallel.tooltip3",
-                        TooltipTier.VOLTAGE.getValue()));
-                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip3"));
             }
             case STREAMLINED_CASTERS -> {
                 t.addLine(
@@ -603,9 +600,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
                         TooltipHelper.SPEED_COLOR));
-                t.addLine(
-                    StatCollector
-                        .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
             }
             case EFFICIENT_OC -> {
                 t.addLine(createModuleLimitText());
@@ -616,13 +610,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.efficientoc.tooltip2",
                         TooltipHelper.SPEED_COLOR));
-                t.addLine(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip3"));
-                t.addLine(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
-
             }
             case HYPERCOOLER -> {
                 t.addLine(createModuleLimitText());
@@ -630,18 +617,20 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
-                        coolingStrOrder("100", "50"),
-                        coolingStrOrder(
-                            StatCollector.translateToLocal(
-                                "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant"),
-                            StatCollector.translateToLocal(
-                                "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime")),
-                        coolingStrOrder("1", "2")));
+                        "100",
+                        "50",
+                        getFluidUnit() + "/s",
+                        StatCollector.translateToLocal(
+                            "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant"),
+                        StatCollector
+                            .translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime")));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
-                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip5",
+                        formatNumber(25) + " " + getFluidUnit() + "/s"));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
-
             }
             case HELIOCAST_REINFORCEMENT -> {
                 t.addLine(
@@ -703,12 +692,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5",
                         TooltipHelper.SPEED_COLOR));
-                t.addLine(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6"));
             }
         }
-        if (module != FoundryModule.UNSET) t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {

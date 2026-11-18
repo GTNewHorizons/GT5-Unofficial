@@ -7,8 +7,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTSplit;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -21,6 +24,10 @@ public class GregtechLFTR {
         run1();
     }
 
+    private static String[] desc(String key) {
+        return ArrayUtils.add(GTSplit.splitLocalized(key), GTPPCore.GT_Tooltip.get());
+    }
+
     private static void run1() {
         // LFTR
         GregtechItemList.ThoriumReactor.set(
@@ -31,7 +38,7 @@ public class GregtechLFTR {
             MTEBasicMachineWithRecipeBuilder.builder(ReactorProcessingUnit_IV.ID)
                 .setName("rpu.tier.01", "Reactor Processing Unit I")
                 .setTier(5)
-                .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
+                .setDescription(desc("gt.blockmachines.advancedgenerator.reactorprocessingunit.desc"))
                 .setRecipes(RecipeMaps.reactorProcessingUnitRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
@@ -43,7 +50,7 @@ public class GregtechLFTR {
             MTEBasicMachineWithRecipeBuilder.builder(ReactorProcessingUnit_ZPM.ID)
                 .setName("rpu.tier.02", "Reactor Processing Unit II")
                 .setTier(7)
-                .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
+                .setDescription(desc("gt.blockmachines.advancedgenerator.reactorprocessingunit.desc"))
                 .setRecipes(RecipeMaps.reactorProcessingUnitRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
@@ -56,8 +63,7 @@ public class GregtechLFTR {
             MTEBasicMachineWithRecipeBuilder.builder(ColdTrap_IV.ID)
                 .setName("coldtrap.tier.01", "Cold Trap I")
                 .setTier(5)
-                .setDescription(
-                    new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
+                .setDescription(desc("gt.blockmachines.advancedgenerator.coldtrap.desc"))
                 .setRecipes(RecipeMaps.coldTrapRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)
@@ -69,8 +75,7 @@ public class GregtechLFTR {
             MTEBasicMachineWithRecipeBuilder.builder(ColdTrap_ZPM.ID)
                 .setName("coldtrap.tier.02", "Cold Trap II")
                 .setTier(7)
-                .setDescription(
-                    new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
+                .setDescription(desc("gt.blockmachines.advancedgenerator.coldtrap.desc"))
                 .setRecipes(RecipeMaps.coldTrapRecipes)
                 .setSlotsCount(2, 9)
                 .setSound(SoundResource.NONE)

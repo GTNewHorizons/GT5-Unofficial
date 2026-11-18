@@ -1,6 +1,7 @@
 package tectech.recipe;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MAX_SPACE;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MAX_TIME;
 import static tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule.MAGMATTER_MIN_SPACE;
@@ -135,8 +136,11 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
 
     private static void addRangeTooltip(List<String> currentTip, int min, int max) {
         currentTip.add(
-            EnumChatFormatting.GRAY
-                + StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.random_amount", min, max));
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "tt.nei.fog_exotic.random_amount",
+                formatNumber(min),
+                formatNumber(max),
+                getFluidUnit()));
     }
 
     @Override

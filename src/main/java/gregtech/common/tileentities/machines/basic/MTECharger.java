@@ -28,8 +28,10 @@ public class MTECharger extends MTEBasicBatteryBuffer {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("gt.blockmachines.batterycharger.desc"),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length) };
+        return new String[] {
+            StatCollector.translateToLocalFormatted("gt.blockmachines.slot_count.desc", mInventory.length),
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.batterycharger.desc", GTValues.TIER_COLORS[mTier]) };
     }
 
     @Override
