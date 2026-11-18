@@ -3,14 +3,23 @@ package tectech.thing.metaTileEntity.hatch.bec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
+
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -20,6 +29,7 @@ import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElement {
 
     private BECFactoryNetwork network;
+    private Lazy<List<String>> tooltip = null;
 
     private final HashSet<MTEBECMultiblockBase<?>> controllers = new HashSet<>();
 
@@ -71,6 +81,19 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
         }
 
         neighbours.addAll(controllers);
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (tooltip == null) {
+            tooltip = new Lazy<>(
+                () -> MarkdownTooltipLoader.STANDARD
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-hatch"), new HashMap<>()));
+        }
+        return ArrayUtils.addAll(
+            super.getDescription(),
+            tooltip.get()
+                .toArray(GTValues.emptyStringArray));
     }
 
     @Override

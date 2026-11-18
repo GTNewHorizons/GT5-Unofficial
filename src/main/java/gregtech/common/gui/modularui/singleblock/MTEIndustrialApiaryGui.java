@@ -187,10 +187,13 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
         FloatSyncValue energyModSyncer = new FloatSyncValue(machine::getEnergyModifier);
         IntSyncValue accelerationSyncer = new IntSyncValue(machine::getAcceleration);
         IntSyncValue additionalEnergySyncer = new IntSyncValue(machine::getAdditionalEnergyUsage);
+        // the climate comes from the biome at the machine, which is gone once the machine is removed
         EnumSyncValue<EnumTemperature, ?> temperatureSyncer = new EnumSyncValue<>(
             EnumTemperature.class,
-            machine::getTemperature);
-        EnumSyncValue<EnumHumidity, ?> humiditySyncer = new EnumSyncValue<>(EnumHumidity.class, machine::getHumidity);
+            () -> machine.getBaseMetaTileEntity() == null ? EnumTemperature.NONE : machine.getTemperature());
+        EnumSyncValue<EnumHumidity, ?> humiditySyncer = new EnumSyncValue<>(
+            EnumHumidity.class,
+            () -> machine.getBaseMetaTileEntity() == null ? EnumHumidity.NORMAL : machine.getHumidity());
         FloatSyncValue territorySyncer = new FloatSyncValue(() -> machine.getTerritoryModifier(null, 0));
         FloatSyncValue productionSyncer = new FloatSyncValue(() -> machine.getProductionModifier(null, 0));
         FloatSyncValue floweringSyncer = new FloatSyncValue(() -> machine.getFloweringModifier(null, 0));
