@@ -7,6 +7,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
+import gregtech.common.powergoggles.DashboardHud;
 import gregtech.common.powergoggles.PowerGogglesUtil;
 import gregtech.common.powergoggles.gui.PowerGogglesRenderer;
 import gregtech.common.powergoggles.gui.SimplePowerGogglesRenderer;
@@ -31,8 +33,14 @@ public class PowerGogglesHudHandler {
         if (!shouldDrawHud(event)) {
             return;
         }
+        if (Mods.Dashboard.isModLoaded() && !DashboardHud.beginPowerGoggles(event.resolution)) {
+            return;
+        }
 
         renderer.render(event);
+        if (Mods.Dashboard.isModLoaded()) {
+            DashboardHud.endRender();
+        }
     }
 
     private boolean shouldDrawHud(RenderGameOverlayEvent.Post event) {
