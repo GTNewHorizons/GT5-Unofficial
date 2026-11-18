@@ -123,7 +123,6 @@ public class CompatHandler {
         GregtechWirelessChargers.run();
         GregtechFactoryGradeReplacementMultis.run();
         GregtechThaumcraftDevices.run();
-        GregtechIndustrialMixer.run();
         GregtechCustomHatches.run();
         GregtechSolarTower.run();
         GregtechLargeTurbinesAndHeatExchanger.run();
