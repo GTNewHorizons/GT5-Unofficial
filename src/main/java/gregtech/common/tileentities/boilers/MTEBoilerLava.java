@@ -183,7 +183,7 @@ public class MTEBoilerLava extends MTEBoiler {
             // 2. If drain successful
             if (drained != null && drained.amount > 0) {
 
-                // 3fill boiler
+                // 3. Fill boiler
                 tank.fill(drained, true);
                 replaceEquippedItemStack(equippedItemStack, itemToDrain, aPlayer);
             }
