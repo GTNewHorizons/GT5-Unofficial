@@ -338,10 +338,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         if (ORIKALKUM_CURRENT_BOOST != PlasmaType.ORIKALKUM.maxBoost) {
             // since orikalkum starts at 1,
             // it needs some additional safeguards so that the current cap isn't less than the min
-            float ORIKALKUM_CURRENT_CAP = Math.min(1f,PlasmaType.ORIKALKUM.maxBoost * ORIKALKUM_CURRENT_DR
-                / PlasmaType.ORIKALKUM.maxDR);
+            float ORIKALKUM_CURRENT_CAP = Math
+                .min(1f, PlasmaType.ORIKALKUM.maxBoost * ORIKALKUM_CURRENT_DR / PlasmaType.ORIKALKUM.maxDR);
             // [0,0.05] step size
-            float step = (ORIKALKUM_CURRENT_CAP-1) / 10;
+            float step = (ORIKALKUM_CURRENT_CAP - 1) / 10;
             ORIKALKUM_CURRENT_BOOST = Math.min(ORIKALKUM_CURRENT_CAP, ORIKALKUM_CURRENT_BOOST + step);
         }
 
