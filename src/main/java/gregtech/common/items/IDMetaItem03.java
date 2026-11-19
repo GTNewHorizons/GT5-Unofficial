@@ -278,6 +278,9 @@ public enum IDMetaItem03 {
     MetaMaterial_FieldManipulator2(332),
     MetaMaterial_FieldManipulator3(333),
     MetaMaterial_FieldManipulator4(334),
+    Shape_Extruder_Boat(340),
+    Shape_Extruder_Pellet(341),
+    Shape_Extruder_Shaft(342),
 
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
@@ -295,11 +298,7 @@ public enum IDMetaItem03 {
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
     Phononic_Seed_Crystal(761),
-    Harmonic_Compound(762),
-
-    Shape_Extruder_Boat(770),
-    Shape_Extruder_Pellet(771),
-    Shape_Extruder_Shaft(772);
+    Harmonic_Compound(762);
 
     public final int ID;
 
