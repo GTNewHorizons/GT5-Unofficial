@@ -20,9 +20,8 @@ public class MTEHatchInputGui extends MTEHatchBaseGui<MTEHatchInput> {
             .coverChildren()
             .childPadding(1);
 
-        mainRow.child(createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.child(
-            createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot(), machine.getFluidTank()));
+        mainRow.child(createScreen(panel, syncManager));
+        mainRow.child(createScreenIO(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
