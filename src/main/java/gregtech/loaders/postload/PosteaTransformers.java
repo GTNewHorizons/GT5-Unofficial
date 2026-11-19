@@ -94,6 +94,15 @@ public class PosteaTransformers implements Runnable {
             "IC2:itemPlutoniumsmall",
             GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
             true);
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemFuelPlantBall", ItemList.IC2_Plantball.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemBiochaff", ItemList.IC2_BioChaff.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemDynamite", ItemList.Dynamite.get(1));
+
+        // Cells
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 6, Materials.Biomass.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 7, Materials.Biogas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 12, Materials.DistilledWater.getCells(1));
     }
 
     private void registerIC2BlocksTransformer() {
