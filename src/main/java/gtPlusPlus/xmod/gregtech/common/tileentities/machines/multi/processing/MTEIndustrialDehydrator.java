@@ -14,7 +14,6 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -210,14 +209,17 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINE_MODE_VACUUM_FURNACE) ? RecipeMaps.vacuumFurnaceRecipes
-            : RecipeMaps.chemicalDehydratorNonCellRecipes;
+        return switch (machineMode) {
+            case MACHINE_MODE_VACUUM_FURNACE -> RecipeMaps.vacuumFurnaceRecipes;
+            case MACHINE_MODE_DEHYDRATOR -> RecipeMaps.chemicalDehydratorNonCellRecipes;
+            default -> null;
+        };
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.chemicalDehydratorNonCellRecipes, RecipeMaps.vacuumFurnaceRecipes);
+        return List.of(RecipeMaps.chemicalDehydratorNonCellRecipes, RecipeMaps.vacuumFurnaceRecipes);
     }
 
     @Override
