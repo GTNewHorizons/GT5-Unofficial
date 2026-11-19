@@ -81,7 +81,6 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
     net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
-    // TODO: später als Config-Option
     private static final boolean USE_3D_MODELS = true;
 
     protected IIcon coreIcon;
@@ -287,28 +286,36 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     @SideOnly(Side.CLIENT)
-    private List<ArmorComponent> getActiveAugments(ArmorState state) {
-        List<ArmorComponent> activeAugments = new ArrayList<>();
-
-        if (state == null || state.augments == null) {
-            return activeAugments;
-        }
+    private List<ArmorComponent> getOverlayComponents(ArmorState state) {
+        List<ArmorComponent> overlays = new ArrayList<>();
+        if (state == null) return overlays;
 
         String armorTypeName = getArmorType().name()
             .toLowerCase();
 
-        for (var augment : state.augments.values()) {
-            String augmentName = augment.name()
-                .toLowerCase();
+        if (state.core != null) {
+            addComponentIfPresent(
+                overlays,
+                state.core.name()
+                    .toLowerCase() + "_" + armorTypeName);
+        }
 
-            String componentId = augmentName + "_" + armorTypeName;
-            ArmorComponent component = ArmorComponentRegistry.getComponent(componentId);
-            if (component != null) {
-                activeAugments.add(component);
+        if (state.augments != null) {
+            for (var augment : state.augments.values()) {
+                addComponentIfPresent(
+                    overlays,
+                    augment.name()
+                        .toLowerCase() + "_" + armorTypeName);
             }
         }
 
-        return activeAugments;
+        return overlays;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void addComponentIfPresent(List<ArmorComponent> components, String componentId) {
+        ArmorComponent component = ArmorComponentRegistry.getComponent(componentId);
+        if (component != null) components.add(component);
     }
 
     @Override
@@ -342,10 +349,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorComponent baseArmor = getBaseComponent(state);
         if (baseArmor == null) return null;
 
-        List<ArmorComponent> augments = getActiveAugments(state);
+        List<ArmorComponent> overlays = getOverlayComponents(state);
         float scale = (armorSlot == REGISTER_LEGS) ? 0.25F : 0.5F;
 
-        return ArmorRegistry.getOrCompileModel(baseArmor, augments, scale);
+        return ArmorRegistry.getOrCompileModel(baseArmor, overlays, scale);
     }
 
     @SideOnly(Side.CLIENT)

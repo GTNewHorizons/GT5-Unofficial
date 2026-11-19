@@ -2,97 +2,62 @@ package gregtech.api.items.armor.renderer;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ArmorModelCompiler {
+public final class ArmorModelCompiler {
 
-    public static class CompileResult {
+    public static final class CompileResult {
 
-        public BedrockArmorModel mergedJson;
-        public BufferedImage mergedImage;
+        public final BakedArmorModel mergedModel;
+        public final BufferedImage mergedImage;
+
+        CompileResult(BakedArmorModel mergedModel, BufferedImage mergedImage) {
+            this.mergedModel = mergedModel;
+            this.mergedImage = mergedImage;
+        }
     }
 
-    public static CompileResult compile(ArmorComponent baseArmor, List<ArmorComponent> augments) throws Exception {
-        CompileResult result = new CompileResult();
+    private ArmorModelCompiler() {}
 
-        result.mergedJson = baseArmor.getClone();
-        BufferedImage baseImage = baseArmor.getTexture();
+    public static CompileResult compile(ArmorComponent baseArmor, List<ArmorComponent> augments) {
+        List<ArmorComponent> components = new ArrayList<>(1 + augments.size());
+        components.add(baseArmor);
+        components.addAll(augments);
 
-        int totalWidth = baseImage.getWidth();
-        int totalHeight = baseImage.getHeight();
-        for (ArmorComponent augment : augments) {
-            BufferedImage augImg = augment.getTexture();
-            totalWidth = Math.max(totalWidth, augImg.getWidth());
-            totalHeight += augImg.getHeight();
+        int atlasWidth = 0;
+        int atlasHeight = 0;
+        for (ArmorComponent component : components) {
+            atlasWidth = Math.max(atlasWidth, component.texture.getWidth());
+            atlasHeight += component.texture.getHeight();
         }
 
-        result.mergedImage = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = result.mergedImage.createGraphics();
+        BufferedImage atlas = new BufferedImage(atlasWidth, atlasHeight, BufferedImage.TYPE_INT_ARGB);
+        BakedArmorModel mergedModel = new BakedArmorModel(atlasWidth, atlasHeight);
+        Graphics2D graphics = atlas.createGraphics();
 
-        g2d.drawImage(baseImage, 0, 0, null);
-        int currentYOffset = baseImage.getHeight();
+        int atlasOffsetY = 0;
+        for (ArmorComponent component : components) {
+            BufferedImage texture = component.texture;
+            graphics.drawImage(texture, 0, atlasOffsetY, null);
 
-        for (ArmorComponent augment : augments) {
-            BedrockArmorModel augJson = augment.getModel();
-            BufferedImage augImg = augment.getTexture();
+            float uvScaleU = (float) texture.getWidth() / component.model.textureWidth;
+            float uvScaleV = (float) texture.getHeight() / component.model.textureHeight;
 
-            g2d.drawImage(augImg, 0, currentYOffset, null);
+            for (BakedBone sourceBone : component.model.bonesByName.values()) {
+                BakedBone targetBone = mergedModel.bonesByName.computeIfAbsent(
+                    sourceBone.name,
+                    boneName -> new BakedBone(boneName, sourceBone.pivotX, sourceBone.pivotY, sourceBone.pivotZ));
 
-            if (augJson.geometryList != null && !augJson.geometryList.isEmpty()) {
-                List<BedrockArmorModel.Bone> augBones = augJson.geometryList.get(0).bones;
-
-                for (BedrockArmorModel.Bone augBone : augBones) {
-                    remapBoneUVs(augBone, 0, currentYOffset);
-
-                    String targetBoneName = (augBone.parent != null) ? augBone.parent : augBone.name;
-
-                    BedrockArmorModel.Bone targetBaseBone = null;
-                    for (BedrockArmorModel.Bone baseBone : result.mergedJson.geometryList.get(0).bones) {
-                        if (baseBone.name.equals(targetBoneName)) {
-                            targetBaseBone = baseBone;
-                            break;
-                        }
-                    }
-
-                    if (targetBaseBone != null) {
-                        if (targetBaseBone.cubes == null) targetBaseBone.cubes = new java.util.ArrayList<>();
-                        if (augBone.cubes != null) {
-                            targetBaseBone.cubes.addAll(augBone.cubes);
-                        }
-                    } else {
-                        result.mergedJson.geometryList.get(0).bones.add(augBone);
-                    }
+                for (BakedPolygon polygon : sourceBone.polygons) {
+                    targetBone.polygons.add(polygon.copyWithUVTransform(uvScaleU, uvScaleV, 0, atlasOffsetY));
                 }
             }
 
-            currentYOffset += augImg.getHeight();
+            atlasOffsetY += texture.getHeight();
         }
 
-        g2d.dispose();
-
-        result.mergedJson.geometryList.get(0).description.texture_width = totalWidth;
-        result.mergedJson.geometryList.get(0).description.texture_height = totalHeight;
-
-        return result;
-    }
-
-    private static void remapBoneUVs(BedrockArmorModel.Bone bone, float uOffset, float vOffset) {
-        if (bone.cubes == null) return;
-        for (BedrockArmorModel.Cube cube : bone.cubes) {
-            if (cube.uv == null) continue;
-            shiftFace(cube.uv.north, uOffset, vOffset);
-            shiftFace(cube.uv.south, uOffset, vOffset);
-            shiftFace(cube.uv.east, uOffset, vOffset);
-            shiftFace(cube.uv.west, uOffset, vOffset);
-            shiftFace(cube.uv.up, uOffset, vOffset);
-            shiftFace(cube.uv.down, uOffset, vOffset);
-        }
-    }
-
-    private static void shiftFace(BedrockArmorModel.Face face, float uOffset, float vOffset) {
-        if (face != null && face.uv != null && face.uv.length >= 2) {
-            face.uv[0] += uOffset;
-            face.uv[1] += vOffset;
-        }
+        graphics.dispose();
+        return new CompileResult(mergedModel, atlas);
     }
 }

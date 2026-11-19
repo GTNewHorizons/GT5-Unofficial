@@ -6,6 +6,7 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -14,18 +15,17 @@ import org.lwjgl.opengl.GL11;
 
 public class VoxelArmorRenderer extends ModelBiped {
 
-    private final ResourceLocation compiledTexture;
-
-    private final Map<String, Integer> displayLists = new HashMap<>();
-    private BedrockArmorModel rawModel;
-    private boolean isCompiled = false;
-
     private static final float PIXEL_SCALE = 0.0625F;
     private static final float RAD_TO_DEG = 180F / (float) Math.PI;
 
-    public VoxelArmorRenderer(float scale, BedrockArmorModel compiledModel, ResourceLocation compiledTexture) {
+    private final BakedArmorModel bakedModel;
+    private final ResourceLocation compiledTexture;
+    private final Map<String, Integer> displayLists = new HashMap<>();
+    private boolean isCompiled = false;
+
+    public VoxelArmorRenderer(float scale, BakedArmorModel bakedModel, ResourceLocation compiledTexture) {
         super(scale, 0, 64, 64);
-        this.rawModel = compiledModel;
+        this.bakedModel = bakedModel;
         this.compiledTexture = compiledTexture;
     }
 
@@ -33,181 +33,70 @@ public class VoxelArmorRenderer extends ModelBiped {
         return compiledTexture;
     }
 
-    private void drawFace(Tessellator tess, float[] uv, float[] uvSize, int texWidth, int texHeight, float trX,
-        float trY, float trZ, // Top-Right
-        float tlX, float tlY, float tlZ, // Top-Left
-        float blX, float blY, float blZ, // Bottom-Left
-        float brX, float brY, float brZ) { // Bottom-Right
-
-        if (uv == null || uvSize == null || uv.length < 2 || uvSize.length < 2) return;
-
-        float uMin = uv[0] / (float) texWidth;
-        float vMin = uv[1] / (float) texHeight;
-        float uMax = (uv[0] + uvSize[0]) / (float) texWidth;
-        float vMax = (uv[1] + uvSize[1]) / (float) texHeight;
-
-        tess.addVertexWithUV(trX, trY, trZ, uMax, vMin);
-        tess.addVertexWithUV(tlX, tlY, tlZ, uMin, vMin);
-        tess.addVertexWithUV(blX, blY, blZ, uMin, vMax);
-        tess.addVertexWithUV(brX, brY, brZ, uMax, vMax);
-    }
-
     private void compileModelToOpenGL() {
-        int tw = this.rawModel.geometryList.get(0).description.texture_width;
-        int th = this.rawModel.geometryList.get(0).description.texture_height;
-
-        for (BedrockArmorModel.Bone bone : this.rawModel.geometryList.get(0).bones) {
-            int listId = GL11.glGenLists(1);
-            GL11.glNewList(listId, GL11.GL_COMPILE);
-
-            Tessellator tess = Tessellator.instance;
-
-            if (bone.cubes != null) {
-                for (BedrockArmorModel.Cube cube : bone.cubes) {
-
-                    float mcX = cube.origin[0] - bone.pivot[0];
-                    float mcY = -(cube.origin[1] - bone.pivot[1]) - cube.size[1];
-                    float mcZ = cube.origin[2] - bone.pivot[2];
-
-                    float minX = (mcX - cube.inflate) * PIXEL_SCALE;
-                    float maxX = (mcX + cube.size[0] + cube.inflate) * PIXEL_SCALE;
-                    float minY = (mcY - cube.inflate) * PIXEL_SCALE;
-                    float maxY = (mcY + cube.size[1] + cube.inflate) * PIXEL_SCALE;
-                    float minZ = (mcZ - cube.inflate) * PIXEL_SCALE;
-                    float maxZ = (mcZ + cube.size[2] + cube.inflate) * PIXEL_SCALE;
-
-                    GL11.glPushMatrix();
-                    applyCubeRotation(cube);
-
-                    tess.startDrawingQuads();
-
-                    // spotless:off
-                    if (cube.uv != null) {
-
-                        // UP (-Y)
-                        tess.setNormal(0.0F, 1.0F, 0.0F);
-                        if (cube.uv.up != null) {
-                            drawFace(tess, cube.uv.up.uv, cube.uv.up.uv_size, tw, th,
-                                maxX, minY, minZ, // TR
-                                minX, minY, minZ, // TL
-                                minX, minY, maxZ, // BL
-                                maxX, minY, maxZ  // BR
-                            );
-                        }
-
-                        // DOWN (+Y)
-                        tess.setNormal(0.0F, -1.0F, 0.0F);
-                        if (cube.uv.down != null) {
-                            drawFace(tess, cube.uv.down.uv, cube.uv.down.uv_size, tw, th,
-                                maxX, maxY, maxZ, // TR
-                                minX, maxY, maxZ, // TL
-                                minX, maxY, minZ, // BL
-                                maxX, maxY, minZ  // BR
-                            );
-                        }
-
-                        // NORTH (-Z)
-                        tess.setNormal(0.0F, 0.0F, -1.0F);
-                        if (cube.uv.north != null) {
-                            drawFace(tess, cube.uv.north.uv, cube.uv.north.uv_size, tw, th,
-                                maxX, minY, minZ, // TR
-                                minX, minY, minZ, // TL
-                                minX, maxY, minZ, // BL
-                                maxX, maxY, minZ  // BR
-                            );
-                        }
-
-                        // SOUTH (+Z)
-                        tess.setNormal(0.0F, 0.0F, 1.0F);
-                        if (cube.uv.south != null) {
-                            drawFace(tess, cube.uv.south.uv, cube.uv.south.uv_size, tw, th,
-                                minX, minY, maxZ, // TR
-                                maxX, minY, maxZ, // TL
-                                maxX, maxY, maxZ, // BL
-                                minX, maxY, maxZ  // BR
-                            );
-                        }
-
-                        // WEST (-X)
-                        tess.setNormal(-1.0F, 0.0F, 0.0F);
-                        if (cube.uv.west != null) {
-                            drawFace(tess, cube.uv.west.uv, cube.uv.west.uv_size, tw, th,
-                                minX, minY, minZ, // TR
-                                minX, minY, maxZ, // TL
-                                minX, maxY, maxZ, // BL
-                                minX, maxY, minZ  // BR
-                            );
-                        }
-
-                        // EAST (+X)
-                        tess.setNormal(1.0F, 0.0F, 0.0F);
-                        if (cube.uv.east != null) {
-                            drawFace(tess, cube.uv.east.uv, cube.uv.east.uv_size, tw, th,
-                                maxX, minY, maxZ, // TR
-                                maxX, minY, minZ, // TL
-                                maxX, maxY, minZ, // BL
-                                maxX, maxY, maxZ  // BR
-                            );
-                        }
-                    }
-                    // spotless:on
-
-                    tess.draw();
-                    GL11.glPopMatrix();
-                }
-            }
-
-            GL11.glEndList();
-            this.displayLists.put(bone.name, listId);
+        for (BakedBone bone : bakedModel.bonesByName.values()) {
+            displayLists.put(bone.name, compileBone(bone));
         }
-
-        this.rawModel = null;
-        this.isCompiled = true;
+        isCompiled = true;
     }
 
-    private void applyCubeRotation(BedrockArmorModel.Cube cube) {
-        if (cube.rotation != null && cube.pivot != null) {
-            GL11.glTranslatef(cube.pivot[0] * PIXEL_SCALE, -cube.pivot[1] * PIXEL_SCALE, cube.pivot[2] * PIXEL_SCALE);
+    private int compileBone(BakedBone bone) {
+        float inverseTextureWidth = 1.0F / bakedModel.textureWidth;
+        float inverseTextureHeight = 1.0F / bakedModel.textureHeight;
 
-            if (cube.rotation[2] != 0.0F) GL11.glRotatef(cube.rotation[2], 0.0F, 0.0F, 1.0F);
-            if (cube.rotation[1] != 0.0F) GL11.glRotatef(cube.rotation[1], 0.0F, 1.0F, 0.0F);
-            if (cube.rotation[0] != 0.0F) GL11.glRotatef(cube.rotation[0], 1.0F, 0.0F, 0.0F);
+        int displayListId = GLAllocation.generateDisplayLists(1);
+        GL11.glNewList(displayListId, GL11.GL_COMPILE);
 
-            GL11.glTranslatef(-cube.pivot[0] * PIXEL_SCALE, cube.pivot[1] * PIXEL_SCALE, -cube.pivot[2] * PIXEL_SCALE);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        for (BakedPolygon polygon : bone.polygons) {
+            tessellator.setNormal(polygon.normalX, polygon.normalY, polygon.normalZ);
+            for (int quadCorner = 0; quadCorner < 4; quadCorner++) {
+                int sourceVertex = Math.min(quadCorner, polygon.vertexCount - 1);
+                tessellator.addVertexWithUV(
+                    polygon.positions[sourceVertex * 3] - bone.pivotX,
+                    polygon.positions[sourceVertex * 3 + 1] - bone.pivotY,
+                    polygon.positions[sourceVertex * 3 + 2] - bone.pivotZ,
+                    polygon.textureUVs[sourceVertex * 2] * inverseTextureWidth,
+                    polygon.textureUVs[sourceVertex * 2 + 1] * inverseTextureHeight);
+            }
         }
+        tessellator.draw();
+
+        GL11.glEndList();
+        return displayListId;
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        if (!this.isCompiled) {
-            compileModelToOpenGL();
-        }
+    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+                       float headPitch, float scale) {
+        if (!isCompiled) compileModelToOpenGL();
 
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-        if (this.compiledTexture != null) {
+        if (compiledTexture != null) {
             Minecraft.getMinecraft()
                 .getTextureManager()
-                .bindTexture(this.compiledTexture);
+                .bindTexture(compiledTexture);
         }
 
-        if (this.bipedHead.showModel) renderBone("head", this.bipedHead);
-        if (this.bipedBody.showModel) renderBone("body", this.bipedBody);
-
-        if (this.bipedRightArm.showModel) renderBone("right_arm", this.bipedRightArm);
-        if (this.bipedLeftArm.showModel) renderBone("left_arm", this.bipedLeftArm);
-
-        if (this.bipedRightLeg.showModel) renderBone("right_leg", this.bipedRightLeg);
-        if (this.bipedLeftLeg.showModel) renderBone("left_leg", this.bipedLeftLeg);
+        if (bipedHead.showModel) renderBone("head", bipedHead);
+        if (bipedBody.showModel) renderBone("body", bipedBody);
+        if (bipedRightArm.showModel) renderBone("right_arm", bipedRightArm);
+        if (bipedLeftArm.showModel) renderBone("left_arm", bipedLeftArm);
+        if (bipedRightLeg.showModel) renderBone("right_leg", bipedRightLeg);
+        if (bipedLeftLeg.showModel) renderBone("left_leg", bipedLeftLeg);
     }
 
     private void renderBone(String boneName, ModelRenderer vanillaPart) {
-        Integer listId = this.displayLists.get(boneName);
+        Integer listId = displayLists.get(boneName);
         if (listId == null || vanillaPart.isHidden) return;
 
         GL11.glPushMatrix();
-
-        GL11.glTranslatef(0.0F, vanillaPart.rotationPointY * 0.0625F, vanillaPart.rotationPointZ * 0.0625F);
+        GL11.glTranslatef(
+            vanillaPart.rotationPointX * PIXEL_SCALE,
+            vanillaPart.rotationPointY * PIXEL_SCALE,
+            vanillaPart.rotationPointZ * PIXEL_SCALE);
 
         if (vanillaPart.rotateAngleZ != 0.0F) GL11.glRotatef(vanillaPart.rotateAngleZ * RAD_TO_DEG, 0.0F, 0.0F, 1.0F);
         if (vanillaPart.rotateAngleY != 0.0F) GL11.glRotatef(vanillaPart.rotateAngleY * RAD_TO_DEG, 0.0F, 1.0F, 0.0F);
@@ -221,12 +110,12 @@ public class VoxelArmorRenderer extends ModelBiped {
     }
 
     public void deleteOpenGLData() {
-        if (!this.isCompiled) return;
+        if (!isCompiled) return;
 
-        for (Integer listId : this.displayLists.values()) {
-            GL11.glDeleteLists(listId, 1);
+        for (Integer listId : displayLists.values()) {
+            GLAllocation.deleteDisplayLists(listId);
         }
-        this.displayLists.clear();
-        this.isCompiled = false;
+        displayLists.clear();
+        isCompiled = false;
     }
 }

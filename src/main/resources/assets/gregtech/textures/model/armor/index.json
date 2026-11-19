@@ -1,5 +1,3 @@
 {
-  "armor": ["bulwark_helmet", "bulwark_chestplate", "bulwark_leggings", "bulwark_boots"],
-
-  "augment": ["nightvision_helmet"]
+  "models": ["bulwark", "cores"]
 }

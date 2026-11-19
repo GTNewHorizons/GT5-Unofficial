@@ -49,7 +49,7 @@ public class ArmorRegistry {
                 .getTextureManager()
                 .loadTexture(generatedTexLocation, dynTex);
 
-            VoxelArmorRenderer newRenderer = new VoxelArmorRenderer(scale, result.mergedJson, generatedTexLocation);
+            VoxelArmorRenderer newRenderer = new VoxelArmorRenderer(scale, result.mergedModel, generatedTexLocation);
 
             modelCache.put(cacheKey, newRenderer);
             return newRenderer;

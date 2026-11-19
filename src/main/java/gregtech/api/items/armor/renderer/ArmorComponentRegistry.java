@@ -3,15 +3,16 @@ package gregtech.api.items.armor.renderer;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import com.google.gson.Gson;
@@ -19,8 +20,8 @@ import com.google.gson.Gson;
 public class ArmorComponentRegistry {
 
     public static final Map<String, ArmorComponent> componentCache = new HashMap<>();
-    private static final Gson GSON = new Gson();
     public static final String BASE_ARMOR_FOLDER = "textures/model/armor/";
+    private static final Gson GSON = new Gson();
 
     public static void loadAllAssets() {
         clearCache();
@@ -35,8 +36,7 @@ public class ArmorComponentRegistry {
                     .getInputStream())) {
 
                 Map<String, List<String>> indexData = GSON.fromJson(indexReader, Map.class);
-                getFromIndexData(indexData, "armor");
-                getFromIndexData(indexData, "augment");
+                loadModelFiles(indexData.get("models"));
             }
 
             GT_FML_LOGGER.info("[GTNH-VoxelArmor] Successfully cached loaded assets");
@@ -46,51 +46,42 @@ public class ArmorComponentRegistry {
         }
     }
 
-    public static void getFromIndexData(Map<String, List<String>> indexData, String type) {
-        List<String> modelNames = indexData.get(type);
-        if (modelNames == null) {
-            GT_FML_LOGGER.error("[GTNH-VoxelArmor] No matching model names found for {}", type);
+    private static void loadModelFiles(List<String> modelFiles) {
+        if (modelFiles == null) {
+            GT_FML_LOGGER.error("[GTNH-VoxelArmor] index.json has no \"models\" list");
             return;
         }
 
-        for (String name : modelNames) {
-            BedrockArmorModel model = null;
-            BufferedImage img = null;
+        IResourceManager resourceManager = Minecraft.getMinecraft()
+            .getResourceManager();
 
-            try {
-                ResourceLocation modelLoc = new ResourceLocation(
-                    "gregtech",
-                    BASE_ARMOR_FOLDER + type + "_models/" + name + ".geo.json");
-                try (InputStreamReader modelReader = new InputStreamReader(
-                    Minecraft.getMinecraft()
-                        .getResourceManager()
-                        .getResource(modelLoc)
-                        .getInputStream())) {
-                    model = GSON.fromJson(modelReader, BedrockArmorModel.class);
+        for (String modelFile : modelFiles) {
+            ResourceLocation modelLocation = new ResourceLocation(
+                "gregtech",
+                BASE_ARMOR_FOLDER + modelFile + ".bbmodel");
+
+            try (InputStreamReader modelReader = new InputStreamReader(
+                resourceManager.getResource(modelLocation)
+                    .getInputStream(),
+                StandardCharsets.UTF_8)) {
+
+                JsonObject root = new JsonParser().parse(modelReader)
+                    .getAsJsonObject();
+
+                BufferedImage texture = BlockbenchModelParser.readEmbeddedTexture(root);
+                if (texture == null) {
+                    GT_FML_LOGGER.error("[GTNH-VoxelArmor] '{}' has no embedded texture, skipping", modelFile);
+                    continue;
+                }
+
+                for (Map.Entry<String, BakedArmorModel> component : BlockbenchModelParser.parse(root)
+                    .entrySet()) {
+                    String componentId = component.getKey()
+                        .toLowerCase();
+                    componentCache.put(componentId, new ArmorComponent(componentId, component.getValue(), texture));
                 }
             } catch (Exception e) {
-                GT_FML_LOGGER.error("[GTNH-VoxelArmor] Error loading model: {}", name, e);
-            }
-
-            try {
-                ResourceLocation texLoc = new ResourceLocation(
-                    "gregtech",
-                    BASE_ARMOR_FOLDER + type + "_textures/" + name + ".png");
-                try (InputStream texStream = Minecraft.getMinecraft()
-                    .getResourceManager()
-                    .getResource(texLoc)
-                    .getInputStream()) {
-                    img = ImageIO.read(texStream);
-                }
-            } catch (Exception e) {
-                GT_FML_LOGGER.error("[GTNH-VoxelArmor] Error loading texture: {}", name, e);
-            }
-
-            if (model != null && img != null) {
-                componentCache.put(name, new ArmorComponent(name, model, img));
-            } else {
-                GT_FML_LOGGER
-                    .warn("[GTNH-VoxelArmor] Skipping armor component '{}' due to missing or invalid files", name);
+                GT_FML_LOGGER.error("[GTNH-VoxelArmor] Skipping model file '{}'", modelFile, e);
             }
         }
     }
