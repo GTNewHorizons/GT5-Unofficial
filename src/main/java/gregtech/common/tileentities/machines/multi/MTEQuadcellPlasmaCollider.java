@@ -318,13 +318,13 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         if (FORCE_CURRENT_BOOST != PlasmaType.FORCE.maxBoost) {
             float FORCE_CURRENT_CAP = PlasmaType.FORCE.maxBoost * FORCE_CURRENT_DR / PlasmaType.FORCE.maxDR;
             float step = FORCE_CURRENT_CAP / 10;
-            FORCE_CURRENT_BOOST = Math.min(PlasmaType.FORCE.maxBoost, FORCE_CURRENT_BOOST + step);
+            FORCE_CURRENT_BOOST = Math.min(FORCE_CURRENT_CAP, FORCE_CURRENT_BOOST + step);
         }
 
         if (RUNITE_CURRENT_BOOST != PlasmaType.RUNITE.maxBoost) {
             float RUNITE_CURRENT_CAP = PlasmaType.RUNITE.maxBoost * RUNITE_CURRENT_DR / PlasmaType.RUNITE.maxDR;
             float step = RUNITE_CURRENT_CAP / 10;
-            RUNITE_CURRENT_BOOST = Math.min(PlasmaType.RUNITE.maxBoost, RUNITE_CURRENT_BOOST + step);
+            RUNITE_CURRENT_BOOST = Math.min(RUNITE_CURRENT_CAP, RUNITE_CURRENT_BOOST + step);
         }
 
         if (CELESTIAL_TUNGSTEN_CURRENT_BOOST != PlasmaType.CELESTIAL.maxBoost) {
@@ -332,14 +332,14 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                 / PlasmaType.CELESTIAL.maxDR;
             float step = CELESTIAL_TUNGSTEN_CURRENT_CAP / 10;
             CELESTIAL_TUNGSTEN_CURRENT_BOOST = Math
-                .min(PlasmaType.CELESTIAL.maxBoost, CELESTIAL_TUNGSTEN_CURRENT_BOOST + step);
+                .min(CELESTIAL_TUNGSTEN_CURRENT_CAP, CELESTIAL_TUNGSTEN_CURRENT_BOOST + step);
         }
 
         if (ORIKALKUM_CURRENT_BOOST != PlasmaType.ORIKALKUM.maxBoost) {
             float ORIKALKUM_CURRENT_CAP = PlasmaType.ORIKALKUM.maxBoost * ORIKALKUM_CURRENT_DR
                 / PlasmaType.ORIKALKUM.maxDR;
             float step = ORIKALKUM_CURRENT_CAP / 10;
-            ORIKALKUM_CURRENT_BOOST = Math.min(PlasmaType.ORIKALKUM.maxBoost, ORIKALKUM_CURRENT_BOOST + step);
+            ORIKALKUM_CURRENT_BOOST = Math.min(ORIKALKUM_CURRENT_CAP, ORIKALKUM_CURRENT_BOOST + step);
         }
 
         float eutBoost = 1 + ((FORCE_CURRENT_BOOST + CELESTIAL_TUNGSTEN_CURRENT_BOOST) * ORIKALKUM_CURRENT_BOOST); // >1
@@ -548,6 +548,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
         checkOneDynamoHatchMaybeExotic(errors);
+        checkHasOutputHatch(errors);
         checkHasInputHatch(errors);
     }
 
