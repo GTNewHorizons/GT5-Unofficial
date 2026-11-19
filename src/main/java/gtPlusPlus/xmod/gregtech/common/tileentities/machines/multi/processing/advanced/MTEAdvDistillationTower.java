@@ -138,11 +138,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3)),
                         onElementPass(
                             t -> t.onTopLayerFound(false),
-                            ofHatchAdder(MTEAdvDistillationTower::addOutputToMachineList, getCasingTextureId(), 3)),
+                            ofHatchAdder(MTEAdvDistillationTower::addLayerOutputHatch, getCasingTextureId(), 3)),
                         onElementPass(
                             t -> t.onTopLayerFound(false),
                             ofHatchAdder(
                                 MTEAdvDistillationTower::addMaintenanceToMachineList,
+                                getCasingTextureId(),
+                                3)),
+                        onElementPass(
+                            t -> t.onTopLayerFound(false),
+                            ofHatchAdder(
+                                MTEAdvDistillationTower::addEnergyInputToMachineList,
                                 getCasingTextureId(),
                                 3)),
                         onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
