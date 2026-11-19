@@ -558,10 +558,10 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         this.RUNITE_CURRENT_DR = aNBT.getInteger("RuniteDR");
         this.CELESTIAL_TUNGSTEN_CURRENT_DR = aNBT.getInteger("CelestialDR");
         this.ORIKALKUM_CURRENT_DR = aNBT.getInteger("OrikalkumDR");
-        this.FORCE_CURRENT_BOOST = aNBT.getInteger("ForceBoost");
-        this.RUNITE_CURRENT_BOOST = aNBT.getInteger("RuniteBoost");
-        this.CELESTIAL_TUNGSTEN_CURRENT_BOOST = aNBT.getInteger("CelestialBoost");
-        this.ORIKALKUM_CURRENT_BOOST = aNBT.getInteger("OrikalkumBoost");
+        this.FORCE_CURRENT_BOOST = aNBT.getFloat("ForceBoost");
+        this.RUNITE_CURRENT_BOOST = aNBT.getFloat("RuniteBoost");
+        this.CELESTIAL_TUNGSTEN_CURRENT_BOOST = aNBT.getFloat("CelestialBoost");
+        this.ORIKALKUM_CURRENT_BOOST = aNBT.getFloat("OrikalkumBoost");
         this.shouldRender = aNBT.getBoolean("shouldRender");
         this.scale = aNBT.getInteger("scale");
     }
