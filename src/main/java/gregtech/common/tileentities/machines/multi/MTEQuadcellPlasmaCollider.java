@@ -806,6 +806,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
 
         GL11.glPushMatrix();
         // rotation factor is inverse of scale rate.
+        // even though glRotated accepts degrees, not radians. this just so happens to be a good speed for the rotation
         double rotationTimer = Math.toRadians(
             (10 * (10 - lerpRate)
                 * world.getWorldInfo()
