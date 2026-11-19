@@ -176,7 +176,7 @@ public class MTEBoilerLava extends MTEBoiler {
             return;
         }
 
-        // 1.Check if item is an IFluidContainerItem, if not treat as a bucket
+        // 1. Check if item is an IFluidContainerItem, if not treat as a bucket
         if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
             FluidStack drained = container.drain(itemToDrain, amountToDrain, true);
 
