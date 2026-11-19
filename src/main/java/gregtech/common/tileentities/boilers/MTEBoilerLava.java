@@ -165,27 +165,26 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    protected void fillFluid(FluidStack equippedContainerFluidStack, ItemStack equippedItemStack, IFluidTank tank,
-        EntityPlayer aPlayer) {
-        ItemStack returnedContainer = equippedItemStack.copy();
-        returnedContainer.stackSize = 1;
+    protected void fillFluid(ItemStack equippedItemStack, IFluidTank tank, EntityPlayer aPlayer) {
         int freeSpace = tank.getCapacity() - tank.getFluidAmount();
-        int amountToDrain = Math.min(equippedContainerFluidStack.amount, freeSpace);
+        ItemStack returnedContainer;
         FluidStack drained;
 
-        if (amountToDrain < 1000) {
+        if (freeSpace <= 0) {
             return;
         }
 
         // Check if IFluidContainerItem
         if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
+            returnedContainer = equippedItemStack.copy();
+            returnedContainer.stackSize = 1;
             drained = container.drain(returnedContainer, freeSpace, true);
 
-} else {
+        } else {
             // Else, treat as a bucket
-            drained = GTUtility.getFluidForFilledItem(returnedContainer, false);
-            if (drained.amount > freeSpace) return;
-            returnedContainer = GTUtility.getContainerForFilledItem(returnedContainer, false);
+            drained = GTUtility.getFluidForFilledItem(equippedItemStack, false);
+            if (drained == null || drained.amount > freeSpace) return;
+            returnedContainer = GTUtility.getContainerForFilledItem(equippedItemStack, false);
         }
 
         // If container drain was successful, fill the boiler tank
@@ -205,9 +204,9 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack equippedContainerFluidStack = GTUtility.getFluidForFilledItem(equippedItemStack, true);
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
-            fillFluid(equippedContainerFluidStack, equippedItemStack, this, aPlayer);
+            fillFluid(equippedItemStack, this, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
-            fillFluid(equippedContainerFluidStack, equippedItemStack, lavaTank, aPlayer);
+            fillFluid(equippedItemStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
             return true;
@@ -221,11 +220,8 @@ public class MTEBoilerLava extends MTEBoiler {
         // if held item stack is now zero, set held item to returned container
         if (heldItemStack.stackSize <= 0) {
             heldItemStack.stackSize = 0;
-            aPlayer.inventoryContainer.detectAndSendChanges();
-        } else {
-            // if held stack is 1 or greater try and put empty container in inven
-            addItemToPlayerInventory(aPlayer, returnedContainer);
         }
+        addItemToPlayerInventory(aPlayer, returnedContainer);
     }
 
     protected static void addItemToPlayerInventory(EntityPlayer player, ItemStack stack) {
