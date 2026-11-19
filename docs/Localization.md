@@ -9,8 +9,7 @@ rework, read this first.
 ## 1. Java API - Which Method to Use
 
 ### 1.1 `StatCollector.translateToLocal(key)`
-Use for any text that is **rendered on the client side**: item tooltips, item names, GUI labels,
-WAILA/NEI output, anything inside a `@SideOnly(Side.CLIENT)` context. 
+Use for any text that is **generated on the client side**, such as item tooltips, item names, GUI labels, WAILA/NEI output, anything inside a `@SideOnly(Side.CLIENT)` context, or any time when `world.isRemote` is true.
 
 ```java
 import net.minecraft.util.StatCollector;
@@ -18,17 +17,15 @@ import net.minecraft.util.StatCollector;
 String name = StatCollector.translateToLocal("gt.item.item_name.name");
 ```
 
-> **Server-only logging**: It's fine to call StatCollector.translateToLocal on the server for text that is only ever written to the server log, since sometimes you need to log user-visible text.
-> However, do not introduce translation keys for the sole purpose of server-only logging - dedicated servers only ever load en_US.lang, so there is no localization benefit to justify it.
+> **Server-only logging**: It's fine to call `StatCollector.translateToLocal` on the server for text that is only ever written to the server log, since sometimes you need to log user-visible text.  
+> However, do not introduce translation keys for the sole purpose of server-only logging - dedicated servers only ever load `en_US.lang`, so there is no localization benefit to justify it.  
 > (Do note that server threads on LAN & Singleplayer will use the host client's language instead.)
 
 ### 1.2 `StatCollector.translateToLocalFormatted(key, args...)`
 Same as above but with format substitution. Use when the translated string contains `%s` or `%d`
-placeholders. 
- 
-> Never use these two methods in code that runs server-side for chat output.** On a server,
-> the loaded language may differ from the client's, so the message will be translated to 
-> the wrong language. Use `GTUtility.sendChatTrans` or `ChatComponentTranslation` instead.
+placeholders.
+
+> **Never use these two methods in code that runs server-side for chat output.** On a server, the loaded language may differ from the client's, so the message will be translated to the wrong language. Use `GTUtility.sendChatTrans` or `ChatComponentTranslation` instead.
 
 ### 1.3 `GTUtility.sendChatTrans(player, key, args...)` - Chat Messages
 Use for sending a single translated message to a player. Internally wraps `ChatComponentTranslation`,
@@ -43,16 +40,27 @@ GTUtility.sendChatTrans(player, "gt.chat.error.machine_broken", machineName);
 // lang: gt.chat.error.machine_broken=Your machine %s has broken!
 ```
 
-> **Singleplayer vs. Multiplayer note:**
-> `sendChatTrans` is safe in both environments. In singleplayer the integrated server sends the
-> `ChatComponentTranslation` to the local client. On a dedicated server it is sent over the network.
-> Either way, translation happens on the client in the player's own language.
-> Never pre-translate the string with `StatCollector` before passing it to chat - this breaks
-> multiplayer because translation would happen with the server's (possibly wrong) lang file.
+> **Singleplayer vs. Multiplayer:**  
+> `sendChatTrans` is safe in both environments. In singleplayer, the integrated server sends the `ChatComponentTranslation` to the local client.  
+> On a dedicated server, it is sent over the network.  
+> Either way, translation happens on the client in the player's own language.  
+> Never pre-translate the string with `StatCollector` before passing it to chat - this breaks multiplayer because translation would happen with the server's (possibly wrong) lang file.
 
 > **Placeholder support**: `ChatComponentTranslation` (and therefore `sendChatTrans`) only supports
 > plain `%s` placeholders. Do not use `%d`, `%f`/`%.2f`, or positional placeholders like `%1$s`/`%2$s`
 > in lang keys used for chat messages - pass every argument through `%s` instead.
+
+> **Translating arguments (nesting)**: If an argument itself needs to be translated (e.g. a machine or mode name), pass a `ChatComponentTranslation` as the argument instead of a pre-translated string.  
+> `ChatComponentTranslation` accepts other `IChatComponent`s as arguments, so each nested key is also translated on the client. This works with `sendChatTrans` too, since it passes its arguments straight through.
+>
+> ```java
+> GTUtility.sendChatTrans(
+>     player,
+>     "gt.chat.info.mode_changed",
+>     new ChatComponentTranslation("gt.mode.fast"));
+> // lang: gt.chat.info.mode_changed=Mode changed to %s
+> // lang: gt.mode.fast=Fast
+> ```
 
 ### 1.4 `GTUtility.sendChatComp(player, component)` - Complex Chat Messages
 Use when a single message needs multiple independently-formatted parts (e.g. a colored item name
@@ -88,7 +96,10 @@ tooltip.addLine(IKey.lang("gt.gui.my_tooltip"))
 ```
 
 > **MUI2 color note:**
-> Using `.color()` in ModularUI2 guis, hardcodes the color. Use (in priority order) [Theme](https://github.com/GTNewHorizons/GT5-Unofficial/blob/master/src/main/java/gregtech/api/modularui2/GTWidgetThemes.java), `EnumChatFormatting`, or `§` codes in lang file (multi-color sequence).
+> Using `.color()` in ModularUI2 GUIs hardcodes the color. Instead, use one of these, from most to least preferred:
+> 1. **First:** a [Theme](https://github.com/GTNewHorizons/GT5-Unofficial/blob/master/src/main/java/gregtech/api/modularui2/GTWidgetThemes.java) key.
+> 2. **Then:** `EnumChatFormatting` in Java.
+> 3. **Last:** `§` codes in the lang file (only for multi-color sequences).
 
 ---
 
@@ -114,7 +125,12 @@ prefer generating formatting via `EnumChatFormatting` in Java to avoid hard-code
 | `%s` | String values (item names, player names, any text) |
 | `%d` | Integer / whole number values |
 | `%f` or `%.2f` | Floating point values (use sparingly, prefer formatting before passing) |
-| `%1$s`, `%2$s` | Positional placeholders when the order may differ between languages | 
+| `%1$s`, `%2$s` | Positional placeholders when the order may differ between languages |
+
+These follow Java's format syntax. See the [`java.util.Formatter` documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+for the full list of options (widths, padding, precision, etc.).
+
+> Chat messages (`sendChatTrans` / `ChatComponentTranslation`) only support plain `%s`, as noted in [section 1.3](#13-gtutilitysendchattransplayer-key-args---chat-messages).
 
 Examples in the lang file:
 
@@ -135,18 +151,29 @@ All new keys must use the `gt.` prefix.
 gt.<category>.<subcategory>.<identifier>
 ```
 
-**Exception - Creative Tab:** Item group (creative tab) keys are generated by Minecraft/Forge
-using the format `itemGroup.<registryName>.<tabName>`. These do not use the `gt.` prefix.
+**Exceptions**
+Some keys are generated by Minecraft/Forge in a fixed format, so they do not use the `gt.` prefix:
+
+- **Item names**: `item.<unlocalizedName>.name`
+- **Block names**: `tile.<unlocalizedName>.name`
+- **Item groups (creative tabs)**: `itemGroup.<registryName>.<tabName>`
+- **Achievements**: `achievement.<name>` and `achievement.<name>.desc`
+
+`<unlocalizedName>` is the name passed to `setUnlocalizedName(...)` on the item or block.
 
 ```properties
+item.gt.comb.name=Comb
+tile.quantumGlass.name=Quantum Glass
 itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
+achievement.tools=Tool Up
+achievement.tools.desc=Craft a GregTech hard hammer.
 ```
 
 Lang keys live in a single global namespace shared by every mod (and vanilla) that's loaded.
 
 ### 4.2 Case & Separators
-- All lowercase.
+- All lowercase, except the class scope segment from [4.5](#45-file-scoped-keys), which uses `camelCase`.
 - Use `.` as separator between segments.
 - Use `_` as separator within a segment word (snake_case within a segment).
 
@@ -170,12 +197,18 @@ middle of a key - it is always the final segment.
 | `.tooltip` | Tooltip line(s). Always the last segment. |
 | `.tooltip.N` | Numbered tooltip lines when there are multiple (N = 1, 2, 3…). Still last. |
 | `.title` | GUI window / panel title |
-| `.button.*` | Button label |
-| `.label.*` | Static text label in a GUI |
-| `.info.*` | Informational line in GUI or WAILA |
 | `.structure_error` | Multiblock structure error / reason it isn't formed |
 | `.shutdown_reason` | Reason a machine stopped or cannot run |
 | `.recipe_result` | Result or status text of a recipe or processing step |
+
+The following segments are **not** suffixes. They are followed by one more segment that names the
+specific element (e.g. `gt.gui.cover.fluid_filter.button.whitelist`):
+
+| Segment | Meaning |
+|---|---|
+| `.button.<name>` | Button label |
+| `.label.<name>` | Static text label in a GUI |
+| `.info.<name>` | Informational line in GUI or WAILA |
 
 ```properties
 # Good - .tooltip is always at the end
@@ -190,8 +223,15 @@ gt.item.my_item.name.tooltip=...
 ```
 
 ### 4.4 `\n` vs Numbered `.tooltip.N` Keys
-Both approaches produce multi-line tooltips. Choose based on whether the lines are always shown
+Both approaches can produce multi-line tooltips. Choose based on whether the lines are always shown
 together or can vary independently.
+
+> **`\n` is not a real line break on its own.**  
+> In a lang file, `\n` is read as the two literal characters `\` and `n`, so it shows up as-is in a tooltip. To split it into separate lines, pass the translated string through `GTUtility.breakLines(...)` and add each resulting line:
+>
+> ```java
+> Collections.addAll(tooltip, GTUtility.breakLines(StatCollector.translateToLocal("gt.item.cable.tooltip")));
+> ```
 
 | Approach | When to use |
 |---|---|
@@ -214,7 +254,7 @@ segment immediately after the category. Strip the common prefixes (`MTE`, `GT`, 
 write the remainder in `camelCase`.
 
 File-scoped keys still go under their **normal functional section** in the lang file (GUI keys
-under `#### GUI`, info data under `#### Scanner & Info Data`, etc.). The class scope is only
+under `# GUI`, info data under `# Scanner & Info Data`, etc.). The class scope is only
 part of the key name - it is not a separate section.
 
 ```
@@ -243,10 +283,34 @@ the category, making the key shared:
 gt.infodata.average_input=Avg. Input: %s EU/t
 ```
 
-### 4.6 Renaming or Removing Keys
-Do not repurpose an existing key for a different string - this silently
-breaks other language files that haven't been updated yet. Add a new key
-and remove the old one in the same PR, across all shipped lang files. 
+### 4.6 Choosing the Category: GUI vs Tooltip
+
+**Where the text is shown decides its category, not what it describes.**
+
+- If a string is rendered **inside a GUI**, it **must** use the `gui` category and go under the "GUI"
+  section of the lang file. This applies even if it describes an error or status
+  (e.g. `gt.gui.machine.structure_error`).
+- The `tooltip` category is **only** for item/block hover tooltips and the multiblock tooltip builder.
+  Do not use it for general GUI status text.
+
+```properties
+# Good - shown in the machine GUI, so it is a GUI key
+gt.gui.machine.structure_error=Structure is incomplete
+
+# Bad - shown in the machine GUI, but filed as a tooltip
+gt.tooltip.machine.structure_error=Structure is incomplete
+```
+
+### 4.7 Changing, Renaming or Removing Keys
+
+**Changing the text of an existing key is fine** (e.g. fixing a typo or updating a description after
+a machine's behavior changes). Translators will see the change, but other languages keep showing the
+old translation until someone re-translates it.
+
+**Do not change the number of format placeholders** (`%s`, `%d`, etc.) in an existing key. Translations
+that haven't been updated yet will still have the old number of placeholders, and many methods in our
+mods throw an exception when formatting fails. If the placeholders need to change, add a new key and
+remove the old one in the same PR, across all shipped lang files.
 
 ---
 
@@ -256,11 +320,11 @@ Comments in `.lang` files start with `#`. Use the following heading depth to org
 This structure uses Markdown heading levels and makes the file easier to navigate.
 
 ```
-# (1 hashes)    - Top-level / main group
+# (1 hash)      - Top-level / main group
 ## (2 hashes)   - Sub-group level 1
 ### (3 hashes)  - Sub-group level 2
-#### (4 hash)   - Sub-group level 3 (most commonly used for fine-grained sections)
-``` 
+#### (4 hashes) - Sub-group level 3
+```
 
 ### 5.1 Canonical Section Order
 
@@ -400,7 +464,7 @@ to create it under.
 ### Energy Detector
 ### Overflow Valve
 ## NEI GUI
-## WAILA 
+## WAILA
 ## Space Projects GUI
 ## Armor Config GUI
 ## BEC GUI
@@ -429,12 +493,6 @@ to create it under.
 # Config
 ```
 
-### 5.1.1 Resolving ambiguous placement
-If a string is rendered inside a GUI, it belongs under "GUI", even if it
-describes an error/status (e.g. `gt.gui.machine.structure_error`).
-Reserve "Tooltips" for item/block hover tooltips and the multiblock
-tooltip builder specifically - not general GUI status text.
-
 ### 5.2 Example Structure
 
 ```properties
@@ -450,18 +508,17 @@ gt.item.circuit.basic.tooltip=The humble beginning.
 gt.item.circuit.basic.tooltip.1=Required for most early-game recipes.
 
 ## Tools
-### Hand Tools
-##### Wrenches
+### Wrench
 gt.item.wrench.name=Wrench
 gt.item.wrench.tooltip=Right-click machines to disassemble.
 gt.item.wrench.tooltip.1=Hold Shift to pick up with inventory contents.
 
-#### Vajra
+### Vajra
 gt.item.vajra.name=Vajra
 gt.item.vajra.tooltip=The legendary mining tool.
 
-#### Armor
-## Power Goggles
+## Armor
+### Power Goggles
 gt.item.power_goggles.name=Power Goggles
 gt.item.power_goggles.tooltip=Displays EU/t and machine status.
 
@@ -493,13 +550,13 @@ gt.fluid.molten_iron.name=Molten Iron
 gt.gui.machine.progress=Progress: %s%%
 gt.gui.machine.energy_stored=Energy: %s / %s EU
 
-## Structure errors
+### Structure errors
 gt.gui.machine.structure_error=Missing: %s casing(s) in the required layer.
 
-## Shutdown reasons
+### Shutdown reasons
 gt.gui.machine.shutdown_reason=Stopped: not enough %s EU/t.
 
-## Recipe results
+### Recipe results
 gt.gui.machine.recipe_result=Output: %s
 
 ## Cover GUI
@@ -525,7 +582,7 @@ gt.tooltip.multiblock.recipe_result=Last output: %s
 ## Machine Types
 gt.machine_type.electric_blast_furnace=Electric Blast Furnace, EBF
 
-## Scanner & Info Data
+# Scanner & Info Data
 gt.infodata.basicBatteryBuffer.stored_items=Stored: %s / %s EU
 gt.infodata.basicBatteryBuffer.average_input=Avg. Input: %s EU/t
 
@@ -541,9 +598,6 @@ gt.chat.info.structure_formed=Multiblock structure successfully formed.
 # Entities
 gt.entity.lava_monster.name=Lava Monster
 
-# Config
-gt.config.pollution.enabled=Pollution Enabled
-
 # Achievements
 achievement.gettingstartedwithgt=Getting Started with GregTech
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe... wait, you already know how.
@@ -551,6 +605,9 @@ achievement.tools=Tool Up
 achievement.tools.desc=Craft a GregTech hard hammer.
 achievement.brrrr=Brrrr
 achievement.brrrr.desc=Build a chainsaw. Watch your fingers.
+
+# Config
+gt.config.pollution.enabled=Pollution Enabled
 ```
 
 ---
@@ -573,7 +630,7 @@ achievement.brrrr.desc=Build a chainsaw. Watch your fingers.
 
 1. [ ] Determine the correct method from the table above.
 2. [ ] Choose the key using `gt.<category>.<subcategory>.<identifier>` convention.
-3. [ ] Add the key at the bottom of `en_US.lang` under the correct section header.
+3. [ ] Add the key to `en_US.lang` under the correct section header.
 4. [ ] Use `%s` / `%d` placeholders where values are substituted; never concatenate raw strings.
 5. [ ] Use `EnumChatFormatting` constants for color in Java. Hard-coded `§` codes are acceptable in the lang file itself, and also in Java when building multi-color sequences (e.g. rainbow strings) where constants would be impractical.
 6. [ ] For chat messages, always use `sendChatTrans`; never pre-translate on the server.
