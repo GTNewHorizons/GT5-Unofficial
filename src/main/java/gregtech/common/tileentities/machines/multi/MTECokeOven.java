@@ -407,8 +407,9 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             final ItemStack[] inputs = getStoredInputs().toArray(new ItemStack[0]);
             final GTRecipe recipe = getRecipeMap().findRecipeQuery()
                 .items(inputs)
+                .filter(candidate -> canFitOutputsInController(candidate.getOutput(0), candidate.getFluidOutput(0)))
                 .find();
-            if (recipe == null || !canFitOutputsInController(recipe.getOutput(0), recipe.getFluidOutput(0))) return;
+            if (recipe == null) return;
             if (!recipe.isRecipeInputEqual(true, null, inputs)) return;
 
             if (mInventory[INPUT_SLOT] != null && mInventory[INPUT_SLOT].stackSize <= 0) mInventory[INPUT_SLOT] = null;
