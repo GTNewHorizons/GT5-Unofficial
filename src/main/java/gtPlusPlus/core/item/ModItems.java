@@ -216,7 +216,7 @@ public final class ModItems {
         // metadata 16 no longer used
         GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17))
             .registerOre("pelletAluminium");
-        // metadata 18-21 no longer used
+        // metadata 18-22 no longer used
         GregtechItemList.CleanAluminiumMix.set(new ItemStack(agrichemItem, 1, 23));
 
         GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24))
