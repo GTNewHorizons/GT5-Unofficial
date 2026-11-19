@@ -100,6 +100,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     .put("steam_rate", 25600)
                     .put("coolant_rate", 192)
                     .build())
+            .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
             .addCasing("3-7", Casings.HeatProofMachineCasing.getLocalizedName(), false)
