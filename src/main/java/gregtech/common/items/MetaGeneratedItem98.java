@@ -53,6 +53,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
      */
     public enum FluidCell {
         // Next unused ID: 40
+        // Do not reuse IDs 9, 18-21, 27-31, 34-36: PosteaTransformers maps them to MaterialLib material cells.
 
         // GregTech
         DRILLING_FLUID(5, "liquid_drillingfluid", CellType.REGULAR),
@@ -68,19 +69,6 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         SEAWEED_BROTH(8, "seaweedbroth", CellType.REGULAR),
         GELATIN_MIXTURE(32, "gelatinmixture", CellType.REGULAR),
         MEAT_EXTRACT(33, "meatextract", CellType.REGULAR),
-        SUPER_HEAVY_RADOX(28, "superheavyradox", CellType.REGULAR),
-        HEAVY_RADOX(29, "heavyradox", CellType.REGULAR),
-        CRACKED_RADOX(30, "crackedradox", CellType.REGULAR),
-        LIGHT_RADOX(31, "lightradox", CellType.REGULAR),
-        SUPER_LIGHT_RADOX(9, "superlightradox", CellType.REGULAR),
-        RADOX_GAS(34, "radoxgas", CellType.REGULAR),
-        SODIUM_POTASSIUM(18, "sodiumpotassium", CellType.REGULAR),
-        ENRICHED_BACTERIAL_SLUDGE(19, "enrichedbacterialsludge", CellType.REGULAR),
-        FERMENTED_BACTERIAL_SLUDGE(20, "fermentedbacterialsludge", CellType.REGULAR),
-        POLLUTION(21, "pollution", CellType.REGULAR),
-        XENOXENE(27, "xenoxene", CellType.REGULAR),
-        DILUTED_XENOXENE(35, "dilutedxenoxene", CellType.REGULAR),
-        RAW_RADOX(36, "rawradox", CellType.REGULAR),
 
         // BartWorks
         ENZYME_SOLUTION(10, "enzymessollution", CellType.REGULAR),
