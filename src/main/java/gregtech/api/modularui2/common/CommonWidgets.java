@@ -125,8 +125,7 @@ public final class CommonWidgets {
     }
 
     /**
-     * Creates a styled parent widget intended to act as a monitor or display area,
-     * commonly used for rendering fluid tanks.
+     * Creates a styled parent widget intended to act as a monitor or display area.
      * <p>
      * This widget comes pre-configured with a black screen background texture and
      * standardized internal padding to ensure its contents are framed correctly.
@@ -135,7 +134,7 @@ public final class CommonWidgets {
      * @param height The height of the screen widget.
      * @return A configured {@link ParentWidget}
      */
-    public static ParentWidget<?> createFluidScreen(int width, int height) {
+    public static ParentWidget<?> createHatchScreen(int width, int height) {
         return new ParentWidget<>().size(width, height)
             .padding(3, 2, 3, 2)
             .background(GTGuiTextures.PICTURE_SCREEN_BLACK);

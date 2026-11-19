@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GTModHandler.getIC2Item;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -24,6 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
@@ -44,7 +44,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getIC2Item("iridiumOre", 1))
+            .itemInputs(GTModHandler.getIC2Item("iridiumOre", 1))
             .itemOutputs(WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 1))
             .duration(16 * TICKS)
             .eut(4)
@@ -681,7 +681,7 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getIC2Item("biochaff", 1))
+            .itemInputs(ItemList.IC2_BioChaff.get(1))
             .itemOutputs(new ItemStack(Blocks.dirt, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
