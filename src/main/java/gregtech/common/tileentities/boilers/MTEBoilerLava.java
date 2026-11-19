@@ -184,6 +184,7 @@ public class MTEBoilerLava extends MTEBoiler {
 } else {
             // Else, treat as a bucket
             drained = GTUtility.getFluidForFilledItem(returnedContainer, false);
+            if (drained.amount > freeSpace) return;
             returnedContainer = GTUtility.getContainerForFilledItem(returnedContainer, false);
         }
 
