@@ -37,6 +37,7 @@ import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
 public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, ISmartInputHatch {
@@ -45,6 +46,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     private static final ResourceLocation BEAM_TEXTURE = new ResourceLocation("textures/entity/beacon_beam.png");
 
     private BlockPos connection = null;
+    private MTEHatchLoS connectedLoSHatch = null;
     /// When connected, one LoS hatch will be the renderer, and the other won't
     private boolean isRenderer = false;
 
@@ -103,20 +105,30 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
     public void disconnectImpl() {
         this.connection = null;
+        this.connectedLoSHatch = null;
         this.getBaseMetaTileEntity()
             .setActive(false);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
+        onConnectionChange();
     }
 
     public void connectImpl(MTEHatchLoS other) {
         this.connection = other.getBaseMetaTileEntity()
             .getBlockPos();
+        this.connectedLoSHatch = other;
         this.getBaseMetaTileEntity()
             .setActive(true);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
         notifyWatchers();
+        onConnectionChange();
+    }
+
+    public void onConnectionChange() {
+        if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
+            assembler.getIONodes(true);
+        }
     }
 
     public boolean hasOwner() {
@@ -239,14 +251,20 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         if (igte == null || igte.isDead()) {
             connection = null;
+            connectedLoSHatch = null;
             return null;
         }
+
+        if (connectedLoSHatch != null && connectedLoSHatch.isValid()) return connectedLoSHatch;
 
         MTEHatchLoS result = igte.getMetaTileEntity(connection, MTEHatchLoS.class);
 
         if (result == null) {
             connection = null;
+            connectedLoSHatch = null;
         }
+
+        connectedLoSHatch = result;
 
         return result;
     }
