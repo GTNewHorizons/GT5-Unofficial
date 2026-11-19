@@ -167,37 +167,33 @@ public class MTEBoilerLava extends MTEBoiler {
 
     protected void fillFluid(FluidStack equippedContainerFluidStack, ItemStack equippedItemStack, IFluidTank tank,
         EntityPlayer aPlayer) {
-        final ItemStack itemToDrain = equippedItemStack.copy();
-        itemToDrain.stackSize = 1;
-        final FluidStack fluidToDrain = GTUtility.getFluidForFilledItem(itemToDrain, true);
+        ItemStack returnedContainer = equippedItemStack.copy();
+        returnedContainer.stackSize = 1;
         int freeSpace = tank.getCapacity() - tank.getFluidAmount();
         int amountToDrain = Math.min(equippedContainerFluidStack.amount, freeSpace);
-        if (amountToDrain <= 0) {
+        FluidStack drained;
+
+        if (amountToDrain < 1000) {
             return;
         }
 
-        // 1. Check if item is an IFluidContainerItem, if not treat as a bucket
+        // Check if IFluidContainerItem
         if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
-            FluidStack drained = container.drain(itemToDrain, amountToDrain, true);
+            drained = container.drain(returnedContainer, amountToDrain, true);
 
-            // 2. If drain successful
-            if (drained != null && drained.amount > 0) {
-
-                // 3. Fill boiler
-                tank.fill(drained, true);
-                replaceEquippedItemStack(equippedItemStack, itemToDrain, aPlayer);
-            }
+            // Else, treat as a bucket
         } else {
-            // if freespace is less than the capacity of the cell/bucket do nothing
-            if (fluidToDrain != null && (freeSpace < fluidToDrain.amount)) {
-                return;
-            }
-            // fill boiler with cell/bucket
-            ItemStack emptyContainer = GTUtility.getContainerForFilledItem(itemToDrain, false);
-            tank.fill(fluidToDrain, true);
-            replaceEquippedItemStack(equippedItemStack, emptyContainer, aPlayer);
-
+            drained = GTUtility.getFluidForFilledItem(returnedContainer, false);
+            returnedContainer = GTUtility.getContainerForFilledItem(returnedContainer, false);
         }
+
+        // If container drain was successful, fill the boiler tank
+        if (drained != null && drained.amount > 0) {
+            tank.fill(drained, true);
+        }
+
+        // Update held ItemStack and give returnedContainer
+        replaceEquippedItemStack(equippedItemStack, returnedContainer, aPlayer);
     }
 
     @Override
@@ -221,15 +217,13 @@ public class MTEBoilerLava extends MTEBoiler {
     protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
         EntityPlayer aPlayer) {
         heldItemStack.stackSize -= 1;
-        // if held item stack is now zero, set held item to empty container
+        // if held item stack is now zero, set held item to returned container
         if (heldItemStack.stackSize <= 0) {
             heldItemStack.stackSize = 0;
-            aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, returnedContainer);
+            aPlayer.inventoryContainer.detectAndSendChanges();
         } else {
-            // if held stack is 1 or great try and put empty container in inven
+            // if held stack is 1 or greater try and put empty container in inven
             addItemToPlayerInventory(aPlayer, returnedContainer);
-            // it's the same held item stack, but we need to sync changed stack size
-            aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, heldItemStack);
         }
     }
 
@@ -241,9 +235,7 @@ public class MTEBoilerLava extends MTEBoiler {
         if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropPlayerItemWithRandomChoice(stack, false);
         }
-        if (player instanceof EntityPlayerMP) {
-            ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
-        }
+        player.inventoryContainer.detectAndSendChanges();
     }
 
     @Override
