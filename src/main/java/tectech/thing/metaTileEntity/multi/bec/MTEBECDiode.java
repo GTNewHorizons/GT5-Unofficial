@@ -320,7 +320,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         filterParameters = new FluidParameter[CondensateType.VALUES.length];
 
         for (int i = 0; i < filterParameters.length; i++) {
-            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1);
+            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1) {
+
+                @Override
+                public void setValue(Fluid value) {
+                    Fluid previous = getValue();
+
+                    super.setValue(value);
+
+                    if (previous != value && network != null) network.invalidateReachableCondensate();
+                }
+            };
         }
     }
 
