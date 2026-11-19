@@ -11580,6 +11580,21 @@ Material.zn-thalloy.n_gen=Zn-Th сплава
 Material.zn-thalloy.n_gen.lowercase=Zn-Th сплава
 Material.zrcl4.n_gen=тетрахлорида циркония
 
+# Fluid inflection overrides
+fluid.enzymessollution.n_gen=ферментного раствора
+fluid.fluorecentddna.n_gen=флуоресцентной ДНК
+fluid.fulvic acid.n_gen=фульвовой кислоты
+fluid.gelatinmixture.n_gen=желатиновой смеси
+fluid.heated fulvic acid.n_gen=нагретой фульвовой кислоты
+fluid.leadzincsolution.n_gen=свинцово-цинкового раствора
+fluid.liquid_drillingfluid.n_gen=бурового раствора
+fluid.meatextract.n_gen=мясного экстракта
+fluid.solution.bluevitriol.n_gen=водного раствора синего купороса
+fluid.solution.greenvitriol.n_gen=водного раствора зелёного купороса
+fluid.solution.nickelsulfate.n_gen=водного раствора сульфата никеля
+fluid.squidink.n_gen=чернил спрута
+fluid.unknownnutrientagar.n_gen=неизвестного питательного агара
+
 # Material pipe names
 Material.plastic.fluidpipe.newname=Полиэтилен
 Material.polybenzimidazole.fluidpipe.newname=ПБИ
