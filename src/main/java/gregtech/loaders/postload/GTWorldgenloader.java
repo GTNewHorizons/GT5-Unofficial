@@ -7,6 +7,7 @@ import gregtech.api.enums.GTStones;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.SmallOres;
 import gregtech.common.GTWorldgenerator;
+import gregtech.common.worldgen.WorldgenRubberTrees;
 
 public class GTWorldgenloader implements Runnable {
 
@@ -19,6 +20,9 @@ public class GTWorldgenloader implements Runnable {
         for (GTStones stone : GTStones.VALUES) {
             stone.addGTStone();
         }
+
+        // Rubber Trees
+        new WorldgenRubberTrees();
 
         // GT Default Small Ores
         for (SmallOres smallOre : SmallOres.values()) {

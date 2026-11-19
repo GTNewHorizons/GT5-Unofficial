@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
@@ -20,6 +21,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.common.blocks.rubbertree.BlockRubberLogNatural;
+import vexatos.tgregworks.reference.Mods;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
 
@@ -35,6 +38,7 @@ public class PosteaTransformers implements Runnable {
         registerFrameboxTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
+        registerIc2RubberTreeTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
@@ -204,6 +208,25 @@ public class PosteaTransformers implements Runnable {
         return false;
     }
 
+    private void registerIc2RubberTreeTransformers() {
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubSapling", GregTechAPI.sBlockRubberSapling, 0);
+
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubLeaves", GregTechAPI.sBlockRubberLeaves, 0);
+
+        // Rubber Logs in world replaced by natural logs
+        BlockReplacementManager.addSimpleReplacement(
+            "IC2:blockRubWood",
+            GregTechAPI.sBlockRubberLogNatural,
+            BlockRubberLogNatural.META_EMPTY,
+            true);
+
+        // Rubber Logs in inventories replaced by regular logs
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:blockRubWood",
+            new ItemStack(Item.getItemFromBlock(GregTechAPI.sBlockRubberLog), 1, 0),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemHarz", ItemList.Sticky_Resin.get(1L));
     private static int tieredGlassBlockId = -1;
     private static int extraGlassBlockId = -1;
     private static int tieredGlassItemId = -1;

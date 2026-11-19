@@ -178,7 +178,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies -> {
             beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 0), 0.30f);
             beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.STICKY), 0.15f);
-            beeSpecies.addSpecialty(ItemList.IC2_Resin.get(1), 0.15f);
+            beeSpecies.addSpecialty(ItemList.Sticky_Resin.get(1), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
         }, template -> {

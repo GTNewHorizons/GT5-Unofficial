@@ -141,6 +141,7 @@ import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
+import gregtech.common.blocks.rubbertree.RubberTreeRegistrator;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.WirelessEnergyHatchManager;
@@ -471,7 +472,9 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GT_FML_LOGGER.debug("GTMod: Getting required Items of other Mods.");
+        RubberTreeRegistrator.initBlocks();
+        RubberTreeRegistrator.initItems();
+        GTLog.out.println("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GTModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
