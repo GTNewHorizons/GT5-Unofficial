@@ -38,6 +38,11 @@ public class GTPPMTECable extends MTECable {
         this.rgb = aRGB == null || aRGB.length != 4 ? Materials.Iron.mRGBa : aRGB;
     }
 
+    @Override
+    public boolean isBuiltinCable() {
+        return getClass() == GTPPMTECable.class;
+    }
+
     public GTPPMTECable(final String aName, final float aThickNess, final Materials aMaterial,
         final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated,
         final boolean aCanShock, final short[] aRGB) {
