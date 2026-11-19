@@ -227,35 +227,6 @@ public class MTEMassFabricator extends MTEExtendedPowerMultiBlockBase<MTEMassFab
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                if (machineMode == MODE_SCRAP) {
-                    if (inputItems != null) {
-                        for (ItemStack item : inputItems) {
-                            if (item == null || item.stackSize == 0) continue;
-                            ItemStack aPotentialOutput = GTModHandler
-                                .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
-                            GTRecipe recipe = new GTRecipe(
-                                new ItemStack[] { GTUtility.copyAmount(1, item) },
-                                aPotentialOutput == null ? null
-                                    : new ItemStack[] { aPotentialOutput, aPotentialOutput },
-                                null,
-                                null,
-                                new int[] { 1250 + GTUtility.getTier(getMaxInputVoltage()) * SCRAP_CHANCE_PER_TIER,
-                                    Math.max(
-                                        1250 + GTUtility.getTier(getMaxInputVoltage()) * SCRAP_CHANCE_PER_TIER - 10000,
-                                        0) },
-                                null,
-                                null,
-                                null,
-                                null,
-                                40,
-                                (int) TierEU.RECIPE_LV,
-                                0);
-                            return Stream.of(recipe);
-                        }
-                    }
-                    return Stream.empty();
-                }
-                return super.findRecipeMatches(map);
                 if (machineMode != MODE_SCRAP) {
                     return super.findRecipeMatches(map);
                 }
