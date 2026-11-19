@@ -104,7 +104,7 @@ public final class AE2Compat {
             ItemList.Shape_Extruder_Hoe, ItemList.Shape_Extruder_Hammer, ItemList.Shape_Extruder_File,
             ItemList.Shape_Extruder_Saw, ItemList.Shape_Extruder_Gear, ItemList.Shape_Extruder_Rotor,
             ItemList.Shape_Extruder_Turbine_Blade, ItemList.Shape_Extruder_Small_Gear,
-            ItemList.Shape_Extruder_ToolHeadDrill, };
+            ItemList.Shape_Extruder_ToolHeadDrill, ItemList.Shape_Extruder_Boat };
         for (ItemList item : nonConsumables) {
             registry.register(item.get(1));
         }

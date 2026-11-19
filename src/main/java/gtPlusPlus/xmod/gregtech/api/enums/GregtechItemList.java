@@ -86,9 +86,6 @@ public enum GregtechItemList implements IItemContainer {
     Laser_Lens_WoodsGlass,
     Laser_Lens_Special,
 
-    // Pellet Mold
-    Pellet_Mold,
-
     // Upgrade chip for Maceration Stack
     Maceration_Upgrade_Chip,
 

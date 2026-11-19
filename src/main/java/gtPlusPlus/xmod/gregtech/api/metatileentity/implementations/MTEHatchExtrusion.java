@@ -47,7 +47,8 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         ItemList.Shape_Extruder_Plate.get(1), ItemList.Shape_Extruder_Ring.get(1), ItemList.Shape_Extruder_Rod.get(1),
         // Containers, Misc
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
-        ItemList.Shape_Extruder_Cell.get(1) };
+        ItemList.Shape_Extruder_Cell.get(1), ItemList.Shape_Extruder_Boat.get(1), ItemList.Shape_Extruder_Shaft.get(1),
+        ItemList.Shape_Extruder_Pellet.get(1) };
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

@@ -288,6 +288,9 @@ import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naqua
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Shape_Extruder_Boat;
+import static gregtech.common.items.IDMetaItem03.Shape_Extruder_Pellet;
+import static gregtech.common.items.IDMetaItem03.Shape_Extruder_Shaft;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
@@ -2025,6 +2028,23 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Realized_Quantum_Circuit_Rack.ID,
                 "gt.item.realized_quantum_circuit_rack.name",
                 "gt.item.realized_quantum_circuit_rack.tooltip"));
+
+        // Extruder shape unification
+        ItemList.Shape_Extruder_Boat.set(
+            addItemWithLocalizationKeys(
+                Shape_Extruder_Boat.ID,
+                "gt.item.shape_extruder.boat.name",
+                "gt.item.shape_extruder.boat.tooltip"));
+        ItemList.Shape_Extruder_Pellet.set(
+            addItemWithLocalizationKeys(
+                Shape_Extruder_Pellet.ID,
+                "gt.item.shape_extruder.pellet.name",
+                "gt.item.shape_extruder.pellet.tooltip"));
+        ItemList.Shape_Extruder_Shaft.set(
+            addItemWithLocalizationKeys(
+                Shape_Extruder_Shaft.ID,
+                "gt.item.shape_extruder.shaft.name",
+                "gt.item.shape_extruder.shaft.tooltip"));
 
         registerMetaMaterials();
 

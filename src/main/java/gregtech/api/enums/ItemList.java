@@ -169,6 +169,9 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Turbine_Blade,
     Shape_Extruder_Small_Gear,
     Shape_Extruder_ToolHeadDrill,
+    Shape_Extruder_Boat,
+    Shape_Extruder_Pellet,
+    Shape_Extruder_Shaft,
 
     // IC2 Replacements
     PadBouncy,
