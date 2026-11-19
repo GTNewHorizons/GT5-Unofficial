@@ -179,7 +179,7 @@ public class MTEBoilerLava extends MTEBoiler {
 
         // Check if IFluidContainerItem
         if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
-            drained = container.drain(returnedContainer, amountToDrain, true);
+            drained = container.drain(returnedContainer, freeSpace, true);
 
             // Else, treat as a bucket
         } else {
