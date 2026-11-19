@@ -3486,6 +3486,115 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
 
+        ItemList.Silicon_Seed_Crystal.set(
+            addItem(
+                IDMetaItem02.Silicon_Seed_Crystal.ID,
+                $ -> "Silicon Seed Crystal",
+                $ -> "Seed for growing a silicon boule."));
+        ItemList.Microwaved_Silicon_Seed_Crystal.set(
+            addItem(
+                IDMetaItem02.Microwaved_Silicon_Seed_Crystal.ID,
+                $ -> "Microwaved Silicon Seed Crystal",
+                $ -> "Seed for growing a microwaved silicon boule."));
+        ItemList.AlGaAs_Seed_Crystal.set(
+            addItem(
+                IDMetaItem02.AlGaAs_Seed_Crystal.ID,
+                $ -> "AlGaAs Seed Crystal",
+                $ -> "Seed for growing an AlGaAs boule."));
+        ItemList.Raw_Crude_Si_Wafer.set(
+            addItem(IDMetaItem02.Raw_Crude_Si_Wafer.ID, $ -> "Raw Crude Si Wafer", $ -> "Rough-cut silicon wafer."));
+        ItemList.Crude_Si_Wafer
+            .set(addItem(IDMetaItem02.Crude_Si_Wafer.ID, $ -> "Crude Si Wafer", $ -> "Unmodified silicon wafer."));
+        ItemList.Microwaved_Si_Wafer.set(
+            addItem(
+                IDMetaItem02.Microwaved_Si_Wafer.ID,
+                $ -> "Microwaved Silicon Wafer",
+                $ -> "Unmodified microwaved silicon wafer."));
+        ItemList.AlGaAs_Wafer
+            .set(addItem(IDMetaItem02.AlGaAs_Wafer.ID, $ -> "AlGaAs Wafer", $ -> "Unmodified AlGaAs wafer."));
+        ItemList.Modified_AlGaAs_Wafer.set(
+            addItem(IDMetaItem02.Modified_AlGaAs_Wafer.ID, $ -> "Modified AlGaAs Wafer", $ -> "Doped AlGaAs wafer."));
+        ItemList.Si_AsGa_Wafer.set(
+            addItem(
+                IDMetaItem02.Si_AsGa_Wafer.ID,
+                $ -> "Si/AsGa Wafer",
+                $ -> "Silicon wafer doped with gallium arsenide."));
+        ItemList.Si_AsGa_Al2O3_Wafer.set(
+            addItem(
+                IDMetaItem02.Si_AsGa_Al2O3_Wafer.ID,
+                $ -> "Si/AsGa/Al2O3 Wafer",
+                $ -> "Wafer doped with gallium arsenide and aluminium oxide."));
+        ItemList.Si_AsGa_NqO2_Wafer.set(
+            addItem(
+                IDMetaItem02.Si_AsGa_NqO2_Wafer.ID,
+                $ -> "Si/AsGa/NqO2 Wafer",
+                $ -> "Wafer doped with gallium arsenide and naquadah dioxide."));
+        ItemList.MW_Si_AsGa_EuO_Wafer.set(
+            addItem(
+                IDMetaItem02.MW_Si_AsGa_EuO_Wafer.ID,
+                $ -> "MW-Si/AsGa/EuO Wafer",
+                $ -> "Microwaved silicon wafer doped with gallium arsenide and europium monoxide."));
+        ItemList.MW_Si_AsGa_TnO_Wafer.set(
+            addItem(
+                IDMetaItem02.MW_Si_AsGa_TnO_Wafer.ID,
+                $ -> "MW-Si/AsGa/TnO Wafer",
+                $ -> "Microwaved silicon wafer doped with gallium arsenide and tritanium oxide."));
+        ItemList.AlGaAs_Monocrystal.set(
+            addItem(
+                IDMetaItem02.AlGaAs_Monocrystal.ID,
+                $ -> "AlGaAs Monocrystal",
+                $ -> "Precise single-crystal AlGaAs."));
+        ItemList.Diamond_Infused_Wire_Saw.set(
+            addItem(
+                IDMetaItem02.Diamond_Infused_Wire_Saw.ID,
+                $ -> "Diamond Infused Wire Saw",
+                $ -> "Saw for cutting silicon boules."));
+        ItemList.Crude_Silicon_Boule.set(
+            addItem(
+                IDMetaItem02.Crude_Silicon_Boule.ID,
+                $ -> "Crude Silicon Boule",
+                $ -> "Unrefined silicon boule grown in a CZ Puller."));
+        ItemList.Precise_Silicon_Boule.set(
+            addItem(
+                IDMetaItem02.Precise_Silicon_Boule.ID,
+                $ -> "Precise Silicon Boule",
+                $ -> "Zone-refined silicon boule."));
+        ItemList.Crude_Microwaved_Silicon_Boule.set(
+            addItem(
+                IDMetaItem02.Crude_Microwaved_Silicon_Boule.ID,
+                $ -> "Crude Microwaved Silicon Boule",
+                $ -> "Unrefined microwaved silicon boule."));
+        ItemList.Precise_Microwaved_Silicon_Boule.set(
+            addItem(
+                IDMetaItem02.Precise_Microwaved_Silicon_Boule.ID,
+                $ -> "Precise Microwaved Silicon Boule",
+                $ -> "Zone-refined microwaved silicon boule."));
+        ItemList.Crude_AlGaAs_Boule.set(
+            addItem(
+                IDMetaItem02.Crude_AlGaAs_Boule.ID,
+                $ -> "Crude AlGaAs Boule",
+                $ -> "Unrefined AlGaAs boule grown in a CZ Puller."));
+        ItemList.Precise_AlGaAs_Boule.set(
+            addItem(
+                IDMetaItem02.Precise_AlGaAs_Boule.ID,
+                $ -> "Precise AlGaAs Boule",
+                $ -> "Zone-refined AlGaAs boule."));
+        ItemList.Microwaved_Silicon_Dust.set(
+            addItem(
+                IDMetaItem02.Microwaved_Silicon_Dust.ID,
+                $ -> "Microwaved Silicon Dust",
+                $ -> "Feedstock for growing microwaved silicon boules."));
+        ItemList.AlGaAs_Dust.set(
+            addItem(
+                IDMetaItem02.AlGaAs_Dust.ID,
+                $ -> "AlGaAs Dust",
+                $ -> "Feedstock and refining dust for AlGaAs boules."));
+        ItemList.Tritanium_Oxide_Dust.set(
+            addItem(
+                IDMetaItem02.Tritanium_Oxide_Dust.ID,
+                $ -> "Tritanium Oxide Dust",
+                $ -> "Dust used to dope microwaved silicon wafers."));
+
         ItemList.Display_ITS_FREE.set(
             addItem(
                 Display_ITS_FREE.ID,

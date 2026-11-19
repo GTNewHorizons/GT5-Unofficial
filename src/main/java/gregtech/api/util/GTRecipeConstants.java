@@ -87,6 +87,16 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Integer> COIL_HEAT = SimpleRecipeMetadataKey
         .create(Integer.class, "coil_heat");
     /**
+     * Maximum acceptable recipe temperature (Kelvin)
+     */
+    public static final RecipeMetadataKey<Integer> MAX_COIL_HEAT = SimpleRecipeMetadataKey
+        .create(Integer.class, "max_coil_heat");
+    /**
+     * Minimum multiblock structure tier required by a recipe.
+     */
+    public static final RecipeMetadataKey<Integer> STRUCTURE_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "structure_tier");
+    /**
      * Research item used by assline recipes.
      */
     public static final RecipeMetadataKey<ItemStack> RESEARCH_ITEM = SimpleRecipeMetadataKey

@@ -23,6 +23,7 @@ public class MaterialsInit {
         loadElements();
         loadIsotopes();
         loadWaterLine();
+        loadWaferLiquid();
         loadRandom();
         loadDontCare();
         loadUnknownComponents();
@@ -2108,6 +2109,23 @@ public class MaterialsInit {
             .addAspect(TCAspects.RADIO, 2)
             .addSubTag(SubTag.METAL)
             .hasGlowingOre()
+            .constructMaterial();
+    }
+
+    private static void loadWaferLiquid() {
+        Materials.ElectrochemicalElectrolyteSolution = loadElectrochemicalElectrolyteSolution();
+    }
+
+    private static Materials loadElectrochemicalElectrolyteSolution() {
+        return new MaterialBuilder().setName("ElectrochemicalElectrolyteSolution")
+            .setDefaultLocalName("Electrochemical Electrolyte Solution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlue)
+            .setARGB(0x003d3a52)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(273)
+            .addSubTag(SubTag.TRANSPARENT)
             .constructMaterial();
     }
 
