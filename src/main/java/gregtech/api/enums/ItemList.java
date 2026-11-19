@@ -82,6 +82,7 @@ public enum ItemList implements IItemContainer {
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
+    IC2_BioChaff,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
@@ -1665,6 +1666,7 @@ public enum ItemList implements IItemContainer {
     Super_Chest_IV,
 
     Debug_Fluid_Tank,
+    Debug_Chest,
 
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
@@ -1838,6 +1840,7 @@ public enum ItemList implements IItemContainer {
 
     Block_Powderbarrel,
     GelledToluene,
+    Dynamite,
 
     FluidFilter,
     ItemFilter_Export,
@@ -2717,6 +2720,7 @@ public enum ItemList implements IItemContainer {
     Alumina_Support_Ring,
     Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
+    Dim_Prismarine,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,

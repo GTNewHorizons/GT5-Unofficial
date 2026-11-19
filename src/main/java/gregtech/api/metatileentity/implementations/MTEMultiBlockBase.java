@@ -107,6 +107,7 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -158,6 +159,7 @@ import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.crossmod.ae2.PatternTargetKey;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -252,6 +254,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
+    protected List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
 
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
@@ -558,6 +561,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
         mPyrotheumHatches.clear();
+        mElementalDataOrbHatches.clear();
         doPeriodicChecks = false;
 
         mCoils.clear();
@@ -1674,7 +1678,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
-        int injected = 0;
+        long injected = 0;
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
@@ -1712,18 +1716,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         long leftToInject;
         long aVoltage;
-        int aAmpsToInject;
-        int aRemainder;
-        int ampsOnCurrentHatch;
+        long aAmpsToInject;
+        long aRemainder;
+        long ampsOnCurrentHatch;
         for (MTEHatch aDynamo : validMTEList(mDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-            for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity()
-                    .increaseStoredEnergyUnits(aVoltage, false);
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            ampsOnCurrentHatch = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
+                for (long i = 0; i < ampsOnCurrentHatch; i++) {
+                    aDynamo.getBaseMetaTileEntity()
+                        .increaseStoredEnergyUnits(aVoltage, false);
+                }
             }
             injected += aVoltage * ampsOnCurrentHatch;
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
@@ -1735,12 +1741,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-            for (int i = 0; i < ampsOnCurrentHatch; i++) {
-                aDynamo.getBaseMetaTileEntity()
-                    .increaseStoredEnergyUnits(aVoltage, false);
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            ampsOnCurrentHatch = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            if (ampsOnCurrentHatch <= 1 || !isFullNativeDynamo(aDynamo)) {
+                for (long i = 0; i < ampsOnCurrentHatch; i++) {
+                    aDynamo.getBaseMetaTileEntity()
+                        .increaseStoredEnergyUnits(aVoltage, false);
+                }
             }
             injected += aVoltage * ampsOnCurrentHatch;
             if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
@@ -1750,6 +1758,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return injected > 0;
+    }
+
+    /**
+     * Only these exact implementations reject full storage without callbacks. Accepted packets must retain their
+     * individual dirty notifications, and external implementations must retain even rejected calls.
+     */
+    protected static boolean isFullNativeDynamo(MTEHatch dynamo) {
+        if (dynamo.getClass() != MTEHatchDynamoMulti.class || dynamo.maxAmperesOut() <= 1) return false;
+        IGregTechTileEntity base = dynamo.getBaseMetaTileEntity();
+        return base != null && base.getClass() == BaseMetaTileEntity.class
+            && base.getMetaTileEntity() == dynamo
+            && base.getStoredEU() >= base.getEUCapacity();
     }
 
     /**
@@ -2463,6 +2483,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    public boolean addElementalDataOrbHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder mteHatchElementalDataOrb) {
+            mteHatchElementalDataOrb.updateTexture(aBaseCasingIndex);
+            mteHatchElementalDataOrb.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mElementalDataOrbHatches.add(mteHatchElementalDataOrb);
+        }
+        return false;
+    }
+
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -3077,6 +3109,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatch> getPyrotheumHatches() {
         return mPyrotheumHatches;
+    }
+
+    public List<MTEHatchElementalDataOrbHolder> getElementalDataOrbHatches() {
+        return mElementalDataOrbHatches;
     }
 
     /**
