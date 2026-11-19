@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.base.dusts;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +105,9 @@ public class BaseItemDustUnique extends Item {
         if (StatCollector.canTranslate(overrideKey)) {
             return StatCollector.translateToLocal(overrideKey);
         }
-        return translateToLocalFormatted(typeLoc, MaterialUtils.getMaterialLocalizedName(this.materialName));
+        return OrePrefixes.getLocalizedNameForItemWithInflection(
+            typeLoc,
+            MaterialUtils.getMaterialLocalizedNameKey(this.materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {
