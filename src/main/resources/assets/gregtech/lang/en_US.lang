@@ -5275,6 +5275,12 @@ gt.item.shape_extruder.turbine_blade.name=Extruder Shape (Turbine Blade)
 gt.item.shape_extruder.turbine_blade.tooltip=Extruder Shape for a Turbine Blade
 gt.item.shape_extruder.tool_head_drill.name=Extruder Shape (Drill Head)
 gt.item.shape_extruder.tool_head_drill.tooltip=Extruder Shape for a Drill Head
+gt.item.shape_extruder.boat.name=Extruder Shape (Boat)
+gt.item.shape_extruder.boat.tooltip=Extruder Shape for making boats
+gt.item.shape_extruder.pellet.name=Extruder Shape (Pellet)
+gt.item.shape_extruder.pellet.tooltip=Extruder Shape for making pellets
+gt.item.shape_extruder.shaft.name=Extruder Shape (Shaft)
+gt.item.shape_extruder.shaft.tooltip=Extruder Shape for making shafts
 
 ### Shape Slicer
 gt.item.shape_slicer.flat.name=Slicer Blade (Flat)
