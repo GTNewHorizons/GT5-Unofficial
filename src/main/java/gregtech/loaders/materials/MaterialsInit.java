@@ -5329,6 +5329,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setARGB(0x0036f60e)
+            .addCell()
             .constructMaterial();
     }
 
@@ -5338,6 +5339,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeGreen)
             .setARGB(0x00008c10)
+            .addCell()
             .constructMaterial();
     }
 
@@ -7560,6 +7562,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setARGB(0x0016ff24)
+            .addCell()
             .addMaterial(Materials.Sodium, 1)
             .addMaterial(Materials.Potassium, 1)
             .constructMaterial();
@@ -11208,6 +11211,7 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeBrown)
             .setARGB(0x00d0b361)
+            .addCell()
             .constructMaterial();
     }
 
@@ -14051,6 +14055,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Cracked Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00b482b4)
+            .addCell()
             .addGas()
             .constructMaterial();
     }
@@ -14060,6 +14065,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Radox Gas")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00ff82ff)
+            .addCell()
             .addGas()
             .constructMaterial();
     }
@@ -14069,6 +14075,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Heavy Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00730073)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }
@@ -14078,6 +14085,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Light Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x008c008c)
+            .addCell()
             .addGas()
             .constructMaterial();
     }
@@ -14112,6 +14120,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Raw Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00501e50)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }
@@ -14121,6 +14130,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Super Heavy Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00640064)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }
@@ -14130,6 +14140,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Super Light Radox")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x009b009b)
+            .addCell()
             .addGas()
             .constructMaterial();
     }
@@ -14139,6 +14150,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Xenoxene")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00858280)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }
@@ -14148,6 +14160,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Diluted Xenoxene")
             .setIconSet(TextureSet.SET_DULL)
             .setARGB(0x00cec8c4)
+            .addCell()
             .addFluid()
             .constructMaterial();
     }

@@ -1502,8 +1502,6 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Cell_Empty.get(1L));
 
         // region NewHorizonsCoreMod fluids
-        // These fluids have to get registered manually so they use the MetaGeneratedItem98 cells instead of generating
-        // new MetaGeneratedItem01 fluid cells.
         GTFluidFactory.builder("SodiumPotassium")
             .withDefaultLocalName("Sodium Potassium")
             .withStateAndTemperature(LIQUID, 295)

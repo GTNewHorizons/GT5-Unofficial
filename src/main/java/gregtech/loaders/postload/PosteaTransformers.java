@@ -39,6 +39,27 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerMaterialFluidCellTransformers();
+    }
+
+    private void registerMaterialFluidCellTransformers() {
+        // Maps removed MetaGeneratedItem98.FluidCell IDs to the standard cells of their materials.
+        String fluidCellItem = "gregtech:gt.metaitem.98";
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 9, Materials.RadoxSuperLight.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 18, Materials.SodiumPotassium.getCells(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement(fluidCellItem, 19, Materials.EnrichedBacterialSludge.getCells(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement(fluidCellItem, 20, Materials.FermentedBacterialSludge.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 21, Materials.Pollution.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 27, Materials.Xenoxene.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 28, Materials.RadoxSuperHeavy.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 29, Materials.RadoxHeavy.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 30, Materials.RadoxCracked.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 31, Materials.RadoxLight.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 34, Materials.RadoxGas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 35, Materials.XenoxeneDiluted.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement(fluidCellItem, 36, Materials.RadoxRaw.getCells(1));
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
