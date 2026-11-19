@@ -29,9 +29,8 @@ public abstract class MTEMachineWithItemScreenBaseGui<T extends MTETieredMachine
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
     }
 
-    @Override
-    protected ItemSlot createSlot(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, getSlotIndex()) {
+    protected ItemSlot createInventoryDisplaySlot(int slotIndex) {
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, slotIndex) {
 
             @Override
             public ItemStack getStack() {
@@ -49,8 +48,6 @@ public abstract class MTEMachineWithItemScreenBaseGui<T extends MTETieredMachine
             .bottomRel(0)
             .rightRel(0);
     }
-
-    protected abstract int getSlotIndex();
 
     @Override
     protected boolean supportsFilterScreen() {

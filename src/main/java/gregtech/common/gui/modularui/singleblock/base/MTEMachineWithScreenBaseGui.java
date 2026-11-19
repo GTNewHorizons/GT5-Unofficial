@@ -43,14 +43,18 @@ public abstract class MTEMachineWithScreenBaseGui<T extends MTETieredMachineBloc
             .childPadding(1)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        textColumn.child(createScreenAmountLabel(panel, syncManager));
-        textColumn.child(createScreenAmount(panel, syncManager));
+        addScreenText(textColumn, panel, syncManager);
 
         screen.child(textColumn);
 
         screen.child(createSlot(panel, syncManager));
 
         return screen;
+    }
+
+    protected void addScreenText(Flow textColumn, ModularPanel panel, PanelSyncManager syncManager) {
+        textColumn.child(createScreenAmountLabel(panel, syncManager));
+        textColumn.child(createScreenAmount(panel, syncManager));
     }
 
     protected abstract TextWidget<?> createScreenAmountLabel(ModularPanel panel, PanelSyncManager syncManager);
@@ -70,7 +74,8 @@ public abstract class MTEMachineWithScreenBaseGui<T extends MTETieredMachineBloc
             .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         ioColumn.child(createInputSlot(panel, syncManager, getInputSlotIndex()));
-        ioColumn.child(createScreenIOWidget(panel, syncManager));
+        Widget<?> middle = createScreenIOWidget(panel, syncManager);
+        if (middle != null) ioColumn.child(middle);
         ioColumn.child(createOutputSlot(panel, syncManager, getOutputSlotIndex()));
 
         return ioColumn;
@@ -80,7 +85,9 @@ public abstract class MTEMachineWithScreenBaseGui<T extends MTETieredMachineBloc
 
     protected abstract int getOutputSlotIndex();
 
-    protected abstract Widget<?> createScreenIOWidget(ModularPanel panel, PanelSyncManager syncManager);
+    protected Widget<?> createScreenIOWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        return null;
+    }
 
     protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager, int inputSlot) {
         return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, inputSlot).slotGroup("io_inv"))

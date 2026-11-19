@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -17,6 +16,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -25,20 +25,23 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigitalChestBase> {
+public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTEDigitalChestBase> {
 
-    private static final int SCREEN_WIDTH = 71;
     private static final int STORED_SCREEN_WIDTH = SCREEN_WIDTH + SLOT_SIZE;
-    private static final int SCREEN_HEIGHT = 54;
-    private static final String ITEM_INVENTORY = "item_inv";
 
     private final IntSyncValue storedCount;
     private final BooleanSyncValue itemLock;
     private final BooleanSyncValue voidFull;
+    private final ItemStackHandler lockInventory = new ItemStackHandler(1) {
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+    };
 
     public MTEDigitalChestBaseGui(MTEDigitalChestBase machine) {
         super(machine);
@@ -51,8 +54,8 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
         syncManager.syncValue("storedCount", storedCount);
-        syncManager.registerSlotGroup(ITEM_INVENTORY, 1);
     }
 
     @Override
@@ -70,72 +73,82 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
         Flow mainRow = Flow.row()
             .coverChildren()
             .childPadding(1)
-            .child(createStoredItemScreen())
-            .child(createItemIO())
-            .child(createItemLockScreen());
+            .child(createScreen(panel, syncManager))
+            .child(createScreenIO(panel, syncManager))
+            .child(createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
-    private ParentWidget<?> createStoredItemScreen() {
+    @Override
+    protected ParentWidget<?> createScreen(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createScreen(panel, syncManager).width(STORED_SCREEN_WIDTH);
+    }
+
+    @Override
+    protected TextWidget<?> createScreenAmount(ModularPanel panel, PanelSyncManager syncManager) {
+        return IKey.dynamic(() -> formatNumber(storedCount.getIntValue()))
+            .asWidget()
+            .width(STORED_SCREEN_WIDTH - 6)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
+    }
+
+    @Override
+    protected void addScreenText(Flow textColumn, ModularPanel panel, PanelSyncManager syncManager) {
+        super.addScreenText(textColumn, panel, syncManager);
+        textColumn.child(
+            IKey.str("/ " + formatNumber(machine.getMaxItemCount()))
+                .asWidget()
+                .width(STORED_SCREEN_WIDTH - 6)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
+    }
+
+    @Override
+    protected ItemDisplayWidget createSlot(ModularPanel panel, PanelSyncManager syncManager) {
         GenericSyncValue<ItemStack, ?> storedItem = GenericSyncValue.builder(ItemStack.class)
             .getter(machine::getItemStack)
             .adapter(ByteBufAdapters.ITEM_STACK)
             .copy(ItemStack::copy)
             .build();
-        Flow textColumn = Flow.column()
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                IKey.lang("GT5U.gui.text.item_amount")
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
-            .child(
-                IKey.dynamic(() -> formatNumber(storedCount.getIntValue()))
-                    .asWidget()
-                    .width(STORED_SCREEN_WIDTH - 6)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
-            .child(
-                IKey.str("/ " + formatNumber(machine.getMaxItemCount()))
-                    .asWidget()
-                    .width(STORED_SCREEN_WIDTH - 6)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
-
-        return CommonWidgets.createHatchScreen(STORED_SCREEN_WIDTH, SCREEN_HEIGHT)
-            .child(textColumn)
-            .child(
-                new ItemDisplayWidget().item(storedItem)
-                    .displayAmount(false)
-                    .bottomRel(0)
-                    .rightRel(0)
-                    .background(GTGuiTextures.SLOT_FLUID_TANK));
+        return new ItemDisplayWidget().item(storedItem)
+            .displayAmount(false)
+            .bottomRel(0)
+            .rightRel(0)
+            .background(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
-    private Flow createItemIO() {
-        ModularSlot inputSlot = new ModularSlot(machine.inventoryHandler, 0).slotGroup(ITEM_INVENTORY);
-
-        return Flow.column()
-            .coverChildrenWidth()
-            .fullHeight()
-            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
-            .child(
-                new ItemSlot().slot(inputSlot)
-                    .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_IN_STANDARD))
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(machine.inventoryHandler, 1).slotGroup(ITEM_INVENTORY)
-                        .canPut(false))
-                    .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD));
+    @Override
+    protected int getInputSlotIndex() {
+        return 0;
     }
 
-    private ParentWidget<?> createItemLockScreen() {
-        ItemStackHandler lockInventory = new ItemStackHandler(1) {
+    @Override
+    protected int getOutputSlotIndex() {
+        return 1;
+    }
 
-            @Override
-            public int getSlotLimit(int slot) {
-                return 1;
-            }
-        };
+    @Override
+    protected TextWidget<?> createFilterScreenAmountLabel(ModularPanel panel, PanelSyncManager syncManager) {
+        return IKey.lang("GT5U.machines.digitalchest.lockitem.label")
+            .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
+    }
+
+    @Override
+    protected TextWidget<?> createFilterScreenAmount(ModularPanel panel, PanelSyncManager syncManager) {
+        return IKey.dynamic(() -> {
+            ItemStack lockedItem = lockInventory.getStackInSlot(0);
+            if (lockedItem != null) return lockedItem.getDisplayName();
+            return translateToLocal(
+                itemLock.getBoolValue() ? "GT5U.machines.digitalchest.lockitem.waiting"
+                    : "GT5U.machines.digitalchest.lockitem.empty");
+        })
+            .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
+    }
+
+    @Override
+    protected ItemSlot createFilterSlot(ModularPanel panel, PanelSyncManager syncManager) {
         lockInventory.setStackInSlot(0, GTUtility.copyAmount(1, machine.getLockedItem()));
         ModularSlot lockSlot = new ModularSlot(lockInventory, 0) {
 
@@ -162,30 +175,10 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                 super.detectAndSendChanges(init);
             }
         };
-        Flow textColumn = Flow.column()
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                IKey.lang("GT5U.machines.digitalchest.lockitem.label")
-                    .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
-            .child(IKey.dynamic(() -> {
-                ItemStack lockedItem = lockInventory.getStackInSlot(0);
-                if (lockedItem != null) return lockedItem.getDisplayName();
-                return translateToLocal(
-                    itemLock.getBoolValue() ? "GT5U.machines.digitalchest.lockitem.waiting"
-                        : "GT5U.machines.digitalchest.lockitem.empty");
-            })
-                .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
-
-        return CommonWidgets.createHatchScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
-            .child(textColumn)
-            .child(
-                new PhantomItemSlot().syncHandler(lockSyncer)
-                    .bottomRel(0)
-                    .rightRel(0)
-                    .background(GTGuiTextures.SLOT_FLUID_TANK));
+        return new PhantomItemSlot().syncHandler(lockSyncer)
+            .bottomRel(0)
+            .rightRel(0)
+            .background(GTGuiTextures.SLOT_FLUID_TANK);
     }
 
     @Override
