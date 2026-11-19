@@ -256,6 +256,32 @@ public class MTEMassFabricator extends MTEExtendedPowerMultiBlockBase<MTEMassFab
                     return Stream.empty();
                 }
                 return super.findRecipeMatches(map);
+                if (machineMode != MODE_SCRAP) {
+                    return super.findRecipeMatches(map);
+                }
+                if (inputItems == null) {
+                    return Stream.empty();
+                }
+                int baseChance = 1250 + GTUtility.getTier(getMaxInputVoltage()) * SCRAP_CHANCE_PER_TIER;
+                for (ItemStack item : inputItems) {
+                    if (item == null || item.stackSize == 0) continue;
+                    ItemStack aPotentialOutput = GTModHandler.getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
+                    GTRecipe recipe = new GTRecipe(
+                        new ItemStack[] { GTUtility.copyAmount(1, item) },
+                        aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput, aPotentialOutput },
+                        null,
+                        null,
+                        new int[] { baseChance, Math.max(baseChance - 10000, 0) },
+                        null,
+                        null,
+                        null,
+                        null,
+                        40,
+                        (int) TierEU.RECIPE_LV,
+                        0);
+                    return Stream.of(recipe);
+                }
+                return Stream.empty();
             }
         }.setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
