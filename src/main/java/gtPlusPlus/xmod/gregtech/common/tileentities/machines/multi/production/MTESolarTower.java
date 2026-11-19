@@ -291,14 +291,6 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         @Override
         protected IStructureDefinition<MTESolarTower> computeValue(Class<?> type) {
             return StructureDefinition.<MTESolarTower>builder()
-
-                // S = salt
-                // C = thermal containment
-                // I = thermal insulated
-                // T = solar structural
-                // H = hatch
-                // G = solar heater
-
                 .addShape(STRUCTURE_PIECE_TOP, STRUCTURE_STRING_TOP)
                 .addShape(STRUCTURE_PIECE_TOWER, STRUCTURE_STRING_TOWER)
                 .addShape(STRUCTURE_PIECE_BASE, STRUCTURE_STRING_BASE)
