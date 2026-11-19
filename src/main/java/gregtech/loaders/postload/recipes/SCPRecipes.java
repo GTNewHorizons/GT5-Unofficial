@@ -251,7 +251,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_MV.get(1)))
             .itemOutputs(SuperconductorMV)
             .fluidInputs((Materials.SuperconductorMVBase.getMolten(72L * 3 * 64)), Materials.Helium.getGas(2_000 * 64))
-            .duration(20 * 48 * SECONDS)
+            .duration(20 * 16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(scpRecipes);
 
@@ -263,7 +263,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_HV.get(1)))
             .itemOutputs(SuperconductorHV)
             .fluidInputs((Materials.SuperconductorHVBase.getMolten(72L * 6 * 64)), Materials.Helium.getGas(4_000 * 64))
-            .duration(20 * 48 * SECONDS)
+            .duration(20 * 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(scpRecipes);
 
@@ -276,7 +276,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_EV.get(1)))
             .itemOutputs(SuperconductorEV)
             .fluidInputs((Materials.SuperconductorEVBase.getMolten(72L * 9 * 64)), Materials.Helium.getGas(6_000 * 64))
-            .duration(20 * 48 * SECONDS)
+            .duration(20 * 16 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(scpRecipes);
 
@@ -289,7 +289,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_IV.get(1)))
             .itemOutputs(SuperconductorIV)
             .fluidInputs((Materials.SuperconductorIVBase.getMolten(72L * 12 * 64)), Materials.Helium.getGas(8_000 * 64))
-            .duration(40 * 48 * SECONDS)
+            .duration(40 * 16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(scpRecipes);
 
@@ -303,7 +303,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorLuVBase.getMolten(72L * 15 * 64)),
                 Materials.Helium.getGas(12_000 * 64))
-            .duration(40 * 48 * SECONDS)
+            .duration(40 * 16 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(scpRecipes);
 
@@ -317,7 +317,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorZPMBase.getMolten(72L * 18 * 64)),
                 Materials.Helium.getGas(16_000 * 64))
-            .duration(80 * 48 * SECONDS)
+            .duration(80 * 16 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(scpRecipes);
 
@@ -331,7 +331,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorUVBase.getMolten(72L * 21 * 64)),
                 Materials.Helium.getGas(20_000 * 64))
-            .duration(80 * 48 * SECONDS)
+            .duration(80 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(scpRecipes);
 
@@ -345,7 +345,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorUHVBase.getMolten(72L * 24 * 64)),
                 Materials.Helium.getGas(24_000 * 64))
-            .duration(160 * 48 * SECONDS)
+            .duration(160 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(scpRecipes);
 
@@ -362,7 +362,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorMVBase.getMolten(72L * 3 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(2_000 * 64))
-            .duration(16 * 48 * SECONDS)
+            .duration(16 * 16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(scpRecipes);
 
@@ -376,7 +376,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorHVBase.getMolten(72L * 6 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(4_000 * 64))
-            .duration(16 * 48 * SECONDS)
+            .duration(16 * 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(scpRecipes);
 
@@ -391,7 +391,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorEVBase.getMolten(72L * 9 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(6_000 * 64))
-            .duration(16 * 48 * SECONDS)
+            .duration(16 * 16 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(scpRecipes);
 
@@ -406,7 +406,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorIVBase.getMolten(72L * 12 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(8_000 * 64))
-            .duration(32 * 48 * SECONDS)
+            .duration(32 * 16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(scpRecipes);
 
@@ -420,7 +420,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorLuVBase.getMolten(72L * 15 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(12_000 * 64))
-            .duration(32 * 48 * SECONDS)
+            .duration(32 * 16 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(scpRecipes);
 
@@ -434,7 +434,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorZPMBase.getMolten(72L * 18 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(16_000 * 64))
-            .duration(64 * 48 * SECONDS)
+            .duration(64 * 16 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(scpRecipes);
 
@@ -448,7 +448,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorUVBase.getMolten(72L * 21 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(20_000 * 64))
-            .duration(64 * 48 * SECONDS)
+            .duration(64 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(scpRecipes);
 
@@ -462,7 +462,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorUHVBase.getMolten(72L * 24 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(24_000 * 64))
-            .duration(128 * 48 * SECONDS)
+            .duration(128 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(scpRecipes);
 
@@ -476,7 +476,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 (Materials.SuperconductorUEVBase.getMolten(72L * 27 * 64)),
                 WerkstoffLoader.LiquidHelium.getFluidOrGas(28_000 * 64))
-            .duration(160 * 48 * SECONDS)
+            .duration(160 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(scpRecipes);
 
@@ -491,7 +491,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_MV.get(1)))
             .itemOutputs(SuperconductorMV)
             .fluidInputs(Materials.SuperconductorMVBase.getMolten(72L * 3 * 64), Materials.SpaceTime.getMolten(4 * 64))
-            .duration(10 * 48 * SECONDS)
+            .duration(10 * 16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(scpRecipes);
 
@@ -503,7 +503,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_HV.get(1)))
             .itemOutputs(SuperconductorHV)
             .fluidInputs(Materials.SuperconductorHVBase.getMolten(72L * 6 * 64), Materials.SpaceTime.getMolten(8 * 64))
-            .duration(10 * 48 * SECONDS)
+            .duration(10 * 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(scpRecipes);
 
@@ -516,7 +516,7 @@ public class SCPRecipes implements Runnable {
                 GTUtility.copyAmountUnsafe(1 * 64, ItemList.Electric_Pump_EV.get(1)))
             .itemOutputs(SuperconductorEV)
             .fluidInputs(Materials.SuperconductorEVBase.getMolten(72L * 9 * 64), Materials.SpaceTime.getMolten(12 * 64))
-            .duration(10 * 48 * SECONDS)
+            .duration(10 * 16 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(scpRecipes);
 
@@ -531,7 +531,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorIVBase.getMolten(72L * 12 * 64),
                 Materials.SpaceTime.getMolten(16 * 64))
-            .duration(20 * 48 * SECONDS)
+            .duration(20 * 16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(scpRecipes);
 
@@ -545,7 +545,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorLuVBase.getMolten(72L * 15 * 64),
                 Materials.SpaceTime.getMolten(24 * 64))
-            .duration(20 * 48 * SECONDS)
+            .duration(20 * 16 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(scpRecipes);
 
@@ -559,7 +559,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorZPMBase.getMolten(72L * 18 * 64),
                 Materials.SpaceTime.getMolten(32 * 64))
-            .duration(40 * 48 * SECONDS)
+            .duration(40 * 16 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(scpRecipes);
 
@@ -573,7 +573,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorUVBase.getMolten(72L * 21 * 64),
                 Materials.SpaceTime.getMolten(40 * 64))
-            .duration(40 * 48 * SECONDS)
+            .duration(40 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(scpRecipes);
 
@@ -587,7 +587,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorUHVBase.getMolten(72L * 24 * 64),
                 Materials.SpaceTime.getMolten(48 * 64))
-            .duration(80 * 48 * SECONDS)
+            .duration(80 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(scpRecipes);
 
@@ -601,7 +601,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorUEVBase.getMolten(72L * 27 * 64),
                 Materials.SpaceTime.getMolten(56 * 64))
-            .duration(80 * 48 * SECONDS)
+            .duration(80 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(scpRecipes);
 
@@ -616,7 +616,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorUIVBase.getMolten(72L * 30 * 64),
                 Materials.SpaceTime.getMolten(68 * 64))
-            .duration(80 * 48 * SECONDS)
+            .duration(80 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(scpRecipes);
 
@@ -630,7 +630,7 @@ public class SCPRecipes implements Runnable {
             .fluidInputs(
                 Materials.SuperconductorUMVBase.getMolten(72L * 33 * 64),
                 Materials.SpaceTime.getMolten(72 * 64))
-            .duration(160 * 48 * SECONDS)
+            .duration(160 * 16 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(scpRecipes);
     }
