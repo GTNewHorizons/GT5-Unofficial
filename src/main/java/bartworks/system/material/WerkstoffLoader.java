@@ -80,6 +80,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
+import com.falsepattern.endlessids.config.GeneralConfig;
 import com.google.common.collect.HashBiMap;
 
 import bartworks.API.WerkstoffAdderRegistry;
@@ -1982,26 +1983,19 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
-        GameRegistry.registerTileEntity(
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
-            "bw.werkstoffblockscasingadvancedTE");
+        if (!GeneralConfig.extendBlockItem) {
+            throw new IllegalStateException("BartWorks material block states require EndlessIDs block/item extensions");
+        }
 
         BWOreAdapter.INSTANCE.init();
 
-        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
-            Material.iron,
-            BWTileEntityMetaGeneratedWerkstoffBlock.class,
-            "bw.werkstoffblocks");
+        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(Material.iron, "bw.werkstoffblocks");
         WerkstoffLoader.BWBlockCasings = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasing.class,
             "bw.werkstoffblockscasing",
             OrePrefixes.blockCasing);
         WerkstoffLoader.BWBlockCasingsAdvanced = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 
