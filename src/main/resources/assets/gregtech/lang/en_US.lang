@@ -2975,6 +2975,7 @@ GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitalchest.tooltip=Stores %s items
 GT5U.machines.digitalchest.tooltip1=Use a screwdriver to enable voiding items on overflow
+GT5U.machines.digitalchest.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
@@ -4241,9 +4242,8 @@ GT5U.gui.text.wormhole_generator.status.no_destination=§7Wormhole status: §cNo
 GT5U.gui.text.wormhole_generator.status.decaying=§7Wormhole status: §6Decaying§f
 GT5U.gui.text.wormhole_generator.status.active=§7Wormhole status: §bActive§f
 GT5U.gui.text.wormhole_generator.status.inactive=§7Wormhole status: Inactive§f
-GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%,d§7 Å§f
-GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch: §b%,d§7 EU/t§f
-GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 EU/t§f
+GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%s§7 Å§f
+GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch:\n§b%s§7 EU/t§f
 
 GT5U.gui.text.status.active=Active
 GT5U.gui.text.status.online=Online
@@ -5921,6 +5921,16 @@ gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from fail
 ## Gelled Toluene
 gt.item.gelled_toluene.name=Gelled Toluene
 gt.item.gelled_toluene.tooltip=Raw Explosive
+
+# Dynamite
+gt.item.dynamite.name=Dynamite
+gt.item.dynamite.tooltip=
+
+# IC2 Bio stuff
+gt.item.chaff.name=Bio Chaff
+gt.item.chaff.tooltip=
+gt.item.plant_ball.name=Plant Ball
+gt.item.plant_ball.tooltip=
 
 ## Bottle drinks
 gt.item.bottle.purple_drink.name=Purple Drink
@@ -7945,6 +7955,7 @@ entity.gregtech.GTDrone.name=Drone
 fluid.aniline=Aniline
 fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
+fluid.biogas=Biogas
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
 fluid.cadaverine=Cadaverine
@@ -8794,10 +8805,10 @@ GT5U.infodata.wormhole_generator.status.active=Wormhole status: §bActive§f
 GT5U.infodata.wormhole_generator.status.decaying=Wormhole status: §6Decaying§f
 GT5U.infodata.wormhole_generator.status.inactive=Wormhole status: §7Inactive§f
 GT5U.infodata.wormhole_generator.status.no_energy=Wormhole status: §7No energy in input hatches§f
-GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%,d§r angstrom
-GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%,.0f§r EU/t
-GT5U.infodata.wormhole_generator.transferred=%s hatch (%,dA %s) transferred §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
-GT5U.infodata.wormhole_generator.received=%s hatch (%,dA %s) received §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%s§r angstrom
+GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%s§r EU/t
+GT5U.infodata.wormhole_generator.transferred=%s hatch (%sA %s) transferred §b%s§f EU (equivalent to %sA) with an efficiency of %s%% in the last %s seconds
+GT5U.infodata.wormhole_generator.received=%s hatch (%sA %s) received §b%s§f EU (equivalent to %sA) with an efficiency of %s%% in the last %s seconds
 GT5U.infodata.wormhole_generator.not_present=%s hatch is not present
 
 GT5U.infodata.wormhole_generator.hatch.top=Top
