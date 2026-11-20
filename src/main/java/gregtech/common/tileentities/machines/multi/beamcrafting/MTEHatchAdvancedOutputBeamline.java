@@ -30,6 +30,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
 
     private boolean initialized = false;
+    private MTEBeamMultiBase.FundamentalForce force = null;
     public Map<Particle, Boolean> acceptedInputMap = new HashMap<>();
 
     @Override
@@ -37,6 +38,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         super.saveNBTData(aNBT);
         saveInputMapToNBT(aNBT, this.acceptedInputMap);
         aNBT.setBoolean("init", initialized);
+        aNBT.setString("force", force.name());
     }
 
     @Override
@@ -45,9 +47,10 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
         loadInputMapFromNBT(aNBT, this.acceptedInputMap);
         initialized = aNBT.getBoolean("init");
-        // loads missing particles as false
-        for (Particle p : Particle.VALUES) {
-            acceptedInputMap.putIfAbsent(p, false);
+        // TODO: flatten if after 2.10
+        if (aNBT.hasKey("force")) {
+            var forceName = aNBT.getString("force");
+            this.force = MTEBeamMultiBase.FundamentalForce.fromName(forceName);
         }
     }
 
@@ -55,11 +58,9 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         for (Map.Entry<Particle, Boolean> entry : map.entrySet()) {
             Particle key = entry.getKey();
             boolean value = entry.getValue();
-            // only save accepted particles
-            if (!value) continue;
             final String particleName = key.getName();
             aNBT.setInteger(NBT_KEY_DESCRIPTOR + particleName, key.getId());
-            aNBT.setBoolean(NBT_VALUE_DESCRIPTOR + particleName, true);
+            aNBT.setBoolean(NBT_VALUE_DESCRIPTOR + particleName, value);
         }
     }
 
@@ -74,20 +75,21 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         }
     }
 
-    public void setInitialParticleList(List<Particle> initialParticleList) {
-
+    public void setInitialParticleList(List<Particle> initialParticleList, MTEBeamMultiBase.FundamentalForce force) {
+        // called by structure check, for particle migration purposes, it will add the missing particles
+        // TODO: remove this.force == null after 2.10
+        if (this.force == null || initialParticleList.size() != acceptedInputMap.size()) {
+            this.force = force;
+            initialParticleList.forEach(p -> acceptedInputMap.putIfAbsent(p, false));
+        }
         if (initialized) return;
 
         acceptedInputMap.clear();
         for (Particle p : initialParticleList) {
             acceptedInputMap.put(p, true);
         }
-        // adds complement of initialParticleList to the map, but false
-        for (Particle p : Particle.VALUES) {
-            acceptedInputMap.putIfAbsent(p, false);
-        }
+        this.force = force;
         initialized = true;
-
     }
 
     public MTEHatchAdvancedOutputBeamline(int id, String name, String nameRegional, int tier) {

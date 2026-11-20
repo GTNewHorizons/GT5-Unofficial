@@ -68,11 +68,23 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
     }
 
     public enum FundamentalForce {
+
         EM,
         Weak,
         Strong,
         Gravity,
-        All
+        All,;
+
+        public static final FundamentalForce[] VALUES = values();
+
+        public static FundamentalForce fromName(String name) {
+            return Arrays.stream(VALUES)
+                .filter(
+                    f -> f.name()
+                        .equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+        }
     }
 
     public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, FundamentalForce forceType) {
@@ -84,15 +96,15 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
             hatch.updateTexture(casingIndex);
             switch (forceType) {
                 case EM:
-                    hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
+                    hatch.setInitialParticleList(LHCModule.EM.acceptedParticles, forceType);
                 case Weak:
-                    hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
+                    hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles, forceType);
                 case Strong:
-                    hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
+                    hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles, forceType);
                 case Gravity:
-                    hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
+                    hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles, forceType);
                 case All:
-                    hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
+                    hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles, forceType);
             }
             return this.mAdvancedOutputBeamline.add(hatch);
         }
