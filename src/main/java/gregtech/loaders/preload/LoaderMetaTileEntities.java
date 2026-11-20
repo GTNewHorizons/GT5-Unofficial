@@ -220,6 +220,7 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
 import gregtech.common.tileentities.machines.multi.MTEOreWashingPlant;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
+import gregtech.common.tileentities.machines.multi.MTEQuadcellPlasmaCollider;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
@@ -300,6 +301,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugChest;
 import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
@@ -946,6 +948,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MegaOilCracker.set(
             new MTEMegaOilCracker(MegaOilCracker.ID, "multimachine.mega_oil_cracker", "Mega Oil Cracker")
                 .getStackForm(1));
+
+        ItemList.QuadcellPlasmaCollider.set(
+            new MTEQuadcellPlasmaCollider(
+                QuadcellPlasmaCollider.ID,
+                "multimachine.quadcell_plasma_collider",
+                "Quad-Cell Plasma Collider").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -8176,6 +8184,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "", 9).getStackForm(1L));
         ItemList.Quantum_Chest_IV
             .set(new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "", 10).getStackForm(1L));
+        ItemList.Debug_Chest
+            .set(new MTEDebugChest(DEBUG_CHEST.ID, "quantum.chest.debug", "Debug Chest", 10).getStackForm(1L));
     }
 
     private static void registerSuperTank() {
