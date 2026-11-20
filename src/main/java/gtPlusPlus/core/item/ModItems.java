@@ -217,6 +217,7 @@ public final class ModItems {
         GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17))
             .registerOre("pelletAluminium");
         // metadata 18-22 no longer used
+        // 22 deprecated during 2.10.0 development cycle (#8771)
         GregtechItemList.CleanAluminiumMix.set(new ItemStack(agrichemItem, 1, 23));
 
         GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24))

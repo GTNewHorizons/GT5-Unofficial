@@ -2757,7 +2757,7 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Shape_Extruder_Rotor.set(new ItemShapeExtruder("rotor", "Rotor"));
         ItemList.Shape_Extruder_Small_Gear.set(new ItemShapeExtruder("small_gear", "Small Gear"));
         ItemList.Shape_Extruder_Turbine_Blade.set(new ItemShapeExtruder("turbine_blade", "Turbine Blade"));
-        ItemList.Shape_Extruder_ToolHeadDrill.set(new ItemShapeExtruder("tool_head_drill", "Drill Head"));
+        ItemList.Shape_Extruder_Drill.set(new ItemShapeExtruder("drill", "Drill Head"));
         ItemList.Shape_Extruder_Boat.set(new ItemShapeExtruder("boat", "Boat"));
         ItemList.Shape_Extruder_Pellet.set(new ItemShapeExtruder("pellet", "Pellet"));
         ItemList.Shape_Extruder_Shaft.set(new ItemShapeExtruder("shaft", "Shaft"));

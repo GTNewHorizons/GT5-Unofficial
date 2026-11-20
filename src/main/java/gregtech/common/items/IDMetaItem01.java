@@ -113,8 +113,8 @@ public enum IDMetaItem01 {
     Electromagnet_Neodymium(347),
     Electromagnet_Samarium(348),
     Electromagnet_Tengam(349),
-    
-    // deprecated during 2.10.0 development cycle
+
+    // deprecated during 2.10.0 development cycle (#8771)
     // Shape_Extruder_Plate(350),
     // Shape_Extruder_Rod(351),
     // Shape_Extruder_Bolt(352),
@@ -143,7 +143,7 @@ public enum IDMetaItem01 {
     // Shape_Extruder_Small_Gear(375),
     // Shape_Extruder_Turbine_Blade(376),
     // Shape_Extruder_Tool_Head_Drill(377),
-    
+
     Cover_Chest_Basic(380),
     Cover_Chest_Good(381),
     Cover_Chest_Advanced(382),

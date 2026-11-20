@@ -34,7 +34,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         ItemList.Shape_Extruder_Axe.get(1), ItemList.Shape_Extruder_File.get(1), ItemList.Shape_Extruder_Hammer.get(1),
         ItemList.Shape_Extruder_Hoe.get(1), ItemList.Shape_Extruder_Pickaxe.get(1), ItemList.Shape_Extruder_Saw.get(1),
         ItemList.Shape_Extruder_Shovel.get(1), ItemList.Shape_Extruder_Sword.get(1),
-        ItemList.Shape_Extruder_ToolHeadDrill.get(1),
+        ItemList.Shape_Extruder_Drill.get(1),
         // Machine Components
         ItemList.Shape_Extruder_Gear.get(1), ItemList.Shape_Extruder_Small_Gear.get(1),
         ItemList.Shape_Extruder_Rotor.get(1), ItemList.Shape_Extruder_Turbine_Blade.get(1),
