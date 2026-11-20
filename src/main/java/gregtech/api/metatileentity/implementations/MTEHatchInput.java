@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import appeng.api.crafting.IPatternTargetKey;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
@@ -81,7 +82,7 @@ public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
     }
 
     @Override
-    public Object getTargetKey() {
+    public IPatternTargetKey getTargetKey() {
         return getOwnerPatternTargetKey();
     }
 

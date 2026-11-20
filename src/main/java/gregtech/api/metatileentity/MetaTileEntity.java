@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.crafting.IPatternTarget;
+import appeng.api.crafting.IPatternTargetKey;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
@@ -721,7 +722,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Nullable
     @Override
-    public Object getTargetKey() {
+    public IPatternTargetKey getTargetKey() {
         return null;
     }
 

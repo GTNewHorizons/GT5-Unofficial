@@ -3,16 +3,14 @@ package gregtech.crossmod.ae2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.crafting.IPatternTargetKey;
 import appeng.api.crafting.PatternMatch;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEFluidStack;
@@ -30,7 +28,8 @@ import gregtech.api.util.GTUtility.ItemId;
  * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the sets of items it may
  * add to a recipe check, such as the circuit; one fitting set is enough.
  */
-public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets) {
+public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets)
+    implements IPatternTargetKey {
 
     /**
      * Builds a key with one item set; a non-positive voltage turns the voltage check off.
@@ -58,16 +57,12 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
     }
 
     /**
-     * Matcher registered with AE2; finds a recipe for each key once.
+     * Returns MATCH when the machine finds a recipe for the pattern with any of its item sets.
      */
-    public static Map<PatternTargetKey, PatternMatch> match(ICraftingPatternDetails pattern,
-        Set<PatternTargetKey> keys) {
-        final Map<PatternTargetKey, PatternMatch> results = new HashMap<>();
+    @Override
+    public PatternMatch match(ICraftingPatternDetails pattern) {
         if (pattern.isCraftable()) {
-            for (PatternTargetKey key : keys) {
-                results.put(key, PatternMatch.NO_MATCH);
-            }
-            return results;
+            return PatternMatch.NO_MATCH;
         }
 
         final List<ItemStack> patternItems = new ArrayList<>();
@@ -86,14 +81,6 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
         }
 
         final FluidStack[] fluidArray = patternFluids.toArray(new FluidStack[0]);
-        for (PatternTargetKey key : keys) {
-            results.put(key, key.match(pattern, patternItems, patternCircuit, fluidArray));
-        }
-        return results;
-    }
-
-    private PatternMatch match(ICraftingPatternDetails pattern, List<ItemStack> patternItems,
-        @Nullable ItemStack patternCircuit, FluidStack[] fluidArray) {
         for (List<ItemId> items : itemSets) {
             if (fits(items, pattern, patternItems, patternCircuit, fluidArray)) {
                 return PatternMatch.MATCH;

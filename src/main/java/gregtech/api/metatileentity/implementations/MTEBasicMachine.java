@@ -64,6 +64,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.api.crafting.IPatternTargetKey;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -1046,7 +1047,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public Object getTargetKey() {
+    public IPatternTargetKey getTargetKey() {
         final RecipeMap<?> map = getRecipeMap();
         if (map == null) return null;
         final ItemStack[] nonConsumed = getNonConsumedInputDisplayItems().toArray(new ItemStack[0]);
