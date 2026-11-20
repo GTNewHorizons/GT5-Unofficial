@@ -1,8 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 
@@ -26,7 +26,7 @@ import gregtech.common.misc.WirelessNetworkManager;
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
-        .valueOf(2 * V[mTier] * ticks_between_energy_addition);
+        .valueOf(2 * V[mTier] * TICKS_BETWEEN_ENERGY_ADDITION);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;

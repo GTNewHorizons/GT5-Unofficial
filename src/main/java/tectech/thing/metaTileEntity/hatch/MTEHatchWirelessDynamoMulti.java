@@ -1,9 +1,9 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 
 import java.util.UUID;
 
@@ -108,7 +108,7 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.
-            if (aTick % ticks_between_energy_addition == 0L) {
+            if (aTick % TICKS_BETWEEN_ENERGY_ADDITION == 0L) {
                 addEUToGlobalEnergyMap(owner_uuid, getEUVar());
                 setEUVar(0L);
             }

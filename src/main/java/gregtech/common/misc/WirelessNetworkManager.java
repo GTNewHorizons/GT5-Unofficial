@@ -34,10 +34,10 @@ public class WirelessNetworkManager {
 
     // Ticks between energy additions to the hatch. For a dynamo this is how many ticks between energy being consumed
     // and added to the global energy map.
-    public static long ticks_between_energy_addition = 100L * 20L;
+    public static final long TICKS_BETWEEN_ENERGY_ADDITION = 100L * 20L;
 
     // Total number of energy additions this multi can store before it is full.
-    public static long number_of_energy_additions = 4L;
+    public static final long NUMBER_OF_ENERGY_ADDITIONS = 4L;
 
     /**
      * Add EU to a user's team global energy. Enter a negative number to subtract from it.
@@ -77,7 +77,7 @@ public class WirelessNetworkManager {
     }
 
     public static long totalStorage(long tier_eu_per_tick) {
-        return tier_eu_per_tick * ticks_between_energy_addition * number_of_energy_additions;
+        return tier_eu_per_tick * TICKS_BETWEEN_ENERGY_ADDITION * NUMBER_OF_ENERGY_ADDITIONS;
     }
 
     /**
@@ -144,7 +144,7 @@ public class WirelessNetworkManager {
         // Minimizing the number of operations on BigInteger is essential.
         // Every ticks_between_energy_addition adds eu_transferred_per_operation to internal EU storage from the
         // network.
-        if (tick % ticks_between_energy_addition != 0L) return;
+        if (tick % TICKS_BETWEEN_ENERGY_ADDITION != 0L) return;
         Iterator<MTEWirelessEnergy> it = hatches.iterator();
         while (it.hasNext()) {
             MTEWirelessEnergy hatch = it.next();
