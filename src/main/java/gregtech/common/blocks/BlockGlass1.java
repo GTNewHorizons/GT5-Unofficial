@@ -43,6 +43,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(10, ItemList.ReinforcedGlass);
         ItemList.ReinforcedGlass.registerOre("glassReinforced");
         ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(108.0f), 1, 10));
+        register(11, ItemList.GlassPlasmaCollider);
     }
 
     @Override
@@ -87,6 +88,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
             case 9 -> Textures.BlockIcons.BEC_GLASS.getIcon();
             case 10 -> Textures.BlockIcons.REINFORCED_GLASS.getIcon();
+            case 11 -> Textures.BlockIcons.GLASS_PLASMA_COLLIDER.getIcon();
 
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
