@@ -36,6 +36,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.collect.ImmutableMap;
@@ -53,6 +54,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -92,7 +94,9 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbi
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+    implements ISurvivalConstructable, ICasingTextureProvider, IDataCopyable {
+
+    private static final String COPY_PASTE_IDENTIFIER = "spinmatron";
 
     private static final int TURBINE_SLOTS_PER_TIER = 2;
     private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
@@ -817,6 +821,61 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     @Override
     public boolean supportsInputSeparation() {
         return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPY_PASTE_IDENTIFIER;
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
+        tag.setBoolean("tier2FluidOn", tier2Fluid);
+        tag.setDouble("multiMode", mode);
+        tag.setBoolean("turbineAnimationsStatic", staticAnimations);
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
+
+        this.tier2Fluid = nbt.getBoolean("tier2FluidOn");
+        this.mode = nbt.getDouble("multiMode");
+        this.staticAnimations = nbt.getBoolean("turbineAnimationsStatic");
+
+        return true;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        // The controller reserve 2 slots
+        // We add 8 more for turbines
+        return 2 + 8;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        if (index < 2) return super.isItemValidForSlot(index, itemStack);
+        else return isTurbine(itemStack);
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if (aIndex < 2) super.setInventorySlotContents(aIndex, aStack);
+        else {
+            turbineHolder.setStackInSlot(aIndex - 2, aStack);
+            markDirty();
+        }
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        if (index < 2) return super.getStackInSlot(index);
+        else return turbineHolder.getStackInSlot(index - 2);
     }
 
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {

@@ -969,7 +969,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_OreWasher.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
-                ItemList.Hull_MAX.get(1),
+                ItemList.Hull_UHV.get(1),
                 ItemList.Electric_Motor_UHV.get(32),
                 ItemList.Electric_Piston_UHV.get(8),
                 ItemList.Electric_Pump_UHV.get(16),
@@ -1174,6 +1174,27 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.MegaChemicalReactor.get(1))
                 .eut(TierEU.RECIPE_LuV / 2)
                 .duration(1 * MINUTES)
+                .addTo(AssemblyLine);
+
+            GTValues.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.PlasmaTurbineXL.get(1))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
+                .itemInputs(
+                    ItemList.CasingQuadcellDriving.get(1),
+                    ItemList.Field_Generator_ZPM.get(1),
+                    ItemList.FluidRegulator_ZPM.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1),
+                    MaterialsAlloy.PIKYONIUM.getGear(4),
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 4),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.ElectrumFlux, 8))
+                .fluidInputs(
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
+                    Materials.Americium.getMolten(10 * INGOTS),
+                    Materials.Tritanium.getMolten(10 * INGOTS),
+                    new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 10000))
+                .itemOutputs(ItemList.QuadcellPlasmaCollider.get(1))
+                .duration(1 * MINUTES)
+                .eut(TierEU.RECIPE_ZPM / 2)
                 .addTo(AssemblyLine);
 
             // Mega Oil Cracker

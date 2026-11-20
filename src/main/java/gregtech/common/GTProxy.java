@@ -65,6 +65,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -120,6 +121,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -158,7 +160,6 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
-import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
@@ -536,15 +537,10 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
-        ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
-        ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
-        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
-        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
-        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
         ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
         ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
@@ -836,7 +832,6 @@ public class GTProxy implements IFuelHandler {
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
         EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
-        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
@@ -920,6 +915,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
+        BaseMetaPipeEntity.clearManagedCables();
         // spotless:off
         if (wirelessChargerManager != null) {
             FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
@@ -1195,6 +1191,7 @@ public class GTProxy implements IFuelHandler {
             } else {
                 TICK_LOCK.unlock();
                 RunnableMachineUpdate.endTick();
+                BaseMetaPipeEntity.tickManagedCables();
                 RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
@@ -1278,6 +1275,14 @@ public class GTProxy implements IFuelHandler {
             if (tileEntity instanceof IGregTechTileEntity) {
                 tileEntity.onChunkUnload();
             }
+        }
+        BaseMetaPipeEntity.unloadManagedCables(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+        for (Object tileEntity : event.getChunk().chunkTileEntityMap.values()) {
+            if (tileEntity instanceof BaseMetaPipeEntity pipe) pipe.onChunkLoad();
         }
     }
 

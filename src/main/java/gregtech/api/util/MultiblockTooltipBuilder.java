@@ -81,6 +81,7 @@ public class MultiblockTooltipBuilder {
     private final String TT_controller = StatCollector.translateToLocal("GT5U.MBTT.Controller");
     private final String TT_minimum = StatCollector.translateToLocal("GT5U.MBTT.Minimum");
     private final String TT_tiered = StatCollector.translateToLocal("GT5U.MBTT.Tiered");
+    private final String TT_tieredMixed = StatCollector.translateToLocal("GT5U.MBTT.TieredMixed");
     private final String TT_energyhatch = StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch");
     private final String TT_dynamohatch = StatCollector.translateToLocal("GT5U.MBTT.DynamoHatch");
     private final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
@@ -518,13 +519,27 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addCasing(String count, String name, boolean isTiered) {
+        return addCasing(count, name, isTiered, false);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)count name (Tiered) or (indent)count name (Tiered, can be mixed)
+     *
+     * @param count      Number of casings
+     * @param name       Name of casing
+     * @param isTiered   Flag for the (Tiered) tag
+     * @param mixedTiers If the block is tiered, whether different tiers can be mixed in one structure
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addCasing(String count, String name, boolean isTiered, boolean mixedTiers) {
         sLines.add(
             TAB + EnumChatFormatting.GOLD
                 + count
                 + " "
                 + EnumChatFormatting.WHITE
                 + name
-                + (isTiered ? " " + TT_tiered : ""));
+                + (isTiered ? " " + (mixedTiers ? TT_tieredMixed : TT_tiered) : ""));
         return this;
     }
 
