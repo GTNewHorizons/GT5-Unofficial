@@ -903,6 +903,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         }
 
         /**
+         * Whether the shift view has anything to show, so WAILA only offers it while cache mode is on with a cell.
+         */
+        public static boolean hasWailaAdvancedBody(IWailaDataAccessor accessor) {
+            return accessor.getNBTData()
+                .hasKey("cacheCount");
+        }
+
+        /**
          * The cache itself is listed by {@link #getWailaCacheBody}, so this only adds the storage cell contents while
          * cache mode is on.
          */
