@@ -14,7 +14,6 @@
 package bartworks.system.material;
 
 import java.util.List;
-import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,20 +22,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.structurelib.structure.ICustomBlockSetting;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 
-public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
-    implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
+public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks implements ICustomBlockSetting {
 
-    public BWMetaGeneratedBlocksCasing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
-        OrePrefixes prefixes) {
-        super(p_i45386_1_, tileEntity, blockName, prefixes);
+    public BWMetaGeneratedBlocksCasing(Material material, String blockName, OrePrefixes prefixes) {
+        super(material, blockName, prefixes);
     }
 
     @Override
@@ -105,13 +103,5 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     @Override
     public void setBlock(World world, int x, int y, int z, int meta) {
         world.setBlock(x, y, z, this, meta, 2);
-        try {
-            Thread.sleep(1);
-            // Fucking Minecraft TE settings.
-        } catch (InterruptedException ignored) {}
-        Optional.ofNullable(world.getTileEntity(x, y, z))
-            .filter(te -> te instanceof TileEntityMetaGeneratedBlock)
-            .map(te -> (TileEntityMetaGeneratedBlock) te)
-            .ifPresent(te -> te.mMetaData = (short) meta);
     }
 }
