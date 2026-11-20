@@ -23,8 +23,8 @@ public class MTEFusionComputerGui extends MTEMultiBlockBaseGui<MTEFusionComputer
 
     public MTEFusionComputerGui(MTEFusionComputer multiblock) {
         super(multiblock);
-        storedEUSyncer = new LongSyncValue(null, multiblock::getStoredEU);
-        euCapacitySyncer = new LongSyncValue(null, multiblock::getEUCapacity);
+        storedEUSyncer = new LongSyncValue(null, baseMetaTileEntity::getStoredEU);
+        euCapacitySyncer = new LongSyncValue(null, baseMetaTileEntity::getEUCapacity);
     }
 
     @Override
