@@ -33,8 +33,8 @@ public class GTPPEverglades {
     public static GTPPEverglades instance;
 
     // Dark World Handler
-    protected static volatile BiomeEverglades Everglades_Biome;
-    protected static volatile DimensionEverglades Everglades_Dimension;
+    protected static BiomeEverglades Everglades_Biome;
+    protected static DimensionEverglades Everglades_Dimension;
 
     // Pre-Init
     @Mod.EventHandler
@@ -45,10 +45,6 @@ public class GTPPEverglades {
 
         setEvergladesBiome(new BiomeEverglades());
         Everglades_Dimension = new DimensionEverglades();
-
-        // Load Dark World
-        getEvergladesBiome().instance = instance;
-        Everglades_Dimension.instance = instance;
     }
 
     @EventHandler

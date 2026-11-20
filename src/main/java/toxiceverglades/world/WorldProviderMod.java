@@ -2,7 +2,6 @@ package toxiceverglades.world;
 
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import cpw.mods.fml.relauncher.Side;
@@ -14,7 +13,10 @@ public class WorldProviderMod extends WorldProvider {
 
     @Override
     public void registerWorldChunkManager() {
-        this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.AMPLIFIED);
+        this.worldChunkMgr = new WorldChunkManagerCustom(
+            this.worldObj.getSeed(),
+            this.worldObj.getWorldInfo()
+                .getTerrainType());
         this.isHellWorld = false;
         this.hasNoSky = false;
         this.dimensionId = DimensionEverglades.DIMID;

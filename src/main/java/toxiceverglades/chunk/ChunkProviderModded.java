@@ -6,26 +6,17 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.MapGenCaves;
-import net.minecraft.world.gen.MapGenRavine;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
-import net.minecraft.world.gen.structure.MapGenScatteredFeature;
-import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -41,59 +32,17 @@ public class ChunkProviderModded implements IChunkProvider {
     private NoiseGeneratorOctaves field_147432_k;
     private NoiseGeneratorOctaves field_147429_l;
     private NoiseGeneratorPerlin field_147430_m;
-    /**
-     * A NoiseGeneratorOctaves used in generating terrain
-     */
-    public NoiseGeneratorOctaves noiseGen5;
-    /**
-     * A NoiseGeneratorOctaves used in generating terrain
-     */
-    public NoiseGeneratorOctaves noiseGen6;
-    public NoiseGeneratorOctaves mobSpawnerNoise;
-    /**
-     * Reference to the World object.
-     */
+    private NoiseGeneratorOctaves noiseGen6;
     private final World worldObj;
     private final WorldType field_147435_p;
     private final double[] field_147434_q;
     private final float[] parabolicField;
     private double[] stoneNoise = new double[256];
-    private MapGenBase caveGenerator = new MapGenCaves();
-    /**
-     * Holds Village Generator
-     */
-    private MapGenVillage villageGenerator = new MapGenVillage();
-    /**
-     * Holds Mineshaft Generator
-     */
-    private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
-    private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
-    /**
-     * Holds ravine generator
-     */
-    private MapGenBase ravineGenerator = new MapGenRavine();
-    /**
-     * The biomes that are used to generate the chunk
-     */
     private BiomeGenBase[] biomesForGeneration;
-    double[] field_147427_d;
-    double[] field_147428_e;
-    double[] field_147425_f;
-    double[] field_147426_g;
-    {
-        caveGenerator = TerrainGen
-            .getModdedMapGen(caveGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
-        villageGenerator = (MapGenVillage) TerrainGen
-            .getModdedMapGen(villageGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
-        mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(
-            mineshaftGenerator,
-            net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT);
-        scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(
-            scatteredFeatureGenerator,
-            net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCATTERED_FEATURE);
-        ravineGenerator = TerrainGen
-            .getModdedMapGen(ravineGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.RAVINE);
-    }
+    private double[] field_147427_d;
+    private double[] field_147428_e;
+    private double[] field_147425_f;
+    private double[] field_147426_g;
 
     public ChunkProviderModded(World par1World, long par2) {
         this.worldObj = par1World;
@@ -104,9 +53,10 @@ public class ChunkProviderModded implements IChunkProvider {
         this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147429_l = new NoiseGeneratorOctaves(this.rand, 8);
         this.field_147430_m = new NoiseGeneratorPerlin(this.rand, 4);
-        this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
+        // Keep the original RNG sequence and Forge's seven-generator hook layout.
+        NoiseGeneratorOctaves unusedNoise5 = new NoiseGeneratorOctaves(this.rand, 10);
         this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
-        this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
+        NoiseGeneratorOctaves unusedSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
         this.field_147434_q = new double[825];
         this.parabolicField = new float[25];
 
@@ -117,20 +67,19 @@ public class ChunkProviderModded implements IChunkProvider {
             }
         }
 
-        NoiseGenerator[] noiseGens = { field_147431_j, field_147432_k, field_147429_l, field_147430_m, noiseGen5,
-            noiseGen6, mobSpawnerNoise };
+        NoiseGenerator[] noiseGens = { field_147431_j, field_147432_k, field_147429_l, field_147430_m, unusedNoise5,
+            noiseGen6, unusedSpawnerNoise };
         noiseGens = TerrainGen.getModdedNoiseGenerators(par1World, this.rand, noiseGens);
         this.field_147431_j = (NoiseGeneratorOctaves) noiseGens[0];
         this.field_147432_k = (NoiseGeneratorOctaves) noiseGens[1];
         this.field_147429_l = (NoiseGeneratorOctaves) noiseGens[2];
         this.field_147430_m = (NoiseGeneratorPerlin) noiseGens[3];
-        this.noiseGen5 = (NoiseGeneratorOctaves) noiseGens[4];
         this.noiseGen6 = (NoiseGeneratorOctaves) noiseGens[5];
-        this.mobSpawnerNoise = (NoiseGeneratorOctaves) noiseGens[6];
     }
 
     public void func_147424_a(int p_147424_1_, int p_147424_2_, Block[] p_147424_3_) {
         byte b0 = 63;
+        Block lakeFluid = DimensionEverglades.blockFluidLakes;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager()
             .getBiomesForGeneration(this.biomesForGeneration, p_147424_1_ * 4 - 2, p_147424_2_ * 4 - 2, 10, 10);
         this.func_147423_a(p_147424_1_ * 4, p_147424_2_ * 4);
@@ -175,12 +124,7 @@ public class ChunkProviderModded implements IChunkProvider {
                                 if ((d15 += d16) > 0.0D) {
                                     p_147424_3_[j3 += short1] = DimensionEverglades.blockMainFiller;
                                 } else if (k2 * 8 + l2 < b0) {
-                                    try {
-                                        p_147424_3_[j3 += short1] = DimensionEverglades.blockFluidLakes; // River Fluid
-                                                                                                         // .
-                                    } catch (Exception t) {
-                                        p_147424_3_[j3 += short1] = Blocks.water; // River Fluid Fallback
-                                    }
+                                    p_147424_3_[j3 += short1] = lakeFluid;
                                 } else {
                                     p_147424_3_[j3 += short1] = null;
                                 }
@@ -207,7 +151,7 @@ public class ChunkProviderModded implements IChunkProvider {
             p_147422_1_,
             p_147422_2_,
             p_147422_3_,
-            new byte[256],
+            p_147422_4_,
             p_147422_5_,
             null);
         MinecraftForge.EVENT_BUS.post(event);
@@ -402,75 +346,35 @@ public class ChunkProviderModded implements IChunkProvider {
         return true;
     }
 
-    /**
-     * Populates chunk with ores etc etc
-     */
     @Override
-    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
-        BlockFalling.fallInstantly = false;
-        int k = par2 * 16;
-        int l = par3 * 16;
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
-        this.rand.setSeed(this.worldObj.getSeed());
-        long i1 = this.rand.nextLong() / 2L * 2L + 1L;
-        long j1 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
-        boolean flag = false;
+    public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ) {
+        boolean previousFallInstantly = BlockFalling.fallInstantly;
+        BlockFalling.fallInstantly = true;
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+        try {
+            int blockX = chunkX * 16;
+            int blockZ = chunkZ * 16;
+            BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(blockX + 16, blockZ + 16);
 
-        int k1;
-        int l1;
-        int i2;
+            long seed = this.worldObj.getSeed();
+            this.rand.setSeed(seed);
 
-        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills
-            && !flag
-            && this.rand.nextInt(4) == 0
-            && TerrainGen.populate(
-                par1IChunkProvider,
-                worldObj,
-                rand,
-                par2,
-                par3,
-                flag,
-                net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(256);
-            i2 = l + this.rand.nextInt(16) + 8;
-            try {
-                (new WorldGenLakes(DimensionEverglades.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
-            } catch (NullPointerException n) {
-                n.getStackTrace();
-                (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-            }
+            long xSeed = this.rand.nextLong() / 2L * 2L + 1L;
+            long zSeed = this.rand.nextLong() / 2L * 2L + 1L;
+
+            this.rand.setSeed((chunkX * xSeed + chunkZ * zSeed) ^ seed);
+
+            MinecraftForge.EVENT_BUS
+                .post(new PopulateChunkEvent.Pre(chunkProvider, worldObj, rand, chunkX, chunkZ, false));
+
+            biome.decorate(this.worldObj, this.rand, blockX, blockZ);
+
+            MinecraftForge.EVENT_BUS
+                .post(new PopulateChunkEvent.Post(chunkProvider, worldObj, rand, chunkX, chunkZ, false));
+
+        } finally {
+            BlockFalling.fallInstantly = previousFallInstantly;
         }
-
-        if (TerrainGen.populate(
-            par1IChunkProvider,
-            worldObj,
-            rand,
-            par2,
-            par3,
-            flag,
-            net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA) && !flag
-            && this.rand.nextInt(8) == 0) {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
-            i2 = l + this.rand.nextInt(16) + 8;
-
-            if (l1 < 63 || this.rand.nextInt(10) == 0) { // Changes 63 -> 128
-                try {
-                    (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-                } catch (NullPointerException ignored) {}
-            }
-        }
-        biomegenbase.decorate(this.worldObj, this.rand, k, l);
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
-
-        MinecraftForge.EVENT_BUS
-            .post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
-
-        BlockFalling.fallInstantly = false;
     }
 
     /**
@@ -513,25 +417,15 @@ public class ChunkProviderModded implements IChunkProvider {
         return "RandomLevelSource";
     }
 
-    /**
-     * Returns a list of creatures of the specified type that can spawn at the given location.
-     */
     @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2,
-        int par3, int par4) {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(par2, par4);
-        return par1EnumCreatureType == EnumCreatureType.monster
-            && this.scatteredFeatureGenerator.func_143030_a(par2, par3, par4)
-                ? this.scatteredFeatureGenerator.getScatteredFeatureSpawnList()
-                : biomegenbase.getSpawnableList(par1EnumCreatureType);
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType type, int x, int y, int z) {
+        return this.worldObj.getBiomeGenForCoords(x, z)
+            .getSpawnableList(type);
     }
 
     @Override
-    public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_,
-        int p_147416_5_) {
-        return "Village".equals(p_147416_2_) && this.villageGenerator != null
-            ? this.villageGenerator.func_151545_a(p_147416_1_, p_147416_3_, p_147416_4_, p_147416_5_)
-            : null;
+    public ChunkPosition func_147416_a(World world, String structureName, int x, int y, int z) {
+        return null;
     }
 
     @Override

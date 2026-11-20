@@ -13,9 +13,9 @@ public class BlockDarkWorldSludgeFluid extends Fluid implements Runnable {
 
     public static final Material SLUDGE = new MaterialLiquid(MapColor.dirtColor);
 
-    protected static int mapColor = 0xFFFFFFFF;
-    protected static float overlayAlpha = 0.2F;
-    protected static Material material = SLUDGE;
+    private int mapColor = 0xFFFFFFFF;
+    private float overlayAlpha;
+    private Material material = SLUDGE;
 
     public BlockDarkWorldSludgeFluid(String fluidName, int rgbColour) {
         this(fluidName, rgbColour, null);
@@ -23,12 +23,10 @@ public class BlockDarkWorldSludgeFluid extends Fluid implements Runnable {
 
     public BlockDarkWorldSludgeFluid(String fluidName, int rgbColour, Float overlayAlpha) {
         super(fluidName);
+
         setColor(rgbColour);
-        if (overlayAlpha != null) {
-            setAlpha(overlayAlpha);
-        } else {
-            setAlpha(0);
-        }
+        setAlpha(overlayAlpha != null ? overlayAlpha : 0.0F);
+
         if (GregTechAPI.sGTBlockIconload != null) {
             GregTechAPI.sGTBlockIconload.add(this);
         }
@@ -46,8 +44,8 @@ public class BlockDarkWorldSludgeFluid extends Fluid implements Runnable {
         return mapColor;
     }
 
-    public BlockDarkWorldSludgeFluid setColor(int parColor) {
-        mapColor = parColor;
+    public BlockDarkWorldSludgeFluid setColor(int color) {
+        this.mapColor = color;
         return this;
     }
 
@@ -55,13 +53,13 @@ public class BlockDarkWorldSludgeFluid extends Fluid implements Runnable {
         return overlayAlpha;
     }
 
-    public BlockDarkWorldSludgeFluid setAlpha(float parOverlayAlpha) {
-        overlayAlpha = parOverlayAlpha;
+    public BlockDarkWorldSludgeFluid setAlpha(float alpha) {
+        this.overlayAlpha = alpha;
         return this;
     }
 
-    public BlockDarkWorldSludgeFluid setMaterial(Material parMaterial) {
-        material = parMaterial;
+    public BlockDarkWorldSludgeFluid setMaterial(Material material) {
+        this.material = material;
         return this;
     }
 

@@ -13,7 +13,8 @@ public class BlockDarkWorldGround extends BlockGrass implements ITileTooltip {
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setBlockName("blockDarkWorldGround");
         this.setHardness(1.0F);
-        this.setBlockTextureName(Minecraft.ID + ":" + "grass");
+        this.setBlockTextureName(Minecraft.ID + ":grass");
+        this.setTickRandomly(false);
     }
 
     @Override
