@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.Constants;
 
 import com.gtnewhorizon.gtnhlib.teams.ITeamData;
 import com.gtnewhorizon.gtnhlib.teams.Team;
@@ -23,7 +24,9 @@ public class WirelessTeamData implements ITeamData {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        wirelessEnergy = new BigInteger(tag.getString(ENERGY_TAG));
+        if (tag.hasKey(ENERGY_TAG, Constants.NBT.TAG_STRING)) {
+            wirelessEnergy = new BigInteger(tag.getString(ENERGY_TAG));
+        }
     }
 
     @Override
