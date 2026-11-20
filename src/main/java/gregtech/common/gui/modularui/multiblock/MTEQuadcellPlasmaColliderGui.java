@@ -157,6 +157,7 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
         SyncHandler<?> progress = syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
         LongSyncValue eut = syncManager.findSyncHandler("EnergyProduced", LongSyncValue.class);
         IntSyncValue residue = syncManager.findSyncHandler("ResidueOutput", IntSyncValue.class);
+        IntSyncValue scale = syncManager.findSyncHandler("scale", IntSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent).child(createRecipeInfoTextWidget(syncManager))
             .child(
@@ -175,7 +176,8 @@ public class MTEQuadcellPlasmaColliderGui extends MTEMultiBlockBaseGui<MTEQuadce
                     () -> StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.qpc.residue",
                         EnumChatFormatting.DARK_AQUA
-                            + formatFluid(Math.floorDiv(residue.getIntValue(), RESIDUE_CONVERSION_DIVISOR))
+                            + formatFluid(
+                                Math.floorDiv(residue.getIntValue(), RESIDUE_CONVERSION_DIVISOR * scale.getIntValue()))
                             + EnumChatFormatting.WHITE))
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CenterLeft)
