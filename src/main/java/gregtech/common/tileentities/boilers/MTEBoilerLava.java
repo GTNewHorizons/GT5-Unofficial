@@ -208,7 +208,6 @@ public class MTEBoilerLava extends MTEBoiler {
             fillFluid(equippedItemStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
-            return true;
         }
         return true;
     }
