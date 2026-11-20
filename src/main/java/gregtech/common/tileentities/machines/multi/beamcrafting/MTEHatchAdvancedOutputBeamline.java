@@ -76,20 +76,25 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     public void setInitialParticleList(List<Particle> initialParticleList, MTEBeamMultiBase.FundamentalForce force) {
-        // called by structure check, for particle migration purposes, it will add the missing particles
-        // TODO: replace this.force == null after 2.10 with this.force == force && ...
-        if ((this.force == null || this.force == force) && initialParticleList.size() != acceptedInputMap.size()) {
+        // called by structure check. for particle migration purposes, it will add missing particles and remove invalid
+        // particles
+        // fresh hatch
+        if (!initialized) {
+            acceptedInputMap.clear();
+            for (Particle p : initialParticleList) acceptedInputMap.put(p, true);
             this.force = force;
-            initialParticleList.forEach(p -> acceptedInputMap.putIfAbsent(p, false));
+            initialized = true;
+            return;
         }
-        if (initialized) return;
-
-        acceptedInputMap.clear();
-        for (Particle p : initialParticleList) {
-            acceptedInputMap.put(p, true);
+        // existing hatch
+        // TODO: remove null check for 2.10
+        if (this.force == null || this.force == force) {
+            this.force = force;
+            // drop particles not valid for this force
+            acceptedInputMap.keySet()
+                .retainAll(initialParticleList);
+            for (Particle p : initialParticleList) acceptedInputMap.putIfAbsent(p, false);
         }
-        this.force = force;
-        initialized = true;
     }
 
     public MTEHatchAdvancedOutputBeamline(int id, String name, String nameRegional, int tier) {
