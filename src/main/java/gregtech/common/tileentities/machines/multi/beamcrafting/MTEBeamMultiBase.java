@@ -69,12 +69,14 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
 
     public enum FundamentalForce {
 
+        // spotless:off
         EM,
         Weak,
         Strong,
         Gravity,
-        All,;
-
+        All,
+        ;
+        //spotless:on
         public static final FundamentalForce[] VALUES = values();
 
         public static FundamentalForce fromName(String name) {
