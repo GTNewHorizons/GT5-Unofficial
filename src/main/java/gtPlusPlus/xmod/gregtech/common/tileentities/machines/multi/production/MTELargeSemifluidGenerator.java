@@ -17,6 +17,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -44,6 +46,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
     implements ISurvivalConstructable {
 
@@ -67,21 +70,17 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run")
-            .addInfo("Supply 80L of Oxygen per second to boost output (optional)")
-            .addInfo("Default: Produces 2048EU/t at 100% efficiency")
-            .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
-            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
+            .addMarkdown(new ResourceLocation("gregtech", "large-semifluid-generator"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("16-21", "Stable Titanium Machine Casing", false)
-            .addCasing("8", "Engine Intake Casing", false)
-            .addCasing("2", "Steel Gear Box Casing", false)
-            .addDynamoHatch("1", "Back center casing", 2)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addMufflerHatch("1", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("16-21", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
@@ -311,7 +310,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
 
     @Override
     public String getMachineType() {
-        return "Semifluid Generator, LSB";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.semifluid_generator");
     }
 
     @Override
