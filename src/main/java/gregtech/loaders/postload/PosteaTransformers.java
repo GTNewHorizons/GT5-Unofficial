@@ -358,6 +358,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // Extruder shape unification (#8771)
     private static void registerExtruderShapeTransformers() {
         ItemStackReplacementManager
             .addSimpleReplacement("dreamcraft:ExtruderShapeBoat", ItemList.Shape_Extruder_Boat.get(1));

@@ -4,7 +4,7 @@ public class ItemShapeExtruder extends GTGenericItem {
 
     public ItemShapeExtruder(String aUnlocalizedOutput, String aEnglishOutput, String aEnglishOutputTooltip) {
         super(
-            "shape_extruder_" + aUnlocalizedOutput,
+            "shape_extruder." + aUnlocalizedOutput,
             "Extruder Shape (" + aEnglishOutput + ")",
             "Extruder Shape for making " + aEnglishOutputTooltip + "s");
     }
