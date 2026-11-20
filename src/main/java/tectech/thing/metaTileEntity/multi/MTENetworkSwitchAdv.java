@@ -47,6 +47,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -74,6 +75,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     private int length;
     private @Nullable QuantumDataPacket pendingPacket;
     private long wastedComputation;
+    private boolean compChanged = false;
 
     public MTENetworkSwitchAdv(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -207,9 +209,18 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     private void resetDataHatches() {
+        for (MTEHatchDataInput input : validMTEList(eInputData)) {
+            input.removeWatcher(this);
+        }
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             output.allowComputationConfiguring = false;
         }
+    }
+
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        super.scheduleRecipeCheckImmediate();
+        this.compChanged = true;
     }
 
     @Override
@@ -346,23 +357,26 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
         pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
         if (pendingPacket == null) {
+            this.compChanged = true;
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
 
         for (MTEHatchDataInput di : validMTEList(eInputData)) {
             if (di.q != null) {
                 if (di.q.contains(getPos())) {
+                    this.compChanged = true;
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
                 pendingPacket = pendingPacket.unifyPacketWith(di.q);
                 if (pendingPacket == null) {
+                    this.compChanged = true;
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
-                di.setContents(null);
             }
         }
 
         if (pendingPacket.getContent() == 0) {
+            this.compChanged = true;
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
 
@@ -377,6 +391,8 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     public void outputAfterRecipe_EM() {
         super.outputAfterRecipe_EM();
 
+        if (!this.compChanged) return;
+
         if (pendingPacket == null) {
             wastedComputation = 0;
             return;
@@ -388,13 +404,16 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             if (pendingComputation <= 0) break;
 
             long toConsume = Math.min(pendingComputation, output.requestedComputation);
+            QuantumDataPacket packet = new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket);
             pendingComputation -= toConsume;
 
-            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
+            output.q = packet;
+            output.moveAround(output.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         wastedComputation = pendingComputation;
         pendingPacket = null;
+        this.compChanged = false;
     }
 
     @Override

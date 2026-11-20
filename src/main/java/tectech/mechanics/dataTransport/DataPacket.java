@@ -1,12 +1,11 @@
 package tectech.mechanics.dataTransport;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
 
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 
 /**
  * Created by Tec on 05.04.2017.
@@ -14,7 +13,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 public abstract class DataPacket<T> {
 
     private static final byte MAX_HISTORY = 64;
-    private final Set<Vec3Impl> trace = new LinkedHashSet<>();
+    private final LongSet trace = new LongOpenHashSet(MAX_HISTORY);
 
     protected T content;
 
@@ -24,8 +23,10 @@ public abstract class DataPacket<T> {
 
     protected DataPacket(NBTTagCompound nbt) {
         content = contentFromNBT(nbt.getCompoundTag("qContent"));
-        for (int i = 0; i < nbt.getByte("qHistory"); i++) {
-            trace.add(new Vec3Impl(nbt.getInteger("qX" + i), nbt.getInteger("qY" + i), nbt.getInteger("qZ" + i)));
+        NBTTagList list = nbt.getTagList("qTrace", 4);
+        var length = list.tagCount();
+        for (int i = 0; i < length; i++) {
+            trace.add(((NBTTagLong) list.removeTag(i)).func_150291_c());
         }
     }
 
@@ -35,14 +36,12 @@ public abstract class DataPacket<T> {
         if (contentTag != null) {
             nbt.setTag("qContent", contentTag);
         }
-        nbt.setByte("qHistory", (byte) trace.size());
         int i = 0;
-        for (Vec3Impl v : trace) {
-            nbt.setInteger("qX" + i, v.get0());
-            nbt.setInteger("qY" + i, v.get1());
-            nbt.setInteger("qZ" + i, v.get2());
-            i++;
+        NBTTagList list = new NBTTagList();
+        for (long v : trace) {
+            list.appendTag(new NBTTagLong(v));
         }
+        nbt.setTag("qTrace", list);
         return nbt;
     }
 
@@ -52,7 +51,7 @@ public abstract class DataPacket<T> {
 
     protected abstract T unifyContentWith(T content);
 
-    public final boolean contains(Vec3Impl v) {
+    public final boolean contains(long v) {
         return trace.contains(v);
     }
 
@@ -60,30 +59,31 @@ public abstract class DataPacket<T> {
         return trace.size() <= MAX_HISTORY;
     }
 
-    public abstract boolean extraCheck();
-
-    protected final DataPacket<T> unifyTrace(Vec3Impl... positions) {
-        Collections.addAll(trace, positions);
-        return (check() && extraCheck()) ? this : null;
+    protected final DataPacket<T> unifyTrace(long... positions) {
+        if (trace.size() + positions.length > MAX_HISTORY) return null;
+        for (long position : positions) {
+            trace.add(position);
+        }
+        return (check()) ? this : null;
     }
 
     protected final DataPacket<T> unifyTrace(DataPacket<T> p) {
         if (p == null) return this;
         trace.addAll(p.trace);
-        return (check() && extraCheck()) ? this : null;
+        return (check()) ? this : null;
     }
 
     protected final DataPacket<T> unifyWith(DataPacket<T> p) {
         if (p == null) return this;
         trace.addAll(p.trace);
-        if (check() && extraCheck()) {
+        if (check()) {
             content = unifyContentWith(p.content);
             return this;
         }
         return null;
     }
 
-    public final T contentIfNotInTrace(Vec3Impl pos) {
+    public final T contentIfNotInTrace(long pos) {
         if (trace.contains(pos)) {
             return null;
         }

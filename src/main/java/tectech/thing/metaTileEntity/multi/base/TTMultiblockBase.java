@@ -33,9 +33,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -199,7 +199,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     /** Index of the energy hatch {@link #powerInput()} drains first on the next tick */
     private int powerInputRotation = 0;
 
-    private Vec3Impl pos;
+    private long pos;
 
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
@@ -482,10 +482,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected long getAvailableData_EM() {
         long result = 0;
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        Vec3Impl pos = new Vec3Impl(
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord());
+        long pos = CoordinatePacker
+            .pack(baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(), baseMetaTileEntity.getZCoord());
         for (MTEHatchDataInput in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -734,6 +732,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
+            data.moveAround(data.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         eAvailableData = 0;
@@ -747,6 +746,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
+            data.moveAround(data.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         mOutputItems = null;
@@ -869,10 +869,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        pos = new Vec3Impl(
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
+        pos = CoordinatePacker
+            .pack(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -1275,7 +1273,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return super.getRepairStatus() + (eCertainStatus == 0 ? 1 : 0) + (eParameters ? 1 : 0);
     }
 
-    public Vec3Impl getPos() {
+    public long getPos() {
         return pos;
     }
 
@@ -1560,8 +1558,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) return eUncertainHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) return eEnergyMulti.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) return eDynamoMulti.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) return eInputData.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) return eOutputData.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
+            hatch.addWatcher(this);
+            return eInputData.add(hatch);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
+            hatch.addWatcher(this);
+            return eOutputData.add(hatch);
+        }
 
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
@@ -1620,9 +1624,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 return eUncertainHatches.add(mteHatchUncertainty);
             }
             case MTEHatchDataInput mteHatchDataInput -> {
+                mteHatchDataInput.addWatcher(this);
                 return eInputData.add(mteHatchDataInput);
             }
             case MTEHatchDataOutput mteHatchDataOutput -> {
+                mteHatchDataOutput.addWatcher(this);
                 return eOutputData.add(mteHatchDataOutput);
             }
             default -> {
@@ -1922,7 +1928,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
-            addIfSmartInput(hatch);
+            hatch.addWatcher(this);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return eInputData.add(hatch);
@@ -1942,6 +1948,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
+            hatch.addWatcher(this);
             return eOutputData.add(hatch);
         }
         return false;
