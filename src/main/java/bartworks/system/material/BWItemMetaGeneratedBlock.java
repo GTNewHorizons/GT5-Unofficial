@@ -21,6 +21,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
+
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,6 +33,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
 
     public BWItemMetaGeneratedBlock(Block par1) {
         super(par1);
+        BlockPropertyRegistry.registerProperty(this, BWMetaGeneratedBlocks.MATERIAL_ID);
     }
 
     @Override
@@ -63,18 +66,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
         float hitX, float hitY, float hitZ, int aMeta) {
-        short tDamage = (short) this.getDamage(aStack);
-        if (tDamage > 0) {
-            if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
-                return false;
-            }
-            TileEntityMetaGeneratedBlock tTileEntity = (TileEntityMetaGeneratedBlock) aWorld.getTileEntity(aX, aY, aZ);
-            tTileEntity.mMetaData = tDamage;
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) return false;
-        if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
-            this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
-            this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
-        }
-        return true;
+        int materialId = Math.max(0, (short) this.getDamage(aStack));
+        return super.placeBlockAt(aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ, materialId);
     }
 }
