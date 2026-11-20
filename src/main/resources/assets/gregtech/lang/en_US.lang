@@ -2977,6 +2977,7 @@ GT5U.machines.digitalchest.lockitem.empty=None
 GT5U.machines.digitalchest.data_stick.name=Digital Chest Configuration
 GT5U.machines.digitalchest.tooltip=Stores %s items
 GT5U.machines.digitalchest.tooltip1=Use a screwdriver to enable voiding items on overflow
+GT5U.machines.digitalchest.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
@@ -5919,6 +5920,16 @@ gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from fail
 gt.item.gelled_toluene.name=Gelled Toluene
 gt.item.gelled_toluene.tooltip=Raw Explosive
 
+# Dynamite
+gt.item.dynamite.name=Dynamite
+gt.item.dynamite.tooltip=
+
+# IC2 Bio stuff
+gt.item.chaff.name=Bio Chaff
+gt.item.chaff.tooltip=
+gt.item.plant_ball.name=Plant Ball
+gt.item.plant_ball.tooltip=
+
 ## Bottle drinks
 gt.item.bottle.purple_drink.name=Purple Drink
 gt.item.bottle.purple_drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
@@ -7666,6 +7677,17 @@ GT5U.gui.button.vm.deselect=Deselect all ores
 GT5U.gui.button.vm.tt.void=§cWill be voided
 GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
+#Quad-Cell Plasma Collider GUI
+GT5U.gui.button.qpc.configure.1=Left-Click to configure Plasmas
+GT5U.gui.button.qpc.configure.2=Right-Click to configure Scale
+GT5U.gui.text.qpc.plasma_display=%s: %s/s
+GT5U.gui.text.qpc.expected_rate=Expected Drain Rates:
+GT5U.gui.text.qpc.residue=Producing %s/s residue 
+GT5U.gui.text.qpc.generating=Generating %s EU/t
+GT5U.gui.text.qpc.scale=Configure Scale
+GT5U.gui.text.qpc.scale.text.1=Set Scale (1-30)
+GT5U.gui.text.qpc.scale.text.2=Scale multiplies both initial Drain Rate and Cycle Time
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -7942,6 +7964,7 @@ entity.gregtech.GTDrone.name=Drone
 fluid.aniline=Aniline
 fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
+fluid.biogas=Biogas
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
 fluid.cadaverine=Cadaverine
@@ -9813,6 +9836,8 @@ gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
 gt.blockcasings14.6.name=Extruder Machine Casing
 gt.blockcasings14.7.name=Tension Resistant Machine Casing
+gt.blockcasings14.8.name=Plasma Collider Casing
+gt.blockcasings14.9.name=Quadcell Driving Casing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
@@ -9874,6 +9899,7 @@ gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blockglass1.10.name=Reinforced Glass
+gt.blockglass1.11.name=Plasma Collider Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
