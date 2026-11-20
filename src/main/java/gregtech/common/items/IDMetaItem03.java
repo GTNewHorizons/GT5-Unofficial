@@ -278,9 +278,6 @@ public enum IDMetaItem03 {
     MetaMaterial_FieldManipulator2(332),
     MetaMaterial_FieldManipulator3(333),
     MetaMaterial_FieldManipulator4(334),
-    Shape_Extruder_Boat(340),
-    Shape_Extruder_Pellet(341),
-    Shape_Extruder_Shaft(342),
 
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
