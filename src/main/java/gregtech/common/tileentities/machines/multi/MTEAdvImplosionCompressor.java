@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -23,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -36,10 +39,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEAdvImplosionCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -92,24 +95,24 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
-            .addInfo("Factory Grade Advanced Implosion Compressor")
-            .addInfo(TooltipHelper.parallelText("1 + (Tier/2)") + " Parallels")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor_basic"))
+            .addMarkdown(new ResourceLocation("gregtech", "adv-implosion-compressor"))
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("80", "Refined Graphite Block", false)
-            .addCasing("50-60", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("24", "Tungstensteel Frame Box", false)
-            .addCasing("4", "Gold Sheetmetal", false)
-            .addCasing("4", "Gold Frame Box", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("80", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
+            .addCasing("50-60", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing("4", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Gold), false)
+            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Gold), false)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addMufflerHatch("1", anyCasing, 1)
+            .addInputBus("1+", anyCasing, 1)
+            .addOutputBus("1+", anyCasing, 1)
             .toolTipFinisher();
         return tt;
     }
