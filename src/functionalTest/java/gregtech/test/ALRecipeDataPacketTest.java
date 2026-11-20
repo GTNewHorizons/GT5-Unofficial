@@ -2,7 +2,6 @@ package gregtech.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility.ItemId;
@@ -57,7 +56,7 @@ class ALRecipeDataPacketTest {
     @Test
     void duplicateOutputReachesFixpoint() {
         assertNotNull(duplicateOutputGroup);
-        ALRecipeDataPacket packet = new ALRecipeDataPacket(ImmutableList.of(duplicateOutputGroup.get(0)));
+        ALRecipeDataPacket packet = new ALRecipeDataPacket(ImmutableSet.of(duplicateOutputGroup.get(0)));
 
         ALRecipeDataPacket once = roundTrip(packet);
         assertEquals(duplicateOutputGroup.size(), once.contents.size());
@@ -74,7 +73,7 @@ class ALRecipeDataPacketTest {
         RecipeAssemblyLine[] bloated = new RecipeAssemblyLine[8];
         Arrays.fill(bloated, duplicateOutputGroup.get(0));
 
-        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableList.copyOf(bloated)));
+        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableSet.copyOf(bloated)));
         assertEquals(duplicateOutputGroup.size(), once.contents.size());
         assertEquals(new HashSet<>(duplicateOutputGroup), new HashSet<>(once.contents));
     }
@@ -82,9 +81,9 @@ class ALRecipeDataPacketTest {
     @Test
     void uniqueOutputIsLossless() {
         assertNotNull(uniqueOutputRecipe);
-        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableList.of(uniqueOutputRecipe)));
+        ALRecipeDataPacket once = roundTrip(new ALRecipeDataPacket(ImmutableSet.of(uniqueOutputRecipe)));
         assertEquals(1, once.contents.size());
-        assertSame(uniqueOutputRecipe, once.contents.getFirst());
+        assertTrue(once.contents.contains(uniqueOutputRecipe));
     }
 
     @Test
@@ -92,7 +91,7 @@ class ALRecipeDataPacketTest {
         int total = RecipeAssemblyLine.sAssemblylineRecipes.size();
         assertTrue(total > 0);
         ALRecipeDataPacket once = roundTrip(
-            new ALRecipeDataPacket(ImmutableList.copyOf(RecipeAssemblyLine.sAssemblylineRecipes)));
+            new ALRecipeDataPacket(ImmutableSet.copyOf(RecipeAssemblyLine.sAssemblylineRecipes)));
         assertTrue(once.contents.size() <= total);
     }
 }

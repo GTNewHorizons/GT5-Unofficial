@@ -2,8 +2,9 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,13 +20,14 @@ import gregtech.api.util.GTSplit;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.thing.metaTileEntity.pipe.MTEPipeData;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALRecipeOutputHatch, IConnectsToDataPipe {
+public class MTEHatchDataItemsOutput extends MTEHatchDataBase
+    implements IALRecipeOutputHatch, IConnectsToDataPipe<ALRecipeDataPacket> {
 
-    private ALRecipeDataPacket previousPacket = ALRecipeDataPacket.EMPTY_PACKET;
+    public ALRecipeDataPacket previousPacket = null;
+    private ALRecipeDataPacket q = null;
+    private IConnectsToDataPipe<ALRecipeDataPacket> lastConnected = null;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.hatch.dataoutass.desc"));
@@ -92,8 +94,24 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
     }
 
     @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
+    public @Nullable IConnectsToDataPipe<ALRecipeDataPacket> getLastConnected() {
+        return lastConnected;
+    }
+
+    @Override
+    public void setLastConnected(@Nullable IConnectsToDataPipe<ALRecipeDataPacket> connected) {
+        lastConnected = connected;
+    }
+
+    @Override
+    public ALRecipeDataPacket getQueued() {
+        return q;
+    }
+
+    @Override
+    public void setContent(@Nullable ALRecipeDataPacket content) {
+        this.q = content;
+        moveAround(getBaseMetaTileEntity(), CheckState.NEW_DATA);
     }
 
     @Override
@@ -102,56 +120,22 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            aTick = MinecraftServer.getServer()
-                .getTickCounter();
-            if (CommonValues.MOVE_AT == aTick % 20) {
-                if (previousPacket.isEmpty()) {
-                    getBaseMetaTileEntity().setActive(false);
-                } else {
-                    getBaseMetaTileEntity().setActive(true);
-                    moveAround();
-                }
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
+        var result = IConnectsToDataPipe.super.moveAround(aBaseMetaTileEntity, checkState);
+
+        switch (result) {
+            // these states should not modify this hatch or the connected one
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                previousPacket = q;
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
             }
         }
-    }
-
-    public void moveAround() {
-        IConnectsToDataPipe current = this, source = this, next;
-        int range = 0;
-        while ((next = current.getNext(source)) != null && range++ < 1000) {
-            if (next instanceof MTEHatchDataItemsInput) {
-                ((MTEHatchDataItemsInput) next).setContents(previousPacket);
-                break;
-            }
-            source = current;
-            current = next;
-        }
-    }
-
-    @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /* ==this */) {
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        byte color = base.getColorization();
-        if (color < 0) {
-            return null;
-        }
-        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (next == null) {
-            return null;
-        }
-        IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof MTEPipeData) {
-            ((MTEPipeData) meta).markUsed();
-            return (IConnectsToDataPipe) meta;
-        } else if (meta instanceof MTEHatchDataItemsInput && ((MTEHatchDataItemsInput) meta).getColorization() == color
-            && ((MTEHatchDataItemsInput) meta).canConnectData(
-                base.getFrontFacing()
-                    .getOpposite())) {
-                        return (IConnectsToDataPipe) meta;
-                    }
-        return null;
+        return result;
     }
 
     @Override
@@ -166,6 +150,6 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase implements IALReci
 
     @Override
     public void setAssemblyLineRecipes(ALRecipeDataPacket packet) {
-        this.previousPacket = packet;
+        setContent(packet);
     }
 }

@@ -4,19 +4,18 @@ import java.util.LinkedHashSet;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 
 public class ALRecipeDataPacket {
 
-    public static final RecipeAssemblyLine[] EMPTY_ARRAY = new RecipeAssemblyLine[0];
-    public static final ALRecipeDataPacket EMPTY_PACKET = new ALRecipeDataPacket(ImmutableList.of());
+    public static final ALRecipeDataPacket EMPTY_PACKET = new ALRecipeDataPacket(ImmutableSet.of());
 
-    public final ImmutableList<RecipeAssemblyLine> contents;
+    public final ImmutableSet<RecipeAssemblyLine> contents;
 
-    public ALRecipeDataPacket(ImmutableList<RecipeAssemblyLine> contents) {
+    public ALRecipeDataPacket(ImmutableSet<RecipeAssemblyLine> contents) {
         this.contents = contents;
     }
 
@@ -33,9 +32,9 @@ public class ALRecipeDataPacket {
                 recipes.addAll(AssemblyLineUtils.loadRecipe(qContent.getCompoundTag(Integer.toString(i))));
             }
 
-            this.contents = ImmutableList.copyOf(recipes);
+            this.contents = ImmutableSet.copyOf(recipes);
         } else {
-            this.contents = ImmutableList.of();
+            this.contents = ImmutableSet.of();
         }
     }
 
@@ -52,8 +51,10 @@ public class ALRecipeDataPacket {
         if (!contents.isEmpty()) {
             compound.setInteger("count", contents.size());
 
-            for (int i = 0; i < contents.size(); i++) {
-                compound.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(contents.get(i)));
+            int i = 0;
+            for (RecipeAssemblyLine content : contents) {
+                compound.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(content));
+                i++;
             }
         }
 

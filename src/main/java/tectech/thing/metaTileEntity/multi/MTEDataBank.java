@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -123,8 +123,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        recipeInputHatches.clear();
-        recipeOutputHatches.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         if (recipeInputHatches.isEmpty()) {
@@ -135,6 +133,13 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        recipeInputHatches.clear();
+        recipeOutputHatches.clear();
     }
 
     @Override
@@ -164,13 +169,18 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         ALRecipeDataPacket packet = ALRecipeDataPacket.EMPTY_PACKET;
 
         if (!availableRecipes.isEmpty()) {
-            packet = new ALRecipeDataPacket(ImmutableList.copyOf(availableRecipes));
+            packet = new ALRecipeDataPacket(ImmutableSet.copyOf(availableRecipes));
         }
 
+        updateDataOutputs(packet);
+    }
+
+    private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
         for (IALRecipeOutputHatch recipeOutputHatch : recipeOutputHatches) {
             if (!recipeOutputHatch.isValid()) continue;
 
-            recipeOutputHatch.setAssemblyLineRecipes(packet);
+            // if (dataPacket.equals(previous)) continue;
+            // hatch.enqueueAndMove(dataPacket);
         }
     }
 

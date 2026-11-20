@@ -80,10 +80,10 @@ public class MTEHatchCreativeData extends MTEHatchDataInput {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aBaseMetaTileEntity.isAllowedToWork()) {
                 if (CommonValues.MOVE_AT == aTick % 20) {
-                    setContents(new QuantumDataPacket(production));
+                    setContent(new QuantumDataPacket(production));
                 }
             } else {
-                setContents(null);
+                setContent(null);
                 updateComputationHistory(0);
                 aBaseMetaTileEntity.setActive(false);
             }

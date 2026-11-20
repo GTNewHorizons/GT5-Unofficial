@@ -27,8 +27,11 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTEHatch implements IConnectsToDataPipe {
+public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTEHatch
+    implements IConnectsToDataPipe<T> {
 
+    public static final int TICKS_ONE_SECOND = 20;
+    public static final int TICKS_CONNECTION_POLLING = 100;
     public static IIconContainer EM_D_SIDES;
     public static IIconContainer EM_D_ACTIVE;
     public static IIconContainer EM_D_CONN;
@@ -36,6 +39,7 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     public T q;
 
     public short id = -1;
+    protected IConnectsToDataPipe<T> connected = null;
 
     protected MTEHatchDataConnector(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
@@ -94,22 +98,18 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
         if (aBaseMetaTileEntity.isServerSide()) {
             aTick = MinecraftServer.getServer()
                 .getTickCounter();
-            if (CommonValues.MOVE_AT == aTick % 20) {
+            if (CommonValues.MOVE_AT == aTick % TICKS_ONE_SECOND) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
-                    resetHistory();
                 } else {
                     getBaseMetaTileEntity().setActive(true);
-                    moveAround(aBaseMetaTileEntity);
+                    moveAround(aBaseMetaTileEntity, CheckState.NEW_DATA);
                 }
             }
+            if (CommonValues.MOVE_AT == aTick % TICKS_CONNECTION_POLLING) {
+                moveAround(aBaseMetaTileEntity, CheckState.CONNECTION);
+            }
         }
-    }
-
-    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
-
-    protected void resetHistory() {
-
     }
 
     @Override
@@ -162,7 +162,31 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     }
 
     @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        // when "inputs" aka receivers are broken, no need to update the "upstream" "output" aka sender
+        if (canClear() || connected == null) return;
+        // when "outputs" are broken, update the connected input's data
+        moveAround(this.getBaseMetaTileEntity(), CheckState.CONNECTION);
+    }
+
+    @Override
+    public IConnectsToDataPipe<T> getLastConnected() {
+        return this.connected;
+    }
+
+    @Override
+    public void setLastConnected(IConnectsToDataPipe<T> connected) {
+        this.connected = connected;
+    }
+
+    @Override
+    public T getQueued() {
+        return q;
+    }
+
+    @Override
+    public void setContent(T content) {
+        this.q = content;
     }
 }

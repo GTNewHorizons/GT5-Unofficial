@@ -20,14 +20,11 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
-import tectech.mechanics.pipe.IConnectsToDataPipe;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> implements ISmartInputHatch {
-
-    private boolean delDelay = true;
 
     private long history;
 
@@ -71,16 +68,22 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
+    public QuantumDataPacket getQueued() {
+        return null;
+    }
+
+    @Override
+    public boolean canClear() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
 
     @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source) {
-        return null;
-    }
-
-    public void setContents(QuantumDataPacket qIn) {
+    public void setContent(QuantumDataPacket qIn) {
         Long old = this.q == null ? null : this.q.getContent();
 
         if (qIn == null) {
@@ -88,7 +91,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         } else {
             if (qIn.getContent() > 0) {
                 this.q = qIn;
-                delDelay = true;
             } else {
                 this.q = null;
             }
@@ -98,20 +100,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
         Long now = this.q == null ? null : this.q.getContent();
         if (now != null && !now.equals(old)) notifyWatchers();
-    }
-
-    @Override
-    protected void resetHistory() {
-        history = 0;
-    }
-
-    @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (delDelay) {
-            delDelay = false;
-        } else {
-            setContents(null);
-        }
     }
 
     @Override

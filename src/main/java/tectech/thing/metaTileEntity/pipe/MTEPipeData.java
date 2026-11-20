@@ -31,6 +31,8 @@ import tectech.mechanics.pipe.IConnectsToDataPipe;
 /**
  * Created by Tec on 26.02.2017.
  */
+// can connect to any carried packet
+@SuppressWarnings("rawtypes")
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
@@ -267,6 +269,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     }
 
     @Override
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
+        return CheckState.UNKNOWN;
+    }
+
+    @Override
     public float getCollisionThickness() {
         return 0.375f;
     }
@@ -277,9 +284,20 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     }
 
     @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
+    public IConnectsToDataPipe getLastConnected() {
+        return null;
     }
+
+    @Override
+    public void setLastConnected(IConnectsToDataPipe connected) {}
+
+    @Override
+    public Object getQueued() {
+        return null;
+    }
+
+    @Override
+    public void setContent(Object content) {}
 
     public void markUsed() {
         if (active) return;

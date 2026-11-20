@@ -358,7 +358,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 if (pendingPacket == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_routing");
                 }
-                di.setContents(null);
+                di.setContent(null);
             }
         }
 
@@ -390,7 +390,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             long toConsume = Math.min(pendingComputation, output.requestedComputation);
             pendingComputation -= toConsume;
 
-            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
+            output.setContent(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
         }
 
         wastedComputation = pendingComputation;
