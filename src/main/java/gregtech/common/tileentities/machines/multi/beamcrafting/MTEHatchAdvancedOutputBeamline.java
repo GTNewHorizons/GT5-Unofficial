@@ -45,15 +45,21 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
         loadInputMapFromNBT(aNBT, this.acceptedInputMap);
         initialized = aNBT.getBoolean("init");
+        // loads missing particles as false
+        for (Particle p : Particle.VALUES) {
+            acceptedInputMap.putIfAbsent(p, false);
+        }
     }
 
     public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Particle, Boolean> map) {
         for (Map.Entry<Particle, Boolean> entry : map.entrySet()) {
             Particle key = entry.getKey();
             boolean value = entry.getValue();
+            // only save accepted particles
+            if (!value) continue;
             final String particleName = key.getName();
             aNBT.setInteger(NBT_KEY_DESCRIPTOR + particleName, key.getId());
-            aNBT.setBoolean(NBT_VALUE_DESCRIPTOR + particleName, value);
+            aNBT.setBoolean(NBT_VALUE_DESCRIPTOR + particleName, true);
         }
     }
 
@@ -75,6 +81,10 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         acceptedInputMap.clear();
         for (Particle p : initialParticleList) {
             acceptedInputMap.put(p, true);
+        }
+        // adds complement of initialParticleList to the map, but false
+        for (Particle p : Particle.VALUES) {
+            acceptedInputMap.putIfAbsent(p, false);
         }
         initialized = true;
 
