@@ -4478,23 +4478,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new ItemStack(Blocks.dragon_egg, 1, 32767) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Shape_Slicer_Flat.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "hXS", aTextShape, "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.get(Materials.StainlessSteel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Shape_Slicer_Stripes.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.get(Materials.StainlessSteel) });
-
-        GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,

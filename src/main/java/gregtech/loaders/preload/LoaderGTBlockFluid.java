@@ -2761,5 +2761,22 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Shape_Extruder_Boat.set(new ItemShapeExtruder("boat", "Boat"));
         ItemList.Shape_Extruder_Pellet.set(new ItemShapeExtruder("pellet", "Pellet"));
         ItemList.Shape_Extruder_Shaft.set(new ItemShapeExtruder("shaft", "Shaft"));
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Shape_Slicer_Flat.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new Object[] { "hXS", " P ", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.get(Materials.StainlessSteel) });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Shape_Slicer_Stripes.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.get(Materials.StainlessSteel) });
     }
 }
