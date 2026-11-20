@@ -2,7 +2,6 @@ package gregtech.api.net;
 
 import java.util.Arrays;
 
-import bartworks.common.net.PacketBWMetaBlock;
 import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
@@ -33,7 +32,7 @@ public enum GTPacketTypes {
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
-    BW_META_BLOCK(24, new PacketBWMetaBlock()),
+    // ID 24 unused, was PacketBWMetaBlock.
     ORE_DICT_CACHE(25, new PacketOreDictCache()),
     SERVER_JOINED(26, new PacketServerJoined()),
     // ID 27 unused, was ElectricImplosionCompressor(27, new PacketEIC()),
