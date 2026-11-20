@@ -1155,6 +1155,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
 
+                    MTEHatchLoS other = hatch.getConnectedHatch();
+                    if (other != null && other.getOwner() instanceof MTEBECAssembler assembler) {
+                        assembler.getIONodes(true);
+                    }
+
                     return true;
                 } else {
                     return false;
