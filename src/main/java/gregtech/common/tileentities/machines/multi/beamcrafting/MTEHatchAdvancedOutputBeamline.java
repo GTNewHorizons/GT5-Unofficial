@@ -77,7 +77,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     public void setInitialParticleList(List<Particle> initialParticleList, MTEBeamMultiBase.FundamentalForce force) {
         // called by structure check, for particle migration purposes, it will add the missing particles
-        // TODO: remove this.force == null after 2.10
+        // TODO: replace this.force == null after 2.10 with this.force == force && ...
         if (this.force == null || initialParticleList.size() != acceptedInputMap.size()) {
             this.force = force;
             initialParticleList.forEach(p -> acceptedInputMap.putIfAbsent(p, false));
