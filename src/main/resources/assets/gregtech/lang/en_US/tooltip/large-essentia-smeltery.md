@@ -1,6 +1,5 @@
-Necessary evil
-Advanced Essentia smelting technology
-Maximum parallel = {color_parallel:2^Tier * (Length - 1)}
-Diffusion Cell Tiers start from 0, Length is full multi length
-{color_hatch:Energy Hatch Tier}: HV+
-You can find more information about this machine in the {color_name:Thaumonomicon}
+{italic:{dark_purple:Necessary Evil}}
+Advanced {light_purple:Essentia} Smelting Technology
+{white:2^Tier * (Length - 1)} Parallels
+{color_note:Diffusion Cell Tiers start at 0, Length refers to the full multiblock length}
+Find more information in the {color_name:Thaumonomicon}
