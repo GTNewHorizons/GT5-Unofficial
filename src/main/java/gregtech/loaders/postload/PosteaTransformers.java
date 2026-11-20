@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -58,8 +59,10 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerBartworksMaterialBlockTransformer(String tileEntityId, Block block) {
+        AtomicInteger originalBlockId = new AtomicInteger(-1);
+        BlockReplacementManager.registerIDResolver(Block.blockRegistry.getNameForObject(block), originalBlockId::set);
         TileEntityReplacementManager.tileEntityTransformer(tileEntityId, (tag, world, chunk) -> {
-            if (BlockAccessCompat.getBlockIDAtTE(tag, chunk) != Block.getIdFromBlock(block)) return null;
+            if (BlockAccessCompat.getBlockIDAtTE(tag, chunk) != originalBlockId.get()) return null;
             short materialId = tag.getShort("m");
             if (isWerkstoffRemoved(materialId)) return null;
             return new BlockInfo(block, materialId > 0 ? materialId : BlockAccessCompat.getBlockMetaAtTE(tag, chunk));
