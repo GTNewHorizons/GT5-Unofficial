@@ -530,8 +530,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings14,6, gt(16,7,6)),
     TensionResistantMachineCasing
         (() -> GregTechAPI.sBlockCasings14,7, gt(16,7,7)),
-    PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 8, gt(16, 7, 6)),
-    QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 9, gt(16, 7, 7)),
+    PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 8, gt(16, 7, 8)),
+    QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 9, gt(16, 7, 9)),
 
     // Block Reinforced
     TungstenSteelReinforcedBlock
