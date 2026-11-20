@@ -39,6 +39,7 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerExtruderShapeTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -331,5 +332,14 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
+    }
+
+    private static void registerExtruderShapeTransformers() {
+        ItemStackReplacementManager
+            .addSimpleReplacement("dreamcraft:ExtruderShapeBoat", ItemList.Shape_Extruder_Boat.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:MU-metaitem.01", 40, ItemList.Shape_Extruder_Shaft.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.BasicAgrichemItem", 22, ItemList.Shape_Extruder_Pellet.get(1));
     }
 }
