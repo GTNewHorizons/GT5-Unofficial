@@ -20,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.blocks.BlockFrameBox;
 
 public class PosteaTransformers implements Runnable {
@@ -37,11 +38,28 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2ItemTransformers() {
+        // These are used to convert ic2 items to their new counterparts.
+        // I.e. Uranium235, Uranium238, Plutonium, ect.
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutonium",
+            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Plutonium, 1L),
+            true);
+
+        ItemStackReplacementManager.addSimpleReplacement(
+            "IC2:itemPlutoniumsmall",
+            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
+            true);
+
     }
 
     private void registerIC2BlocksTransformer() {
