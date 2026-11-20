@@ -102,13 +102,6 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("smallUran235", 9))
-            .itemOutputs(GTModHandler.getIC2Item("Uran235", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.water_bucket, 1))
             .itemOutputs(new ItemStack(Blocks.snow, 1))
             .duration(15 * SECONDS)
@@ -167,27 +160,6 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
-            .itemOutputs(GTModHandler.getIC2Item("Uran238", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
-            .itemOutputs(GTModHandler.getIC2Item("Uran235", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium235, 1))
-            .itemOutputs(GTModHandler.getIC2Item("smallUran235", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
