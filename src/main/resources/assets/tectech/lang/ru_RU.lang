@@ -1173,7 +1173,7 @@ tt.keyphrase.Hint_Details=Hint Details
 
 #debug boom
 tt.keyword.BOOM=БУУУУУМ!
-tt.keyword.Destination=ID Выходного разъёма
+tt.keyword.Id=ID
 tt.keyword.Weight=Вес
 tt.keyword.Source=Источник
 tt.keyword.Progress=Прогресс
