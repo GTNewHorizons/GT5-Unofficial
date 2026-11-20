@@ -2619,6 +2619,7 @@ gt.recipe.extrahugenaquadahreactor=Naquadah Reactor Mk-V
 gt.recipe.fluidfuelnaquadahreactor=Fluid Naquadah Reactor
 gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
+gt.recipe.zero_resistance_cryostat=Zero-Resistance Cryostat
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
 gt.recipe.cauldron=Cauldron

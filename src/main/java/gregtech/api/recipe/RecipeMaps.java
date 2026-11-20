@@ -1673,6 +1673,11 @@ public final class RecipeMaps {
             Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(NANO_FORGE_TIER, 1))
                 .thenComparing(GTRecipe::compareTo))
         .build();
+    public static final RecipeMap<RecipeMapBackend> zeroResistanceCryostatRecipes = RecipeMapBuilder
+        .of("gt.recipe.zero_resistance_cryostat")
+        .maxIO(1, 1, 3, 0)
+        .minInputs(1, 3)
+        .build();
     public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipes = RecipeMapBuilder.of("gt.recipe.pcbfactory")
         .maxIO(6, 9, 3, 0)
         .minInputs(3, 1)

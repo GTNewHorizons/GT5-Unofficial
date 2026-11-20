@@ -34,6 +34,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -160,6 +162,11 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     public IStructureDefinition<MTEZeroResistanceCryostat> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.zeroResistanceCryostatRecipes;
     }
 
 
