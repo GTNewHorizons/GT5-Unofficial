@@ -103,7 +103,7 @@ public interface IConnectsToDataPipe<T> {
             current = next;
         }
 
-        if (getLastConnected() == null) {
+        if (getLastConnected() == null || getLastConnected() != oldConnected) {
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContent(null);
                 case MTEHatchDataItemsInput dataItemsInput -> dataItemsInput.setContent(null);

@@ -120,7 +120,8 @@ public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputH
     @Override
     public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
-
+        // only trigger once
+        if (slot != 0) return;
         cachedRecipes = null;
         // Adding/removing a data stick changes which assembly-line recipes are available, so push a recipe check.
         notifyWatchers();
