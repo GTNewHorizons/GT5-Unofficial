@@ -112,9 +112,11 @@ public interface IConnectsToDataPipe<T> {
             current = next;
         }
 
+        IConnectsToDataPipe<T> newConnected = getLastConnected();
+        boolean nowDisconnected = newConnected == null;
         // broken connection or redirected connection,
         // we need to remove the data from the old connected hatch if possible
-        if (getLastConnected() == null || getLastConnected() != oldConnected) {
+        if (nowDisconnected || getLastConnected() != oldConnected) {
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContent(null);
                 case MTEHatchDataItemsInput dataItemsInput -> dataItemsInput.setContent(null);
@@ -122,15 +124,15 @@ public interface IConnectsToDataPipe<T> {
                 case null -> {}
                 default -> {}
             }
-            result = CheckState.DISCONNECTED;
         }
+        if (nowDisconnected) result = CheckState.DISCONNECTED;
         return result;
     }
 
     /**
      * Safely enqueue and move the specified content for output hatches by calling
      * {@link #setContent(Object)} and {@link #moveAround(IGregTechTileEntity, CheckState)} internally.
-     * 
+     *
      * @param content
      */
     default void enqueueAndMove(@Nullable T content) {
@@ -173,7 +175,7 @@ public interface IConnectsToDataPipe<T> {
     /**
      * Implementing input hatches should return {@code true}!
      * Default implementation returns {@code false}.
-     * 
+     *
      * @return whether the implementation is an "input" and thereby can be cleared,
      *         as no multiblock is feeding the input content directly.
      */

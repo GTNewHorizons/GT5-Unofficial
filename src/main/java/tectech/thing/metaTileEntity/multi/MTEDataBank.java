@@ -124,11 +124,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void onStructureChange() {
-        var base = this.getBaseMetaTileEntity();
-        if (base.isClientSide()) return;
-        mMachine = checkMachine_TT(base);
-        onStructureCheckFinished(base);
-        if (mMachine) scheduleRecipeCheckImmediate();
+        super.onStructureChange();
+        mUpdate = 1;
     }
 
     @Override

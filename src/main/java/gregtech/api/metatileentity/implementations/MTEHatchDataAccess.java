@@ -140,7 +140,11 @@ public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputH
                 recipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
 
-            this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(recipes));
+            if (recipes.isEmpty()) {
+                this.cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
+            } else {
+                this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(recipes));
+            }
         }
 
         return cachedRecipes;

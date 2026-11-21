@@ -32,7 +32,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     implements ISmartInputHatch, IALRecipeInputHatch, IConnectsToDataPipe<ALRecipeDataPacket> {
 
     public boolean delDelay = true;
-    protected ALRecipeDataPacket cachedRecipes = null;
+    protected ALRecipeDataPacket cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, GTSplit.splitLocalized("gt.blockmachines.hatch.datainass.desc"));
