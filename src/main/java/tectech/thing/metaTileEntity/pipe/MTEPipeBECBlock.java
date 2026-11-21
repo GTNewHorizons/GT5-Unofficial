@@ -2,6 +2,8 @@ package tectech.thing.metaTileEntity.pipe;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.List;
+
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -31,6 +33,12 @@ public class MTEPipeBECBlock extends MTEPipeBEC {
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+    }
+
+    @Override
+    public List<AxisAlignedBB> getRayTraceBoxes(int x, int y, int z) {
+        // Selected as a full block, like its collision bounding box
+        return null;
     }
 
     @Override
