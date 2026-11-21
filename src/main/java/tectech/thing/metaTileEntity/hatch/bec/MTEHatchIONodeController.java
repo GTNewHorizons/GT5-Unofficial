@@ -42,7 +42,6 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
     private Control control = Control.PAUSE;
 
     private PauseMode pauseMode = PauseMode.PAUSE_INSTANT;
-    private int parallelExponent;
 
     public enum Control {
 
@@ -139,11 +138,12 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
     }
 
     public int getParallelExponent() {
-        return parallelExponent;
+        ItemStack circuit = getStackInSlot(getCircuitSlot());
+        return circuit != null ? circuit.getItemDamage() : 0;
     }
 
     public int getParallel() {
-        return mulSafe(signalReceived(), (int) Math.pow(16, parallelExponent));
+        return mulSafe(signalReceived(), (int) Math.pow(16, getParallelExponent()));
     }
 
     @Override
@@ -164,16 +164,6 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
     @Override
     public int getCircuitSlotY() {
         return 0;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        super.onPostTick(baseMetaTileEntity, tick);
-
-        if (baseMetaTileEntity.hasInventoryBeenModified()) {
-            ItemStack circuit = getStackInSlot(0);
-            parallelExponent = circuit != null ? circuit.getItemDamage() : 0;
-        }
     }
 
     @Override
