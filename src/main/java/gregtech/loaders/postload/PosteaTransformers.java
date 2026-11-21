@@ -3,17 +3,21 @@ package gregtech.loaders.postload;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizons.postea.api.BlockAccessCompat;
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -39,10 +43,30 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerBartworksMaterialBlockTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerBartworksMaterialBlockTransformers() {
+        registerBartworksMaterialBlockTransformer("bw.werkstoffblockTE", WerkstoffLoader.BWBlocks);
+        registerBartworksMaterialBlockTransformer("bw.werkstoffblockcasingTE", WerkstoffLoader.BWBlockCasings);
+        registerBartworksMaterialBlockTransformer(
+            "bw.werkstoffblockscasingadvancedTE",
+            WerkstoffLoader.BWBlockCasingsAdvanced);
+    }
+
+    private void registerBartworksMaterialBlockTransformer(String tileEntityId, Block block) {
+        AtomicInteger originalBlockId = new AtomicInteger(-1);
+        BlockReplacementManager.registerIDResolver(Block.blockRegistry.getNameForObject(block), originalBlockId::set);
+        TileEntityReplacementManager.tileEntityTransformer(tileEntityId, (tag, world, chunk) -> {
+            if (BlockAccessCompat.getBlockIDAtTE(tag, chunk) != originalBlockId.get()) return null;
+            short materialId = tag.getShort("m");
+            if (isWerkstoffRemoved(materialId)) return null;
+            return new BlockInfo(block, materialId > 0 ? materialId : BlockAccessCompat.getBlockMetaAtTE(tag, chunk));
+        });
     }
 
     private void registerIC2ItemTransformers() {
@@ -73,6 +97,15 @@ public class PosteaTransformers implements Runnable {
             "IC2:itemPlutoniumsmall",
             GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Plutonium, 1L),
             true);
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemFuelPlantBall", ItemList.IC2_Plantball.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemBiochaff", ItemList.IC2_BioChaff.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemDynamite", ItemList.Dynamite.get(1));
+
+        // Cells
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 6, Materials.Biomass.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 7, Materials.Biogas.getCells(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemCellEmpty", 12, Materials.DistilledWater.getCells(1));
     }
 
     private void registerIC2BlocksTransformer() {

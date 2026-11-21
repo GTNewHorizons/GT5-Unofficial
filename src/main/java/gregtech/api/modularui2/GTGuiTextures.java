@@ -1734,6 +1734,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_NORMAL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_normal");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_REVERSED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_reversed");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_RANDOM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_random");
 
     public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/emit_energy")
@@ -2056,6 +2062,13 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .nonOpaque()
+        .build();
+
+    public static final UITexture PLASMA_COLLIDER_SLIDER_BG = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/plasma_collider_slider_bg")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
         .build();
 
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
