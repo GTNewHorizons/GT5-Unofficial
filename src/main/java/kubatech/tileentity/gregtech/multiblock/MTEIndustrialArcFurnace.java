@@ -1031,8 +1031,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 return 1;
             }
         },
-        ElectrodeDetectorHatch("GT5U.MBTT.ElectrodeDetectorHatch",MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
-            MTEHatchElectrodeDetector.class) {
+        ElectrodeDetectorHatch("GT5U.MBTT.ElectrodeDetectorHatch",
+            MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList, MTEHatchElectrodeDetector.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {

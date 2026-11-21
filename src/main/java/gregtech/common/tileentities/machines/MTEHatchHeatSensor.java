@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -24,7 +25,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHatchHeatSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
-import net.minecraft.util.StatCollector;
 
 public class MTEHatchHeatSensor extends MTEHatchRedstoneBase implements IDataCopyable {
 
@@ -121,7 +121,8 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase implements IDataCop
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor("GT5U.MBTT.HeatSensorHatch", IHeatProducer::addHeatSensorHatchToMachineList, MTEHatchHeatSensor.class);
+        HeatSensor("GT5U.MBTT.HeatSensorHatch", IHeatProducer::addHeatSensorHatchToMachineList,
+            MTEHatchHeatSensor.class);
 
         private final String name;
         private final IGTHatchAdder<IHeatProducer> adder;

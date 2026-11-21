@@ -1,16 +1,13 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
@@ -21,7 +18,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchBlackHoleUtilityGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase implements IDataCopyable{
+public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "blackHoleUtility";
 
