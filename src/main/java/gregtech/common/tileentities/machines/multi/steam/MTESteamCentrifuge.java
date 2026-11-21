@@ -271,7 +271,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
 
     @Override
     public int getMaxParallelRecipes() {
-        return 8;
+        return 16;
     }
 
     @Override
@@ -296,7 +296,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.25 * tierMachine)
+                    .setEUtDiscount(0.9375 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
         }.noRecipeCaching()
@@ -314,7 +314,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(getMachineType())
-            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
+            .addSteamBulkMachineInfo(16, 1.25f, 0.46875f)
             .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(5, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
