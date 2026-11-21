@@ -279,8 +279,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                double parallels = recipe
-                    .maxParallelCalculatedByInputs(MTEBECIONode.this.maxParallel, this.inputFluids, this.inputItems);
+                double parallels = recipe.maxParallelCalculatedByInputs(
+                    MTEBECIONode.this.getControllerMaxParallel(),
+                    this.inputFluids,
+                    this.inputItems);
 
                 if (parallels >= minParallelParameter.getValue()) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
