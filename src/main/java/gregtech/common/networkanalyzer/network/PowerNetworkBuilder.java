@@ -23,6 +23,7 @@ import gregtech.api.graphs.PowerNode;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.consumers.EmptyPowerConsumer;
 import gregtech.api.graphs.paths.PowerNodePath;
+import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -699,17 +700,22 @@ public class PowerNetworkBuilder {
                                 totalAmperage += outputAmperage;
                                 maxVoltage = Math.max(maxVoltage, outputVoltage);
                             }
-                        } else {
-                            final IEnergySource emitter = sideEntity instanceof IReactorChamber chamber
-                                && chamber.getReactor() instanceof IEnergySource reactorEmitter ? reactorEmitter
-                                    : sideEntity instanceof IEnergySource sideEmitter ? sideEmitter : null;
+                        } else if (sideEntity instanceof IEnergyConnected connected
+                            && connected.outputsEnergyTo(side.getOpposite(), false)) {
+                                totalAmperage += cable.mAmperage;
+                                maxVoltage = Math.max(maxVoltage, cable.mVoltage);
+                            } else {
+                                final IEnergySource emitter = sideEntity instanceof IReactorChamber chamber
+                                    && chamber.getReactor() instanceof IEnergySource reactorEmitter ? reactorEmitter
+                                        : sideEntity instanceof IEnergySource sideEmitter ? sideEmitter : null;
 
-                            if (emitter != null && countedEmitters.add(emitter)) {
-                                final long amps = Math.max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
-                                totalAmperage += amps;
-                                maxVoltage = cable.mVoltage;
+                                if (emitter != null && countedEmitters.add(emitter)) {
+                                    final long amps = Math
+                                        .max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
+                                    totalAmperage += amps;
+                                    maxVoltage = cable.mVoltage;
+                                }
                             }
-                        }
 
                     }
                 }
