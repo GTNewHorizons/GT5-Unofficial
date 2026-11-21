@@ -96,6 +96,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
@@ -157,6 +158,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gregtech.crossmod.ae2.PatternTargetKey;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -1176,6 +1178,113 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
+    }
+
+    /**
+     * Returns the pattern target key for a pattern pushed into the given hatch of this multiblock, or null if unknown.
+     */
+    @Nullable
+    public PatternTargetKey getPatternTargetKey(MTEHatch hatch) {
+        if (!mMachine) return null;
+        final RecipeMap<?> current = getRecipeMap();
+        // Machines that pick a map by state, such as the Black Hole Compressor, report no current map.
+        final Collection<RecipeMap<?>> maps = current != null ? Collections.singletonList(current)
+            : getAvailableRecipeMaps();
+        if (maps.isEmpty()) return null;
+
+        // Same power as setProcessingLogicPower; steam and wireless multis have no energy hatches, so the voltage is 0
+        // and the key turns the voltage check off.
+        final boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        final long voltage = getAverageInputVoltage() * (useSingleAmp ? 1 : getMaxInputAmps());
+
+        // checkRecipeForCustomHatches runs a solidifier hatch's fluid with only the hatch's own mold and circuit.
+        if (hatch instanceof MTEHatchSolidifier solidifier) {
+            return PatternTargetKey.of(maps, voltage, solidifier.getNonConsumableItems());
+        }
+        if (isInputSeparationEnabled() && !(hatch instanceof MTEHatchInputBus) && !(hatch instanceof IDualInputHatch)) {
+            return PatternTargetKey.ofSets(maps, voltage, separatedBusItems(hatch, maps));
+        }
+
+        // Mirrors doCheckRecipe: a crafting input buffer only adds its shared items and a bus with input separation
+        // adds its own items.
+        final List<ItemStack> items = new ArrayList<>();
+        if (hatch instanceof IDualInputHatch dualInputHatch) {
+            Collections.addAll(items, dualInputHatch.getSharedItems());
+        } else {
+            if (!isInputSeparationEnabled()) {
+                return PatternTargetKey.ofSets(maps, voltage, combinedBusItems(hatch, maps));
+            }
+            if (hatch instanceof MTEHatchInputBus bus) {
+                addPatternConfigItems(items, bus, maps);
+            }
+            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) items.add(getControllerSlot());
+        }
+        return PatternTargetKey.of(maps, voltage, items);
+    }
+
+    private List<List<ItemStack>> combinedBusItems(MTEHatch hatch, Collection<RecipeMap<?>> maps) {
+        // doCheckRecipe merges uncolored buses into each color pass; colored hatches join only their own pass.
+        short colors = getHatchColors();
+        if (colors == 0) colors = 0b1;
+        final byte hatchColor = hatch.getColor();
+        final ItemStack slotCircuit = getStackInSlot(1);
+        final ItemStack controllerItem = canUseControllerSlotForRecipe() ? getControllerSlot() : null;
+        final List<List<ItemStack>> sets = new ArrayList<>();
+        for (byte color = 0; color < 16; color++) {
+            if (isColorAbsent(colors, color) || (hatchColor != -1 && hatchColor != color)) continue;
+            final List<ItemStack> items = new ArrayList<>();
+            for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+                final byte busColor = bus.getColor();
+                if (bus instanceof MTEHatchCraftingInputME || (busColor != -1 && busColor != color)) continue;
+                addPatternConfigItems(items, bus, maps);
+            }
+            if (slotCircuit != null && GTUtility.isAnyIntegratedCircuit(slotCircuit)) items.add(slotCircuit);
+            if (controllerItem != null) items.add(controllerItem);
+            sets.add(items);
+        }
+        if (sets.isEmpty()) sets.add(Collections.emptyList());
+        return sets;
+    }
+
+    // With input separation doCheckRecipe pairs the fluids with one bus at a time, and with the controller slot alone
+    // when no bus shares the hatch's color.
+    private List<List<ItemStack>> separatedBusItems(MTEHatch hatch, Collection<RecipeMap<?>> maps) {
+        final List<List<ItemStack>> sets = new ArrayList<>();
+        final ItemStack controllerItem = canUseControllerSlotForRecipe() ? getControllerSlot() : null;
+        final byte hatchColor = hatch.getColor();
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            if (bus instanceof MTEHatchCraftingInputME) continue;
+            final byte busColor = bus.getColor();
+            if (hatchColor != -1 && busColor != -1 && hatchColor != busColor) continue;
+            final List<ItemStack> items = new ArrayList<>();
+            addPatternConfigItems(items, bus, maps);
+            if (controllerItem != null) items.add(controllerItem);
+            sets.add(items);
+        }
+        if (sets.isEmpty()) {
+            sets.add(controllerItem != null ? Collections.singletonList(controllerItem) : Collections.emptyList());
+        }
+        return sets;
+    }
+
+    // Only the circuit and items the recipes never consume: the rest of the bus holds leftovers of other crafts.
+    private static void addPatternConfigItems(List<ItemStack> items, MTEHatchInputBus bus,
+        Collection<RecipeMap<?>> maps) {
+        final int circuitSlot = bus.allowSelectCircuit() ? bus.getCircuitSlot() : -1;
+        for (int i = 0; i < bus.getSizeInventory(); i++) {
+            final ItemStack stack = bus.getStackInSlot(i);
+            if (stack == null) continue;
+            if (i == circuitSlot) {
+                items.add(stack);
+                continue;
+            }
+            for (RecipeMap<?> map : maps) {
+                if (INonConsumedItemDisplay.isDisplayableItem(map, stack)) {
+                    items.add(stack);
+                    break;
+                }
+            }
+        }
     }
 
     protected boolean supportsCraftingMEBuffer() {

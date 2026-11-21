@@ -48,6 +48,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
+import appeng.api.crafting.CraftingMachineTarget;
+import appeng.api.crafting.IPatternTarget;
+import appeng.api.crafting.IPatternTargetKey;
+import appeng.api.crafting.NotReadyTarget;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -872,5 +876,15 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean isCraftingPatternProvider() {
         return true;
+    }
+
+    @Override
+    public IPatternTarget getPatternTarget() {
+        return this;
+    }
+
+    @Override
+    public IPatternTargetKey getTargetKey() {
+        return mMachine ? CraftingMachineTarget.INSTANCE : NotReadyTarget.INSTANCE;
     }
 }
