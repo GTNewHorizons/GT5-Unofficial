@@ -12,6 +12,7 @@ import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGE
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -448,6 +449,7 @@ public final class ModItems {
         // Special (Only Plasma)
         Material materialIodine = MaterialsElements.getInstance().IODINE;
         materialIodine.mPlasma = materialIodine.generatePlasma();
+        new RecipeGenPlasma(materialIodine);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
