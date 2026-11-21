@@ -40,6 +40,7 @@ public class CropRenderer extends EntityFX {
 
     int[] meta = new int[7 * 3];
     ExtendedFacing facing;
+    private final double[] offsets = new double[7 * 3 * 2];
 
     public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age) {
         super(world, x, ((double) y - 0.0625d), z);
@@ -49,6 +50,20 @@ public class CropRenderer extends EntityFX {
         this.particleMaxAge = age;
         this.facing = extendedFacing;
         for (int i = 0; i < 7 * 3; i++) this.meta[i] = this.rand.nextInt(8);
+
+        // cache rotated offsets once
+        final double[] abc = new double[] { 0.0d, 0.0d, 0.0d };
+        final double[] xyz = new double[3];
+        int k = 0;
+        for (int ox = -1; ox <= 1; ox++) {
+            for (int oz = 0; oz <= 6; oz++) {
+                abc[0] = ox;
+                abc[2] = oz;
+                extendedFacing.getWorldOffset(abc, xyz);
+                offsets[k++] = xyz[0];
+                offsets[k++] = xyz[2];
+            }
+        }
     }
 
     @Override
@@ -72,14 +87,10 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int zmin = 0, zmax = 6;
         int i = 0;
-        for (int x = -1; x <= 1; x++) for (int z = zmin; z <= zmax; z++) {
-            double[] abc = new double[] { x, 0, z };
-            double[] xyz = new double[] { 0, 0, 0 };
-            facing.getWorldOffset(abc, xyz);
-            double f11 = (this.posX + xyz[0]) - interpPosX;
-            double f13 = (this.posZ + xyz[2]) - interpPosZ;
+        for (int idx = 0; idx < 7 * 3; idx++) {
+            double f11 = (this.posX + offsets[idx * 2]) - interpPosX;
+            double f13 = (this.posZ + offsets[idx * 2 + 1]) - interpPosZ;
 
             RenderBlocks.getInstance()
                 .renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
