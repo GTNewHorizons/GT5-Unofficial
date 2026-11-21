@@ -10,11 +10,12 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 
-public class StructureChecker<T> implements IStructureWalker<T> {
+public class StructureChecker<T extends IMachineBlockUpdateable> implements IStructureWalker<T> {
 
     T instance;
     final boolean forced;
@@ -30,6 +31,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
     @Override
     public boolean visit(IStructureElement<T> element, World world, int x, int y, int z, int a, int b, int c) {
         boolean result = element.check(instance, world, x, y, z);
+        instance.addMachineCoord(world, x, y, z);
 
         if (!result) {
             this.success = false;

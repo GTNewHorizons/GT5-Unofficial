@@ -357,6 +357,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('Z', isAir())
         .build();
     private byte mSpecialTier = 0;
+    private ItemStack lastCheckStack;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
 
@@ -545,9 +546,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            // TODO: Look for proper fix
-            // Updates every 10 sec
-            if (mUpdate <= -150) mUpdate = 50;
+            if (lastCheckStack != getControllerSlot()) {
+                if (getControllerSlot() == null || lastCheckStack == null) {
+                    onMachineBlockUpdate();
+                } else if (!getControllerSlot().isItemEqual(lastCheckStack)) {
+                    onMachineBlockUpdate();
+                }
+            }
             if (renderActive && !renderDisabled) {
                 RenderingTileEntityNanoForge tile = getRenderer();
                 if (tile != null) {
@@ -589,6 +594,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mSpecialTier = 0;
+        lastCheckStack = aStack;
 
         if (renderDisabled && renderActive) {
             buildRenderStruct();
