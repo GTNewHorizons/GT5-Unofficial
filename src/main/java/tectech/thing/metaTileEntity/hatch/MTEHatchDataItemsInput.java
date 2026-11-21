@@ -31,7 +31,6 @@ import tectech.mechanics.pipe.IConnectsToDataPipe;
 public class MTEHatchDataItemsInput extends MTEHatchDataBase
     implements ISmartInputHatch, IALRecipeInputHatch, IConnectsToDataPipe<ALRecipeDataPacket> {
 
-    public boolean delDelay = true;
     protected ALRecipeDataPacket cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
@@ -90,7 +89,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
             this.cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
         } else {
             this.cachedRecipes = newRecipes;
-            this.delDelay = true;
         }
 
         // The upstream re-pushes the packet every cycle as a keep-alive, so only notify when the available recipe set

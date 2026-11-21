@@ -91,19 +91,21 @@ public interface IConnectsToDataPipe<T> {
             if (isStickOutput && next instanceof MTEHatchDataItemsInput dataItemsInput) {
                 if (checkState == CheckState.NEW_DATA) {
                     result = CheckState.NEW_DATA;
+                    dataItemsInput.setContent((ALRecipeDataPacket) this.getQueued());
                 } else {
                     result = CheckState.CONNECTED;
+                    if (next != oldConnected) dataItemsInput.setContent((ALRecipeDataPacket) this.getQueued());
                 }
-                dataItemsInput.setContent((ALRecipeDataPacket) this.getQueued());
                 setLastConnected(next);
                 break;
             } else if (isDataOutput && next instanceof MTEHatchDataInput dataInput) {
                 if (checkState == CheckState.NEW_DATA) {
                     result = CheckState.NEW_DATA;
+                    dataInput.setContent((QuantumDataPacket) this.getQueued());
                 } else {
                     result = CheckState.CONNECTED;
+                    if (next != oldConnected) dataInput.setContent((QuantumDataPacket) this.getQueued());
                 }
-                dataInput.setContent((QuantumDataPacket) this.getQueued());
                 setLastConnected(next);
                 break;
             }
@@ -116,7 +118,7 @@ public interface IConnectsToDataPipe<T> {
         boolean nowDisconnected = newConnected == null;
         // broken connection or redirected connection,
         // we need to remove the data from the old connected hatch if possible
-        if (nowDisconnected || getLastConnected() != oldConnected) {
+        if (nowDisconnected || newConnected != oldConnected) {
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContent(null);
                 case MTEHatchDataItemsInput dataItemsInput -> dataItemsInput.setContent(null);
