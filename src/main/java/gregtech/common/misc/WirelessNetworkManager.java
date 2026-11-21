@@ -11,6 +11,7 @@ import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.GTLoggers;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 
@@ -24,8 +25,10 @@ public class WirelessNetworkManager {
     public static void strongCheckOrAddUser(UUID user_uuid) {
         // a player always is in a team, and a teams' data always is initialized if registered.
         Team team = TeamManager.getTeamByPlayer(user_uuid);
-        assert team != null;
-        assert team.getData(WirelessTeamData.DATA_KEY) != null;
+        if (team == null) {
+            GTLoggers.GT_FML_LOGGER
+                .error("Player ({}) is not in a team. How? Did you forget to create a team for your test?", user_uuid);
+        }
     }
 
     // ------------------------------------------------------------------------------------

@@ -3,7 +3,6 @@ package gregtech.wirelessnetwork;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.clearGlobalEnergyInformationMaps;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
-import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -113,15 +112,6 @@ class IGlobalWirelessEnergy_UnitTest implements GlobalWirelessTestBase {
         assertEquals(getUserEU(user_uuid), BigInteger.valueOf(5L), MESSAGE);
     }
 
-    @MethodSource("randomUserUUID1")
-    @ParameterizedTest
-    void IGlobalWirelessEnergy_StrongCheckOrAddUser(final UUID user_uuid) {
-        TeamManager.createTeam("UnitTest", user_uuid);
-
-        strongCheckOrAddUser(user_uuid);
-        assertEquals(getUserEU(user_uuid), BigInteger.ZERO, MESSAGE);
-    }
-
     @Override
     @MethodSource("randomUserUUID4")
     @ParameterizedTest
@@ -136,10 +126,6 @@ class IGlobalWirelessEnergy_UnitTest implements GlobalWirelessTestBase {
         Team unit_team_1 = TeamManager.createTeam("UnitTest1", user_uuid_1);
         Team unit_team_2 = TeamManager.createTeam("UnitTest2", user_uuid_2);
         Team unit_team_3 = TeamManager.createTeam("UnitTest3", user_uuid_3);
-
-        strongCheckOrAddUser(user_uuid_0);
-        strongCheckOrAddUser(user_uuid_1);
-        strongCheckOrAddUser(user_uuid_2);
 
         assertEquals(getUserEU(user_uuid_0), BigInteger.ZERO, MESSAGE);
         assertEquals(getUserEU(user_uuid_1), BigInteger.ZERO, MESSAGE);
