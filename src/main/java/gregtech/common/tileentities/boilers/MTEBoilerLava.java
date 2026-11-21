@@ -165,7 +165,8 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    protected void fillFluid(ItemStack equippedItemStack, FluidStack equippedFluidStack, IFluidTank tank, EntityPlayer aPlayer) {
+    protected void fillFluid(ItemStack equippedItemStack, FluidStack equippedFluidStack, IFluidTank tank,
+        EntityPlayer aPlayer) {
         int freeSpace = tank.fill(equippedFluidStack, false);
         ItemStack returnedContainer;
         FluidStack drained;
