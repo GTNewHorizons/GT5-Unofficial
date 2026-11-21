@@ -17,10 +17,15 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 
+/**
+ * In the process of being merged into {@link WirelessNetworkManager}
+ */
+@Deprecated
 @EventBusSubscriber
 public class WirelessDataStore {
 

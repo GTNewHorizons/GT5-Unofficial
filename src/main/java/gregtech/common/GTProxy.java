@@ -143,7 +143,6 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
-import gregtech.common.data.WirelessEnergyHatchManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.entity.EntityDrone;
@@ -153,6 +152,8 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
+import gregtech.common.misc.WirelessNetworkManager;
+import gregtech.common.misc.WirelessTeamData;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.oredict.OreDictRegistrationHandler;
@@ -365,7 +366,7 @@ public class GTProxy implements IFuelHandler {
     public GTPowerfailTracker powerfailTracker;
     public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
-    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
+    public WirelessNetworkManager wirelessNetworkManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -537,8 +538,6 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
-        ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
-        ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
@@ -697,6 +696,7 @@ public class GTProxy implements IFuelHandler {
 
         ArmorEventHandlers armorEvents = new ArmorEventHandlers();
 
+        TeamDataRegistry.register(WirelessTeamData.DATA_KEY, WirelessTeamData::new);
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
@@ -851,7 +851,7 @@ public class GTProxy implements IFuelHandler {
         powerfailTracker = new GTPowerfailTracker();
         if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
-        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
+        wirelessNetworkManager = new WirelessNetworkManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
@@ -861,7 +861,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(tetherManager);
         FMLCommonHandler.instance().bus().register(cameraViewportManager);
         MinecraftForge.EVENT_BUS.register(cameraViewportManager);
-        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
+        FMLCommonHandler.instance().bus().register(wirelessNetworkManager);
         // spotless:off
     }
 
@@ -938,14 +938,14 @@ public class GTProxy implements IFuelHandler {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
-        if (wirelessEnergyHatchManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
+        if (wirelessNetworkManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessNetworkManager);
         }
         wirelessChargerManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
-        wirelessEnergyHatchManager = null;
+        wirelessNetworkManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
