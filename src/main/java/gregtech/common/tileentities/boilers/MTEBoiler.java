@@ -351,7 +351,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         }
     }
 
-    private boolean canNotCreateSteam(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+    protected boolean canNotCreateSteam(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 10L != 0L) {
             return false;
         }

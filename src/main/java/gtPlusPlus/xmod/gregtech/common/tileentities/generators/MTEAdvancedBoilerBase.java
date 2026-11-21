@@ -26,6 +26,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
@@ -314,6 +315,26 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
+    protected boolean canNotCreateSteam(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aTick % 10L != 0L) {
+            return false;
+        }
+
+        if (this.mTemperature > 100) {
+            if ((!GTModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
+                this.mHadNoWater = true;
+            } else {
+                produceSteam(getProductionPerSecond() / 2);
+                playBoiling = true;
+            }
+        } else {
+            this.mHadNoWater = false;
+            playBoiling = false;
+        }
+        return false;
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -334,7 +355,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         final int fuel;
         if (this.mProcessingEnergy > 0) {
             fuel = this.mProcessingEnergy;
-        } else if (this.mInventory[2] == null) {
+        } else if (this.mInventory[2] == null || isItemValidFuel(this.mInventory[2])) {
             fuel = 0;
         } else {
             fuel = -1;
