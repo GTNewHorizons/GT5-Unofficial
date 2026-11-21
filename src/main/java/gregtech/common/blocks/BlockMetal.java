@@ -15,6 +15,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.client.DynamicLangManager;
+import gregtech.common.render.MHDCSMBlockRenderer;
 
 public class BlockMetal extends BlockStorage {
 
@@ -23,6 +24,7 @@ public class BlockMetal extends BlockStorage {
     public IIconContainer[] mBlockIcons;
     public boolean mHideBlocks;
     public static boolean mNEIisLoaded = NotEnoughItems.isModLoaded();
+    public boolean hasMHDCSM = false;
 
     public BlockMetal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
         super(ItemStorage.class, aName, Material.iron);
@@ -41,6 +43,7 @@ public class BlockMetal extends BlockStorage {
                     GTOreDictUnificator.registerOre(aPrefix.get(materials), new ItemStack(this, 1, i));
                 }
             }
+            if (aMats[i] == Materials.MHDCSM) this.hasMHDCSM = true;
         }
         if (aMats.length < 16 && mNEIisLoaded) {
             for (int i = aMats.length; i < 16; i++) codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
@@ -78,4 +81,9 @@ public class BlockMetal extends BlockStorage {
         }
     }
 
+    @Override
+    public int getRenderType() {
+        if (hasMHDCSM) return MHDCSMBlockRenderer.RENDER_ID;
+        return super.getRenderType();
+    }
 }
