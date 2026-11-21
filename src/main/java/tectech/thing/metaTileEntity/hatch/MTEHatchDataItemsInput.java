@@ -7,7 +7,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,6 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeInputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.util.CommonValues;
 
 /// The AL recipe input hatch that receives its recipes from a databank (via a [MTEHatchDataItemsOutput] + data pipe
 /// chain).
@@ -79,10 +78,15 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    @Override
     public void setContent(@Nullable ALRecipeDataPacket newRecipes) {
         ALRecipeDataPacket oldRecipes = this.cachedRecipes;
 
-        if (newRecipes.isEmpty()) {
+        if (newRecipes == null || newRecipes.isEmpty()) {
             this.cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
         } else {
             this.cachedRecipes = newRecipes;
@@ -102,38 +106,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataBase
     @Override
     public void setActive(boolean active) {
         // do nothing
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        NBTTagCompound stacksTag = getAssemblyLineRecipes().toNBT();
-        aNBT.setTag("data_stacks", stacksTag);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-
-        NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
-        this.cachedRecipes = new ALRecipeDataPacket(stacksTag);
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        if (CommonValues.MOVE_AT == aTick % 20) {
-            if (this.cachedRecipes.isEmpty()) {
-                getBaseMetaTileEntity().setActive(false);
-            } else {
-                getBaseMetaTileEntity().setActive(true);
-                if (delDelay) {
-                    delDelay = false;
-                } else {
-                    setContent(null);
-                }
-            }
-        }
     }
 
     @Override

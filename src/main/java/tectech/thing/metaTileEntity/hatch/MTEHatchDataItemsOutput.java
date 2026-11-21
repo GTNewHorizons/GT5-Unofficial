@@ -4,7 +4,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -71,27 +71,16 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-
-        if (!this.previousPacket.isEmpty()) {
-            aNBT.setTag("eDATA", this.previousPacket.toNBT());
-        }
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-
-        if (aNBT.hasKey("eDATA")) {
-            this.previousPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
-        }
-    }
-
-    @Override
     public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    // region IConnectsToDataPipe
 
     @Override
     public @Nullable IConnectsToDataPipe<ALRecipeDataPacket> getLastConnected() {
@@ -111,7 +100,6 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
     @Override
     public void setContent(@Nullable ALRecipeDataPacket content) {
         this.q = content;
-        moveAround(getBaseMetaTileEntity(), CheckState.NEW_DATA);
     }
 
     @Override
@@ -137,11 +125,14 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
         }
         return result;
     }
+    // endregion
 
     @Override
     protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Transmitting";
     }
+
+    // region IALRecipeOutputHatch
 
     @Override
     public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
@@ -150,6 +141,8 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
 
     @Override
     public void setAssemblyLineRecipes(ALRecipeDataPacket packet) {
-        setContent(packet);
+        enqueueAndMove(packet);
     }
+
+    // endregion
 }
