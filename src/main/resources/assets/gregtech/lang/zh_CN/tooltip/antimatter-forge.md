@@ -28,5 +28,5 @@
 1. {fluid:molten.shirabon} = {gold:0.05}
 2. {fluid:molten.magnetohydrodynamicallyconstrainedstarmatter} = {gold:0.10}
 {aqua:{bold:{underline:A}}}{aqua:-活化稳定化} (每次运行消耗{dark_aqua:反物质量}^(1/3) L流体)
-1. {fluid:naquadah based liquid fuel mkv (depleted)} = {aqua:0.05}
-2. {fluid:naquadah based liquid fuel mkvi (depleted)} = {aqua:0.10}
+1. {fluid:naquadah based liquid fuel mk-v (depleted)} = {aqua:0.05}
+2. {fluid:naquadah based liquid fuel mk-vi (depleted)} = {aqua:0.10}

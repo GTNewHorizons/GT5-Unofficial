@@ -49,6 +49,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -79,12 +80,14 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEYottaFluidTank> multiDefinition = null;
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();
@@ -455,13 +458,13 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addCasing("25-57", StatCollector.translateToLocal("yottaFluidTankCasing.name"), false)
             .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true, true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
+            .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true, true)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_air_gaps_fluid_cells_different_tiers"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_air_gaps"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

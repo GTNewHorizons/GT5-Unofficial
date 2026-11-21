@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import java.util.Locale;
+
 import com.cleanroommc.modularui.utils.Color;
 
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
@@ -48,7 +50,7 @@ public class ColorData {
     }
 
     public void setH(float h) {
-        this.h = Float.parseFloat(String.format("%.1f", h));
+        this.h = Float.parseFloat(String.format(Locale.ROOT, "%.1f", h));
         updateFromHSV();
     }
 
@@ -57,7 +59,7 @@ public class ColorData {
     }
 
     public void setS(float s) {
-        this.s = Float.parseFloat(String.format("%.3f", s));
+        this.s = Float.parseFloat(String.format(Locale.ROOT, "%.3f", s));
         updateFromHSV();
     }
 
@@ -66,7 +68,7 @@ public class ColorData {
     }
 
     public void setV(float v) {
-        this.v = Float.parseFloat(String.format("%.3f", v));
+        this.v = Float.parseFloat(String.format(Locale.ROOT, "%.3f", v));
         updateFromHSV();
     }
 
@@ -75,7 +77,7 @@ public class ColorData {
     }
 
     public void setGamma(float gamma) {
-        this.gamma = Float.parseFloat(String.format("%.2f", gamma));
+        this.gamma = Float.parseFloat(String.format(Locale.ROOT, "%.2f", gamma));
     }
 
     public int getColor() {
@@ -84,9 +86,9 @@ public class ColorData {
 
     private void updateFromRGB() {
         color = Color.rgb(r, g, b);
-        h = Float.parseFloat(String.format("%.1f", Color.getHue(color)));
-        s = Float.parseFloat(String.format("%.3f", Color.getHSVSaturation(color)));
-        v = Float.parseFloat(String.format("%.3f", Color.getValue(color)));
+        h = Float.parseFloat(String.format(Locale.ROOT, "%.1f", Color.getHue(color)));
+        s = Float.parseFloat(String.format(Locale.ROOT, "%.3f", Color.getHSVSaturation(color)));
+        v = Float.parseFloat(String.format(Locale.ROOT, "%.3f", Color.getValue(color)));
     }
 
     private void updateFromHSV() {

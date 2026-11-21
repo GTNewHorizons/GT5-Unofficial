@@ -134,13 +134,12 @@ public class ToolboxUtil {
      * @return The {@link ToolboxSlot} of the current tool, or empty if no tool is selected
      */
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
-        if (toolbox == null || !ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
-            return Optional.empty();
+        if (toolbox.getItem() instanceof ItemGTToolbox
+            && ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
+            return ToolboxSlot.getBySlot(ItemStackNBT.getInteger(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY));
         }
 
-        return ToolboxSlot.getBySlot(
-            toolbox.getTagCompound()
-                .getInteger(ItemGTToolbox.CURRENT_TOOL_KEY));
+        return Optional.empty();
     }
 
     /**

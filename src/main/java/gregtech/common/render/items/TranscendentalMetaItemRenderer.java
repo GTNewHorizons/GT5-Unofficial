@@ -81,7 +81,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
         GL11.glPopMatrix();
     }
 
-    private void applyEffect(ItemRenderType type) {
+    public static void applyEffect(ItemRenderType type) {
         if (RenderItem.renderInFrame) {
             // Float in front of item frame
             GL11.glTranslatef(0.0f, 0.0f, -0.5f);

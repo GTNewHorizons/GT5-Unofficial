@@ -24,6 +24,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gregtech.api.enums.Mods;
+import gregtech.common.powergoggles.DashboardHud;
 import gregtech.common.powergoggles.handlers.PowerGogglesHudHandler;
 import gregtech.common.powergoggles.handlers.PowerGogglesKeybindHandler;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
@@ -52,6 +53,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
+        if (Mods.Dashboard.isModLoaded()) {
+            DashboardHud.register();
+        }
         if (Angelica.isModLoaded()) {
             AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
             FMLCommonHandler.instance()
@@ -80,7 +84,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
         RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
+        RenderDecayChest decayChestRenderer = new RenderDecayChest();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, decayChestRenderer);
+        RenderingRegistry.registerBlockHandler(decayChestRenderer);
         // spotless:on
     }
 

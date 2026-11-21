@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -84,7 +83,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
     @Override
     public IStructureDefinition<MTEBECDiode> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 16, Arrays.asList(InputHatch, Energy, ExoticEnergy));
         structure.addCasing('C', FineStructureConstantManipulator);
@@ -102,7 +101,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return ElectromagneticallyIsolatedCasing.getCasingTexture();
     }
 
@@ -121,6 +120,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         if (mMaxProgresstime == 0) return Collections.emptyList();
 
         return Arrays.asList(inputHatch);
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -196,15 +206,16 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Diode, Storage Bus")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_diode"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-diode"))
             .addSupportAny();
 
         tt.beginStructureBlock(17, 11, 11, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
-            .addCasing("148", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("148", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
-            .addCasing("83-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("75-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -212,14 +223,10 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addCasing("24", CondensateGuidanceCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
-            .addMiscHatch(
-                "2",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"),
-                2,
-                3)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"), 2, 3)
+            .toolTipFinisher();
         return tt;
+        // spotless:on
     }
 
     @Override
@@ -313,7 +320,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         filterParameters = new FluidParameter[CondensateType.VALUES.length];
 
         for (int i = 0; i < filterParameters.length; i++) {
-            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1);
+            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1) {
+
+                @Override
+                public void setValue(Fluid value) {
+                    Fluid previous = getValue();
+
+                    super.setValue(value);
+
+                    if (previous != value && network != null) network.invalidateReachableCondensate();
+                }
+            };
         }
     }
 

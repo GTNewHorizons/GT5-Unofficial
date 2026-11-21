@@ -37,6 +37,7 @@ import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
+import tectech.thing.metaTileEntity.multi.bec.MTEBECAssembler;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
 public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, ISmartInputHatch {
@@ -45,6 +46,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     private static final ResourceLocation BEAM_TEXTURE = new ResourceLocation("textures/entity/beacon_beam.png");
 
     private BlockPos connection = null;
+    private MTEHatchLoS connectedLoSHatch = null;
     /// When connected, one LoS hatch will be the renderer, and the other won't
     private boolean isRenderer = false;
 
@@ -53,6 +55,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     @Nullable
     private WeakReference<MetaTileEntity> owner;
     private boolean ownerDirty = false;
+    private boolean beamActive = false;
 
     @SideOnly(Side.CLIENT)
     private boolean canRender;
@@ -102,20 +105,30 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
     public void disconnectImpl() {
         this.connection = null;
+        this.connectedLoSHatch = null;
         this.getBaseMetaTileEntity()
             .setActive(false);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
+        onConnectionChange();
     }
 
     public void connectImpl(MTEHatchLoS other) {
         this.connection = other.getBaseMetaTileEntity()
             .getBlockPos();
+        this.connectedLoSHatch = other;
         this.getBaseMetaTileEntity()
             .setActive(true);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
         notifyWatchers();
+        onConnectionChange();
+    }
+
+    public void onConnectionChange() {
+        if (this.owner != null && this.owner.get() instanceof MTEBECAssembler assembler) {
+            assembler.getIONodes(true);
+        }
     }
 
     public boolean hasOwner() {
@@ -135,6 +148,24 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         if (getOwner() != owner) {
             this.owner = new WeakReference<>(owner);
             this.ownerDirty = true;
+        }
+    }
+
+    public void setBeamActive(boolean beamActive) {
+        if (this.beamActive != beamActive) {
+            this.beamActive = beamActive;
+
+            // Only update the rendering hatch
+            if (isRenderer) {
+                getBaseMetaTileEntity().issueTileUpdate();
+            } else {
+                var other = getConnectedHatch();
+
+                if (other != null) {
+                    other.getBaseMetaTileEntity()
+                        .issueTileUpdate();
+                }
+            }
         }
     }
 
@@ -220,14 +251,20 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         if (igte == null || igte.isDead()) {
             connection = null;
+            connectedLoSHatch = null;
             return null;
         }
+
+        if (connectedLoSHatch != null && connectedLoSHatch.isValid()) return connectedLoSHatch;
 
         MTEHatchLoS result = igte.getMetaTileEntity(connection, MTEHatchLoS.class);
 
         if (result == null) {
             connection = null;
+            connectedLoSHatch = null;
         }
+
+        connectedLoSHatch = result;
 
         return result;
     }
@@ -297,6 +334,10 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         buffer.writeBoolean(this.hasOwner() && other != null && other.hasOwner());
 
         buffer.writeBoolean(connection != null);
+
+        // The beam is active if either hatch wants it to be active
+        buffer.writeBoolean(beamActive || other != null && other.beamActive);
+
         if (connection != null) {
             buffer.writeInt(connection.getX());
             buffer.writeInt(connection.getY());
@@ -310,8 +351,9 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         isRenderer = buffer.readBoolean();
         canRender = buffer.readBoolean();
-
         boolean connected = buffer.readBoolean();
+        beamActive = buffer.readBoolean();
+
         if (connected) {
             connection = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         } else {
@@ -368,10 +410,15 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         float scroll = -worldTime * 0.2F - (float) Math.floor(-worldTime * 0.1F);
         Tessellator tess = Tessellator.instance;
 
-        // Pass 1: outer rotating prism (no blend, additive)
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
-        OpenGlHelper.glBlendFunc(770, 1, 1, 0);
+        // Pass 1: outer rotating prism
+
+        if (beamActive) {
+            // Beam active: no blend, additive
+            disableBlend();
+        } else {
+            // Beam idle: blended, semi-transparent
+            enableBlend();
+        }
 
         double outerRadius = 0.6;
         double rot = (double) worldTime * -0.0375;
@@ -403,9 +450,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         tess.draw();
 
         // Pass 2: inner solid prism (blended, semi-transparent)
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glDepthMask(false);
+        enableBlend();
 
         double inner = 0.6;
         double vMin2 = -1.0 + scroll;
@@ -421,6 +466,18 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();
+    }
+
+    private static void enableBlend() {
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glDepthMask(false);
+    }
+
+    private static void disableBlend() {
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
+        OpenGlHelper.glBlendFunc(770, 1, 1, 0);
     }
 
     private static void addBeamQuad(Tessellator tess, double x1, double z1, double x2, double z2, double length,

@@ -7,6 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 
@@ -247,15 +248,6 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCDAlloyBlastSmelterActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/alloyBlastSmelterActiveGlow");
 
-    public static final CustomIcon oMCDIndustrialArcFurnace = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnace");
-    public static final CustomIcon oMCDIndustrialArcFurnaceGlow = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceGlow");
-    public static final CustomIcon oMCDIndustrialArcFurnaceActive = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceActive");
-    public static final CustomIcon oMCDIndustrialArcFurnaceActiveGlow = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceActiveGlow");
-
     public static final CustomIcon oMCDIndustrialCuttingMachine = new CustomIcon(
         "iconsets/controllerFaces/industrialCuttingMachine");
     public static final CustomIcon oMCDIndustrialCuttingMachineGlow = new CustomIcon(
@@ -297,9 +289,9 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Controller_Advanced_Active = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_GLOW");
     public static final IIconContainer Overlay_Machine_Controller_Advanced_Active_Glow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
+        .create(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED_ACTIVE_GLOW");
 
     // oMCA = Overlay_Machine_Controller_Advanced
     public static final CustomIcon oMCACokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
@@ -327,9 +319,9 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
     public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
     public static final IIconContainer oMCATreeFarmGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmGlow");
     public static final IIconContainer oMCATreeFarmActiveGlow = GTCustomOptionalBlockIconContainer
-        .create("iconsets/controllerFaces/treeFarmActiveGlow");
+        .create(Mods.GregTech.resourceDomain, "iconsets/controllerFaces/treeFarmActiveGlow");
 
     public static final CustomIcon oMCAIndustrialRockBreaker = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreaker");

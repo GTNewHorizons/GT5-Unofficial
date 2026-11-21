@@ -1,13 +1,18 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,7 +21,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchBlackHoleUtilityGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase {
+public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase implements IDataCopyable{
+
+    public static final String COPIED_DATA_IDENTIFIER = "blackHoleUtility";
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -68,6 +75,26 @@ public class MTEHatchBlackHoleUtility extends MTEHatchRedstoneBase {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("mode", getMode());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setMode(nbt.getBoolean("mode"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 
     public void cycleStart() {

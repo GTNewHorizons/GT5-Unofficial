@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -18,17 +19,34 @@ import gregtech.api.render.TextureFactory;
 
 public abstract class MTEBaseFactoryHatch extends MTEHatch {
 
-    public static final IIconContainer EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
-    public static final IIconContainer EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
-    public static final IIconContainer EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
+    public static final IIconContainer EM_D_ACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_ACTIVE");
+    public static final IIconContainer EM_D_SIDES = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_SIDES");
+    public static final IIconContainer EM_D_CONN = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA_CONN");
 
     protected MTEBaseFactoryHatch(MTEBaseFactoryHatch prototype) {
-        super(prototype.mName, prototype.mTier, 0, prototype.mDescriptionArray, prototype.mTextures);
+        this(prototype, 0);
+    }
+
+    protected MTEBaseFactoryHatch(MTEBaseFactoryHatch prototype, int inventorySlots) {
+        super(prototype.mName, prototype.mTier, inventorySlots, prototype.mDescriptionArray, prototype.mTextures);
     }
 
     public MTEBaseFactoryHatch(int id, String name, int tier, String[] description) {
+        this(id, name, tier, 0, description);
+    }
+
+    public MTEBaseFactoryHatch(int id, String name, int tier, int inventorySlots, String[] description) {
         // Temporarily translate here until hatches are properly localized
-        super(id, name, StatCollector.translateToLocal("gt.blockmachines." + name + ".name"), tier, 0, description);
+        super(
+            id,
+            name,
+            StatCollector.translateToLocal("gt.blockmachines." + name + ".name"),
+            tier,
+            inventorySlots,
+            description);
     }
 
     @Override

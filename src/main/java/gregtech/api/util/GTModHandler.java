@@ -68,6 +68,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -200,9 +201,7 @@ public class GTModHandler {
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(long aAmount) {
-        FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
-        return tFluid;
+        return Materials.DistilledWater.getFluid(aAmount);
     }
 
     /**
@@ -615,13 +614,12 @@ public class GTModHandler {
      * <p/>
      * Lowercase Letters are reserved for Tools. They are as follows:
      * <p/>
-     * 'b' ToolDictNames.craftingToolBlade 'c' ToolDictNames.craftingToolCrowbar, 'd'
-     * ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile, 'h'
-     * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
-     * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
-     * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
-     * 'x' ToolDictNames.craftingToolWireCutter,
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
         return addCraftingRecipe(aResult, 0, aRecipe);
@@ -637,13 +635,12 @@ public class GTModHandler {
      * <p/>
      * Lowercase Letters are reserved for Tools. They are as follows:
      * <p/>
-     * 'b' ToolDictNames.craftingToolBlade 'c' ToolDictNames.craftingToolCrowbar, 'd'
-     * ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile, 'h'
-     * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
-     * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
-     * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
-     * 'x' ToolDictNames.craftingToolWireCutter,
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
@@ -718,7 +715,7 @@ public class GTModHandler {
                     case  6 -> ItemList.Hull_LuV;
                     case  7 -> ItemList.Hull_ZPM;
                     case  8 -> ItemList.Hull_UV;
-                    default -> ItemList.Hull_MAX;
+                    default -> ItemList.Hull_UHV;
                 };
 
                 case WIRE -> switch (machineTier) {
@@ -1058,10 +1055,6 @@ public class GTModHandler {
                     case 'i' -> {
                         tRecipeList.add(c);
                         tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
-                    }
-                    case 'j' -> {
-                        tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
                     }
                     case 'k' -> {
                         tRecipeList.add(c);
@@ -2180,19 +2173,38 @@ public class GTModHandler {
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSolderingToolList)) {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
-                if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
+
+                ItemStack stackToTest = aStack;
+                final Optional<ToolboxSlot> slot = ToolboxUtil.getSelectedToolType(aStack);
+
+                if (slot.isPresent()) {
+                    // This will always be present if slot is present.
+                    // noinspection OptionalGetWithoutIsPresent
+                    stackToTest = ToolboxUtil.getSelectedTool(aStack)
+                        .get();
+                }
+
+                if (isElectricItem(stackToTest) && ic2.api.item.ElectricItem.manager.getCharge(stackToTest) > 1000.0d) {
                     if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
                         || consumeSolderingMaterial(tPlayer)) {
-                        if (canUseElectricItem(aStack, 10000)) {
-                            return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
+                        if (canUseElectricItem(stackToTest, 10000)) {
+                            final boolean returnValue = GTModHandler.useElectricItem(stackToTest, 10000, tPlayer);
+                            if (slot.isPresent()) {
+                                ToolboxUtil.saveItemInside(aStack, stackToTest, slot.get());
+                            }
+                            return returnValue;
                         }
                         GTModHandler.useElectricItem(
-                            aStack,
-                            (int) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                            (EntityPlayer) aPlayer);
+                            stackToTest,
+                            (int) ic2.api.item.ElectricItem.manager.getCharge(stackToTest),
+                            tPlayer);
+
+                        if (slot.isPresent()) {
+                            ToolboxUtil.saveItemInside(aStack, stackToTest, slot.get());
+                        }
                         return false;
                     } else {
-                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
+                        GTUtility.sendChatTrans(tPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {

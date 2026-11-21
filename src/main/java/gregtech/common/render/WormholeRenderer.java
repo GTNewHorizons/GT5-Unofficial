@@ -92,8 +92,10 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
     }
 
     private static void render(ShaderHandle shader, Block coreBlock, double rotation) {
+        // Wrap before float conversion to preserve sub-tick precision.
+        final float angle = (float) Math.toRadians(rotation % 360.0);
         modelMatrix.pushMatrix();
-        modelMatrix.rotate((float) Math.toRadians(rotation), SHELL_AXIS.x, SHELL_AXIS.y, SHELL_AXIS.z);
+        modelMatrix.rotate(angle, SHELL_AXIS.x, SHELL_AXIS.y, SHELL_AXIS.z);
         modelMatrix.scale(-1, -1, -1);
 
         for (Shell shell : SHELLS) {
@@ -106,7 +108,7 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
         if (coreBlock != null) {
             modelMatrix.pushMatrix();
             modelMatrix.scale((float) corePercentage);
-            modelMatrix.rotate((float) Math.toRadians(rotation), CORE_AXIS.x, CORE_AXIS.y, CORE_AXIS.z);
+            modelMatrix.rotate(angle, CORE_AXIS.x, CORE_AXIS.y, CORE_AXIS.z);
 
             renderShell(shader, coreBlock, 1f);
 
@@ -123,7 +125,7 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
             final double radius = wTile.targetRadius;
             if (radius <= 0) return;
 
-            double rotationTimer = wTile.getWorldObj()
+            double rotationTimer = (double) wTile.getWorldObj()
                 .getWorldInfo()
                 .getWorldTotalTime() + timeSinceLastTick;
 

@@ -481,13 +481,13 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 2))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 3))
             .circuit(16)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 12L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(mixerRecipes);
@@ -1735,7 +1735,7 @@ public class MixerRecipes implements Runnable {
                     Materials.DTEC.getFluid(1_000),
                     Materials.Lead.getPlasma(1_000),
                     Materials.Thorium.getPlasma(1_000),
-                    Materials.Naquadria.getPlasma(100L),
+                    Materials.Orikalkum.getPlasma(100L),
                     Materials.RawStarMatter.getFluid(25L))
                 .fluidOutputs(Materials.DTSC.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)

@@ -27,6 +27,10 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
     private int threshold = 0;
     private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
+    private int lastDurability = 0;
+    private int lastMaxDurability = 0;
+    private boolean hasDurabilitySample = false;
+
     public MTEHatchElectrodeDetector(int aID, String aName, String aNameRegional) {
         super(
             aID,
@@ -52,6 +56,10 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
         thresholdType = ThresholdType.values[aNBT.getInteger("mThresholdType")];
+        lastDurability = aNBT.getInteger("mLastDurability");
+        lastMaxDurability = aNBT.getInteger("mLastMaxDurability");
+        // Older saves retain mIsOn until the multiblock supplies the first sample.
+        hasDurabilitySample = aNBT.getBoolean("mHasDurabilitySample");
         super.loadNBTData(aNBT);
     }
 
@@ -59,11 +67,23 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setInteger("mThresholdType", thresholdType.ordinal());
+        aNBT.setInteger("mLastDurability", lastDurability);
+        aNBT.setInteger("mLastMaxDurability", lastMaxDurability);
+        aNBT.setBoolean("mHasDurabilitySample", hasDurabilitySample);
         super.saveNBTData(aNBT);
     }
 
     public void updateRedstoneOutput(int durability, int maxDurability) {
-        setRedstoneSignal(getComparatorValue(durability, maxDurability) >= threshold);
+        lastDurability = durability;
+        lastMaxDurability = maxDurability;
+        hasDurabilitySample = true;
+        recalculateRedstoneState();
+    }
+
+    private void recalculateRedstoneState() {
+        IGregTechTileEntity baseTile = getBaseMetaTileEntity();
+        if (!hasDurabilitySample || baseTile == null || !baseTile.isServerSide()) return;
+        setRedstoneSignal((getComparatorValue(lastDurability, lastMaxDurability) >= threshold) ^ inverted);
     }
 
     public int getComparatorValue(int durability, int maxDurability) {
@@ -103,6 +123,7 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
+        recalculateRedstoneState();
     }
 
     public ThresholdType getThresholdType() {
@@ -112,6 +133,15 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
     public void setThresholdType(ThresholdType thresholdType) {
         this.thresholdType = thresholdType;
         this.threshold = Math.min(this.threshold, this.thresholdType.getMaxCapacity());
+        recalculateRedstoneState();
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
     }
 
     public enum ThresholdType {

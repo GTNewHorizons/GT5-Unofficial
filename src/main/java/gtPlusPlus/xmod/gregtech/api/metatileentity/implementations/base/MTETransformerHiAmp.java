@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GTValues;
@@ -11,10 +12,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETransformer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
@@ -25,6 +28,15 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     public MTETransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.ha.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -95,9 +107,10 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithPrefixAndAlkalus(
-            super.getDescription()[0],
+        return GTSplit.splitLocalizedFormattedWithWarped(
             "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
+            GTPPCore.GT_Tooltip.get(),
             4,
             16,
             2,

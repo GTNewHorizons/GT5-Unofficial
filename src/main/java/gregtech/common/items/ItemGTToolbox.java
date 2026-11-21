@@ -331,9 +331,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                         "GT5U.item.toolbox.tooltip.tool_durability",
                         StatCollector.translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(
-                                maxDamage - MetaGeneratedTool.getToolDamage(tool)
-                            ) + " ", " " + formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
+                            formatNumber(maxDamage - MetaGeneratedTool.getToolDamage(tool)),
+                            formatNumber(maxDamage))) + EnumChatFormatting.GRAY);
         }
 
         final Optional<ItemStack> battery = ToolboxUtil.getBattery(toolbox);

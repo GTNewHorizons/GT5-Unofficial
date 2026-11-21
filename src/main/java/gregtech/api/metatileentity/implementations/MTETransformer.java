@@ -26,6 +26,7 @@ import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.power.IPowerContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,6 +42,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Machine
  */
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTETransformer extends MTETieredMachineBlock {
 
     public MTETransformer(int aID, String aName, String aNameRegional, int aTier) {
@@ -49,6 +51,15 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override
@@ -247,15 +258,13 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String getAlternativeModeText() {
-        return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.trans("145", "Step Down, In: ")
-            : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesIn()
-            + GTUtility.trans("147", "A, Out: ")
-            + maxEUOutput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesOut()
-            + GTUtility.trans("149", "A");
+        return StatCollector.translateToLocalFormatted(
+            getBaseMetaTileEntity().isAllowedToWork() ? "GT5U.gui.transformer.step_down"
+                : "GT5U.gui.transformer.step_up",
+            maxEUInput(),
+            maxAmperesIn(),
+            maxEUOutput(),
+            maxAmperesOut());
     }
 
     @Override

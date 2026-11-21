@@ -22,8 +22,16 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
         super(id, name, tier, description);
     }
 
+    public MTEHatchConfigurableBase(int id, String name, int tier, int inventorySlots, String[] description) {
+        super(id, name, tier, inventorySlots, description);
+    }
+
     public MTEHatchConfigurableBase(MTEHatchConfigurableBase prototype) {
         super(prototype);
+    }
+
+    public MTEHatchConfigurableBase(MTEHatchConfigurableBase prototype, int inventorySlots) {
+        super(prototype, inventorySlots);
     }
 
     @Override
@@ -37,16 +45,24 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     public abstract String getCopiedDataIdentifier(EntityPlayer player);
 
     public void setOutput(boolean active) {
+        setOutput(active ? 15 : 0);
+    }
+
+    public void setOutput(int power) {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (igte == null || igte.isDead()) return;
 
+        ForgeDirection front = igte.getFrontFacing();
+
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            if (dir != front) {
+                igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
+            }
         }
 
-        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (active ? 15 : 0));
-        igte.setActive(active);
+        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (power));
+        igte.setActive(power > 0);
     }
 
     @Override

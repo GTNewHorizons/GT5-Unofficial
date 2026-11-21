@@ -7,6 +7,7 @@ import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.HashMap;
 import java.util.List;
@@ -158,13 +159,18 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         transferBuffer += eu;
         transferSamples++;
 
-        // Only update the samples once every second
+        // Only update the samples once every second, using the average EU/t over the whole period rather than the
+        // value of a single tick. Power transfer is often periodic (e.g. with hatches of different tiers), so sampling
+        // one tick would alias to a constant 0 or a constant spike.
         if (transferSamples >= TRANSFER_UPDATE_PERIOD) {
-            transferSamples %= TRANSFER_UPDATE_PERIOD;
+            transferSamples = 0;
 
-            transferredLast5Secs = (transferredLast5Secs * (1d - INV_5SECS)) + (eu * INV_5SECS);
-            transferredLast30Secs = (transferredLast30Secs * (1d - INV_30SECS)) + (eu * INV_30SECS);
-            transferredLast1Min = (transferredLast1Min * (1d - INV_60SECS)) + (eu * INV_60SECS);
+            double avgEUt = transferBuffer / TRANSFER_UPDATE_PERIOD;
+            transferBuffer = 0d;
+
+            transferredLast5Secs = (transferredLast5Secs * (1d - INV_5SECS)) + (avgEUt * INV_5SECS);
+            transferredLast30Secs = (transferredLast30Secs * (1d - INV_30SECS)) + (avgEUt * INV_30SECS);
+            transferredLast1Min = (transferredLast1Min * (1d - INV_60SECS)) + (avgEUt * INV_60SECS);
         }
     }
 
@@ -179,8 +185,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addDynamoHatch("0+", anyCasingText(), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

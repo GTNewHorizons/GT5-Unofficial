@@ -98,7 +98,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
-import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -145,7 +145,7 @@ public class RecipeLoader {
                 "HTGR",
                 "High Temperature Gas-cooled Reactor").getStackForm(1L));
         ElectrodeHatch
-            .set(new MTEElectrodeHatch(ELECTRODE_HATCH.ID, "electrodehatch", "Electrode Hatch").getStackForm(1L));
+            .set(new MTEHatchElectrode(ELECTRODE_HATCH.ID, "electrodehatch", "Electrode Hatch").getStackForm(1L));
         ElectrodeDetectorHatch.set(
             new MTEHatchElectrodeDetector(
                 ELECTRODE_DETECTOR_HATCH.ID,

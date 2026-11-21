@@ -2,9 +2,7 @@ package gregtech.api.net;
 
 import java.util.Arrays;
 
-import bartworks.common.net.PacketBWMetaBlock;
 import bartworks.common.net.PacketBioVatRenderer;
-import bartworks.common.net.PacketEIC;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
@@ -28,15 +26,16 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
+    REQUEST_OREGEN_PATTERN(18, new GTPacketRequestOregenPattern()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
-    BW_META_BLOCK(24, new PacketBWMetaBlock()),
+    // ID 24 unused, was PacketBWMetaBlock.
     ORE_DICT_CACHE(25, new PacketOreDictCache()),
     SERVER_JOINED(26, new PacketServerJoined()),
-    EIC(27, new PacketEIC()),
+    // ID 27 unused, was ElectricImplosionCompressor(27, new PacketEIC()),
     // ID 28 unused
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),

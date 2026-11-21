@@ -27,6 +27,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -62,6 +63,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     protected final SoundResource mSoundResource;
     protected FallbackableUITexture progressBarTexture;
     protected int recipeCatalystPriority;
+    private boolean deprecated;
     private int mMachineEUtMultiplier = 1;
 
     /**
@@ -114,33 +116,41 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aTankCapacity,
             aSound,
             aSpecialEffect,
-            new ITexture[] { TextureFactory.of(
-                TextureFactory.of(
-                    Textures.BlockIcons.customOptional(
-                        "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        (Textures.BlockIcons.customOptional(
-                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE_GLOW")))
-                    .glow()
-                    .build()),
+            new ITexture[] {
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
+                    TextureFactory.builder()
+                        .addIcon(
+                            (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
+                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                    + "/OVERLAY_SIDE_ACTIVE_GLOW")))
+                        .glow()
+                        .build()),
+                TextureFactory.of(
+                    TextureFactory.of(
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_ACTIVE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                     + "/OVERLAY_FRONT_ACTIVE_GLOW")))
                         .glow()
@@ -148,40 +158,48 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_ACTIVE_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
-                        Textures.BlockIcons
-                            .customOptional("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
+                        Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
+                            "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP_GLOW")))
                         .glow()
                         .build()),
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_ACTIVE")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                     + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
                         .glow()
@@ -189,10 +207,12 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                 TextureFactory.of(
                     TextureFactory.of(
                         Textures.BlockIcons.customOptional(
+                            Mods.GregTech.resourceDomain,
                             "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
                     TextureFactory.builder()
                         .addIcon(
                             (Textures.BlockIcons.customOptional(
+                                Mods.GregTech.resourceDomain,
                                 "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM_GLOW")))
                         .glow()
                         .build()) },
@@ -280,7 +300,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             this.mSoundResource,
             this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
                 .setMachineEUtMultiplier(this.mMachineEUtMultiplier)
-                .setRecipeCatalystPriority(this.recipeCatalystPriority);
+                .setRecipeCatalystPriority(this.recipeCatalystPriority)
+                .setDeprecated(this.deprecated);
     }
 
     public MTEBasicMachineWithRecipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
@@ -474,6 +495,16 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     public MTEBasicMachineWithRecipe setRecipeCatalystPriority(int recipeCatalystPriority) {
         this.recipeCatalystPriority = recipeCatalystPriority;
+        return this;
+    }
+
+    @Override
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public MTEBasicMachineWithRecipe setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
         return this;
     }
 

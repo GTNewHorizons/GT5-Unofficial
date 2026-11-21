@@ -282,6 +282,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public ITexture[][] getInventoryTextures() {
+        return getOrCreateInventoryTextures();
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
@@ -1217,6 +1222,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         boolean isActive = tag.getBoolean("isActiveSingleBlock");
         String euText = StatCollector.translateToLocalFormatted(
             "GT5U.waila.machine.eu_bar",
+            formatNumber(eu),
             maxEu > 0 ? Math.clamp((int) ((double) eu / maxEu * 100), 0, 100) : 0);
 
         List<ItemStack> inputItems = new ArrayList<>();
@@ -1244,6 +1250,15 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
 
+        if (isElectric() && !isSteampowered()) {
+            currenttip.add(
+                TTRenderBar.create(
+                    euText,
+                    ColorUtils.euBarTop.getColor(),
+                    ColorUtils.euBarBottom.getColor(),
+                    (double) eu / maxEu));
+        }
+
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
@@ -1256,17 +1271,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getInteger("progressSingleBlock")));
             }
 
-            if (!isSteampowered()) {
-                currenttip.add(
-                    TTRenderBar.create(
-                        euText,
-                        ColorUtils.euBarTop.getColor(),
-                        ColorUtils.euBarBottom.getColor(),
-                        (double) eu / maxEu));
-            }
-
             if (isActive) {
-                if (!isSteampowered()) {
+                if (isElectric() && !isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
 
@@ -1366,8 +1372,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         NBTTagCompound tag) {
         for (int i = 0; i < itemStacks.length; i++) {
             if (tag.hasKey(nameTag + i)) {
-                ItemStack inputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(nameTag + i));
-
+                ItemStack inputStack = GTUtility.loadItem(tag.getCompoundTag(nameTag + i));
                 if (inputStack == null) {
                     continue;
                 }
@@ -1381,12 +1386,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
     }
 
-    private void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
+    protected void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
         for (int i = 0; i < itemStacks.length; i++) {
             ItemStack itemStack = itemStacks[i];
             if (itemStack != null) {
-                NBTTagCompound itemTag = new NBTTagCompound();
-                itemStack.writeToNBT(itemTag);
+                NBTTagCompound itemTag = GTUtility.saveItem(itemStack);
                 tag.setTag(nameTag + i, itemTag);
             }
         }

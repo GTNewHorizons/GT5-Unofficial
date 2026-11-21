@@ -66,14 +66,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderXPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -81,7 +77,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, 1.0f, 0.0f, 0.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.EAST, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
@@ -102,14 +99,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderXNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -117,7 +110,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, -1.0f, 0.0f, 0.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.WEST, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
@@ -138,14 +132,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderYPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -153,7 +143,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 1.0f, 0.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.UP, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
@@ -174,14 +165,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderYNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -189,7 +176,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, -1.0f, 0.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.DOWN, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
@@ -210,14 +198,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderZPos(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -225,7 +209,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, 1.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.SOUTH, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
@@ -246,14 +231,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
     @Override
     public void renderZNeg(ISBRContext ctx) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -261,7 +242,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
-        final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, -1.0f);
+        final ExtendedFacing rotation = getExtendedFacing(ctx);
         final IIcon icon = getIcon(ForgeDirection.NORTH, false, ctx);
         if (icon != INVISIBLE_ICON && canRenderInPass(ctx)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
@@ -504,8 +486,8 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
     }
 
-    private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (!useExtFacing) return ExtendedFacing.DEFAULT;
+    private ExtendedFacing getExtendedFacing(ISBRContext ctx) {
+        if (!useExtFacing || ctx instanceof ISBRInventoryContext) return ExtendedFacing.DEFAULT;
 
         final EntityPlayer player = GTMod.proxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;
@@ -513,7 +495,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         final World w = player.getEntityWorld();
         if (w == null) return ExtendedFacing.DEFAULT;
 
-        final TileEntity te = w.getTileEntity(x, y, z);
+        final TileEntity te = w.getTileEntity(ctx.getX(), ctx.getY(), ctx.getZ());
 
         IAlignment alignment = null;
 

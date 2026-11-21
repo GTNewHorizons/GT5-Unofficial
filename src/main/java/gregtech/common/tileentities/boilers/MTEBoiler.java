@@ -375,6 +375,10 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         return false;
     }
 
+    protected boolean isProducingSteam() {
+        return this.mTemperature > 100 && !this.mHadNoWater;
+    }
+
     protected void onDangerousWaterLack(IGregTechTileEntity tile, long ignoredTicks) {
         tile.doExplosion(2048L);
     }

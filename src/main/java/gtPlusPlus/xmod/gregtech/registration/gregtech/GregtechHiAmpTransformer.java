@@ -24,33 +24,24 @@ public class GregtechHiAmpTransformer {
 
     public static void run() {
 
-        GregtechItemList.Transformer_HA_LV_ULV.set(
-            new MTETransformerHiAmp(Transformer_HA_LV_ULV.ID, "transformer.ha.tier.00", "ULV Hi-Amp Transformer", 0)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_MV_LV.set(
-            new MTETransformerHiAmp(Transformer_HA_MV_LV.ID, "transformer.ha.tier.01", "LV Hi-Amp Transformer", 1)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_HV_MV.set(
-            new MTETransformerHiAmp(Transformer_HA_HV_MV.ID, "transformer.ha.tier.02", "MV Hi-Amp Transformer", 2)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_EV_HV.set(
-            new MTETransformerHiAmp(Transformer_HA_EV_HV.ID, "transformer.ha.tier.03", "HV Hi-Amp Transformer", 3)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_IV_EV.set(
-            new MTETransformerHiAmp(Transformer_HA_IV_EV.ID, "transformer.ha.tier.04", "EV Hi-Amp Transformer", 4)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_LuV_IV.set(
-            new MTETransformerHiAmp(Transformer_HA_LuV_IV.ID, "transformer.ha.tier.05", "IV Hi-Amp Transformer", 5)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_ZPM_LuV.set(
-            new MTETransformerHiAmp(Transformer_HA_ZPM_LuV.ID, "transformer.ha.tier.06", "LuV Hi-Amp Transformer", 6)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_UV_ZPM.set(
-            new MTETransformerHiAmp(Transformer_HA_UV_ZPM.ID, "transformer.ha.tier.07", "ZPM Hi-Amp Transformer", 7)
-                .getStackForm(1L));
-        GregtechItemList.Transformer_HA_MAX_UV.set(
-            new MTETransformerHiAmp(Transformer_HA_MAX_UV.ID, "transformer.ha.tier.08", "UV Hi-Amp Transformer", 8)
-                .getStackForm(1L));
+        GregtechItemList.Transformer_HA_LV_ULV
+            .set(new MTETransformerHiAmp(Transformer_HA_LV_ULV.ID, "transformer.ha.tier.00", "", 0).getStackForm(1L));
+        GregtechItemList.Transformer_HA_MV_LV
+            .set(new MTETransformerHiAmp(Transformer_HA_MV_LV.ID, "transformer.ha.tier.01", "", 1).getStackForm(1L));
+        GregtechItemList.Transformer_HA_HV_MV
+            .set(new MTETransformerHiAmp(Transformer_HA_HV_MV.ID, "transformer.ha.tier.02", "", 2).getStackForm(1L));
+        GregtechItemList.Transformer_HA_EV_HV
+            .set(new MTETransformerHiAmp(Transformer_HA_EV_HV.ID, "transformer.ha.tier.03", "", 3).getStackForm(1L));
+        GregtechItemList.Transformer_HA_IV_EV
+            .set(new MTETransformerHiAmp(Transformer_HA_IV_EV.ID, "transformer.ha.tier.04", "", 4).getStackForm(1L));
+        GregtechItemList.Transformer_HA_LuV_IV
+            .set(new MTETransformerHiAmp(Transformer_HA_LuV_IV.ID, "transformer.ha.tier.05", "", 5).getStackForm(1L));
+        GregtechItemList.Transformer_HA_ZPM_LuV
+            .set(new MTETransformerHiAmp(Transformer_HA_ZPM_LuV.ID, "transformer.ha.tier.06", "", 6).getStackForm(1L));
+        GregtechItemList.Transformer_HA_UV_ZPM
+            .set(new MTETransformerHiAmp(Transformer_HA_UV_ZPM.ID, "transformer.ha.tier.07", "", 7).getStackForm(1L));
+        GregtechItemList.Transformer_HA_MAX_UV
+            .set(new MTETransformerHiAmp(Transformer_HA_MAX_UV.ID, "transformer.ha.tier.08", "", 8).getStackForm(1L));
         ItemStack mItem_1;
         ItemStack mItem_2;
         ItemStack mItem_3;

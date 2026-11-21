@@ -15,7 +15,6 @@ package bartworks.system.material;
 
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static bartworks.util.BWUtil.superscriptNumbers;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -81,6 +80,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
+import com.falsepattern.endlessids.config.GeneralConfig;
 import com.google.common.collect.HashBiMap;
 
 import bartworks.API.WerkstoffAdderRegistry;
@@ -107,7 +107,6 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -822,12 +821,10 @@ public class WerkstoffLoader {
         // No Byproducts
         Pair.of(Materials.Platinum, 1),
         Pair.of(Materials.Stone, 2));
-    // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
-    // satisfy Chem
-    // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
     public static final Werkstoff AquaRegia = new Werkstoff(
         new short[] { 0xff, 0xb1, 0x32 },
         "Aqua Regia",
+        "3" + subscriptNumbers("(HCl):(HNO3)"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -980,7 +977,7 @@ public class WerkstoffLoader {
     public static final Werkstoff LeachResidue = new Werkstoff(
         new short[] { 0x64, 0x46, 0x29 },
         "Leach Residue",
-        subscriptNumbers("Is?Os?Ru?") + "??",
+        subscriptNumbers("Ir?Os?Ru?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -1723,9 +1720,6 @@ public class WerkstoffLoader {
             if (MainMod.DEBUG) {
                 MainMod.BW_DEBUG_LOGGER.info("Loading Recipes{}", System.nanoTime() - timepre);
             }
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.initCls();
-            }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
                 new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new RawOreLoader(),
@@ -1733,7 +1727,6 @@ public class WerkstoffLoader {
                 new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
-            int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 if (MainMod.DEBUG) {
                     timepreone = System.nanoTime();
@@ -1746,9 +1739,7 @@ public class WerkstoffLoader {
                     progressBar.step("");
                     continue;
                 }
-                if (BetterLoadingScreen.isModLoaded()) {
-                    CLSCompat.updateDisplay(werkstoff, pos);
-                }
+                progressBar.step(werkstoff.getLocalizedName());
                 if (MainMod.DEBUG) {
                     MainMod.BW_DEBUG_LOGGER
                         .info("Werkstoff: {} {}", werkstoff.getDefaultName(), System.nanoTime() - timepreone);
@@ -1767,17 +1758,11 @@ public class WerkstoffLoader {
                 if (MainMod.DEBUG) {
                     MainMod.BW_DEBUG_LOGGER.info("Done {}", System.nanoTime() - timepreone);
                 }
-                progressBar.step(werkstoff.getDefaultName());
-                pos++;
             }
             if (MainMod.DEBUG) {
                 MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
             }
             CircuitPartsItem.init();
-
-            if (BetterLoadingScreen.isModLoaded()) {
-                CLSCompat.disableCls();
-            }
 
             progressBar.step("Load Additional Recipes");
             AdditionalRecipes.run();
@@ -1996,26 +1981,19 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
-        GameRegistry.registerTileEntity(
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
-            "bw.werkstoffblockscasingadvancedTE");
+        if (!GeneralConfig.extendBlockItem) {
+            throw new IllegalStateException("BartWorks material block states require EndlessIDs block/item extensions");
+        }
 
         BWOreAdapter.INSTANCE.init();
 
-        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
-            Material.iron,
-            BWTileEntityMetaGeneratedWerkstoffBlock.class,
-            "bw.werkstoffblocks");
+        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(Material.iron, "bw.werkstoffblocks");
         WerkstoffLoader.BWBlockCasings = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasing.class,
             "bw.werkstoffblockscasing",
             OrePrefixes.blockCasing);
         WerkstoffLoader.BWBlockCasingsAdvanced = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 

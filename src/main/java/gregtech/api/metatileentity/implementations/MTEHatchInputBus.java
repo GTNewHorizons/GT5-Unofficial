@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,6 +31,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
@@ -51,6 +53,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchInputBus extends MTEHatch
     implements IConfigurationCircuitSupport, ISmartInputHatch, IPhysicalCircuitDisplay, INonConsumedItemDisplay {
 
@@ -82,6 +85,12 @@ public class MTEHatchInputBus extends MTEHatch
 
     public MTEHatchInputBus(String aName, int aTier, int aSlots, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aSlots, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.input_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -151,8 +160,8 @@ public class MTEHatchInputBus extends MTEHatch
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            detectInventoryChange();
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            notifyWatchers();
             updateSlots();
         }
     }

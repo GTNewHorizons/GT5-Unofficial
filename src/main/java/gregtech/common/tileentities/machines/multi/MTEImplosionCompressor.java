@@ -16,6 +16,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -38,6 +40,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEImplosionCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -103,18 +106,19 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
-            .addInfo("Explosions are fun")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor_basic"))
+            .addMarkdown(new ResourceLocation("gregtech", "implosion-compressor"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("16-20", "Solid Steel Machine Casing", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("16-20", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addMufflerHatch("1", anyCasing, 1)
+            .addInputBus("1+", anyCasing, 1)
+            .addOutputBus("1+", anyCasing, 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }

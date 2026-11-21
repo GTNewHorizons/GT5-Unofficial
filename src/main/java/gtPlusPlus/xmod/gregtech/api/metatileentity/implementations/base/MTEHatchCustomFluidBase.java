@@ -7,20 +7,26 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatch {
 
     public final Fluid mLockedFluid;
@@ -137,14 +143,11 @@ public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatc
             mLockedStack = new FluidStack(mLockedFluid, 1);
         }
         int aFluidTemp = 0;
-        boolean isSteam = false;
         if (mLockedFluid != null) {
             aFluidTemp = mLockedFluid.getTemperature();
             mTempMod = mLockedFluid.getName();
         }
-        if (mTempMod.equalsIgnoreCase("steam")) {
-            isSteam = true;
-        }
+        final boolean isSteam = mTempMod.equalsIgnoreCase("steam");
 
         EnumChatFormatting aColour = EnumChatFormatting.BLUE;
         if (aFluidTemp <= -3000) {
@@ -162,11 +165,18 @@ public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatc
         } else if (aFluidTemp >= 1501) {
             aColour = EnumChatFormatting.RED;
         }
-        String aFluidName = "Accepted Fluid: " + aColour
-            + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
+        final String fluid = aColour
+            + (mLockedStack != null ? mLockedStack.getLocalizedName()
+                : StatCollector.translateToLocal("gt.blockmachines.hatch.custom_fluid.empty"))
             + EnumChatFormatting.RESET;
-        return new String[] { "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
-            "Capacity: " + getCapacity() + "L", aFluidName, GTPPCore.GT_Tooltip.get() };
+        return ArrayUtils
+            .addAll(
+                GTSplit.splitLocalizedFormatted(
+                    isSteam ? "gt.blockmachines.hatch.custom_fluid.steam.desc"
+                        : "gt.blockmachines.hatch.custom_fluid.desc",
+                    getCapacity(),
+                    fluid),
+                GTPPCore.GT_Tooltip.get());
     }
 
     @Override

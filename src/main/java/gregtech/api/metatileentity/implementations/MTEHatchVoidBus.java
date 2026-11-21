@@ -125,20 +125,6 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         return false;
     }
 
-    // TODO remove this in 2.10
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        NBTTagList lockedItemList = aNBT.getTagList(LOCKED_ITEMS_NBT_KEY, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < lockedItemList.tagCount(); i++) {
-            NBTTagCompound itemTag = lockedItemList.getCompoundTagAt(i);
-            int slot = itemTag.getByte("Slot");
-            if (slot < mInventory.length) {
-                mInventory[slot] = ItemStack.loadItemStackFromNBT(itemTag);
-            }
-        }
-    }
-
     @Override
     public boolean isLocked() {
         for (ItemStack lockedItem : mInventory) {
@@ -197,7 +183,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus {
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             for (ItemStack lockedItem : mInventory) {
                 if (lockedItem != null && lockedItem.isItemEqual(stack)) {
                     stack.stackSize = 0;

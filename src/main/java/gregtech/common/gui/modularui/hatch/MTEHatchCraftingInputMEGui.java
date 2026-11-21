@@ -5,6 +5,8 @@ import static gregtech.common.tileentities.machines.MTEHatchCraftingInputME.SLOT
 
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -18,6 +20,7 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.ProxiedMteGui.ProxiedMteGuiData;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.PatternSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
@@ -32,8 +35,15 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
     private static final int MANUAL_SLOT_ROW = 3;
     private static final int MANUAL_SLOT_PER_ROW = 3;
 
+    private final @Nullable ProxiedMteGuiData proxyData;
+
     public MTEHatchCraftingInputMEGui(MTEHatchCraftingInputME hatch) {
+        this(hatch, null);
+    }
+
+    public MTEHatchCraftingInputMEGui(MTEHatchCraftingInputME hatch, @Nullable ProxiedMteGuiData proxyData) {
         super(hatch);
+        this.proxyData = proxyData;
     }
 
     @Override
@@ -68,7 +78,21 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .child(createShowPatternButton())
             .child(createExportButton())
             .child(createDoublePatternButton())
-            .child(createManualItemsButton(syncManager));
+            .child(createManualItemsButton(syncManager))
+            .childIf(machine.allowSelectCircuit(), () -> createCircuitSlot(syncManager));
+    }
+
+    @Override
+    protected boolean doesAddCircuitSlot() {
+        return false;
+    }
+
+    @Override
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createBottomRightCornerFlow(panel, syncManager).childIf(
+            proxyData != null && proxyData.hasOrigin(),
+            () -> MTEHatchCraftingInputSlaveGui.createRecipeOrderButton(proxyData.getOriginMTE())
+                .size(SLOT_SIZE));
     }
 
     private ToggleButton createOptimizerButton() {

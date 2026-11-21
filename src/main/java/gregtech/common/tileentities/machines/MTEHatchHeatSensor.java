@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -12,6 +13,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -22,8 +24,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHatchHeatSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
+import net.minecraft.util.StatCollector;
 
-public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
+public class MTEHatchHeatSensor extends MTEHatchRedstoneBase implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "heatSensor";
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -88,18 +93,43 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
     }
 
     @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setDouble("threshold", getThreshold());
+        tag.setBoolean("inverted", isInverted());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setThreshold(nbt.getDouble("threshold"));
+        setInverted(nbt.getBoolean("inverted"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchHeatSensorGui(this).build(data, syncManager, uiSettings);
     }
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHatchHeatSensor.class);
+        HeatSensor("GT5U.MBTT.HeatSensorHatch", IHeatProducer::addHeatSensorHatchToMachineList, MTEHatchHeatSensor.class);
 
+        private final String name;
         private final IGTHatchAdder<IHeatProducer> adder;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
 
-        HeatSensorHatchElement(IGTHatchAdder<IHeatProducer> adder, Class<? extends IMetaTileEntity> mteClasse) {
+        HeatSensorHatchElement(String name, IGTHatchAdder<IHeatProducer> adder,
+            Class<? extends IMetaTileEntity> mteClasse) {
+            this.name = name;
             this.adder = adder;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasse));
         }
@@ -119,6 +149,15 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
             return adder;
         }
 
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
 }
