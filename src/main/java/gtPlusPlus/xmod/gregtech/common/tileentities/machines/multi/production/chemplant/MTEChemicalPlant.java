@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -33,9 +34,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -118,6 +121,20 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     public MTEChemicalPlant(final String aName) {
         super(aName);
+    }
+
+    @Nullable
+    private static Integer getPipeTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCasings2) return null;
+        if (metaID < 12 || metaID > 15) return null;
+        return metaID - 11;
+    }
+
+    @Nullable
+    private static Integer getMachineCasingTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCasings1) return null;
+        if (metaID < 0 || metaID > 9) return null;
+        return metaID + 1;
     }
 
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
@@ -256,11 +273,22 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 .addElement(
                     'M',
                     GTStructureChannels.TIER_MACHINE_CASING.use(
-                        addTieredBlock(
-                            GregTechAPI.sBlockCasings1,
+                        ofBlocksTiered(
+                            MTEChemicalPlant::getMachineCasingTierFromMeta,
+                            ImmutableList.of(
+                                Pair.of(GregTechAPI.sBlockCasings1, 0),
+                                Pair.of(GregTechAPI.sBlockCasings1, 1),
+                                Pair.of(GregTechAPI.sBlockCasings1, 2),
+                                Pair.of(GregTechAPI.sBlockCasings1, 3),
+                                Pair.of(GregTechAPI.sBlockCasings1, 4),
+                                Pair.of(GregTechAPI.sBlockCasings1, 5),
+                                Pair.of(GregTechAPI.sBlockCasings1, 6),
+                                Pair.of(GregTechAPI.sBlockCasings1, 7),
+                                Pair.of(GregTechAPI.sBlockCasings1, 8),
+                                Pair.of(GregTechAPI.sBlockCasings1, 9)),
+                            -1,
                             MTEChemicalPlant::setMachineMeta,
-                            MTEChemicalPlant::getMachineMeta,
-                            10)))
+                            MTEChemicalPlant::getMachineMeta)))
                 .addElement(
                     'H',
                     GTStructureChannels.HEATING_COIL
@@ -268,12 +296,16 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 .addElement(
                     'P',
                     GTStructureChannels.PIPE_CASING.use(
-                        addTieredBlock(
-                            GregTechAPI.sBlockCasings2,
+                        ofBlocksTiered(
+                            MTEChemicalPlant::getPipeTierFromMeta,
+                            ImmutableList.of(
+                                Pair.of(GregTechAPI.sBlockCasings2, 12),
+                                Pair.of(GregTechAPI.sBlockCasings2, 13),
+                                Pair.of(GregTechAPI.sBlockCasings2, 14),
+                                Pair.of(GregTechAPI.sBlockCasings2, 15)),
+                            -1,
                             MTEChemicalPlant::setPipeMeta,
-                            MTEChemicalPlant::getPipeMeta,
-                            12,
-                            16)))
+                            MTEChemicalPlant::getPipeMeta)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -387,8 +419,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         for (int i = 0; i < 8; i++) {
             checkCasing[i] = 0;
         }
-        checkPipe = 0;
-        checkMachine = 0;
+        checkPipe = -1;
+        checkMachine = -1;
         mSolidCasingTier = 0;
         mMachineCasingTier = 0;
         mPipeCasingTier = 0;
@@ -408,7 +440,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         }
         checkCasingMin(errors, mCasing, 70);
         mMachineCasingTier = checkMachine - 1;
-        mPipeCasingTier = checkPipe - 12;
+        mPipeCasingTier = checkPipe;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
