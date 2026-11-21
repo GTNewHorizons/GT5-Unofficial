@@ -37,6 +37,14 @@ public class ArmorActionManager {
 
         register(
             new ArmorAction(
+                "haste",
+                "Haste",
+                true,
+                SyncedKeybind.createConfigurable("key.gt.toggle_haste", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.Haste));
+
+        register(
+            new ArmorAction(
                 "jetpack_hover",
                 "Jetpack Hover",
                 true,
