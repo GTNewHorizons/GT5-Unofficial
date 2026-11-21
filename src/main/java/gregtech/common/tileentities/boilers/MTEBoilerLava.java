@@ -165,12 +165,13 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    protected void fillFluid(ItemStack equippedItemStack, IFluidTank tank, EntityPlayer aPlayer) {
-        int freeSpace = tank.getCapacity() - tank.getFluidAmount();
+    protected void fillFluid(ItemStack equippedItemStack, FluidStack equippedFluidStack, IFluidTank tank, EntityPlayer aPlayer) {
+        int freeSpace = tank.fill(equippedFluidStack, false);
         ItemStack returnedContainer;
         FluidStack drained;
 
         if (freeSpace <= 0) {
+            openGui(aPlayer);
             return;
         }
 
@@ -191,7 +192,6 @@ public class MTEBoilerLava extends MTEBoiler {
             tank.fill(drained, true);
         }
 
-        // Update held ItemStack and give returnedContainer
         replaceEquippedItemStack(equippedItemStack, returnedContainer, aPlayer);
     }
 
@@ -203,9 +203,9 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack equippedContainerFluidStack = GTUtility.getFluidForFilledItem(equippedItemStack, true);
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
-            fillFluid(equippedItemStack, this, aPlayer);
+            fillFluid(equippedItemStack, equippedContainerFluidStack, this, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
-            fillFluid(equippedItemStack, lavaTank, aPlayer);
+            fillFluid(equippedItemStack, equippedContainerFluidStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
         }
@@ -215,21 +215,25 @@ public class MTEBoilerLava extends MTEBoiler {
     protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
         EntityPlayer aPlayer) {
         heldItemStack.stackSize -= 1;
-        // if held item stack is now zero, set held item to returned container
+
         if (heldItemStack.stackSize <= 0) {
-            heldItemStack.stackSize = 0;
+            aPlayer.setCurrentItemOrArmor(0, returnedContainer);
+            aPlayer.inventoryContainer.detectAndSendChanges();
+        } else {
+            addItemToPlayerInventory(aPlayer, returnedContainer);
         }
-        addItemToPlayerInventory(aPlayer, returnedContainer);
     }
 
     protected static void addItemToPlayerInventory(EntityPlayer player, ItemStack stack) {
+
         if (stack == null) {
             return;
         }
-        // Try to place in inventory, if not, spawn in world
+
         if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropPlayerItemWithRandomChoice(stack, false);
         }
+
         player.inventoryContainer.detectAndSendChanges();
     }
 
