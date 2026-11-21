@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -40,14 +42,11 @@ public class ThermalBoilerFrontend extends LargeNEIFrontend {
 
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
-            // TODO: Translation.
             List<String> result = new ArrayList<>();
-            result.add("Steam output shown");
-            result.add("at maximum efficiency.");
+            result.add(StatCollector.translateToLocal("GT5U.nei.thermal_boiler.steam_output"));
 
             if (recipeInfo.recipe.mOutputs != null && recipeInfo.recipe.mOutputs.length > 0) {
-                result.add("Without a Lava Filter,");
-                result.add("only Obsidian is produced.");
+                result.add(StatCollector.translateToLocal("GT5U.nei.thermal_boiler.without_filter"));
             }
 
             return result;
