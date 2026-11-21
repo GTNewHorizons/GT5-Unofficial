@@ -10755,3 +10755,9 @@ Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
 Material.polyvinylchloride.itempipe.newname=PVC
 Material.redstone.fluidpipe.newname=High Pressure
 Material.wood.fluidpipe.newname=Wooden
+
+# Mech armor magnet augment
+GT5U.armor.part.name.Magnet=Augment: Item Attractor
+GT5U.armor.part.tooltip.Magnet=Instantly picks up nearby items and XP while active
+GT5U.armor.behavior.Magnet=Magnet
+key.gt.toggle_magnet=Toggle Magnet
