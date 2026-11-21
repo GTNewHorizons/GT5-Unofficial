@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.glodblock.github.common.item.FCBaseItemCell;
 import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -452,7 +453,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             getAEDiagnostics(),
             "GT5U.infodata.hatch.output_me",
             (IAEFluidStack s) -> s.getFluidStack()
-                .getLocalizedName());
+                .getLocalizedName(),
+            NumberFormatUtil::formatFluid);
     }
 
     @Override
