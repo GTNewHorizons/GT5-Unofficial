@@ -221,7 +221,9 @@ public class RecipeMapBackend {
      * Builds recipe from supplied recipe builder and adds it.
      */
     protected Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
+        if (builder.rejectInvalidComponents(recipeMap.unlocalizedName)) return Collections.emptyList();
         properties.transformBuilder(builder);
+        if (builder.rejectInvalidComponents(recipeMap.unlocalizedName)) return Collections.emptyList();
         Iterable<? extends GTRecipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GTRecipe> ret = new ArrayList<>();
         for (GTRecipe recipe : recipes) {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
@@ -27,11 +28,21 @@ public interface IRecipeMap {
      * to it.
      */
     default IRecipeMap deepCopyInput() {
-        return newRecipeMap(b -> doAdd(b.copy()));
+        return newRecipeMap(toString(), b -> doAdd(b.copy()));
     }
 
     static IRecipeMap newRecipeMap(Function<? super GTRecipeBuilder, Collection<GTRecipe>> func) {
+        return newRecipeMap(null, func);
+    }
+
+    static IRecipeMap newRecipeMap(@Nullable String name,
+        Function<? super GTRecipeBuilder, Collection<GTRecipe>> func) {
         return new IRecipeMap() {
+
+            @Override
+            public String toString() {
+                return name == null ? super.toString() : name;
+            }
 
             @Nonnull
             @Override

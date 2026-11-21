@@ -92,6 +92,7 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
+import gregtech.common.RecipeRegistrationErrorHandler;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
@@ -805,6 +806,7 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         proxy.onServerStarted(event);
+        RecipeRegistrationErrorHandler.start();
         if (RecipeMapBackend.shouldValidateLookup()) {
             GT_FML_LOGGER.info("GTRecipeLookupValidator: enabled; waiting for first server tick after server start.");
             FMLCommonHandler.instance()
@@ -843,7 +845,11 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onServerStopped(FMLServerStoppedEvent event) {
-        proxy.onServerStopped(event);
+        try {
+            proxy.onServerStopped(event);
+        } finally {
+            RecipeRegistrationErrorHandler.stop();
+        }
     }
 
     @Mod.EventHandler
