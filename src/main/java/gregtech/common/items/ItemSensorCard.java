@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -77,9 +78,7 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         ChunkCoordinates target = aCard.getTarget();
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if (((tTileEntity instanceof IGregTechDeviceInformation))
-            && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
-            IGregTechDeviceInformation info = (IGregTechDeviceInformation) tTileEntity;
+        if (((tTileEntity instanceof IGregTechDeviceInformation info)) && (info.isGivingInformation())) {
             List<String> tInfoList = new ArrayList<>(Arrays.asList(info.getInfoData()));
             info.getExtraInfoData(tInfoList);
             String[] tInfoData = tInfoList.toArray(new String[0]);
@@ -87,6 +86,14 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
                 aCard.setString("mString" + i, tInfoData[i]);
             }
             aCard.setInt("mString", strCount = tInfoData.length);
+
+            List<IChatComponent> tChatInfoList = info.getChatInfoData();
+            info.getExtraChatInfoData(tChatInfoList);
+            for (int i = 0; i < tChatInfoList.size(); i++) {
+                aCard.setString("mChatString" + i, IGregTechDeviceInformation.encodeChat(tChatInfoList.get(i)));
+            }
+            aCard.setInt("mChatString", tChatInfoList.size());
+
             return CardState.OK;
         }
         return CardState.NO_TARGET;
@@ -95,10 +102,18 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
     @Override
     public List<PanelString> getStringData(int aSettings, ICardWrapper aCard, boolean aLabels) {
         List<PanelString> rList = new LinkedList<>();
-        for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
+        strCount = aCard.getInt("mString") + aCard.getInt("mChatString");
+        for (int i = 0; i < aCard.getInt("mString"); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
                 line.textLeft = IGregTechDeviceInformation.decode(aCard.getString("mString" + i));
+                rList.add(line);
+            }
+        }
+        for (int i = 0; i < aCard.getInt("mChatString"); i++) {
+            if ((aSettings & 1 << (i + aCard.getInt("mString"))) != 0) {
+                PanelString line = new PanelString();
+                line.textLeft = IGregTechDeviceInformation.decodeChat(aCard.getString("mChatString" + i));
                 rList.add(line);
             }
         }

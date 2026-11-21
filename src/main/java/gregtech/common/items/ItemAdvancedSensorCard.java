@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -63,6 +64,8 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
     private static final String MACHINE_NAME_KEY = "client_machine_name";
     private static final String OUTPUT_ENTRY_KEY = "client_entry_%d";
     private static final String OUTPUT_ENTRY_LENGTH_KEY = "client_entry_length";
+    private static final String OUTPUT_CHAT_ENTRY_KEY = "client_chat_entry_%d";
+    private static final String OUTPUT_CHAT_ENTRY_LENGTH_KEY = "client_chat_entry_length";
 
     private int payloadSize = 0;
 
@@ -153,6 +156,7 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                 .ifPresent(name -> card.setString(MACHINE_NAME_KEY, machineState == State.SELF_DESTRUCTED ? "" : name));
 
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            final ImmutableList.Builder<IChatComponent> chatBuilder = ImmutableList.builder();
             switch (machineState) {
                 case SELF_DESTRUCTED -> builder.add(SELF_DESTRUCTED_OUTPUT);
                 case HOST_DECONSTRUCTED -> builder.addAll(DECONSTRUCTED_OUTPUT);
@@ -167,6 +171,8 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
                     data.getPayload()
                         .ifPresent(builder::addAll);
+                    data.getChatPayload()
+                        .ifPresent(chatBuilder::addAll);
                 }
                 default -> builder.add(NO_DATA_FOUND);
             }
@@ -177,6 +183,17 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                 final String payloadItem = payload.get(i);
                 if (!payloadItem.isEmpty()) {
                     card.setString(String.format(OUTPUT_ENTRY_KEY, i), payloadItem);
+                }
+            }
+            final List<IChatComponent> chatPayload = chatBuilder.build();
+            card.setInt(OUTPUT_CHAT_ENTRY_LENGTH_KEY, chatPayload.size());
+            for (int i = 0; i < chatPayload.size(); i++) {
+                final IChatComponent chatPayloadItem = chatPayload.get(i);
+                if (chatPayloadItem != null) {
+                    // convert chat payload to JSON.
+                    card.setString(
+                        String.format(OUTPUT_CHAT_ENTRY_KEY, i),
+                        IGregTechDeviceInformation.encodeChat(chatPayloadItem));
                 }
             }
         });
@@ -191,7 +208,7 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
         final String machineName = card.getString(MACHINE_NAME_KEY);
         final int bitmaskOffset;
 
-        payloadSize = card.getInt(OUTPUT_ENTRY_LENGTH_KEY);
+        payloadSize = card.getInt(OUTPUT_ENTRY_LENGTH_KEY) + card.getInt(OUTPUT_CHAT_ENTRY_LENGTH_KEY);
 
         if (!machineName.isEmpty() && (displaySettings & 1) != 0) {
             // update() stores the name in the server language; rebuild it here so it follows the reader's language.
@@ -209,6 +226,15 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                     returned.add(
                         panelString(
                             IGregTechDeviceInformation.decode(card.getString(String.format(OUTPUT_ENTRY_KEY, i)))));
+                }
+            });
+        IntStream.range(0, card.getInt(OUTPUT_CHAT_ENTRY_LENGTH_KEY))
+            .forEach(i -> {
+                if ((displaySettings & 1 << (card.getInt(OUTPUT_ENTRY_LENGTH_KEY) + i + bitmaskOffset)) != 0) {
+                    returned.add(
+                        panelString(
+                            IGregTechDeviceInformation
+                                .decodeChat(card.getString(String.format(OUTPUT_CHAT_ENTRY_KEY, i)))));
                 }
             });
 
