@@ -116,12 +116,13 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
                 } else if (!isUsingDenseSteam) {
                     continue;
                 }
-                denseFlow = Math
-                    .min(aFluids.get(i).amount, MathUtils.safeInt((long) Math.ceil(remainingFlow / 1000.0d)));
+                denseFlow = Math.min(
+                    aFluids.get(i).amount,
+                    MathUtils.safeInt((long) Math.ceil(remainingFlow / (double) DENSE_STEAM_RATIO)));
                 if (denseFlow <= 0) {
                     continue;
                 }
-                int effectiveFlow = Math.min(remainingFlow, denseFlow * 1000);
+                int effectiveFlow = Math.min(remainingFlow, denseFlow * DENSE_STEAM_RATIO);
                 depleteInput(new FluidStack(aFluids.get(i), denseFlow));
                 storedFluid += denseFlow;
                 remainingFlow -= effectiveFlow;
