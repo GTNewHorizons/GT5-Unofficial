@@ -45,21 +45,21 @@ public class RecipeIC2 {
 
         // Shaft Extruder Shape
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
+            ItemList.Shape_Extruder_Shaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
                 OrePrefixes.plate.get(Materials.DarkSteel), 'S', OrePrefixes.screw.get(Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
+            ItemList.Shape_Extruder_Shaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
                 OrePrefixes.plate.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
+            ItemList.Shape_Extruder_Shaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -70,7 +70,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 9),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
             .eut(250)
@@ -78,7 +78,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
             .eut(250)
@@ -87,7 +87,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 9),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -95,7 +95,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -104,7 +104,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.VibrantAlloy, 9),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -112,7 +112,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -121,7 +121,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 9),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
             .eut(4000)
@@ -129,7 +129,7 @@ public class RecipeIC2 {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1),
-                GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
+                ItemList.Shape_Extruder_Shaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
             .eut(4000)
