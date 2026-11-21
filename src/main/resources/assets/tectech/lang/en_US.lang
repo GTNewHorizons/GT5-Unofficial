@@ -120,6 +120,7 @@ item.tm.powerpassupgradecover.name=Power Pass Upgrade Cover
 item.tm.powerpassupgradecover.desc.0=Add power pass functionality to TecTech Multiblocks
 item.tm.powerpassupgradecover.desc.1=Active transformer in a can??
 item.tm.powerpassupgradecover.desc.2=Chain them up like Christmas lights!
+item.tm.powerpassupgradecover.desc.3=Deprecated - Power Pass is now enabled by default
 
 item.tm.itemAstralArrayFabricator.name=Astral Array Fabricator
 item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
