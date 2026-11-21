@@ -306,12 +306,12 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTENeutronAccelerator) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mNeutronAccelerator.add((MTENeutronAccelerator) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTEHatchNeutronSensor) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mNeutronSensor.add((MTEHatchNeutronSensor) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTENeutronAccelerator neutronAccelerator) {
+                neutronAccelerator.updateTexture(aBaseCasingIndex);
+                return this.mNeutronAccelerator.add(neutronAccelerator);
+            } else if (aMetaTileEntity instanceof MTEHatchNeutronSensor neutronSensor) {
+                neutronSensor.updateTexture(aBaseCasingIndex);
+                return this.mNeutronSensor.add(neutronSensor);
             }
         }
         return false;
