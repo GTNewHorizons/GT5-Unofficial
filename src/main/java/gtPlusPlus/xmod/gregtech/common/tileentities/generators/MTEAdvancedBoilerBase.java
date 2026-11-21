@@ -2,10 +2,14 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
@@ -22,11 +26,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateName
 public class MTEAdvancedBoilerBase extends MTEBoiler {
@@ -275,7 +282,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     private void consumeFuel(IGregTechTileEntity tile, ItemStack fuel, int burnTime) {
-        this.mProcessingEnergy += burnTime / 10;
+        addProcessingEnergy(burnTime / 10);
         this.mTemperature += burnTime / 500; // will add bonus temperature points if the burn time is pretty high
 
         tile.decrStackSize(2, 1);
@@ -306,4 +313,54 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     public int getTitleColor() {
         return COLOR_TITLE.get();
     }
+
+    @Override
+    protected boolean canNotCreateSteam(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aTick % 10L != 0L) {
+            return false;
+        }
+
+        if (this.mTemperature > 100) {
+            if ((!GTModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
+                this.mHadNoWater = true;
+            } else {
+                produceSteam(getProductionPerSecond() / 2);
+                playBoiling = true;
+            }
+        } else {
+            this.mHadNoWater = false;
+            playBoiling = false;
+        }
+        return false;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean isProducingSteam = tag.getBoolean("isProducingSteam");
+        int power = tag.getInteger("power");
+        if (isProducingSteam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("isProducingSteam", this.isProducingSteam());
+        tag.setInteger("power", this.getProductionPerSecond());
+        final int fuel;
+        if (this.mProcessingEnergy > 0) {
+            fuel = this.mProcessingEnergy;
+        } else if (this.mInventory[2] == null || isItemValidFuel(this.mInventory[2])) {
+            fuel = 0;
+        } else {
+            fuel = -1;
+        }
+        tag.setInteger("fuel", fuel);
+    }
+
 }
