@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_GLOW
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -49,6 +50,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> implements IDataCopyable {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -137,22 +139,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.1", TOOLTIP_COLORED))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.splitter.body.2"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.3", TOOLTIP_COLOR, TOOLTIP_COLOR))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
-            .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.module.splitter.body.5",
-                    TOOLTIP_COLORED,
-                    TOOLTIP_VCOs,
-                    TOOLTIP_CCs))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.splitter.body.6"))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-splitter"))
             .beginStructureBlock(7, 5, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -160,7 +147,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             // Nanochip Mesh Interface Casing
             .addCasing("18", translateToLocal("gt.blockcasings12.1.name"), false)
             // Kevlar Frame Box
-            .addCasing("10", "Kevlar Frame Box", false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Kevlar), false)
             .addMiscHatch(
                 "0+",
                 translateToLocal("gt.blockmachines.hatch.splitter.redstone.name"),

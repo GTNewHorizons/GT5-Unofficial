@@ -7,8 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_G
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,6 +26,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTracerModule> {
 
     protected static final int WIRE_OFFSET_X = 3;
@@ -103,10 +104,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.wire_tracer.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.wire_tracer.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-wire-tracer"))
             .beginStructureBlock(7, 8, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -116,9 +114,9 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             // Nanochip Complex Glass
             .addCasing("25", translateToLocal("gt.blockglass1.8.name"), false)
             // Superconductor Base UHV Frame Box
-            .addCasing("20", "Superconductor Base UHV Frame Box", false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SuperconductorUHVBase), false)
             // Superconductor Base UEV Sheetmetal
-            .addCasing("1", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase), false)
+            .addCasing("1", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.SuperconductorUEVBase), false)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,

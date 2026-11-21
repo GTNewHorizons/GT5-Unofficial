@@ -6,24 +6,25 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGAN
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,11 +37,11 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
 
     protected static final int OPTICAL_OFFSET_X = 3;
@@ -125,22 +126,22 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         // spotless:off
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.1"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.2"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.3"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.4"))
-            .addSeparator()
-            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.9x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.7x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.9x"), TooltipHelper.EFF_COLOR))
-            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-optical-organizer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("amount3", WATER_LIST.get(0).amount)
+                    .put("amount4", WATER_LIST.get(1).amount)
+                    .put("amount5", WATER_LIST.get(2).amount)
+                    .put("amount6", WATER_LIST.get(3).amount)
+                    .put("amount7", WATER_LIST.get(4).amount)
+                    .put("amount8", WATER_LIST.get(5).amount)
+                    .put("bonus3", GRADE_3_WATER_DISCOUNT)
+                    .put("bonus4", GRADE_4_WATER_DISCOUNT)
+                    .put("bonus5", GRADE_5_SPEED_MODIFIER)
+                    .put("bonus6", GRADE_6_SPEED_MODIFIER)
+                    .put("bonus7", GRADE_7_EU_MULTIPLIER)
+                    .put("bonus8", GRADE_8_EU_MULTIPLIER)
+                    .build())
             .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -148,7 +149,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             // Nanochip Mesh Interface Casing
             .addCasing("49", translateToLocal("gt.blockcasings12.1.name"), false)
             // Awakened Draconium Frame Box
-            .addCasing("48", "Awakened Draconium Frame Box", false)
+            .addCasing("48", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DraconiumAwakened), false)
             // Nanochip Complex Glass
             .addCasing("40", translateToLocal("gt.blockglass1.8.name"), false)
             .addInputHatch("1-2", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
@@ -159,15 +160,6 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
         // spotless:on
-    }
-
-    public String getWaterTooltipLine(String grade, int amount, String effect, EnumChatFormatting effectColor) {
-        return translateToLocalFormatted(
-            "GT5U.tooltip.nac.module.optical_organizer.body.water",
-            grade,
-            amount,
-            effectColor,
-            effect);
     }
 
     @Override
@@ -250,13 +242,38 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         }
     }
 
+    private static final float GRADE_3_WATER_DISCOUNT = 0.8f;
+    private static final float GRADE_4_WATER_DISCOUNT = 0.6f;
+    private static final float GRADE_5_SPEED_MODIFIER = 0.9f;
+    private static final float GRADE_6_SPEED_MODIFIER = 0.7f;
+    private static final float GRADE_7_EU_MULTIPLIER = 0.9f;
+    private static final float GRADE_8_EU_MULTIPLIER = 0.7f;
+
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
-        new BoostingWater(Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
-        new BoostingWater(Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
-        new BoostingWater(Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
+        new BoostingWater(
+            Materials.Grade3PurifiedWater,
+            1000,
+            module -> { module.waterDiscount *= GRADE_3_WATER_DISCOUNT; }),
+        new BoostingWater(
+            Materials.Grade4PurifiedWater,
+            800,
+            module -> { module.waterDiscount *= GRADE_4_WATER_DISCOUNT; }),
+        new BoostingWater(
+            Materials.Grade5PurifiedWater,
+            800,
+            module -> { module.speedModifier *= GRADE_5_SPEED_MODIFIER; }),
+        new BoostingWater(
+            Materials.Grade6PurifiedWater,
+            600,
+            module -> { module.speedModifier *= GRADE_6_SPEED_MODIFIER; }),
+        new BoostingWater(
+            Materials.Grade7PurifiedWater,
+            600,
+            module -> { module.euMultiplier *= GRADE_7_EU_MULTIPLIER; }),
+        new BoostingWater(
+            Materials.Grade8PurifiedWater,
+            400,
+            module -> { module.euMultiplier *= GRADE_8_EU_MULTIPLIER; }));
 
     private static class BoostingWater {
 

@@ -7,11 +7,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMB
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMBER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,6 +31,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECuttingChamberModule> {
 
     protected static final int CUTTING_OFFSET_X = 3;
@@ -109,10 +111,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.cutting_chamber.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.cutting_chamber.flavor.1")))
+            .addMarkdown(new ResourceLocation("gregtech", "nanochip-cutting-chamber"))
             .beginStructureBlock(7, 8, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -122,7 +121,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             // Nanochip Complex Glass
             .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Neutronium Frame Box
-            .addCasing("21", "Neutronium Frame Box", false)
+            .addCasing("21", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
             // Naquadria-Reinforced Water Plant Casing
             .addCasing("16", translateToLocal("gt.blockcasings9.12.name"), false)
             .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)

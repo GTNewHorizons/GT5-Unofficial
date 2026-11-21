@@ -15,7 +15,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.Assembly
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.util.ArrayDeque;
@@ -32,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,6 +50,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -94,6 +95,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
     implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
@@ -103,6 +105,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     // How many seconds of power should each module buffer
     private static final BigInteger MODULE_BUFFER_SECONDS = BigInteger.valueOf(20 * SECONDS);
+
+    private static final int PROCESSING_CYCLE_SECONDS = 5;
 
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
@@ -253,32 +257,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.main.logo"))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.3", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.4", TOOLTIP_VCOs, TOOLTIP_COLOR))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.5", TOOLTIP_CCs, TOOLTIP_VCI))
-            .addInfo(
-                translateToLocalFormatted(
-                    "GT5U.tooltip.nac.main.body.6",
-                    TOOLTIP_CCs,
-                    TOOLTIP_COLORED,
-                    TOOLTIP_VCI,
-                    TOOLTIP_COLOR))
-            .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
-            .addSupportAny()
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-assembly-complex"),
+                ImmutableMap.of("cycle", PROCESSING_CYCLE_SECONDS))
             .beginStructureBlock(63, 49, 63, false)
-            .addController("Middle of structure, 9th layer")
+            .addController(translateToLocal("gt.mbtt.structure.middle_of_structure_9th_layer"))
             // Nanochip Reinforcement Casing
             .addCasing("3958", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
@@ -288,7 +271,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             // Nanochip Computational Matrix Casing
             .addCasing("721", translateToLocal("gt.blockcasings12.3.name"), false)
             // Naquadah Frame Box
-            .addCasing("53", "Naquadah Frame Box", false)
+            .addCasing("53", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Naquadah), false)
             // Nanochip Firewall Projection Casing
             .addCasing("32", translateToLocal("gt.blockcasings12.4.name"), false)
             .addMiscHatch(
@@ -712,7 +695,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
-            mMaxProgresstime = 5 * SECONDS;
+            mMaxProgresstime = PROCESSING_CYCLE_SECONDS * SECONDS;
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();

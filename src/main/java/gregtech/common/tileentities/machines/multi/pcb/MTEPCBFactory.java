@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -41,6 +42,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -55,6 +57,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -90,7 +93,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTEPCBFactoryGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -99,6 +101,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @SuppressWarnings("SpellCheckingInspection")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -107,6 +110,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
+    private static final double NANITE_PARALLEL_EXPONENT = 0.75;
+    private static final int MAX_PARALLEL = 256;
     private float mRoughnessMultiplier = 1;
     private byte mTier = 1;
     private int mMaxParallel = 0;
@@ -408,7 +413,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         return SimpleCheckRecipeResult.ofFailure("nanites_missing");
                     }
                 }
-                maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
+                maxParallel = (int) Math
+                    .min(Math.max(Math.ceil(Math.pow(numberOfNanites, NANITE_PARALLEL_EXPONENT)), 1), MAX_PARALLEL);
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
@@ -737,73 +743,74 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Board Fabricator")
-            .addInfo("Tier of the machine determines the available recipes")
-            .addInfo("Each tier and upgrade requires additional structures")
-            .addInfo("Power consumption is multiplied by Sqrt(structures)")
-            .addInfo("Tier 2 and 3 allow parallel by using extra nanites")
-            .addInfo("Nanites have to be placed in a Nanite Containment Bus")
-            .addInfo(
-                "The formula for parallels is the " + TooltipHelper.parallelText("amount of nanites^0.75")
-                    + ", rounded up")
-            .addInfo("Maximum parallel is " + TooltipHelper.parallelText("256"))
-            .addInfo("Recipes require a cooling upgrade to be overclocked")
-            .addInfo(
-                "Liquid Cooling uses " + EnumChatFormatting.BLUE
-                    + "10 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.BLUE
-                    + "distilled water"
-                    + EnumChatFormatting.GRAY
-                    + " and enables default overclocks")
-            .addInfo(
-                "Thermosink uses " + EnumChatFormatting.AQUA
-                    + "10 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.AQUA
-                    + "Super Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " and enables "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclocks")
-            .addInfo("Trace size can be changed to modify the material usage and machine speed")
-            .addInfo("Configure Trace Size in UI")
+        String lowerBackCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_lower_back_casing");
+        String photolithographicCasing = StatCollector
+            .translateToLocal("gt.mbtt.structure.any_photolithographic_casing");
+        String naniteBus = StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.circuit_board_fabricator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pcb-factory"),
+                ImmutableMap.of(
+                    "exponent",
+                    NANITE_PARALLEL_EXPONENT,
+                    "max_parallel",
+                    MAX_PARALLEL,
+                    "coolant",
+                    COOLANT_CONSUMED_PER_SEC))
             .addSupportAny()
             .beginStructureBlock(7, 6, 7, true)
-            .addController("Front bottom center")
-            .addEnergyHatch("1-2", "Any lower back casing", 1)
-            .addMaintenanceHatch("1", "Any lower back casing", 1)
-            .addInputBus("1+", "Any lower back casing", 1)
-            .addInputHatch("1+", "Any lower back casing", 1)
-            .addOutputBus("1+", "Any lower back casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1-2", lowerBackCasing, 1)
+            .addMaintenanceHatch("1", lowerBackCasing, 1)
+            .addInputBus("1+", lowerBackCasing, 1)
+            .addInputHatch("1+", lowerBackCasing, 1)
+            .addOutputBus("1+", lowerBackCasing, 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T1 Recipes")
-            .addCasing("67-72", "Basic Photolithographic Framework Casing", false)
-            .addCasing("40", "Damascus Steel Frame Box", false)
-            .addCasing("25", "Plascrete Block", false)
-            .addCasing("25", "Any Tiered Glass", false)
-            .addCasing("12", "Grate Machine Casing", false)
-            .addCasing("9", "Vibrant Alloy Frame Box", false)
+            .addStructureInfo(
+                EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocalFormatted("gt.mbtt.structure.unlocks_tier_recipes", 1))
+            .addCasing("67-72", Casings.BasicPhotolithographicFrameworkCasing.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
+            .addCasing(
+                "25",
+                ItemList.Block_Plascrete.get(1)
+                    .getDisplayName(),
+                false)
+            .addCasing("25", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("12", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.VibrantAlloy), false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 2 " + EnumChatFormatting.BLUE + "(Adds to T1)")
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T2 Recipes and Parallels with Silver Nanites")
-            .addCasing("158", "Reinforced Photolithographic Framework Casing", false)
-            .addCasing("34", "Duranium Frame Box", false)
-            .addMiscHatch("0-1", "Nanite Containment Bus", "Any lower back casing", 1)
+            .addStructureInfo(
+                StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two") + " "
+                    + EnumChatFormatting.BLUE
+                    + StatCollector.translateToLocalFormatted("gt.mbtt.structure.adds_to_tier", 1))
+            .addStructureInfo(
+                EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.unlocks_tier_recipes_and_parallels",
+                    2,
+                    OrePrefixes.nanite.getLocalizedNameForItem(Materials.Silver)))
+            .addCasing("158", Casings.ReinforcedPhotolithographicFrameworkCasing.getLocalizedName(), false)
+            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Duranium), false)
+            .addMiscHatch("0-1", naniteBus, lowerBackCasing, 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 3 " + EnumChatFormatting.BLUE + "(New Structure)")
-            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T3 Recipes and Parallels with Gold Nanites")
-            .addCasing("256-292", "Radiation Proof Photolithographic Framework Casing", false)
-            .addCasing("76", "Radiant Naquadah Alloy Casing", false)
-            .addMiscHatch("0-1", "Nanite Containment Bus", "Any photolithographic casing", 1)
-            .addEnergyHatch("1-2", "Any photolithographic casing", 1)
-            .addMaintenanceHatch("1", "Any photolithographic casing", 1)
-            .addInputBus("1+", "Any photolithographic casing", 1)
-            .addInputHatch("1+", "Any photolithographic casing", 1)
-            .addOutputBus("1+", "Any photolithographic casing", 1)
+            .addStructureInfo(
+                StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three") + " "
+                    + EnumChatFormatting.BLUE
+                    + StatCollector.translateToLocal("gt.mbtt.structure.new_structure"))
+            .addStructureInfo(
+                EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.unlocks_tier_recipes_and_parallels",
+                    3,
+                    OrePrefixes.nanite.getLocalizedNameForItem(Materials.Gold)))
+            .addCasing("256-292", Casings.RadiationProofPhotolithographicFrameworkCasing.getLocalizedName(), false)
+            .addCasing("76", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addMiscHatch("0-1", naniteBus, photolithographicCasing, 1)
+            .addEnergyHatch("1-2", photolithographicCasing, 1)
+            .addMaintenanceHatch("1", photolithographicCasing, 1)
+            .addInputBus("1+", photolithographicCasing, 1)
+            .addInputHatch("1+", photolithographicCasing, 1)
+            .addOutputBus("1+", photolithographicCasing, 1)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
