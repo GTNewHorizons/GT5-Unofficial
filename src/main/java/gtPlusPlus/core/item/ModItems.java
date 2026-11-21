@@ -12,7 +12,6 @@ import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGE
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -74,6 +73,7 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
 import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
