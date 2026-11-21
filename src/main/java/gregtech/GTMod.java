@@ -151,7 +151,7 @@ import ic2.api.recipe.RecipeOutput;
     version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
-        + "required-after:gtnhlib@[0.12.4,);"
+        + "required-after:gtnhlib@[0.11.58,);"
         + "required-after:endlessids@[1.7.3,);"
         + "required-after:postea@[1.2.7,);"
         + "required-after:modularui@[1.1.12,);"
