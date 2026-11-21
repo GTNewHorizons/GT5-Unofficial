@@ -7,15 +7,18 @@ import java.util.ListIterator;
 import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -96,6 +99,42 @@ public class ArmorEventHandlers {
     public void onServerPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.START && !(event.player instanceof FakePlayer)) {
             onPlayerTick(event);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderArmor(RenderPlayerEvent.SetArmorModel event) {
+        if (isCloaked(event.entityPlayer)) {
+            event.result = 0;
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
+        if (isCloaked(event.entityPlayer)) {
+            event.renderHelmet = false;
+            event.renderCape = false;
+            event.renderItem = false;
+        }
+    }
+
+    private static boolean isCloaked(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
+        if (chest == null || !(chest.getItem() instanceof MechArmorBase)) return false;
+        return MechArmorBase.load(player, chest)
+            .hasBehavior(BehaviorName.Cloak);
+    }
+
+    @SubscribeEvent
+    public void onMobTarget(LivingSetAttackTargetEvent event) {
+        if (!(event.target instanceof EntityPlayer player)) return;
+        if (!(event.entityLiving instanceof EntityLiving mob)) return;
+        if (mob.getAITarget() == player) return;
+        if (isCloaked(player)) {
+            mob.setAttackTarget(null);
         }
     }
 
