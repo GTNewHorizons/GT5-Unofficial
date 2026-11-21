@@ -1205,24 +1205,45 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return PatternTargetKey.ofSets(maps, voltage, separatedBusItems(hatch, maps));
         }
 
-        // Mirrors doCheckRecipe: a crafting input buffer only adds its shared items, a bus with input separation adds
-        // its own items, and without separation every bus but the buffers counts.
+        // Mirrors doCheckRecipe: a crafting input buffer only adds its shared items and a bus with input separation
+        // adds its own items.
         final List<ItemStack> items = new ArrayList<>();
         if (hatch instanceof IDualInputHatch dualInputHatch) {
             Collections.addAll(items, dualInputHatch.getSharedItems());
         } else {
             if (!isInputSeparationEnabled()) {
-                for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
-                    if (!(bus instanceof MTEHatchCraftingInputME)) addPatternConfigItems(items, bus, maps);
-                }
-                final ItemStack slotCircuit = getStackInSlot(1);
-                if (slotCircuit != null && GTUtility.isAnyIntegratedCircuit(slotCircuit)) items.add(slotCircuit);
-            } else if (hatch instanceof MTEHatchInputBus bus) {
+                return PatternTargetKey.ofSets(maps, voltage, combinedBusItems(hatch, maps));
+            }
+            if (hatch instanceof MTEHatchInputBus bus) {
                 addPatternConfigItems(items, bus, maps);
             }
             if (canUseControllerSlotForRecipe() && getControllerSlot() != null) items.add(getControllerSlot());
         }
         return PatternTargetKey.of(maps, voltage, items);
+    }
+
+    private List<List<ItemStack>> combinedBusItems(MTEHatch hatch, Collection<RecipeMap<?>> maps) {
+        // doCheckRecipe merges uncolored buses into each color pass; colored hatches join only their own pass.
+        short colors = getHatchColors();
+        if (colors == 0) colors = 0b1;
+        final byte hatchColor = hatch.getColor();
+        final ItemStack slotCircuit = getStackInSlot(1);
+        final ItemStack controllerItem = canUseControllerSlotForRecipe() ? getControllerSlot() : null;
+        final List<List<ItemStack>> sets = new ArrayList<>();
+        for (byte color = 0; color < 16; color++) {
+            if (isColorAbsent(colors, color) || (hatchColor != -1 && hatchColor != color)) continue;
+            final List<ItemStack> items = new ArrayList<>();
+            for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+                final byte busColor = bus.getColor();
+                if (bus instanceof MTEHatchCraftingInputME || (busColor != -1 && busColor != color)) continue;
+                addPatternConfigItems(items, bus, maps);
+            }
+            if (slotCircuit != null && GTUtility.isAnyIntegratedCircuit(slotCircuit)) items.add(slotCircuit);
+            if (controllerItem != null) items.add(controllerItem);
+            sets.add(items);
+        }
+        if (sets.isEmpty()) sets.add(Collections.emptyList());
+        return sets;
     }
 
     // With input separation doCheckRecipe pairs the fluids with one bus at a time, and with the controller slot alone

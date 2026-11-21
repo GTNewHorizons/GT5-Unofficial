@@ -28,14 +28,22 @@ import gregtech.api.util.GTUtility.ItemId;
  * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the sets of items it may
  * add to a recipe check, such as the circuit; one fitting set is enough.
  */
-public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets)
-    implements IPatternTargetKey {
+public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets,
+    @Nullable ItemId specialItem) implements IPatternTargetKey {
 
     /**
      * Builds a key with one item set; a non-positive voltage turns the voltage check off.
      */
     public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items) {
         return ofSets(recipeMaps, voltage, Collections.singletonList(items));
+    }
+
+    /** Builds a key with the machine's special-slot item. */
+    public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items,
+        @Nullable ItemStack specialItem) {
+        final PatternTargetKey key = of(recipeMaps, voltage, items);
+        return specialItem == null ? key
+            : new PatternTargetKey(key.recipeMaps, key.voltage, key.itemSets, ItemId.createWithStackSize(specialItem));
     }
 
     /**
@@ -53,7 +61,7 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             }
             sets.add(ids);
         }
-        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), sets);
+        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), sets, null);
     }
 
     /**
@@ -107,7 +115,8 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
         for (RecipeMap<?> recipeMap : recipeMaps) {
             final FindRecipeQuery query = recipeMap.findRecipeQuery()
                 .items(inputArray)
-                .fluids(fluidArray);
+                .fluids(fluidArray)
+                .specialSlot(specialItem == null ? null : specialItem.getItemStack(specialItem.stackSize()));
             // The query multiplies the voltage by the map's amperage, so "no check" must skip the call, not pass a max.
             if (voltage > 0) {
                 query.voltage(voltage);
@@ -290,6 +299,7 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
     private static boolean consumesAllFluids(GTRecipe recipe, FluidStack[] patternFluids, long multiplier) {
         final long[] left = new long[patternFluids.length];
         final boolean[] used = new boolean[patternFluids.length];
+        final boolean[] nonConsumed = new boolean[patternFluids.length];
         for (int i = 0; i < patternFluids.length; i++) {
             left[i] = patternFluids[i].amount;
         }
@@ -311,6 +321,10 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
                     continue;
                 }
                 used[i] = true;
+                if (provided.amount <= 0) {
+                    nonConsumed[i] = true;
+                    continue;
+                }
                 final long taken = Math.min(needed, left[i]);
                 left[i] -= taken;
                 needed -= taken;
@@ -321,7 +335,8 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
         }
 
         for (int i = 0; i < patternFluids.length; i++) {
-            if (!used[i] || left[i] > 0) {
+            // The recipe does not consume this fluid, so its pattern amount may remain.
+            if (!used[i] || (left[i] > 0 && !nonConsumed[i])) {
                 return false;
             }
         }

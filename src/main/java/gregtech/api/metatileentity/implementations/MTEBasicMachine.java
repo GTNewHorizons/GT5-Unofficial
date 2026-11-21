@@ -1051,8 +1051,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         final RecipeMap<?> map = getRecipeMap();
         if (map == null) return null;
         final ItemStack[] nonConsumed = getNonConsumedInputDisplayItems().toArray(new ItemStack[0]);
-        return PatternTargetKey
-            .of(Collections.singletonList(map), V[mTier], Arrays.asList(appendSelectedCircuit(nonConsumed)));
+        return PatternTargetKey.of(
+            Collections.singletonList(map),
+            V[mTier],
+            Arrays.asList(appendSelectedCircuit(nonConsumed)),
+            getSpecialSlot());
     }
 
     /**
