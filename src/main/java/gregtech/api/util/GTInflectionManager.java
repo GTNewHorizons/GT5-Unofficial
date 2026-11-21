@@ -45,6 +45,7 @@ public final class GTInflectionManager {
         .getEffectiveSide()
         .isServer();
     private static final Pattern CAPITALIZE_WORDS_PATTERN = Pattern.compile("\\p{L}+");
+    private static final Pattern WORD_PATTERN = Pattern.compile("\\S+");
     private static final Splitter SPLITTER = Splitter.on('/')
         .omitEmptyStrings();
 
@@ -186,12 +187,13 @@ public final class GTInflectionManager {
                 continue;
             }
             switch (targetRule) {
-                case "lowercase" -> word = word.toLowerCase(LOCALE);
+                case "lowercase" -> word = lowercaseKeepingAcronyms(word);
                 case "uppercase" -> word = word.toUpperCase(LOCALE);
-                case "capitalize_first" -> word = word.substring(0, 1)
-                    .toUpperCase(LOCALE)
-                    + word.substring(1)
-                        .toLowerCase(LOCALE);
+                case "capitalize_first" -> {
+                    String lower = lowercaseKeepingAcronyms(word);
+                    word = lower.substring(0, 1)
+                        .toUpperCase(LOCALE) + lower.substring(1);
+                }
                 case "capitalize_words" -> {
                     Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
                     StringBuffer sb = new StringBuffer(word.length());
@@ -223,6 +225,30 @@ public final class GTInflectionManager {
             }
         }
         return word;
+    }
+
+    /** Lowercases text but keeps inner capitals: Хастеллой-C276 becomes хастеллой-C276, HSS-E stays as is. */
+    private static String lowercaseKeepingAcronyms(String text) {
+        Matcher words = WORD_PATTERN.matcher(text);
+        StringBuffer sb = new StringBuffer(text.length());
+        while (words.find()) {
+            words.appendReplacement(sb, Matcher.quoteReplacement(lowercaseWord(words.group())));
+        }
+        words.appendTail(sb);
+        return sb.toString();
+    }
+
+    private static String lowercaseWord(String word) {
+        Matcher firstRun = CAPITALIZE_WORDS_PATTERN.matcher(word);
+        if (!firstRun.find()) return word.toLowerCase(LOCALE);
+        String afterFirstLetter = word.substring(firstRun.start() + 1);
+        if (afterFirstLetter.equals(afterFirstLetter.toLowerCase(LOCALE))) return word.toLowerCase(LOCALE);
+        // Only a leading "Capitalized" run is a normal word; an acronym or mixed-case run is kept
+        String runTail = firstRun.group()
+            .substring(1);
+        if (runTail.isEmpty() || !runTail.equals(runTail.toLowerCase(LOCALE))) return word;
+        return word.substring(0, firstRun.start()) + firstRun.group()
+            .toLowerCase(LOCALE) + word.substring(firstRun.end());
     }
 
     @Desugar
