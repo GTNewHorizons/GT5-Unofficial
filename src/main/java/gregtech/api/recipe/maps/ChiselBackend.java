@@ -73,7 +73,19 @@ public class ChiselBackend extends RecipeMapBackend {
         if (chiselTargetRecipe != null) return chiselTargetRecipe;
 
         // Architecture mode
-        return generateArchitectureRecipe(items, specialSlot);
+        GTRecipe architectureRecipe = generateArchitectureRecipe(items, specialSlot);
+        if (architectureRecipe != null) return architectureRecipe;
+
+        // Default recipe: only when no circuit is set, circuit greater than number of targets will fail
+        if (circuitConfiguration == 0) {
+            for (ItemStack item : items) {
+                if (item == null || isArchitectureTarget(item)) continue;
+                GTRecipe recipe = generateDefaultChiselRecipe(item, circuitConfiguration);
+                if (recipe != null) return recipe;
+            }
+        }
+
+        return null;
     }
 
     @Nullable
@@ -82,7 +94,6 @@ public class ChiselBackend extends RecipeMapBackend {
 
         for (ItemStack input : items) {
             if (input == null || GTUtility.isAnyIntegratedCircuit(input)) continue;
-            if (GTUtility.areStacksEqual(input, specialSlot, true)) continue;
             GTRecipe recipe = generateChiselToTargetRecipe(input, specialSlot);
             if (recipe != null) return recipe;
         }
@@ -247,12 +258,28 @@ public class ChiselBackend extends RecipeMapBackend {
     }
 
     @Nullable
+    private static GTRecipe generateDefaultChiselRecipe(ItemStack input, int circuitConfiguration) {
+        if (input == null || circuitConfiguration != 0) {
+            return null;
+        }
+        List<ItemStack> results = getItemsForChiseling(input);
+        if (results.isEmpty()) return null;
+        int nextIndex = (input.getItemDamage() + 1) % results.size();
+        return buildChiselRecipe(input, results.get(nextIndex), circuitConfiguration);
+    }
+
+    @Nullable
     private static GTRecipe buildChiselRecipe(ItemStack input, ItemStack output, int circuitConfiguration) {
         if (input == null || output == null) return null;
-        return GTRecipeBuilder.builder()
-            .itemInputs(GTUtility.copyAmount(1, input))
-            .circuit(circuitConfiguration)
-            .itemOutputs(GTUtility.copyAmount(1, output))
+
+        var builder = GTRecipeBuilder.builder()
+            .itemInputs(GTUtility.copyAmount(1, input));
+
+        if (circuitConfiguration > 0) {
+            builder.circuit(circuitConfiguration);
+        }
+
+        return builder.itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
             .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
@@ -265,10 +292,14 @@ public class ChiselBackend extends RecipeMapBackend {
     private static GTRecipe buildChiselNEIRecipe(ItemStack[] inputAlternatives, ItemStack output,
         int circuitConfiguration) {
         if (inputAlternatives.length == 0 || output == null) return null;
-        return GTRecipeBuilder.builder()
-            .itemInputs((Object) inputAlternatives)
-            .circuit(circuitConfiguration)
-            .itemOutputs(GTUtility.copyAmount(1, output))
+        GTRecipeBuilder builder = GTRecipeBuilder.builder()
+            .itemInputs((Object) inputAlternatives);
+
+        if (circuitConfiguration > 0) {
+            builder.circuit(circuitConfiguration);
+        }
+
+        return builder.itemOutputs(GTUtility.copyAmount(1, output))
             .duration(20)
             .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)
@@ -321,6 +352,18 @@ public class ChiselBackend extends RecipeMapBackend {
             }
 
             List<ItemStack> variations = getVariationStacks(group);
+            for (ItemStack input : variations) {
+                GTRecipe defaultRecipe = generateDefaultChiselRecipe(input, 0);
+                if (defaultRecipe == null) continue;
+
+                GTRecipe neiRecipe = buildChiselNEIRecipe(
+                    new ItemStack[] { GTUtility.copyAmount(1, input) },
+                    defaultRecipe.mOutputs[0],
+                    0);
+
+                if (neiRecipe != null) recipes.add(neiRecipe);
+            }
+
             ItemStack[] inputAlternatives = variations.stream()
                 .map(stack -> GTUtility.copyAmount(1, stack))
                 .toArray(ItemStack[]::new);
