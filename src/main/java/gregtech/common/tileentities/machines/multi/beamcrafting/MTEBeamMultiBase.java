@@ -77,7 +77,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         Gravity,
         All,
         ;
-        //spotless:on
+        // spotless:on
         public static final FundamentalForce[] VALUES = values();
 
         public static FundamentalForce fromName(String name) {
