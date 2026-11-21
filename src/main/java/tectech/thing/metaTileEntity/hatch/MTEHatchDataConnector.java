@@ -31,7 +31,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     implements IConnectsToDataPipe<T> {
 
     public static final int TICKS_ONE_SECOND = 20;
-    public static final int TICKS_CONNECTION_POLLING = 100;
     public static IIconContainer EM_D_SIDES;
     public static IIconContainer EM_D_ACTIVE;
     public static IIconContainer EM_D_CONN;

@@ -60,4 +60,11 @@ public class ALRecipeDataPacket {
 
         return root;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof ALRecipeDataPacket packet)) return false;
+        return contents.equals(packet.contents);
+    }
 }

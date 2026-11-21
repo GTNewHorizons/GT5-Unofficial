@@ -20,9 +20,16 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeData;
  */
 public interface IConnectsToDataPipe<T> {
 
+    int TICKS_CONNECTION_POLLING = 100;
+
     boolean canConnectData(ForgeDirection side);
 
-    default IConnectsToDataPipe<T> getNext(IConnectsToDataPipe<T> source) {
+    /**
+     * The first caller is supposed to be a colored hatch. Pipes implement this interface need to overload this method!
+     * @param source the calling {@link IConnectsToDataPipe}, for grabbing its colorization.
+     * @return the neighboring {@link IConnectsToDataPipe} or {@code null} if none is found.
+     */
+    default @Nullable IConnectsToDataPipe<T> getNext(IConnectsToDataPipe<T> source) {
         if (canClear()) return null;
 
         if (!(source instanceof MTEHatch hatch)) return null;
@@ -65,6 +72,8 @@ public interface IConnectsToDataPipe<T> {
      * Checks for a connection from an output subclass like {@link MTEHatchDataOutput} or {@link MTEHatchDataItemsOutput}
      * to an input subclass like {@link MTEHatchDataInput} or {@link MTEHatchDataItemsInput}.
      * Keeps track of the connected input and updates the data if new data is pushed or the slow polling detects either a new connection or disconnection.
+     * <p>
+     * Non-hatches should return {@link CheckState#UNKNOWN}!
      *
      * @return a resulting check state, used for post moveAround processing of subclasses
      */
@@ -103,6 +112,8 @@ public interface IConnectsToDataPipe<T> {
             current = next;
         }
 
+        // broken connection or redirected connection,
+        // we need to remove the data from the old connected hatch if possible
         if (getLastConnected() == null || getLastConnected() != oldConnected) {
             switch (oldConnected) {
                 case MTEHatchDataInput dataInput -> dataInput.setContent(null);
@@ -116,6 +127,12 @@ public interface IConnectsToDataPipe<T> {
         return result;
     }
 
+    /**
+     * Safely enqueue and move the specified content for output hatches by calling
+     * {@link #setContent(Object)} and {@link #moveAround(IGregTechTileEntity, CheckState)} internally.
+     * 
+     * @param content
+     */
     default void enqueueAndMove(@Nullable T content) {
         if (canClear()) return;
         if (!(this instanceof MTEHatch hatch)) return;
@@ -126,16 +143,11 @@ public interface IConnectsToDataPipe<T> {
     boolean isDataInputFacing(ForgeDirection side);
 
     default byte getColorization() {
-        switch (this) {
-            case MTEHatch hatch -> {
-                return hatch.getBaseMetaTileEntity().getColorization();
-            }
-            case MTEPipeData pipe -> {
-                return pipe.getBaseMetaTileEntity().getColorization();
-            }
-            default -> {}
-        }
-        return -1;
+        return switch (this) {
+            case MTEHatch hatch -> hatch.getBaseMetaTileEntity().getColorization();
+            case MTEPipeData pipe -> pipe.getBaseMetaTileEntity().getColorization();
+            default -> -1;
+        };
     }
 
     @Nullable
@@ -146,8 +158,25 @@ public interface IConnectsToDataPipe<T> {
     @Nullable
     T getQueued();
 
+    /**
+     * Sets the content for hatches, they should replace {@code null} with a non-null empty or dummy packet
+     * depending on the scenario.
+     * This packet is the {@link #getQueued()} packet.
+     * <p>
+     * If you want that an output hatch updates its content and sends it to the connected input,
+     * you should call {@link #enqueueAndMove(Object)}.
+     *
+     * @param content the packet
+     */
     void setContent(@Nullable T content);
 
+    /**
+     * Implementing input hatches should return {@code true}!
+     * Default implementation returns {@code false}.
+     * 
+     * @return whether the implementation is an "input" and thereby can be cleared,
+     *         as no multiblock is feeding the input content directly.
+     */
     default boolean canClear() {
         return false;
     }

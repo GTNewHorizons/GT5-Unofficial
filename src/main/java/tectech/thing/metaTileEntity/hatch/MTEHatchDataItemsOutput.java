@@ -5,6 +5,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ import gregtech.api.util.GTSplit;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsOutput extends MTEHatchDataBase
@@ -99,6 +101,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
 
     @Override
     public void setContent(@Nullable ALRecipeDataPacket content) {
+        if (content == null) content = ALRecipeDataPacket.EMPTY_PACKET;
         this.q = content;
     }
 
@@ -116,7 +119,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
             case CONNECTION, DISCONNECTED, UNKNOWN -> {}
             case NEW_DATA -> {
                 previousPacket = q;
-                q = null;
+                q = ALRecipeDataPacket.EMPTY_PACKET;
             }
             case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
             default -> {
@@ -145,4 +148,17 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
     }
 
     // endregion
+
+    // 5s connection polling, in case of pipes being broken, until pipes update hatches instantly
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isClientSide()) return;
+
+        aTick = MinecraftServer.getServer()
+            .getTickCounter();
+
+        if (CommonValues.MOVE_AT == aTick % IConnectsToDataPipe.TICKS_CONNECTION_POLLING) {
+            moveAround(aBaseMetaTileEntity, CheckState.CONNECTION);
+        }
+    }
 }
