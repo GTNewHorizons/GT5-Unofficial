@@ -1,14 +1,13 @@
 A primitive Grinder powered by {aqua:Kinetic Energy}
-Macerates up to {color_parallel:16} items at a time
-The amount of parallels is determined by {color_name:Wind Speed}
-Parallels determine how many items are processed per recipe
-Processing time is the same regardless of parallels
-{color_name:Wind Speed} can be determined using the {color_name:{item:bartworks:BW_SimpleWindMeter}}
-Rotor can be put in the {color_name:{item:bartworks:BWRotorBlock}}
-Will not work if wind is non-existent or too strong
-{color_speed:12.5%} speed
+Parallels are determined by wind speed:
+{color_parallel:2}: {white:Low}
+{color_parallel:4}: {white:Common}
+{color_parallel:8}: {white:Rather strong}
+{color_parallel:16}: {white:Very Strong}
+{color_speed:12.5%} Speed
 {hr}
-{color_parallel:2} parallels: {white:Low}
-{color_parallel:4} parallels: {white:Common}
-{color_parallel:8} parallels: {white:Rather strong}
-{color_parallel:16} parallels: {white:Very Strong}
+Macerates up to {color_parallel:16} items at a time based on {color_name:Wind Speed}
+{color_name:Wind Speed} can be determined using the {color_name:{item:bartworks:BW_SimpleWindMeter}}
+Rotors are placed in the {color_name:{item:bartworks:BWRotorBlock}}
+{hr}
+{color_note:Will fail if the wind is too strong or absent}

@@ -21,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -86,6 +87,10 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
     final XSTR R = new XSTR();
+
+    private static final int MIN_PIPE_HEIGHT = 4;
+    private static final int ENERGY_DECAY_KEV_PER_SECOND = 72;
+    private static final int DUST_ENERGY_REDUCTION_MEV = 10;
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons
         .custom(Mods.GregTech.resourceDomain, "icons/NeutronActivator_On");
@@ -198,7 +203,13 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.neutron_activator"))
-            .addMarkdown(new ResourceLocation("gregtech", "neutron-activator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "neutron-activator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_pipe_height", MIN_PIPE_HEIGHT)
+                    .put("energy_decay", ENERGY_DECAY_KEV_PER_SECOND)
+                    .put("dust_energy_reduction", DUST_ENERGY_REDUCTION_MEV)
+                    .build())
             .beginVariableStructureBlock(5, 5, 6, 256, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.neutron_accelerator"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 2)

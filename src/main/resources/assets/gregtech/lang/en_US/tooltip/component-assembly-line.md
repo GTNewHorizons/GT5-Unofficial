@@ -1,5 +1,5 @@
-Assembles basic components (motors, pumps, etc.) in large batches
-The {bold:{yellow:Component Assembly Line Casing}} limits the recipes the machine can perform. See the NEI pages for details
-Using casings above the required Recipe Tier provides a speed bonus:
-{color_note:Halves recipe time per tier above recipe}
+Assembles basic components (motors, pumps, etc...) in large batches
+The {color_name:Component Assembly Line Casing} limits the recipes the machine can perform. See {color_name:NEI} for details
+Casings above the required {white:Recipe} Tier halves recipe time per tier above
 {italic:Much more efficient than other competing brands!}
+{hr}
