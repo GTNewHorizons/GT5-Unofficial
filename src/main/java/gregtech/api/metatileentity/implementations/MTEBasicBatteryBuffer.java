@@ -57,10 +57,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.batterybuffer.name",
-            GTValues.getLocalizedLongVoltageName(mTier),
-            GTValues.VN[mTier]);
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.batterybuffer.small.name";
+            case 9 -> "gt.blockmachines.batterybuffer.large.name";
+            case 16 -> "gt.blockmachines.batterybuffer.huge.name";
+            default -> "gt.blockmachines.batterybuffer.name";
+        };
+        return StatCollector
+            .translateToLocalFormatted(nameKey, GTValues.getLocalizedLongVoltageName(mTier), GTValues.VN[mTier]);
     }
 
     @Override
@@ -214,18 +218,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName()
-            .startsWith("gt.metaitem.01.")) {
-            String name = aStack.getUnlocalizedName();
-            if (name.equals("gt.metaitem.01.32510") || name.equals("gt.metaitem.01.32511")
-                || name.equals("gt.metaitem.01.32520")
-                || name.equals("gt.metaitem.01.32521")
-                || name.equals("gt.metaitem.01.32530")
-                || name.equals("gt.metaitem.01.32531")) {
-                return ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0;
-            }
-        }
-        return false;
+        return true;
     }
 
     @Override

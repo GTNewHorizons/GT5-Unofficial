@@ -89,7 +89,7 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                                                 .textAlign(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                                    .numbersInt(() -> 1, () -> Integer.MAX_VALUE)
                                     .width(120)
                                     .height(14)
                                     .marginRight(2)

@@ -39,7 +39,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingRecipes implements Runnable {
 
@@ -77,12 +76,7 @@ public class CraftingRecipes implements Runnable {
         ItemStack[] chreac = { ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L),
             ItemList.Machine_EV_ChemicalReactor.get(1L), ItemList.Machine_IV_ChemicalReactor.get(1L) };
 
-        GTModHandler.addCraftingRecipe(
-            new MTELESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
-            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CDC", "SBS", "CFC", 'C', "circuitAdvanced", 'D', ItemList.Cover_Screen.get(1L), 'S',
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 1L), 'B',
-                new ItemStack(ItemRegistry.BW_BLOCKS[1]), 'F', ItemList.Field_Generator_HV.get(1L) });
+        new MTELESU(LESU.ID, "LESU", "L.E.S.U.");
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),
@@ -535,13 +529,6 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
                 'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
-
-        GTModHandler.addCraftingRecipe(
-            ItemList.Item_Redstone_Sniffer.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " M ", "STS", "dPw", 'M', ItemList.Cover_Screen.get(1L), 'S',
-                OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'P',
-                OrePrefixes.plate.get(Materials.Titanium) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Vajra.get(1),

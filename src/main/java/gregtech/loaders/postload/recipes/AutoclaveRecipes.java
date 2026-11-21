@@ -210,7 +210,7 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 64))
             .itemOutputs(ItemList.NuclearStar.get(1L))
-            .fluidInputs(Materials.Infinity.getPlasma(4 * INGOTS))
+            .fluidInputs(Materials.Infinity.getPlasma(2 * INGOTS))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(autoclaveRecipes);

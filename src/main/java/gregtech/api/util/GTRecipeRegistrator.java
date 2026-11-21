@@ -186,6 +186,7 @@ public class GTRecipeRegistrator {
             || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), aStack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.brick_block), aStack)
             || aData == null
             || !aData.hasValidMaterialData()
             || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
@@ -505,10 +506,10 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
-                && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
+                && GTOreDictUnificator.getDust(tMaterial) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.getDust(aData.mMaterial))
+                    .itemOutputs(GTOreDictUnificator.getDust(tMaterial))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .recipeCategory(RecipeCategories.forgeHammerRecycling)

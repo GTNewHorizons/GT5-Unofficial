@@ -248,15 +248,6 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCDAlloyBlastSmelterActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/alloyBlastSmelterActiveGlow");
 
-    public static final CustomIcon oMCDIndustrialArcFurnace = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnace");
-    public static final CustomIcon oMCDIndustrialArcFurnaceGlow = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceGlow");
-    public static final CustomIcon oMCDIndustrialArcFurnaceActive = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceActive");
-    public static final CustomIcon oMCDIndustrialArcFurnaceActiveGlow = new CustomIcon(
-        "iconsets/controllerFaces/industrialArcFurnaceActiveGlow");
-
     public static final CustomIcon oMCDIndustrialCuttingMachine = new CustomIcon(
         "iconsets/controllerFaces/industrialCuttingMachine");
     public static final CustomIcon oMCDIndustrialCuttingMachineGlow = new CustomIcon(

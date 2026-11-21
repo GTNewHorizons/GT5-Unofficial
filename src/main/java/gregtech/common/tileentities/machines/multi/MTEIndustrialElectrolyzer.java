@@ -14,7 +14,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,6 +40,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectrolyzer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -50,8 +52,8 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_Z = 1;
 
     private static final int PARALLEL_PER_TIER = 4;
-    private static final float SPEED = 2.8f;
-    private static final float EU_EFFICIENCY = 0.9f;
+    private static final double SPEED = 2.8D;
+    private static final double EU_EFFICIENCY = 0.9D;
 
     public MTEIndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -145,28 +147,27 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electrolyzer")
-            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electrolyzer"))
+            .addBulkMachineInfo(PARALLEL_PER_TIER, (float) SPEED, (float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center, 3rd layer")
-            .addCasing("6-43", "Electrolyzer Casing", false)
-            .addCasing("12", "Potin Frame Box", false)
-            .addCasing("4", "Tin Item Pipe Casing", false)
-            .addCasing("4", "Brass Item Pipe Casing", false)
-            .addEnergyHatch("1+", "Any electrolyzer casing", 1)
-            .addMaintenanceHatch("1", "Any electrolyzer casing", 1)
-            .addMufflerHatch("1", "Any electrolyzer casing", 1)
-            .addInputAny("1+", "Any electrolyzer casing", 1)
-            .addOutputAny("1+", "Any electrolyzer casing", 1)
-            .addStructureAuthors(EnumChatFormatting.BLUE + "Vortex")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("6-43", Casings.ElectrolyzerCasing.getLocalizedName(), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.POTIN), false)
+            .addCasing("4", Casings.TinItemPipeCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.BrassItemPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / SPEED)
+        return new ProcessingLogic().setSpeedBonus(1.0D / SPEED)
             .setEuModifier(EU_EFFICIENCY)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

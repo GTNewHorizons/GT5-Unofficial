@@ -1433,7 +1433,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     idList[idIndex],
                     internalNameItemPipe + "_Huge",
                     "gt.oreprefix.huge_material_item_pipe",
-                    1.00F,
+                    0.875F,
                     material,
                     invSlotsForHugePipe,
                     32768 / invSlotsForHugePipe,

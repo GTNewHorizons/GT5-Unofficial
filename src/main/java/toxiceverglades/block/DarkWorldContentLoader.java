@@ -7,6 +7,7 @@ import static toxiceverglades.dimension.DimensionEverglades.blockTopLayer;
 import static toxiceverglades.dimension.DimensionEverglades.portalBlock;
 import static toxiceverglades.dimension.DimensionEverglades.portalItem;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -46,7 +47,7 @@ public class DarkWorldContentLoader {
 
     public static synchronized void initBlocks() {
         // Create Block Instances
-        blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, BlockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f)
+        blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, Material.water).setLightLevel(2f)
             .setLightOpacity(1)
             .setBlockName("fluidSludge");
         portalBlock = new BlockEvergladesPortal();

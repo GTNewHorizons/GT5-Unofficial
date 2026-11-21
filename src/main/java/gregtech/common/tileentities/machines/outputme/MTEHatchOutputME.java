@@ -61,10 +61,12 @@ import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
@@ -73,30 +75,25 @@ import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
+    public static final long DEFAULT_CAPACITY = 128_000;
+
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            4,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs",
-                "Right click with screwdriver to toggle Cache Mode",
-                "Shift right click with screwdriver to toggle Check Mode" },
-            1);
+        super(aID, aName, aNameRegional, 4, null, 1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(
-        this,
-        128_000) {};
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(this) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_me.desc");
     }
 
     @Override
@@ -133,14 +130,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
+        return GTUtility.longToInt(fillLong(aFluid, doFill));
+    }
+
+    @Override
+    public long fillLong(FluidStack aFluid, boolean doFill) {
         IAEFluidStack input = AEFluidStack.create(aFluid);
+        long fluidAmount = GTUtility.getFluidAmount(aFluid);
+        input.setStackSize(fluidAmount);
         provider.storePartial(input, !doFill);
-        return aFluid.amount - (int) input.getStackSize();
+        return fluidAmount - input.getStackSize();
     }
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.canStore(AEFluidStack.create(fluidStack));
+        return provider.canStore(
+            AEFluidStack.create(fluidStack)
+                .setStackSize(GTUtility.getFluidAmount(fluidStack)));
     }
 
     @Override
@@ -151,6 +157,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public int getCapacity() {
         return 0;
+    }
+
+    @Override
+    public long getDefaultCapacity() {
+        return DEFAULT_CAPACITY;
     }
 
     public boolean getCheckMode() {
@@ -195,6 +206,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     EntityPlayer lastClickedPlayer = null;
 
     @Override
+    public boolean acceptsConfigCopy() {
+        return false;
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         lastClickedPlayer = aPlayer;
 
@@ -211,6 +227,12 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public boolean isValidSlot(int aIndex) {
         return true;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return aIndex == 0 && side == aBaseMetaTileEntity.getFrontFacing() && isItemValidForSlot(aIndex, aStack);
     }
 
     @Override
@@ -291,12 +313,13 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        return true;
+        return MTEHatchOutputMEBase.WailaHelper.hasWailaAdvancedBody(accessor);
     }
 
     @Override
@@ -602,30 +625,30 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     IAEFluidStack input = AEFluidStack.create(stack);
                     if (isDynamicCapacity) {
                         long cellAvailableSpace = provider.getCellAvailableSpace();
-                        int parallels = Math.clamp(cellAvailableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                        long parallels = cellAvailableSpace / totalPerParallel;
                         long amount = Math.min(parallels * perParallel, cellAvailableSpace - cache.getTotal());
-                        amount = Math.min(amount, stack.amount);
+                        amount = Math.min(amount, GTUtility.getFluidAmount(stack));
                         input.setStackSize(amount);
                     }
                     IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    int inserted = (int) (input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize()));
+                    long inserted = input.getStackSize() - (rejected == null ? 0 : rejected.getStackSize());
                     cache.insert(id, inserted);
-                    stack.amount -= inserted;
+                    GTUtility.decFluidAmount(stack, inserted);
                     return inserted > 0;
                 } else if (isDynamicCapacity) {
-                    int parallels = Math.clamp(availableSpace / totalPerParallel, 1, Integer.MAX_VALUE);
+                    long parallels = availableSpace / totalPerParallel;
                     long amount = Math.min(parallels * perParallel, availableSpace - cache.getTotal());
-                    amount = Math.min(amount, stack.amount);
+                    amount = Math.min(amount, GTUtility.getFluidAmount(stack));
                     cache.insert(id, amount);
-                    stack.amount -= amount;
+                    GTUtility.decFluidAmount(stack, amount);
                     return amount > 0;
                 }
             }
             if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
-            cache.insert(id, stack.amount);
-            stack.amount = 0;
+            cache.insert(id, GTUtility.getFluidAmount(stack));
+            GTUtility.setFluidAmount(stack, 0);
             return true;
         }
 

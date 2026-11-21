@@ -55,6 +55,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.widget.NanochipCCDisplayWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
@@ -71,7 +72,6 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .child(createButtonHoldingColumn(panel, syncManager));
     }
 
-    // todo: add more functionality from the ticket
     protected Flow createButtonHoldingColumn(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .width(40)
@@ -183,7 +183,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     }
 
     private Widget<?> createSlotWidget(ItemStack item, long amount, PanelSyncManager syncManager) {
-        return new Widget<>().size(18)
+        return new NanochipCCDisplayWidget(item).size(18)
             .background(
                 GTGuiTextures.SLOT_ITEM_NANOCHIP,
                 new DynamicDrawable(

@@ -38,8 +38,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
     }

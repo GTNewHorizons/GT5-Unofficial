@@ -116,6 +116,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean coverTabsFlipped;
 
+        @Config.Comment("If true, allows certain covers to automatically toggle panels opened if the panel was open before the GUI was closed previously.")
+        @Config.DefaultBoolean(true)
+        public boolean autoOpenCovers;
+
         @Config.Comment("How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended.")
         @Config.DefaultInt(2)
         public int tooltipVerbosity;
@@ -156,7 +160,7 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialFilter;
 
-        @Config.Comment("If true, scrolling up while hovering a ghost circuit in a machine UI will increment the circuit number.")
+        @Config.Comment("If true, scrolling up while hovering over a ghost circuit in a machine UI will decrement the circuit number.")
         @Config.DefaultBoolean(false)
         public boolean invertCircuitScrollDirection;
 

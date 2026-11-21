@@ -25,12 +25,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -62,6 +56,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.MTENeutronActivatorGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -72,6 +68,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
+    // TODO remove after 2.9
     public Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the batch setting */
@@ -80,18 +77,14 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     /** Status of the batch setting */
     public static final IStatusFunction<MTENeutronActivator> BATCH_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+    protected static final int WORLD_COORDINATE_LIMIT = 30_000_000;
+    protected static final int MINIMUM_STRUCTURE_HEIGHT = 4;
     protected static IStructureDefinition<MTENeutronActivator> multiDefinition = null;
     protected final ArrayList<MTENeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
     protected final ArrayList<MTENeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
-    protected static final NumberFormatMUI numberFormat;
-    static {
-        numberFormat = new NumberFormatMUI();
-        numberFormat.setMinimumFractionDigits(2);
-        numberFormat.setMaximumFractionDigits(2);
-    }
     final XSTR R = new XSTR();
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons
@@ -107,12 +100,21 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     protected final String NA_MID = mName + "mid";
     protected final String NA_TOP = mName + "top";
 
+    private int getMaximumStructureHeight() {
+        long maximumHeight = (long) WORLD_COORDINATE_LIMIT - getBaseMetaTileEntity().getYCoord() - 1L;
+        return (int) Math.max(MINIMUM_STRUCTURE_HEIGHT, Math.min(Integer.MAX_VALUE, maximumHeight));
+    }
+
     public MTENeutronActivator(String name) {
         super(name);
     }
 
     public MTENeutronActivator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    public int geteV() {
+        return eV;
     }
 
     @Override
@@ -231,6 +233,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                 .addShape(NA_TOP, transpose(new String[][] { { "CCCCC", "CDDDC", "CDDDC", "CDDDC", "CCCCC" } }))
                 .addShape(NA_MID, transpose(new String[][] { { "F   F", " GGG ", " GPG ", " GGG ", "F   F" } }))
                 .addShape(NA_BOTTOM, transpose(new String[][] { { "XX~XX", "XDDDX", "XDDDX", "XDDDX", "XXXXX" } }))
+                .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 4, 256)
                 .addElement(
                     'C',
                     ofChain(
@@ -335,12 +338,6 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
-    }
-
-    @Override
     public boolean supportsBatchMode() {
         return true;
     }
@@ -410,7 +407,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(NA_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
-        int heights = stackSize.stackSize + 3;
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueLimited(stackSize, MINIMUM_STRUCTURE_HEIGHT, getMaximumStructureHeight());
         buildPiece(NA_TOP, stackSize, hintsOnly, 2, heights + 1, 0);
         while (heights > 0) {
             buildPiece(NA_MID, stackSize, hintsOnly, 2, heights, 0);
@@ -467,7 +465,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
         int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int heights = stackSize.stackSize + 3;
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueLimited(stackSize, MINIMUM_STRUCTURE_HEIGHT, getMaximumStructureHeight());
         for (int i = 1; i <= heights; i++) {
             built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
@@ -479,34 +478,18 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         casingAmount++;
     }
 
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
-    }
-
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
 
-        NeutronSensor(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronSensor.class) {
+        NeutronSensor("GT5U.MBTT.NeutronSensorHatch", MTENeutronActivator::addAcceleratorAndSensor,
+            MTENeutronSensor.class) {
 
             @Override
             public long count(MTENeutronActivator t) {
                 return t.mNeutronSensor.size();
             }
         },
-        NeutronAccelerator(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronAccelerator.class) {
+        NeutronAccelerator("GT5U.MBTT.NeutronAcceleratorHatch", MTENeutronActivator::addAcceleratorAndSensor,
+            MTENeutronAccelerator.class) {
 
             @Override
             public long count(MTENeutronActivator t) {
@@ -514,11 +497,14 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTENeutronActivator> adder;
 
         @SafeVarargs
-        NeutronHatchElement(IGTHatchAdder<MTENeutronActivator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        NeutronHatchElement(String name, IGTHatchAdder<MTENeutronActivator> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -532,5 +518,25 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTENeutronActivatorGui(this);
     }
 }

@@ -152,6 +152,32 @@ public class CircuitComponentPacket {
         return stacks;
     }
 
+    public List<ItemStack> getRealItemRepresentations() {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+        for (var entry : components.entrySet()) {
+            CircuitComponent cc = entry.getKey();
+            List<MutablePair<String, Long>> amounts = entry.getValue();
+            for (var pair : amounts) {
+                String name = pair.getLeft();
+                long amount = pair.getRight();
+                int stackSize = Math.toIntExact(Math.min(Integer.MAX_VALUE, amount));
+                ItemStack stack;
+                if (cc.isProcessed || cc.realComponent == null || cc.realComponent.get() == null) {
+                    stack = cc.getFakeStack(stackSize);
+                } else {
+                    stack = cc.realComponent.get();
+                    stack.stackSize = stackSize;
+                }
+
+                if (name != null) {
+                    stack.setStackDisplayName(name);
+                }
+                stacks.add(stack);
+            }
+        }
+        return stacks;
+    }
+
     /**
      * Get total amount of CCs of this type in the packet, ignoring any custom names.
      */

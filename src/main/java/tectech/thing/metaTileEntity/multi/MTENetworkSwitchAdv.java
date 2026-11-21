@@ -1,9 +1,9 @@
 package tectech.thing.metaTileEntity.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
@@ -17,7 +17,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +27,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
@@ -48,6 +42,8 @@ import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTENetworkSwitchAdvGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -77,7 +73,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     private int length;
     private @Nullable QuantumDataPacket pendingPacket;
-    private long displayedComputation; // MUI1 stuff, remove this field and migrate to SyncValue in MUI2
     private long wastedComputation;
 
     public MTENetworkSwitchAdv(int aID, String aName, String aNameRegional) {
@@ -94,6 +89,18 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
         structure = prototype.structure;
         structureInstanceInfo = new StructureWrapperInstanceInfo<>(structure);
+    }
+
+    public @Nullable QuantumDataPacket getPendingPacket() {
+        return pendingPacket;
+    }
+
+    public void setPendingPacket(@Nullable QuantumDataPacket pendingPacket) {
+        this.pendingPacket = pendingPacket;
+    }
+
+    public long getWastedComputation() {
+        return wastedComputation;
     }
 
     @Override
@@ -286,8 +293,8 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
             .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("0-18", translateToLocal("gt.blockcasingsTT.1.name"), false)
@@ -390,42 +397,23 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         pendingPacket = null;
     }
 
-    private long getPendingComputation() {
-        if (pendingPacket == null) return 0;
-        return pendingPacket.getContent();
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(new FakeSyncWidget.LongSyncer(this::getPendingComputation, value -> displayedComputation = value));
-        screenElements
-            .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
-
-        screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.machines.computation_hatch.pending_computation",
-                        formatNumber(displayedComputation)))
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(w -> mMaxProgresstime > 0));
-        screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.machines.computation_hatch.wasted_computation",
-                        formatNumber(wastedComputation)))
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(w -> mMaxProgresstime > 0));
-    }
-
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTENetworkSwitchAdvGui(this);
     }
 }

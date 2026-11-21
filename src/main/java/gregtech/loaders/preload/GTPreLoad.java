@@ -247,7 +247,10 @@ public class GTPreLoad {
             final String reEnable = mMTTags.get(i);
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
-                Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
+                Materials tName = Materials.get(
+                    reEnable.substring(
+                        tPrefix.getName()
+                            .length()));
                 tPrefix.mDisabledItems.remove(tName);
                 tPrefix.mGeneratedItems.add(tName);
                 if (tPrefix == OrePrefixes.screw) {
@@ -353,6 +356,8 @@ public class GTPreLoad {
         GTMod.proxy.gt6Cable = Gregtech.general.gt6Cable;
         GTMod.proxy.ic2EnergySourceCompat = Gregtech.general.ic2EnergySourceCompat;
         GTMod.proxy.costlyCableConnection = Gregtech.general.costlyCableConnection;
+        GTMod.proxy.cableMultiConnectEnabled = Gregtech.general.cableMultiConnectEnabled;
+        GTMod.proxy.cableMultiConnectLimit = Gregtech.general.cableMultiConnectLimit;
         GTMod.proxy.crashOnNullRecipeInput = Gregtech.general.crashOnNullRecipeInput;
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             GTMod.proxy.crashOnNullRecipeInput = false; // Use flags in GTRecipeBuilder instead!

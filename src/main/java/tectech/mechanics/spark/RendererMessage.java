@@ -15,6 +15,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import tectech.loader.ConfigHandler;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 // TODO Re-work how sparks are distributed
@@ -54,6 +55,9 @@ public class RendererMessage implements IMessage {
 
         @Override
         public IMessage onMessage(RendererData message, MessageContext ctx) {
+            if (!ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                return null;
+            }
             // disgusting
             Random localRand = Minecraft.getMinecraft().theWorld.rand;
             int[] zapsToUse = new int[4];

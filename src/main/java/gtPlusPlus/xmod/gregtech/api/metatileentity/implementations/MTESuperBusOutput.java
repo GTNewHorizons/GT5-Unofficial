@@ -16,8 +16,9 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 @IMetaTileEntity.SkipGenerateName
@@ -70,7 +71,10 @@ public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtech
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.output_bus_super.desc", getSlots(this.mTier));
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.output_bus_super.desc",
+            GTPPCore.GT_Tooltip.get(),
+            getSlots(this.mTier));
     }
 
     @Override
@@ -88,7 +92,7 @@ public class MTESuperBusOutput extends MTEHatchOutputBus implements IAddGregtech
             scrollable.setSize(18 * 4 + 4, 18 * 4)
                 .setPos(52, 7));
 
-        if (acceptsItemLock()) {
+        if (acceptsConfigCopy()) {
             builder.widget(
                 new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
                     .setBackground(PhantomItemButton.FILTER_BACKGROUND));
