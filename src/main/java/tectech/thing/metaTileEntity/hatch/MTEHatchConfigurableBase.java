@@ -22,8 +22,16 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
         super(id, name, tier, description);
     }
 
+    public MTEHatchConfigurableBase(int id, String name, int tier, int inventorySlots, String[] description) {
+        super(id, name, tier, inventorySlots, description);
+    }
+
     public MTEHatchConfigurableBase(MTEHatchConfigurableBase prototype) {
         super(prototype);
+    }
+
+    public MTEHatchConfigurableBase(MTEHatchConfigurableBase prototype, int inventorySlots) {
+        super(prototype, inventorySlots);
     }
 
     @Override
