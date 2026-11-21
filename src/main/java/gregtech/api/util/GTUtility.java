@@ -1336,7 +1336,7 @@ public class GTUtility {
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
 
-        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
+        return createFluidStack(tFluid, tNBT != null ? tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
