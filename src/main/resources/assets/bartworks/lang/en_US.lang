@@ -172,6 +172,7 @@ tooltip.tile.lesu.0.name=Controller Block for the GT2-Styled L.E.S.U.;Size: ANY
 tooltip.tile.lesu.1.name=Storage per LESU Casing:
 tooltip.tile.lesu.2.name=Output EU: LESU Casings amount;Input EU: Next Voltage Tier to Output EU;Input/Output Amps can be configured via 4 Circuits in GUI;Output Side has a dot on it.
 tooltip.tile.lesu.3.name=Only one Controller allowed, no Wallsharing!
+tooltip.tile.lesu.deprecated=Deprecated - Will be removed in the next major version
 tooltip.tile.tiereddsc.0.name=Voltage:
 tooltip.tile.tiereddsc.1.name=Amperage IN:
 tooltip.tile.tiereddsc.2.name=Amperage OUT:
