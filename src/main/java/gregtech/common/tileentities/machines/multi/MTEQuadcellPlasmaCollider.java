@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
@@ -23,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -96,6 +94,14 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
     public float ORIKALKUM_CURRENT_BOOST = 1f;
 
+    public static final int FORCE_MAX_BOOST_PERCENT = 15;
+    public static final int RUNITE_MAX_BOOST_PERCENT = 10;
+    public static final int CELESTIAL_MAX_BOOST_PERCENT = 5;
+    public static final int ORIKALKUM_MAX_BOOST_PERCENT = 50;
+
+    public static final float ORIKALKUM_BONUS_THRESHOLD = 2f / 3f;
+    public static final int RESIDUE_OUTPUT_AMOUNT = 1;
+
     public int residueCycles = 0;
     public int drainedSinceLastOutput = 0;
 
@@ -129,9 +135,9 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
            }))
         .addElement('A', Casings.SuperconductingCoilBlock.asElement())
         .addElement('B',buildHatchAdder(MTEQuadcellPlasmaCollider.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
-                    .casingIndex(Casings.PlasmaColliderCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(Casings.PlasmaColliderCasing.asElement()))
+            .casingIndex(Casings.PlasmaColliderCasing.textureId)
+            .hint(1)
+            .buildAndChain(Casings.PlasmaColliderCasing.asElement()))
         .addElement('C', Casings.QuadcellDrivingCasing.asElement())
         .addElement('D', Casings.PlasmaColliderGlass.asElement())
         //spotless:on
@@ -182,7 +188,6 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
             .addMarkdown(
                 new ResourceLocation("gregtech", "quadcell-plasma-collider"),
                 ImmutableMap.<String, Object>builder()
-                    .put("fluid_unit", getFluidUnit())
                     .put("force_max_dr", PlasmaType.FORCE.maxDR)
                     .put("force_density", PlasmaType.FORCE.density)
                     .put("runite_max_dr", PlasmaType.RUNITE.maxDR)
@@ -192,6 +197,12 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                     .put("orikalkum_max_dr", PlasmaType.ORIKALKUM.maxDR)
                     .put("orikalkum_density", PlasmaType.ORIKALKUM.density)
                     .put("residue_divisor", RESIDUE_CONVERSION_DIVISOR)
+                    .put("force_max_boost", FORCE_MAX_BOOST_PERCENT)
+                    .put("runite_max_boost", RUNITE_MAX_BOOST_PERCENT)
+                    .put("celestial_max_boost", CELESTIAL_MAX_BOOST_PERCENT)
+                    .put("orikalkum_max_boost", ORIKALKUM_MAX_BOOST_PERCENT)
+                    .put("orikalkum_bonus_threshold", Math.round(ORIKALKUM_BONUS_THRESHOLD * 1000) / 10f)
+                    .put("residue_output_amount", RESIDUE_OUTPUT_AMOUNT)
                     .build())
             .addSupportAny()
             .beginStructureBlock(23, 13, 9, true)
@@ -206,23 +217,6 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
             .toolTipFinisher();
         // spotless:on
         return tt;
-    }
-
-    private String getPlasmaTextFormatted(String plasma, EnumChatFormatting plasmaColor, String dr, String density,
-        String buff) {
-        return String.format(
-            "%s%s%s / %s%s%s / %s%s%s / %s%s ",
-            plasmaColor,
-            plasma,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GREEN,
-            dr,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.AQUA,
-            density,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.WHITE,
-            buff);
     }
 
     private static final int CYCLE_TIME = 20;
