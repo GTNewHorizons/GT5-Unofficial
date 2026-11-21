@@ -9,8 +9,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
+/**
+ * In the process of being merged into {@link WirelessNetworkManager}
+ */
+@Deprecated
 public class WirelessDataStore {
 
     public static final long IO_TICK_RATE = 200;
