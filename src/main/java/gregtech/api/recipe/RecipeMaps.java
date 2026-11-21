@@ -51,6 +51,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
+import bwcrossmod.galacticgreg.VoidMinerFrontend;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -65,6 +66,7 @@ import gregtech.api.recipe.maps.AlgaePondFrontend;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.CentrifugeFrontend;
 import gregtech.api.recipe.maps.ChemicalPlantFrontend;
 import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
@@ -76,14 +78,17 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FoundryModuleFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
+import gregtech.api.recipe.maps.FuelFrontend;
 import gregtech.api.recipe.maps.FurnaceBackend;
+import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
+import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
+import gregtech.api.recipe.maps.NACMatrixFrontend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
@@ -120,7 +125,6 @@ import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderFrontend;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderMetadata;
-import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
@@ -251,6 +255,22 @@ public final class RecipeMaps {
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> iceCreamMachineRecipes = RecipeMapBuilder
+        .of("gt.recipe.icecreammachine")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .slotOverlaysMUI2(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid
+                ? (isOutput ? GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD : GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
+                : null)
+        .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Ice_Cream_Machine.get(1))
+                .setHeight(90)
+                .setShowFavoritesButton(false)
+                .setShowOverlayButton(false))
+        .frontend(IceCreamMachineFrontend::new)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
         .of("ic.recipe.recycler", RecyclerBackend::new)
@@ -769,7 +789,7 @@ public final class RecipeMaps {
         .frontend(FluidOnlyFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
-        .maxIO(2, 6, 1, 1)
+        .maxIO(2, 9, 1, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return null;
@@ -798,6 +818,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
+        .frontend(CentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -1069,7 +1090,7 @@ public final class RecipeMaps {
             if (tGunpowder < 65) coll.derive()
                 .setInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder));
             if (tDynamite < 17) coll.derive()
-                .setInputs(input, GTModHandler.getIC2Item("dynamite", tDynamite, null));
+                .setInputs(input, ItemList.Dynamite.get(tDynamite));
             coll.derive()
                 .setInputs(input, new ItemStack(Blocks.tnt, tTNT));
             coll.derive()
@@ -1494,7 +1515,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> dieselFuels = RecipeMapBuilder
         .of("gt.recipe.dieselgeneratorfuel", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(0, 0, 1, 1)
         .builderTransformer(b -> {
             if (!RecipeMaps.largeBoilerFakeFuels.containsInput(b.getItemInputBasic(0))) {
                 b.copy()
@@ -1508,16 +1529,16 @@ public final class RecipeMaps {
                     .addTo(RecipeMaps.extremeDieselFuels);
             }
         })
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> extremeDieselFuels = RecipeMapBuilder
         .of("gt.recipe.extremedieselgeneratorfuel", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(0, 0, 1, 1)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> gasTurbineFuels = RecipeMapBuilder
         .of("gt.recipe.gasturbinefuel", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(0, 0, 1, 1)
         .builderTransformer(b -> {
             if (!RecipeMaps.largeBoilerFakeFuels.containsInput(b.getItemInputBasic(0))) {
                 b.copy()
@@ -1527,12 +1548,12 @@ public final class RecipeMaps {
                             .addDieselGasRecipe(r));
             }
         })
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> hotFuels = RecipeMapBuilder
         .of("gt.recipe.thermalgeneratorfuel", FuelBackend::new)
-        .maxIO(1, 4, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(1, 1, 1, 0)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidboilerfuels", FuelBackend::new)
@@ -1550,38 +1571,38 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> plasmaFuels = RecipeMapBuilder
         .of("gt.recipe.plasmageneratorfuels", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(0, 0, 1, 1)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> magicFuels = RecipeMapBuilder
         .of("gt.recipe.magicfuels", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(1, 1, 1, 0)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> smallNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.smallnaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> largeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.largenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> hugeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.fluidnaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> extremeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.hugenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<FuelBackend> ultraHugeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.extrahugenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<LargeBoilerFuelBackend> largeBoilerFakeFuels = RecipeMapBuilder
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)
@@ -1779,8 +1800,8 @@ public final class RecipeMaps {
         .neiItemInputsGetter(recipe -> {
             BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
-            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_A);
-            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_B);
+            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_A);
+            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID_B);
 
             List<ItemStack> ret = new ArrayList<>();
             ret.addAll(Arrays.asList(recipe.mInputs));
@@ -1832,8 +1853,8 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .build();
 
-    public static final RecipeMap<NACRecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.assemblymatrix", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix", RecipeMapBackend::new)
         .maxIO(16, 1, 4, 0)
         .minInputs(0, 0)
         .recipeEmitter(builder -> {
@@ -1843,6 +1864,7 @@ public final class RecipeMaps {
                 .validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0)
                 .validateInputFluidCount(1, 4)
+                .ignoreCollision()
                 .buildWithAlt();
             // noinspection SimplifyOptionalCallChains
             if (!rr.isPresent()) return Collections.emptyList();
@@ -1869,7 +1891,7 @@ public final class RecipeMaps {
                 .map(
                     val -> Arrays.stream(val)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                .toList();
             slots.stream()
                 .reduce(
                     Stream.of(new ArrayList<ItemStack>()),
@@ -1903,51 +1925,51 @@ public final class RecipeMaps {
             recipes.add(r);
             return recipes;
         })
-        .frontend(AssemblyLineFrontend::new)
+        .frontend(NACMatrixFrontend::new)
         .build();
 
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.smdprocessor", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+    public static final RecipeMap<RecipeMapBackend> nanochipPartProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.partprocessor", RecipeMapBackend::new)
+        .maxIO(6, 4, 3, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.boardprocessor", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.boardprocessor", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 1)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
-        .of("gt.recipe.nanochip.etchingarray", NACRecipeMapBackend::new)
-        .maxIO(2, 1, 2, 0)
+    public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
+        .of("gt.recipe.nanochip.etchingarray", RecipeMapBackend::new)
+        .maxIO(2, 2, 2, 0)
         .minInputs(0, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
-        .of("gt.recipe.nanochip.cuttingchamber", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
+        .of("gt.recipe.nanochip.cuttingchamber", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.wiretracer", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.wiretracer", RecipeMapBackend::new)
+        .maxIO(2, 4, 0, 0)
+        .minInputs(1, 0)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
+        .of("gt.recipe.nanochip.superconductorsplitter", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
-        .of("gt.recipe.nanochip.superconductorsplitter", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.opticalorganizer", RecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.opticalorganizer", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+    public static final RecipeMap<RecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
+        .of("gt.recipe.nanochip.encasementwrapper", RecipeMapBackend::new)
+        .maxIO(4, 1, 2, 0)
         .minInputs(1, 0)
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
-        .of("gt.recipe.nanochip.encasementwrapper", NACRecipeMapBackend::new)
-        .maxIO(4, 1, 0, 0)
-        .minInputs(1, 0)
-        .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
-        .of("gt.recipe.nanochip.biologicalcoordinator", NACRecipeMapBackend::new)
+    public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
+        .of("gt.recipe.nanochip.biologicalcoordinator", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .build();
@@ -1965,11 +1987,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> rocketFuels = RecipeMapBuilder
         .of("gt.recipe.rocketenginefuel", FuelBackend::new)
-        .maxIO(0, 0, 1, 0)
-        .neiSpecialInfoFormatter(
-            recipeInfo -> Collections.singletonList(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
+        .maxIO(0, 0, 1, 1)
+        .frontend(
+            (uiPropertiesBuilder,
+                neiPropertiesBuilder) -> new FuelFrontend(uiPropertiesBuilder, neiPropertiesBuilder, 3))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gt.recipe.quantumforcesmelter")
@@ -2128,9 +2149,6 @@ public final class RecipeMaps {
                 StatCollector.translateToLocal("gt.nei.solar_tower.3")))
         .frontend(FluidOnlyFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> cyclotronRecipes = RecipeMapBuilder.of("gt.recipe.cyclotron")
-        .maxIO(9, 9, 1, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> fishPondRecipes = RecipeMapBuilder.of("gt.recipe.fishpond")
         .maxIO(1, 25, 0, 0)
         .slotOverlays(
@@ -2149,10 +2167,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multicentrifuge")
-        .maxIO(6, 6, 6, 6)
+        .maxIO(9, 9, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
-        .frontend(LargeNEIFrontend::new)
+        .frontend(LargeCentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multielectro")
@@ -2185,8 +2203,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> semiFluidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidgeneratorfuels", FuelBackend::new)
-        .maxIO(0, 0, 1, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .maxIO(0, 0, 1, 1)
+        .frontend(FuelFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> flotationCellRecipes = RecipeMapBuilder
         .of("gt.recipe.flotationcell")
@@ -2198,6 +2216,17 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> voidMinerRecipes = RecipeMapBuilder.of("gt.recipe.voidminer")
+        .maxIO(1, VoidMinerFrontend.MAX_ITEM_OUTPUTS, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBarPos(75, 26)
+        .logoPos(10, 10)
+        .neiHandlerInfo(
+            builder -> builder.setHeight(240)
+                .setMultipleWidgetsAllowed(false))
+        .frontend(VoidMinerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gt.recipe.multiblockrockbreaker")

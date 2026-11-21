@@ -153,14 +153,14 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
             .findSyncHandler("currentWaterConsumption", DoubleSyncValue.class);
         // spotless:off
         return new TextWidget<>(
-            IKey.dynamic(() -> getFluidTextLine(fluidName,currentWaterProductionSync.getValue().longValue())))
+            IKey.dynamic(() -> getFluidTextLine(fluidName,-currentWaterProductionSync.getValue().longValue())))
                 .height(DISPLAY_ROW_HEIGHT)
                 .scale(0.75f)
                 .tooltipBuilder(t -> t.addLine(
                             EnumChatFormatting.AQUA
                             + fluidName
                             + "\n"
-                            + GTUtility.appendRate(false,currentWaterProductionSync.getValue().longValue(),
+                            + GTUtility.appendRate(false,-currentWaterProductionSync.getValue().longValue(),
                                 false,1)))
                 .tooltipAutoUpdate(true);
         // spotless:on

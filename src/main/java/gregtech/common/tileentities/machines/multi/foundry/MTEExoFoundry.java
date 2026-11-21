@@ -9,8 +9,9 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,8 +38,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,13 +51,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -63,13 +67,16 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -96,11 +103,15 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider, IDataCopyable {
+
+    private static final String COPY_PASTE_IDENTIFIER = "exofoundry";
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -119,6 +130,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     public final FoundryData foundryData = new FoundryData();
 
+    public static final int MIN_TIER_WHERE_MODULES_NEEDED = VoltageIndex.UIV;
+    private static final int MAX_MACHINE_TIER = 3;
     public static final int MIN_CASINGS = 462; // 462 is the total casings (489) - 1 casing for ehatch - 1 casing for
                                                // output
                                                // bus - 25 casings to hold recipes
@@ -213,7 +226,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy), Maintenance)
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -413,6 +426,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
+    protected float getSoundRadiusMultiplier() {
+        return 2.5f;
+    }
+
+    @Override
     public IStructureDefinition<MTEExoFoundry> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -445,76 +463,43 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        // UNSET is not a selectable module, so it is not counted as an option
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_solidifier"))
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
-            .addInfo(
-                "Will " + EnumChatFormatting.BOLD
-                    + "not"
-                    + EnumChatFormatting.GRAY
-                    + " perform "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " over the hatch tier without modules")
-            .addInfo(
-                "Will " + EnumChatFormatting.BOLD
-                    + "not"
-                    + EnumChatFormatting.GRAY
-                    + " process "
-                    + EnumChatFormatting.DARK_BLUE
-                    + EnumChatFormatting.UNDERLINE
-                    + "UIV+"
-                    + EnumChatFormatting.GRAY
-                    + " voltage tier recipes without modules")
-            .addInfo(
-                "Has " + EnumChatFormatting.GOLD
-                    + "3 Tiers"
-                    + EnumChatFormatting.GRAY
-                    + ", depending on Central Chassis Casing")
-            .addInfo(
-                "Has " + EnumChatFormatting.GOLD
-                    + "2/3/4"
-                    + EnumChatFormatting.GRAY
-                    + " Module Slots, based on machine tier")
-            .addInfo(
-                "Each Module Slot has " + EnumChatFormatting.GOLD
-                    + "7"
-                    + EnumChatFormatting.GRAY
-                    + " different options")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Modules" + EnumChatFormatting.GRAY + " are selected inside the Controller")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Module"
-                    + EnumChatFormatting.GRAY
-                    + " stats are shown in NEI and the Controller")
-            .addInfo("Toggle Render with Screwdriver")
+            .addMarkdown(new ResourceLocation("gregtech", "exo-foundry"), ImmutableMap.of(
+                "min_tier_where_modules_needed", MIN_TIER_WHERE_MODULES_NEEDED,
+                "tiers", MAX_MACHINE_TIER,
+                "slots", IntStream.rangeClosed(1, MAX_MACHINE_TIER).mapToObj(t -> String.valueOf(getModuleSlots(t))).collect(Collectors.joining("/")),
+                "options", FoundryModule.values().length - 1))
             .addSupportAny()
             .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
+            .addInfo(EnumChatFormatting.RED + StatCollector.translateToLocal("gt.mbtt.flavor.exo_foundry"))
             .beginStructureBlock(15, 55, 15, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("548", "Exo-Foundry Containment Glass", false)
-            .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
-            .addCasing("282", "Inner Exo-Foundry Siphon Casing", false)
-            .addCasing("260", "Magnetic Chassis", true)
-            .addCasing("224", "Netherite Frame Box", false)
-            .addCasing("196", "Central Exo-Foundry Regulation Casing", false)
-            .addCasing("173", "Black Plutonium Item Pipe Casing", false)
-            .addEnergyHatch("1+", "Any primary casing", 1)
-            .addInputBus("0+", "Any primary casing", 1)
-            .addInputHatch("1+", "Any primary casing", 1)
-            .addOutputBus("1+", "Any primary casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("548", Casings.ExoFoundryContainmentGlass.getLocalizedName(), false)
+            .addCasing(MIN_CASINGS + "-485", Casings.PrimaryExoFoundryCasing.getLocalizedName(), false)
+            .addCasing("282", Casings.InnerExoFoundrySiphonCasing.getLocalizedName(), false)
+            .addCasing("260", StatCollector.translateToLocal("gt.mbtt.structure.magnetic_chassis"), true)
+            .addCasing("224", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Netherite), false)
+            .addCasing("196", Casings.CentralCasingExoFoundryCasing.getLocalizedName(), false)
+            .addCasing("173", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_primary_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_primary_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_primary_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_primary_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Check NEI for module costs")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.exo_foundry_module_costs"))
             .addSubChannel(GTStructureChannels.MAGNETIC_CHASSIS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (m != FoundryModule.UNSET) {
                 buildPiece(
@@ -533,7 +518,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (m != FoundryModule.UNSET) {
                 built += survivalBuildPiece(
@@ -579,8 +564,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Nullable
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasingsFoundry) return null;
-        if (metaID < 1 || metaID > 3) return null;
+        if (metaID < 1 || metaID > MAX_MACHINE_TIER) return null;
         return metaID;
+    }
+
+    /** Returns the number of module slots for the given machine tier. */
+    private static int getModuleSlots(int tier) {
+        return tier + 1;
     }
 
     @Override
@@ -617,7 +607,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private boolean checkModules(List<StructureError> errors) {
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
@@ -633,7 +623,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             }
         }
         return true;
-
     }
 
     public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -663,8 +652,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         foundryData.checkSolidifierModules();
         logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
-        logic.setMaxParallel(
-            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setMaxParallelSupplier(this::getTrueParallel);
         logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
@@ -718,7 +706,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
                 additionalOverclocks += foundryData.extraOverclocks;
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !foundryData.UIVRecipesEnabled) {
+                if (GTUtility.getTier(recipe.mEUt) >= MIN_TIER_WHERE_MODULES_NEEDED
+                    && !foundryData.moduleOnlyRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -783,11 +772,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -817,7 +801,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal);
+        foundryData.setModule(index, ordinal, true);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
@@ -837,35 +821,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     // Render code
     private boolean shouldRender = true;
-    private boolean renderInitialized;
-    private static IVertexArrayObject ring;
-    private static ShaderProgram ringProgram;
-    private int uRingColor;
-
-    private void initializeRender() {
-        // spotless:off
-        ring = WavefrontVBOBuilder.compileToVBO(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            )
-        );
-
-
-        try {
-            ringProgram = new ShaderProgram(
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl"
-            );
-            uRingColor = ringProgram.getUniformLocation("u_Color");
-        } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(e.getMessage());
-            return;
-        }
-        renderInitialized = true;
-        // spotless:on
-    }
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
@@ -873,10 +828,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             return;
         }
 
-        if (!renderInitialized) {
-            initializeRender();
-            if (!renderInitialized) return;
-        }
+        if (!FoundryRenderUtils.renderInitialized) return;
+
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
             .addDelayedRenderer(this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
@@ -897,7 +850,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private void renderRings(boolean bloom) {
         int i = 0;
-        GL11.glColor4f(1, 1, 1, 1);
         for (FoundryModule module : foundryData.modules) {
             if (i == foundryData.tier + 1) return;
             if (module == FoundryModule.UNSET) {
@@ -924,13 +876,17 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
     }
 
-    private void renderStandardRing(int index, float red, float green, float blue) {
-        ringProgram.use();
-        GL20.glUniform3f(uRingColor, red, green, blue);
-        renderRing(index);
+    private static void renderStandardRing(int index, float red, float green, float blue) {
+        FoundryRenderUtils.ringShader.use();
+        GL20.glUniform3f(FoundryRenderUtils.ringShader.loc(FoundryRenderUtils.RING_COLOR), red, green, blue);
+
+        FoundryRenderUtils.ringMatrix.translation(0, ringHeight(index), 0)
+            .scale(0.8f, 1.2f, 0.8f);
+        FoundryRenderUtils.ringShader.uploadModel(FoundryRenderUtils.ringMatrix);
+        FoundryRenderUtils.ring.render();
     }
 
-    private void renderUniversiumRing(int index, boolean bloom) {
+    private static void renderUniversiumRing(int index, boolean bloom) {
         final UniversiumShader shader = UniversiumShader.getInstance();
         if (bloom) {
             shader
@@ -950,18 +906,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glColor4f(1, 1, 1, 1);
 
-        renderRing(index);
+        renderFFPRing(index);
 
         UniversiumShader.clear();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
 
-    private void renderRing(int index) {
+    private static float ringHeight(int index) {
+        return 9 + index * 8 + (index > 1 ? 10 : 0);
+    }
+
+    private static void renderFFPRing(int index) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+        GL11.glTranslatef(0, ringHeight(index), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ring.render();
+        FoundryRenderUtils.ffpRing.render();
         GL11.glPopMatrix();
     }
 
@@ -983,9 +944,59 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
      * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(foundryData.tier);
+        buffer.writeInt(foundryData.modules[0].ordinal());
+        buffer.writeInt(foundryData.modules[1].ordinal());
+        buffer.writeInt(foundryData.modules[2].ordinal());
+        buffer.writeInt(foundryData.modules[3].ordinal());
+        buffer.writeBoolean(shouldRender);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        foundryData.tier = buffer.readInt();
+        foundryData.modules[0] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[1] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[2] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[3] = FoundryModule.values()[buffer.readInt()];
+        shouldRender = buffer.readBoolean();
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
+        if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("Exo-Foundry Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", foundryData.tier);
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
         tag.setInteger("module1OR", foundryData.modules[0].ordinal());
         tag.setInteger("module2OR", foundryData.modules[1].ordinal());
         tag.setInteger("module3OR", foundryData.modules[2].ordinal());
@@ -995,14 +1006,22 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
-        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
-        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
-        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
-        shouldRender = data.getBoolean("shouldRender");
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        this.shouldRender = nbt.getBoolean("shouldRender");
+        if (this.foundryData.tier == 0) return true; // nothing to paste, but paste is successful
+
+        for (int i = 0; i <= foundryData.tier; i++) {
+            String key = "module" + (i + 1) + "OR";
+            this.foundryData.modules[i] = FoundryModule.values()[nbt.getInteger(key)];
+        }
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPY_PASTE_IDENTIFIER;
     }
 
     // data class

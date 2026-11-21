@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
@@ -66,6 +65,7 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -80,6 +80,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.crossmod.liquidlogged.WaterlogHelper;
 import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
@@ -112,8 +113,7 @@ public class GTStructureUtility {
                 boolean isWater = isWater(block);
                 boolean isFlowing = isFlowingWater(block, world, x, y, z);
                 if (isWater && !isFlowing) return true;
-                if (allowFlowing && isFlowing) return true;
-                return false;
+                return allowFlowing && isFlowing;
             }
 
             @Override
@@ -197,11 +197,50 @@ public class GTStructureUtility {
                 }
             }
         }
+        if (allFilled && Mods.LiquidLogged.isModLoaded()) {
+            waterlogBlocksNextToWater(tile, facing, structure, offsetX, offsetY, offsetZ, waterChar);
+        }
         return allFilled;
     }
 
+    private static void waterlogBlocksNextToWater(IGregTechTileEntity tile, ExtendedFacing facing, String[][] structure,
+        int offsetX, int offsetY, int offsetZ, char waterChar) {
+        for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
+            String[] layers = structure[sliceZ];
+            for (int layerY = 0; layerY < layers.length; layerY++) {
+                String row = layers[layerY];
+                for (int charX = 0; charX < row.length(); charX++) {
+                    // Same-layer neighbours only, so frames above the water line stay dry
+                    if (row.charAt(charX) == waterChar || !hasCharNextTo(structure, sliceZ, layerY, charX, waterChar))
+                        continue;
+
+                    int[] abc = new int[] { charX - offsetX, layerY - offsetY, sliceZ - offsetZ };
+                    int[] xyz = new int[] { 0, 0, 0 };
+                    facing.getWorldOffset(abc, xyz);
+                    WaterlogHelper.waterlog(
+                        tile.getWorld(),
+                        tile.getXCoord() + xyz[0],
+                        tile.getYCoord() + xyz[1],
+                        tile.getZCoord() + xyz[2]);
+                }
+            }
+        }
+    }
+
+    private static boolean hasCharNextTo(String[][] structure, int sliceZ, int layerY, int charX, char c) {
+        return isCharAt(structure, sliceZ - 1, layerY, charX, c) || isCharAt(structure, sliceZ + 1, layerY, charX, c)
+            || isCharAt(structure, sliceZ, layerY, charX - 1, c)
+            || isCharAt(structure, sliceZ, layerY, charX + 1, c);
+    }
+
+    private static boolean isCharAt(String[][] structure, int sliceZ, int layerY, int charX, char c) {
+        if (sliceZ < 0 || sliceZ >= structure.length || layerY >= structure[sliceZ].length) return false;
+        String row = structure[sliceZ][layerY];
+        return charX >= 0 && charX < row.length() && row.charAt(charX) == c;
+    }
+
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
-        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        if (material == null) throw new IllegalArgumentException("material for sheet metal cannot be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
 
             @Override
@@ -220,7 +259,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
-        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal cannot be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
 
             @Override
@@ -906,15 +945,30 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return triggerItemTransform(
             GTStructureUtility::capGlassStack,
-            GTStructureChannels.BOROGLASS.use(
-                lazy(
-                    t -> ofBlocksTiered(
-                        GlassTier::getGlassBlockTier,
-                        GlassTier.getGlassList(),
-                        notSet,
-                        setter,
-                        getter,
-                        Collections.singletonList("GT5U.structure.tiered_glass")))));
+            GTStructureChannels.BOROGLASS.use(lazy(t -> chainAllGlassesImpl(notSet, setter, getter))));
+    }
+
+    private static <T> IStructureElement<T> chainAllGlassesImpl(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        IStructureElement<T> inner = ofBlocksTiered(
+            GlassTier::getGlassBlockTier,
+            GlassTier.getGlassList(),
+            notSet,
+            setter,
+            getter);
+        return new ProxyStructureElement<>(inner) {
+
+            @Override
+            public List<String> getDescription(T context) {
+                int tier = getter.apply(context);
+                if (tier == notSet) {
+                    return Collections.singletonList("GT5U.structure.tiered_glass");
+                }
+                return Collections.singletonList(
+                    GlassTier.getTierLangKeys()
+                        .get(tier));
+            }
+        };
     }
 
     /**
@@ -1205,7 +1259,7 @@ public class GTStructureUtility {
                     .addAll(
                         IntStream.rangeClosed(0, 15)
                             .boxed()
-                            .collect(Collectors.toList()));
+                            .toList());
             } else {
                 map.computeIfAbsent(block, k -> new ArrayList<>())
                     .add(meta);
@@ -1340,6 +1394,16 @@ public class GTStructureUtility {
         @Override
         public String getDisplayName() {
             return proxiedHatch.getDisplayName();
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return proxiedHatch.getDescriptionLangKey();
+        }
+
+        @Override
+        public List<String> getDescriptionLangKeys() {
+            return proxiedHatch.getDescriptionLangKeys();
         }
 
         @Override

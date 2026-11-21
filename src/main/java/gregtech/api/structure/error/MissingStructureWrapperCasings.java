@@ -50,7 +50,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+        for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) list.tagList) {
             ItemStack stack = new ItemStack(
                 Item.getItemById(tag.getInteger("casingId")),
                 1,
@@ -78,7 +78,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                 Item.getItemById(tag.getInteger("casingId")),
                 1,
                 tag.getInteger("casingMeta"));
-            if (sb.length() > 0) sb.append('\n');
+            if (!sb.isEmpty()) sb.append('\n');
             sb.append(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.structure_error.missing_casings_specific",

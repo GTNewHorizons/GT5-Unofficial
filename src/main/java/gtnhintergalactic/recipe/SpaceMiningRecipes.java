@@ -443,7 +443,7 @@ public class SpaceMiningRecipes {
             new int[] { 2000, 2000, 2000, 1000, 2000, 2000, 3000, 3000, 3000, 3000, 3000, 3000 },
             new Materials[] { Materials.MeteoricIron, Materials.DeepIron, Materials.Mytryl, Materials.BlackPlutonium,
                 Materials.CallistoIce, Materials.Ledox, Materials.Alduorite, Materials.Rubracium, Materials.Vulcanite,
-                Materials.Vyroxeres, Materials.Ceruclase, Materials.Orichalcum },
+                Materials.Vyroxeres, Materials.Ceruclase, Materials.Orikalkum },
             OrePrefixes.oreEndstone,
             20,
             50,
@@ -845,7 +845,7 @@ public class SpaceMiningRecipes {
             25,
             200,
             360,
-            3,
+            2,
             500,
             (int) TierEU.RECIPE_ZPM,
             ItemMiningDrones.DroneTiers.ZPM.ordinal(),
@@ -1049,7 +1049,8 @@ public class SpaceMiningRecipes {
                 aItemOutputs,
                 aChances,
                 minModuleTier,
-                duration));
+                duration,
+                EUt));
     }
 
     private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
@@ -1104,7 +1105,8 @@ public class SpaceMiningRecipes {
                 orePrefixes,
                 aChances,
                 minModuleTier,
-                duration));
+                duration,
+                EUt));
     }
 
     /**

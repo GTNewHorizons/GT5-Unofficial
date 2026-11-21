@@ -17,7 +17,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import codechicken.enderstorage.api.EnderStorageDyeTool;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
@@ -25,7 +28,8 @@ import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 
-public class BehaviourSprayColor extends BehaviourNone {
+@Optional.Interface(iface = "codechicken.enderstorage.api.EnderStorageDyeTool", modid = Mods.ModIDs.ENDER_STORAGE)
+public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDyeTool {
 
     private final ItemStack mEmpty;
     private final ItemStack mUsed;
@@ -64,6 +68,9 @@ public class BehaviourSprayColor extends BehaviourNone {
 
         if (ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side)
             .isValid()) {
+            // Spraying only happens server-side, so report success on the client. Otherwise Backhand
+            // treats the click as unused and falls back to the offhand item, which opens the block's GUI.
+            if (aWorld.isRemote) return aStack.stackSize == 1;
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
 
@@ -101,7 +108,9 @@ public class BehaviourSprayColor extends BehaviourNone {
         Block initialBlock = aWorld.getBlock(aX, aY, aZ);
         int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
-        while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
+        ColoredBlockContainer initialContainer = ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side);
+        ColoredBlockContainer container = initialContainer;
+        while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && colorize(container)) {
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
@@ -138,6 +147,7 @@ public class BehaviourSprayColor extends BehaviourNone {
                     if (currentGTTile.getMetaTileID() != targetGTTile.getMetaTileID()) break;
                 }
             }
+            container = initialContainer.getChainInstance(aPlayer, aX, aY, aZ, side);
         }
         setRemainingUses(aStack, tNBT, tUses);
         return rOutput;
@@ -189,9 +199,8 @@ public class BehaviourSprayColor extends BehaviourNone {
         }
     }
 
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
-            .setColor(getColor());
+    protected boolean colorize(ColoredBlockContainer container) {
+        return container.setColor(getColor());
     }
 
     protected byte getColor() {
@@ -210,5 +219,19 @@ public class BehaviourSprayColor extends BehaviourNone {
         aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.uses", tRemainingPaint));
         aList.add(StatCollector.translateToLocal("gt.behaviour.unstackable"));
         return aList;
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        return this.mColor;
+    }
+
+    @Override
+    public void expendToolUse(final ItemStack itemStack) {
+        final NBTTagCompound nbt = ItemStackNBT.get(itemStack);
+        final long uses = getUses(itemStack, nbt);
+        if (uses > 0) {
+            setRemainingUses(itemStack, nbt, uses - 1);
+        }
     }
 }

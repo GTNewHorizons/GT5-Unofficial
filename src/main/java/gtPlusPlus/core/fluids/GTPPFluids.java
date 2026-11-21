@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
@@ -584,7 +585,7 @@ public class GTPPFluids {
             OreDictionary.registerOre("cell" + s, temp.copy());
             return temp;
         } catch (final Exception e) {
-            e.printStackTrace();
+            GTplusplus.logger.error(e);
         }
         return null;
     }

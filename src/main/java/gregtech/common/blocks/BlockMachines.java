@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
@@ -17,13 +17,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -58,6 +56,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -159,7 +158,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0) ? 100 : 0;
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0 ? 100 : 0;
     }
 
     @Override
@@ -169,12 +169,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean isFireSource(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
     }
 
     @Override
     public boolean isFlammable(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
+    }
+
+    private static boolean isHatchAt(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        if (!(aWorld instanceof World world)) return false;
+        TileEntity te = world.getTileEntity(aX, aY, aZ);
+        return te instanceof BaseMetaTileEntity bmte && bmte.getMetaTileEntity() instanceof MTEHatch;
     }
 
     @Override
@@ -356,10 +364,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         if (!GregTechAPI.sPostloadFinished) return;
-        GTLog.out.println("GTMod: Setting up Icon Register for Blocks");
+        GT_FML_LOGGER.debug("GTMod: Setting up Icon Register for Blocks");
         GregTechAPI.setBlockIconRegister(aIconRegister);
 
-        GTLog.out.println("GTMod: Registering MetaTileEntity specific Textures");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntity specific Textures");
         try {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -367,18 +375,18 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Starting Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
             for (Runnable tRunnable : GregTechAPI.sGTBlockIconload) {
                 tRunnable.run();
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Finished Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Finished Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Finished Block Icon Load Phase");
     }
 
@@ -550,10 +558,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void harvestBlock(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, int aMeta) {
         super.harvestBlock(aWorld, aPlayer, aX, aY, aZ, aMeta);
         aWorld.setBlockToAir(aX, aY, aZ);
-        if (aPlayer instanceof EntityPlayerMP player) {
-            // vajra support for triggering resync earlier instead of delaying by 1 tick (50ms).
-            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
-        }
     }
 
     @Override

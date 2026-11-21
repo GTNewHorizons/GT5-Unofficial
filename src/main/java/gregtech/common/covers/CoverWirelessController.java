@@ -1,7 +1,10 @@
 package gregtech.common.covers;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
@@ -19,6 +23,10 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
 public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
+
+    private static final int LEGACY_FREQUENCY_MASK = 0xFFFF;
+    private static final int LEGACY_PRIVATE_MASK = 0x10000;
+    private static final UUID UNBOUND_LEGACY_PRIVATE_UUID = new UUID(0, 0);
 
     private enum State {
         ENABLE_WITH_SIGNAL,
@@ -38,10 +46,37 @@ public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        super.readDataFromNbt(nbt);
+        // Meta item 747 used to be CoverRedstoneReceiverInternal, whose data was an int bit field.
+        if (nbt instanceof NBTTagInt legacyData) {
+            int data = legacyData.func_150287_d();
+            readLegacyData(data, (data & LEGACY_PRIVATE_MASK) != 0);
+            return;
+        }
+
         NBTTagCompound tag = (NBTTagCompound) nbt;
+        if (tag.getTag("frequency") instanceof NBTTagInt) {
+            readLegacyData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
+            return;
+        }
+
+        super.readDataFromNbt(nbt);
         if (!tag.hasKey("mode")) setMode(GateMode.SINGLE_SOURCE);
         state = State.values()[tag.getByte("state")];
+    }
+
+    private void readLegacyData(int legacyData, boolean privateChannel) {
+        setFrequency(Integer.toString(legacyData & LEGACY_FREQUENCY_MASK));
+        setUuid(privateChannel ? getTileOwnerUuid() : null);
+        setMode(GateMode.SINGLE_SOURCE);
+        state = State.ENABLE_WITH_SIGNAL;
+    }
+
+    private UUID getTileOwnerUuid() {
+        if (coveredTile.get() instanceof IGregTechTileEntity tile) {
+            UUID ownerUuid = tile.getOwnerUuid();
+            if (ownerUuid != null) return ownerUuid;
+        }
+        return UNBOUND_LEGACY_PRIVATE_UUID;
     }
 
     @Override

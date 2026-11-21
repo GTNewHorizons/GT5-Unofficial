@@ -1,6 +1,9 @@
 package gregtech.common.misc;
 
+import java.util.Locale;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
@@ -22,45 +25,43 @@ import gregtech.api.structure.IStructureChannels;
 public enum GTStructureChannels implements IStructureChannels {
 
     // Order of enum constants does not matter
-    QFT_MANIPULATOR("manipulator", "Manipulator Tier"),
-    QFT_SHIELDING("shielding", "Shielding Tier"),
-    HEATING_COIL("coil", "Heating Coil Tier"),
-    BOROGLASS("glass", "Glass Tier"),
-    PRASS_UNIT_CASING("unit_casing", "Precise Electronic Unit Casing Tier"),
-    METAL_MACHINE_CASING("casing", "Metal Machine Casing Tier"),
-    TIER_MACHINE_CASING("machine_casing", "Machine Casing Tier"),
-    TIER_CASING("casing", "Machine Casing Tier"),
-    SOLENOID("solenoid", "Solenoid Tier"),
-    LSC_CAPACITOR("capacitor", "Capacitor Tier"),
-    STRUCTURE_HEIGHT("height", "Structure Height"),
-    STRUCTURE_LENGTH("length", "Structure Length"),
-    PIPE_CASING("pipe", "Pipe Casing Tier"),
-    ITEM_PIPE_CASING("item_pipe", "Item Pipe Casing Tier"),
-    PSS_CELL("cell", "Vanadium Redox Power Cell Tier"),
-    SYNCHROTRON_ANTENNA("antenna", "Antenna Casing Tier"),
-    SE_MOTOR("motor", "Space Elevator Motor Tier"),
-    EOH_COMPRESSION("spacetime_compression", "Spacetime Compression Field Generator Tier"),
-    EOH_STABILISATION("stabilisation", "Stabilisation Field Generator Tier"),
-    EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
-    HATCH("gt_hatch", "Hatch placement"),
-    TFFT_FIELD("field", "Storage Field Tier"),
-    EIC_PISTON("piston_block", "Containment Block Tier"),
-    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
-    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
-    SUPER_CHEST("super_chest", "Super Chest Tier"),
-    MAGNETIC_CHASSIS("chassis", "Magnetic Chassis Tier"),
-    COMPONENT_ASSEMBLYLINE_CASING("component_casing", "Component Assembly Line Casing Tier"),
-    LES_ESSENTIA_CELL("essentia_cell", "Large Essentia Smeltery Essentia Diffusion Cell Tier"),
-    COKE_OVEN_CASING("coke_oven_casing", "Coke Oven Casing Tier");
+    QFT_MANIPULATOR("manipulator"),
+    QFT_SHIELDING("shielding"),
+    HEATING_COIL("coil"),
+    FIELD_RESTRICTION_COIL("field_restriction_coil"),
+    BOROGLASS("glass"),
+    PRASS_UNIT_CASING("unit_casing"),
+    METAL_MACHINE_CASING("casing"),
+    TIER_MACHINE_CASING("machine_casing"),
+    TIER_CASING("casing"),
+    SOLENOID("solenoid"),
+    LSC_CAPACITOR("capacitor"),
+    STRUCTURE_HEIGHT("height"),
+    STRUCTURE_LENGTH("length"),
+    PIPE_CASING("pipe"),
+    ITEM_PIPE_CASING("item_pipe"),
+    PSS_CELL("cell"),
+    SYNCHROTRON_ANTENNA("antenna"),
+    SE_MOTOR("motor"),
+    EOH_COMPRESSION("spacetime_compression"),
+    EOH_STABILISATION("stabilisation"),
+    EOH_DILATION("time_dilation"),
+    HATCH("gt_hatch"),
+    TFFT_FIELD("field"),
+    EIC_PISTON("piston_block"),
+    ALCHEMICAL_CASING("casing"),
+    ALCHEMICAL_CONSTRUCT("construct"),
+    SUPER_CHEST("super_chest"),
+    MAGNETIC_CHASSIS("chassis"),
+    COMPONENT_ASSEMBLYLINE_CASING("component_casing"),
+    LES_ESSENTIA_CELL("essentia_cell"),
+    COKE_OVEN_CASING("coke_oven_casing");
     //
-    ;
 
     private final String channel;
-    private final String defaultTooltip;
 
-    GTStructureChannels(String aChannel, String defaultTooltip) {
+    GTStructureChannels(String aChannel) {
         channel = aChannel;
-        this.defaultTooltip = defaultTooltip;
     }
 
     @Override
@@ -68,9 +69,10 @@ public enum GTStructureChannels implements IStructureChannels {
         return channel;
     }
 
+    // Keyed by constant name, not channel id: several constants share the "casing" channel with different names
     @Override
     public String getDefaultTooltip() {
-        return defaultTooltip;
+        return StatCollector.translateToLocal("channels.gregtech.subchannel." + name().toLowerCase(Locale.ROOT));
     }
 
     @Override

@@ -31,7 +31,11 @@ public class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
 
     @Override
     public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
+        // Simple reasons all share the same ID, so the key has to be compared as well, otherwise switching between
+        // them is not detected and the reason never gets synced to the client.
         return t1.getID()
-            .equals(t2.getID());
+            .equals(t2.getID())
+            && t1.getKey()
+                .equals(t2.getKey());
     }
 }

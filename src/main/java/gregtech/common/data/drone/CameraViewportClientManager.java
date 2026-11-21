@@ -54,6 +54,10 @@ public class CameraViewportClientManager extends CameraViewportManager {
 
     private static final int COLOR_OBSERVATION_MASK = Color.BLACK.main;
 
+    /** Fraction of the screen covered by the camera panel */
+    public static final float PANEL_SCREEN_FRACTION = 0.8F;
+    public static final int SIGNAL_LOST_THRESHOLD = 10;
+
     public DroneConnection activeConnection = null;
     public NBTTagCompound observedMachineStatus = null;
 
@@ -62,7 +66,6 @@ public class CameraViewportClientManager extends CameraViewportManager {
     public float cameraYaw, cameraPitch;
     public float spawnYaw;
     public long hoveredMachineCoord = NULL_COORD;
-    public java.util.List<String> cachedWailaLines = null;
     public boolean flashlightActive = false;
     public boolean switchingToRemoteGui = false;
     public boolean returningFromRemoteGui = false;
@@ -77,7 +80,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     private int switchingToRemoteGuiTimeout = 0;
 
     private boolean wasLDown = false;
-    private boolean wasGDown = false;
+    private boolean wasRightClickDown = false;
     private boolean hadNightVisionBefore = false;
     private boolean wasTabDown = false;
     private boolean wasF5Down = false;
@@ -390,8 +393,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
         }
         wasF5Down = isF5Down;
 
-        boolean isGDown = Keyboard.isKeyDown(Keyboard.KEY_G);
-        if (isGDown && !wasGDown) {
+        boolean isRightClickDown = Mouse.isButtonDown(1);
+        if (isRightClickDown && !wasRightClickDown) {
             int rx = CoordinatePacker.unpackX(this.hoveredMachineCoord);
             int ry = CoordinatePacker.unpackY(this.hoveredMachineCoord);
             int rz = CoordinatePacker.unpackZ(this.hoveredMachineCoord);
@@ -423,7 +426,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
                 }
             }
         }
-        wasGDown = isGDown;
+        wasRightClickDown = isRightClickDown;
 
         boolean isZoomIn = Keyboard.isKeyDown(Keyboard.KEY_EQUALS) || Keyboard.isKeyDown(Keyboard.KEY_ADD)
             || Keyboard.isKeyDown(Keyboard.KEY_PRIOR);
@@ -463,14 +466,14 @@ public class CameraViewportClientManager extends CameraViewportManager {
 
         boolean isTabDown = Keyboard.isKeyDown(Keyboard.KEY_TAB);
         if (isTabDown && !wasTabDown) {
-            if (getSignalStrength() > 10) {
+            if (!isSignalLost()) {
                 Mouse.setGrabbed(!Mouse.isGrabbed());
             }
         }
         wasTabDown = isTabDown;
 
         if (Mouse.isGrabbed()) {
-            if (getSignalStrength() <= 10) {
+            if (isSignalLost()) {
                 Mouse.setGrabbed(false);
                 return;
             }
@@ -608,8 +611,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
         int sw = sr.getScaledWidth();
         int sh = sr.getScaledHeight();
 
-        int panelW = (int) (sw * 0.8);
-        int panelH = (int) (sh * 0.8);
+        int panelW = (int) (sw * PANEL_SCREEN_FRACTION);
+        int panelH = (int) (sh * PANEL_SCREEN_FRACTION);
 
         int x0 = (sw - panelW) / 2;
         int y0 = (sh - panelH) / 2;
@@ -723,13 +726,17 @@ public class CameraViewportClientManager extends CameraViewportManager {
         if (rSq < 400.0) {
             return 100;
         } else if (rSq >= 1024.0) {
-            return 10;
+            return SIGNAL_LOST_THRESHOLD;
         } else {
             // At very edge
             double r = Math.sqrt(rSq);
             double distToCircleEdge = 32.0 - r;
-            return 10 + (int) (distToCircleEdge * 7.5);
+            return SIGNAL_LOST_THRESHOLD + (int) (distToCircleEdge * 7.5);
         }
+    }
+
+    public boolean isSignalLost() {
+        return getSignalStrength() <= SIGNAL_LOST_THRESHOLD;
     }
 
     public void resetToSpawn() {

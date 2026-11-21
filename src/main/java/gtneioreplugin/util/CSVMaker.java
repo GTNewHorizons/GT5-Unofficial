@@ -1,5 +1,7 @@
 package gtneioreplugin.util;
 
+import static gtneioreplugin.GTNEIOrePlugin.LOG;
+
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class CSVMaker implements Runnable {
             one.flush();
             one.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -112,7 +114,7 @@ public class CSVMaker implements Runnable {
             one.flush();
             one.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 }

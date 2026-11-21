@@ -156,8 +156,8 @@ public class IGConfig {
                     try {
                         cachedPowerFactors.put(parts[0], Double.parseDouble(parts[1]));
                     } catch (Exception e) {
-                        GTNHIntergalactic.LOG.error("Error while trying to parse \"" + s + "\"!");
-                        e.printStackTrace();
+                        GTNHIntergalactic.LOG.error("Error while trying to parse \"{}\"!", s);
+                        GTNHIntergalactic.LOG.error(e);
                     }
                 }
             }

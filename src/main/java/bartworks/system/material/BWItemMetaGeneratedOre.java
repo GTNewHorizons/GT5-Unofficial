@@ -46,12 +46,10 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff == null) {
-            return blockOre.getPrefix()
-                .getLocalizedNameForItem(Materials._NULL);
+            return blockOre.stoneType.getLocalizedOreName(Materials._NULL, blockOre.isSmall);
         }
 
-        return blockOre.getPrefix()
-            .getLocalizedNameForItem(werkstoff.getBridgeMaterial());
+        return blockOre.stoneType.getLocalizedOreName(werkstoff.getBridgeMaterial(), blockOre.isSmall);
     }
 
     @Override

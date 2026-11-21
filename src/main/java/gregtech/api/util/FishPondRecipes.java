@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class FishPondRecipes {
             generateRecipes(MTEIndustrialFishingPond.JUNK_MODE, junkList, 1.35);
             generateRecipes(MTEIndustrialFishingPond.TREASURE_MODE, treasureList, 20D);
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
     }
 

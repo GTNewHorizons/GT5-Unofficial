@@ -30,7 +30,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
@@ -156,46 +155,6 @@ class GTRecipeBackendLifecycleTest {
         assertFalse(
             map.getBackend()
                 .isValidCatalystFluid(new FluidStack(FluidRegistry.LAVA, 1)));
-    }
-
-    @Test
-    void nacMaxDurationTracksRemoveClearAndReInit() {
-        RecipeMap<NACRecipeMapBackend> map = RecipeMapBuilder.of(uniqueName("nac"), NACRecipeMapBackend::new)
-            .maxIO(1, 1, 0, 0)
-            .build();
-        GTRecipe shortRecipe = addItemRecipe(map, 10);
-        GTRecipe longRecipe = addItemRecipe(map, 30);
-
-        assertEquals(
-            30,
-            map.getBackend()
-                .getMaxDuration());
-
-        map.getBackend()
-            .removeRecipe(longRecipe);
-        assertEquals(
-            10,
-            map.getBackend()
-                .getMaxDuration());
-
-        map.getBackend()
-            .reInit();
-        assertSame(
-            shortRecipe,
-            map.getAllRecipes()
-                .iterator()
-                .next());
-        assertEquals(
-            10,
-            map.getBackend()
-                .getMaxDuration());
-
-        map.getBackend()
-            .clearRecipes();
-        assertEquals(
-            0,
-            map.getBackend()
-                .getMaxDuration());
     }
 
     @Test
@@ -326,16 +285,6 @@ class GTRecipeBackendLifecycleTest {
                 .fluidInputs(new FluidStack(fluid, 1_000))
                 .itemOutputs(new ItemStack(chest, 1))
                 .duration(1)
-                .eut(1)
-                .addTo(map));
-    }
-
-    private static GTRecipe addItemRecipe(RecipeMap<NACRecipeMapBackend> map, int duration) {
-        return onlyRecipe(
-            RA.stdBuilder()
-                .itemInputs(new ItemStack(log, 1, duration))
-                .itemOutputs(new ItemStack(chest, 1))
-                .duration(duration)
                 .eut(1)
                 .addTo(map));
     }

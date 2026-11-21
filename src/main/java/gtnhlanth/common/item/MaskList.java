@@ -23,7 +23,7 @@ public enum MaskList {
     CBLANK("cblank", "Crystal", 0, "X-RAY", null, null, 0, 0, 0, 0, 0, null, null), // Better at resolving smaller
                                                                                     // features, in theory
 
-    ILC("ilc", "Integrated Logic Circuit", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
+    ILC("ilc", "Logic IC", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
         ItemList.Circuit_Wafer_ILC.get(1), null),
     RAM("ram", "Random Access Memory", 200, "", BLANK1, Dyes.dyeCyan, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 40, 2,
         ItemList.Circuit_Wafer_Ram.get(1), null, ItemList.Circuit_Silicon_Wafer),
@@ -113,27 +113,27 @@ public enum MaskList {
 
     ;
 
-    String name;
-    String englishName;
-    String spectrum;
+    final String name;
+    final String englishName;
+    final String spectrum;
 
-    int maxUses;
+    final int maxUses;
 
-    MaskList precursor;
-    Dyes lensColour;
+    final MaskList precursor;
+    final Dyes lensColour;
 
-    long engraverEUt;
+    final long engraverEUt;
 
-    float minEnergy;
-    float maxEnergy;
+    final float minEnergy;
+    final float maxEnergy;
 
-    float minFocus;
-    int baselineAmount;
+    final float minFocus;
+    final int baselineAmount;
 
-    ItemStack tcTargetItem;
-    ItemStack producedItem;
+    final ItemStack tcTargetItem;
+    final ItemStack producedItem;
 
-    ItemList[] forbiddenWafers;
+    final ItemList[] forbiddenWafers;
 
     MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,

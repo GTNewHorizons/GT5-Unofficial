@@ -154,6 +154,18 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         public boolean batchModeInitialValue;
 
+        @Config.Comment("If true, explosive food items (e.g. Explosive Ice Cream) deal damage when eaten. "
+            + "If false, only the explosion effect plays, with no damage.")
+        @Config.DefaultBoolean(true)
+        public boolean explosiveFoodDamage;
+
+        @Config.Comment("If true, entities can climb the uncovered horizontal sides of frame boxes like ladders.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("ClimbableFrameBox")
+        @Config.Sync
+        @Config.RequiresWorldRestart
+        public boolean climbableFrameBox;
+
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
         @Config.RequiresMcRestart
@@ -384,7 +396,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/explosions.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;

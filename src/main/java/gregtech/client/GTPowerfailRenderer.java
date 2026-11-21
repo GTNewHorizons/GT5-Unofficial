@@ -2,7 +2,7 @@ package gregtech.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -53,7 +53,7 @@ public class GTPowerfailRenderer {
         if (powerfails.isEmpty()) return;
         if (!Client.render.renderPowerfailNotifications) return;
 
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityLivingBase player = Minecraft.getMinecraft().renderViewEntity;
 
         Vec3 pos2 = player.getPosition(event.partialTicks);
         Vector3d pos = new Vector3d(pos2.xCoord, pos2.yCoord, pos2.zCoord);
@@ -61,7 +61,7 @@ public class GTPowerfailRenderer {
 
         long now = System.currentTimeMillis();
 
-        int dimId = player.getEntityWorld().provider.dimensionId;
+        int dimId = player.worldObj.provider.dimensionId;
 
         Long2ObjectOpenHashMap<Powerfail> powerfails = this.powerfails.get(dimId);
 

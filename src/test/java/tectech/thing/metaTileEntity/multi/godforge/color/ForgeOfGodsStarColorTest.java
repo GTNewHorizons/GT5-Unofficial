@@ -2,9 +2,13 @@ package tectech.thing.metaTileEntity.multi.godforge.color;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 public class ForgeOfGodsStarColorTest {
+
+    public static final Logger logger = LogManager.getLogger("TecTech test");
 
     @Test
     public void testSerializeToString() {
@@ -14,7 +18,7 @@ public class ForgeOfGodsStarColorTest {
             .addColor(3, 8, 94, 20);
 
         String serialized = starColor.serializeToString();
-        System.out.printf("Tested Star Color: %s\n", serialized);
+        logger.info("Tested Star Color: {}", serialized);
         ForgeOfGodsStarColor deserialized = ForgeOfGodsStarColor.deserialize(serialized);
         assertEquals(starColor, deserialized);
     }

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -12,7 +14,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import gregtech.api.util.GTLog;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -60,7 +61,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                     BlockBaseModular g = (BlockBaseModular) thisBlock;
                     this.mMaterial = g.getMaterialEx();
                 } catch (Exception e) {
-                    e.printStackTrace(GTLog.err);
+                    GT_FML_LOGGER.error(e);
                 }
                 // list.add("Material is Null.");
             }

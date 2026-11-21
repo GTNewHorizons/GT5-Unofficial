@@ -47,19 +47,19 @@ public class GregtechPowerSubStation {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_MV.get(1L),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "C", "M", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_EV.get(1L),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "C", "M", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_MV.get(1L),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "M", "C", 'M', ItemList.Hull_MV, 'C', ItemList.Battery_Buffer_2by2_MV });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Battery_EV.get(1L),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "M", "C", 'M', ItemList.Hull_EV, 'C', ItemList.Battery_Buffer_4by4_EV });
     }
 }

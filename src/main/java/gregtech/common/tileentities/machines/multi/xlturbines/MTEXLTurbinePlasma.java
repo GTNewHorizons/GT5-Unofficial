@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -10,7 +10,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,6 +22,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -37,6 +39,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.util.math.MathUtils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -172,32 +175,25 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Turbine, XLPT")
-            .addInfo("Same throughput as 16 LPT with only 12 turbines")
-            .addInfo("Generates power from Plasma based on the turbine and fitting")
-            .addInfo("Outputs 1L of fluid for every 1L of Plasma")
-            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
-            .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.plasma_turbine", "XLPT"))
+            .addMarkdown(new ResourceLocation("gregtech", "xl-plasma-turbine"))
             .addSupportAny()
             .beginStructureBlock(9, 9, 26, true)
-            .addController("Front center, 5th layer")
-            .addCasing(minCasingAmount() + "-352", "Reinforced Plasma Turbine Casing", false)
-            .addCasing("100", "Naquadah Coil Block", false)
-            .addCasing("72", "Tungstensteel Pipe Casing", false)
-            .addCasing("36", "Any Tiered Glass", false)
-            .addCasing("32", "Tungstensteel Frame Box", false)
-            .addCasing("16", "Turbine Shaft", false)
-            .addCasing("7", "Steel Gear Box Casing", false)
-            .addDynamoHatch("1+", "Any turbine casing", 1)
-            .addMaintenanceHatch("1", "Any turbine casing", 1)
-            .addInputBus("0+", "Any turbine casing", 1)
-            .addInputHatch("1+", "Any turbine casing", 1)
-            .addOutputHatch("1+", "Any turbine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_5th_layer"))
+            .addCasing(minCasingAmount() + "-352", getCasing().getLocalizedName(), false)
+            .addCasing("100", Casings.NaquadahCoilBlock.getLocalizedName(), false)
+            .addCasing("72", getRotorCasing().getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
+            .addCasing("7", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }

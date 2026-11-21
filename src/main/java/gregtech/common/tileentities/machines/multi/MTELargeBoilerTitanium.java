@@ -5,6 +5,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
 
     public static final int EUT_GENERATED = 4800;

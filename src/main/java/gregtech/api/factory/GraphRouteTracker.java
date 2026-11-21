@@ -21,6 +21,7 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
     private final TRouteInfo zero;
 
     private boolean networkChanged = false;
+    private int version;
 
     public GraphRouteTracker(Class<TNotable> notableType, TRouteInfo zero) {
         this.notableType = notableType;
@@ -29,6 +30,12 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
 
     public void invalidateRoutes() {
         networkChanged = true;
+        version++;
+    }
+
+    /// Changes every time the routes are invalidated.
+    public int getVersion() {
+        return version;
     }
 
     public void clear() {
@@ -98,23 +105,29 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         return EMPTY_NODE_ARRAY;
     }
 
+    /**
+     * Visits each node at most once; alternate paths to an already visited node are not exposed to the visitor.
+     */
     public void iterateNetworkBFS(TNotable start, NetworkVisitor<TNotable, TRouteInfo> visitor) {
         updateEdgesIfNeeded();
 
         StepQueue<TNotable, TRouteInfo> queue = new StepQueue<>();
+        Set<TNotable> visited = new HashSet<>();
 
         queue.add(new NetworkStep<>(start, zero, null));
 
         NetworkStep<TNotable, TRouteInfo> step;
 
         while ((step = queue.takeFront()) != null) {
+            if (!visited.add(step.node())) continue;
+
             VisitorResult result = visitor.visit(step);
 
             if (result == VisitorResult.Break) break;
             if (result == VisitorResult.SkipNode) continue;
 
             for (var edge : edges.getOrDefault(step.node(), emptyNodeArray())) {
-                if (!step.contains(edge.element())) {
+                if (!visited.contains(edge.element())) {
                     queue.add(
                         new NetworkStep<>(
                             edge.element(),

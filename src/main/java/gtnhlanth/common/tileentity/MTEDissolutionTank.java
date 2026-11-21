@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,6 +58,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -217,22 +219,23 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.disstank.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info2"))
+            .addMarkdown(new ResourceLocation("gregtech", "dissolution-tank"))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center, 2nd layer")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("30-44", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("24", "Any Tiered Glass", false)
+            .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("9", Casings.HeatProofMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", "Any stainless steel casing", 1)
-            .addMaintenanceHatch("1", "Any stainless steel casing", 1)
-            .addInputAny("1+", "Any stainless steel casing", 1)
-            .addOutputAny("1+", "Any stainless steel casing", 1)
-            .addAir("Interior of the structure")
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gtnhlanth.tt.disstank.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.disstank.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.disstank.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gtnhlanth.tt.disstank.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 }

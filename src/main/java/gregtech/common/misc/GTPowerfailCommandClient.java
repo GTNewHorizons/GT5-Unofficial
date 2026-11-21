@@ -32,13 +32,9 @@ public class GTPowerfailCommandClient extends GTPowerfailCommand {
 
                 ChatMessage.PowerfailRenderHidden.send(player);
             }
-            case "help" -> {
-                sendHelpMessage(sender);
-            }
-            case "clear", "clear-dim", "list" -> {
-                // Pass it to the server
+            case "help" -> sendHelpMessage(sender);
+            case "clear", "clear-dim", "list" -> // Pass it to the server
                 player.sendChatMessage("/" + getCommandName() + " " + String.join(" ", args));
-            }
             default -> {
                 sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
                 sendHelpMessage(sender);

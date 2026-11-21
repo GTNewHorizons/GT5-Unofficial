@@ -42,13 +42,7 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaOilCrackerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
@@ -175,14 +169,14 @@ public class ItemRegistry {
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
             MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
         MainMod.BIO_TAB);
     public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
@@ -213,11 +207,9 @@ public class ItemRegistry {
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
     public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
-    public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack vat;
     public static ItemStack compressedHatch;
@@ -254,10 +246,6 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new MTEElectricImplosionCompressorLegacy(
-            LegacyElectricImplosionCompressor.ID,
-            "ElectricImplosionCompressor",
-            "Electric Implosion Compressor").getStackForm(1L);
 
         // EIC depend on neutronium block to pass on structure updates
         int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
@@ -309,79 +297,33 @@ public class ItemRegistry {
             EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GTValues.VN.length - 1; i++) {
-            ItemRegistry.diode2A[i] = new MTEDiode(
-                Diode2A[i],
-                "diode" + "2A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode4A[i] = new MTEDiode(
-                Diode4A[i],
-                "diode" + "4A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode8A[i] = new MTEDiode(
-                Diode8A[i],
-                "diode" + "8A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode12A[i] = new MTEDiode(
-                Diode12A[i],
-                "diode" + "12A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode16A[i] = new MTEDiode(
-                Diode16A[i],
-                "diode" + "16A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
-                i).getStackForm(1L);
+            ItemRegistry.diode2A[i] = new MTEDiode(Diode2A[i], "diode" + "2A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode4A[i] = new MTEDiode(Diode4A[i], "diode" + "4A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode8A[i] = new MTEDiode(Diode8A[i], "diode" + "8A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode12A[i] = new MTEDiode(Diode12A[i], "diode" + "12A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
+            ItemRegistry.diode16A[i] = new MTEDiode(Diode16A[i], "diode" + "16A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
 
-        ItemRegistry.acidGens[0] = new MTEAcidGenerator(
-            AcidGeneratorMV.ID,
-            "acidgenerator" + GTValues.VN[2],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
-            2,
-            94).getStackForm(1);
-        ItemRegistry.acidGens[1] = new MTEAcidGenerator(
-            AcidGeneratorHV.ID,
-            "acidgenerator" + GTValues.VN[3],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
-            3,
-            91).getStackForm(1);
-        ItemRegistry.acidGens[2] = new MTEAcidGenerator(
-            AcidGeneratorEV.ID,
-            "acidgenerator" + GTValues.VN[4],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
-            4,
-            88).getStackForm(1);
-        ItemRegistry.acidGens[3] = new MTEAcidGenerator(
-            AcidGeneratorIV.ID,
-            "acidgenerator" + GTValues.VN[5],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
-            5,
-            50).getStackForm(1);
-        ItemRegistry.acidGensLV = new MTEAcidGenerator(
-            AcidGeneratorLV.ID,
-            "acidgenerator" + GTValues.VN[1],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
-            1,
-            97).getStackForm(1L);
+        ItemRegistry.acidGens[0] = new MTEAcidGenerator(AcidGeneratorMV.ID, "acidgenerator" + GTValues.VN[2], "", 2, 94)
+            .getStackForm(1);
+        ItemRegistry.acidGens[1] = new MTEAcidGenerator(AcidGeneratorHV.ID, "acidgenerator" + GTValues.VN[3], "", 3, 91)
+            .getStackForm(1);
+        ItemRegistry.acidGens[2] = new MTEAcidGenerator(AcidGeneratorEV.ID, "acidgenerator" + GTValues.VN[4], "", 4, 88)
+            .getStackForm(1);
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(AcidGeneratorIV.ID, "acidgenerator" + GTValues.VN[5], "", 5, 50)
+            .getStackForm(1);
+        ItemRegistry.acidGensLV = new MTEAcidGenerator(AcidGeneratorLV.ID, "acidgenerator" + GTValues.VN[1], "", 1, 97)
+            .getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnaceLegacy(
-            LegacyMegaBlastFurnace.ID,
-            "MegaBlastFurnace",
-            StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
-            LegacyMegaVacuumFreezer.ID,
-            "MegaVacuumFreezer",
-            StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
         ItemRegistry.cal = new MTECircuitAssemblyLine(
             CircuitAssemblyLine.ID,
             "CircuitAssemblyLine",
@@ -398,18 +340,6 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
-            LegacyMegaDistillationTower.ID,
-            "MegaDistillationTower",
-            "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
-            LegacyMegaChemicalReactor.ID,
-            "MegaChemicalReactor",
-            "Mega Chemical Reactor").getStackForm(1L);
-        ItemRegistry.megaMachines[4] = new MTEMegaOilCrackerLegacy(
-            LegacyMegaOilCracker.ID,
-            "MegaOilCracker",
-            "Mega Oil Cracker").getStackForm(1L);
 
         ItemRegistry.voidminer[2] = new MTEVoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);

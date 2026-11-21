@@ -10,6 +10,7 @@ import java.util.Set;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -36,6 +37,7 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -168,7 +170,7 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         // RecipeGen_Recycling.generateRecipes(matInfo);
     }
@@ -274,8 +276,7 @@ public class MaterialGenerator {
             new RecipeGenOre(matInfo);
 
             // Fluorite Dehydrator
-            if (matInfo.getLocalizedName()
-                .equals("Fluorite (F)")) {
+            if (matInfo == MaterialsFluorides.FLUORITE) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(matInfo.getDust(37))
                     .itemOutputs(
@@ -293,7 +294,7 @@ public class MaterialGenerator {
             }
 
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -333,7 +334,7 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

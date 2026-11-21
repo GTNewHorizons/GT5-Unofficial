@@ -15,14 +15,18 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -57,6 +61,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     private final int OXYGEN_PER_SEC = 2000;
     private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
     private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
+    private final int GAS_FUEL_THRESHOLD = 1000;
 
     public MTESOFuelCellMK2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -108,26 +113,23 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final Map<String, Object> vars = new HashMap<>();
+        vars.put("euPerTickX20", formatNumber(EU_PER_TICK * 20));
+        vars.put("euPerTick", formatNumber(EU_PER_TICK));
+        vars.put("steamPerSec", formatNumber(STEAM_PER_SEC));
+        vars.put("oxygenPerSec", formatNumber(OXYGEN_PER_SEC));
+        vars.put("gasFuelThreshold", formatNumber(GAS_FUEL_THRESHOLD));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.desc1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc2", formatNumber(EU_PER_TICK * 20)))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.desc3b"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK2.desc4", EU_PER_TICK, STEAM_PER_SEC))
-            .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
+            .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk2"), vars)
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
             .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.electrolyte_unit"), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputHatch("1+", anyCasingText(), 1)
+            .addOutputHatch("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
@@ -166,7 +168,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                     && hatchFluid.isFluidEqual(liquid)) {
 
                     liquid.amount = (int) ((EU_PER_TICK * 20)
-                        / (aFuel.mSpecialValue * Math.max(1, (float) aFuel.mSpecialValue / 1000)));
+                        / (aFuel.mSpecialValue * Math.max(1, (float) aFuel.mSpecialValue / GAS_FUEL_THRESHOLD)));
 
                     if (super.depleteInput(liquid)) {
 

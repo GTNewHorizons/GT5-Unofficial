@@ -520,9 +520,19 @@ public enum Casings implements ICasing {
 
 
     // Block Casings 14
-    HearthCasing(() -> GregTechAPI.sBlockCasings14,3,gt(16,7,3)),
-    FridgeCasing(()->GregTechAPI.sBlockCasings14,4,gt(16,7,4)),
-    NaquadahReinforcedDistillationCasing(()->GregTechAPI.sBlockCasings14,5,gt(16,7,5)),
+    HearthCasing
+        (() -> GregTechAPI.sBlockCasings14,3, gt(16,7,3)),
+    FridgeCasing
+        (() -> GregTechAPI.sBlockCasings14,4, gt(16,7,4)),
+    NaquadahReinforcedDistillationCasing
+        (() -> GregTechAPI.sBlockCasings14,5, gt(16,7,5)),
+    ExtruderMachineCasing
+        (() -> GregTechAPI.sBlockCasings14,6, gt(16,7,6)),
+    TensionResistantMachineCasing
+        (() -> GregTechAPI.sBlockCasings14,7, gt(16,7,7)),
+    PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 8, gt(16, 7, 8)),
+    QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 9, gt(16, 7, 9)),
+
     // Block Reinforced
     TungstenSteelReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,3,211),
@@ -608,7 +618,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
     // BEC
-    SuperconductivePlasmaEnergyConduit
+    CoherencePreservingPlasmaConduit
         (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
@@ -646,6 +656,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 9, -1),
     ReinforcedGlass
         (() -> GregTechAPI.sBlockGlass1, 10, -1),
+    PlasmaColliderGlass
+        (() -> GregTechAPI.sBlockGlass1, 11, gt(16, 0, 11)),
 
     // Fences
 
@@ -892,21 +904,21 @@ public enum Casings implements ICasing {
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
-        (() -> ModBlocks.blockSpecialMultiCasings, 0, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 0, -1),
     ResonanceChamber2
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 1, -1),
     ResonanceChamber3
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 2, -1),
     ResonanceChamber4
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 3, -1),
     Modulator1
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 4, -1),
     Modulator2
-        (() -> ModBlocks.blockSpecialMultiCasings, 5, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 5, -1),
     Modulator3
-        (() -> ModBlocks.blockSpecialMultiCasings, 6, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 6, -1),
     Modulator4
-        (() -> ModBlocks.blockSpecialMultiCasings, 7, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 7, -1),
 
     // GregtechMetaSpecialMachineCasings
     StrongBronzeMachineCasing
@@ -917,8 +929,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCustomMachineCasings, 2, gtpp(2,4)),
     RuggedBotmiumMachineCasing
         (() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3,4)),
-
-    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
 
     // ------------------ Tectech Casings -----------------
 
@@ -1045,23 +1055,23 @@ public enum Casings implements ICasing {
 
     // Godforge Casings
     SingularityReinforcedStellarShieldingCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7,64)),
+        (() -> TTCasingsContainer.GodforgeCasings, 0, gt(7,64)),
     CelestialMatterGuidanceCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7,65)),
+        (() -> TTCasingsContainer.GodforgeCasings, 1, gt(7,65)),
     BoundlessGravitationallySeveredStructureCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2, gt(7,66)),
+        (() -> TTCasingsContainer.GodforgeCasings, 2, gt(7,66)),
     TranscendentallyAmplifiedMagneticConfinementCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3, gt(7,67)),
+        (() -> TTCasingsContainer.GodforgeCasings, 3, gt(7,67)),
     StellarEnergySiphonCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7,68)),
+        (() -> TTCasingsContainer.GodforgeCasings, 4, gt(7,68)),
     RemoteGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7,69)),
+        (() -> TTCasingsContainer.GodforgeCasings, 5, gt(7,69)),
     MedialGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7,70)),
+        (() -> TTCasingsContainer.GodforgeCasings, 6, gt(7,70)),
     CentralGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7,71)),
+        (() -> TTCasingsContainer.GodforgeCasings, 7, gt(7,71)),
     HarmonicPhononTransmissionConduit
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7,72)),
+        (() -> TTCasingsContainer.GodforgeCasings, 8, gt(7,72)),
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),

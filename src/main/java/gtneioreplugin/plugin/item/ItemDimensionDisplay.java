@@ -36,7 +36,7 @@ public class ItemDimensionDisplay extends ItemBlock {
             return new ItemStack(block);
         }
         if (dimension != null) {
-            GTNEIOrePlugin.LOG.warn("Unknown dimension queried for ItemDimensionDisplay: " + dimension);
+            GTNEIOrePlugin.LOG.warn("Unknown dimension queried for ItemDimensionDisplay: {}", dimension);
         }
         return null;
     }

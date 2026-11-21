@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -31,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,8 +50,8 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -76,21 +76,28 @@ import gregtech.common.items.ItemTierDrone;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.IMTERenderer;
 import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
-    private static final IIconContainer ACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_ACTIVE");
-    private static final IIconContainer FACE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_FACE");
-    private static final IIconContainer INACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_INACTIVE");
+    private static final IIconContainer ACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/DRONE_CENTRE_ACTIVE");
+    private static final IIconContainer FACE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/DRONE_CENTRE_FACE");
+    private static final IIconContainer INACTIVE = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/DRONE_CENTRE_INACTIVE");
     private static final int CASINGS_MIN = 20;
     private static final int OFFSET_X = 5;
     private static final int OFFSET_Y = 3;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_LEGACY = "main_legacy";
+
+    public static final int MAX_GROUPS = 64;
 
     private int casingAmount = 0;
     private Vec3Impl centreCoord;
@@ -225,36 +232,17 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Drone Centre");
-        if (getBaseMetaTileEntity().getMetaTileID() == MetaTileEntityIDs.Drone_Centre.ID) {
-            tt.addStructureDeprecatedLine();
-        }
-        tt.addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
-            .addInfo("Monitors multiblock machines in range")
-            .addInfo("Replace maintenance hatch on other multi with drone downlink module")
-            .addInfo("Provides maintenance, power control, monitoring, and more")
-            .addSeparator()
-            .addInfo("Operation range is determined by drone tier:")
-            .addInfo("T1-128, T2-512, T3-4096, T4-4096(Auto)/Infinite(Key)")
-            .addInfo("T4 drone allows cross-dimension connection!")
-            .addInfo(EnumChatFormatting.RED + "To enable cross-dimension,")
-            .addInfo(EnumChatFormatting.RED + "downlink module must have the same key with centre.")
-            .addInfo(EnumChatFormatting.RED + "But it's not necessary for auto connection in range")
-            .addSeparator()
-            .addInfo("Place drones in input bus; only one needed to operate")
-            .addInfo("Automatically upgrade based on the drone level in the input bus")
-            .addInfo("There is a chance per second that the drone will crash")
-            .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.drone_centre"))
+            .addMarkdown(new ResourceLocation("gregtech", "drone-centre"))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front bottom center")
-            .addCasing("61", "Steel Pipe Casing", false)
-            .addCasing("47", "Steel Frame Box", false)
-            .addCasing("29", "Hempcrete (any color)", false)
-            .addCasing("28", "Iron Frame Box", false)
-            .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
-            .addInputBus("1+", "Any machine casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
-            .toolTipFinisher(AuthorSilverMoon);
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("61", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("47", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("29", StatCollector.translateToLocal("gt.mbtt.structure.hempcrete_any_color"), false)
+            .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Iron), false)
+            .addCasing(CASINGS_MIN + "-26", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -354,7 +342,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
-        sortMode = DroneCentreGuiUtil.SortMode.valueOf(aNBT.getString("sort"));
+        sortMode = DroneCentreGuiUtil.SortMode.fromName(aNBT.getString("sort"));
         productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
         int size = GroupNBT.getInteger("size");
@@ -424,25 +412,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("connectionCount", connectionList.size());
-        if (droneLevel != 0) tag.setInteger("droneLevel", droneLevel);
+        if (droneLevel != 0) {
+            tag.setInteger("droneLevel", droneLevel);
+        }
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             EnumChatFormatting.AQUA + StatCollector
                 .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.drone_downlink.connectionCount",
                 tag.getInteger("connectionCount")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
@@ -570,11 +557,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
                 MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
                 if (linkedMachine != null) {
-                    linkedMachine.enableWorking();
                     IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
                     if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
                         GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
                     }
+                    linkedMachine.enableWorking();
                 }
             }
         }
@@ -604,22 +591,21 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        data.setBoolean("usingLegacyStructure", usingLegacyStructure);
-        data.setBoolean("useRender", useRender);
-        data.setBoolean("renderActive", renderActive);
-        data.setInteger("droneLevel", droneLevel);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(usingLegacyStructure);
+        buffer.writeBoolean(useRender);
+        buffer.writeBoolean(renderActive);
+        buffer.writeInt(droneLevel);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        usingLegacyStructure = data.getBoolean("usingLegacyStructure");
-        useRender = data.getBoolean("useRender");
-        renderActive = data.getBoolean("renderActive");
-        droneLevel = data.getInteger("droneLevel");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        usingLegacyStructure = buffer.readBoolean();
+        useRender = buffer.readBoolean();
+        renderActive = buffer.readBoolean();
+        droneLevel = buffer.readInt();
     }
 
     private void issueTileUpdate() {
@@ -712,7 +698,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     public void addNewGroup() {
-        if (group.size() < 64) {
+        if (group.size() < MAX_GROUPS) {
             group.add(String.valueOf(group.size()));
         }
     }

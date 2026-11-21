@@ -14,11 +14,13 @@ import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
 
-    public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.ADVANCED);
+    public static final JetpackBehavior JETPACK = new JetpackBehavior(JetpackStats.JETPACK);
+    public static final JetpackBehavior VECTORED_JETPACK = new JetpackBehavior(JetpackStats.VECTORED_JETPACK);
+
     private final JetpackStats jetpackStats;
 
-    protected JetpackBehavior(JetpackStats stats) {
-        jetpackStats = stats;
+    protected JetpackBehavior(JetpackStats jetpackStats) {
+        this.jetpackStats = jetpackStats;
     }
 
     @Override
@@ -61,7 +63,8 @@ public class JetpackBehavior implements IArmorBehavior {
         boolean descend = ArmorActionManager.getKeybind("VANILLA_SNEAK")
             .isKeyDown(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
-        boolean isGuiOpen = context.getPlayer().worldObj.isRemote && ClientGuiHelper.isGuiOpen();
+        boolean isGuiOpen = context.getPlayer().worldObj.isRemote
+            && (net.minecraft.client.Minecraft.getMinecraft().currentScreen != null);
 
         if ((ascend && !isGuiOpen) || isHovering && !player.onGround) {
             if (!player.isInWater() && context.drainEnergy(20)) {
@@ -77,10 +80,7 @@ public class JetpackBehavior implements IArmorBehavior {
                 } else if (descend && !isGuiOpen) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math.min(
-                        player.motionY + currentAccel,
-                        context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
-                            : -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
                     : jetpackStats.getSidewaysSpeed());
@@ -114,13 +114,5 @@ public class JetpackBehavior implements IArmorBehavior {
                 // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
-    }
-}
-
-class ClientGuiHelper {
-
-    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
-    static boolean isGuiOpen() {
-        return net.minecraft.client.Minecraft.getMinecraft().currentScreen != null;
     }
 }

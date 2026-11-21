@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.GTplusplus;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
@@ -194,7 +195,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                 entityToSpawn.playLivingSound();
             } else {
                 // DEBUG
-                System.out.println("Entity not found " + entityToSpawnName);
+                GTplusplus.logger.debug("Entity not found {}", entityToSpawnName);
             }
         }
 

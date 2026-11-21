@@ -18,8 +18,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,6 +29,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEAcidGenerator extends MTEBasicGenerator {
 
     private final int efficiency;
@@ -84,9 +85,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT")),
+            TextureFactory.of(
+                Textures.BlockIcons
+                    .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT")),
             TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
                 .glow()
                 .build() };
     }
@@ -117,11 +123,14 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] { super.getTopActive(aColor)[0],
-            TextureFactory
-                .of(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
+        return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(
+            Textures.BlockIcons
+                .customOptional(Mods.GregTech.resourceDomain, "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
             TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.customOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
+                .addIcon(
+                    Textures.BlockIcons.customOptional(
+                        Mods.GregTech.resourceDomain,
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -139,6 +148,12 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.acidgenerator.tier." + mTier + ".name");
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"),
             StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"),
@@ -150,7 +165,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
                 + this.getEfficiency(),
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
                 + EnumChatFormatting.YELLOW
-                + this.maxAmperesOut(),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+                + this.maxAmperesOut() };
     }
 }

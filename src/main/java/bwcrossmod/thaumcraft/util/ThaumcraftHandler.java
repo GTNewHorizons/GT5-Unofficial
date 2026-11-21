@@ -13,13 +13,13 @@
 
 package bwcrossmod.thaumcraft.util;
 
+import static bartworks.MainMod.BW_DEBUG_LOGGER;
 import static bartworks.MainMod.DEBUG;
 
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import bartworks.util.log.DebugLog;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -44,14 +44,14 @@ public class ThaumcraftHandler {
             for (Pair<Object, Integer> a : aspectPair) {
                 Aspect aspect = (Aspect) a.getKey();
                 int amount = a.getValue();
-                if (DEBUG) DebugLog.log(
-                    "Stack:" + stack.getDisplayName()
-                        + " Damage:"
-                        + stack.getItemDamage()
-                        + " aspectPair: "
-                        + aspect.getName()
-                        + " / "
-                        + amount);
+                if (DEBUG) {
+                    BW_DEBUG_LOGGER.info(
+                        "Stack:{} Damage:{} aspectPair: {} / {}",
+                        stack.getDisplayName(),
+                        stack.getItemDamage(),
+                        aspect.getName(),
+                        amount);
+                }
                 aspectList.add(aspect, amount);
             }
             ThaumcraftApi.registerObjectTag(stack, aspectList);

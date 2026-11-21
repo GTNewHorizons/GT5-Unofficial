@@ -27,6 +27,8 @@ import java.util.function.UnaryOperator;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -53,10 +55,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.items.MetaGeneratedItem02;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTERockBreaker extends MTEBasicMachine {
 
     private static final Int2ObjectMap<Set<RockBreakerRecipe>> ROCK_BREAKER_RECIPES = new Int2ObjectOpenHashMap<>();
@@ -123,6 +127,14 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     public MTERockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // The lower tiers carry names of their own, only the solidifiers follow the model number pattern.
+        if (StatCollector.canTranslate(getLocalNameKey())) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.rockbreaker.name", 1000 * mTier + 3200);
     }
 
     @Override
@@ -275,7 +287,7 @@ public class MTERockBreaker extends MTEBasicMachine {
             private ItemStack inputItem;
             private boolean inputConsumed;
             private ItemStack outputItem;
-            private String recipeDescription = "IT'S FREE! Place Lava on Side";
+            private String recipeDescription = "gt.recipe.rockbreaker.fakeitem.side";
 
             /**
              * @param block Require a specific block above the Rock Breaker.
@@ -331,8 +343,8 @@ public class MTERockBreaker extends MTEBasicMachine {
             }
 
             /**
-             * @param desc A description to show in NEI if there are no recipe inputs. For example: "IT'S FREE! Place
-             *             Lava on Side"
+             * @param desc Lang key of the description to show in NEI if there are no recipe inputs. For example:
+             *             "gt.recipe.rockbreaker.fakeitem.side". Plain text without a lang entry is shown as is.
              */
             public Builder recipeDescription(String desc) {
                 this.recipeDescription = desc;
@@ -380,8 +392,12 @@ public class MTERockBreaker extends MTEBasicMachine {
                         inputs.add(GTUtility.copyAmount(0, this.inputItem));
                     }
                 } else {
-                    // Add the "IT'S FREE" item
-                    inputs.add(ItemList.Display_ITS_FREE.getWithName(1, this.recipeDescription));
+                    // Add the "IT'S FREE" item, named on display from the description key
+                    ItemStack free = ItemList.Display_ITS_FREE.get(1);
+                    NBTTagCompound tag = new NBTTagCompound();
+                    tag.setString(MetaGeneratedItem02.DISPLAY_NAME_KEY_TAG, this.recipeDescription);
+                    free.setTagCompound(tag);
+                    inputs.add(free);
                 }
                 b.itemInputs(inputs.toArray(new ItemStack[0]));
                 if (this.circuit != -1) {

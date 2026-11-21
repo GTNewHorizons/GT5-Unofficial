@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -36,7 +36,7 @@ public class GregtechTEWailaDataProvider implements IWailaDataProvider {
                 ((IGregtechWailaProvider) tile).getWailaBody(itemStack, currenttip, accessor, config);
             } catch (Exception t) {
                 // waila doesn't print a useful stacktrace, so catch the error and rethrow it
-                GTMod.GT_FML_LOGGER.error("Could not call getWailaBody on " + tile, t);
+                GTLoggers.GT_FML_LOGGER.error("Could not call getWailaBody on {}", tile, t);
                 throw t;
             }
         }
@@ -52,7 +52,7 @@ public class GregtechTEWailaDataProvider implements IWailaDataProvider {
             try {
                 return ((IGregtechWailaProvider) tile).hasWailaAdvancedBody(itemStack, accessor, config);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not call hasWailaAdvancedBody on " + tile, t);
+                GTLoggers.GT_FML_LOGGER.error("Could not call hasWailaAdvancedBody on {}", tile, t);
                 throw t;
             }
         }
@@ -69,7 +69,7 @@ public class GregtechTEWailaDataProvider implements IWailaDataProvider {
             try {
                 ((IGregtechWailaProvider) tile).getWailaAdvancedBody(itemStack, currentTip, accessor, config);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not call getWailaAdvancedBody on " + tile, t);
+                GTLoggers.GT_FML_LOGGER.error("Could not call getWailaAdvancedBody on {}", tile, t);
                 throw t;
             }
 
@@ -92,7 +92,7 @@ public class GregtechTEWailaDataProvider implements IWailaDataProvider {
             try {
                 ((IGregtechWailaProvider) tile).getWailaNBTData(player, tile, tag, world, x, y, z);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Could not call getWailaNBTData on " + tile, t);
+                GTLoggers.GT_FML_LOGGER.error("Could not call getWailaNBTData on {}", tile, t);
                 throw t;
             }
         }

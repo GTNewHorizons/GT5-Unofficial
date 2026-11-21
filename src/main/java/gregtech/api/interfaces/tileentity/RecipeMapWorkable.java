@@ -46,4 +46,8 @@ public interface RecipeMapWorkable {
     default int getRecipeCatalystPriority() {
         return 0;
     }
+
+    default boolean isDeprecated() {
+        return false;
+    }
 }

@@ -2013,7 +2013,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
-                get(NuclearStar, 768),
+                get(PseudoStar, 48),
                 get(wrapCircuit, UXV, 12),
                 get(wrapCircuit, UHV, 48),
                 get(nanite, Gold, 24))
@@ -2036,7 +2036,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
-                get(NuclearStar, 768),
+                get(PseudoStar, 48),
                 get(wrapCircuit, UXV, 12),
                 get(wrapCircuit, UHV, 48),
                 get(nanite, Gold, 24))
@@ -2058,7 +2058,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_UXV.get(64))
             .itemInputsUnsafe(
                 get(frameGt, MHDCSM, 48),
-                get(NuclearStar, 3072),
+                get(PseudoStar, 192),
                 get(Emitter_UXV, 192),
                 get(wrapCircuit, MAX, 12),
                 get(wrapCircuit, UHV, 66),

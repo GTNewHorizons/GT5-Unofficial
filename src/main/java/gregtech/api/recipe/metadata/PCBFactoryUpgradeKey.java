@@ -1,6 +1,7 @@
 package gregtech.api.recipe.metadata;
 
-import static gregtech.api.util.GTUtility.trans;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -26,7 +27,10 @@ public class PCBFactoryUpgradeKey extends RecipeMetadataKey<PCBFactoryUpgrade> {
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         PCBFactoryUpgrade upgrade = cast(value);
         if (upgrade == PCBFactoryUpgrade.BIO) {
-            recipeInfo.drawText(trans("337", "Upgrade Required: ") + trans("338", "Bio"));
+            recipeInfo.drawText(
+                translateToLocalFormatted(
+                    "GT5U.nei.pcb_factory.upgrade_required",
+                    translateToLocal("GT5U.nei.pcb_factory.upgrade_bio")));
         }
     }
 }

@@ -643,22 +643,22 @@ public class GregtechConduits {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
         }
 
@@ -713,7 +713,7 @@ public class GregtechConduits {
             if (pipePlateDouble != null) {
                 GTModHandler.addCraftingRecipe(
                     ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "DhD", "D D", "DwD", 'D', pipePlateDouble.copy() });
             }
         }
@@ -954,7 +954,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(2),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire02 });
         }
 
@@ -962,7 +962,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(4),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire04 });
         }
 
@@ -970,7 +970,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(8),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire08 });
         }
 
@@ -978,7 +978,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(12),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire12 });
         }
 
@@ -986,7 +986,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(16),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire16 });
         }
 
@@ -994,7 +994,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire02,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire01, aWire01 });
         }
 
@@ -1002,7 +1002,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aWire04 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire04,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire02, aWire02 });
         }
 
@@ -1010,7 +1010,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire04, aWire04 });
         }
 
@@ -1018,7 +1018,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08, aWire12 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire12,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire04, aWire08 });
         }
 
@@ -1026,7 +1026,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire12, aWire16 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire16,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire04, aWire12 });
         }
 
@@ -1034,7 +1034,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aWire16 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire16,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire08, aWire08 });
         }
 
@@ -1042,7 +1042,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire04,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
         }
 
@@ -1050,7 +1050,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new ItemStack[] { aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01 });
         }
 
