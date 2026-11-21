@@ -76,7 +76,7 @@ public class RecipeRegistrationErrorHandler {
             CrashReport report = CrashReport
                 .makeCrashReport(exception, "Invalid recipe components during registration");
             String details = report.getCompleteReport();
-            GT_FML_LOGGER.fatal(details);
+            GT_FML_LOGGER.fatal(exception.getMessage());
             Path output = Loader.instance()
                 .getConfigDir()
                 .toPath()

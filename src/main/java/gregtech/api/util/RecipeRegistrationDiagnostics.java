@@ -4,8 +4,10 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Supplier;
@@ -33,16 +35,21 @@ public class RecipeRegistrationDiagnostics {
         int issues = 0;
         Report report;
         while ((report = PENDING_REPORTS.poll()) != null) {
-            IllegalArgumentException failure = report.log(failures.size() + 1);
-            if (failure == null) continue;
-            issues += failure.getSuppressed().length;
-            failures.add(failure);
+            ReportedRecipe result = report.log(failures.size() + 1);
+            if (result == null) continue;
+            issues += result.componentCount();
+            failures.add(result.failure());
         }
         if (failures.isEmpty()) return;
 
         RecipeRegistrationException exception = new RecipeRegistrationException(failures.size(), issues);
         failures.forEach(exception::addSuppressed);
         GT_FML_LOGGER.error(exception.getMessage());
+        IllegalArgumentException source = new IllegalArgumentException("First invalid recipe registration");
+        source.setStackTrace(
+            failures.get(0)
+                .getStackTrace());
+        GT_FML_LOGGER.error("Recipe registration source stack (recipe #1)", source);
         if (failOnErrors) throw exception;
     }
 
@@ -112,6 +119,30 @@ public class RecipeRegistrationDiagnostics {
         }
     }
 
+    private record IssueContext(String problem, String arguments, List<StackTraceElement> stackTrace) {}
+
+    private record ReportedRecipe(IllegalArgumentException failure, int componentCount) {}
+
+    private static List<StackTraceElement> registrationStack(List<StackTraceElement> stackTrace) {
+        List<StackTraceElement> result = new ArrayList<>();
+        for (StackTraceElement frame : stackTrace) {
+            String name = frame.getClassName();
+            if (name.equals(GTRecipeBuilder.class.getName())
+                || name.equals(RecipeRegistrationDiagnostics.class.getName())
+                || name.startsWith(RecipeRegistrationDiagnostics.class.getName() + "$")) continue;
+            if (name.startsWith("java.") || name.startsWith("jdk.")
+                || name.startsWith("sun.")
+                || name.startsWith("cpw.mods.fml.")
+                || name.startsWith("com.google.common.eventbus.")
+                || name.startsWith("net.minecraft.")) {
+                if (!result.isEmpty()) break;
+                continue;
+            }
+            result.add(frame);
+        }
+        return result;
+    }
+
     public static class Report {
 
         private Supplier<String> description;
@@ -163,29 +194,48 @@ public class RecipeRegistrationDiagnostics {
         }
 
         @Nullable
-        private synchronized IllegalArgumentException log(int index) {
+        private synchronized ReportedRecipe log(int index) {
             try {
                 if (description == null || issues.isEmpty()) return null;
                 String details = "targets=" + (targets.isEmpty() ? "<not submitted>" : targets)
                     + ", "
                     + description.get();
                 IllegalArgumentException failure = new IllegalArgumentException(details);
+                failure.setStackTrace(
+                    issues.get(0)
+                        .stackTrace()
+                        .toArray(new StackTraceElement[0]));
                 GT_FML_LOGGER.error("Recipe component diagnostics #{}: {}", index, details);
+                Map<IssueContext, List<String>> grouped = new LinkedHashMap<>();
                 for (ComponentIssue issue : issues) {
-                    GT_FML_LOGGER.error("  {}: {}; arguments={}", issue.path(), issue.problem(), issue.arguments());
+                    IssueContext context = new IssueContext(issue.problem(), issue.arguments(), issue.stackTrace());
+                    grouped.computeIfAbsent(context, key -> new ArrayList<>())
+                        .add(issue.path());
+                }
+                for (Map.Entry<IssueContext, List<String>> entry : grouped.entrySet()) {
+                    IssueContext context = entry.getKey();
+                    String paths = String.join(", ", entry.getValue());
+                    List<StackTraceElement> source = registrationStack(context.stackTrace());
+                    GT_FML_LOGGER.error(
+                        "  {}: {}; arguments={}; source={}",
+                        paths,
+                        context.problem(),
+                        context.arguments(),
+                        source.isEmpty() ? "<unavailable>" : source.get(0));
                     IllegalArgumentException component = new IllegalArgumentException(
-                        issue.path() + ": " + issue.problem() + "; arguments=" + issue.arguments());
+                        paths + ": " + context.problem() + "; arguments=" + context.arguments());
                     component.setStackTrace(
-                        issue.stackTrace()
+                        context.stackTrace()
                             .toArray(new StackTraceElement[0]));
                     failure.addSuppressed(component);
-                    for (StackTraceElement frame : issue.stackTrace()) {
-                        if (frame.getClassName()
-                            .equals(Report.class.getName())) continue;
-                        GT_FML_LOGGER.error("    at {}", frame);
-                    }
                 }
-                return failure;
+                List<StackTraceElement> registration = registrationStack(
+                    issues.get(0)
+                        .stackTrace());
+                if (registration.size() > 1) {
+                    GT_FML_LOGGER.error("  registration chain: {}", registration);
+                }
+                return new ReportedRecipe(failure, issues.size());
             } finally {
                 release();
             }
