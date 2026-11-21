@@ -94,12 +94,6 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
     public float ORIKALKUM_CURRENT_BOOST = 1f;
 
-    public static final int FORCE_MAX_BOOST_PERCENT = 15;
-    public static final int RUNITE_MAX_BOOST_PERCENT = 10;
-    public static final int CELESTIAL_MAX_BOOST_PERCENT = 5;
-    public static final int ORIKALKUM_MAX_BOOST_PERCENT = 50;
-
-    public static final float ORIKALKUM_BONUS_THRESHOLD = 2f / 3f;
     public static final int RESIDUE_OUTPUT_AMOUNT = 1;
 
     public int residueCycles = 0;
@@ -190,18 +184,17 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
                 ImmutableMap.<String, Object>builder()
                     .put("force_max_dr", PlasmaType.FORCE.maxDR)
                     .put("force_density", PlasmaType.FORCE.density)
+                    .put("force_max_boost", Math.round(PlasmaType.FORCE.maxBoost * 100))
                     .put("runite_max_dr", PlasmaType.RUNITE.maxDR)
                     .put("runite_density", PlasmaType.RUNITE.density)
+                    .put("runite_max_boost", Math.round(PlasmaType.RUNITE.maxBoost * 100))
                     .put("celestial_max_dr", PlasmaType.CELESTIAL.maxDR)
                     .put("celestial_density", PlasmaType.CELESTIAL.density)
+                    .put("celestial_max_boost", Math.round(PlasmaType.CELESTIAL.maxBoost * 100))
                     .put("orikalkum_max_dr", PlasmaType.ORIKALKUM.maxDR)
                     .put("orikalkum_density", PlasmaType.ORIKALKUM.density)
+                    .put("orikalkum_max_multiplier", PlasmaType.ORIKALKUM.maxBoost)
                     .put("residue_divisor", RESIDUE_CONVERSION_DIVISOR)
-                    .put("force_max_boost", FORCE_MAX_BOOST_PERCENT)
-                    .put("runite_max_boost", RUNITE_MAX_BOOST_PERCENT)
-                    .put("celestial_max_boost", CELESTIAL_MAX_BOOST_PERCENT)
-                    .put("orikalkum_max_boost", ORIKALKUM_MAX_BOOST_PERCENT)
-                    .put("orikalkum_bonus_threshold", Math.round(ORIKALKUM_BONUS_THRESHOLD * 1000) / 10f)
                     .put("residue_output_amount", RESIDUE_OUTPUT_AMOUNT)
                     .build())
             .addSupportAny()
