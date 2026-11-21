@@ -119,11 +119,12 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
         if (pStack.recipe.mRecipe.mSpecialItems instanceof ExoticPlasmaWeights weights
             && weights.getWeight(fluid) > 0) {
             currentTip.add(
-                EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("tt.nei.fog_exotic.weight", formatNumber(weights.getWeight(fluid))));
+                EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                    "tt.nei.fog_exotic.weight.tooltip",
+                    formatNumber(weights.getWeight(fluid))));
             currentTip.add(
                 EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                    "tt.nei.fog_exotic.chance",
+                    "tt.nei.fog_exotic.chance.tooltip",
                     formatNumber(100 * weights.getChance(fluid))));
         } else if (fluid.isFluidEqual(Materials.Time.getMolten(1))) {
             addRangeTooltip(currentTip, MAGMATTER_MIN_TIME, MAGMATTER_MAX_TIME);
@@ -136,7 +137,7 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     private static void addRangeTooltip(List<String> currentTip, int min, int max) {
         currentTip.add(
             EnumChatFormatting.GRAY
-                + StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.random_amount", min, max));
+                + StatCollector.translateToLocalFormatted("tt.nei.fog_exotic.random_amount.tooltip", min, max));
     }
 
     @Override

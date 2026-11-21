@@ -61,8 +61,9 @@ public class VoidMinerFrontend extends ScrollableOutputFrontend {
         if (weights != null) {
             ItemStack ore = pStack.item;
             currentTip.add(
-                EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("GT5U.nei.voidminer.weight", formatNumber(weights.getWeight(ore))));
+                EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.voidminer.weight.tooltip",
+                    formatNumber(weights.getWeight(ore))));
         }
         return currentTip;
     }
