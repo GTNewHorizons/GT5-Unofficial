@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
@@ -22,6 +24,7 @@ import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
 import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
+import gregtech.loaders.postload.recipes.DevEnvNanochipRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
 import gregtech.loaders.postload.recipes.ElectromagneticSeparatorRecipes;
@@ -126,5 +129,8 @@ public class MachineRecipeLoader implements Runnable {
         NaniteChain.run();
         PCBFactoryRecipes.load();
         PurifiedWaterRecipes.run();
+        if (!NewHorizonsCoreMod.isModLoaded()) {
+            new DevEnvNanochipRecipes().run();
+        }
     }
 }
