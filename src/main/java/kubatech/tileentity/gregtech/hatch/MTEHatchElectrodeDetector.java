@@ -136,14 +136,6 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
         recalculateRedstoneState();
     }
 
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
-    }
-
     public enum ThresholdType {
 
         DURABILITY(10000, "kubatech.gui.text.electrode_detector.durability"),

@@ -104,7 +104,6 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
-import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
@@ -133,8 +132,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     private int mCasing = 0;
-    private MTEElectrodeHatch electrodeHatch;
-    private final List<MTEElectrodeDetectorHatch> electrodeDetectorHatch = new ArrayList<>();
+    private MTEHatchElectrode electrodeHatch;
+    private final List<MTEHatchElectrodeDetector> electrodeDetectorHatch = new ArrayList<>();
 
     enum ArcFurnaceMode {
 
@@ -1032,8 +1031,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 return 1;
             }
         },
-        ElectrodeDetectorHatch(MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
-            MTEElectrodeDetectorHatch.class) {
+        ElectrodeDetectorHatch("GT5U.MBTT.ElectrodeDetectorHatch",MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
+            MTEHatchElectrodeDetector.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {
