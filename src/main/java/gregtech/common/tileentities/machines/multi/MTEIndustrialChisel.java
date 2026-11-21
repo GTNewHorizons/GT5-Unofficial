@@ -99,7 +99,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_3rd_layer"))
-            .addCasing("40-48", Casings.SturdyPrinterCasing.getLocalizedName(), false)
+            .addCasing("20-48", Casings.SturdyPrinterCasing.getLocalizedName(), false)
             .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
             .addCasing("18", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("12", Casings.SteelPipeCasing.getLocalizedName(), false)
@@ -171,7 +171,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors, casingAmount, 40);
+        checkCasingMin(errors, casingAmount, 20);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
