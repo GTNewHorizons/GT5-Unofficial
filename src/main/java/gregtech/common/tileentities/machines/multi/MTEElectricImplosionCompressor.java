@@ -129,11 +129,16 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-implosion-compressor"),
-                ImmutableMap.<String, Object>builder().build())
+                ImmutableMap.<String, Object>builder()
+                    .put("tier_1_para", getMaxParallelRecipes(1))
+                    .put("tier_2_para", getMaxParallelRecipes(2))
+                    .put("tier_3_para", getMaxParallelRecipes(3))
+                    .put("tier_4_para", getMaxParallelRecipes(4))
+                    .put("tier_5_para", getMaxParallelRecipes(5))
+                    .build())
             .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(15, 7, 7, true)
@@ -143,7 +148,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.containment_block"), true)
             .addCasing("22", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("10", Casings.PTFEPipeCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
+            .addCasing(
+                "2",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
@@ -152,7 +160,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addSubChannel(GTStructureChannels.EIC_PISTON)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -215,6 +222,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
+        return getMaxParallelRecipes(this.pistonTier);
+    }
+
+    public static int getMaxParallelRecipes(int pistonTier) {
         return (int) GTUtility.powInt(4, Math.max(pistonTier - 1, 0));
     }
 

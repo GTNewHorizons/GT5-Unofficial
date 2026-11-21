@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static goodgenerator.main.GGConfigLoader.*;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -21,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,6 +66,11 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int COOLANT_AMT_HIGH = 1000;
+    private static final int COOLANT_AMT_LOW = 20;
+    private static final int EXCITED_AMT_HIGH = 180;
+    private static final int EXCITED_AMT_LOW = 20;
+
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 10;
     private static final int OFFSET_Z = 0;
@@ -85,19 +90,20 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         if (excitedLiquid == null) {
             excitedLiquid = Arrays.asList(
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 20),
+                    MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, EXCITED_AMT_LOW),
                     ExcitedLiquidCoe[0]),
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, 20),
+                    MaterialLibAPI
+                        .getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, EXCITED_AMT_LOW),
                     ExcitedLiquidCoe[1]),
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 20),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, EXCITED_AMT_LOW),
                     ExcitedLiquidCoe[2]),
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, 180),
+                    MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, EXCITED_AMT_HIGH),
                     ExcitedLiquidCoe[3]),
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.Caesium, FluidShapes.fluidMolten, 180),
+                    MaterialLibAPI.getFluidStack(Materials.Caesium, FluidShapes.fluidMolten, EXCITED_AMT_HIGH),
                     ExcitedLiquidCoe[4]));
         }
         return excitedLiquid;
@@ -107,13 +113,13 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         if (coolant == null) {
             coolant = Arrays.asList(
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, 20),
+                    MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, COOLANT_AMT_LOW),
                     CoolantEfficiency[0]),
-                Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
+                Pair.of(new FluidStack(TFFluids.fluidCryotheum, COOLANT_AMT_HIGH), CoolantEfficiency[1]),
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1_000),
+                    MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, COOLANT_AMT_HIGH),
                     CoolantEfficiency[2]),
-                Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
+                Pair.of(GTModHandler.getIC2Coolant(COOLANT_AMT_HIGH), CoolantEfficiency[3]));
         }
         return coolant;
     }
@@ -379,38 +385,36 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Naquadah Reactor, LNR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-naquadah-reactor"),
                 ImmutableMap.<String, Object>builder()
-                    .put("liquid_air", formatNumber(LiquidAirConsumptionPerSecond))
-                    .put("coolant_ic2", formatNumber(CoolantEfficiency[3]))
-                    .put("coolant_super", formatNumber(CoolantEfficiency[2]))
-                    .put("coolant_cryo", formatNumber(CoolantEfficiency[1]))
-                    .put("coolant_tachyon", formatNumber(CoolantEfficiency[0]))
-                    .put("excited_caesium", formatNumber(ExcitedLiquidCoe[4]))
-                    .put("excited_uranium", formatNumber(ExcitedLiquidCoe[3]))
-                    .put("excited_naquadah", formatNumber(ExcitedLiquidCoe[2]))
-                    .put("excited_asc", formatNumber(ExcitedLiquidCoe[1]))
-                    .put("excited_space", formatNumber(ExcitedLiquidCoe[0]))
-                    .put("coolant_amt_high", formatNumber(1000))
-                    .put("coolant_amt_low", formatNumber(20))
-                    .put("excited_amt_high", formatNumber(180))
-                    .put("excited_amt_low", formatNumber(20))
+                    .put("liquid_air", LiquidAirConsumptionPerSecond)
+                    .put("coolant_ic2", CoolantEfficiency[3])
+                    .put("coolant_super", CoolantEfficiency[2])
+                    .put("coolant_cryo", CoolantEfficiency[1])
+                    .put("coolant_tachyon", CoolantEfficiency[0])
+                    .put("excited_caesium", ExcitedLiquidCoe[4])
+                    .put("excited_uranium", ExcitedLiquidCoe[3])
+                    .put("excited_naquadah", ExcitedLiquidCoe[2])
+                    .put("excited_asc", ExcitedLiquidCoe[1])
+                    .put("excited_space", ExcitedLiquidCoe[0])
+                    .put("coolant_amt_high", COOLANT_AMT_HIGH)
+                    .put("coolant_amt_low", COOLANT_AMT_LOW)
+                    .put("excited_amt_high", EXCITED_AMT_HIGH)
+                    .put("excited_amt_low", EXCITED_AMT_LOW)
                     .build())
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)
-            .addController("Front bottom center")
-            .addCasing("130-141", "Naquadah Reactor Casing", false)
-            .addCasing("81", "Field Restriction Casing", false)
-            .addCasing("32", "Radiation Proof Steel Frame Box", false)
-            .addDynamoHatch("1", "Any reactor casing", 1)
-            .addMaintenanceHatch("1", "Any reactor casing", 1)
-            .addInputHatch("1+", "Any reactor casing", 1)
-            .addOutputHatch("1+", "Any reactor casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("130-141", Casings.NaquadahReactorCasing.getLocalizedName(), false)
+            .addCasing("81", Casings.FieldRestrictionCasing.getLocalizedName(), false)
+            .addCasing("32", Casings.RadiantProofSteelFrameBox.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

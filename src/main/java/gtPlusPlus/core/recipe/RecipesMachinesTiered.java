@@ -177,7 +177,7 @@ public class RecipesMachinesTiered {
         // UHV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_MAX.get(1),
+                ItemList.Hull_UHV.get(1),
                 ItemList.Emitter_UHV.get(4),
                 ItemList.Sensor_UHV.get(4),
                 ItemList.Field_Generator_ZPM.get(2),
@@ -634,7 +634,7 @@ public class RecipesMachinesTiered {
         // Integral Framework V (UHV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_MAX.get(1),
+                ItemList.Casing_UHV.get(1),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.gearGt, 2),
                 MaterialLibAPI.getStack(Materials.Duranium, TEBlockShapes.cableGt02, 4),
@@ -1400,7 +1400,7 @@ public class RecipesMachinesTiered {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'M', ItemList.Electric_Motor_UHV, 'C',
-                "circuitInfinite", 'H', ItemList.Hull_MAX });
+                "circuitInfinite", 'H', ItemList.Hull_UHV });
     }
 
     private static void tanks() {

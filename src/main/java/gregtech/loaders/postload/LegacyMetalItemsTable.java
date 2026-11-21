@@ -73,7 +73,7 @@ public final class LegacyMetalItemsTable {
             Materials.PolyvinylChloride, Materials.Kevlar, Materials.Endium, Materials.NickelAluminide,
             Materials.Obsidian, Materials.Wood, Materials.DeepIron, Materials.SiliconSG, Materials.Trinium,
             Materials.Polyethylene, Materials.Rubber, Materials.Desh, Materials.WoodSealed, Materials.Chrysotile,
-            Materials.Realgar, Materials.Vyroxeres, Materials.Ceruclase, Materials.Tartarite, Materials.Orichalcum,
+            Materials.Realgar, Materials.Vyroxeres, Materials.Ceruclase, Materials.Tartarite, Materials.Orikalkum,
             Materials.Void, Materials.SuperconductorUEVBase, Materials.Draconium, Materials.DraconiumAwakened,
             Materials.BloodInfusedIron, Materials.Ichorium, Materials.RadoxPolymer, Materials.GalliumArsenide,
             Materials.IndiumGalliumPhosphide, Materials.CosmicNeutronium, Materials.Flerovium,

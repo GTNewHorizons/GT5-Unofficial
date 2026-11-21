@@ -67,6 +67,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import akka.japi.Pair;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.ColorUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
@@ -265,7 +266,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     index)) {
                 return new DrawableStack(
                     GuiTextures.SLOT_ITEM,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {
@@ -474,7 +478,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (filterContainsAsteroidOre(data)) {
                 return new DrawableStack(
                     GuiTextures.BUTTON_CLEAN,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {
@@ -597,7 +604,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 droneFilterSyncer.getValue(),
                 moduleTierFilterSyncer.getValue())) {
                 return new DrawableStack(
-                    new Rectangle().color(Color.rgb(0, 255, 0))
+                    new Rectangle().color(ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor())
                         .asIcon()
                         .size(16),
                     new ItemDrawable(oreItem).asIcon()
@@ -878,6 +885,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (!isAsteroidPanelForFilter) return true;
             if (filterContainsOre(ore)) return true;
             int firstEmptySlot = findFirstEmptySlot();
+            if (firstEmptySlot == -1) return true;
+
             filterModularSlots[firstEmptySlot].putStack(ore);
             filterSlots[firstEmptySlot].getSyncHandler()
                 .updateFromClient(ore, 0);
@@ -891,7 +900,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (filterContainsOre(ore)) {
                 return new DrawableStack(
                     GuiTextures.SLOT_ITEM,
-                    new Rectangle().color(multiblock.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                    new Rectangle()
+                        .color(
+                            multiblock.isWhitelisted ? ColorUtils.SPACE_ELEVATOR_SELECTOR_WHITELIST.getColor()
+                                : ColorUtils.SPACE_ELEVATOR_SELECTOR_BLACKLIST.getColor())
                         .asIcon()
                         .size(16));
             } else {

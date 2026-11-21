@@ -549,7 +549,6 @@ public class Materials {
     public static Material DistilledWater;
     public static Material Coolant;
     public static Material HotCoolant;
-    public static Material IC2Biomass;
     public static Material Biogas;
     public static Material PahoehoeLava;
     public static Material SuperheatedSteam;
@@ -697,6 +696,8 @@ public class Materials {
     public static Material Chalcopyrite;
     public static Material SiliconSG;
     public static Material CrudeOil;
+    public static Material CollisionResidue;
+    public static Material OrikalkicReagent;
     public static Material Emery;
     public static Material Epidote;
     public static Material Graphite;
@@ -784,7 +785,7 @@ public class Materials {
     public static Material Vyroxeres;
     public static Material Ceruclase;
     public static Material Tartarite;
-    public static Material Orichalcum;
+    public static Material Orikalkum;
     public static Material SiliconTetrafluoride;
     public static Material SiliconTetrachloride;
     public static Material AluminiumFluoride;
@@ -1119,7 +1120,6 @@ public class Materials {
     public static Material SeaweedByproducts;
     public static Material NitricLeachedMonaziteMixture;
     public static Material EuropiumOxide;
-    public static Material EuropiumSulfide;
     public static Material UnknownBlend;
     public static Material EuropiumIIIOxide;
     public static Material MuddyBastnasiteRareEarthSolution;
@@ -12554,10 +12554,10 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyePink")
             .build();
         Materials.Biomass = MaterialLibAPI.newMaterial("gregtech", "Biomass", TextureSet.of("gregtech", "FLUID"))
-            .setTint(0xFF00FF00)
+            .setTint(0xFF4E912D)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Forestry Biomass")
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Biomass")
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.biomass")
             .setProperty(GTMaterialProperties.FUEL_POWER, 8)
             .setProperty(GTMaterialProperties.FUEL_TYPE, 3)
@@ -12652,11 +12652,19 @@ public class Materials {
             .build();
         // IC2's own fluids, reused by name (see MaterialFluidNames), so their cells are MaterialLib cells.
         Materials.DistilledWater = MaterialLibAPI.newMaterial("gregtech", "DistilledWater", TextureSet.of("gregtech", "FLUID"))
-            .setTint(0xFF7FB2FF)
+            .setTint(0xFF4775FF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Distilled Water")
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.distilledwater")
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 705)
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.NO_RECYCLING, GTMaterialFlag.NO_SMASHING, GTMaterialFlag.NO_SMELTING))
+            .setProperty(GTMaterialProperties.DYE, "dyeLightBlue")
+            .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("AQUA", 3)))
+            .setProperty(GTMaterialProperties.FORMULA, "H₂O")
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 300)
             .build();
         Materials.Coolant = MaterialLibAPI.newMaterial("gregtech", "Coolant", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0D9FB0)
@@ -12673,21 +12681,17 @@ public class Materials {
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.hotcoolant")
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 1200)
             .build();
-        Materials.IC2Biomass = MaterialLibAPI.newMaterial("gregtech", "IC2Biomass", TextureSet.of("gregtech", "FLUID"))
-            .setTint(0xFF3D6B0F)
-            .addToFamily(Families.all)
-            .addToFamily(Families.liquids)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Biomass")
-            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.ic2biomass")
-            .build();
         Materials.Biogas = MaterialLibAPI.newMaterial("gregtech", "Biogas", TextureSet.of("gregtech", "FLUID"))
-            .setTint(0xFFB9A13F)
+            .setTint(0xFF988D4D)
             .addToFamily(Families.all)
             .addToFamily(Families.gases)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Biogas")
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.biogas")
             .setProperty(GTMaterialProperties.FUEL_POWER, 40)
             .setProperty(GTMaterialProperties.FUEL_TYPE, 1)
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 245)
+            .setProperty(GTMaterialProperties.DYE, "dyeYellow")
+            .setProperty(GTMaterialProperties.GAS_TEMPERATURE, 300)
             .build();
         Materials.PahoehoeLava = MaterialLibAPI.newMaterial("gregtech", "PahoehoeLava", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8C3B12)
@@ -13604,7 +13608,7 @@ public class Materials {
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Calcium Carbide")
-            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.cacliumcarbide")
+            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.calciumcarbide")
             .setProperty(GTMaterialProperties.MELTING_POINT, 2430)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 775)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 2L)))
@@ -15046,6 +15050,36 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.DYE, "dyeBlack")
             .build();
+        Materials.CollisionResidue = MaterialLibAPI.newMaterial("gregtech", "CollisionResidue", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF014D4E)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Collision Residue")
+            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.collisionresidue")
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 859)
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
+            .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
+            .setProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES, false)
+            .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 10000)
+            .setProperty(GTMaterialProperties.FORMULA, "✦Fc⚙◆Rt*✦")
+            .build();
+        Materials.OrikalkicReagent = MaterialLibAPI.newMaterial("gregtech", "OrikalkicReagent", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFA9EEF6)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Orikalkic Reagent")
+            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.orikalkicreagent")
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 860)
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
+            .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
+            .setProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES, false)
+            .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 10000)
+            .setProperty(GTMaterialProperties.FORMULA, "Ok⚶✦Fc⚙◆Rt*✦")
+            .build();
         Materials.Emery = MaterialLibAPI.newMaterial("gregtech", "Emery", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -16471,29 +16505,24 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .build();
-        Materials.Orichalcum = MaterialLibAPI.newMaterial("gregtech", "Orichalcum", TextureSet.of("gregtech", "METALLIC"))
-            .setTint(0xFF547A38)
+        Materials.Orikalkum = MaterialLibAPI.newMaterial("gregtech", "Orichalcum", TextureSet.of("gregtech", "METALLIC"))
+            .setTint(0xFF641509)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
             .addToFamily(Families.ores)
-            .addToFamily(Families.toolParts)
-            .addToFamily(Families.poweredToolParts)
-            .addToFamily(Families.gears)
             .addToFamily(Families.moltens)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Orichalcum")
-            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.orichalcum")
+            .addToFamily(Families.plasmas)
+            .generateShape(CellShapes.cellPlasma)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Orikalkum")
+            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.orikalkum")
             .setProperty(GTMaterialProperties.MELTING_POINT, 6000)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6000)
             .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
-            .setProperty(GTMaterialProperties.TOOL_SPEED, 32.0F)
-            .setProperty(GTMaterialProperties.DURABILITY, 20480)
-            .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 966)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TOOL_MATERIAL, GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
-            .setProperty(GTMaterialProperties.GAS_MULTIPLIER, 6.0F)
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.FORMULA, "SpBi")
+            .setProperty(GTMaterialProperties.FORMULA, "Ok⚶")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .build();
@@ -17295,6 +17324,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(48))
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 300)
             .setProperty(GTMaterialProperties.GAS_TEMPERATURE, 300)
+            .setProperty(GTMaterialProperties.FORMULA, "3(HCl):(HNO₃)")
             .build();
         Materials.Aredrite = MaterialLibAPI.newMaterial("gregtech", "Aredrite", TextureSet.of("gregtech", "NONE"))
             .setTint(0xFFFF0000)
@@ -18933,7 +18963,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(60))
-            .setProperty(GTMaterialProperties.FORMULA, "IsOsRu??")
+            .setProperty(GTMaterialProperties.FORMULA, "IrOsRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
             .build();
@@ -22765,29 +22795,15 @@ public class Materials {
         Materials.Iodine = MaterialLibAPI.newMaterial("gregtech", "Iodine", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFAB28AF)
             .addToFamily(Families.all)
-            .addToFamily(Families.metals)
-            .addToFamily(Families.gears)
+            .addToFamily(Families.dusts)
             .addToFamily(Families.moltens)
             .addToFamily(Families.plasmas)
-            .generateShape(BlockShapes.block)
             .generateShape(CellShapes.cellPlasmaLight)
-            .removeShape(Shapes.foil)
-            .removeShape(Shapes.gearGtSmall)
-            .removeShape(Shapes.ingotHot)
-            .removeShape(Shapes.itemCasing)
-            .removeShape(Shapes.plateSuperdense)
-            .removeShape(Shapes.round)
-            .removeShape(Shapes.spring)
-            .removeShape(Shapes.springSmall)
-            .removeShape(Shapes.wireFine)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Iodine")
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.iodine")
             .setProperty(GTMaterialProperties.MELTING_POINT, 387)
             .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 16)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 1123)
-            .setProperty(GTMaterialProperties.TOOL_SPEED, 3.8300004F)
-            .setProperty(GTMaterialProperties.DURABILITY, 1426)
-            .setProperty(GTMaterialProperties.TOOL_QUALITY, 5)
             .setProperty(GTMaterialProperties.ELEMENT, "I")
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Steel))
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iodine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iodine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iodine), 1L)))
@@ -22796,7 +22812,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
             .setProperty(GTMaterialProperties.FORMULA, "I")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
-            .generateShape(TEBlockShapes.frameGt)
             .build();
         Materials.MuddyMonaziteRareEarthSolution = MaterialLibAPI.newMaterial("gregtech", "MuddyMonaziteRareEarthSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6F4E37)
@@ -23336,21 +23351,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11047))
             .setProperty(GTMaterialProperties.FORMULA, "EuO")
-            .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
-            .build();
-        Materials.EuropiumSulfide = MaterialLibAPI.newMaterial("gregtech", "EuropiumSulfide", TextureSet.of("gregtech", "DULL"))
-            .setTint(0xFF050005)
-            .addToFamily(Families.all)
-            .addToFamily(Families.dusts)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "Europium Sulfide")
-            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.europiumsulfide")
-            .setProperty(GTMaterialProperties.MELTING_POINT, 1123)
-            .setProperty(GTMaterialProperties.BLAST_TEMP, 1123)
-            .setProperty(GTMaterialProperties.TOOL_QUALITY, -1)
-            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L)))
-            .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11048))
-            .setProperty(GTMaterialProperties.FORMULA, "EuS")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
         // spotless:on

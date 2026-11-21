@@ -7,6 +7,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +33,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -141,40 +143,26 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         int randomInt = (int) (Math.random() * 101);
-        String beanOrBeamSplitter = StatCollector
-            .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype");
+        String beanOrBeamSplitter = StatCollector.translateToLocal("gt.mbtt.machine_type.beam_splitter");
         if (randomInt == 69) {
             beanOrBeamSplitter = StatCollector
                 .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake");
         }
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(beanOrBeamSplitter)
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam-splitter"))
             .beginStructureBlock(9, 3, 9, false)
-            .addController("Front bottom center")
-            .addCasing(
-                "42",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing(
-                "27",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
-            .addCasing("9", "Any Tiered Glass", false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
-            .addMiscHatch(
-                "4",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Opposite controller",
-                2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("42", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
+            .addCasing("27", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"), false)
+            .addCasing("9", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.above_controller"), 1)
+            .addMiscHatch("4", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"), StatCollector.translateToLocal("gt.mbtt.structure.opposite_controller"), 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

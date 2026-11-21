@@ -87,6 +87,7 @@ final class OreDictAliases {
         aliasToOreDict(OrePrefixes.dust, Materials.Salt, "itemSalt");
         aliasToOreDict(OrePrefixes.dust, Materials.Wood, "pulpWood");
         aliasToOreDict(OrePrefixes.dust, Materials.Wheat, "foodFlour");
+        aliasToOreDict(OrePrefixes.dust, Materials.CalciumCarbide, "dustCalciumCarbide");
 
         aliasToOreDict(OrePrefixes.ingot, Materials.Rubber, "itemRubber");
 

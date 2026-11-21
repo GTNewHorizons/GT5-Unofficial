@@ -207,28 +207,26 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Naquadah Fuel Refinery, NFR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_fuel_refinery"))
             .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
             .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(27, 27, 5, false)
-            .addController("Front center, 14th layer")
-            .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)
-            .addCasing("192", "Field Restriction Glass", false)
-            .addCasing("124", "Europium Reinforced Radiation Proof Machine Casing", false)
-            .addCasing("72", "Field Restriction Coil", true)
-            .addCasing("64", "Radiation Proof Steel Frame Box", false)
-            .addEnergyHatch("1+", "Any refinery casing", 1)
-            .addInputBus("1+", "Any refinery casing", 1)
-            .addInputHatch("1+", "Any refinery casing", 1)
-            .addOutputHatch("1+", "Any refinery casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_14th_layer"))
+            .addCasing("470-483", Casings.NaquadahFuelRefineryCasing.getLocalizedName(), false)
+            .addCasing("192", Casings.FieldRestrictionGlass.getLocalizedName(), false)
+            .addCasing("124", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addCasing("72", StatCollector.translateToLocal("GT5U.MBTT.Tiers.FieldRestrictionCoil"), true)
+            .addCasing("64", Casings.RadiantProofSteelFrameBox.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_refinery_casing"), 1)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
             .addSubChannel(GTStructureChannels.FIELD_RESTRICTION_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

@@ -9,20 +9,19 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.FluidLoader;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -189,28 +188,20 @@ public class PyrolyseRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("biochaff", 4))
+            .itemInputs(ItemList.IC2_BioChaff.get(4))
             .circuit(1)
             .fluidInputs(GTUtility.getWater(4_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 5_000))
             .duration(45 * SECONDS)
             .eut(10)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
+            .itemInputs(ItemList.IC2_BioChaff.get(1))
             .circuit(2)
             .fluidInputs(GTUtility.getWater(1_500))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 1_500))
             .duration(10 * SECONDS)
-            .eut(10)
-            .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 1_000))
-            .duration(5 * SECONDS)
             .eut(10)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 

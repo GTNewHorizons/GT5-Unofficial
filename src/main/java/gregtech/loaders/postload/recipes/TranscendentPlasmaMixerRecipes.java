@@ -118,7 +118,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidPlasma, 100),
+                MaterialLibAPI.getFluidStack(Materials.Orikalkum, FluidShapes.fluidPlasma, 100),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 25))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 1_000))
             .duration(100)

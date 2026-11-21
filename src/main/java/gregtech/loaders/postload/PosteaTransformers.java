@@ -68,12 +68,13 @@ public class PosteaTransformers implements Runnable {
     public void run() {
         validateCutoverTables();
         registerFrameboxTransformers();
-        registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerIC2ItemTransformers();
         registerBartworksLabPartTransformer();
+        registerExtruderShapeTransformers();
         registerMaterialLibCutoverTransformers();
         if (Mods.ForgeMicroblocks.isModLoaded()) remapLegacyMicroblockMaterials();
         claimMissingMappings();
@@ -129,6 +130,10 @@ public class PosteaTransformers implements Runnable {
     private static void addItemReplacement(String legacyId, int legacyMeta, Item item, int newMeta) {
         transformedIds.add(legacyId);
         ItemStackReplacementManager.addSimpleReplacement(legacyId, legacyMeta, item, newMeta);
+    }
+
+    private static void addItemReplacement(String legacyId, int legacyMeta, ItemStack stack) {
+        addItemReplacement(legacyId, legacyMeta, stack.getItem(), stack.getItemDamage());
     }
 
     /// Logs the gtPlusPlus item and ore, foreign part and pipe cutover rows that do not resolve to a MaterialLib
@@ -260,7 +265,7 @@ public class PosteaTransformers implements Runnable {
         remapIC2Cell(3, Materials.UUMatter);
         remapIC2Cell(4, Materials.ConstructionFoam);
         remapIC2Cell(5, Materials.Air);
-        remapIC2Cell(6, Materials.IC2Biomass);
+        remapIC2Cell(6, Materials.Biomass);
         remapIC2Cell(7, Materials.Biogas);
         remapIC2Cell(9, Materials.Coolant);
         remapIC2Cell(10, Materials.HotCoolant);
@@ -660,6 +665,27 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    private void registerIC2ItemTransformers() {
+        // These are used to convert ic2 items to their new counterparts.
+        // I.e. Uranium235, Uranium238, Plutonium, ect.
+
+        addItemReplacement("IC2:itemUran238", MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 1), true);
+        addItemReplacement("IC2:itemUran235", MaterialLibAPI.getStack(Materials.Uranium235, Shapes.ingot, 1), true);
+        addItemReplacement(
+            "IC2:itemUran235small",
+            MaterialLibAPI.getStack(Materials.Uranium235, Shapes.nugget, 1),
+            true);
+        addItemReplacement("IC2:itemPlutonium", MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 1), true);
+        addItemReplacement(
+            "IC2:itemPlutoniumsmall",
+            MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 1),
+            true);
+
+        addItemReplacement("IC2:itemFuelPlantBall", ItemList.IC2_Plantball.get(1));
+        addItemReplacement("IC2:itemBiochaff", ItemList.IC2_BioChaff.get(1));
+        addItemReplacement("IC2:itemDynamite", ItemList.Dynamite.get(1));
+    }
+
     private void registerIC2BlocksTransformer() {
         // These are used to convert ic2 blocks to their new counterparts.
         // I.e. Reinforced glass, iron fences, etc.
@@ -668,6 +694,7 @@ public class PosteaTransformers implements Runnable {
         addBlockReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
         addBlockReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         addBlockReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        addBlockReplacement("IC2:blockMachine", 0, ItemList.Casing_LV.getBlock(), 1);
         Material[] materials = { Materials.Copper, Materials.Tin, Materials.Bronze, Materials.Uranium, Materials.Lead,
             Materials.Steel };
         for (int meta = 0; meta < materials.length; meta++) {
@@ -729,12 +756,6 @@ public class PosteaTransformers implements Runnable {
             tag.setShort("Damage", (short) material.getIndex());
             return true;
         });
-    }
-
-    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
-    private void registerProgrammedCircuitTransformers() {
-        addItemReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        addItemReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -884,6 +905,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // sounds stupid, but this needs to persist, so renamed items don't break janky bartworks & recipe map code
     private static void registerBartworksLabPartTransformer() {
         ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
             // ensure it has the extra tag
@@ -896,6 +918,39 @@ public class PosteaTransformers implements Runnable {
             }
             return true;
         });
+    }
 
+    // Extruder shape unification (#8771)
+    private static void registerExtruderShapeTransformers() {
+        addItemReplacement("dreamcraft:ExtruderShapeBoat", ItemList.Shape_Extruder_Boat.get(1));
+        addItemReplacement("miscutils:MU-metaitem.01", 32040, ItemList.Shape_Extruder_Shaft.get(1));
+        addItemReplacement("miscutils:item.BasicAgrichemItem", 22, ItemList.Shape_Extruder_Pellet.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32350, ItemList.Shape_Extruder_Plate.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32351, ItemList.Shape_Extruder_Rod.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32352, ItemList.Shape_Extruder_Bolt.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32353, ItemList.Shape_Extruder_Ring.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32354, ItemList.Shape_Extruder_Cell.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32355, ItemList.Shape_Extruder_Ingot.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32357, ItemList.Shape_Extruder_Casing.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32358, ItemList.Shape_Extruder_Pipe_Tiny.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32359, ItemList.Shape_Extruder_Pipe_Small.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32360, ItemList.Shape_Extruder_Pipe_Medium.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32361, ItemList.Shape_Extruder_Pipe_Large.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32362, ItemList.Shape_Extruder_Pipe_Huge.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32363, ItemList.Shape_Extruder_Block.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32364, ItemList.Shape_Extruder_Sword.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32365, ItemList.Shape_Extruder_Pickaxe.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32366, ItemList.Shape_Extruder_Shovel.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32367, ItemList.Shape_Extruder_Axe.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32368, ItemList.Shape_Extruder_Hoe.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32369, ItemList.Shape_Extruder_Hammer.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32370, ItemList.Shape_Extruder_File.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32371, ItemList.Shape_Extruder_Saw.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32372, ItemList.Shape_Extruder_Gear.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32373, ItemList.Shape_Extruder_Bottle.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32374, ItemList.Shape_Extruder_Rotor.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32375, ItemList.Shape_Extruder_Small_Gear.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32376, ItemList.Shape_Extruder_Turbine_Blade.get(1));
+        addItemReplacement("gregtech:gt.metaitem.01", 32377, ItemList.Shape_Extruder_Drill.get(1));
     }
 }

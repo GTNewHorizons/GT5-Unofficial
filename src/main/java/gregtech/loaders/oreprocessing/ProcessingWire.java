@@ -551,6 +551,36 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
+                            Materials.StyreneButadieneRubber,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
+                    .duration(5 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(cableRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        stack,
+                        MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
+                    .circuit(24)
+                    .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
+                            Materials.StyreneButadieneRubber,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
+                    .duration(5 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        stack,
+                        MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
+                    .circuit(24)
+                    .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
                             Materials.RubberSilicone,
                             FluidShapes.fluidMolten,
                             costMultiplier * HALF_INGOTS))

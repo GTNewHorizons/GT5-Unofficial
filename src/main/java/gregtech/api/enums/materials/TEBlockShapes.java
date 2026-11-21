@@ -77,7 +77,7 @@ public class TEBlockShapes {
         itemPipeSmall = register(new PipeShapeBlock("itemPipeSmall", "gt.oreprefix.small_material_item_pipe", 5820, PipeFamily.ITEM, 1, 1, 0.375F, "pipeSmall", "pipeSmall"));
         itemPipeMedium = register(new PipeShapeBlock("itemPipeMedium", "gt.oreprefix.material_item_pipe", 5821, PipeFamily.ITEM, 2, 1, 0.5F, "pipeMedium", "pipeMedium"));
         itemPipeLarge = register(new PipeShapeBlock("itemPipeLarge", "gt.oreprefix.large_material_item_pipe", 5822, PipeFamily.ITEM, 3, 1, 0.75F, "pipeLarge", "pipeLarge"));
-        itemPipeHuge = register(new PipeShapeBlock("itemPipeHuge", "gt.oreprefix.huge_material_item_pipe", 5823, PipeFamily.ITEM, 4, 1, 1.0F, "pipeHuge", "pipeHuge"));
+        itemPipeHuge = register(new PipeShapeBlock("itemPipeHuge", "gt.oreprefix.huge_material_item_pipe", 5823, PipeFamily.ITEM, 4, 1, 0.875F, "pipeHuge", "pipeHuge"));
         itemPipeRestrictiveTiny = register(new PipeShapeBlock("itemPipeRestrictiveTiny", "gt.oreprefix.tiny_restrictive_material_item_pipe", 5824, PipeFamily.ITEM_RESTRICTIVE, 0, 1, 0.25F, "pipeTiny", "pipeRestrictiveTiny"));
         itemPipeRestrictiveSmall = register(new PipeShapeBlock("itemPipeRestrictiveSmall", "gt.oreprefix.small_restrictive_material_item_pipe", 5825, PipeFamily.ITEM_RESTRICTIVE, 1, 1, 0.375F, "pipeSmall", "pipeRestrictiveSmall"));
         itemPipeRestrictiveMedium = register(new PipeShapeBlock("itemPipeRestrictiveMedium", "gt.oreprefix.restrictive_material_item_pipe", 5826, PipeFamily.ITEM_RESTRICTIVE, 2, 1, 0.5F, "pipeMedium", "pipeRestrictiveMedium"));

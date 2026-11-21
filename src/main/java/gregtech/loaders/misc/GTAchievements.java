@@ -203,13 +203,7 @@ public class GTAchievements {
 
         registerAchievement("steel", 4, 0, MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 1), "bronze", false);
         registerAchievement("highpressure", 4, 2, ItemList.Machine_Steel_Boiler.get(1), "steel", false);
-        registerAchievement(
-            "extremepressure",
-            4,
-            4,
-            ItemList.Machine_Multi_LargeBoiler_Steel.get(1),
-            "highpressure",
-            false);
+        registerAchievement("extremepressure", 4, 4, ItemList.SteelBoilerLarge.get(1), "highpressure", false);
         registerAchievement("cheapermac", 6, 1, ItemList.Machine_LV_Hammer.get(1), "steel", false);
         registerAchievement(
             "complexalloys",

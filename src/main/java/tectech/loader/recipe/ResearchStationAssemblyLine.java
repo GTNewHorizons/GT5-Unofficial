@@ -3,6 +3,7 @@ package tectech.loader.recipe;
 import static goodgenerator.loader.Loaders.NeutronAccelerators;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
@@ -68,6 +69,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
         addBeamcraftingRecipes();
+        addCompressedQuantumBusRecipes();
 
         if (NewHorizonsCoreMod.isModLoaded() && Railcraft.isModLoaded()) {
             // Here instead of CoreMod to coincide with the non-AAL BEC Recipes
@@ -185,7 +187,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     16,
                     50000,
                     2,
-                    new Object[] { ItemList.Hull_MAX.get(1L),
+                    new Object[] { ItemList.Hull_UHV.get(1L),
                         MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 2),
                         ItemList.Circuit_Chip_QPIC.get(2L), new Object[] { Circuits.UHV.getIngredient(), 2L },
                         ItemList.UHV_Coil.get(2L),
@@ -313,7 +315,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     100000,
                     4,
-                    new Object[] { ItemList.Hull_MAX.get(1L),
+                    new Object[] { ItemList.Hull_UHV.get(1L),
                         MaterialLibAPI.getStack(Materials.SuperconductorUHVBase, Shapes.spring, 8),
                         ItemList.Circuit_Chip_QPIC.get(2L), new Object[] { Circuits.UHV.getIngredient(), 2L },
                         ItemList.UHV_Coil.get(2L),
@@ -3103,6 +3105,199 @@ public class ResearchStationAssemblyLine implements Runnable {
             30 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
+    }
+
+    private void addCompressedQuantumBusRecipes() {
+        if (!AvaritiaAddons.isModLoaded() && !DraconicEvolution.isModLoaded()) {
+            return;
+        }
+        // Input
+        {
+            // UHV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hatch_Input_Bus_MAX.get(1),
+                240_000L,
+                24_000L,
+                (int) TierEU.RECIPE_UV,
+                4,
+                new Object[] { ItemList.Hatch_Input_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
+                    ItemList.Quantum_Chest_HV.get(6), new Object[] { Circuits.UEV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UV.get(4) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 128 * INGOTS) },
+                ItemList.CompressedInputBusUHV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UHV);
+
+            // UEV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Casing_UEV.get(1),
+                300_000L,
+                30_000L,
+                (int) TierEU.RECIPE_UHV,
+                4,
+                new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
+                    ItemList.Electric_Piston_UEV.get(2), ItemList.Quantum_Chest_EV.get(8),
+                    new Object[] { Circuits.UIV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.Hypogen, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UHV.get(8) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 32 * INGOTS) },
+                ItemList.CompressedInputBusUEV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UEV);
+
+            // UIV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Casing_UIV.get(1),
+                600_000L,
+                60_000L,
+                (int) TierEU.RECIPE_UEV,
+                4,
+                new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
+                    ItemList.Electric_Piston_UIV.get(2), ItemList.Quantum_Chest_IV.get(4),
+                    new Object[] { Circuits.UMV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.CelestialTungsten, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UEV.get(16) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 64 * INGOTS) },
+                ItemList.CompressedInputBusUIV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UIV);
+
+            // UMV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Casing_UMV.get(1),
+                1_200_000L,
+                120_000L,
+                (int) TierEU.RECIPE_UIV,
+                1024,
+                new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
+                    ItemList.Electric_Piston_UMV.get(2), ItemList.Quantum_Chest_IV.get(6),
+                    new Object[] { Circuits.UXV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UIV.get(32) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 128 * INGOTS) },
+                ItemList.CompressedInputBusUMV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UMV);
+
+            // UXV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Casing_UXV.get(1),
+                2_400_000L,
+                240_000L,
+                (int) TierEU.RECIPE_UXV,
+                4096,
+                new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),
+                    ItemList.Electric_Piston_UXV.get(2), ItemList.Quantum_Chest_IV.get(8),
+                    new Object[] { Circuits.MAX.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.plateSuperdense, 16),
+                    MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.plateDense, 4),
+                    MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plateSuperdense, 16),
+                    ItemList.Field_Generator_UMV.get(64) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 256 * INGOTS) },
+                ItemList.CompressedInputBusUXV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UXV);
+        }
+
+        // Output
+        {
+            // UHV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hatch_Output_Bus_MAX.get(1),
+                240_000L,
+                24_000L,
+                (int) TierEU.RECIPE_UV,
+                4,
+                new Object[] { ItemList.Hatch_Output_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
+                    ItemList.Quantum_Chest_HV.get(6), new Object[] { Circuits.UEV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UV.get(4) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 128 * INGOTS) },
+                ItemList.CompressedOutputBusUHV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UHV);
+
+            // UEV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hull_UEV.get(1),
+                300_000L,
+                30_000L,
+                (int) TierEU.RECIPE_UHV,
+                4,
+                new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
+                    ItemList.Electric_Piston_UEV.get(2), ItemList.Quantum_Chest_EV.get(8),
+                    new Object[] { Circuits.UIV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.Hypogen, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UHV.get(8) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 32 * INGOTS) },
+                ItemList.CompressedOutputBusUEV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UEV);
+
+            // UIV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hull_UIV.get(1),
+                600_000L,
+                60_000L,
+                (int) TierEU.RECIPE_UEV,
+                4,
+                new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
+                    ItemList.Electric_Piston_UIV.get(2), ItemList.Quantum_Chest_IV.get(4),
+                    new Object[] { Circuits.UMV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.CelestialTungsten, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UEV.get(16) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 64 * INGOTS) },
+                ItemList.CompressedOutputBusUIV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UIV);
+
+            // UMV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hull_UMV.get(1),
+                1_200_000L,
+                120_000L,
+                (int) TierEU.RECIPE_UIV,
+                1024,
+                new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
+                    ItemList.Electric_Piston_UMV.get(2), ItemList.Quantum_Chest_IV.get(6),
+                    new Object[] { Circuits.UXV.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateSuperdense, 1),
+                    ItemList.Field_Generator_UIV.get(32) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 128 * INGOTS) },
+                ItemList.CompressedOutputBusUMV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UMV);
+
+            // UXV Tier
+            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+                ItemList.Hull_UXV.get(1),
+                2_400_000L,
+                240_000L,
+                (int) TierEU.RECIPE_UXV,
+                4096,
+                new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),
+                    ItemList.Electric_Piston_UXV.get(2), ItemList.Quantum_Chest_IV.get(8),
+                    new Object[] { Circuits.MAX.getIngredient(), 1 },
+                    MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.plateSuperdense, 16),
+                    MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.plateDense, 4),
+                    MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plateSuperdense, 16),
+                    ItemList.Field_Generator_UMV.get(64) },
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 256 * INGOTS) },
+                ItemList.CompressedOutputBusUXV.get(1),
+                25 * SECONDS,
+                (int) TierEU.UXV);
+        }
     }
 
     public void runLateRecipes() {

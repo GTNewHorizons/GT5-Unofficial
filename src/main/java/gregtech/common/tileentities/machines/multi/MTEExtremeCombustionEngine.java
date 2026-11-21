@@ -6,10 +6,10 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -131,11 +131,11 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addMarkdown(
                 new ResourceLocation("gregtech", "extreme-combustion-engine"),
                 ImmutableMap.<String, Object>builder()
-                    .put("lubricant", formatNumber(LUBRICANT_PER_HOUR))
-                    .put("oxygen", formatNumber(OXYGEN_RATE))
-                    .put("default_output", formatNumber(DEFAULT_OUTPUT_EU))
+                    .put("lubricant", LUBRICANT_PER_HOUR)
+                    .put("oxygen", OXYGEN_RATE)
+                    .put("default_output", DEFAULT_OUTPUT_EU)
                     .put("default_eff", DEFAULT_EFFICIENCY_PERCENT)
-                    .put("boosted_output", formatNumber(BOOSTED_OUTPUT_EU))
+                    .put("boosted_output", BOOSTED_OUTPUT_EU)
                     .put("boosted_eff", BOOSTED_EFFICIENCY_PERCENT)
                     .put("wait_power", WAIT_POWER_PERCENT)
                     .build())
@@ -180,10 +180,10 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE,
-            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_EXTREME_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override

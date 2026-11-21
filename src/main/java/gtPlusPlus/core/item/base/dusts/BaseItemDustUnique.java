@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.base.dusts;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +13,7 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.StringUtils;
@@ -77,7 +77,7 @@ public class BaseItemDustUnique extends Item {
         if (StatCollector.canTranslate(overrideKey)) {
             return StatCollector.translateToLocal(overrideKey);
         }
-        return translateToLocalFormatted(typeLoc, localizedName(this.materialName));
+        return OrePrefixes.getLocalizedNameForItemWithInflectionForKey(typeLoc, nameKey(this.materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {
@@ -113,11 +113,6 @@ public class BaseItemDustUnique extends Item {
 
     private static void registerLocalizedName(String name) {
         GTLanguageManager.addStringLocalization(nameKey(name), name);
-    }
-
-    /// The display name registered for `name`, or the key itself when the lang file has no entry.
-    private static String localizedName(String name) {
-        return StatCollector.translateToLocal(nameKey(name));
     }
 
     /// The lang key for a unique dust's free-form display name ("Tumbaga Mix", "Cooked ZrCl4"). Not

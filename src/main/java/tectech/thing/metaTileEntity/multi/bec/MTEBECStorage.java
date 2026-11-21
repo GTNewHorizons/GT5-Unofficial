@@ -115,6 +115,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void clearHatches() {
         super.clearHatches();
 
+        // Condensate detectors register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(condensateDetectors);
         condensateDetectors.clear();
     }
 
@@ -195,8 +197,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
             storedCondensate.replaceAll((mat, amount) -> decay.apply(amount));
 
-            storedCondensate.object2LongEntrySet()
-                .removeIf(e -> e.getLongValue() <= 0);
+            if (storedCondensate.object2LongEntrySet()
+                .removeIf(e -> e.getLongValue() <= 0)) invalidateReachableCondensate();
         }
 
         return SimpleCheckRecipeResult.ofSuccess("routing");
@@ -229,8 +231,20 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
+        clearCondensate();
+    }
+
+    private void clearCondensate() {
         contentsChanged = true;
+
+        if (storedCondensate.isEmpty()) return;
+
         storedCondensate.clear();
+        invalidateReachableCondensate();
+    }
+
+    private void invalidateReachableCondensate() {
+        if (network != null) network.invalidateReachableCondensate();
     }
 
     @Override
@@ -252,12 +266,11 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
-            contentsChanged = true;
-            storedCondensate.clear();
+            clearCondensate();
             return;
         }
 
-        storedCondensate.addTo(stack.getFluid(), stack.getStackSize());
+        if (storedCondensate.addTo(stack.getFluid(), stack.getStackSize()) == 0) invalidateReachableCondensate();
         stack.setStackSize(0);
 
         contentsChanged = true;
@@ -267,8 +280,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
-            contentsChanged = true;
-            storedCondensate.clear();
+            clearCondensate();
             return false;
         }
 
@@ -285,6 +297,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         if (stored == 0) {
             storedCondensate.removeLong(stack.getFluid());
+            invalidateReachableCondensate();
         } else {
             storedCondensate.put(stack.getFluid(), stored);
         }
@@ -405,7 +418,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
                     self.contentsChanged = true;

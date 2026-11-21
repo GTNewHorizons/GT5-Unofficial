@@ -9,7 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -243,7 +242,7 @@ public class DistilleryRecipes implements Runnable {
             .circuit(17)
             .itemOutputs(fertOutput)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1_800))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biogas, FluidShapes.fluidGas, 1_800))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
@@ -251,7 +250,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 100))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 300))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biogas, FluidShapes.fluidGas, 300))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(distilleryRecipes);
@@ -307,18 +306,18 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32))
-            .duration(2 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 40))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 20))
+            .duration(16 * TICKS)
+            .eut(24)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
-            .fluidOutputs(GTUtility.getWater(2))
-            .duration(4 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 20))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biogas, FluidShapes.fluidGas, 32))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -373,16 +372,6 @@ public class DistilleryRecipes implements Runnable {
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(distillationTowerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, 2))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 600),
-                GTUtility.getWater(300))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(400)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -612,8 +601,11 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(fertOutput)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8_000), GTUtility.getWater(125))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 3_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 1_800),
+                MaterialLibAPI.getFluidStack(Materials.Biogas, FluidShapes.fluidGas, 8_000),
+                GTUtility.getWater(125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);

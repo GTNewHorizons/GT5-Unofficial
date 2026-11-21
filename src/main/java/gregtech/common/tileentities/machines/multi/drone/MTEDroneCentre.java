@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,8 +49,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
@@ -57,6 +58,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,6 +81,7 @@ import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
@@ -230,34 +233,22 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Drone Centre");
-        if (getBaseMetaTileEntity().getMetaTileID() == MetaTileEntityIDs.Drone_Centre.ID) {
-            tt.addStructureDeprecatedLine();
-        }
-        tt.addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
-            .addInfo("Monitors multiblock machines in range")
-            .addInfo("Replace maintenance hatch on other multi with drone downlink module")
-            .addInfo("Provides maintenance, power control, monitoring, and more")
-            .addSeparator()
-            .addInfo("Operation range is determined by Drone Tier:")
-            .addInfo("T1-128, T2-512, T3-4096, T4-4096(Auto)/Infinite(Key)")
-            .addInfo("T4 drone allows cross-dimension connection!")
-            .addInfo(EnumChatFormatting.RED + "To enable cross-dimension,")
-            .addInfo(EnumChatFormatting.RED + "downlink module must have the same key with centre.")
-            .addInfo(EnumChatFormatting.RED + "But it's not necessary for auto connection in range")
-            .addSeparator()
-            .addInfo("Place drones in input bus; only one needed to operate")
-            .addInfo("Automatically upgrade based on the drone level in the input bus")
-            .addInfo("There is a chance per second that the drone will crash")
-            .addInfo("Chance is determined by Drone Tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.drone_centre"))
+            .addMarkdown(new ResourceLocation("gregtech", "drone-centre"))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front bottom center")
-            .addCasing("61", "Steel Pipe Casing", false)
-            .addCasing("47", "Steel Frame Box", false)
-            .addCasing("29", "Hempcrete (any color)", false)
-            .addCasing("28", "Iron Frame Box", false)
-            .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
-            .addInputBus("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("61", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing(
+                "47",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
+            .addCasing("29", StatCollector.translateToLocal("gt.mbtt.structure.hempcrete_any_color"), false)
+            .addCasing(
+                "28",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Iron)),
+                false)
+            .addCasing(CASINGS_MIN + "-26", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -358,7 +349,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
-        sortMode = DroneCentreGuiUtil.SortMode.valueOf(aNBT.getString("sort"));
+        sortMode = DroneCentreGuiUtil.SortMode.fromName(aNBT.getString("sort"));
         productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
         int size = GroupNBT.getInteger("size");

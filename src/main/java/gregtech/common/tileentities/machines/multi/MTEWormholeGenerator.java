@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -34,27 +35,27 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -76,6 +77,8 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEWormholeGeneratorGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -84,6 +87,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -167,8 +171,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     private WormholeLink mLink;
     private final WeakReference<MTEWormholeGenerator> mSelfReference = new WeakReference<>(this);
 
-    private double mWormholeEnergy_UI = 0;
-
     private boolean mAllowOverclocks = true;
     private boolean mIsUnloading = false;
 
@@ -178,6 +180,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     public MTEWormholeGenerator(String aName) {
         super(aName);
+    }
+
+    public boolean isAllowOverclocks() {
+        return mAllowOverclocks;
+    }
+
+    public void setAllowOverclocks(boolean mAllowOverclocks) {
+        this.mAllowOverclocks = mAllowOverclocks;
     }
 
     @Override
@@ -297,13 +307,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
                     case MTEHatchEnergyMulti input -> {
                         input.updateTexture(aBaseCasingIndex);
-                        input.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mSendHatches[mIndex] = input;
                         return true;
                     }
                     case MTEHatchDynamoMulti output -> {
                         output.updateTexture(aBaseCasingIndex);
-                        output.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mReceiveHatches[mIndex] = output;
                         return true;
                     }
@@ -983,38 +993,31 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         // spotless:off
-        tt.addMachineType("Wormhole Generator, MWG")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wormhole_generator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "wormhole-generator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("transfer_efficiency", TRANSFER_EFFICIENCY * 100)
+                    .put("overclock_limit", MAX_OVERCLOCKS)
+                    .build())
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
             .addEnergyHatchGlassTier()
-            .addController("Front center, 4th layer")
-            .addCasing("0-51", "High Power Casing", false)
-            .addCasing("36", "Any Tiered Glass", true)
-            .addCasing("24", "Molecular Casing", false)
-            .addCasing("22", "Fusion Coil Block", false)
-            .addCasing("8", "Europium Reinforced Radiation Proof Machine Casing", false)
-            .addMiscHatch("0-4", "Laser Target Hatch", "Any center side casing", 2)
-            .addMiscHatch("0-4", "Laser Source Hatch", "Any center side casing", 2)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addInputBus("1+", "Any high power casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-51", Casings.HighPowerCasing.getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("24", Casings.MolecularCasing.getLocalizedName(), false)
+            .addCasing("22", Casings.FusionCoilBlock.getLocalizedName(), false)
+            .addCasing("8", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Insert an entangled singularity into the controller to link it with another one")
-            .addStructureFooter("Each laser target hatch must have a corresponding laser source hatch")
-            .addStructureFooter("on the other linked generator on the opposite side")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 
@@ -1070,14 +1073,15 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
                 }
 
-                double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
                 data.add(
-                    IGregTechDeviceInformation
-                        .encode("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.wormhole_generator.diameter",
+                        formatNumber((long) (getWormholeDiameter(mLink.mWormholeEnergy)))));
 
                 data.add(
-                    IGregTechDeviceInformation
-                        .encode("GT5U.infodata.wormhole_generator.optimal_transfer_speed", mLink.mWormholeEnergy / 20));
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.wormhole_generator.optimal_transfer_speed",
+                        formatNumber(mLink.mWormholeEnergy / 20)));
             }
         }
 
@@ -1112,23 +1116,23 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
-                    inputHatch.getAmperes(),
+                    formatNumber(inputHatch.getAmperes()),
                     VN[inputHatch.mTier],
-                    avgSend,
-                    avgSend / 20 / V[inputHatch.mTier],
-                    avgSend > 0 ? (avgReceiveOpposite / (double)avgSend * 100) : 0,
-                    SCAN_AVG_WINDOW
+                    formatNumber(avgSend),
+                    formatNumber(avgSend / 20 / V[inputHatch.mTier]),
+                    formatNumber(avgSend > 0 ? avgReceiveOpposite / (double) avgSend * 100 : 0),
+                    formatNumber(SCAN_AVG_WINDOW)
                 ));
             } else if(outputHatch != null) {
                 data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.received",
                     getLocalizedHatchName(i),
-                    outputHatch.Amperes,
+                    formatNumber(outputHatch.Amperes),
                     VN[outputHatch.mTier],
-                    avgReceive,
-                    avgReceive / 20 / V[outputHatch.mTier],
-                    avgSendOpposite > 0 ? (avgReceive / (double)avgSendOpposite * 100) : 0,
-                    SCAN_AVG_WINDOW
+                    formatNumber(avgReceive),
+                    formatNumber(avgReceive / 20 / V[outputHatch.mTier]),
+                    formatNumber(avgSendOpposite > 0 ? avgReceive / (double) avgSendOpposite * 100 : 0),
+                    formatNumber(SCAN_AVG_WINDOW)
                 ));
             } else {
                 data.add(IGregTechDeviceInformation.encode("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
@@ -1142,75 +1146,42 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widgets(TextWidget.dynamicString(() -> {
-            if (mLink == null) {
-                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.missing_entangled_singularity");
-            }
-
-            if (!mLink.isFormed()) {
-                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.no_destination");
-            }
-
-            if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.decaying");
-            }
-
-            if (mLink.mWormholeEnergy > 0) {
-                return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.active");
-            }
-
-            return StatCollector.translateToLocal("GT5U.gui.text.wormhole_generator.status.inactive");
-        })
-            .setTextAlignment(Alignment.CenterLeft),
-
-            TextWidget.dynamicString(() -> {
-                if (mLink == null) {
-                    return "";
-                }
-
-                // LV power = 1 angstrom in diameter
-                double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
-
-                return StatCollector
-                    .translateToLocalFormatted("GT5U.gui.text.wormhole_generator.diameter", (long) (radius * 2));
-            })
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(w -> mWormholeEnergy_UI > 0),
-
-            TextWidget.dynamicString(() -> {
-                if (mLink == null) {
-                    return "";
-                }
-
-                if (mLink.mWormholeEnergy >= 1e10) {
-                    return StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.wormhole_generator.max_io.large",
-                        mLink.mWormholeEnergy / 20);
-                } else {
-                    return StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.wormhole_generator.max_io",
-                        (long) (mLink.mWormholeEnergy / 20));
-                }
-            })
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(w -> mWormholeEnergy_UI > 0),
-
-            new FakeSyncWidget.DoubleSyncer(
-                () -> mLink != null ? mLink.mWormholeEnergy : 0,
-                val -> mWormholeEnergy_UI = val));
-    }
-
-    @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEWormholeGeneratorGui(this);
+    }
+
+    public String getStatus() {
+        if (mLink == null) {
+            return "GT5U.gui.text.wormhole_generator.missing_entangled_singularity";
+        }
+
+        if (!mLink.isFormed()) {
+            return "GT5U.gui.text.wormhole_generator.status.no_destination";
+        }
+
+        if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
+            return "GT5U.gui.text.wormhole_generator.status.decaying";
+        }
+
+        if (mLink.mWormholeEnergy > 0) {
+            return "GT5U.gui.text.wormhole_generator.status.active";
+        }
+
+        return "GT5U.gui.text.wormhole_generator.status.inactive";
+    }
+
+    public double getWormholeEnergy() {
+        return mLink == null ? -1 : mLink.mWormholeEnergy;
+    }
+
+    public double getWormholeDiameter(double energy) {
+        // LV power = 1 angstrom in diameter
+        return Math.sqrt(energy / 20 / 32 * 2);
     }
 
     // #endregion

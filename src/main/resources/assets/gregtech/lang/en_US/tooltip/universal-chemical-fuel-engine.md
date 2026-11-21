@@ -4,9 +4,9 @@ No soft caps or upper limits on power output, other than the size of the {color_
 No power is produced without Combustion Promoter
 Excess power is voided if the {color_name:Dynamo Hatch} is full or the output exceeds the dynamo throughput
 {hr}
-Efficiency is determined by the ratio (R) of {yellow:Combustion Promoter} to {gold:Fuel}
+Efficiency is determined by the ratio ({color_formula:R}) of {yellow:Combustion Promoter} to {gold:Fuel}
 The more Combustion Promoter, the higher the efficiency
-Follows an exponential curve {aqua:exp(-{color_note:C}/R) * {var:efficiency_ceiling}}, where {color_note:C} is a constant based on the fuel type
-{color_key:Gas/Diesel Fuel}: {color_note:C}{color_formula:={var:gas_coefficient}} | {color_key:Rocket Fuel}: {color_note:C}{color_formula:={var:rocket_coefficient}}
+Follows an exponential curve, {color_formula:exp(-C / R) * {var:efficiency_ceiling}}, where {color_formula:C} is a constant based on the fuel type
+{color_key:Gas/Diesel Fuel}: {color_formula:C = {var:gas_coefficient}} | {color_key:Rocket Fuel}: {color_formula:C = {var:rocket_coefficient}}
 {hr}
 Produces {color_pollution:sqrt({EU/t})} pollution per second

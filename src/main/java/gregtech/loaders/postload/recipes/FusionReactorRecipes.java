@@ -358,6 +358,18 @@ public class FusionReactorRecipes implements Runnable {
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
 
+        // 16 regular mk 4 reactors should produce ~ 250k L/s
+        // one mk4 = 16k L/s
+        GTValues.RA.stdBuilder()
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidPlasma, 4000),
+                MaterialLibAPI.getFluidStack(Materials.OrikalkicReagent, FluidShapes.fluidLiquid, 100))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Orikalkum, FluidShapes.fluidPlasma, 4000))
+            .duration(5 * TICKS)
+            .eut(1_966_080)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .addTo(fusionRecipes); // FT4
+
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Cobalt, FluidShapes.fluidMolten, INGOTS),

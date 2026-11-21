@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
@@ -443,21 +445,29 @@ public class EyeOfHarmonyRecipe {
         double mainMultiplier = timeInSeconds * 384.0;
 
         if (normalOreDimWrapper != null) {
-            normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
-                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
-                // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
-            });
+            // Sum in a fixed order: the maps are keyed by identity-hashed wrappers, and floating-point addition
+            // depends on order, so a HashMap iteration made the floored amounts differ between launches.
+            sortedEntries(
+                normalOreDimWrapper.oreVeinToProbabilityInDimension,
+                Comparator.comparing((GT5OreLayerHelper.OreLayerWrapper vein) -> vein.veinName)
+                    .thenComparing(vein -> vein.worldGenHeightRange)).forEach((veinInfo, probability) -> {
+                        processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                        processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
+                        // 8.0 to replicate void miner getDropsVanillaVeins method yields.
+                        processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                        processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+                    });
         }
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
         if (smallOreDimWrapper != null) {
-            smallOreDimWrapper.oreVeinProbabilities.forEach(
-                (veinInfo, probability) -> {
-                    processHelper(outputMap, veinInfo.material, mainMultiplier, probability);
-                });
+            sortedEntries(
+                smallOreDimWrapper.oreVeinProbabilities,
+                Comparator.comparing((GT5OreSmallHelper.OreSmallWrapper ore) -> ore.oreGenName)
+                    .thenComparing(ore -> ore.worldGenHeightRange)).forEach(
+                        (veinInfo, probability) -> {
+                            processHelper(outputMap, veinInfo.material, mainMultiplier, probability);
+                        });
         }
 
         ArrayList<Pair<Object, Long>> outputList = new ArrayList<>();
@@ -465,6 +475,15 @@ public class EyeOfHarmonyRecipe {
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
 
         return outputList;
+    }
+
+    private static <K> Map<K, Double> sortedEntries(Map<K, Double> map, Comparator<K> order) {
+        Map<K, Double> sorted = new LinkedHashMap<>();
+        map.keySet()
+            .stream()
+            .sorted(order)
+            .forEach(key -> sorted.put(key, map.get(key)));
+        return sorted;
     }
 
     private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<Object, Long>> planetList) {

@@ -1,20 +1,22 @@
 3 режима: {light_purple:Лёгкий} | {blue:Обычный} | {dark_green:Тяжёлый}
-{gray:{hr}}
-{gold:{var:parallels} параллели} за {white:сумму тиров турбин}
-{green:Скорость {var:speed}%}
-{aqua:Потребление EU {var:eu_eff}%}
-{white:Турбины меньше огромных} имеют пониженную эффективность...
-Даёт {var:slots_per_tier} {white:слота под турбины} за тир {white:структуры}
-Для работы требует {aqua:(тир рецепта * {var:fluid_per_tier} {var:fluid_unit}/с)} {gold:Керосина}
-Подавайте вместо него {gold:Биокаталитическое ракетное топливо}, чтобы получить множитель параллелей {gold:{var:tier2_mult}x}
-{yellow:Разгон ограничен тиром шлюза + 1}
-{gray:{hr}}
+{hr}
+{color_parallel:{var:parallels} параллели} за {color_name:сумму тиров турбин}
+{color_speed:Скорость {var:speed}%}
+{color_efficiency:Потребление {EU} {var:eu_eff}%}
+{color_name:Турбины меньше огромных} имеют пониженную эффективность...
+Даёт {var:slots_per_tier} {color_name:слота под турбины} за тир {color_name:структуры}
+Для работы требует {aqua:(тир рецепта * {var:fluid_per_tier} {L}/с)} {color_key:Керосина}
+Подавайте вместо него {color_key:Биокаталитическое ракетное топливо}, чтобы получить множитель параллелей {color_parallel:{var:tier2_mult}x}
+{color_note:Разгон ограничен тиром шлюза + 1}
+{hr}
 {light_purple:Лёгкий режим}:
-- {green:+{var:light_speed}% к скорости}
+- {color_speed:+{var:light_speed}% к скорости}
 - Максимальный тир рецепта: {aqua:(тир вольтажа - {var:light_offset})}
+{hr}
 {blue:Обычный режим}: без изменений
-{dark_green:Тяжёлый режим}: требует {gold:Биокаталитическое ракетное топливо}
-- Делит {gold:параллели} на {gold:{var:heavy_div}}
+{hr}
+{dark_green:Тяжёлый режим}: требует {color_key:Биокаталитическое ракетное топливо}
+- Делит {color_parallel:параллели} на {color_parallel:{var:heavy_div}}
 - Умножает {red:стоимость EU} на {red:{var:heavy_eu}}
 - {light_purple:Разгон без ограничений}
 - Некоторые рецепты {dark_red:требуют} {dark_green:Тяжёлый режим}

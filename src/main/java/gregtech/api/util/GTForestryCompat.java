@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import binnie.extrabees.apiary.machine.mutator.AlvearyMutator;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
@@ -22,6 +23,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.CombType;
@@ -181,5 +183,13 @@ public class GTForestryCompat {
                     .addTo(RecipeMaps.fluidExtractionRecipes);
             }
         }
+    }
+
+    public static void registerExtraBeesMutatorItems() {
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 1), 2.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.ingot, 1), 10.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.nugget, 1), 5.5f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 1), 15.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 1), 9.0f);
     }
 }
