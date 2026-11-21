@@ -976,7 +976,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
-                        if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
+                        if (tryFlushPendingOutputs() && mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 markDirty();
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -1068,12 +1068,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected void addClassicOutputs_EM() {
         if (mOutputItems != null) {
-            addItemOutputs(mOutputItems);
+            addPendingOutputs(mOutputItems);
         }
         mOutputItems = null;
 
         if (mOutputFluids != null) {
-            addFluidOutputs(mOutputFluids);
+            addPendingOutputs(mOutputFluids);
         }
         mOutputFluids = null;
     }

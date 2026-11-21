@@ -21,11 +21,15 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -235,7 +239,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
@@ -303,16 +307,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        boolean succeed = true;
-        for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
-            final FluidStack fluidStack = outputFluids[i];
-            if (fluidStack == null) continue;
-            FluidStack stack = fluidStack.copy();
-            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
-            if (stack.amount > 0) succeed = false;
-        }
-        return succeed;
+    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
+        return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
     }
 
     @Override

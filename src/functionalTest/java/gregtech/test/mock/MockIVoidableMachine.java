@@ -3,6 +3,10 @@ package gregtech.test.mock;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
@@ -34,7 +38,7 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
-    public List<IOutputHatch> getOutputHatches() {
+    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return Collections.emptyList();
     }
 
