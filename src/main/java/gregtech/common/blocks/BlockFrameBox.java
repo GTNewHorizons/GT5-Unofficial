@@ -19,6 +19,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.api.IBlockClimbableFromSide;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,9 +40,10 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.config.Gregtech;
 import gregtech.common.render.GTRendererBlock;
 
-public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
+public class BlockFrameBox extends BlockContainer implements IBlockWithTextures, IBlockClimbableFromSide {
 
     public static final int MATERIAL_MASK = 0xFFF;
     public static final int MTE_BIT = 0x1000;
@@ -253,6 +256,13 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public boolean isClimbableSide(IBlockAccess world, int x, int y, int z, ForgeDirection side,
+        EntityPlayer entityPlayer) {
+        return Gregtech.general.climbableFrameBox
+            && !(world.getTileEntity(x, y, z) instanceof ICoverable coverable && coverable.hasCoverAtSide(side));
     }
 
     @Override

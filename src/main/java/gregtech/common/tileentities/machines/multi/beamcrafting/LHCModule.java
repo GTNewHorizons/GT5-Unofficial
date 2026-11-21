@@ -61,7 +61,9 @@ public enum LHCModule {
         Particle.ETA,
         Particle.JPSI,
         Particle.UPSILON,
-        Particle.GRAVITON));
+        Particle.GRAVITON,
+        Particle.PION,
+        Particle.GLUEBALL));
 
     public final ImmutableList<Particle> acceptedParticles;
 

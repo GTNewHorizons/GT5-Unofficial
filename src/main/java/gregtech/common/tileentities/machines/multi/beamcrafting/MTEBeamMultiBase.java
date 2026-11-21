@@ -20,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.util.IGTHatchAdder;
 import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
@@ -68,11 +69,25 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
     }
 
     public enum FundamentalForce {
+
+        // spotless:off
         EM,
         Weak,
         Strong,
         Gravity,
-        All
+        All,
+        ;
+        // spotless:on
+        public static final FundamentalForce[] VALUES = values();
+
+        public static FundamentalForce fromName(String name) {
+            return Arrays.stream(VALUES)
+                .filter(
+                    f -> f.name()
+                        .equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+        }
     }
 
     public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, FundamentalForce forceType) {
@@ -82,18 +97,14 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             hatch.updateTexture(casingIndex);
-            switch (forceType) {
-                case EM:
-                    hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
-                case Weak:
-                    hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
-                case Strong:
-                    hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
-                case Gravity:
-                    hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
-                case All:
-                    hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
-            }
+            List<Particle> particles = switch (forceType) {
+                case EM -> LHCModule.EM.acceptedParticles;
+                case Weak -> LHCModule.Weak.acceptedParticles;
+                case Strong -> LHCModule.Strong.acceptedParticles;
+                case Gravity -> LHCModule.Grav.acceptedParticles;
+                case All -> LHCModule.AllParticles.acceptedParticles;
+            };
+            hatch.setInitialParticleList(particles, forceType);
             return this.mAdvancedOutputBeamline.add(hatch);
         }
         return false;

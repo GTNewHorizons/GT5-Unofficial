@@ -2945,6 +2945,7 @@ GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitalchest.tooltip=Stores %s items
 GT5U.machines.digitalchest.tooltip1=Use a screwdriver to enable voiding items on overflow
+GT5U.machines.digitalchest.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
@@ -7643,6 +7644,17 @@ GT5U.gui.button.vm.deselect=Deselect all ores
 GT5U.gui.button.vm.tt.void=§cWill be voided
 GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
+#Quad-Cell Plasma Collider GUI
+GT5U.gui.button.qpc.configure.1=Left-Click to configure Plasmas
+GT5U.gui.button.qpc.configure.2=Right-Click to configure Scale
+GT5U.gui.text.qpc.plasma_display=%s: %s/s
+GT5U.gui.text.qpc.expected_rate=Expected Drain Rates:
+GT5U.gui.text.qpc.residue=Producing %s/s residue 
+GT5U.gui.text.qpc.generating=Generating %s EU/t
+GT5U.gui.text.qpc.scale=Configure Scale
+GT5U.gui.text.qpc.scale.text.1=Set Scale (1-30)
+GT5U.gui.text.qpc.scale.text.2=Scale multiplies both initial Drain Rate and Cycle Time
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -9791,6 +9803,8 @@ gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
 gt.blockcasings14.6.name=Extruder Machine Casing
 gt.blockcasings14.7.name=Tension Resistant Machine Casing
+gt.blockcasings14.8.name=Plasma Collider Casing
+gt.blockcasings14.9.name=Quadcell Driving Casing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
@@ -9852,6 +9866,7 @@ gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blockglass1.10.name=Reinforced Glass
+gt.blockglass1.11.name=Plasma Collider Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
@@ -10253,6 +10268,11 @@ GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 GT5U.gui.text.nanite-detector-analog=Analog
 GT5U.gui.text.nanite-detector-tier=Tier %s
+GT5U.gui.text.control-pause=Pause
+GT5U.gui.text.control-parallel=Parallel
+GT5U.gui.text.control-parallel.mantissa=Mantissa:
+GT5U.gui.text.control-parallel.exponent=Exponent:
+GT5U.gui.text.control-parallel.parallel=Parallel:
 
 # BEC I/O Node Structure Hints
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
@@ -10312,6 +10332,8 @@ gt.tooltip.nanite-tier=Nanite Tier: %s
 gt.tooltip.max-nanite=Max Nanite Tier:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
+GT5U.gui.text.control-pause.tooltip=Control the I/O Node processing flow suspension
+GT5U.gui.text.control-parallel.tooltip=Control the I/O Node max parallel for recipes
 
 # BEC Chat Messages
 GT5U.chat.bec-saved-link-data=Saved Link Data to the Data Stick
@@ -10319,6 +10341,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
+GT5U.chat.bec-max-parallel=Max Parallel: %s
 GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
