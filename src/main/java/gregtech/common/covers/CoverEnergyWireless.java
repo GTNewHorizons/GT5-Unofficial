@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static java.lang.Long.min;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class CoverEnergyWireless extends CoverLegacyData {
 
     public CoverEnergyWireless(CoverContext context, int voltage) {
         super(context);
-        this.transferred_energy_per_operation = 2 * voltage * ticks_between_energy_addition;
+        this.transferred_energy_per_operation = 2 * voltage * TICKS_BETWEEN_ENERGY_ADDITION;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CoverEnergyWireless extends CoverLegacyData {
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        if (coverData == 0 || aTimer % ticks_between_energy_addition == 0) {
+        if (coverData == 0 || aTimer % TICKS_BETWEEN_ENERGY_ADDITION == 0) {
             tryFetchingEnergy(coveredTile.get());
         }
         coverData = 1;
