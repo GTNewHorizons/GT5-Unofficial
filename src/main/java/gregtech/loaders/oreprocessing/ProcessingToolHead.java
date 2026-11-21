@@ -517,7 +517,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 4L),
-                                ItemList.Shape_Extruder_ToolHeadDrill.get(0))
+                                ItemList.Shape_Extruder_Drill.get(0))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
