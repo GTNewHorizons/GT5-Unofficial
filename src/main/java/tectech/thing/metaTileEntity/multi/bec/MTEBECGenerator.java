@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
@@ -140,7 +142,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         if (network != null) {
             boolean succeed = true;
             for (FluidStack output : outputFluids) {
-                AEFluidStack stack = AEFluidStack.create(output);
+                IAEFluidStack stack = AEFluidStack.create(output)
+                    .setStackSize(GTUtility.getFluidAmount(output));
                 network.injectCondensate(this, stack);
                 if (stack.getStackSize() > 0) succeed = false;
             }
@@ -176,8 +179,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         Map<Fluid, Long> combinedFluids = new HashMap<>();
         for (FluidStack input : getStoredFluids()) {
-            if (input != null && input.amount > 0) {
-                combinedFluids.merge(input.getFluid(), (long) input.amount, Long::sum);
+            if (input != null && GTUtility.getFluidAmount(input) > 0) {
+                combinedFluids.merge(input.getFluid(), GTUtility.getFluidAmount(input), GTUtility::addSafe);
             }
         }
         if (combinedFluids.isEmpty()) {
@@ -187,27 +190,24 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         List<FluidCandidate> fluidCandidates = new ArrayList<>();
         for (Map.Entry<Fluid, Long> entry : combinedFluids.entrySet()) {
             Fluid fluid = entry.getKey();
-            long totalAmountLong = entry.getValue();
+            long totalAmount = entry.getValue();
 
             GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
-                .fluids(new FluidStack(fluid, (int) Math.min(totalAmountLong, Integer.MAX_VALUE)))
+                .fluids(new FluidStack(fluid, GTUtility.longToInt(totalAmount)))
                 .find();
             if (recipe == null) continue;
 
             if (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) continue;
-            int perParallel = recipe.mFluidInputs[0].amount;
+            long perParallel = GTUtility.getFluidAmount(recipe.mFluidInputs[0]);
             if (perParallel <= 0) continue;
 
             double recipeAccepts = recipe.maxParallelCalculatedByInputs(
                 1,
-                new FluidStack[] { new FluidStack(fluid, perParallel) },
+                new FluidStack[] { GTUtility.createFluidStack(fluid, perParallel) },
                 GTValues.emptyItemStackArray);
             if (recipeAccepts <= 0) continue;
 
-            long maxParallelsByInput = totalAmountLong / perParallel;
-            if (maxParallelsByInput > Integer.MAX_VALUE) {
-                maxParallelsByInput = Integer.MAX_VALUE;
-            }
+            long maxParallelsByInput = Math.min(totalAmount / perParallel, Integer.MAX_VALUE);
 
             fluidCandidates.add(new FluidCandidate(recipe, (int) maxParallelsByInput, fluid));
         }
@@ -248,19 +248,17 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             int plannedParallels = candidate.parallels;
             if (plannedParallels <= 0) continue;
 
-            int perParallel = candidate.recipe.mFluidInputs[0].amount;
-            long plannedDrain = (long) plannedParallels * perParallel;
+            long perParallel = GTUtility.getFluidAmount(candidate.recipe.mFluidInputs[0]);
+            long plannedDrain = GTUtility.mulSafe(plannedParallels, perParallel);
 
-            long drained = drainInputHatches(mInputHatches, plannedDrain, candidate.fluid, true);
-            int actualParallels = (int) Math.min(drained / perParallel, Integer.MAX_VALUE);
+            long drained = depleteInputQuantity(GTUtility.createFluidStack(candidate.fluid, plannedDrain), true);
+            int actualParallels = GTUtility.longToInt(drained / perParallel);
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
             drainInputHatches(mInputHatches, (long) actualParallels * perParallel, candidate.fluid, false);
 
-            outputs.addTo(
-                candidate.recipe.mFluidOutputs[0].getFluid(),
-                candidate.recipe.mFluidOutputs[0].amount * (long) actualParallels);
+            outputs.addTo(candidate.fluid, perParallel * (long) actualParallels);
             anySuccess = true;
         }
 
@@ -299,8 +297,9 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         long drained = 0;
         for (MTEHatchInput hatch : validMTEList(hatches)) {
             if (drained >= amount) break;
-            int chunk = (int) Math.min(amount - drained, Integer.MAX_VALUE);
-            FluidStack result = hatch.drain(ForgeDirection.UNKNOWN, new FluidStack(fluid, chunk), !simulate);
+            long chunk = amount - drained;
+            FluidStack result = hatch
+                .drain(ForgeDirection.UNKNOWN, GTUtility.createFluidStack(fluid, chunk), !simulate);
             if (result == null || result.getFluid() != fluid) continue;
             drained += result.amount;
         }
