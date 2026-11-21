@@ -151,7 +151,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         recipeOutputHatches.clear();
     }
 
-    // called by the hatches' notifyWatchers
+    // called by the hatches' notifyWatchers, so when a new stick is inserted
+    // or a "master" database pushed data to it's "slave"
     @Override
     public void scheduleRecipeCheckImmediate() {
         super.scheduleRecipeCheckImmediate();
@@ -201,6 +202,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 .equals(dataPacket)) continue;
             roh.setAssemblyLineRecipes(dataPacket);
         }
+        dirty = false;
     }
 
     // be dirty on first tick, so that the cache gets primed
