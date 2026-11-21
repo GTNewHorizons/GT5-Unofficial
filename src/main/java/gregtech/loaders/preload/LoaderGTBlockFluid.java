@@ -2730,37 +2730,36 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.TierdDrone3.set(new ItemTierDrone("tierdDrone3", "Drone (Level 4)", "Warp engine FTL Shuttle", 4));
 
         // Extruder shapes
-        ItemList.Shape_Extruder_Plate.set(new ItemShapeExtruder("plate", "Plate"));
-        ItemList.Shape_Extruder_Rod.set(new ItemShapeExtruder("rod", "Rod"));
-        ItemList.Shape_Extruder_Bolt.set(new ItemShapeExtruder("bolt", "Bolt"));
-        ItemList.Shape_Extruder_Ring.set(new ItemShapeExtruder("ring", "Ring"));
-        ItemList.Shape_Extruder_Cell.set(new ItemShapeExtruder("cell", "Cell"));
-        ItemList.Shape_Extruder_Ingot
-            .set(new ItemShapeExtruder("ingot", "Ingot", "Extruder Shape for, wait, can't we just use a Furnace?"));
-        ItemList.Shape_Extruder_Casing.set(new ItemShapeExtruder("casing", "Casing", "Item Casing"));
-        ItemList.Shape_Extruder_Pipe_Tiny.set(new ItemShapeExtruder("pipe_tiny", "Tiny Pipe", "tiny Pipe"));
-        ItemList.Shape_Extruder_Pipe_Small.set(new ItemShapeExtruder("pipe_small", "Small Pipe", "small Pipe"));
-        ItemList.Shape_Extruder_Pipe_Medium.set(new ItemShapeExtruder("pipe_medium", "Normal Pipe"));
-        ItemList.Shape_Extruder_Pipe_Large.set(new ItemShapeExtruder("pipe_large", "Large Pipe", "large Pipe"));
-        ItemList.Shape_Extruder_Pipe_Huge.set(new ItemShapeExtruder("pipe_huge", "Huge Pipe", "full Block Pipe"));
-        ItemList.Shape_Extruder_Block.set(new ItemShapeExtruder("block", "Block"));
-        ItemList.Shape_Extruder_Sword.set(new ItemShapeExtruder("sword", "Sword Blade", "Sword"));
-        ItemList.Shape_Extruder_Pickaxe.set(new ItemShapeExtruder("pickaxe", "Pickaxe Head", "Pickaxe"));
-        ItemList.Shape_Extruder_Shovel.set(new ItemShapeExtruder("shovel", "Shovel Head", "Shovel"));
-        ItemList.Shape_Extruder_Axe.set(new ItemShapeExtruder("axe", "Axe Head", "Axe"));
-        ItemList.Shape_Extruder_Hoe.set(new ItemShapeExtruder("hoe", "Hoe Head", "Hoe"));
-        ItemList.Shape_Extruder_Hammer.set(new ItemShapeExtruder("hammer", "Hammer Head", "Hammer"));
-        ItemList.Shape_Extruder_File.set(new ItemShapeExtruder("file", "File Head", "File"));
-        ItemList.Shape_Extruder_Saw.set(new ItemShapeExtruder("saw", "Saw Blade", "Saw"));
-        ItemList.Shape_Extruder_Gear.set(new ItemShapeExtruder("gear", "Gear"));
-        ItemList.Shape_Extruder_Bottle.set(new ItemShapeExtruder("bottle", "Bottle"));
-        ItemList.Shape_Extruder_Rotor.set(new ItemShapeExtruder("rotor", "Rotor"));
-        ItemList.Shape_Extruder_Small_Gear.set(new ItemShapeExtruder("small_gear", "Small Gear"));
-        ItemList.Shape_Extruder_Turbine_Blade.set(new ItemShapeExtruder("turbine_blade", "Turbine Blade"));
-        ItemList.Shape_Extruder_Drill.set(new ItemShapeExtruder("drill", "Drill Head"));
-        ItemList.Shape_Extruder_Boat.set(new ItemShapeExtruder("boat", "Boat"));
-        ItemList.Shape_Extruder_Pellet.set(new ItemShapeExtruder("pellet", "Pellet"));
-        ItemList.Shape_Extruder_Shaft.set(new ItemShapeExtruder("shaft", "Shaft"));
+        ItemList.Shape_Extruder_Plate.set(new ItemShapeExtruder("plate"));
+        ItemList.Shape_Extruder_Rod.set(new ItemShapeExtruder("rod"));
+        ItemList.Shape_Extruder_Bolt.set(new ItemShapeExtruder("bolt"));
+        ItemList.Shape_Extruder_Ring.set(new ItemShapeExtruder("ring"));
+        ItemList.Shape_Extruder_Cell.set(new ItemShapeExtruder("cell"));
+        ItemList.Shape_Extruder_Ingot.set(new ItemShapeExtruder("ingot"));
+        ItemList.Shape_Extruder_Casing.set(new ItemShapeExtruder("casing"));
+        ItemList.Shape_Extruder_Pipe_Tiny.set(new ItemShapeExtruder("pipe_tiny"));
+        ItemList.Shape_Extruder_Pipe_Small.set(new ItemShapeExtruder("pipe_small"));
+        ItemList.Shape_Extruder_Pipe_Medium.set(new ItemShapeExtruder("pipe_medium"));
+        ItemList.Shape_Extruder_Pipe_Large.set(new ItemShapeExtruder("pipe_large"));
+        ItemList.Shape_Extruder_Pipe_Huge.set(new ItemShapeExtruder("pipe_huge"));
+        ItemList.Shape_Extruder_Block.set(new ItemShapeExtruder("block"));
+        ItemList.Shape_Extruder_Sword.set(new ItemShapeExtruder("sword"));
+        ItemList.Shape_Extruder_Pickaxe.set(new ItemShapeExtruder("pickaxe"));
+        ItemList.Shape_Extruder_Shovel.set(new ItemShapeExtruder("shovel"));
+        ItemList.Shape_Extruder_Axe.set(new ItemShapeExtruder("axe"));
+        ItemList.Shape_Extruder_Hoe.set(new ItemShapeExtruder("hoe"));
+        ItemList.Shape_Extruder_Hammer.set(new ItemShapeExtruder("hammer"));
+        ItemList.Shape_Extruder_File.set(new ItemShapeExtruder("file"));
+        ItemList.Shape_Extruder_Saw.set(new ItemShapeExtruder("saw"));
+        ItemList.Shape_Extruder_Gear.set(new ItemShapeExtruder("gear"));
+        ItemList.Shape_Extruder_Bottle.set(new ItemShapeExtruder("bottle"));
+        ItemList.Shape_Extruder_Rotor.set(new ItemShapeExtruder("rotor"));
+        ItemList.Shape_Extruder_Small_Gear.set(new ItemShapeExtruder("small_gear"));
+        ItemList.Shape_Extruder_Turbine_Blade.set(new ItemShapeExtruder("turbine_blade"));
+        ItemList.Shape_Extruder_Drill.set(new ItemShapeExtruder("drill"));
+        ItemList.Shape_Extruder_Boat.set(new ItemShapeExtruder("boat"));
+        ItemList.Shape_Extruder_Pellet.set(new ItemShapeExtruder("pellet"));
+        ItemList.Shape_Extruder_Shaft.set(new ItemShapeExtruder("shaft"));
 
     }
 }
