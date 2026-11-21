@@ -112,8 +112,7 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
 
         // GT glass tubes carry no ItemData, so declare the tube part's glass composition
-        // explicitly (3 tubes at 1 ingot of molten glass each). It must be registered before
-        // the recipes below so the motor and pump inherit the glass through their own recipes.
+        // explicitly (3 tubes at 1 ingot of molten glass each).
         GTOreDictUnificator
             .addItemData(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), new ItemData(Materials.Glass, M * 3));
 
