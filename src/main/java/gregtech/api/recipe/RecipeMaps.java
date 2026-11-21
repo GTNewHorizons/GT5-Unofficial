@@ -1101,7 +1101,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
-        .maxIO(1, 1, 2, 1)
+        .maxIO(1, 1, 2, 2)
         .recipeEmitter(b -> {
             FluidStack in, out;
             if (isArrayOfLength(b.getItemInputsBasic(), 1) && isArrayOfLength(b.getItemOutputs(), 1)
@@ -2233,6 +2233,12 @@ public final class RecipeMaps {
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> scpRecipes = RecipeMapBuilder.of("gt.recipe.scp")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {

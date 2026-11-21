@@ -96,6 +96,17 @@ import static gregtech.common.items.IDMetaItem01.Black_Hole_Stabilizer;
 import static gregtech.common.items.IDMetaItem01.Book_Written_01;
 import static gregtech.common.items.IDMetaItem01.Book_Written_02;
 import static gregtech.common.items.IDMetaItem01.Book_Written_03;
+import static gregtech.common.items.IDMetaItem01.Booster_EV;
+import static gregtech.common.items.IDMetaItem01.Booster_HV;
+import static gregtech.common.items.IDMetaItem01.Booster_IV;
+import static gregtech.common.items.IDMetaItem01.Booster_LuV;
+import static gregtech.common.items.IDMetaItem01.Booster_MV;
+import static gregtech.common.items.IDMetaItem01.Booster_UEV;
+import static gregtech.common.items.IDMetaItem01.Booster_UHV;
+import static gregtech.common.items.IDMetaItem01.Booster_UIV;
+import static gregtech.common.items.IDMetaItem01.Booster_UMV;
+import static gregtech.common.items.IDMetaItem01.Booster_UV;
+import static gregtech.common.items.IDMetaItem01.Booster_ZPM;
 import static gregtech.common.items.IDMetaItem01.Circuit_Advanced;
 import static gregtech.common.items.IDMetaItem01.Circuit_Basic;
 import static gregtech.common.items.IDMetaItem01.Circuit_Board_Advanced;
@@ -3743,6 +3754,73 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.black_hole.supermassive_seed.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
+        // Superconductor Boosters
+        ItemList.Booster_MV.set(
+            addItemWithLocalizationKeys(
+                Booster_MV.ID,
+                "gt.item.superconductor_booster.mv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 10)));
+        ItemList.Booster_HV.set(
+            addItemWithLocalizationKeys(
+                Booster_HV.ID,
+                "gt.item.superconductor_booster.hv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 20)));
+        ItemList.Booster_EV.set(
+            addItemWithLocalizationKeys(
+                Booster_EV.ID,
+                "gt.item.superconductor_booster.ev.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 30)));
+        ItemList.Booster_IV.set(
+            addItemWithLocalizationKeys(
+                Booster_IV.ID,
+                "gt.item.superconductor_booster.iv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
+        ItemList.Booster_LuV.set(
+            addItemWithLocalizationKeys(
+                Booster_LuV.ID,
+                "gt.item.superconductor_booster.luv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 50)));
+        ItemList.Booster_ZPM.set(
+            addItemWithLocalizationKeys(
+                Booster_ZPM.ID,
+                "gt.item.superconductor_booster.zpm.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 60)));
+        ItemList.Booster_UV.set(
+            addItemWithLocalizationKeys(
+                Booster_UV.ID,
+                "gt.item.superconductor_booster.uv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 70)));
+        ItemList.Booster_UHV.set(
+            addItemWithLocalizationKeys(
+                Booster_UHV.ID,
+                "gt.item.superconductor_booster.uhv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 80)));
+        ItemList.Booster_UEV.set(
+            addItemWithLocalizationKeys(
+                Booster_UEV.ID,
+                "gt.item.superconductor_booster.uev.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 90)));
+        ItemList.Booster_UIV.set(
+            addItemWithLocalizationKeys(
+                Booster_UIV.ID,
+                "gt.item.superconductor_booster.uiv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 100)));
+        ItemList.Booster_UMV.set(
+            addItemWithLocalizationKeys(
+                Booster_UMV.ID,
+                "gt.item.superconductor_booster.umv.name",
+                "gt.item.superconductor_booster.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 110)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
@@ -4171,6 +4249,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
         setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_MV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_HV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_EV.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Booster_IV.ID, 0L, 1L);
+
     }
 
     private void oredictBlacklistEntries() {

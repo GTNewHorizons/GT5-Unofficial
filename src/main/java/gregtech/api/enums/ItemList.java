@@ -1531,6 +1531,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_Spinmatron,
     Spinmatron_Casing,
     Spinmatron_Chamber_Grate,
+    SCP_Casing,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
@@ -2260,6 +2261,7 @@ public enum ItemList implements IItemContainer {
     NaquadahReactorCasing,
     EntropicProcessor,
     DecayWarehouse,
+    SuperConductorProcessor,
     LATEX,
     MagicalMaintenanceHatch,
     AcceleratorLV,
@@ -2820,7 +2822,21 @@ public enum ItemList implements IItemContainer {
     StableEmptyContainmentUnit,
 
     ManaFly,
+
     DebugEnergyHatch,
+
+    Hatch_Booster,
+    Booster_MV,
+    Booster_HV,
+    Booster_EV,
+    Booster_IV,
+    Booster_LuV,
+    Booster_ZPM,
+    Booster_UV,
+    Booster_UHV,
+    Booster_UEV,
+    Booster_UIV,
+    Booster_UMV,
 
     ChaosLocator,
 
