@@ -134,7 +134,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private static Integer getMachineCasingTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings1) return null;
         if (metaID < 0 || metaID > 9) return null;
-        return metaID + 1;
+        return metaID;
     }
 
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
@@ -439,7 +439,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             }
         }
         checkCasingMin(errors, mCasing, 70);
-        mMachineCasingTier = checkMachine - 1;
+        mMachineCasingTier = checkMachine;
         mPipeCasingTier = checkPipe;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
