@@ -1217,7 +1217,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             for (FluidStack fluid : i.fluidInventory) {
                 if (fluid != null && GTUtility.getFluidAmount(fluid) > 0) {
                     String name = fluid.getLocalizedName();
-                    nameToAmount.merge(name, GTUtility.getFluidAmount(fluid), Long::sum);
+                    nameToAmount.merge(name, GTUtility.getFluidAmount(fluid), GTUtility::addSafe);
                 }
             }
         }

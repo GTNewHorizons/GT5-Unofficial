@@ -361,6 +361,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         for (FluidStack fluid : inputFluid) {
             if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
                 // Safe cast long amount to int
+                // Because the amount requested is 1M L at max
+                // based on getCapacity()
                 if (storedFluidStack == null) {
                     int depleted = GTUtility
                         .longToInt(depleteInputQuantity(new FluidStack(fluid, getCapacity()), false));

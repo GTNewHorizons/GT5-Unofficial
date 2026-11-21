@@ -678,7 +678,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(2);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.mergeLong(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack), Long::sum);
+                fluidMap.mergeLong(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack), GTUtility::addSafe);
             }
 
             for (int i = 0; i < mFluidInputs.length; i++) {
@@ -710,7 +710,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (selectedAlt != null) {
                     long consumed = (long) (GTUtility.getFluidAmount(selectedAlt)
                         * Math.min(currentParallel, bestParallelForSlot));
-                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
+                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, GTUtility::addSafe);
                 }
 
                 currentParallel = Math.min(currentParallel, bestParallelForSlot);

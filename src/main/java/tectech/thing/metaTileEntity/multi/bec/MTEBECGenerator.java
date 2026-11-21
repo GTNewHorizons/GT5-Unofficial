@@ -180,7 +180,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         Map<Fluid, Long> combinedFluids = new HashMap<>();
         for (FluidStack input : getStoredFluids()) {
             if (input != null && GTUtility.getFluidAmount(input) > 0) {
-                combinedFluids.merge(input.getFluid(), GTUtility.getFluidAmount(input), Long::sum);
+                combinedFluids.merge(input.getFluid(), GTUtility.getFluidAmount(input), GTUtility::addSafe);
             }
         }
         if (combinedFluids.isEmpty()) {
@@ -198,7 +198,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             if (recipe == null) continue;
 
             if (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) continue;
-            int perParallel = recipe.mFluidInputs[0].amount;
+            long perParallel = GTUtility.getFluidAmount(recipe.mFluidInputs[0]);
             if (perParallel <= 0) continue;
 
             double recipeAccepts = recipe.maxParallelCalculatedByInputs(
@@ -207,10 +207,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
                 GTValues.emptyItemStackArray);
             if (recipeAccepts <= 0) continue;
 
-            long maxParallelsByInput = totalAmount / perParallel;
-            if (maxParallelsByInput > Integer.MAX_VALUE) {
-                maxParallelsByInput = Integer.MAX_VALUE;
-            }
+            long maxParallelsByInput = Math.min(totalAmount / perParallel, Integer.MAX_VALUE);
 
             fluidCandidates.add(new FluidCandidate(recipe, (int) maxParallelsByInput, fluid));
         }
@@ -251,11 +248,11 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             int plannedParallels = candidate.parallels;
             if (plannedParallels <= 0) continue;
 
-            long perParallel = candidate.recipe.mFluidInputs[0].amount;
-            long plannedDrain = plannedParallels * perParallel;
+            long perParallel = GTUtility.getFluidAmount(candidate.recipe.mFluidInputs[0]);
+            long plannedDrain = GTUtility.mulSafe(plannedParallels, perParallel);
 
             long drained = depleteInputQuantity(GTUtility.createFluidStack(candidate.fluid, plannedDrain), true);
-            int actualParallels = (int) (drained / perParallel);
+            int actualParallels = GTUtility.longToInt(drained / perParallel);
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
