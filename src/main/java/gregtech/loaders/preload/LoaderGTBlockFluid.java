@@ -2735,14 +2735,14 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Shape_Extruder_Bolt.set(new ItemShapeExtruder("bolt", "Bolt"));
         ItemList.Shape_Extruder_Ring.set(new ItemShapeExtruder("ring", "Ring"));
         ItemList.Shape_Extruder_Cell.set(new ItemShapeExtruder("cell", "Cell"));
-        ItemList.Shape_Extruder_Ingot.set(new ItemShapeExtruder("ingot", "Ingot"));
-        ItemList.Shape_Extruder_Wire.set(new ItemShapeExtruder("wire", "Wire"));
-        ItemList.Shape_Extruder_Casing.set(new ItemShapeExtruder("casing", "Casing"));
-        ItemList.Shape_Extruder_Pipe_Tiny.set(new ItemShapeExtruder("pipe_tiny", "Tiny Pipe"));
-        ItemList.Shape_Extruder_Pipe_Small.set(new ItemShapeExtruder("pipe_small", "Small Pipe"));
-        ItemList.Shape_Extruder_Pipe_Medium.set(new ItemShapeExtruder("pipe_medium", "Medium Pipe"));
-        ItemList.Shape_Extruder_Pipe_Large.set(new ItemShapeExtruder("pipe_large", "Large Pipe"));
-        ItemList.Shape_Extruder_Pipe_Huge.set(new ItemShapeExtruder("pipe_huge", "Huge Pipe"));
+        ItemList.Shape_Extruder_Ingot
+            .set(new ItemShapeExtruder("ingot", "Ingot", "Extruder Shape for, wait, can't we just use a Furnace?"));
+        ItemList.Shape_Extruder_Casing.set(new ItemShapeExtruder("casing", "Casing", "Item Casing"));
+        ItemList.Shape_Extruder_Pipe_Tiny.set(new ItemShapeExtruder("pipe_tiny", "Tiny Pipe", "tiny Pipe"));
+        ItemList.Shape_Extruder_Pipe_Small.set(new ItemShapeExtruder("pipe_small", "Small Pipe", "small Pipe"));
+        ItemList.Shape_Extruder_Pipe_Medium.set(new ItemShapeExtruder("pipe_medium", "Normal Pipe"));
+        ItemList.Shape_Extruder_Pipe_Large.set(new ItemShapeExtruder("pipe_large", "Large Pipe", "large Pipe"));
+        ItemList.Shape_Extruder_Pipe_Huge.set(new ItemShapeExtruder("pipe_huge", "Huge Pipe", "full Block Pipe"));
         ItemList.Shape_Extruder_Block.set(new ItemShapeExtruder("block", "Block"));
         ItemList.Shape_Extruder_Sword.set(new ItemShapeExtruder("sword", "Sword Blade", "Sword"));
         ItemList.Shape_Extruder_Pickaxe.set(new ItemShapeExtruder("pickaxe", "Pickaxe Head", "Pickaxe"));
@@ -2762,21 +2762,5 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Shape_Extruder_Pellet.set(new ItemShapeExtruder("pellet", "Pellet"));
         ItemList.Shape_Extruder_Shaft.set(new ItemShapeExtruder("shaft", "Shaft"));
 
-        GTModHandler.addCraftingRecipe(
-            ItemList.Shape_Slicer_Flat.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "hXS", " P ", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.get(Materials.StainlessSteel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Shape_Slicer_Stripes.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.get(Materials.StainlessSteel) });
     }
 }

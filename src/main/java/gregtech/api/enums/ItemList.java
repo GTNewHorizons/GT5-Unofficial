@@ -148,7 +148,6 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,

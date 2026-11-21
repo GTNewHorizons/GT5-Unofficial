@@ -2,11 +2,19 @@ package gregtech.api.items;
 
 public class ItemShapeExtruder extends GTGenericItem {
 
+    public ItemShapeExtruder(String aUnlocalizedOutput, String aEnglishOutput, String aEnglishTooltip,
+        boolean defaultTooltip) {
+        String englishTooltip;
+        if (defaultTooltip) {
+            englishTooltip = "Extruder Shape for making " + aEnglishTooltip + "s";
+        } else {
+            englishTooltip = aEnglishTooltip;
+        }
+        super("shape_extruder." + aUnlocalizedOutput, "Extruder Shape (" + aEnglishOutput + ")", englishTooltip);
+    }
+
     public ItemShapeExtruder(String aUnlocalizedOutput, String aEnglishOutput, String aEnglishOutputTooltip) {
-        super(
-            "shape_extruder." + aUnlocalizedOutput,
-            "Extruder Shape (" + aEnglishOutput + ")",
-            "Extruder Shape for making " + aEnglishOutputTooltip + "s");
+        this(aUnlocalizedOutput, aEnglishOutput, aEnglishOutputTooltip, true);
     }
 
     public ItemShapeExtruder(String aUnlocalizedOutput, String aEnglishOutput) {
