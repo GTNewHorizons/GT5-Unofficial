@@ -24,6 +24,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.Variants;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -759,14 +760,14 @@ public class GTRecipeBuilder {
      * Specifies whether a variant modifies this recipe. If any of the listed variants are loaded, all the operations
      * for this builder will be ignored. If Variable Horizons is not loaded, this does nothing.
      *
-     * @param variantNames Variant(s) modifying this recipe.
+     * @param variants Variant(s) modifying this recipe.
      */
-    public GTRecipeBuilder modifiedByVariant(String... variantNames) {
+    public GTRecipeBuilder modifiedByVariant(Variants... variants) {
         if (!Mods.VariableHorizons.isModLoaded()) {
             return this;
         }
-        for (final String name : variantNames) {
-            if (VariantNames.activeContains(name)) {
+        for (final Variants variant : variants) {
+            if (VariantNames.activeContains(variant.ID)) {
                 skip = true;
                 return this;
             }

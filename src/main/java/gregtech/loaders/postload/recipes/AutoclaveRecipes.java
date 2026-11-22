@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Variants.GardenOfGrind;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -263,7 +264,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .modifiedByVariant("GARDEN_OF_GRIND")
+            .modifiedByVariant(GardenOfGrind)
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 15))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Asbestos, 18),

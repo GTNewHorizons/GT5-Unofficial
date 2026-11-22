@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Variants.AlteredPricing;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -59,7 +60,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV motor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -76,7 +77,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM motor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -96,7 +97,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV motor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -125,7 +126,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Pump
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -144,7 +145,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Pump
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -163,7 +164,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Pump
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -188,7 +189,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Conveyor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -206,7 +207,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Conveyor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -224,7 +225,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Conveyor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -248,7 +249,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Piston
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -268,7 +269,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Pistons
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -288,7 +289,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Piston
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -314,7 +315,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Robot Arm
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -335,7 +336,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Robot Arm
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -356,7 +357,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Robot Arm
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -383,7 +384,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Emitter
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -404,7 +405,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Emitter
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -425,7 +426,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Emitter
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -451,7 +452,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Sensor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -472,7 +473,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Sensor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -493,7 +494,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Sensor
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -519,7 +520,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Field Generator
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -541,7 +542,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Field Generator
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -563,7 +564,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Field Generator
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -592,7 +593,6 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Energy Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -614,7 +614,6 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Energy Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -636,7 +635,6 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Energy Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
@@ -665,7 +663,6 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Dynamo Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -687,7 +684,6 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM Dynamo Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -709,7 +705,6 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Dynamo Hatch
             GTValues.RA.stdBuilder()
-                .modifiedByVariant("CHEAP_MODE", "EXPENSIVE_MODE")
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
