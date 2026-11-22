@@ -46,6 +46,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -196,11 +197,10 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_IV)
                 .addTo(autoclaveRecipes);
 
-            if (EtFuturumRequiem.isModLoaded()) {
+            ItemStack prismarineCrystals = GameRegistry.findItemStack(EtFuturumRequiem.ID, "prismarine_crystals", 64);
+            if (prismarineCrystals != null) {
                 GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
-                    .itemInputs(
-                        GregtechItemList.RedAlgaeBiomass.get(32),
-                        getModItem(EtFuturumRequiem.ID, "prismarine_crystals", 64))
+                    .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), prismarineCrystals)
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
                     .itemOutputs(ItemList.Dim_Prismarine.get(32))
@@ -209,7 +209,7 @@ public class NetheriteRecipes {
                     .addTo(autoclaveRecipes);
 
                 GTValues.RA.stdBuilder() // Compression
-                    .itemInputs(getModItem(EtFuturumRequiem.ID, "prismarine_crystals", 64))
+                    .itemInputs(prismarineCrystals)
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PrismaticAcid, FluidShapes.fluidLiquid, 4000))
                     .itemOutputs(ItemList.Dim_Prismarine.get(64))
                     .duration(1 * TICKS)

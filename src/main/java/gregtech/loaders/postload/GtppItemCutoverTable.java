@@ -8,7 +8,7 @@ import gregtech.api.enums.OrePrefixes;
 /// Frame blocks are in [GtppFrameCutoverTable]. The six gtPlusPlus fluid cells on IC2's cell item have no row here and
 /// are migrated directly in [PosteaTransformers].
 ///
-/// Rows are never removed. A missing row orphans that item in existing worlds.
+/// A missing row orphans that item in existing worlds, so rows are removed only when their shape is retired.
 public final class GtppItemCutoverTable {
 
     public record Entry(OrePrefixes prefix, String materialName, String registryName) {}
@@ -52,7 +52,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.block, "Inconel690", "miscutils:blockBlockInconel690"),
         new Entry(OrePrefixes.block, "Inconel792", "miscutils:blockBlockInconel792"),
         new Entry(OrePrefixes.block, "Indalloy140", "miscutils:blockBlockIndalloy140"),
-        new Entry(OrePrefixes.block, "Iodine", "miscutils:blockBlockIodine"),
         new Entry(OrePrefixes.block, "LafiumCompound", "miscutils:blockBlockLafiumCompound"),
         new Entry(OrePrefixes.block, "Laurenium", "miscutils:blockBlockLaurenium"),
         new Entry(OrePrefixes.block, "Lithium7", "miscutils:blockBlockLithium7"),
@@ -122,7 +121,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.bolt, "Inconel625", "miscutils:itemBoltInconel625"),
         new Entry(OrePrefixes.bolt, "Inconel690", "miscutils:itemBoltInconel690"),
         new Entry(OrePrefixes.bolt, "Inconel792", "miscutils:itemBoltInconel792"),
-        new Entry(OrePrefixes.bolt, "Iodine", "miscutils:itemBoltIodine"),
         new Entry(OrePrefixes.bolt, "LafiumCompound", "miscutils:itemBoltLafiumCompound"),
         new Entry(OrePrefixes.bolt, "Laurenium", "miscutils:itemBoltLaurenium"),
         new Entry(OrePrefixes.bolt, "MaragingSteel250", "miscutils:itemBoltMaragingSteel250"),
@@ -1112,7 +1110,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.gearGt, "Inconel625", "miscutils:itemGearInconel625"),
         new Entry(OrePrefixes.gearGt, "Inconel690", "miscutils:itemGearInconel690"),
         new Entry(OrePrefixes.gearGt, "Inconel792", "miscutils:itemGearInconel792"),
-        new Entry(OrePrefixes.gearGt, "Iodine", "miscutils:itemGearIodine"),
         new Entry(OrePrefixes.gearGt, "LafiumCompound", "miscutils:itemGearLafiumCompound"),
         new Entry(OrePrefixes.gearGt, "Laurenium", "miscutils:itemGearLaurenium"),
         new Entry(OrePrefixes.gearGt, "MaragingSteel250", "miscutils:itemGearMaragingSteel250"),
@@ -1180,7 +1177,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.ingot, "Inconel690", "miscutils:itemIngotInconel690"),
         new Entry(OrePrefixes.ingot, "Inconel792", "miscutils:itemIngotInconel792"),
         new Entry(OrePrefixes.ingot, "Indalloy140", "miscutils:itemIngotIndalloy140"),
-        new Entry(OrePrefixes.ingot, "Iodine", "miscutils:itemIngotIodine"),
         new Entry(OrePrefixes.ingot, "LafiumCompound", "miscutils:itemIngotLafiumCompound"),
         new Entry(OrePrefixes.ingot, "Laurenium", "miscutils:itemIngotLaurenium"),
         new Entry(OrePrefixes.ingot, "Lithium7", "miscutils:itemIngotLithium7"),
@@ -1315,7 +1311,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.nugget, "Inconel690", "miscutils:itemNuggetInconel690"),
         new Entry(OrePrefixes.nugget, "Inconel792", "miscutils:itemNuggetInconel792"),
         new Entry(OrePrefixes.nugget, "Indalloy140", "miscutils:itemNuggetIndalloy140"),
-        new Entry(OrePrefixes.nugget, "Iodine", "miscutils:itemNuggetIodine"),
         new Entry(OrePrefixes.nugget, "LafiumCompound", "miscutils:itemNuggetLafiumCompound"),
         new Entry(OrePrefixes.nugget, "Laurenium", "miscutils:itemNuggetLaurenium"),
         new Entry(OrePrefixes.nugget, "Lithium7", "miscutils:itemNuggetLithium7"),
@@ -1392,7 +1387,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.plate, "Inconel690", "miscutils:itemPlateInconel690"),
         new Entry(OrePrefixes.plate, "Inconel792", "miscutils:itemPlateInconel792"),
         new Entry(OrePrefixes.plate, "Indalloy140", "miscutils:itemPlateIndalloy140"),
-        new Entry(OrePrefixes.plate, "Iodine", "miscutils:itemPlateIodine"),
         new Entry(OrePrefixes.plate, "LafiumCompound", "miscutils:itemPlateLafiumCompound"),
         new Entry(OrePrefixes.plate, "Laurenium", "miscutils:itemPlateLaurenium"),
         new Entry(OrePrefixes.plate, "Lithium7", "miscutils:itemPlateLithium7"),
@@ -1458,7 +1452,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.plateDense, "Inconel625", "miscutils:itemPlateDenseInconel625"),
         new Entry(OrePrefixes.plateDense, "Inconel690", "miscutils:itemPlateDenseInconel690"),
         new Entry(OrePrefixes.plateDense, "Inconel792", "miscutils:itemPlateDenseInconel792"),
-        new Entry(OrePrefixes.plateDense, "Iodine", "miscutils:itemPlateDenseIodine"),
         new Entry(OrePrefixes.plateDense, "LafiumCompound", "miscutils:itemPlateDenseLafiumCompound"),
         new Entry(OrePrefixes.plateDense, "Laurenium", "miscutils:itemPlateDenseLaurenium"),
         new Entry(OrePrefixes.plateDense, "MaragingSteel250", "miscutils:itemPlateDenseMaragingSteel250"),
@@ -1523,7 +1516,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.plateDouble, "Inconel690", "miscutils:itemPlateDoubleInconel690"),
         new Entry(OrePrefixes.plateDouble, "Inconel792", "miscutils:itemPlateDoubleInconel792"),
         new Entry(OrePrefixes.plateDouble, "Indalloy140", "miscutils:itemPlateDoubleIndalloy140"),
-        new Entry(OrePrefixes.plateDouble, "Iodine", "miscutils:itemPlateDoubleIodine"),
         new Entry(OrePrefixes.plateDouble, "LafiumCompound", "miscutils:itemPlateDoubleLafiumCompound"),
         new Entry(OrePrefixes.plateDouble, "Laurenium", "miscutils:itemPlateDoubleLaurenium"),
         new Entry(OrePrefixes.plateDouble, "Lithium7", "miscutils:itemPlateDoubleLithium7"),
@@ -1647,7 +1639,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.ring, "Inconel625", "miscutils:itemRingInconel625"),
         new Entry(OrePrefixes.ring, "Inconel690", "miscutils:itemRingInconel690"),
         new Entry(OrePrefixes.ring, "Inconel792", "miscutils:itemRingInconel792"),
-        new Entry(OrePrefixes.ring, "Iodine", "miscutils:itemRingIodine"),
         new Entry(OrePrefixes.ring, "LafiumCompound", "miscutils:itemRingLafiumCompound"),
         new Entry(OrePrefixes.ring, "Laurenium", "miscutils:itemRingLaurenium"),
         new Entry(OrePrefixes.ring, "MaragingSteel250", "miscutils:itemRingMaragingSteel250"),
@@ -1705,7 +1696,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.rotor, "Inconel625", "miscutils:itemRotorInconel625"),
         new Entry(OrePrefixes.rotor, "Inconel690", "miscutils:itemRotorInconel690"),
         new Entry(OrePrefixes.rotor, "Inconel792", "miscutils:itemRotorInconel792"),
-        new Entry(OrePrefixes.rotor, "Iodine", "miscutils:itemRotorIodine"),
         new Entry(OrePrefixes.rotor, "LafiumCompound", "miscutils:itemRotorLafiumCompound"),
         new Entry(OrePrefixes.rotor, "Laurenium", "miscutils:itemRotorLaurenium"),
         new Entry(OrePrefixes.rotor, "MaragingSteel250", "miscutils:itemRotorMaragingSteel250"),
@@ -1763,7 +1753,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.screw, "Inconel625", "miscutils:itemScrewInconel625"),
         new Entry(OrePrefixes.screw, "Inconel690", "miscutils:itemScrewInconel690"),
         new Entry(OrePrefixes.screw, "Inconel792", "miscutils:itemScrewInconel792"),
-        new Entry(OrePrefixes.screw, "Iodine", "miscutils:itemScrewIodine"),
         new Entry(OrePrefixes.screw, "LafiumCompound", "miscutils:itemScrewLafiumCompound"),
         new Entry(OrePrefixes.screw, "Laurenium", "miscutils:itemScrewLaurenium"),
         new Entry(OrePrefixes.screw, "MaragingSteel250", "miscutils:itemScrewMaragingSteel250"),
@@ -1833,7 +1822,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.stick, "Inconel625", "miscutils:itemRodInconel625"),
         new Entry(OrePrefixes.stick, "Inconel690", "miscutils:itemRodInconel690"),
         new Entry(OrePrefixes.stick, "Inconel792", "miscutils:itemRodInconel792"),
-        new Entry(OrePrefixes.stick, "Iodine", "miscutils:itemRodIodine"),
         new Entry(OrePrefixes.stick, "LFTRFuel1", "miscutils:itemRodLFTRFuel1"),
         new Entry(OrePrefixes.stick, "LFTRFuel2", "miscutils:itemRodLFTRFuel2"),
         new Entry(OrePrefixes.stick, "LFTRFuel3", "miscutils:itemRodLFTRFuel3"),
@@ -1919,7 +1907,6 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.stickLong, "Inconel625", "miscutils:itemRodLongInconel625"),
         new Entry(OrePrefixes.stickLong, "Inconel690", "miscutils:itemRodLongInconel690"),
         new Entry(OrePrefixes.stickLong, "Inconel792", "miscutils:itemRodLongInconel792"),
-        new Entry(OrePrefixes.stickLong, "Iodine", "miscutils:itemRodLongIodine"),
         new Entry(OrePrefixes.stickLong, "LFTRFuel1", "miscutils:itemRodLongLFTRFuel1"),
         new Entry(OrePrefixes.stickLong, "LFTRFuel2", "miscutils:itemRodLongLFTRFuel2"),
         new Entry(OrePrefixes.stickLong, "LFTRFuel3", "miscutils:itemRodLongLFTRFuel3"),
