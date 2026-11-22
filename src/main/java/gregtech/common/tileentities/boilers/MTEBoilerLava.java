@@ -215,13 +215,15 @@ public class MTEBoilerLava extends MTEBoiler {
 
     protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
         EntityPlayer aPlayer) {
-        heldItemStack.stackSize -= 1;
 
-        if (heldItemStack.stackSize <= 0) {
-            aPlayer.setCurrentItemOrArmor(0, returnedContainer);
-            aPlayer.inventoryContainer.detectAndSendChanges();
-        } else {
-            addItemToPlayerInventory(aPlayer, returnedContainer);
+        if (!aPlayer.capabilities.isCreativeMode) {
+            heldItemStack.stackSize -= 1;
+            if (heldItemStack.stackSize <= 0) {
+                aPlayer.setCurrentItemOrArmor(0, returnedContainer);
+                aPlayer.inventoryContainer.detectAndSendChanges();
+            } else {
+                addItemToPlayerInventory(aPlayer, returnedContainer);
+            }
         }
     }
 
