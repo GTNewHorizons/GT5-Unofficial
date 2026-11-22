@@ -37,7 +37,7 @@ import gregtech.common.misc.GTStructureChannels;
 
 import java.util.List;
 
-public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MTEZeroResistanceCryostat> {
+public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<MTEZeroResistanceCryoforge> {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 11;
@@ -50,13 +50,13 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.zero_resistance_cryostat"));
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.zero_resistance_cryoforge"));
         tt.toolTipFinisher();
         return tt;
     }
 
-    private static final IStructureDefinition<MTEZeroResistanceCryostat> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEZeroResistanceCryostat>builder()
+    private static final IStructureDefinition<MTEZeroResistanceCryoforge> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEZeroResistanceCryoforge>builder()
         .addShape(
             "main",
             transpose(
@@ -85,15 +85,15 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
             'D',
             GTStructureChannels.SOLENOID.use(
                 ofSolenoidCoil(
-                    MTEZeroResistanceCryostat::setSolenoidLevel,
-                    MTEZeroResistanceCryostat::getSolenoidLevel)))
+                    MTEZeroResistanceCryoforge::setSolenoidLevel,
+                    MTEZeroResistanceCryoforge::getSolenoidLevel)))
         .addElement('E', Casings.CoolantDuct.asElement())
         .addElement('F', ofFrame(Materials.CosmicNeutronium))
         // G: Magnetic Anchor Casing, where hatches can go
         .addElement(
             'G',
             ofChain(
-                buildHatchAdder(MTEZeroResistanceCryostat.class)
+                buildHatchAdder(MTEZeroResistanceCryoforge.class)
                     .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(Casings.MagneticAnchorCasing.textureId)
                     .hint(1)
@@ -103,11 +103,11 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
         .addElement('I', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
         .build();
 
-    public MTEZeroResistanceCryostat(final int aID, final String aName, final String aNameRegional) {
+    public MTEZeroResistanceCryoforge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEZeroResistanceCryostat(final String aName) {
+    public MTEZeroResistanceCryoforge(final String aName) {
         super(aName);
     }
 
@@ -143,20 +143,20 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
 
 
     @Override
-    public IStructureDefinition<MTEZeroResistanceCryostat> getStructureDefinition() {
+    public IStructureDefinition<MTEZeroResistanceCryoforge> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.zeroResistanceCryostatRecipes;
+        return RecipeMaps.zeroResistanceCryoforgeRecipes;
     }
 
 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEZeroResistanceCryostat(mName);
+        return new MTEZeroResistanceCryoforge(mName);
     }
 
     @Override

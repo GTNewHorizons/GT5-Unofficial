@@ -2235,7 +2235,7 @@ gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
 gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
 gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
 gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
-gt.mbtt.machine_type.zero_resistance_cryostat=Zero-Resistance Cryostat, %s
+gt.mbtt.machine_type.zero_resistance_cryoforge=Zero-Resistance Cryoforge, %s
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2619,7 +2619,7 @@ gt.recipe.extrahugenaquadahreactor=Naquadah Reactor Mk-V
 gt.recipe.fluidfuelnaquadahreactor=Fluid Naquadah Reactor
 gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
-gt.recipe.zero_resistance_cryostat=Zero-Resistance Cryostat
+gt.recipe.zero_resistance_cryoforge=Zero-Resistance Cryoforge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
 gt.recipe.cauldron=Cauldron
