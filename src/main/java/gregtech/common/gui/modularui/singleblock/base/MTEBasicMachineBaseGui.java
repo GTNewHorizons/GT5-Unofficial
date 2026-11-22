@@ -20,7 +20,9 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -38,6 +40,7 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -49,6 +52,8 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.modularui2.widget.GTProgressWidget;
+import gregtech.nei.transfer.RecipeTransferClient;
+import gregtech.nei.transfer.RecipeTransferSyncHandler;
 import it.unimi.dsi.fastutil.chars.CharList;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
@@ -78,6 +83,16 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     public MTEBasicMachineBaseGui<T> useGregTechLogo(boolean addLogo) {
         this.mAddGregTechLogo = addLogo;
         return this;
+    }
+
+    @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        RecipeTransferSyncHandler recipeTransfer = new RecipeTransferSyncHandler(machine);
+        syncManager.syncValue(RecipeTransferSyncHandler.KEY, recipeTransfer);
+        if (syncManager.isClient() && Mods.NotEnoughItems.isModLoaded() && machine.getRecipeMap() != null) {
+            uiSettings.customContainer(() -> RecipeTransferClient.createContainer(machine, recipeTransfer));
+        }
+        return super.build(guiData, syncManager, uiSettings);
     }
 
     @Override
