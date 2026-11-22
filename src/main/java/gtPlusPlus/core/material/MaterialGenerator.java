@@ -274,6 +274,7 @@ public class MaterialGenerator {
             new BaseItemRawOre(matInfo);
 
             new RecipeGenOre(matInfo);
+            new RecipeGenDustGeneration(matInfo, true);
 
             // Fluorite Dehydrator
             if (matInfo == MaterialsFluorides.FLUORITE) {
@@ -330,7 +331,7 @@ public class MaterialGenerator {
             new RecipeGenPlates(matInfo);
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
-            new RecipeGenDustGeneration(matInfo);
+            new RecipeGenDustGeneration(matInfo, true);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {

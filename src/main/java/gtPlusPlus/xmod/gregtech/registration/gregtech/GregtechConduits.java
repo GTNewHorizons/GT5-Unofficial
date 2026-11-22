@@ -931,14 +931,6 @@ public class GregtechConduits {
         }
 
         // Extruder
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aWire01 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aIngot, ItemList.Shape_Extruder_Wire.get(0))
-                .itemOutputs(aMaterial.getWire01(2))
-                .duration(9 * SECONDS + 16 * TICKS)
-                .eut(96)
-                .addTo(extruderRecipes);
-        }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCable01, aWire01 })) {
             GTValues.RA.stdBuilder()
