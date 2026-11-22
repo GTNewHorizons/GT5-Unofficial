@@ -2946,6 +2946,7 @@ GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitalchest.tooltip=Stores %s items
 GT5U.machines.digitalchest.tooltip1=Use a screwdriver to enable voiding items on overflow
+GT5U.machines.digitalchest.debugtooltip=Refills itself infinitely
 GT5U.machines.digitaltank.tooltip=Stores %s L of fluid
 GT5U.machines.digitaltank.tooltip1=Will keep its contents when harvested
 GT5U.machines.digitaltank.debugtooltip=Refills itself infinitely
@@ -5218,63 +5219,67 @@ gt.item.shape_mold.pipe_huge.tooltip=Mold for making full Block Pipes
 gt.item.shape_mold.tool_head_drill.name=Mold (Drill Head)
 gt.item.shape_mold.tool_head_drill.tooltip=Mold for making Drill Heads
 
-### Shape Extruder
-gt.item.shape_extruder.plate.name=Extruder Shape (Plate)
-gt.item.shape_extruder.plate.tooltip=Extruder Shape for making Plates
-gt.item.shape_extruder.rod.name=Extruder Shape (Rod)
-gt.item.shape_extruder.rod.tooltip=Extruder Shape for making Rods
-gt.item.shape_extruder.bolt.name=Extruder Shape (Bolt)
-gt.item.shape_extruder.bolt.tooltip=Extruder Shape for making Bolts
-gt.item.shape_extruder.ring.name=Extruder Shape (Ring)
-gt.item.shape_extruder.ring.tooltip=Extruder Shape for making Rings
-gt.item.shape_extruder.cell.name=Extruder Shape (Cell)
-gt.item.shape_extruder.cell.tooltip=Extruder Shape for making Cells
-gt.item.shape_extruder.ingot.name=Extruder Shape (Ingot)
-gt.item.shape_extruder.ingot.tooltip=Extruder Shape for, wait, can't we just use a Furnace?
-gt.item.shape_extruder.wire.name=Extruder Shape (Wire)
-gt.item.shape_extruder.wire.tooltip=DEPRECATED! Will be removed in next major update.
-gt.item.shape_extruder.casing.name=Extruder Shape (Casing)
-gt.item.shape_extruder.casing.tooltip=Extruder Shape for making Item Casings
-gt.item.shape_extruder.pipe_tiny.name=Extruder Shape (Tiny Pipe)
-gt.item.shape_extruder.pipe_tiny.tooltip=Extruder Shape for making tiny Pipes
-gt.item.shape_extruder.pipe_small.name=Extruder Shape (Small Pipe)
-gt.item.shape_extruder.pipe_small.tooltip=Extruder Shape for making small Pipes
-gt.item.shape_extruder.pipe_medium.name=Extruder Shape (Normal Pipe)
-gt.item.shape_extruder.pipe_medium.tooltip=Extruder Shape for making Pipes
-gt.item.shape_extruder.pipe_large.name=Extruder Shape (Large Pipe)
-gt.item.shape_extruder.pipe_large.tooltip=Extruder Shape for making large Pipes
-gt.item.shape_extruder.pipe_huge.name=Extruder Shape (Huge Pipe)
-gt.item.shape_extruder.pipe_huge.tooltip=Extruder Shape for making full Block Pipes
-gt.item.shape_extruder.block.name=Extruder Shape (Block)
-gt.item.shape_extruder.block.tooltip=Extruder Shape for making Blocks
-gt.item.shape_extruder.sword.name=Extruder Shape (Sword Blade)
-gt.item.shape_extruder.sword.tooltip=Extruder Shape for making Swords
-gt.item.shape_extruder.pickaxe.name=Extruder Shape (Pickaxe Head)
-gt.item.shape_extruder.pickaxe.tooltip=Extruder Shape for making Pickaxes
-gt.item.shape_extruder.shovel.name=Extruder Shape (Shovel Head)
-gt.item.shape_extruder.shovel.tooltip=Extruder Shape for making Shovels
-gt.item.shape_extruder.axe.name=Extruder Shape (Axe Head)
-gt.item.shape_extruder.axe.tooltip=Extruder Shape for making Axes
-gt.item.shape_extruder.hoe.name=Extruder Shape (Hoe Head)
-gt.item.shape_extruder.hoe.tooltip=Extruder Shape for making Hoes
-gt.item.shape_extruder.hammer.name=Extruder Shape (Hammer Head)
-gt.item.shape_extruder.hammer.tooltip=Extruder Shape for making Hammers
-gt.item.shape_extruder.file.name=Extruder Shape (File Head)
-gt.item.shape_extruder.file.tooltip=Extruder Shape for making Files
-gt.item.shape_extruder.saw.name=Extruder Shape (Saw Blade)
-gt.item.shape_extruder.saw.tooltip=Extruder Shape for making Saws
-gt.item.shape_extruder.gear.name=Extruder Shape (Gear)
-gt.item.shape_extruder.gear.tooltip=Extruder Shape for making Gears
-gt.item.shape_extruder.bottle.name=Extruder Shape (Bottle)
-gt.item.shape_extruder.bottle.tooltip=Extruder Shape for making Bottles
-gt.item.shape_extruder.rotor.name=Extruder Shape (Rotor)
-gt.item.shape_extruder.rotor.tooltip=Extruder Shape for a Rotor
-gt.item.shape_extruder.small_gear.name=Extruder Shape (Small Gear)
-gt.item.shape_extruder.small_gear.tooltip=Extruder Shape for a Small Gear
-gt.item.shape_extruder.turbine_blade.name=Extruder Shape (Turbine Blade)
-gt.item.shape_extruder.turbine_blade.tooltip=Extruder Shape for a Turbine Blade
-gt.item.shape_extruder.tool_head_drill.name=Extruder Shape (Drill Head)
-gt.item.shape_extruder.tool_head_drill.tooltip=Extruder Shape for a Drill Head
+### Extruder Shape
+gt.shape_extruder.plate.name=Extruder Shape (Plate)
+gt.shape_extruder.plate.tooltip=Extruder Shape for making Plates
+gt.shape_extruder.rod.name=Extruder Shape (Rod)
+gt.shape_extruder.rod.tooltip=Extruder Shape for making Rods
+gt.shape_extruder.bolt.name=Extruder Shape (Bolt)
+gt.shape_extruder.bolt.tooltip=Extruder Shape for making Bolts
+gt.shape_extruder.ring.name=Extruder Shape (Ring)
+gt.shape_extruder.ring.tooltip=Extruder Shape for making Rings
+gt.shape_extruder.cell.name=Extruder Shape (Cell)
+gt.shape_extruder.cell.tooltip=Extruder Shape for making Cells
+gt.shape_extruder.ingot.name=Extruder Shape (Ingot)
+gt.shape_extruder.ingot.tooltip=Extruder Shape for making, wait, can't we just use a Furnace?
+gt.shape_extruder.casing.name=Extruder Shape (Casing)
+gt.shape_extruder.casing.tooltip=Extruder Shape for making Item Casings
+gt.shape_extruder.pipe_tiny.name=Extruder Shape (Tiny Pipe)
+gt.shape_extruder.pipe_tiny.tooltip=Extruder Shape for making tiny Pipes
+gt.shape_extruder.pipe_small.name=Extruder Shape (Small Pipe)
+gt.shape_extruder.pipe_small.tooltip=Extruder Shape for making small Pipes
+gt.shape_extruder.pipe_medium.name=Extruder Shape (Normal Pipe)
+gt.shape_extruder.pipe_medium.tooltip=Extruder Shape for making Pipes
+gt.shape_extruder.pipe_large.name=Extruder Shape (Large Pipe)
+gt.shape_extruder.pipe_large.tooltip=Extruder Shape for making large Pipes
+gt.shape_extruder.pipe_huge.name=Extruder Shape (Huge Pipe)
+gt.shape_extruder.pipe_huge.tooltip=Extruder Shape for making full Block Pipes
+gt.shape_extruder.block.name=Extruder Shape (Block)
+gt.shape_extruder.block.tooltip=Extruder Shape for making Blocks
+gt.shape_extruder.sword.name=Extruder Shape (Sword Blade)
+gt.shape_extruder.sword.tooltip=Extruder Shape for making Swords
+gt.shape_extruder.pickaxe.name=Extruder Shape (Pickaxe Head)
+gt.shape_extruder.pickaxe.tooltip=Extruder Shape for making Pickaxes
+gt.shape_extruder.shovel.name=Extruder Shape (Shovel Head)
+gt.shape_extruder.shovel.tooltip=Extruder Shape for making Shovels
+gt.shape_extruder.axe.name=Extruder Shape (Axe Head)
+gt.shape_extruder.axe.tooltip=Extruder Shape for making Axes
+gt.shape_extruder.hoe.name=Extruder Shape (Hoe Head)
+gt.shape_extruder.hoe.tooltip=Extruder Shape for making Hoes
+gt.shape_extruder.hammer.name=Extruder Shape (Hammer Head)
+gt.shape_extruder.hammer.tooltip=Extruder Shape for making Hammers
+gt.shape_extruder.file.name=Extruder Shape (File Head)
+gt.shape_extruder.file.tooltip=Extruder Shape for making Files
+gt.shape_extruder.saw.name=Extruder Shape (Saw Blade)
+gt.shape_extruder.saw.tooltip=Extruder Shape for making Saws
+gt.shape_extruder.gear.name=Extruder Shape (Gear)
+gt.shape_extruder.gear.tooltip=Extruder Shape for making Gears
+gt.shape_extruder.bottle.name=Extruder Shape (Bottle)
+gt.shape_extruder.bottle.tooltip=Extruder Shape for making Bottles
+gt.shape_extruder.rotor.name=Extruder Shape (Rotor)
+gt.shape_extruder.rotor.tooltip=Extruder Shape for making Rotors
+gt.shape_extruder.small_gear.name=Extruder Shape (Small Gear)
+gt.shape_extruder.small_gear.tooltip=Extruder Shape for making Small Gears
+gt.shape_extruder.turbine_blade.name=Extruder Shape (Turbine Blade)
+gt.shape_extruder.turbine_blade.tooltip=Extruder Shape for making Turbine Blades
+gt.shape_extruder.drill.name=Extruder Shape (Drill Head)
+gt.shape_extruder.drill.tooltip=Extruder Shape for making Drill Heads
+gt.shape_extruder.boat.name=Extruder Shape (Boat)
+gt.shape_extruder.boat.tooltip=Extruder Shape for making Boats
+gt.shape_extruder.pellet.name=Extruder Shape (Pellet)
+gt.shape_extruder.pellet.tooltip=Extruder Shape for making Pellets
+gt.shape_extruder.shaft.name=Extruder Shape (Shaft)
+gt.shape_extruder.shaft.tooltip=Extruder Shape for making Shafts
 
 ### Shape Slicer
 gt.item.shape_slicer.flat.name=Slicer Blade (Flat)
@@ -5886,6 +5891,16 @@ gt.item.thermos_can.ice_tea.tooltip=Better than this purple Junk Drink from fail
 ## Gelled Toluene
 gt.item.gelled_toluene.name=Gelled Toluene
 gt.item.gelled_toluene.tooltip=Raw Explosive
+
+# Dynamite
+gt.item.dynamite.name=Dynamite
+gt.item.dynamite.tooltip=
+
+# IC2 Bio stuff
+gt.item.chaff.name=Bio Chaff
+gt.item.chaff.tooltip=
+gt.item.plant_ball.name=Plant Ball
+gt.item.plant_ball.tooltip=
 
 ## Bottle drinks
 gt.item.bottle.purple_drink.name=Purple Drink
@@ -7634,6 +7649,17 @@ GT5U.gui.button.vm.deselect=Deselect all ores
 GT5U.gui.button.vm.tt.void=§cWill be voided
 GT5U.gui.button.vm.tt.novoid=§aWill not be voided
 
+#Quad-Cell Plasma Collider GUI
+GT5U.gui.button.qpc.configure.1=Left-Click to configure Plasmas
+GT5U.gui.button.qpc.configure.2=Right-Click to configure Scale
+GT5U.gui.text.qpc.plasma_display=%s: %s/s
+GT5U.gui.text.qpc.expected_rate=Expected Drain Rates:
+GT5U.gui.text.qpc.residue=Producing %s/s residue 
+GT5U.gui.text.qpc.generating=Generating %s EU/t
+GT5U.gui.text.qpc.scale=Configure Scale
+GT5U.gui.text.qpc.scale.text.1=Set Scale (1-30)
+GT5U.gui.text.qpc.scale.text.2=Scale multiplies both initial Drain Rate and Cycle Time
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -7910,6 +7936,7 @@ entity.gregtech.GTDrone.name=Drone
 fluid.aniline=Aniline
 fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
+fluid.biogas=Biogas
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
 fluid.cadaverine=Cadaverine
@@ -9781,6 +9808,8 @@ gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
 gt.blockcasings14.6.name=Extruder Machine Casing
 gt.blockcasings14.7.name=Tension Resistant Machine Casing
+gt.blockcasings14.8.name=Plasma Collider Casing
+gt.blockcasings14.9.name=Quadcell Driving Casing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
@@ -9842,6 +9871,7 @@ gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
 gt.blockglass1.10.name=Reinforced Glass
+gt.blockglass1.11.name=Plasma Collider Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
@@ -10243,6 +10273,11 @@ GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 GT5U.gui.text.nanite-detector-analog=Analog
 GT5U.gui.text.nanite-detector-tier=Tier %s
+GT5U.gui.text.control-pause=Pause
+GT5U.gui.text.control-parallel=Parallel
+GT5U.gui.text.control-parallel.mantissa=Mantissa:
+GT5U.gui.text.control-parallel.exponent=Exponent:
+GT5U.gui.text.control-parallel.parallel=Parallel:
 
 # BEC I/O Node Structure Hints
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
@@ -10302,6 +10337,8 @@ gt.tooltip.nanite-tier=Nanite Tier: %s
 gt.tooltip.max-nanite=Max Nanite Tier:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
+GT5U.gui.text.control-pause.tooltip=Control the I/O Node processing flow suspension
+GT5U.gui.text.control-parallel.tooltip=Control the I/O Node max parallel for recipes
 
 # BEC Chat Messages
 GT5U.chat.bec-saved-link-data=Saved Link Data to the Data Stick
@@ -10309,6 +10346,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
+GT5U.chat.bec-max-parallel=Max Parallel: %s
 GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 

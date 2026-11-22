@@ -56,12 +56,12 @@ public class FluidEjectionHelper {
      * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
      * @return The number of fluids that were ejected.
      */
-    public int ejectStack(FluidStack stack) {
+    public long ejectStack(FluidStack stack) {
         List<FluidStack> list = Collections.singletonList(GTUtility.copyAmount(1, stack));
 
-        int ejected = ejectFluids(list, stack.amount);
+        long ejected = ejectFluids(list, GTUtility.getFluidAmount(stack));
 
-        stack.amount -= ejected;
+        GTUtility.decFluidAmount(stack, ejected);
         return ejected;
     }
 
@@ -80,7 +80,7 @@ public class FluidEjectionHelper {
      *                          not need.
      * @return The number of parallels that can be safely ran without voiding fluids.
      */
-    public int ejectFluids(List<FluidStack> outputs, int startingParallels, @Nullable List<FluidStack> remaining) {
+    public long ejectFluids(List<FluidStack> outputs, long startingParallels, @Nullable List<FluidStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional fluids after committing an FluidEjectionHelper");
@@ -161,19 +161,20 @@ public class FluidEjectionHelper {
             for (FluidParallelData parallelData : outputParallels) {
                 if (fluidProtectionEnabled) {
                     long ejected = parallelData.initialAmount - parallelData.remainingAmount;
-                    startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
+                    startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
                 }
                 if (remaining != null && parallelData.remainingAmount > 0) {
-                    do {
-                        var tmp = parallelData.tmpStack.copy();
-                        tmp.amount = (int) Math.min(parallelData.remainingAmount, Integer.MAX_VALUE);
-                        remaining.add(tmp);
-                        parallelData.remainingAmount -= tmp.amount;
-                    } while (parallelData.remainingAmount > 0);
+                    var tmp = parallelData.tmpStack.copy();
+                    GTUtility.setFluidAmount(tmp, parallelData.remainingAmount);
+                    remaining.add(tmp);
                 }
             }
         }
         return startingParallels;
+    }
+
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+        return GTUtility.longToInt(ejectFluids(outputs, (long) startingParallels));
     }
 
     public void commit() {
@@ -207,10 +208,9 @@ public class FluidEjectionHelper {
                     }
                 }
             }
-            int amount = (int) Math.min(remainingAmount, Integer.MAX_VALUE);
-            tmpStack.amount = amount;
+            GTUtility.setFluidAmount(tmpStack, remainingAmount);
             transaction.storePartial(id, tmpStack, totalPerParallel, perParallel);
-            long actuallyInsert = amount - tmpStack.amount;
+            long actuallyInsert = remainingAmount - GTUtility.getFluidAmount(tmpStack);
             remainingAmount -= actuallyInsert;
             return actuallyInsert > 0;
         }

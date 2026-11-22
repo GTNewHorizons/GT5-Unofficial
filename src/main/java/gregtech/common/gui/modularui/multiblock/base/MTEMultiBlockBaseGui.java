@@ -616,7 +616,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return column;
     }
 
-    private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
+    protected IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
         return IKey.dynamic(multiblock::generateCurrentRecipeInfoString)
             .asWidget()
             .marginBottom(2)
