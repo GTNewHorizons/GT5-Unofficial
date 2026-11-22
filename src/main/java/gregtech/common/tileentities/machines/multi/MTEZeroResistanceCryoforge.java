@@ -14,28 +14,36 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import gregtech.api.structure.error.StructureError;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
-
-import java.util.List;
 
 public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<MTEZeroResistanceCryoforge> {
 
@@ -43,9 +51,10 @@ public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<M
     private static final int OFFSET_X = 11;
     private static final int OFFSET_Y = 8;
     private static final int OFFSET_Z = 0;
+    private static final int PARALLELS_PER_SOLENOID_TIER = 4;
 
     private int casingAmount;
-    private  Byte solenoidLevel;
+    private Byte solenoidLevel;
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -119,7 +128,15 @@ public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<M
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN, stackSize, OFFSET_X, OFFSET_Y, OFFSET_Z, elementBudget, env, false, true);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_X,
+            OFFSET_Y,
+            OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
@@ -130,6 +147,9 @@ public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<M
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
         checkHasAnyEnergy(errors);
+        if (!mExoticEnergyHatches.isEmpty() && (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1)) {
+            errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+        }
         checkHasMaintenanceHatch(errors);
     }
 
@@ -141,7 +161,6 @@ public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<M
         solenoidLevel = level;
     }
 
-
     @Override
     public IStructureDefinition<MTEZeroResistanceCryoforge> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -152,7 +171,24 @@ public class MTEZeroResistanceCryoforge extends MTEExtendedPowerMultiBlockBase<M
         return RecipeMaps.zeroResistanceCryoforgeRecipes;
     }
 
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks(GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt));
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        if (solenoidLevel == null) return 1;
+        return Math.max(1, PARALLELS_PER_SOLENOID_TIER * (solenoidLevel - VoltageIndex.UV + 1));
+    }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
