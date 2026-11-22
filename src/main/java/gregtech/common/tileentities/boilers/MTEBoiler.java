@@ -51,6 +51,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.singleblock.MTEBoilerGui;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -550,8 +551,12 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        int fuel = tag.getInteger("fuel") * 20;
-        int fuelMax = tag.getInteger("fuelMax") * 20;
+        int timeMult = 4;
+        if (this instanceof MTEAdvancedBoilerBase) timeMult = 5;
+        if (this instanceof MTEBoilerBronze) timeMult = 12;
+        if (this instanceof MTEBoilerSteel) timeMult = 6;
+        int fuel = tag.getInteger("fuel") * timeMult;
+        int fuelMax = tag.getInteger("fuelMax") * timeMult;
         int temperature = tag.getInteger("temperature");
 
         if (fuel > 0) {
