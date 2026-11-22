@@ -99,6 +99,15 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatchDataBase implements
     }
 
     @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        WirelessDataStore wirelessDataStore = WirelessDataStore
+            .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+        this.dataPacket = ALRecipeDataPacket.EMPTY_PACKET;
+        wirelessDataStore.uploadData(this);
+    }
+
+    @Override
     protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Transmitting";
     }
