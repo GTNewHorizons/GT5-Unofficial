@@ -221,6 +221,7 @@ public enum Mods implements IMod {
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
     VariableHorizons(ModIDs.VARIABLE_HORIZONS),
     VendingMachine(ModIDs.VENDING_MACHINE),
+    VillageNames(ModIDs.VILLAGE_NAMES),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
     WailaHarvestability(ModIDs.WAILA_HARVESTABILITY),
@@ -566,6 +567,7 @@ public enum Mods implements IMod {
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
         public static final String VARIABLE_HORIZONS = "variablehorizons";
         public static final String VENDING_MACHINE = "vendingmachine";
+        public static final String VILLAGE_NAMES = "VillageNames";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";
         public static final String WAILA_HARVESTABILITY = "WailaHarvestability";
