@@ -198,7 +198,6 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
         this.casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, casingAmount, 16);
-        System.out.println("Found " + mAirIntakeHatches.size() + " air intake hatches");
         if (mAirIntakeHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
