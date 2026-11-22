@@ -122,12 +122,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
-    public void onStructureChange() {
-        super.onStructureChange();
-        mUpdate = 1;
-    }
-
-    @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         slave = false;
