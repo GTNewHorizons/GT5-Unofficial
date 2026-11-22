@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -305,11 +306,19 @@ public class MTEActiveTransformer extends TTMultiblockBase
             .addMarkdown(new ResourceLocation("gregtech", "active-transformer"))
             .addSupportAny()
             .beginStructureBlock(3, 3, 3, false)
+            .beginVariableStructureBlock(3,3,3,3,3,8,false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
-            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
             .addEnergyHatch("1+", anyCasingText(), 1)
             .addDynamoHatch("0+", anyCasingText(), 1)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("0-17", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("0-8",StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addStructureInfoSeparator()
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         // spotless:on
         return tt;
