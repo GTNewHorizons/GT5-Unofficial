@@ -13,11 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import gregtech.api.casing.Casings;
-import gregtech.api.util.GTDataUtils;
-import gregtech.common.misc.GTStructureChannels;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -27,9 +22,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -42,10 +38,12 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -84,17 +82,17 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-         casingCount = 0;
-         int checkLength = 1;
-         if(!checkPiece(STRUCTURE_SHAPE_FIRST,1,1,0,errors)) return;
-         while(checkLength <= MAX_LENGTH && checkPiece(STRUCTURE_SHAPE_MIDDLE,1,1, -checkLength,errors)){
-             checkLength++;
-         }
-         // needed because while loop can look for a 'middle' piece where an 'end' piece exists and error
-         errors.clear();
-         if(!checkPiece(STRUCTURE_SHAPE_LAST,1,1,-(checkLength),errors)) return;
-         checkCasingMin(errors, casingCount, CASING_MAX);
-         checkHasAnyEnergy(errors);
+        casingCount = 0;
+        int checkLength = 1;
+        if (!checkPiece(STRUCTURE_SHAPE_FIRST, 1, 1, 0, errors)) return;
+        while (checkLength <= MAX_LENGTH && checkPiece(STRUCTURE_SHAPE_MIDDLE, 1, 1, -checkLength, errors)) {
+            checkLength++;
+        }
+        // needed because while loop can look for a 'middle' piece where an 'end' piece exists and error
+        errors.clear();
+        if (!checkPiece(STRUCTURE_SHAPE_LAST, 1, 1, -(checkLength), errors)) return;
+        checkCasingMin(errors, casingCount, CASING_MAX);
+        checkHasAnyEnergy(errors);
 
         // hack to prevent hatch duplication from while loop of middle slice scanning end slice
         GTDataUtils.dedupList(mExoticEnergyHatches);
@@ -403,12 +401,12 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void construct(ItemStack stack, boolean hintsOnly) {
-        buildPiece(STRUCTURE_SHAPE_FIRST,stack,hintsOnly,1,1,0);
+        buildPiece(STRUCTURE_SHAPE_FIRST, stack, hintsOnly, 1, 1, 0);
         int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stack, 1, MAX_LENGTH);
-        for(int i = 1; i <= length; i++){
-            buildPiece(STRUCTURE_SHAPE_MIDDLE,stack,hintsOnly,1,1,-i);
+        for (int i = 1; i <= length; i++) {
+            buildPiece(STRUCTURE_SHAPE_MIDDLE, stack, hintsOnly, 1, 1, -i);
         }
-        buildPiece(STRUCTURE_SHAPE_LAST,stack,hintsOnly,1,1,-(length+1));
+        buildPiece(STRUCTURE_SHAPE_LAST, stack, hintsOnly, 1, 1, -(length + 1));
     }
 
     @Override
@@ -416,17 +414,35 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         if (mMachine) return -1;
         int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stack, 1, MAX_LENGTH);
         int built = 0, temp;
-        temp = survivalBuildPiece(STRUCTURE_SHAPE_FIRST,stack,1,1,0,elementBudget-built,env,false,false);
-        if(temp>-1) built+= temp;
+        temp = survivalBuildPiece(STRUCTURE_SHAPE_FIRST, stack, 1, 1, 0, elementBudget - built, env, false, false);
+        if (temp > -1) built += temp;
 
-        if(elementBudget-built <= 0) return built;
+        if (elementBudget - built <= 0) return built;
 
-        for(int i =1; i<= length;i++) {
-            temp = survivalBuildPiece(STRUCTURE_SHAPE_MIDDLE,stack,1,1,-i,elementBudget-built,env,false,false);
-            if(temp>-1) built+=temp;
-            if(elementBudget-built <= 0) return built;
+        for (int i = 1; i <= length; i++) {
+            temp = survivalBuildPiece(
+                STRUCTURE_SHAPE_MIDDLE,
+                stack,
+                1,
+                1,
+                -i,
+                elementBudget - built,
+                env,
+                false,
+                false);
+            if (temp > -1) built += temp;
+            if (elementBudget - built <= 0) return built;
         }
-        temp = survivalBuildPiece(STRUCTURE_SHAPE_LAST,stack,1,1,-(length+1),elementBudget-built,env,false,false);
+        temp = survivalBuildPiece(
+            STRUCTURE_SHAPE_LAST,
+            stack,
+            1,
+            1,
+            -(length + 1),
+            elementBudget - built,
+            env,
+            false,
+            false);
         if (temp > -1) built += temp;
         return temp == -1 ? -1 : built;
     }
