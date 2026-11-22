@@ -81,6 +81,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     private boolean inputFilterDisabled;
     private boolean autoOutputItems;
     private ItemStack lockedItem;
+    private boolean lockNextItem;
     private boolean blockExternalAccess;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this) {
 
@@ -197,6 +198,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         private void storeItems(ItemStack storedItem, long itemCount) {
             if (getStoredCount() <= 0) {
                 setStoredItem(simulated && borrowInputTag ? storedItem : GTUtility.copyAmount(1, storedItem));
+                if (!simulated && lockNextItem) {
+                    lockedItem = GTUtility.copyAmount(1, storedItem);
+                    lockNextItem = false;
+                }
             }
             setStoredCount((int) (getStoredCount() + itemCount));
         }
@@ -925,6 +930,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (enabled) {
             mVoidOverflow = false;
             lockedItem = null;
+            lockNextItem = false;
         }
         markDirty();
     }
@@ -941,6 +947,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (!ItemUtil.isStackEmpty(item)
             && (isMatterCluster(item) || (storedType != null && !sameItemType(storedType, item)))) return;
         lockedItem = ItemUtil.isStackEmpty(item) ? null : GTUtility.copyAmount(1, item);
+        lockNextItem = false;
         markDirty();
     }
 
@@ -963,7 +970,22 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isLocked() {
-        return lockedItem != null;
+        return lockNextItem || lockedItem != null;
+    }
+
+    public void setItemLockEnabled(boolean enabled) {
+        if (enabled == isLocked() || (enabled && mVoidFull)) return;
+        if (!enabled) {
+            clearLock();
+            return;
+        }
+        ItemStack stored = getStoredItemType();
+        if (stored != null) {
+            setLockedItem(stored);
+        } else {
+            lockNextItem = true;
+            markDirty();
+        }
     }
 
     private boolean isExternalAccessBlocked() {
@@ -1046,6 +1068,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         aNBT.setBoolean("autoOutputItems", autoOutputItems);
         aNBT.setBoolean("blockExternalAccess", blockExternalAccess);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
+        if (lockNextItem) aNBT.setBoolean("lockNextItem", true);
     }
 
     @Override
@@ -1057,6 +1080,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (autoOutputItems) aNBT.setBoolean("autoOutputItems", true);
         if (blockExternalAccess) aNBT.setBoolean("blockExternalAccess", true);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
+        if (lockNextItem) aNBT.setBoolean("lockNextItem", true);
     }
 
     @Override
@@ -1073,6 +1097,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         lockedItem = aNBT.hasKey("lockedItem", Constants.NBT.TAG_COMPOUND)
             ? GTUtility.copyAmount(1, ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedItem")))
             : null;
+        lockNextItem = !mVoidFull && lockedItem == null && aNBT.getBoolean("lockNextItem");
         if (mVoidFull) {
             mVoidOverflow = false;
             lockedItem = null;

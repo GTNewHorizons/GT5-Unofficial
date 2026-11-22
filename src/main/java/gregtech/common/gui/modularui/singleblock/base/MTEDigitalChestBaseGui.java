@@ -37,10 +37,16 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
     private static final String ITEM_INVENTORY = "item_inv";
 
     private final IntSyncValue storedCount;
+    private final BooleanSyncValue itemLock;
+    private final BooleanSyncValue voidFull;
 
     public MTEDigitalChestBaseGui(MTEDigitalChestBase machine) {
         super(machine);
         storedCount = new IntSyncValue(machine::getItemCount);
+        itemLock = new BooleanSyncValue(
+            machine::isLocked,
+            enabled -> { if (baseMetaTileEntity.isServerSide()) machine.setItemLockEnabled(enabled); }).allowC2S();
+        voidFull = new BooleanSyncValue(machine::isVoidFull, machine::setVoidFull).allowC2S();
     }
 
     @Override
@@ -165,8 +171,10 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE))
             .child(IKey.dynamic(() -> {
                 ItemStack lockedItem = lockInventory.getStackInSlot(0);
-                return lockedItem == null ? translateToLocal("GT5U.machines.digitalchest.lockitem.empty")
-                    : lockedItem.getDisplayName();
+                if (lockedItem != null) return lockedItem.getDisplayName();
+                return translateToLocal(
+                    itemLock.getBoolValue() ? "GT5U.machines.digitalchest.lockitem.waiting"
+                        : "GT5U.machines.digitalchest.lockitem.empty");
             })
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
@@ -188,6 +196,14 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                     .value(new BooleanSyncValue(machine::isAutoOutputEnabled, machine::setAutoOutputEnabled).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                     .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitalchest.autooutput"))))
+            .child(
+                new ToggleButton().value(itemLock)
+                    .setEnabledIf(button -> !voidFull.getBoolValue())
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED)
+                    .tooltip(t -> {
+                        t.addLine(translateToLocal("GT5U.machines.digitalchest.lockitem.tooltip"));
+                        t.addLine(translateToLocal("GT5U.machines.digitalchest.lockitem.tooltip.1"));
+                    }))
             .child(
                 new ToggleButton()
                     .value(
@@ -244,7 +260,7 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                         t.addLine(translateToLocal("GT5U.machines.digitalchest.voidoverflow.tooltip.1"));
                     }))
             .child(
-                new ToggleButton().value(new BooleanSyncValue(machine::isVoidFull, machine::setVoidFull).allowC2S())
+                new ToggleButton().value(voidFull)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                     .tooltip(t -> {
                         t.addLine(translateToLocal("GT5U.machines.digitalchest.voidfull.tooltip"));
