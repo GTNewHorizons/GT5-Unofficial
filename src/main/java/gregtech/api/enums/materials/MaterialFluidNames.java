@@ -632,9 +632,9 @@ public final class MaterialFluidNames {
         m.put("OilHeavy", new FluidNames(new FluidRef("liquid_heavy_oil", "gregtech:fluids/fluid.liquid_heavy_oil"), null, null, null));
         m.put("OilLight", new FluidNames(new FluidRef("liquid_light_oil", "gregtech:fluids/fluid.liquid_light_oil"), null, null, null));
         m.put("OilMedium", new FluidNames(new FluidRef("liquid_medium_oil", "gregtech:fluids/fluid.liquid_medium_oil"), null, null, null));
-        m.put("Orichalcum", new FluidNames(null, null, new FluidRef("plasma.orikalkum", FluidShapes.PLASMA_TEXTURE), RULE));
-        m.put("OrikalkicReagent", new FluidNames(RULE, null, null, null));
         m.put("Oriharukon", new FluidNames(null, null, RULE, RULE));
+        m.put("OrikalkicReagent", new FluidNames(RULE, null, null, null));
+        m.put("Orikalkum", new FluidNames(null, null, RULE, RULE));
         m.put("Orundum", new FluidNames(null, null, null, RULE));
         m.put("Osmiridium", new FluidNames(null, null, null, RULE));
         m.put("Osmium", new FluidNames(null, null, RULE, RULE));

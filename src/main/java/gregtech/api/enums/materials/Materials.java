@@ -13603,7 +13603,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "[-CO-C₆H₄-CO-NH-C₆H₄-NH-]n")
             .build();
-        Materials.CalciumCarbide = MaterialLibAPI.newMaterial("gregtech", "CacliumCarbide", TextureSet.of("gregtech", "DULL"))
+        Materials.CalciumCarbide = MaterialLibAPI.newMaterial("gregtech", "CalciumCarbide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFEBEBEB)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
@@ -16505,7 +16505,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .build();
-        Materials.Orikalkum = MaterialLibAPI.newMaterial("gregtech", "Orichalcum", TextureSet.of("gregtech", "METALLIC"))
+        Materials.Orikalkum = MaterialLibAPI.newMaterial("gregtech", "Orikalkum", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF641509)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
