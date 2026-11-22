@@ -5,13 +5,14 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 
 public class ZeroResistanceCryoforgeRecipes implements Runnable {
 
@@ -20,11 +21,11 @@ public class ZeroResistanceCryoforgeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_UV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21))
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.pipeTiny, 14))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt01, 21))
             .fluidInputs(
-                Materials.SuperconductorUVBase.getMolten(21 * HALF_INGOTS),
-                WerkstoffLoader.LiquidHelium.getFluidOrGas(20_000))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorUVBase, FluidShapes.fluidMolten, 21 * HALF_INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, 20_000))
             .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(zeroResistanceCryoforgeRecipes);
