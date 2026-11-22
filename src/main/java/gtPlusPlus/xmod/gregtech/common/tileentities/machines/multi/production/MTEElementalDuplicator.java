@@ -54,7 +54,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
-    private final List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
+    private final List<MTEHatchElementalDataOrbHolder> dataOrbHatches = new ArrayList<>();
     // spotless:off
     private static final String[][] structure = {
         { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", "CCCC~CCCC", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
@@ -134,7 +134,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
                                     Maintenance,
                                     Muffler,
                                     Energy,
-                                    ElementalDataOrbHatchElement.ELEMENT)
+                                    ReplicatorHatchElement.DATA_ORB_REPOSITORY)
                                 .casingIndex(Casings.ElementalConfinementShell.textureId)
                                 .hint(1)
                                 .build(),
@@ -158,14 +158,14 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public void clearHatches() {
         super.clearHatches();
-        mElementalDataOrbHatches.clear();
+        dataOrbHatches.clear();
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
-        int hatchCount = mElementalDataOrbHatches.size();
+        int hatchCount = dataOrbHatches.size();
         if (hatchCount != 1) {
             errors.add(
                 StructureErrors.hatchCount(
@@ -216,7 +216,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(mElementalDataOrbHatches)) {
+        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(dataOrbHatches)) {
             ItemStack orb = hatch.getOrbByCircuit();
             logic.setSpecialSlotItem(orb);
             break;
@@ -236,7 +236,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
-        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(mElementalDataOrbHatches)) {
+        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(dataOrbHatches)) {
             byte busColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
@@ -256,13 +256,13 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
         return true;
     }
 
-    private enum ElementalDataOrbHatchElement implements IHatchElement<MTEElementalDuplicator> {
+    private enum ReplicatorHatchElement implements IHatchElement<MTEElementalDuplicator> {
 
-        ELEMENT("GT5U.MBTT.ElementalDataOrbHatch");
+        DATA_ORB_REPOSITORY("GT5U.MBTT.ElementalDataOrbHatch");
 
         private final String name;
 
-        ElementalDataOrbHatchElement(String name) {
+        ReplicatorHatchElement(String name) {
             this.name = name;
         }
 
@@ -277,7 +277,8 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
                 if (igte.getMetaTileEntity() instanceof MTEHatchElementalDataOrbHolder imte) {
                     imte.updateTexture(texture);
                     imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
-                    self.mElementalDataOrbHatches.add(imte);
+                    self.addIfSmartInput(imte);
+                    self.dataOrbHatches.add(imte);
                     return true;
                 }
                 return false;
@@ -286,7 +287,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
 
         @Override
         public long count(MTEElementalDuplicator mte) {
-            return mte.mElementalDataOrbHatches.size();
+            return mte.dataOrbHatches.size();
         }
 
         @Override
