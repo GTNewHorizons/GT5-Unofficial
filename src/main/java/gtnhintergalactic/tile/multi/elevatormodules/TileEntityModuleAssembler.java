@@ -245,6 +245,31 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     }
 
     @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
+            .addMarkdown(new ResourceLocation("gregtech", "space/assembler-module"),
+                ImmutableMap.<String, Object>builder()
+                    .put("voltageTier", this.getTier())
+                    .put("moduleTier", this.tModuleTier)
+                    .put("speed", (int) (1 / this.getSpeedBonus() * 100))
+                    .put("motorTier", this.getNeededMotorTier())
+                    .put("parallels", this.getMaxParallels())
+                    .build())
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
     protected boolean useMui2() {
         return true;
     }
@@ -323,28 +348,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected float getSpeedBonus() {
             return 1.0F / SPEED_BONUS;
         }
-
-        /**
-         * @return Tooltip builder for this module
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -406,28 +409,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected float getSpeedBonus() {
             return 1.0F / SPEED_BONUS;
         }
-
-        /**
-         * @return Tooltip builder for this module
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -488,28 +469,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected float getSpeedBonus() {
             return 1.0F / SPEED_BONUS;
-        }
-
-        /**
-         * @return Tooltip builder for this module
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
         }
     }
 }
