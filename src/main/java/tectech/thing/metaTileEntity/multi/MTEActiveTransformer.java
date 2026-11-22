@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import gregtech.api.casing.Casings;
+import gregtech.api.util.GTDataUtils;
+import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,15 +78,29 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
 
+    private static final int MAX_LENGTH = 6; // 8 - 2 to account for first and last slice
+    private static final int CASING_MAX = 5;
+
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        casingCount = 0;
-        checkPiece("main", 1, 1, 0, errors);
+         casingCount = 0;
+         int checkLength = 1;
+         if(!checkPiece(STRUCTURE_SHAPE_FIRST,1,1,0,errors)) return;
+         while(checkLength <= MAX_LENGTH && checkPiece(STRUCTURE_SHAPE_MIDDLE,1,1, -checkLength,errors)){
+             checkLength++;
+         }
+         // needed because while loop can look for a 'middle' piece where an 'end' piece exists and error
+         errors.clear();
+         if(!checkPiece(STRUCTURE_SHAPE_LAST,1,1,-(checkLength),errors)) return;
+         checkCasingMin(errors, casingCount, CASING_MAX);
+         checkHasAnyEnergy(errors);
 
-        checkCasingMin(errors, casingCount, 5);
-        checkHasAnyEnergy(errors);
-
+        // hack to prevent hatch duplication from while loop of middle slice scanning end slice
+        GTDataUtils.dedupList(mExoticEnergyHatches);
+        GTDataUtils.dedupList(mEnergyHatches);
+        GTDataUtils.dedupList(eEnergyMulti);
+        GTDataUtils.dedupList(eDynamoMulti);
         if (errors.isEmpty()) {
             grace = true;
         } else if (grace) {
@@ -98,17 +116,27 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         }
     }
 
+    private static final String STRUCTURE_SHAPE_FIRST = "first";
+    private static final String STRUCTURE_SHAPE_MIDDLE = "middle";
+    private static final String STRUCTURE_SHAPE_LAST = "last";
+
+    private static final String[] FIRST = { "111", "1~1", "111" };
+
+    private static final String[] MIDDLE = { "111", "101", "111" };
+
+    private static final String[] LAST = { "111", "111", "111" };
+
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEActiveTransformer>builder()
-        .addShape(
-            "main",
-            new String[][] { { "111", "1~1", "111", }, { "111", "101", "111", }, { "111", "111", "111", }, })
+        .addShape(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST })
+        .addShape(STRUCTURE_SHAPE_MIDDLE, new String[][] { MIDDLE })
+        .addShape(STRUCTURE_SHAPE_LAST, new String[][] { LAST })
         .addElement('0', ofBlock(sBlockCasings1, 15))
         .addElement(
             '1',
             buildHatchAdder(MTEActiveTransformer.class)
                 .atLeast(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti)
-                .casingIndex(BlockGTCasingsTT.textureOffset)
+                .casingIndex(Casings.HighPowerCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.casingCount++, ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))))
         .build();
@@ -374,14 +402,33 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece("main", stackSize, hintsOnly, 1, 1, 0);
+    public void construct(ItemStack stack, boolean hintsOnly) {
+        buildPiece(STRUCTURE_SHAPE_FIRST,stack,hintsOnly,1,1,0);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stack, 1, MAX_LENGTH);
+        for(int i = 1; i <= length; i++){
+            buildPiece(STRUCTURE_SHAPE_MIDDLE,stack,hintsOnly,1,1,-i);
+        }
+        buildPiece(STRUCTURE_SHAPE_LAST,stack,hintsOnly,1,1,-(length+1));
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stack, 1, MAX_LENGTH);
+        int built = 0, temp;
+        temp = survivalBuildPiece(STRUCTURE_SHAPE_FIRST,stack,1,1,0,elementBudget-built,env,false,false);
+        if(temp>-1) built+= temp;
+
+        if(elementBudget-built <= 0) return built;
+
+        for(int i =1; i<= length;i++) {
+            temp = survivalBuildPiece(STRUCTURE_SHAPE_MIDDLE,stack,1,1,-i,elementBudget-built,env,false,false);
+            if(temp>-1) built+=temp;
+            if(elementBudget-built <= 0) return built;
+        }
+        temp = survivalBuildPiece(STRUCTURE_SHAPE_LAST,stack,1,1,-(length+1),elementBudget-built,env,false,false);
+        if (temp > -1) built += temp;
+        return temp == -1 ? -1 : built;
     }
 
     @Override
