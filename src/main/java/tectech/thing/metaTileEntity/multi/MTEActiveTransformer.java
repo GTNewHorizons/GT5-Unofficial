@@ -305,7 +305,6 @@ public class MTEActiveTransformer extends TTMultiblockBase
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
             .addMarkdown(new ResourceLocation("gregtech", "active-transformer"))
             .addSupportAny()
-            .beginStructureBlock(3, 3, 3, false)
             .beginVariableStructureBlock(3,3,3,3,3,8,false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addEnergyHatch("1+", anyCasingText(), 1)
