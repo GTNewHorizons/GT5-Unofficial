@@ -533,17 +533,23 @@ public class PosteaTransformers implements Runnable {
             OrePrefixes.blockCasingAdvanced);
     }
 
-    /// Migrates saved placed (tile-entity) and inventory bartworks werkstoff storage blocks and casings
-    /// (`m`/`Damage` = werkstoff id) into the equivalent MaterialLib block. A casing whose material has no MaterialLib
-    /// casing becomes the material's storage block. A placed block of a werkstoff removed from the pack becomes dirt,
-    /// and one whose id resolves to no block becomes air.
+    /// Migrates saved placed and inventory bartworks werkstoff storage blocks and casings into the equivalent
+    /// MaterialLib block. A placed block carries the werkstoff id either in its tile entity (`m`) or, when saved after
+    /// bartworks dropped that tile entity, in its block metadata; an item stack carries it in `Damage`. A casing whose
+    /// material has no MaterialLib casing becomes the material's storage block. A placed block of a werkstoff removed
+    /// from the pack becomes dirt, and one whose id resolves to no block becomes air.
+    ///
+    /// Postea runs tile-entity transformers before block transformers, so the metadata handler only sees blocks that
+    /// had no tile entity.
     private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
-        TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
-            int id = tag.getShort("m");
-            if (ArrayUtils.contains(WERKSTOFFS_REMOVED_IN_2_9, id)) return new BlockInfo(Blocks.dirt, 0);
-            ItemStack cutover = werkstoffBlockStack(prefix, id);
-            if (cutover == null) return new BlockInfo(Blocks.air, 0);
-            return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
+        TileEntityReplacementManager
+            .tileEntityTransformer(teId, (tag, world, chunk) -> werkstoffBlockInfo(prefix, tag.getShort("m")));
+
+        addBlockTransformer(itemId, info -> {
+            BlockInfo cutover = werkstoffBlockInfo(prefix, info.metadata);
+            info.blockID = Block.getIdFromBlock(cutover.block);
+            info.metadata = cutover.metadata;
+            return true;
         });
 
         addItemTransformer(itemId, (originalId, tag) -> {
@@ -553,6 +559,13 @@ public class PosteaTransformers implements Runnable {
             tag.setShort("Damage", (short) cutover.getItemDamage());
             return true;
         });
+    }
+
+    private static BlockInfo werkstoffBlockInfo(OrePrefixes prefix, int werkstoffId) {
+        if (ArrayUtils.contains(WERKSTOFFS_REMOVED_IN_2_9, werkstoffId)) return new BlockInfo(Blocks.dirt, 0);
+        ItemStack cutover = werkstoffBlockStack(prefix, werkstoffId);
+        if (cutover == null) return new BlockInfo(Blocks.air, 0);
+        return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
     }
 
     private static @Nullable ItemStack werkstoffBlockStack(OrePrefixes prefix, int werkstoffId) {
