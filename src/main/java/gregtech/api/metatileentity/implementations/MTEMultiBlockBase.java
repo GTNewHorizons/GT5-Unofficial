@@ -229,6 +229,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
     protected SingleRecipeCheck mSingleRecipeCheck = null;
 
+    // DO NOT ADD NEW HATCH LISTS HERE, UNLESS THEY ARE SUPPOSED TO BE USABLE BY ALL MULTIBLOCKS
     public ArrayList<MTEHatchInput> mInputHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutput> mOutputHatches = new ArrayList<>();
     public ArrayList<MTEHatchInputBus> mInputBusses = new ArrayList<>();
@@ -239,6 +240,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchMuffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<MTEHatchEnergy> mEnergyHatches = new ArrayList<>();
     public ArrayList<MTEHatchMaintenance> mMaintenanceHatches = new ArrayList<>();
+    // DO NOT ADD NEW HATCH LISTS HERE, UNLESS THEY ARE SUPPOSED TO BE USABLE BY ALL MULTIBLOCKS
     protected boolean doPeriodicChecks = false;
 
     /**
@@ -248,11 +250,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public LongArrayList mCoils = new LongArrayList();
     private GTCoilTracker.MultiCoilLease coilLease = null;
 
+    // DO NOT ADD NEW HATCH LISTS HERE, UNLESS THEY ARE SUPPOSED TO BE USABLE BY ALL MULTIBLOCKS
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
     protected List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
+    // DO NOT ADD NEW HATCH LISTS HERE, UNLESS THEY ARE SUPPOSED TO BE USABLE BY ALL MULTIBLOCKS
 
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
