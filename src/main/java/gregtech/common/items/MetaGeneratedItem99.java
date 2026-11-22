@@ -23,6 +23,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
@@ -150,7 +151,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     public ItemStack getContainerItem(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         if (prefix != null) {
-            return prefix.mContainerItem;
+            return GTUtility.copyAmount(1, prefix.mContainerItem);
         }
         return null;
     }
