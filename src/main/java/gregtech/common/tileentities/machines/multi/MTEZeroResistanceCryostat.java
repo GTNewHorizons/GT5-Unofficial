@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -18,7 +16,6 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import gregtech.api.structure.error.StructureError;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,7 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -38,7 +34,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 import java.util.List;
 
@@ -46,7 +41,7 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 11;
-    private static final int OFFSET_Y = 9;
+    private static final int OFFSET_Y = 8;
     private static final int OFFSET_Z = 0;
 
     private int casingAmount;
@@ -67,33 +62,24 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
             transpose(
                 new String[][] {
                     // spotless:off
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","           G               ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","          GGG              ","          GFFFFFFF         ","          GGG              ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","           G               ","          GFG    FFFF      ","           G               ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                    JJJ    ","                    FFF    ","                    JJJ    ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                      JJJ  ","                      FFF  ","                      JJJ  ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                       GGG ","                       GGG ","                       GGG ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                       GGGG","                      GGGGG","                      GGGGG","                      GGGGG","                       GGGG","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           ","                           "},
-                {"                           ","  GGG  D       D  GGG      "," GGG   DD     DD   GGG     "," GG    DD     DD    GG     "," G      D     D      G     ","                           ","                           "," DDD               DDD     ","  DDD             DDD   GGG","                           ","                    GG     ","                    GG     ","                    GG     ","                           ","  DDD             DDD   GGG"," DDD               DDD     ","                           ","                           "," G      D     D      G     "," GG    DD     DD    GG     "," GGG   DD     DD   GGG     ","  GGG  D       D  GGG      ","                           "},
-                {"       D HHHHH D           ","  IIG DDHHHHHHHDD GII      "," IGGG HHAAAAAAAHH GGGI     "," IGG HAAAHHHHHAAAH GGI     "," GG HAAHHD   DHHAAH GG     ","   HAAH D     D HAAH       "," DHAAH           HAAHD     ","DDHAH             HAHDD    "," HAAHD           DHAAH  GGG"," HAHD             DHAH     "," HAH               HAH   C "," HAH               HAH   C "," HAH               HAH   C "," HAHD             DHAH     "," HAAHD           DHAAH  GGG","DDHAH             HAHDD    "," DHAAH           HAAHD     ","   HAAH D     D HAAH       "," GG HAAHHD   DHHAAH GG     "," IGG HAAAHHHHHAAAH GGI     "," IGGG HHAAAAAAAHH GGGI     ","  IIG DDHHHHHHHDD GII      ","       D       D           "},
-                {"       DHHH~HHHD           ","  IIG DHEEEEEEEHD GII      "," IGGGHEEKKKKKKKEEHGGGI     "," IGGHEKKKEEEEEKKKEHGGI     "," GGHEKKEEDHHHDEEKKEHGG     ","  HEKKEHD     DHEKKEH      "," DEKKEH         HEKKED     ","DHEKEH           HEKEHD    ","HEKKED           DEKKEH GGG","HEKED             DEKEH  B ","HEKEH             HEKEH CBC","HEKEH             HEKEH CBC","HEKEH             HEKEH CBC","HEKED             DEKEH  B ","HEKKED           DEKKEH GGG","DHEKEH           HEKEHD    "," DEKKEH         HEKKED     ","  HEKKEHD     DHEKKEH      "," GGHEKKEEDHHHDEEKKEHGG     "," IGGHEKKKEEEEEKKKEHGGI     "," IGGGHEEKKKKKKKEEHGGGI     ","  IIG DHEEEEEEEHD GII      ","       DHHHHHHHD           "},
-                {"       D HHHHH D           ","  IIG DDHHHHHHHDD GII      "," IGGG HHHHHHHHHHH GGGI     "," IGGGHHHHHHHHHHHHHGGGI     "," GGGHHHHHD   DHHHHHGGG     ","   HHHH D     D HHHH       "," DHHHH           HHHHD     ","DDHHH             HHHDD    "," HHHHD           DHHHH  GGG"," HHHD             DHHH     "," HHH               HHH   C "," HHH               HHH   C "," HHH               HHH   C "," HHHD             DHHH     "," HHHHD           DHHHH  GGG","DDHHH             HHHDD    "," DHHHH           HHHHD     ","   HHHH D     D HHHH       "," GGGHHHHHD   DHHHHHGGG     "," IGGGHHHHHHHHHHHHHGGGI     "," IGGG HHHHHHHHHHH GGGI     ","  IIG DDHHHHHHHDD GII      ","       D       D           "},
-                {"                           ","  GGG  D       D  GGG      "," GGGG  DD     DD  GGGG     "," GGGG  DD     DD  GGGG     "," GGG    D     D    GGG     ","                           ","                           "," DDD               DDD     ","  DDD             DDD   GGG","                           ","                           ","                           ","                           ","                           ","  DDD             DDD   GGG"," DDD               DDD     ","                           ","                           "," GGG    D     D    GGG     "," GGGG  DD     DD  GGGG     "," GGGG  DD     DD  GGGG     ","  GGG  D       D  GGG      ","                           "},
-                {"                           ","  GGG             GGG      "," GGGG             GGGG     "," GGGG             GGGG     "," GGG               GGG     ","                           ","                           ","                           ","                        GGG","                        GGG","                        GGG","                        GGG","                        GGG","                        GGG","                        GGG","                           ","                           ","                           "," GGG               GGG     "," GGGG             GGGG     "," GGGG             GGGG     ","  GGG             GGG      ","                           "}}))
+                {"                       ","                       ","                       ","                       ","                       ","                       ","      GG       GG      ","      GGG     GGG      ","       GGG   GGG       ","        GGGGGGG        ","         GGGGG         ","         GGCGG         ","         GGGGG         ","        GGGGGGG        ","       GGG   GGG       ","      GGG     GGG      ","      GG       GG      ","                       ","                       ","                       ","                       ","                       ","                       "},
+                {"                       ","                       ","                       ","                       ","     G           G     ","    GGG         GGG    ","     GGG       GGG     ","      GGG     GGG      ","       GGG   GGG       ","        GGG GGG        ","         GGBGG         ","          BCB          ","         GGBGG         ","        GGG GGG        ","       GGG   GGG       ","      GGG     GGG      ","     GGG       GGG     ","    GGG         GGG    ","     G           G     ","                       ","                       ","                       ","                       "},
+                {"                       ","                       ","                       ","   GG             GG   ","   GGG           GGG   ","    GGG         GGG    ","     GG         GG     ","                       ","                       ","                       ","          GBG          ","          BCB          ","          GBG          ","                       ","                       ","                       ","     GG         GG     ","    GGG         GGG    ","   GGG           GGG   ","   GG             GG   ","                       ","                       ","                       "},
+                {"                       ","                       ","   G               G   ","  GGG             GGG  ","   GG             GG   ","                       ","                       ","                       ","                       ","                       ","          FEF          ","          ECE          ","          FEF          ","                       ","                       ","                       ","                       ","                       ","   GG             GG   ","  GGG             GGG  ","   G               G   ","                       ","                       "},
+                {"                       ","                       ","  GG               GG  ","  G                 G  ","                       ","                       ","                       ","                       ","                       ","                       ","           E           ","          ECE          ","           E           ","                       ","                       ","                       ","                       ","                       ","                       ","  G                 G  ","  GG               GG  ","                       ","                       "},
+                {"                       ","                       ","  GG               GG  ","  G                 G  ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","           C           ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","  G                 G  ","  GG               GG  ","                       ","                       "},
+                {"                       ","  GGG  D       D  GGG  "," GGG   DD     DD   GGG "," GG    DD     DD    GG "," G      D     D      G ","                       ","                       "," DDD               DDD ","  DDD             DDD  ","                       ","                       ","                       ","                       ","                       ","  DDD             DDD  "," DDD               DDD ","                       ","                       "," G      D     D      G "," GG    DD     DD    GG "," GGG   DD     DD   GGG ","  GGG  D       D  GGG  ","                       "},
+                {"       D HHHHH D       ","  IIG DDHHHHHHHDD GII  "," IGGG HHAAAAAAAHH GGGI "," IGG HAAAHHHHHAAAH GGI "," GG HAAHHD   DHHAAH GG ","   HAAH D     D HAAH   "," DHAAH           HAAHD ","DDHAH             HAHDD"," HAAHD           DHAAH "," HAHD             DHAH "," HAH               HAH "," HAH               HAH "," HAH               HAH "," HAHD             DHAH "," HAAHD           DHAAH ","DDHAH             HAHDD"," DHAAH           HAAHD ","   HAAH D     D HAAH   "," GG HAAHHD   DHHAAH GG "," IGG HAAAHHHHHAAAH GGI "," IGGG HHAAAAAAAHH GGGI ","  IIG DDHHHHHHHDD GII  ","       D       D       "},
+                {"       DHHH~HHHD       ","  IIG DHEEEEEEEHD GII  "," IGGGHEE-------EEHGGGI "," IGGHE---EEEEE---EHGGI "," GGHE--EEDHHHDEE--EHGG ","  HE--EHD     DHE--EH  "," DE--EH         HE--ED ","DHE-EH           HE-EHD","HE--ED           DE--EH","HE-ED             DE-EH","HE-EH             HE-EH","HE-EH             HE-EH","HE-EH             HE-EH","HE-ED             DE-EH","HE--ED           DE--EH","DHE-EH           HE-EHD"," DE--EH         HE--ED ","  HE--EHD     DHE--EH  "," GGHE--EEDHHHDEE--EHGG "," IGGHE---EEEEE---EHGGI "," IGGGHEE-------EEHGGGI ","  IIG DHEEEEEEEHD GII  ","       DHHHHHHHD       "},
+                {"       D HHHHH D       ","  IIG DDHHHHHHHDD GII  "," IGGG HHHHHHHHHHH GGGI "," IGGGHHHHHHHHHHHHHGGGI "," GGGHHHHHD   DHHHHHGGG ","   HHHH D     D HHHH   "," DHHHH           HHHHD ","DDHHH             HHHDD"," HHHHD           DHHHH "," HHHD             DHHH "," HHH               HHH "," HHH               HHH "," HHH               HHH "," HHHD             DHHH "," HHHHD           DHHHH ","DDHHH             HHHDD"," DHHHH           HHHHD ","   HHHH D     D HHHH   "," GGGHHHHHD   DHHHHHGGG "," IGGGHHHHHHHHHHHHHGGGI "," IGGG HHHHHHHHHHH GGGI ","  IIG DDHHHHHHHDD GII  ","       D       D       "},
+                {"                       ","  GGG  D       D  GGG  "," GGGG  DD     DD  GGGG "," GGGG  DD     DD  GGGG "," GGG    D     D    GGG ","                       ","                       "," DDD               DDD ","  DDD             DDD  ","                       ","                       ","                       ","                       ","                       ","  DDD             DDD  "," DDD               DDD ","                       ","                       "," GGG    D     D    GGG "," GGGG  DD     DD  GGGG "," GGGG  DD     DD  GGGG ","  GGG  D       D  GGG  ","                       "},
+                {"                       ","  GGG             GGG  "," GGGG             GGGG "," GGGG             GGGG "," GGG               GGG ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       "," GGG               GGG "," GGGG             GGGG "," GGGG             GGGG ","  GGG             GGG  ","                       "}}))
                 // spotless:on
 
         // A: any tiered glass
         .addElement('A', chainAllGlasses())
-        // B: Pikyonium frame (GT++ material, so no ofFrame)
-        .addElement(
-            'B',
-            lazy(
-                t -> ofBlock(
-                    Block.getBlockFromItem(
-                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
-                            .getItem()),
-                    0)))
-        .addElement('C', Casings.SuperconductingCoilBlock.asElement())
+        .addElement('B', ofFrame(Materials.InfinityCatalyst))
+        .addElement('C', ofFrame(Materials.Infinity))
         // D: solenoids, the tiered piece
         .addElement(
             'D',
@@ -102,7 +88,7 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
                     MTEZeroResistanceCryostat::setSolenoidLevel,
                     MTEZeroResistanceCryostat::getSolenoidLevel)))
         .addElement('E', Casings.CoolantDuct.asElement())
-        .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
+        .addElement('F', ofFrame(Materials.CosmicNeutronium))
         // G: Magnetic Anchor Casing, where hatches can go
         .addElement(
             'G',
@@ -115,9 +101,6 @@ public class MTEZeroResistanceCryostat extends MTEExtendedPowerMultiBlockBase<MT
                 onElementPass(x -> x.casingAmount++, Casings.MagneticAnchorCasing.asElement())))
         .addElement('H', Casings.ColliderCasing.asElement())
         .addElement('I', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
-        .addElement('J', ofFrame(Materials.SuperconductorZPMBase))
-        // K: Block of Magnetic Iron
-        .addElement('K', ofBlock(GregTechAPI.sBlockMetal3, 13))
         .build();
 
     public MTEZeroResistanceCryostat(final int aID, final String aName, final String aNameRegional) {
