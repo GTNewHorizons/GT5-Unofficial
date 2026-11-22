@@ -2,10 +2,11 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,9 +20,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -45,7 +48,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
      * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
      */
-    protected final List<IHatchWatcher> watchers = new ArrayList<>();
+    protected final Set<IHatchWatcher> watchers = new LinkedHashSet<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
@@ -81,9 +84,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     /** Asks every registered controller to run a recipe check on its next tick. */
     protected void notifyWatchers() {
-        for (int i = 0; i < watchers.size(); i++) {
-            watchers.get(i)
-                .scheduleRecipeCheckImmediate();
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
         }
     }
 
