@@ -3,4 +3,4 @@
 Выполняет рецепты только до {VNF:tier} включительно
 {hr}
 {color_note:Смена рецепта снова расходует стартовую стоимость}
-{color_mechanic:Выполняет{ifdef:perfect: идеальный} разгон {var:eu_per_oc}/{var:time_per_oc}}
+{color_mechanic:Выполняет идеальный разгон {var:eu_per_oc}/{var:time_per_oc}}

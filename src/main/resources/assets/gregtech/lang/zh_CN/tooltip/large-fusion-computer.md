@@ -3,5 +3,5 @@
 能源仓数*容量时，聚变将无法进行
 当配方需求电压超过{var:tier}{gray:时，无法进行聚变}
 {hr}
-{color_mechanic:执行{var:eu_per_oc}/{var:time_per_oc}{ifdef:perfect: 完善}超频}
+{color_mechanic:执行{var:eu_per_oc}/{var:time_per_oc}超频}
 并行：{color_parallel:{var:per_tier_para} + (机器等级 - 配方等级) * {var:per_tier_para}}
