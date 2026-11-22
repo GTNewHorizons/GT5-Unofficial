@@ -95,7 +95,7 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                     .width(STORED_SCREEN_WIDTH - 6)
                     .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
-        return CommonWidgets.createFluidScreen(STORED_SCREEN_WIDTH, SCREEN_HEIGHT)
+        return CommonWidgets.createHatchScreen(STORED_SCREEN_WIDTH, SCREEN_HEIGHT)
             .child(textColumn)
             .child(
                 new ItemDisplayWidget().item(storedItem)
@@ -171,7 +171,7 @@ public class MTEDigitalChestBaseGui extends MTETieredMachineBlockBaseGui<MTEDigi
                 .asWidget()
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
-        return CommonWidgets.createFluidScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
+        return CommonWidgets.createHatchScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
             .child(textColumn)
             .child(
                 new PhantomItemSlot().syncHandler(lockSyncer)

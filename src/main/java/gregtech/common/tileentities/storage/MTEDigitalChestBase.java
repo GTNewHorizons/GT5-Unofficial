@@ -263,7 +263,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 tooltip.add(
                     StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
                 tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
-                return;
             }
         }
         if (ItemStackNBT.hasKey(stack, "lockedItem")) {
@@ -652,11 +651,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        setPassThroughEnabled(!isPassThroughEnabled());
+        setInputFilterDisabled(!isInputFilterDisabled());
         GTUtility.sendChatTrans(
             aPlayer,
-            passThroughOtherItems ? "GT5U.machines.digitalchest.passthrough.enabled"
-                : "GT5U.machines.digitalchest.passthrough.disabled");
+            inputFilterDisabled ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                : "GT5U.machines.digitalchest.inputfilter.enabled");
         return true;
     }
 
@@ -1042,8 +1041,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         aNBT.setBoolean("mVoidFull", mVoidFull);
-        aNBT.setBoolean("mDisableFilter", passThroughOtherItems);
-        aNBT.setBoolean("inputFilterDisabled", inputFilterDisabled);
+        aNBT.setBoolean("mDisableFilter", inputFilterDisabled);
+        aNBT.setBoolean("passThroughOtherItems", passThroughOtherItems);
         aNBT.setBoolean("autoOutputItems", autoOutputItems);
         aNBT.setBoolean("blockExternalAccess", blockExternalAccess);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
@@ -1053,8 +1052,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
         if (mVoidFull) aNBT.setBoolean("mVoidFull", true);
-        if (passThroughOtherItems) aNBT.setBoolean("mDisableFilter", true);
-        if (inputFilterDisabled) aNBT.setBoolean("inputFilterDisabled", true);
+        if (inputFilterDisabled) aNBT.setBoolean("mDisableFilter", true);
+        if (passThroughOtherItems) aNBT.setBoolean("passThroughOtherItems", true);
         if (autoOutputItems) aNBT.setBoolean("autoOutputItems", true);
         if (blockExternalAccess) aNBT.setBoolean("blockExternalAccess", true);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
@@ -1067,8 +1066,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mVoidFull = aNBT.getBoolean("mVoidFull");
-        passThroughOtherItems = aNBT.getBoolean("mDisableFilter");
-        inputFilterDisabled = aNBT.getBoolean("inputFilterDisabled");
+        inputFilterDisabled = aNBT.getBoolean("mDisableFilter");
+        passThroughOtherItems = aNBT.getBoolean("passThroughOtherItems");
         autoOutputItems = aNBT.getBoolean("autoOutputItems");
         blockExternalAccess = aNBT.getBoolean("blockExternalAccess");
         lockedItem = aNBT.hasKey("lockedItem", Constants.NBT.TAG_COMPOUND)
