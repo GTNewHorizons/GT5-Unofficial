@@ -221,11 +221,13 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int ammount) {
-        if (slot != TileEntityHeatedWaterPump.FUELSLOT || this.fuelstack == null || ammount > this.fuelstack.stackSize)
+    public ItemStack decrStackSize(int slot, int amount) {
+        if (slot != TileEntityHeatedWaterPump.FUELSLOT || this.fuelstack == null || amount > this.fuelstack.stackSize)
             return null;
 
-        return this.fuelstack.splitStack(ammount);
+        ItemStack result = this.fuelstack.splitStack(amount);
+        if (this.fuelstack.stackSize <= 0) this.fuelstack = null;
+        return result;
     }
 
     @Override
@@ -267,7 +269,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return TileEntityFurnace.getItemBurnTime(stack) > 0 && index == TileEntityHeatedWaterPump.FUELSLOT;
+        return index == TileEntityHeatedWaterPump.FUELSLOT && TileEntityFurnace.getItemBurnTime(stack) > 0;
     }
 
     @Override
