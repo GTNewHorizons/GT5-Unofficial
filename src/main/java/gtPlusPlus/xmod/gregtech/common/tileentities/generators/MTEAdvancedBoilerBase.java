@@ -315,20 +315,22 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
+    protected boolean isProducingSteam() {
+        return this.mTemperature > 100 && GTModHandler.isWater(this.mFluid) && this.mFluid.amount > 0;
+    }
+
+    @Override
     protected boolean canNotCreateSteam(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 10L != 0L) {
             return false;
         }
 
         if (this.mTemperature > 100) {
-            if ((!GTModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
-                this.mHadNoWater = true;
-            } else {
+            if (GTModHandler.isWater(this.mFluid) && this.mFluid.amount > 0) {
                 produceSteam(getProductionPerSecond() / 2);
                 playBoiling = true;
             }
         } else {
-            this.mHadNoWater = false;
             playBoiling = false;
         }
         return false;
@@ -355,7 +357,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         final int fuel;
         if (this.mProcessingEnergy > 0) {
             fuel = this.mProcessingEnergy;
-        } else if (this.mInventory[2] == null || isItemValidFuel(this.mInventory[2])) {
+        } else if (this.mInventory[2] == null || !isItemValidFuel(this.mInventory[2])) {
             fuel = 0;
         } else {
             fuel = -1;
