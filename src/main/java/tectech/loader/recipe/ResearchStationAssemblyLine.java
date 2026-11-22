@@ -70,11 +70,13 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     @Override
     public void run() {
-        itemPartsUHVAsslineRecipes();
-        itemPartsUEVAsslineRecipes();
-        itemPartsUIVAsslineRecipes();
-        itemPartsUMVAsslineRecipes();
-        itemPartsUXVAsslineRecipes();
+        if (!Variants.checkIfActive(AlteredPricing)) {
+            itemPartsUHVAsslineRecipes();
+            itemPartsUEVAsslineRecipes();
+            itemPartsUIVAsslineRecipes();
+            itemPartsUMVAsslineRecipes();
+            itemPartsUXVAsslineRecipes();
+        }
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
         addBeamcraftingRecipes();
@@ -1128,9 +1130,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUHVAsslineRecipes() {
 
-        if (Variants.checkIfActive(AlteredPricing)) {
-            return;
-        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1341,9 +1340,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUEVAsslineRecipes() {
 
-        if (Variants.checkIfActive(AlteredPricing)) {
-            return;
-        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1554,9 +1550,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUIVAsslineRecipes() {
 
-        if (Variants.checkIfActive(AlteredPricing)) {
-            return;
-        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1767,9 +1760,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUMVAsslineRecipes() {
 
-        if (Variants.checkIfActive(AlteredPricing)) {
-            return;
-        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1969,9 +1959,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUXVAsslineRecipes() {
 
-        if (Variants.checkIfActive(AlteredPricing)) {
-            return;
-        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
