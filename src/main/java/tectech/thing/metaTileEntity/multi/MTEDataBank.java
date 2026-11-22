@@ -147,7 +147,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public void clearHatches() {
         super.clearHatches();
         for (IALRecipeInputHatch rih : recipeInputHatches) {
-            if (rih instanceof MTEHatchDataBase hatchDataBase) hatchDataBase.removeWatcher(this);
+            if (rih instanceof MTEHatchDataBase hatchDataBase) {
+                hatchDataBase.removeWatcher(this);
+            }
         }
         recipeInputHatches.clear();
         recipeOutputHatches.clear();
@@ -256,7 +258,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
             case IALRecipeInputHatch inputHatch -> {
                 inputHatch.updateTexture(casingIndex);
-                if (inputHatch instanceof MTEHatchDataBase hatchDataBase) hatchDataBase.addWatcher(this);
+                if (inputHatch instanceof MTEHatchDataBase hatchDataBase) {
+                    hatchDataBase.addWatcher(this);
+                }
                 if (inputHatch instanceof MTEHatchDataItemsInput) {
                     // inputs are chained from another databank, increase required per-hatch EU/t
                     slave = true;
