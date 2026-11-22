@@ -82,8 +82,8 @@ public class MTEActiveTransformer extends TTMultiblockBase
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
 
-    private static final int MAX_LENGTH = 8; // 8 - 2 to account for first and last slice
-    private static final int MIDDLE_SLICE_LENGTH = MAX_LENGTH - 2;
+    private static final int MAX_LENGTH = 8;
+    private static final int MIDDLE_SLICE_LENGTH = MAX_LENGTH - 2; // max - 2 to account for first and last slice
     private static final String STRUCTURE_SHAPE_FIRST = "first";
     private static final String STRUCTURE_SHAPE_MIDDLE = "middle";
     private static final String STRUCTURE_SHAPE_LAST = "last";
