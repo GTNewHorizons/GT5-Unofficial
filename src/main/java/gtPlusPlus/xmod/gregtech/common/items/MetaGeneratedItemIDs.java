@@ -2,7 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.items;
 
 public enum MetaGeneratedItemIDs {
 
-    Shape_Extruder_WindmillShaft(40),
+    // Deprecated during 2.10.0 development cycle (#8771)
+    // Shape_Extruder_WindmillShaft(40),
     Pellet_RTG_PU238(41),
     Pellet_RTG_SR90(42),
     Pellet_RTG_PO210(43),
