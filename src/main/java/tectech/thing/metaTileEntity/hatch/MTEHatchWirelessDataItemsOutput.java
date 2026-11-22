@@ -5,8 +5,6 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,45 +53,15 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatchDataBase implements
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-
-        if (!this.dataPacket.isEmpty()) {
-            aNBT.setTag("eDATA", this.dataPacket.toNBT());
-        }
-
-        aNBT.setBoolean("packetValid", packetValid);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-
-        if (aNBT.hasKey("eDATA")) {
-            this.dataPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
-        }
-
-        this.packetValid = aNBT.getBoolean("packetValid");
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
-            // until the data bank resets the wireless network
-            aTick = MinecraftServer.getServer()
-                .getTickCounter();
-            if (aTick % WirelessDataStore.IO_TICK_RATE == 0) {
+            // until the data bank pushes a new packet
+            if (packetValid) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-
                 wirelessDataStore.uploadData(this);
-
-                if (packetValid) {
-                    packetValid = false;
-                } else {
-                    dataPacket = ALRecipeDataPacket.EMPTY_PACKET;
-                }
+                packetValid = false;
             }
         }
     }
