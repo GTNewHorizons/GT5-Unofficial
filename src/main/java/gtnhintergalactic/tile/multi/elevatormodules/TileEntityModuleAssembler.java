@@ -223,7 +223,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
-            .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module"),
+            .addMarkdown(new ResourceLocation("gregtech", "space/assembler-module"),
                 ImmutableMap.<String, Object>builder()
                     .put("voltageTier", this.getTier())
                     .put("moduleTier", this.tModuleTier)
