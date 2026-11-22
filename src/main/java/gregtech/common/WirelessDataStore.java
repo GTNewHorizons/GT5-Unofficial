@@ -33,31 +33,23 @@ public class WirelessDataStore {
     public static final long DOWNLOAD_TICK_OFFSET = 1;
     /// Remove expired uploads the tick before data is re-uploaded
     public static final long CLEAN_TICK_OFFSET = IO_TICK_RATE - 1;
-    /// Uploads can last for two wireless network ticks before they're considered expired.
-    public static final long UPLOAD_EXPIRATION_THRESHOLD = IO_TICK_RATE * 2;
 
     private final LinkedHashMap<IALRecipeOutputHatch, DataStickUpload> uploads = new LinkedHashMap<>();
     private ALRecipeDataPacket cachedRecipes = null;
 
     private static class DataStickUpload {
 
-        public long lastInjection;
         public HashSet<RecipeAssemblyLine> comparisonCache;
     }
 
     public void uploadData(IALRecipeOutputHatch injector) {
-        long now = MinecraftServer.getServer()
-            .getTickCounter();
-
-        var upload = uploads.computeIfAbsent(injector, $ -> new DataStickUpload());
-
-        upload.lastInjection = now;
+        var upload = uploads.computeIfAbsent(injector, _ -> new DataStickUpload());
 
         HashSet<RecipeAssemblyLine> injected = new HashSet<>();
 
         var packet = injector.getAssemblyLineRecipes();
 
-        if (packet != null) {
+        if (packet != null && !packet.isEmpty()) {
             injected.addAll(packet.contents);
         }
 
@@ -104,11 +96,9 @@ public class WirelessDataStore {
 
         if (now % IO_TICK_RATE != CLEAN_TICK_OFFSET) return;
 
-        long expiredThreshold = now - UPLOAD_EXPIRATION_THRESHOLD;
-
         for (var store : GlobalWirelessDataSticks.values()) {
             boolean updated = store.uploads.entrySet()
-                .removeIf(e -> e.getValue().lastInjection <= expiredThreshold);
+                .removeIf(e -> e.getValue().comparisonCache.isEmpty());
 
             if (updated) {
                 store.cachedRecipes = null;
