@@ -1234,7 +1234,7 @@ public class RecipeLoader {
             .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UV))
             .itemInputs(
                 ItemRefer.Inverter.get(8),
-                ItemList.Hull_MAX.get(1L),
+                ItemList.Hull_UHV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Kevlar, 8),
@@ -1382,6 +1382,24 @@ public class RecipeLoader {
                 new FluidStack(GTPPFluids.Pyrotheum, 1_000),
                 Materials.TungstenCarbide.getMolten(2 * INGOTS),
                 Materials.PrismaticNaquadah.getMolten(72))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Plasma Collider Driving Casing
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Compact_Fusion_Coil_T0.get(1),
+                ItemRefer.Speeding_Pipe.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 1))
+            .itemOutputs(ItemList.CasingQuadcellDriving.get(1))
+            .fluidInputs(
+                Materials.NaquadahEnriched.getMolten(576),
+                MaterialsElements.STANDALONE.RUNITE.getFluidStack(576),
+                MaterialsElements.STANDALONE.FORCE.getFluidStack(576))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)

@@ -79,7 +79,6 @@ import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
@@ -484,8 +483,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         if (!tileEntity.isServerSide()) return;
 
-        global_energy_user_uuid = tileEntity.getOwnerUuid();
-        SpaceProjectManager.checkOrCreateTeam(global_energy_user_uuid);
+        global_energy_user_uuid = WirelessNetworkManager.processInitialSettings(tileEntity);
     }
 
     @Override
@@ -608,14 +606,22 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         long temp_stored = 0L;
 
+        // Input and output have separate budgets from the starting balance, shared across their hatches.
+        long inputRemaining = mEnergyHatches.isEmpty() && mEnergyHatchesTT.isEmpty() && mEnergyTunnelsTT.isEmpty() ? 0
+            : getPowerToDraw(Long.MAX_VALUE);
+        long outputRemaining = mDynamoHatches.isEmpty() && mDynamoHatchesTT.isEmpty() && mDynamoTunnelsTT.isEmpty() ? 0
+            : getPowerToPush(Long.MAX_VALUE);
+
         // Draw energy from GT hatches
         for (MTEHatchEnergy eHatch : super.mEnergyHatches) {
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
-            final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
+            final long hatchWatts = eHatch.maxEUInput() * eHatch.maxAmperesIn();
+            final long power = inputRemaining == 0 ? 0 : min(hatchWatts, inputRemaining);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
+                inputRemaining -= power;
                 temp_stored += power;
                 inputLastTick += power;
             }
@@ -626,9 +632,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
-            final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
+            final long power = min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), outputRemaining);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
+                outputRemaining -= power;
                 temp_stored -= power;
                 outputLastTick += power;
             }
@@ -639,9 +646,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
-            final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
+            final long hatchWatts = eHatch.maxEUInput() * eHatch.maxAmperesIn();
+            final long power = inputRemaining == 0 ? 0 : min(hatchWatts, inputRemaining);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
+                inputRemaining -= power;
                 temp_stored += power;
                 inputLastTick += power;
             }
@@ -652,9 +661,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
-            final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
+            final long power = min(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut(), outputRemaining);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
+                outputRemaining -= power;
                 temp_stored -= power;
                 outputLastTick += power;
             }
@@ -666,9 +676,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 continue;
             }
             final long ttLaserWattage = eHatch.maxEUInput() * eHatch.getAmperes() - (eHatch.getAmperes() / 20);
-            final long power = getPowerToDraw(ttLaserWattage);
+            final long power = inputRemaining == 0 ? 0 : min(ttLaserWattage, inputRemaining);
             if (eHatch.getEUVar() >= power) {
                 eHatch.setEUVar(eHatch.getEUVar() - power);
+                inputRemaining -= power;
                 temp_stored += power;
                 inputLastTick += power;
             }
@@ -680,9 +691,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 continue;
             }
             final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
-            final long power = getPowerToPush(ttLaserWattage);
+            final long power = min(ttLaserWattage, outputRemaining);
             if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
                 eDynamo.setEUVar(eDynamo.getEUVar() + power);
+                outputRemaining -= power;
                 temp_stored -= power;
                 outputLastTick += power;
             }
@@ -691,6 +703,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (wirelessCapableCapacitors() <= 0) {
             wireless_mode = false;
         }
+
+        // Wireless balancing must include energy already transferred through the hatches.
+        stored = stored.add(BigInteger.valueOf(temp_stored));
 
         // Every LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS check against wireless network for re-balancing.
         counter++;
@@ -706,9 +721,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
         }
 
-        // This will break if you transfer more than 2^63 EU/t, so don't do that. Thanks <3
-        temp_stored -= passiveDischargeAmount;
-        stored = stored.add(BigInteger.valueOf(temp_stored));
+        stored = stored.subtract(BigInteger.valueOf(passiveDischargeAmount));
 
         // Check that the machine has positive EU stored.
         stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
@@ -744,14 +757,20 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     ItemBlockLapotronicEnergyUnit.UMV_WIRELESS_EU_CAP
                         .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
-        if (transferred_eu.signum() == -1) {
-            inputLastTick += Math.abs(transferred_eu.longValue());
-        } else {
-            outputLastTick += transferred_eu.longValue();
-        }
-
         // If that difference can be added then do so.
         if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
+            // Only telemetry saturates; the wireless transaction and stored energy remain exact.
+            if (transferred_eu.signum() == -1) {
+                inputLastTick = BigInteger.valueOf(inputLastTick)
+                    .subtract(transferred_eu)
+                    .min(LONG_MAX)
+                    .longValue();
+            } else {
+                outputLastTick = BigInteger.valueOf(outputLastTick)
+                    .add(transferred_eu)
+                    .min(LONG_MAX)
+                    .longValue();
+            }
             // If it succeeds there was sufficient energy so set the internal capacity as such.
             stored = ItemBlockLapotronicEnergyUnit.LSC_WIRELESS_EU_CAP
                 .multiply(BigInteger.valueOf(getUHVCapacitorCount()))

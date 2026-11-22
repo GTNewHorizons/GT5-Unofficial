@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
+import static gregtech.api.util.GTUtility.addSafe;
 import static gregtech.api.util.GTUtility.mulSafe;
 
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
-import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Control;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.PauseMode;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -277,8 +279,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                double parallels = recipe
-                    .maxParallelCalculatedByInputs(MTEBECIONode.this.maxParallel, this.inputFluids, this.inputItems);
+                double parallels = recipe.maxParallelCalculatedByInputs(
+                    MTEBECIONode.this.getControllerMaxParallel(),
+                    this.inputFluids,
+                    this.inputItems);
 
                 if (parallels >= minParallelParameter.getValue()) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -297,7 +301,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputEu()));
         logic.setAvailableAmperage(1);
         logic.setUnlimitedTierSkips();
-        logic.setMaxParallel(this.maxParallel);
+        logic.setMaxParallel(getControllerMaxParallel());
     }
 
     @Override
@@ -546,7 +550,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         // if any controllers want the multi to pause immediately, then pause
         for (var controller : this.controllerHatches) {
-            if (controller.getMode() == Mode.PAUSE_INSTANT) {
+            if (controller.getControl() != Control.PAUSE) continue;
+            if (controller.getPauseMode() == PauseMode.PAUSE_INSTANT) {
                 if (controller.receivingSignal()) {
                     state = NodeState.PausedImmediate;
                     return;
@@ -586,7 +591,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         boolean shouldPauseStep = false;
 
         for (var controller : this.controllerHatches) {
-            if (controller.getMode() == Mode.PAUSE_STEP) {
+            if (controller.getControl() != Control.PAUSE) continue;
+            if (controller.getPauseMode() == MTEHatchIONodeController.PauseMode.PAUSE_STEP) {
                 if (controller.receivingSignal()) {
                     shouldPauseStep = true;
                     break;
@@ -698,6 +704,23 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
         return availableNanites / (float) parallelsDivisor / (float) aboveTierDivisor / (float) slowdownDivisor;
+    }
+
+    protected int getControllerMaxParallel() {
+        int maxParallel = this.maxParallel;
+
+        int overrideMaxParallel = 0;
+
+        for (var controller : this.controllerHatches) {
+            if (controller.getControl() != Control.PARALLEL) continue;
+
+            int parallel = controller.getParallel();
+            overrideMaxParallel = addSafe(overrideMaxParallel, parallel);
+        }
+
+        if (overrideMaxParallel != 0) maxParallel = overrideMaxParallel;
+
+        return maxParallel;
     }
 
     @OCMethod
@@ -852,6 +875,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
+        tag.setInteger("maxParallel", getControllerMaxParallel());
         tag.setFloat("speed", getProcessingSpeed());
         tag.setInteger("slowdowns", slowdowns);
     }
@@ -859,6 +883,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-max-parallel", tag.getInteger("maxParallel")));
         list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
         list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
@@ -932,7 +957,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             List<NaniteTier> tiers = new ArrayList<>();
 
             // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
+            for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 
@@ -1131,6 +1156,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                     self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
+
+                    MTEHatchLoS other = hatch.getConnectedHatch();
+                    if (other != null && other.getOwner() instanceof MTEBECAssembler assembler) {
+                        assembler.getIONodes(true);
+                    }
 
                     return true;
                 } else {

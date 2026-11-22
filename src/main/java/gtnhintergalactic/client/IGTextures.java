@@ -11,6 +11,7 @@ import gregtech.api.render.TextureFactory;
  *
  * @author minecraft7771
  */
+// TODO: 2.10 potentially move this to the main texture class
 public class IGTextures implements Runnable {
 
     public static IIconContainer SIPHON_OVERLAY_FRONT_GLOW;
