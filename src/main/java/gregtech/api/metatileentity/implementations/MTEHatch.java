@@ -18,6 +18,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -68,6 +69,15 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         return (aTier + 1) * (aTier + 1);
     }
 
+    /**
+     * Registers a controller to be notified when this hatch's contents/config change. Hatches that want to push an
+     * immediate recipe check implement {@link ISmartInputHatch}, and the controller registers itself here when the
+     * hatch is added to the structure. A hatch belongs to a multiblock exactly once. The underlying data structure
+     * protects against duplicate watchers.
+     * You should always add watchers via {@link MTEMultiBlockBase#addIfSmartInput(IMetaTileEntity)},
+     * so that the watchers get properly removed from the hatch when needed.
+     * If you don't, manual removal is required!
+     */
     public void addWatcher(IHatchWatcher watcher) {
         watchers.add(watcher);
     }
