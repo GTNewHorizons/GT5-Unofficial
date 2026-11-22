@@ -56,6 +56,7 @@ import gregtech.loaders.postload.recipes.ThermalCentrifugeRecipes;
 import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
 import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
+import gregtech.loaders.postload.recipes.ZeroResistanceCryoforgeRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
 
@@ -119,6 +120,7 @@ public class MachineRecipeLoader implements Runnable {
         new TranscendentPlasmaMixerRecipes().run();
         new BECMetaMaterialRecipes().run();
         new BECRecipes().run();
+        new ZeroResistanceCryoforgeRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();

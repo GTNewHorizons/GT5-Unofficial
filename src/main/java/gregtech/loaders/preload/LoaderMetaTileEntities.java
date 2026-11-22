@@ -244,6 +244,7 @@ import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gregtech.common.tileentities.machines.multi.MTEUniversalChemicalFuelEngine;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.MTEZeroResistanceCryoforge;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
@@ -1029,6 +1030,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MegaOilCracker.set(
             new MTEMegaOilCracker(MegaOilCracker.ID, "multimachine.mega_oil_cracker", "Mega Oil Cracker")
                 .getStackForm(1));
+
+        ItemList.ZeroResistanceCryoforge.set(
+            new MTEZeroResistanceCryoforge(
+                ZeroResistanceCryoforge.ID,
+                "multimachine.zero_resistance_cryoforge",
+                "Zero-Resistance Cryoforge").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
