@@ -161,4 +161,12 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
             moveAround(aBaseMetaTileEntity, CheckState.CONNECTION);
         }
     }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        if (lastConnected == null) return;
+        // when "outputs" are broken, update the connected input's data
+        moveAround(this.getBaseMetaTileEntity(), CheckState.CONNECTION);
+    }
 }
