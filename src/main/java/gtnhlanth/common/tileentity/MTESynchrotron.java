@@ -512,7 +512,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "synchrotron"), tooltipVars)
+            .addMarkdown(new ResourceLocation("gregtech", "beam/synchrotron"), tooltipVars)
             .addSupportAny()
             .beginStructureBlock(36, 7, 34, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))

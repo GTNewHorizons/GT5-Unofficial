@@ -223,7 +223,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_stabilizer"))
-            .addMarkdown(new ResourceLocation("gregtech", "beam-stabilizer"), ImmutableMap.of("max_particles", formatNumber(MAX_STORED_PARTICLES)))
+            .addMarkdown(new ResourceLocation("gregtech", "beam/stabilizer"), ImmutableMap.of("max_particles", formatNumber(MAX_STORED_PARTICLES)))
             .beginStructureBlock(7, 7, 11, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
             .addCasing("95", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)

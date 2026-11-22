@@ -177,7 +177,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ozonation"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-ozonation"),
+                new ResourceLocation("gregtech", "purification/unit-ozonation"),
                 ImmutableMap.of(
                     "tier",
                     getWaterTier(),

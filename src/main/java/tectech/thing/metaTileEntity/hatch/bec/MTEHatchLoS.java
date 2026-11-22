@@ -80,7 +80,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "los-connector"),
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/los-connector"),
                     Map.of("range", SCAN_DIST)));
         }
         return ArrayUtils.addAll(

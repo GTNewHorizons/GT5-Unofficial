@@ -229,13 +229,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] {
+            GTUtility.breakLines(
                 translateToLocalFormatted("GT5U.machines.digitalchest.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocalFormatted(
                     "GT5U.machines.digitalchest.autooutput.rate",
                     formatNumber(autoOutputLimit(aTier))),
                 translateToLocal("GT5U.machines.digitalchest.tooltip1"),
-                translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
+                translateToLocal("GT5U.machines.digitaltank.tooltip1")));
     }
 
     protected static int commonSizeCompute(int tier) {
