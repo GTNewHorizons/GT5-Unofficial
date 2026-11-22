@@ -6,13 +6,11 @@ import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -782,54 +780,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         } else {
             cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
         }
-    }
-
-    /**
-     * POD class, Data for the asteroid summary in the mui in the space miner
-     *
-     * @author hacatu
-     */
-    protected static class AsteroidSummary {
-
-        public String name;
-        public float chance;
-        public float timeDensity;
-        public int maxParallels;
-
-        public AsteroidSummary(String name, float chance, float timeDensity, int maxParallels) {
-            this.name = name;
-            this.chance = chance;
-            this.timeDensity = timeDensity;
-            this.maxParallels = maxParallels;
-        }
-    }
-
-    /**
-     * Get a list of summaries for some set of recipes. For each recipe, find: - chance: the probability of choosing it
-     * at each operation - timeDensity: the fraction of time that the recipe takes up in the long run - maxParallels:
-     * the number of parallels the mining module will do at its current settings, level, and computation. (assuming that
-     * power, computation, plasma, and drills/rods don't run out)
-     *
-     * @author hacatu
-     */
-    protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
-        long power = GTValues.V[tTier];
-        if (prevRecipes == null) {
-            return Collections.<AsteroidSummary>emptyList();
-        }
-        float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
-        float totalTimedensity = prevRecipes.totalTimedensity;
-        return prevRecipes.recipes.stream()
-            .map(r -> {
-                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-                if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
-                return new AsteroidSummary(
-                    data.asteroidName,
-                    data.recipeWeight / totalWeight,
-                    data.recipeWeight * r.mDuration / totalTimedensity,
-                    Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
-            })
-            .collect(Collectors.toList());
     }
 
     @Override
