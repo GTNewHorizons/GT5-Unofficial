@@ -1888,10 +1888,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         ejectionHelper.ejectStack(tmp);
         ejectionHelper.commit();
 
-        if (remaining != null && tmp.amount != 0) {
+        if (remaining != null && GTUtility.getFluidAmount(tmp) != 0) {
             remaining.add(tmp);
         }
-        return tmp.amount == 0;
+        return GTUtility.getFluidAmount(tmp) == 0;
     }
 
     protected boolean addFluidOutputByLayer(FluidStack stack,
@@ -1911,9 +1911,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
             ejectionHelper.ejectStack(tmp);
             ejectionHelper.commit();
-            if (tmp.amount == 0) break;
+            if (GTUtility.getFluidAmount(tmp) == 0) break;
         }
-        boolean isConsumed = tmp.amount == 0;
+        boolean isConsumed = GTUtility.getFluidAmount(tmp) == 0;
         if (remaining != null) remaining.add(isConsumed ? null : tmp);
         return isConsumed;
     }
@@ -1951,7 +1951,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         boolean protectFluids, @Nullable List<FluidStack> remaining) {
         if (outputFluids.isEmpty()) return true;
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        int ejected = ejectionHelper.ejectFluids(outputFluids, 1, remaining);
+        long ejected = ejectionHelper.ejectFluids(outputFluids, 1, remaining);
         ejectionHelper.commit();
 
         return ejected == 1;
@@ -1962,75 +1962,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return addFluidOutputsByLayer(outputFluids, hatchesByLayer, protectsExcessFluid(), remaining);
     }
 
-    private boolean addFluidOutputsByLayerInternal(@NotNull List<FluidStack> mergedFluids,
-        List<? extends List<? extends IOutputHatch>> hatchesByLayer, int index, boolean protectFluids,
-        @Nullable List<FluidStack> remaining, @Nullable List<FluidStack> layerRemaining) {
-        if (index >= hatchesByLayer.size()) {
-            if (remaining != null) {
-                for (var s : mergedFluids) {
-                    remaining.add(s.copy());
-                }
-            }
-            return false;
-        }
-        if (layerRemaining != null) layerRemaining.clear();
-        boolean succeed = addFluidOutputs(mergedFluids, hatchesByLayer.get(index), protectFluids, layerRemaining);
-        if (remaining != null) {
-            if (layerRemaining.isEmpty()) remaining.add(null);
-            else remaining.addAll(layerRemaining);
-        }
-        return succeed;
-    }
-
     protected boolean addFluidOutputsByLayer(@NotNull List<FluidStack> outputFluids,
         List<? extends List<? extends IOutputHatch>> hatchesByLayer, boolean protectFluids,
         @Nullable List<FluidStack> remaining) {
-        List<FluidStack> mergedFluids = new ArrayList<>();
         List<FluidStack> layerRemaining = remaining != null ? new ArrayList<>() : null;
         int index = 0;
         boolean succeed = true;
 
         for (FluidStack stack : outputFluids) {
             if (!GTUtility.isStackValid(stack)) {
-                if (!mergedFluids.isEmpty()) {
-                    succeed &= addFluidOutputsByLayerInternal(
-                        mergedFluids,
-                        hatchesByLayer,
-                        index,
-                        protectFluids,
-                        remaining,
-                        layerRemaining);
-                    mergedFluids.clear();
-                    index++;
-                }
                 if (remaining != null) remaining.add(null);
-                index++;
-                continue;
+            } else if (index >= hatchesByLayer.size()) {
+                if (remaining != null) remaining.add(stack.copy());
+                succeed = false;
+            } else {
+                if (layerRemaining != null) layerRemaining.clear();
+                succeed &= addFluidOutputs(
+                    Collections.singletonList(stack),
+                    hatchesByLayer.get(index),
+                    protectFluids,
+                    layerRemaining);
+                if (remaining != null) {
+                    if (layerRemaining.isEmpty()) remaining.add(null);
+                    else remaining.addAll(layerRemaining);
+                }
             }
-            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
-                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
-                mergedFluids.add(stack);
-                continue;
-            }
-            succeed &= addFluidOutputsByLayerInternal(
-                mergedFluids,
-                hatchesByLayer,
-                index,
-                protectFluids,
-                remaining,
-                layerRemaining);
-            mergedFluids.clear();
-            mergedFluids.add(stack);
             index++;
-        }
-        if (!mergedFluids.isEmpty()) {
-            succeed &= addFluidOutputsByLayerInternal(
-                mergedFluids,
-                hatchesByLayer,
-                index,
-                protectFluids,
-                remaining,
-                layerRemaining);
         }
         if (remaining != null) {
             GTUtility.removeTailingNulls(remaining);
@@ -3463,15 +3420,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         @NotNull List<List<T>> hatchesByLayer) {
         List<IOutputHatch> ret = new ArrayList<>();
         int layerIndex = 0;
-        FluidStack lastStack = null;
         for (int i = 0; i < toOutput.size(); i++) {
             FluidStack fluidOutputForLayer = toOutput.get(i);
-            if (fluidOutputForLayer != null && lastStack != null
-                && lastStack.amount == Integer.MAX_VALUE
-                && fluidOutputForLayer.isFluidEqual(lastStack)) {
-                lastStack = fluidOutputForLayer;
-                continue;
-            }
             if (layerIndex >= hatchesByLayer.size()) {
                 break;
             }
@@ -3483,7 +3433,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     ret.add(hatch);
                 }
             }
-            lastStack = fluidOutputForLayer;
             layerIndex++;
         }
         return ret;
@@ -4219,13 +4168,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> mPendingFluids.stream()
                         .map(fluidStack -> {
                             if (fluidStack == null) return null;
-                            return new FluidStack(fluidStack, fluidStack.amount) {
-
-                                @Override
-                                public boolean isFluidEqual(FluidStack other) {
-                                    return super.isFluidEqual(other) && amount == other.amount;
-                                }
-                            };
+                            return GTUtility.createFluidStackWithAmountComparison(fluidStack);
                         })
                         .collect(Collectors.toList()),
                     val -> {

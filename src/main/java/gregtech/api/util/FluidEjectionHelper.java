@@ -65,7 +65,7 @@ public class FluidEjectionHelper {
         return ejected;
     }
 
-    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+    public long ejectFluids(List<FluidStack> outputs, long startingParallels) {
         return ejectFluids(outputs, startingParallels, null);
     }
 
