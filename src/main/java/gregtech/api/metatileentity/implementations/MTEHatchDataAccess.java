@@ -120,7 +120,6 @@ public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputH
     @Override
     public void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
-
         cachedRecipes = null;
         // Adding/removing a data stick changes which assembly-line recipes are available, so push a recipe check.
         notifyWatchers();
@@ -141,7 +140,11 @@ public class MTEHatchDataAccess extends MTEHatchDataBase implements ISmartInputH
                 recipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
 
-            this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(recipes));
+            if (recipes.isEmpty()) {
+                this.cachedRecipes = ALRecipeDataPacket.EMPTY_PACKET;
+            } else {
+                this.cachedRecipes = new ALRecipeDataPacket(ImmutableSet.copyOf(recipes));
+            }
         }
 
         return cachedRecipes;

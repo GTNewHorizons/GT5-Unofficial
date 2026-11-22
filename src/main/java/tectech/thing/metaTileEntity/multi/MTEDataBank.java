@@ -57,6 +57,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private final ArrayList<IALRecipeInputHatch> recipeInputHatches = new ArrayList<>();
     private final ArrayList<IALRecipeOutputHatch> recipeOutputHatches = new ArrayList<>();
     private boolean slave = false;
+    private boolean dirty = false;
 
     private static final IStructureDefinition<MTEDataBank> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEDataBank>builder()
@@ -142,6 +143,14 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         recipeOutputHatches.clear();
     }
 
+    // called by the hatches' notifyWatchers, so when a new stick is inserted
+    // or a "master" database pushed data to it's "slave"
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        super.scheduleRecipeCheckImmediate();
+        this.dirty = true;
+    }
+
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
@@ -158,6 +167,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
+        if (!dirty) return;
+
         LinkedHashSet<RecipeAssemblyLine> availableRecipes = new LinkedHashSet<>();
 
         for (IALRecipeInputHatch recipeInputHatch : recipeInputHatches) {
@@ -176,12 +187,43 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
-        for (IALRecipeOutputHatch recipeOutputHatch : recipeOutputHatches) {
-            if (!recipeOutputHatch.isValid()) continue;
+        for (IALRecipeOutputHatch roh : recipeOutputHatches) {
+            if (!roh.isValid()) continue;
 
-            // if (dataPacket.equals(previous)) continue;
-            // hatch.enqueueAndMove(dataPacket);
+            if (roh.getAssemblyLineRecipes()
+                .equals(dataPacket)) continue;
+            roh.setAssemblyLineRecipes(dataPacket);
         }
+        dirty = false;
+    }
+
+    // be dirty on first tick, so that the cache gets primed
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity bmTE) {
+        super.onFirstTick_EM(bmTE);
+
+        if (!bmTE.isServerSide()) return;
+
+        this.dirty = true;
+    }
+
+    @Override
+    public void onEnableWorking() {
+        super.onEnableWorking();
+        this.dirty = true;
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+        // force outputs to drop packets
+        updateDataOutputs(ALRecipeDataPacket.EMPTY_PACKET);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        updateDataOutputs(ALRecipeDataPacket.EMPTY_PACKET);
     }
 
     @Override
@@ -210,12 +252,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
             case IALRecipeInputHatch inputHatch -> {
                 inputHatch.updateTexture(casingIndex);
-
+                addIfSmartInput(inputHatch);
                 if (inputHatch instanceof MTEHatchDataItemsInput) {
                     // inputs are chained from another databank, increase required per-hatch EU/t
                     slave = true;
                 }
-
                 return recipeInputHatches.add(inputHatch);
             }
             case IALRecipeOutputHatch outputHatch -> {

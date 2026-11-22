@@ -70,6 +70,9 @@ public abstract class MTEHatchDataBase extends MTEHatch {
     public String[] getInfoData() {
         ArrayList<String> lines = new ArrayList<>();
 
+        // guaranteed to be first after sort still
+        lines.addFirst("");
+
         var packet = getAssemblyLineRecipes();
 
         if (!packet.isEmpty()) {
@@ -84,7 +87,8 @@ public abstract class MTEHatchDataBase extends MTEHatch {
 
         lines.sort(String::compareTo);
 
-        lines.add(0, StatCollector.translateToLocalFormatted("tt.keyphrase.AL_Recipe_Header"));
+        // replace with headder
+        lines.set(0, StatCollector.translateToLocalFormatted("tt.keyphrase.AL_Recipe_Header"));
 
         return lines.toArray(GTValues.emptyStringArray);
     }

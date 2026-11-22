@@ -4,7 +4,8 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ import gregtech.api.util.GTSplit;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.IALRecipeOutputHatch;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsOutput extends MTEHatchDataBase
@@ -71,27 +73,16 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-
-        if (!this.previousPacket.isEmpty()) {
-            aNBT.setTag("eDATA", this.previousPacket.toNBT());
-        }
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-
-        if (aNBT.hasKey("eDATA")) {
-            this.previousPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
-        }
-    }
-
-    @Override
     public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    // region IConnectsToDataPipe
 
     @Override
     public @Nullable IConnectsToDataPipe<ALRecipeDataPacket> getLastConnected() {
@@ -110,8 +101,8 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
 
     @Override
     public void setContent(@Nullable ALRecipeDataPacket content) {
+        if (content == null) content = ALRecipeDataPacket.EMPTY_PACKET;
         this.q = content;
-        moveAround(getBaseMetaTileEntity(), CheckState.NEW_DATA);
     }
 
     @Override
@@ -128,7 +119,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
             case CONNECTION, DISCONNECTED, UNKNOWN -> {}
             case NEW_DATA -> {
                 previousPacket = q;
-                q = null;
+                q = ALRecipeDataPacket.EMPTY_PACKET;
             }
             case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
             default -> {
@@ -137,11 +128,14 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
         }
         return result;
     }
+    // endregion
 
     @Override
     protected String getWailaDataKey() {
         return "tt.keyphrase.AL_Recipe_Transmitting";
     }
+
+    // region IALRecipeOutputHatch
 
     @Override
     public @NotNull ALRecipeDataPacket getAssemblyLineRecipes() {
@@ -150,6 +144,29 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataBase
 
     @Override
     public void setAssemblyLineRecipes(ALRecipeDataPacket packet) {
-        setContent(packet);
+        enqueueAndMove(packet);
+    }
+
+    // endregion
+
+    // 5s connection polling, in case of pipes being broken, until pipes update hatches instantly
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isClientSide()) return;
+
+        aTick = MinecraftServer.getServer()
+            .getTickCounter();
+
+        if (CommonValues.MOVE_AT == aTick % IConnectsToDataPipe.TICKS_CONNECTION_POLLING) {
+            moveAround(aBaseMetaTileEntity, CheckState.CONNECTION);
+        }
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        if (lastConnected == null) return;
+        // when "outputs" are broken, update the connected input's data
+        moveAround(this.getBaseMetaTileEntity(), CheckState.CONNECTION);
     }
 }
