@@ -135,18 +135,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
             // wireFine
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Wire.get(0L))
-                .itemOutputs(werkstoff.get(wireFine, 8))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 1.5F,
-                        1F))
-                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
-                .addTo(extruderRecipes);
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
                 .circuit(3)
