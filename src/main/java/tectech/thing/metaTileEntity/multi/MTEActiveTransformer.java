@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -81,8 +82,8 @@ public class MTEActiveTransformer extends TTMultiblockBase
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
 
-    private static final int MAX_LENGTH = 6; // 8 - 2 to account for first and last slice
-
+    private static final int MAX_LENGTH = 8; // 8 - 2 to account for first and last slice
+    private static final int MIDDLE_SLICE_LENGTH = MAX_LENGTH - 2;
     private static final String STRUCTURE_SHAPE_FIRST = "first";
     private static final String STRUCTURE_SHAPE_MIDDLE = "middle";
     private static final String STRUCTURE_SHAPE_LAST = "last";
@@ -107,7 +108,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
 
         slices.add(FIRST);
 
-        for (int i = 0; i < MAX_LENGTH; i++) slices.add(MIDDLE);
+        for (int i = 0; i < MIDDLE_SLICE_LENGTH; i++) slices.add(MIDDLE);
 
         slices.add(LAST);
 
@@ -130,7 +131,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
-        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MAX_LENGTH);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MIDDLE_SLICE_LENGTH);
 
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
@@ -150,7 +151,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MAX_LENGTH);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MIDDLE_SLICE_LENGTH);
 
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
@@ -192,7 +193,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
 
         offset = offset.add(inc);
 
-        while (length < MAX_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset, errors)) {
+        while (length < MIDDLE_SLICE_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset, errors)) {
             length++;
             offset = offset.add(inc);
         }
@@ -303,9 +304,9 @@ public class MTEActiveTransformer extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "active-transformer"))
+            .addMarkdown(new ResourceLocation("gregtech", "active-transformer"), ImmutableMap.<String, Object>builder().put("max_length",MAX_LENGTH).build())
             .addSupportAny()
-            .beginVariableStructureBlock(3,3,3,3,3,8,false)
+            .beginVariableStructureBlock(3,3,3,3,3,MAX_LENGTH,false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addEnergyHatch("1+", anyCasingText(), 1)
             .addDynamoHatch("0+", anyCasingText(), 1)
