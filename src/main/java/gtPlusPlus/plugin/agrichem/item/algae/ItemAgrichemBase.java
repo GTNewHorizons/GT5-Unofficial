@@ -63,7 +63,7 @@ public class ItemAgrichemBase extends Item {
         for (int i = 0; i < base.length; i++) {
             switch (i) {
                 // skip no longer used items
-                case 16, 18, 19, 20, 21 -> {}
+                case 16, 18, 19, 20, 21, 22 -> {}
                 default -> aList.add(new ItemStack(aItem, 1, i));
             }
         }

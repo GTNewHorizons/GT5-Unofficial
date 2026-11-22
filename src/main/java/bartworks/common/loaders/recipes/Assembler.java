@@ -34,14 +34,6 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1), Materials.Lapis.getBlocks(8))
-            .circuit(17)
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[1]))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),

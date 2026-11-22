@@ -412,9 +412,8 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     public boolean onRunningTick(ItemStack aStack) {
         if (lEUt > 0) {
             addEnergyOutput((lEUt * mEfficiency) / 10000);
-            return true;
         }
-        return false;
+        return true;
     }
 
     @Override
