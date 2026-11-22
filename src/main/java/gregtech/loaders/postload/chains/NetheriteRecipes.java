@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.VillageNames;
 import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -197,7 +198,7 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_IV)
                 .addTo(autoclaveRecipes);
 
-            ItemStack prismarineCrystals = GameRegistry.findItemStack(EtFuturumRequiem.ID, "prismarine_crystals", 64);
+            ItemStack prismarineCrystals = GameRegistry.findItemStack(VillageNames.ID, "prismarine_crystals", 64);
             if (prismarineCrystals != null) {
                 GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
                     .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), prismarineCrystals)
