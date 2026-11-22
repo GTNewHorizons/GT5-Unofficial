@@ -183,15 +183,19 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final FusionOverclockDescriber fod = (FusionOverclockDescriber) getOverclockDescriber();
         // spotless:off
+        ImmutableMap.Builder<String, Object> mapBuilder = ImmutableMap.<String, Object>builder()
+            .put("power", GTValues.V[tier()] / MAX_ENERGY_HATCHES)
+            .put("capacity", capableStartupCanonical() / MAX_ENERGY_HATCHES)
+            .put("tier", tier())
+            .put("eu_per_oc", fod.getEUtIncreasePerOC())
+            .put("time_per_oc", fod.getDurationDecreasePerOC());
+        if (fod.getEUtIncreasePerOC() >= 4) {
+            mapBuilder.put("perfect", true);
+        }
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "fusion-computer"),
-                ImmutableMap.<String, Object>builder()
-                    .put("power", GTValues.V[tier()] / MAX_ENERGY_HATCHES)
-                    .put("capacity", capableStartupCanonical() / MAX_ENERGY_HATCHES)
-                    .put("tier", tier())
-                    .put("eu_per_oc", fod.getEUtIncreasePerOC())
-                    .put("time_per_oc", fod.getDurationDecreasePerOC())
+                mapBuilder
                     .build())
             .beginStructureBlock(15, 3, 15, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_2nd_layer"))

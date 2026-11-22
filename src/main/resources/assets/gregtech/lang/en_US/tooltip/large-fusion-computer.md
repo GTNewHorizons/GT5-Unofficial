@@ -4,4 +4,4 @@ The total combined {EU} capacity must be greater than the recipe start cost to i
 Can only run {VNF:tier} recipes and below
 {hr}
 {color_note:Changing recipes consumes the start cost again}
-{color_mechanic:Performs {var:eu_per_oc}/{var:time_per_oc} Perfect Overclocks}
+{color_mechanic:Performs {var:eu_per_oc}/{var:time_per_oc}{ifdef:perfect: Perfect} Overclocks}

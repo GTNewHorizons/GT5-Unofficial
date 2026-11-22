@@ -184,17 +184,23 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final FusionOverclockDescriber fod = (FusionOverclockDescriber) getOverclockDescriber();
         // spotless:off
+        ImmutableMap.Builder<String, Object> mapBuilder = ImmutableMap.<String, Object>builder()
+            .put("power", getSingleHatchPower())
+            .put("capacity", capableStartupCanonical() / MAX_ENERGY_HATCHES)
+            .put("tier", tier())
+            .put("base_para", getMaxPara())
+            .put("per_tier_para", getMaxPara())
+            .put("eu_per_oc", fod.getEUtIncreasePerOC())
+            .put("time_per_oc", fod.getDurationDecreasePerOC());
+
+        if (fod.getEUtIncreasePerOC() >= 4) {
+            mapBuilder.put("perfect", true);
+        }
+
         tt.addMachineType(translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-fusion-computer"),
-                ImmutableMap.<String, Object>builder()
-                    .put("power", getSingleHatchPower())
-                    .put("capacity", capableStartupCanonical() / MAX_ENERGY_HATCHES)
-                    .put("tier", tier())
-                    .put("base_para", getMaxPara())
-                    .put("per_tier_para", getMaxPara())
-                    .put("eu_per_oc", fod.getEUtIncreasePerOC())
-                    .put("time_per_oc", fod.getDurationDecreasePerOC())
+                mapBuilder
                     .build())
             .addSupportMultiAmp()
             .beginStructureBlock(47, 7, 47, false)
