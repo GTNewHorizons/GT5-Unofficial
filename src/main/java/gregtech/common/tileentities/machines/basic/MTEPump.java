@@ -849,11 +849,11 @@ public class MTEPump extends MTEBasicMachine {
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.primary",
                     (this.mPrimaryPumpedBlock != null ? new ChatComponentBlockName(this.mPrimaryPumpedBlock)
-                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
+                        : new ChatComponentTranslation("GT5U.scanner.none"))),
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.secondary",
                     (this.mSecondaryPumpedBlock != null ? new ChatComponentBlockName(this.mSecondaryPumpedBlock)
-                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
+                        : new ChatComponentTranslation("GT5U.scanner.none"))),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.pumps", mPumpCountBelow),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.queue_size", mPumpList.size()),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.head", getYOfPumpHead()),
