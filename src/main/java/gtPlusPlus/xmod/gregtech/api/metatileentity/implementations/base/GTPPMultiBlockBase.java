@@ -1219,13 +1219,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public enum GTPPHatchElement implements IHatchElement<GTPPMultiBlockBase<?>> {
 
-        AirIntake("GT5U.MBTT.AirIntakeHatch", GTPPMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
-
-            @Override
-            public long count(GTPPMultiBlockBase<?> t) {
-                return t.mAirIntakes.size();
-            }
-        },
         /**
          * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
          */

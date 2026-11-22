@@ -157,6 +157,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -253,6 +254,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
     protected List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
+    protected List<MTEHatchAirIntake> mAirIntakeHatches = new ArrayList<>();
 
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
@@ -2407,6 +2409,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    public boolean addAirIntakeToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchAirIntake mteHatchAirIntake) {
+            mteHatchAirIntake.updateTexture(aBaseCasingIndex);
+            mteHatchAirIntake.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
+            return mAirIntakeHatches.add(mteHatchAirIntake);
+        }
+        return false;
+    }
+
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -3025,6 +3039,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatchElementalDataOrbHolder> getElementalDataOrbHatches() {
         return mElementalDataOrbHatches;
+    }
+
+    public List<MTEHatchAirIntake> getAirIntakeHatches() {
+        return mAirIntakeHatches;
     }
 
     /**

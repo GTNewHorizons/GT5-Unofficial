@@ -25,6 +25,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
@@ -212,6 +213,14 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
         @Override
         public boolean matchesHatch(IMetaTileEntity mte) {
             return mte instanceof MTEHatchElementalDataOrbHolder;
+        }
+    },
+    AirIntake("GT5U.MBTT.AirIntakeHatch", MTEMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return t.getAirIntakeHatches()
+                .size();
         }
     };
 
