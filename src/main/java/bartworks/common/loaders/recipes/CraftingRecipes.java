@@ -10,7 +10,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LESU;
 import static gregtech.api.enums.MetaTileEntityIDs.ManualTrafo;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
@@ -25,7 +24,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.RecipeLoader;
-import bartworks.common.tileentities.multis.MTELESU;
 import bartworks.common.tileentities.multis.MTEManualTrafo;
 import bartworks.common.tileentities.multis.MTEWindmill;
 import bartworks.common.tileentities.tiered.MTEBioLab;
@@ -75,8 +73,6 @@ public class CraftingRecipes implements Runnable {
             ItemList.Battery_Hull_HV.get(1L), ItemList.BatteryHull_EV.get(1L) };
         ItemStack[] chreac = { ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L),
             ItemList.Machine_EV_ChemicalReactor.get(1L), ItemList.Machine_IV_ChemicalReactor.get(1L) };
-
-        new MTELESU(LESU.ID, "LESU", "L.E.S.U.");
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),
