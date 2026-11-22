@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.AirIntake;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -14,6 +13,7 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Air_Inta
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -35,6 +35,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -48,6 +49,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -78,6 +80,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     private boolean boostEu;
 
     private int casingAmount;
+    private final List<MTEHatchAirIntake> mAirIntakeHatches = new ArrayList<>();
     // spotless:off
     private static final String[][] structure = new String[][] {
         { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
@@ -156,14 +159,14 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
                 .addElement(
                     'S',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, InputHatch, 1, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(AirIntakeHatchElement.ELEMENT, 8, InputHatch, 1, Maintenance, 1))
                         .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
                 .addElement(
                     'T',
-                    buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 1, Dynamo.or(ExoticDynamo), 1, Maintenance, 1))
+                    buildHatchAdder(MTELargeRocketEngine.class).atLeast(
+                        ImmutableMap.of(AirIntakeHatchElement.ELEMENT, 1, Dynamo.or(ExoticDynamo), 1, Maintenance, 1))
                         .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
@@ -185,10 +188,17 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mAirIntakeHatches.clear();
+    }
+
+    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, casingAmount, 16);
+        System.out.println("Found " + mAirIntakeHatches.size() + " air intake hatches");
         if (mAirIntakeHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
@@ -379,5 +389,49 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    private enum AirIntakeHatchElement implements IHatchElement<MTELargeRocketEngine> {
+
+        ELEMENT("GT5U.MBTT.AirIntakeHatch");
+
+        private final String name;
+
+        AirIntakeHatchElement(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchAirIntake.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTELargeRocketEngine> adder() {
+            return (self, igte, texture) -> {
+                if (igte.getMetaTileEntity() instanceof MTEHatchAirIntake imte) {
+                    imte.updateTexture(texture);
+                    imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    self.mAirIntakeHatches.add(imte);
+                    return true;
+                }
+                return false;
+            };
+        }
+
+        @Override
+        public long count(MTELargeRocketEngine mte) {
+            return mte.mAirIntakeHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }
