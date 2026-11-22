@@ -227,6 +227,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        updateDataOutputs(ALRecipeDataPacket.EMPTY_PACKET);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
