@@ -14,6 +14,7 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Variants.AlteredPricing;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -50,6 +51,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.Variants;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -116,7 +118,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.DraconiumAwakened.getMolten(576), },
             ItemList.Casing_Coil_Infinity.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UEV);
+            (int) TierEU.RECIPE_UEV,
+            AlteredPricing);
 
         // Hypogen Coil
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -131,7 +134,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.Infinity.getMolten(576), },
             ItemList.Casing_Coil_Hypogen.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UIV);
+            (int) TierEU.RECIPE_UIV,
+            AlteredPricing);
 
         // Eternal coil
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -148,7 +152,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UMV);
+            (int) TierEU.RECIPE_UMV,
+            AlteredPricing);
 
         // EOH Controller Recipe.
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -449,7 +454,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTModHandler.getIC2Coolant(10_000), Materials.Radon.getGas(2_500), },
             ItemList.Circuit_Wetwaremainframe.get(1L),
             2000,
-            300000);
+            300000,
+            AlteredPricing);
 
         // Bioware SuperComputer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -473,7 +479,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.BioMediumSterilized.getFluid(10 * INGOTS), Materials.SuperCoolant.getFluid(10_000), },
             ItemList.Circuit_Biowaresupercomputer.get(1L),
             4000,
-            (int) TierEU.RECIPE_UV);
+            (int) TierEU.RECIPE_UV,
+            AlteredPricing);
 
         // Bio Mainframe
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -504,7 +511,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.BioMediumSterilized.getFluid(20 * INGOTS), Materials.SuperCoolant.getFluid(20_000L), },
             ItemList.Circuit_Biomainframe.get(1L),
             6000,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Assembly
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -526,7 +534,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 500) },
             ItemList.Circuit_OpticalAssembly.get(1L),
             20 * 20,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Computer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -549,7 +558,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 1_000) },
             ItemList.Circuit_OpticalComputer.get(1L),
             200 * 20,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Mainframe
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -575,7 +585,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 2_000) },
             ItemList.Circuit_OpticalMainframe.get(1L),
             300 * 20,
-            (int) TierEU.RECIPE_UEV);
+            (int) TierEU.RECIPE_UEV,
+            AlteredPricing);
 
         // Laser Vacuum Mirror
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1117,6 +1128,9 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUHVAsslineRecipes() {
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1327,6 +1341,9 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUEVAsslineRecipes() {
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1537,6 +1554,9 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUIVAsslineRecipes() {
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1747,6 +1767,9 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUMVAsslineRecipes() {
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -1946,6 +1969,9 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     private void itemPartsUXVAsslineRecipes() {
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         // ----------------------------------------------------------------------
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
@@ -3004,10 +3030,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         // Input
         {
             // UHV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hatch_Input_Bus_MAX.get(1),
-                240_000L,
-                24_000L,
+                240_000,
+                24_000,
                 (int) TierEU.RECIPE_UV,
                 4,
                 new Object[] { ItemList.Hatch_Input_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
@@ -3020,10 +3046,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UHV);
 
             // UEV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UEV.get(1),
-                300_000L,
-                30_000L,
+                300_000,
+                30_000,
                 (int) TierEU.RECIPE_UHV,
                 4,
                 new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
@@ -3037,10 +3063,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UEV);
 
             // UIV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UIV.get(1),
-                600_000L,
-                60_000L,
+                600_000,
+                60_000,
                 (int) TierEU.RECIPE_UEV,
                 4,
                 new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
@@ -3055,10 +3081,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UIV);
 
             // UMV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UMV.get(1),
-                1_200_000L,
-                120_000L,
+                1_200_000,
+                120_000,
                 (int) TierEU.RECIPE_UIV,
                 1024,
                 new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
@@ -3072,10 +3098,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UMV);
 
             // UXV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UXV.get(1),
-                2_400_000L,
-                240_000L,
+                2_400_000,
+                240_000,
                 (int) TierEU.RECIPE_UXV,
                 4096,
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),
@@ -3094,10 +3120,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         // Output
         {
             // UHV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hatch_Output_Bus_MAX.get(1),
-                240_000L,
-                24_000L,
+                240_000,
+                24_000,
                 (int) TierEU.RECIPE_UV,
                 4,
                 new Object[] { ItemList.Hatch_Output_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
@@ -3110,10 +3136,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UHV);
 
             // UEV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UEV.get(1),
-                300_000L,
-                30_000L,
+                300_000,
+                30_000,
                 (int) TierEU.RECIPE_UHV,
                 4,
                 new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
@@ -3127,10 +3153,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UEV);
 
             // UIV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UIV.get(1),
-                600_000L,
-                60_000L,
+                600_000,
+                60_000,
                 (int) TierEU.RECIPE_UEV,
                 4,
                 new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
@@ -3145,10 +3171,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UIV);
 
             // UMV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UMV.get(1),
-                1_200_000L,
-                120_000L,
+                1_200_000,
+                120_000,
                 (int) TierEU.RECIPE_UIV,
                 1024,
                 new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
@@ -3162,10 +3188,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UMV);
 
             // UXV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UXV.get(1),
-                2_400_000L,
-                240_000L,
+                2_400_000,
+                240_000,
                 (int) TierEU.RECIPE_UXV,
                 4096,
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),
