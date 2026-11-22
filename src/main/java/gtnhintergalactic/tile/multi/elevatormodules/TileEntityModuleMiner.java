@@ -242,6 +242,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "space/mining-module"),
+                ImmutableMap.<String, Object>builder()
+                    .put("voltageTier", this.getTier())
+                    .put("moduleTier", this.tModuleTier)
+                    .put("motorTier", this.getNeededMotorTier())
+                    .put("parallels", this.getMaxParallels())
+                    .build())
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                anyCasingText(),
+                1)
+            .addInputBus("1+", anyCasingText(), 1)
+            .addInputHatch("0+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @Override
     public OverclockDescriber getOverclockDescriber() {
         return overclockDescriber;
     }
@@ -927,32 +957,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk1"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), anyCasingText(), 1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -1012,36 +1016,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk2"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    anyCasingText(),
-                    1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -1100,36 +1074,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
-        }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk3"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    anyCasingText(),
-                    1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
         }
     }
 
