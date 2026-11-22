@@ -35,7 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDataBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
@@ -146,11 +145,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void clearHatches() {
         super.clearHatches();
-        for (IALRecipeInputHatch rih : recipeInputHatches) {
-            if (rih instanceof MTEHatchDataBase hatchDataBase) {
-                hatchDataBase.removeWatcher(this);
-            }
-        }
         recipeInputHatches.clear();
         recipeOutputHatches.clear();
     }
@@ -258,9 +252,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
             case IALRecipeInputHatch inputHatch -> {
                 inputHatch.updateTexture(casingIndex);
-                if (inputHatch instanceof MTEHatchDataBase hatchDataBase) {
-                    hatchDataBase.addWatcher(this);
-                }
+                addIfSmartInput(inputHatch);
                 if (inputHatch instanceof MTEHatchDataItemsInput) {
                     // inputs are chained from another databank, increase required per-hatch EU/t
                     slave = true;
