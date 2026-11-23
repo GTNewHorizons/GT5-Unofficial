@@ -18179,7 +18179,7 @@ public class Materials {
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.redzircon")
             .setProperty(GTMaterialProperties.MELTING_POINT, 2130)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2130)
-            .setProperty(GTMaterialProperties.DURABILITY, 53)
+            .setProperty(GTMaterialProperties.DURABILITY, 106)
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SiliconDioxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SiliconDioxide), 1L)))
