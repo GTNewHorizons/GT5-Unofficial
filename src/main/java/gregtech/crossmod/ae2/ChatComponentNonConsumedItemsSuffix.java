@@ -11,6 +11,7 @@ import net.minecraft.network.PacketBuffer;
 import com.gtnewhorizon.gtnhlib.chat.AbstractChatComponentCustom;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.AbstractChatComponentBuffer;
 
+import appeng.api.util.INameSuffixIcons;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.Mods;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
@@ -22,7 +23,7 @@ import gregtech.common.config.Gregtech;
  * the server otherwise, where client language files are not loaded.
  */
 public class ChatComponentNonConsumedItemsSuffix
-    extends AbstractChatComponentBuffer<ChatComponentNonConsumedItemsSuffix> {
+    extends AbstractChatComponentBuffer<ChatComponentNonConsumedItemsSuffix> implements INameSuffixIcons {
 
     public List<ItemStack> items = new ArrayList<>();
 
@@ -30,6 +31,11 @@ public class ChatComponentNonConsumedItemsSuffix
 
     public ChatComponentNonConsumedItemsSuffix(List<ItemStack> items) {
         this.items = items;
+    }
+
+    @Override
+    public List<ItemStack> getSuffixIcons() {
+        return items;
     }
 
     @Override

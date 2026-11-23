@@ -732,8 +732,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public IChatComponent getNameSuffix() {
-        if (hasCustomName()) return null;
+        return hasCustomName() ? null : getPatternTargetSuffix();
+    }
 
+    @Override
+    public IChatComponent getPatternTargetSuffix() {
         IChatComponent suffix = null;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
