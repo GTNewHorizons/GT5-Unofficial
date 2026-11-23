@@ -64,15 +64,15 @@ public class ItemDimensionDisplay extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         String dimName = DimensionHelper.getFullName(getDimension(stack));
-
-        String i18nName = DimensionHelper.getDimLocalizedName(dimName);
-
-        return StatCollector.translateToLocalFormatted(DimensionHelper.getDimTier(dimName), i18nName);
+        return DimensionHelper.getDimLocalizedName(dimName);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
         super.addInformation(stack, player, list, advanced);
+
+        BlockDimensionDisplay block = (BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem());
+        list.add(StatCollector.translateToLocalFormatted("gtnop.gui.nei.tier.value", block.getDimensionRocketTier()));
 
         if (stack.hasTagCompound() && stack.getTagCompound()
             .hasKey("VeinChance")) {

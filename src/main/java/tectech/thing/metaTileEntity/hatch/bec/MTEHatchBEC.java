@@ -88,7 +88,7 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-hatch"), new HashMap<>()));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/hatch"), new HashMap<>()));
         }
         return ArrayUtils.addAll(
             super.getDescription(),
