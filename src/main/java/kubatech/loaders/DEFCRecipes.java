@@ -324,7 +324,6 @@ public class DEFCRecipes {
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
-
             // radon plasma
             GTValues.RA.stdBuilder()
                 .itemInputs(
