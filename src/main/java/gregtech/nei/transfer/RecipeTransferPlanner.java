@@ -111,7 +111,7 @@ final class RecipeTransferPlanner {
      */
     RecipeTransferPlanner(List<Ingredient> ingredients, RecipeFluid fluid, Machine machine, ItemStack[] inventory,
         BiPredicate<ItemStack, ItemStack> accepts) {
-        this.ingredients = ingredients;
+        this.ingredients = merge(ingredients);
         this.fluid = fluid;
         this.machine = machine;
         this.inventory = inventory;
@@ -125,6 +125,38 @@ final class RecipeTransferPlanner {
             else inMachine.get(ingredient)
                 .add(stack.copy());
         }
+    }
+
+    /**
+     * Joins the ingredients that accept the same items, adding up their amounts. Recipes list more than a stack of an
+     * item over several slots (104 as 64 + 40), and the items of that kind in the machine must count for all of them.
+     */
+    private static List<Ingredient> merge(List<Ingredient> ingredients) {
+        List<Ingredient> merged = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            int same = -1;
+            for (int i = 0; i < merged.size() && same < 0; i++) {
+                if (sameAlternatives(merged.get(i), ingredient)) same = i;
+            }
+            if (same < 0) {
+                merged.add(ingredient);
+            } else {
+                Ingredient first = merged.get(same);
+                int amount = saturatedAdd(first.amount(), ingredient.amount());
+                merged.set(same, new Ingredient(first.alternatives(), amount));
+            }
+        }
+        return merged;
+    }
+
+    private static boolean sameAlternatives(Ingredient a, Ingredient b) {
+        List<ItemStack> first = a.alternatives();
+        List<ItemStack> second = b.alternatives();
+        if (first.size() != second.size()) return false;
+        for (ItemStack alternative : first) {
+            if (findGroup(second, alternative) < 0) return false;
+        }
+        return true;
     }
 
     /** @param crafts crafts for {@link Mode#ADD} */

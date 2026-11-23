@@ -65,6 +65,11 @@ class RecipeTransferPlannerTest {
 
     private static final List<Ingredient> CHEST_RECIPE = List
         .of(ingredient(1, new ItemStack(CHEST)), ingredient(8, new ItemStack(DIRT)));
+    /** Recipes list more than a stack of an item over several slots, like 104 dirt as 64 + 40. */
+    private static final List<Ingredient> SPLIT_RECIPE = List.of(
+        ingredient(64, new ItemStack(DIRT)),
+        ingredient(40, new ItemStack(DIRT)),
+        ingredient(16, new ItemStack(PLANK)));
 
     @Test
     void fillsOneCraftWithOneSet() {
@@ -134,6 +139,36 @@ class RecipeTransferPlannerTest {
         assertEquals(3, result.crafts());
         assertStacks(result.inputs(), stack(CHEST, 3), stack(DIRT, 24));
         assertStacks(result.inventory(), stack(DIRT, 1));
+    }
+
+    @Test
+    void addsAWholeCraftOfAnItemSplitOverSlots() {
+        Result result = plan(
+            SPLIT_RECIPE,
+            1,
+            inputs(stack(DIRT, 64), stack(DIRT, 40), stack(PLANK, 16)),
+            inventory(stack(DIRT, 128), stack(PLANK, 32)));
+
+        assertEquals(2, result.crafts());
+        assertStacks(
+            result.inputs(),
+            stack(DIRT, 64),
+            stack(DIRT, 64),
+            stack(DIRT, 64),
+            stack(DIRT, 16),
+            stack(PLANK, 32));
+        assertStacks(result.inventory(), stack(DIRT, 24), stack(PLANK, 16));
+    }
+
+    @Test
+    void addsNothingWhenAnItemSplitOverSlotsIsShortOfACraft() {
+        Result result = plan(
+            SPLIT_RECIPE,
+            0,
+            inputs(stack(DIRT, 64), stack(DIRT, 40), stack(PLANK, 16)),
+            inventory(stack(DIRT, 50)));
+
+        assertEquals(NOTHING_TO_ADD, result.outcome());
     }
 
     @Test
