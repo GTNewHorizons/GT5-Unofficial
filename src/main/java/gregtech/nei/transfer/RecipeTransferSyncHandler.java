@@ -38,8 +38,9 @@ public class RecipeTransferSyncHandler extends SyncHandler<RecipeTransferSyncHan
 
     @Override
     public void readOnServer(int id, PacketBuffer buf) {
-        // Only machines that process recipes; others share this GUI but may have slot rules of their own
-        if (id != TRANSFER || machine.getRecipeMap() == null) return;
+        // Only machines that process recipes; others share this GUI but may have slot rules of their own. A machine
+        // broken earlier in the same tick is no longer there to fill.
+        if (id != TRANSFER || machine.getRecipeMap() == null || machine.getBaseMetaTileEntity() == null) return;
         RecipeTransferRequest request = RecipeTransferRequest.read(buf);
         if (request == null) return;
 
