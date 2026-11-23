@@ -69,6 +69,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 
+@Deprecated
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELESU extends MTEMultiBlockBase {
 
@@ -187,6 +188,7 @@ public class MTELESU extends MTEMultiBlockBase {
             .split(";");
         Collections.addAll(e, dsc);
         e.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
+        e.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.tile.lesu.deprecated"));
         return e.toArray(new String[0]);
     }
 
