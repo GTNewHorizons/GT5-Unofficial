@@ -116,10 +116,7 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
     public void setDirectional(boolean directional) {
         this.directional = directional;
-        if (getBaseMetaTileEntity() == null) return;
-        ForgeDirection facingSide = getBaseMetaTileEntity().getFrontFacing();
-        byte signal = getBaseMetaTileEntity().getStrongOutputRedstoneSignal(facingSide);
-        setRedstoneSignal(signal);
+        onFacingChange();
     }
 
     public boolean isInverted() {
