@@ -69,7 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.AEApi;
-import appeng.api.crafting.IPatternTarget;
+import appeng.api.crafting.IPatternTargetKeyProvider;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.interfaces.IInterfaceNameProvider;
@@ -1132,7 +1132,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     @Override
-    public IPatternTarget getPatternTarget() {
+    public IPatternTargetKeyProvider getPatternTarget() {
         return this;
     }
 

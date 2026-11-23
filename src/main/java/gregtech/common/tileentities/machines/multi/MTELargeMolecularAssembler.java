@@ -49,8 +49,8 @@ import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
 import appeng.api.crafting.CraftingMachineTarget;
-import appeng.api.crafting.IPatternTarget;
 import appeng.api.crafting.IPatternTargetKey;
+import appeng.api.crafting.IPatternTargetKeyProvider;
 import appeng.api.crafting.NotReadyTarget;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
@@ -879,7 +879,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public IPatternTarget getPatternTarget() {
+    public IPatternTargetKeyProvider getPatternTarget() {
         return this;
     }
 
