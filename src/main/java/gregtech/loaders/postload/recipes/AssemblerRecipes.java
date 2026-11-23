@@ -16,6 +16,7 @@ import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Variants.AlteredPricing;
+import static gregtech.api.enums.Variants.WirelessPower;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -48,6 +49,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.Variants;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
@@ -545,19 +547,20 @@ public class AssemblerRecipes implements Runnable {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
-
-            for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4L),
-                        CustomItemList.Machine_Multi_Transformer.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 2L),
-                        ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
-                    .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1L))
-                    .fluidInputs(Materials.ExcitedDTEC.getFluid(32_000L))
-                    .duration(10 * SECONDS)
-                    .eut(TierEU.RECIPE_UMV)
-                    .addTo(assemblerRecipes);
+            if (!Variants.checkIfActive(WirelessPower)) {
+                for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4L),
+                            CustomItemList.Machine_Multi_Transformer.get(1),
+                            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 2L),
+                            ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
+                        .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1L))
+                        .fluidInputs(Materials.ExcitedDTEC.getFluid(32_000L))
+                        .duration(10 * SECONDS)
+                        .eut(TierEU.RECIPE_UMV)
+                        .addTo(assemblerRecipes);
+                }
             }
 
             // Plasma Collider Casing

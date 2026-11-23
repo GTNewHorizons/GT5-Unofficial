@@ -15,6 +15,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Variants.AlteredPricing;
+import static gregtech.api.enums.Variants.WirelessPower;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -2764,98 +2765,99 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.eM_energyWirelessTunnel8_UXV.get(1), CustomItemList.eM_energyWirelessTunnel9_UXV.get(1) };
 
         // ------------------------ Wireless EU hatches ------------------------
+        if (!Variants.checkIfActive(WirelessPower)) {
+            for (int i = 0; i < wirelessHatches.length; i++) {
 
-        for (int i = 0; i < wirelessHatches.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    (i == 0) ? ItemList.Tesseract.get(1) : wirelessHatches[i - 1],
+                    totalComputation,
+                    compPerSecond,
+                    researchEuPerTick,
+                    researchAmperage,
+                    new Object[] { energyHatches[i], new ItemStack(compactFusionCoil, 1),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusOne[i],
+                        ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(500) },
+                    wirelessHatches[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                (i == 0) ? ItemList.Tesseract.get(1) : wirelessHatches[i - 1],
-                totalComputation,
-                compPerSecond,
-                researchEuPerTick,
-                researchAmperage,
-                new Object[] { energyHatches[i], new ItemStack(compactFusionCoil, 1),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusOne[i],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(500) },
-                wirelessHatches[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 4A Wireless EU hatches ------------------------
 
-        // ------------------------ 4A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_4A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_4A.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_4A[i],
+                    totalComputation * 4,
+                    compPerSecond * 4,
+                    researchEuPerTick,
+                    researchAmperage * 2,
+                    new Object[] { energyHatches_4A[i], new ItemStack(compactFusionCoil, 1, 1),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(4),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
+                        GTOreDictUnificator.get("plateTripleShirabon", 4L),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4),
+                        circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(2_000) },
+                    wirelessHatches_4A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_4A[i],
-                totalComputation * 4,
-                compPerSecond * 4,
-                researchEuPerTick,
-                researchAmperage * 2,
-                new Object[] { energyHatches_4A[i], new ItemStack(compactFusionCoil, 1, 1),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
-                    GTOreDictUnificator.get("plateTripleShirabon", 4L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4), circuitsTierPlusOne[i + 4],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(2_000) },
-                wirelessHatches_4A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 16A Wireless EU hatches ------------------------
 
-        // ------------------------ 16A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_16A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_16A.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_16A[i],
+                    totalComputation * 16,
+                    compPerSecond * 16,
+                    researchEuPerTick,
+                    researchAmperage * 4,
+                    new Object[] { energyHatches_16A[i], new ItemStack(compactFusionCoil, 1, 2),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(16),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
+                        GTOreDictUnificator.get("plateTripleShirabon", 16L),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4),
+                        circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS + 16 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(8_000) },
+                    wirelessHatches_16A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_16A[i],
-                totalComputation * 16,
-                compPerSecond * 16,
-                researchEuPerTick,
-                researchAmperage * 4,
-                new Object[] { energyHatches_16A[i], new ItemStack(compactFusionCoil, 1, 2),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
-                    GTOreDictUnificator.get("plateTripleShirabon", 16L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4),
-                    circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS + 16 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(8_000) },
-                wirelessHatches_16A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 64A Wireless EU hatches ------------------------
 
-        // ------------------------ 64A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_64A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_64A.length; i++) {
-
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_64A[i],
-                totalComputation * 64,
-                compPerSecond * 64,
-                researchEuPerTick,
-                researchAmperage * 8,
-                new Object[] { energyHatches_64A[i], new ItemStack(compactFusionCoil, 1, 3),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
-                    GTOreDictUnificator.get("plateTripleShirabon", 64L),
-                    GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
-                    Materials.ExcitedDTEC.getFluid(32_000) },
-                wirelessHatches_64A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_64A[i],
+                    totalComputation * 64,
+                    compPerSecond * 64,
+                    researchEuPerTick,
+                    researchAmperage * 8,
+                    new Object[] { energyHatches_64A[i], new ItemStack(compactFusionCoil, 1, 3),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(64),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
+                        GTOreDictUnificator.get("plateTripleShirabon", 64L),
+                        GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
+                        ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
+                        Materials.ExcitedDTEC.getFluid(32_000) },
+                    wirelessHatches_64A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
         }
 
         // ------------------------ Wireless UXV Lasers ------------------------

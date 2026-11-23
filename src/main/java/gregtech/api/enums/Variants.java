@@ -7,6 +7,7 @@ public enum Variants {
     NoRocket("NO_ROCKET"),
     GardenOfGrind("GARDEN_OF_GRIND"),
     AlteredPricing("ALTERED_PRICING"),
+    WirelessPower("WIRELESS"),
 
     ;
 
