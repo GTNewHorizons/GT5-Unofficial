@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.Nullable;
 
 import appeng.api.crafting.IPatternTargetKey;
-import appeng.api.crafting.NotReadyTarget;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -271,7 +270,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     protected IPatternTargetKey getOwnerPatternTargetKey() {
         final MTEMultiBlockBase owner = getCraftingIconOwner();
         // A multiblock that breaks clears the owner, so no owner also means "not formed".
-        if (owner == null || !owner.mMachine) return NotReadyTarget.INSTANCE;
+        if (owner == null || !owner.mMachine) return IPatternTargetKey.NOT_READY;
         return owner.getPatternTargetKey(this);
     }
 
