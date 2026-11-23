@@ -297,7 +297,7 @@ public class PipeMaterials {
     }
 
     private static MaterialEdit edit(Material material) {
-        return MaterialLibAPI.editMaterial(material.getModId(), material.getName());
+        return MaterialLibAPI.editMaterial(Mods.GregTech.ID, material.getName());
     }
 
     private PipeMaterials() {}
