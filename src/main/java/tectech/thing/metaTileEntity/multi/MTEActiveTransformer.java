@@ -42,7 +42,9 @@ import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
+import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -201,6 +203,10 @@ public class MTEActiveTransformer extends TTMultiblockBase
         // reset here as a middle slice can check an end slice as a middle slice, and error.
         errors.clear();
 
+        // if there is no middle slice at all, add an error
+        if (length == 0) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+        }
         if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset, errors)) return;
 
         // Hack to prevent hatch duplication due to middle slice checking end slice as a middle slice
@@ -301,7 +307,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        StructureWrapperTooltipBuilder<MTEActiveTransformer> tt = new StructureWrapperTooltipBuilder<>(structure);
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
             .addMarkdown(new ResourceLocation("gregtech", "active-transformer"), ImmutableMap.<String, Object>builder().put("max_length",MAX_LENGTH).build())
@@ -312,7 +318,7 @@ public class MTEActiveTransformer extends TTMultiblockBase
             .addDynamoHatch("0+", anyCasingText(), 1)
             .addStructureInfoSeparator()
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("0-17", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("0-26", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addStructureInfoSeparator()
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addCasing("0-8",StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
