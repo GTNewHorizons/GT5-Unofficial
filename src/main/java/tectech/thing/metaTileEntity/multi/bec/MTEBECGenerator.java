@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
@@ -96,7 +98,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_generator"))
-            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/generator"))
             .addSupportAny();
 
         tt.beginStructureBlock(19, 19, 34, true)
@@ -137,7 +139,8 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         if (network != null) {
             boolean succeed = true;
             for (FluidStack output : outputFluids) {
-                AEFluidStack stack = AEFluidStack.create(output);
+                IAEFluidStack stack = AEFluidStack.create(output)
+                    .setStackSize(GTUtility.getFluidAmount(output));
                 network.injectCondensate(this, stack);
                 if (stack.getStackSize() > 0) succeed = false;
             }
@@ -171,10 +174,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
         long maxPower = getMaxInputEu();
 
-        Map<Fluid, Integer> combinedFluids = new HashMap<>();
+        Map<Fluid, Long> combinedFluids = new HashMap<>();
         for (FluidStack input : getStoredFluids()) {
-            if (input != null && input.amount > 0) {
-                combinedFluids.merge(input.getFluid(), input.amount, Integer::sum);
+            if (input != null && GTUtility.getFluidAmount(input) > 0) {
+                combinedFluids.merge(input.getFluid(), GTUtility.getFluidAmount(input), GTUtility::addSafe);
             }
         }
         if (combinedFluids.isEmpty()) {
@@ -182,21 +185,28 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         }
 
         List<FluidCandidate> fluidCandidates = new ArrayList<>();
-        for (Map.Entry<Fluid, Integer> entry : combinedFluids.entrySet()) {
+        for (Map.Entry<Fluid, Long> entry : combinedFluids.entrySet()) {
             Fluid fluid = entry.getKey();
-            int totalAmount = entry.getValue();
+            long totalAmount = entry.getValue();
+
             GTRecipe recipe = TecTechRecipeMaps.condensateGeneratorRecipes.findRecipeQuery()
-                .fluids(new FluidStack(fluid, totalAmount))
+                .fluids(new FluidStack(fluid, GTUtility.longToInt(totalAmount)))
                 .find();
             if (recipe == null) continue;
 
-            int maxParallelsByInput = (int) recipe.maxParallelCalculatedByInputs(
-                Integer.MAX_VALUE,
-                new FluidStack[] { new FluidStack(fluid, totalAmount) },
-                GTValues.emptyItemStackArray);
-            if (maxParallelsByInput <= 0) continue;
+            if (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0) continue;
+            long perParallel = GTUtility.getFluidAmount(recipe.mFluidInputs[0]);
+            if (perParallel <= 0) continue;
 
-            fluidCandidates.add(new FluidCandidate(recipe, maxParallelsByInput, fluid));
+            double recipeAccepts = recipe.maxParallelCalculatedByInputs(
+                1,
+                new FluidStack[] { GTUtility.createFluidStack(fluid, perParallel) },
+                GTValues.emptyItemStackArray);
+            if (recipeAccepts <= 0) continue;
+
+            long maxParallelsByInput = Math.min(totalAmount / perParallel, Integer.MAX_VALUE);
+
+            fluidCandidates.add(new FluidCandidate(recipe, (int) maxParallelsByInput, fluid));
         }
         if (fluidCandidates.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -216,14 +226,16 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         for (int i = 0; i < fluidCandidates.size(); i++) {
             FluidCandidate c = fluidCandidates.get(i);
             double share = remainingPower / (fluidCandidates.size() - i);
-            c.parallels = Math.min(c.maxParallelsByInput, (int) (share / c.recipe.mEUt));
+            c.parallels = (int) Math.min(c.maxParallelsByInput, share / c.recipe.mEUt);
             remainingPower -= c.parallels * (double) c.recipe.mEUt;
         }
 
         for (FluidCandidate c : fluidCandidates) {
-            int added = Math.min(c.maxParallelsByInput - c.parallels, (int) (remainingPower / c.recipe.mEUt));
-            c.parallels += added;
-            remainingPower -= added * (double) c.recipe.mEUt;
+            int added = (int) Math.min(c.maxParallelsByInput - c.parallels, remainingPower / c.recipe.mEUt);
+            if (added > 0) {
+                c.parallels += added;
+                remainingPower -= added * (double) c.recipe.mEUt;
+            }
         }
 
         CondensateList outputs = new CondensateList();
@@ -233,20 +245,19 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             int plannedParallels = candidate.parallels;
             if (plannedParallels <= 0) continue;
 
-            int perParallel = candidate.recipe.mFluidInputs[0].amount;
-            int plannedDrain = plannedParallels * perParallel;
+            long perParallel = GTUtility.getFluidAmount(candidate.recipe.mFluidInputs[0]);
+            long plannedDrain = GTUtility.mulSafe(plannedParallels, perParallel);
 
-            long drained = depleteInputQuantity(new FluidStack(candidate.fluid, plannedDrain), true);
-            int actualParallels = (int) (drained / perParallel);
+            long drained = depleteInputQuantity(GTUtility.createFluidStack(candidate.fluid, plannedDrain), true);
+            int actualParallels = GTUtility.longToInt(drained / perParallel);
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
-            int actualDrain = actualParallels * perParallel;
-            depleteInputQuantity(new FluidStack(candidate.fluid, actualDrain), false);
+            depleteInput(GTUtility.createFluidStack(candidate.fluid, actualParallels * perParallel));
 
             outputs.addTo(
                 candidate.recipe.mFluidOutputs[0].getFluid(),
-                candidate.recipe.mFluidOutputs[0].amount * (long) actualParallels);
+                GTUtility.getFluidAmount(candidate.recipe.mFluidOutputs[0]) * (long) actualParallels);
             anySuccess = true;
         }
 

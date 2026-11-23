@@ -73,6 +73,7 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenPlasma;
 import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
@@ -216,8 +217,8 @@ public final class ModItems {
         // metadata 16 no longer used
         GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17))
             .registerOre("pelletAluminium");
-        // metadata 18-21 no longer used
-        GregtechItemList.Pellet_Mold.set(new ItemStack(agrichemItem, 1, 22));
+        // metadata 18-22 no longer used
+        // 22 deprecated during 2.10.0 development cycle (#8771)
         GregtechItemList.CleanAluminiumMix.set(new ItemStack(agrichemItem, 1, 23));
 
         GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24))
@@ -440,11 +441,15 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
         MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON);
-        MaterialGenerator.generate(MaterialsElements.getInstance().IODINE);
         MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
         MaterialGenerator.generate(MaterialsElements.getInstance().TECHNETIUM);
+
+        // Special (Only Plasma)
+        Material materialIodine = MaterialsElements.getInstance().IODINE;
+        materialIodine.mPlasma = materialIodine.generatePlasma();
+        new RecipeGenPlasma(materialIodine);
 
         // RADIOACTIVE ELEMENTS
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
@@ -597,7 +602,6 @@ public final class ModItems {
         MaterialsElements.getInstance().THORIUM232.setWerkstoffID((short) 30);
         MaterialsElements.getInstance().RUTHENIUM.setWerkstoffID((short) 64);
         MaterialsElements.getInstance().HAFNIUM.setWerkstoffID((short) 11000);
-        MaterialsElements.getInstance().IODINE.setWerkstoffID((short) 11012);
 
         // Custom fluids
 

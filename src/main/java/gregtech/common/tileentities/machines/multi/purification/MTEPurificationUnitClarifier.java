@@ -175,7 +175,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_clarifier"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-clarifier"),
+                new ResourceLocation("gregtech", "purification/unit-clarifier"),
                 ImmutableMap.of(
                     "tier",
                     getWaterTier(),
@@ -215,7 +215,10 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
