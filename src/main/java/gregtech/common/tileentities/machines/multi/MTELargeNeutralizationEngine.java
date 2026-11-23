@@ -595,9 +595,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) return;
-        for (MTEHatchToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can
-                                                                                   // update
-            // even when multi is off
+        // done in onPostTick so it can update even when multi is off
+        for (MTEHatchToxicResidueSensor toxicResidueSensorHatch : sensorHatches) {
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
         robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
