@@ -80,6 +80,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.14.1-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.15.2-GTNH:dev")
+    implementation("com.github.GTNewHorizons:ForgeMultipart:2.0.0:dev")
     compileOnly("com.github.GTNewHorizons:StorageDrawers:2.3.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:ArchitectureCraft:1.13.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.18.1-GTNH:dev") { transitive = false }
