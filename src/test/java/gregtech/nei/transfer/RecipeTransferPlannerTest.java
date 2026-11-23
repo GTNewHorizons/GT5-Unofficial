@@ -124,6 +124,19 @@ class RecipeTransferPlannerTest {
     }
 
     @Test
+    void fillsUpAPartlyFilledMachine() {
+        Result result = plan(
+            CHEST_RECIPE,
+            0,
+            inputs(stack(CHEST, 1), stack(DIRT, 5)),
+            inventory(stack(CHEST, 2), stack(DIRT, 20)));
+
+        assertEquals(3, result.crafts());
+        assertStacks(result.inputs(), stack(CHEST, 3), stack(DIRT, 24));
+        assertStacks(result.inventory(), stack(DIRT, 1));
+    }
+
+    @Test
     void changesNothingWhenTheMachineIsAlreadyFull() {
         Result result = plan(CHEST_RECIPE, 0, inputs(stack(CHEST, 1), stack(DIRT, 8)), inventory());
 
@@ -452,6 +465,26 @@ class RecipeTransferPlannerTest {
         assertStacks(result.inventory(), stack(DIRT, 8));
     }
 
+    @Test
+    void planningChangesNoneOfTheGivenStacks() {
+        // The server passes the stacks of the machine and the player themselves, so a plan must work on copies
+        List<Ingredient> recipe = List.of(ingredient(2, new ItemStack(DIRT)));
+        ItemStack[] inputs = inputs(stack(STICK, 3), stack(DIRT, 1));
+        ItemStack[] outputs = new ItemStack[] { stack(DIRT, 2), stack(PLANK, 4) };
+        ItemStack[] inventory = inventory(stack(DIRT, 5), cell(2, 1500), stack(CAN, 1));
+        List<String> before = snapshot(inputs, outputs, inventory);
+
+        Result result = new RecipeTransferPlanner(
+            recipe,
+            fluid(1000, 0, 16000),
+            new Machine(inputs, STACK_LIMIT, outputs),
+            inventory,
+            SAME_ITEM).plan(Mode.FILL, 0);
+
+        assertEquals(4, result.crafts());
+        assertEquals(before, snapshot(inputs, outputs, inventory));
+    }
+
     private static Result withOutputs(int crafts, ItemStack[] inputs, ItemStack[] outputs, ItemStack[] inventory) {
         return new RecipeTransferPlanner(
             CHEST_RECIPE,
@@ -526,6 +559,14 @@ class RecipeTransferPlannerTest {
             .map(RecipeTransferPlannerTest::describe)
             .toList();
         assertEquals(expectedStacks, actualStacks);
+    }
+
+    /** Every slot of the arrays, empty ones included. */
+    private static List<String> snapshot(ItemStack[]... arrays) {
+        return Arrays.stream(arrays)
+            .flatMap(Arrays::stream)
+            .map(stack -> stack == null ? "-" : describe(stack))
+            .toList();
     }
 
     private static String describe(ItemStack stack) {
