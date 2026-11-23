@@ -171,7 +171,7 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase implement
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "io-node-controller-hatch"),
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/ionode-controller-hatch"),
                     new HashMap<>()));
         }
         return ArrayUtils.addAll(

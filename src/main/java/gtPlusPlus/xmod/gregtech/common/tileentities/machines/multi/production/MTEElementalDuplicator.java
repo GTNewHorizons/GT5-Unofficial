@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.HatchElement.ElementalDataOrbHatch;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -30,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -42,8 +42,10 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -52,6 +54,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
+    private final List<MTEHatchElementalDataOrbHolder> dataOrbHatches = new ArrayList<>();
     // spotless:off
     private static final String[][] structure = {
         { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", "CCCC~CCCC", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
@@ -131,7 +134,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
                                     Maintenance,
                                     Muffler,
                                     Energy,
-                                    ElementalDataOrbHatch)
+                                    ReplicatorHatchElement.DATA_ORB_REPOSITORY)
                                 .casingIndex(Casings.ElementalConfinementShell.textureId)
                                 .hint(1)
                                 .build(),
@@ -153,12 +156,23 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        dataOrbHatches.clear();
+    }
+
+    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
-        int hatchCount = mElementalDataOrbHatches.size();
+        int hatchCount = dataOrbHatches.size();
         if (hatchCount != 1) {
-            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, ElementalDataOrbHatch, hatchCount, 1));
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
         checkCasingMin(errors, casingAmount, 120);
         checkHasEnergyHatch(errors);
@@ -202,7 +216,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(getElementalDataOrbHatches())) {
+        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(dataOrbHatches)) {
             ItemStack orb = hatch.getOrbByCircuit();
             logic.setSpecialSlotItem(orb);
             break;
@@ -222,7 +236,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
-        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(getElementalDataOrbHatches())) {
+        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(dataOrbHatches)) {
             byte busColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
@@ -240,5 +254,50 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    private enum ReplicatorHatchElement implements IHatchElement<MTEElementalDuplicator> {
+
+        DATA_ORB_REPOSITORY("GT5U.MBTT.ElementalDataOrbHatch");
+
+        private final String name;
+
+        ReplicatorHatchElement(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchElementalDataOrbHolder.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEElementalDuplicator> adder() {
+            return (self, igte, texture) -> {
+                if (igte.getMetaTileEntity() instanceof MTEHatchElementalDataOrbHolder imte) {
+                    imte.updateTexture(texture);
+                    imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    self.addIfSmartInput(imte);
+                    self.dataOrbHatches.add(imte);
+                    return true;
+                }
+                return false;
+            };
+        }
+
+        @Override
+        public long count(MTEElementalDuplicator mte) {
+            return mte.dataOrbHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }
