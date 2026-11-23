@@ -2,10 +2,11 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,11 +22,14 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -49,7 +53,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
      * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
      */
-    protected final List<IHatchWatcher> watchers = new ArrayList<>();
+    protected final Set<IHatchWatcher> watchers = new LinkedHashSet<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
@@ -72,8 +76,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     /**
      * Registers a controller to be notified when this hatch's contents/config change. Hatches that want to push an
      * immediate recipe check implement {@link ISmartInputHatch}, and the controller registers itself here when the
-     * hatch is added to the structure. A hatch belongs to a multiblock exactly once, so this does not guard against
-     * duplicate watchers - a duplicate registration would indicate a structure bug.
+     * hatch is added to the structure. A hatch belongs to a multiblock exactly once. The underlying data structure
+     * protects against duplicate watchers.
+     * You should always add watchers via {@link MTEMultiBlockBase#addIfSmartInput(IMetaTileEntity)},
+     * so that the watchers get properly removed from the hatch when needed.
+     * If you don't, manual removal is required!
      */
     public void addWatcher(IHatchWatcher watcher) {
         watchers.add(watcher);
@@ -85,9 +92,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     /** Asks every registered controller to run a recipe check on its next tick. */
     protected void notifyWatchers() {
-        for (int i = 0; i < watchers.size(); i++) {
-            watchers.get(i)
-                .scheduleRecipeCheckImmediate();
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
         }
     }
 

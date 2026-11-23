@@ -367,58 +367,58 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager
             .addSimpleReplacement("miscutils:item.BasicAgrichemItem", 22, ItemList.Shape_Extruder_Pellet.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 350, ItemList.Shape_Extruder_Plate.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32350, ItemList.Shape_Extruder_Plate.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 351, ItemList.Shape_Extruder_Rod.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32351, ItemList.Shape_Extruder_Rod.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 352, ItemList.Shape_Extruder_Bolt.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32352, ItemList.Shape_Extruder_Bolt.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 353, ItemList.Shape_Extruder_Ring.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32353, ItemList.Shape_Extruder_Ring.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 354, ItemList.Shape_Extruder_Cell.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32354, ItemList.Shape_Extruder_Cell.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 355, ItemList.Shape_Extruder_Ingot.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32355, ItemList.Shape_Extruder_Ingot.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 357, ItemList.Shape_Extruder_Casing.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32357, ItemList.Shape_Extruder_Casing.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 358, ItemList.Shape_Extruder_Pipe_Tiny.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32358, ItemList.Shape_Extruder_Pipe_Tiny.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 359, ItemList.Shape_Extruder_Pipe_Small.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32359, ItemList.Shape_Extruder_Pipe_Small.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 360, ItemList.Shape_Extruder_Pipe_Medium.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32360, ItemList.Shape_Extruder_Pipe_Medium.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 361, ItemList.Shape_Extruder_Pipe_Large.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32361, ItemList.Shape_Extruder_Pipe_Large.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 362, ItemList.Shape_Extruder_Pipe_Huge.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32362, ItemList.Shape_Extruder_Pipe_Huge.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 363, ItemList.Shape_Extruder_Block.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32363, ItemList.Shape_Extruder_Block.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 364, ItemList.Shape_Extruder_Sword.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32364, ItemList.Shape_Extruder_Sword.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 365, ItemList.Shape_Extruder_Pickaxe.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32365, ItemList.Shape_Extruder_Pickaxe.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 366, ItemList.Shape_Extruder_Shovel.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32366, ItemList.Shape_Extruder_Shovel.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 367, ItemList.Shape_Extruder_Axe.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32367, ItemList.Shape_Extruder_Axe.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 368, ItemList.Shape_Extruder_Hoe.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32368, ItemList.Shape_Extruder_Hoe.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 369, ItemList.Shape_Extruder_Hammer.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32369, ItemList.Shape_Extruder_Hammer.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 370, ItemList.Shape_Extruder_File.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32370, ItemList.Shape_Extruder_File.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 371, ItemList.Shape_Extruder_Saw.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32371, ItemList.Shape_Extruder_Saw.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 372, ItemList.Shape_Extruder_Gear.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32372, ItemList.Shape_Extruder_Gear.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 373, ItemList.Shape_Extruder_Bottle.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32373, ItemList.Shape_Extruder_Bottle.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 374, ItemList.Shape_Extruder_Rotor.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32374, ItemList.Shape_Extruder_Rotor.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 375, ItemList.Shape_Extruder_Small_Gear.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32375, ItemList.Shape_Extruder_Small_Gear.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 376, ItemList.Shape_Extruder_Turbine_Blade.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32376, ItemList.Shape_Extruder_Turbine_Blade.get(1));
         ItemStackReplacementManager
-            .addSimpleReplacement("gregtech:gt.metaitem.01", 377, ItemList.Shape_Extruder_Drill.get(1));
+            .addSimpleReplacement("gregtech:gt.metaitem.01", 32377, ItemList.Shape_Extruder_Drill.get(1));
     }
 }
