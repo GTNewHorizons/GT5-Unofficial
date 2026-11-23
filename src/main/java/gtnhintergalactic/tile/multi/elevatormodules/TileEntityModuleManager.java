@@ -126,7 +126,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-            .addMarkdown(new ResourceLocation("gregtech", "space-project-manager"))
+            .addMarkdown(new ResourceLocation("gregtech", "space/project-manager"))
             .beginStructureBlock(1, 5, 2, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
