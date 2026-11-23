@@ -66,12 +66,12 @@ public class CoverBaseGui<T extends Cover> {
      */
     public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings,
         CoverGuiData data) {
-        return createBasePanel(syncManager, uiSettings, data, false).coverChildren();
+        return createBasePanel(syncManager, uiSettings, data).coverChildren();
     }
 
     public final ModularPanel createPopUpPanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
         IWidget parent) {
-        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data, true).coverChildren();
+        ModularPanel basePanel = createBasePanel(syncManager, uiSettings, data).coverChildren();
         layoutPopUp(basePanel, parent);
         return basePanel;
     }
@@ -82,8 +82,7 @@ public class CoverBaseGui<T extends Cover> {
      *
      * @param syncManager sync handler where widget sync handlers should be registered
      */
-    protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data,
-        boolean isPopup) {
+    protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
         ModularPanel panel = new ModularPanel(getGuiId() + "." + data.getSide()) { // closeifOpen cannot be overriden as
                                                                                    // it is called upon machine ui
                                                                                    // closing
@@ -92,7 +91,7 @@ public class CoverBaseGui<T extends Cover> {
             public void onOpen(ModularScreen screen) {
                 super.onOpen(screen);
                 if (!(cover.getTile() instanceof CoverableTileEntity coverableTileEntity)) return;
-                if (!isPopup) return;
+                if (!data.isPopUp()) return;
                 coverableTileEntity.isCoverOpen[cover.getSide()
                     .ordinal()] = true;
             }
