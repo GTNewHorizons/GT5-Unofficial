@@ -21,7 +21,6 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
     // This implementation was largely copied from the neutron sensor hatch
 
     protected double threshold = 0;
-    private boolean isOn = false;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR_GLOW;
