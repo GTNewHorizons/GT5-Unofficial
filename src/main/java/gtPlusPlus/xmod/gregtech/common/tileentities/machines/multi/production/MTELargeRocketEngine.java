@@ -78,9 +78,10 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     private int freeFuelTicks = 0;
     private int euProduction = 0;
     private boolean boostEu;
+    private static FluidStack airFluidStack;
 
     private int casingAmount;
-    private final List<MTEHatchAirIntake> mAirIntakeHatches = new ArrayList<>();
+    private final List<MTEHatchAirIntake> airIntakeHatches = new ArrayList<>();
     // spotless:off
     private static final String[][] structure = new String[][] {
         { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
@@ -93,11 +94,19 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     public MTELargeRocketEngine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         this.boostEu = false;
+        setAir();
     }
 
     public MTELargeRocketEngine(final String aName) {
         super(aName);
         this.boostEu = false;
+        setAir();
+    }
+
+    public static void setAir() {
+        if (airFluidStack == null) {
+            airFluidStack = Materials.Air.getGas(1);
+        }
     }
 
     @Override
@@ -159,14 +168,16 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
                 .addElement(
                     'S',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntakeHatchElement.ELEMENT, 8, InputHatch, 1, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(IntakeHatchElement.AIR_INTAKE_HATCH, 8, InputHatch, 1, Maintenance, 1))
                         .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
                 .addElement(
                     'T',
-                    buildHatchAdder(MTELargeRocketEngine.class).atLeast(
-                        ImmutableMap.of(AirIntakeHatchElement.ELEMENT, 1, Dynamo.or(ExoticDynamo), 1, Maintenance, 1))
+                    buildHatchAdder(MTELargeRocketEngine.class)
+                        .atLeast(
+                            ImmutableMap
+                                .of(IntakeHatchElement.AIR_INTAKE_HATCH, 1, Dynamo.or(ExoticDynamo), 1, Maintenance, 1))
                         .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
@@ -190,7 +201,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     @Override
     public void clearHatches() {
         super.clearHatches();
-        mAirIntakeHatches.clear();
+        airIntakeHatches.clear();
     }
 
     @Override
@@ -198,7 +209,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
         this.casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, casingAmount, 16);
-        if (mAirIntakeHatches.isEmpty()) {
+        if (airIntakeHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
         checkHasAnyDynamo(errors);
@@ -227,8 +238,8 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
 
     public int getAir() {
         int totalAir = 0;
-        for (MTEHatchAirIntake mte : mAirIntakeHatches) {
-            if (mte.mFluid != null && mte.mFluid.isFluidEqual(Materials.Air.getGas(1))) {
+        for (MTEHatchAirIntake mte : airIntakeHatches) {
+            if (mte.mFluid != null && mte.mFluid.isFluidEqual(airFluidStack)) {
                 totalAir += mte.mFluid.amount;
             }
         }
@@ -242,7 +253,6 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        final ArrayList<FluidStack> tFluids = this.getStoredFluids();
         int airCount = getAir();
         int airToConsume = this.euProduction / 100;
         if (airCount < airToConsume) {
@@ -250,9 +260,9 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
             return SimpleCheckRecipeResult.ofFailure("no_air");
         }
 
-        int splitAmount = (airToConsume / mAirIntakeHatches.size());
+        int splitAmount = (airToConsume / airIntakeHatches.size());
         if (splitAmount > 0) {
-            for (MTEHatchAirIntake airHatch : mAirIntakeHatches) {
+            for (MTEHatchAirIntake airHatch : airIntakeHatches) {
                 boolean hasIntakeAir = airHatch.drain(splitAmount, true) != null;
                 if (!hasIntakeAir) {
                     this.freeFuelTicks = 0;
@@ -263,8 +273,9 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
         // reset fuel ticks in case it does not reset when it stops
         if (this.freeFuelTicks != 0 && this.mProgresstime == 0 && this.mEfficiency == 0) this.freeFuelTicks = 0;
 
+        final ArrayList<FluidStack> storedFluids = this.getStoredFluids();
         RecipeMap<?> recipeMap = getRecipeMap();
-        if (!tFluids.isEmpty() && recipeMap != null) {
+        if (!storedFluids.isEmpty() && recipeMap != null) {
             if (this.mRuntime % 72 == 0) {
                 if (!this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? BOOST_MULTIPLIER : 1))) {
                     this.freeFuelTicks = 0;
@@ -276,8 +287,8 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
             }
 
             Collection<GTRecipe> recipes = recipeMap.getAllRecipes();
-            for (final FluidStack hatchFluid1 : tFluids) {
-                if (hatchFluid1.isFluidEqual(Materials.Air.getFluid(1))) {
+            for (final FluidStack hatchFluid : storedFluids) {
+                if (hatchFluid.isFluidEqual(airFluidStack)) {
                     continue;
                 }
                 if (this.freeFuelTicks != 0) {
@@ -288,18 +299,16 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
                     this.mMaxProgresstime = 1;
                     return CheckRecipeResultRegistry.GENERATING;
                 }
-                for (final GTRecipe aFuel : recipes) {
-                    final FluidStack tLiquid = aFuel.mFluidInputs[0];
-                    if (hatchFluid1.isFluidEqual(tLiquid)) {
-                        if (!consumeFuel(aFuel, hatchFluid1.amount)) {
-                            continue;
-                        }
-                        this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
-                        this.mProgresstime = 1;
-                        this.mMaxProgresstime = 1;
-                        this.mEfficiencyIncrease = this.euProduction / 2000;
-                        return CheckRecipeResultRegistry.GENERATING;
+                for (final GTRecipe recipe : recipes) {
+                    final FluidStack fuel = recipe.mFluidInputs[0];
+                    if (!hatchFluid.isFluidEqual(fuel) || !consumeFuel(recipe, hatchFluid.amount)) {
+                        continue;
                     }
+                    this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
+                    this.mProgresstime = 1;
+                    this.mMaxProgresstime = 1;
+                    this.mEfficiencyIncrease = this.euProduction / 2000;
+                    return CheckRecipeResultRegistry.GENERATING;
                 }
             }
         }
@@ -327,8 +336,8 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     public void setEUProduction(int energy) {
         energy /= 20;
         double energyEfficiency = energy;
-        double tDivideEnergy = Math.cbrt(energy);
         if (energy > 30000) {
+            double tDivideEnergy = Math.cbrt(energy);
             // cbrt(30 000) /
             energyEfficiency = (31.072325 / tDivideEnergy);
             if (energy >= 80000)
@@ -390,13 +399,13 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
         return false;
     }
 
-    private enum AirIntakeHatchElement implements IHatchElement<MTELargeRocketEngine> {
+    private enum IntakeHatchElement implements IHatchElement<MTELargeRocketEngine> {
 
-        ELEMENT("GT5U.MBTT.AirIntakeHatch");
+        AIR_INTAKE_HATCH("GT5U.MBTT.AirIntakeHatch");
 
         private final String name;
 
-        AirIntakeHatchElement(String name) {
+        IntakeHatchElement(String name) {
             this.name = name;
         }
 
@@ -411,7 +420,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
                 if (igte.getMetaTileEntity() instanceof MTEHatchAirIntake imte) {
                     imte.updateTexture(texture);
                     imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
-                    self.mAirIntakeHatches.add(imte);
+                    self.airIntakeHatches.add(imte);
                     return true;
                 }
                 return false;
@@ -420,7 +429,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
 
         @Override
         public long count(MTELargeRocketEngine mte) {
-            return mte.mAirIntakeHatches.size();
+            return mte.airIntakeHatches.size();
         }
 
         @Override
