@@ -219,7 +219,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_uv_treatment"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-uv-treatment"),
+                new ResourceLocation("gregtech", "purification/unit-uv-treatment"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"))

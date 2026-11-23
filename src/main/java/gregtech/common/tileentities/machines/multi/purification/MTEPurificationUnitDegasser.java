@@ -306,7 +306,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 .put("mult" + i, superconductors[i].multiplier);
         }
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), vars.build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification/unit-degasser"), vars.build())
             .beginStructureBlock(17, 25, 17, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing(MIN_CASING + "-800", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
