@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.ExoticDynamo;
@@ -24,8 +22,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,6 +36,7 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -95,6 +94,8 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     public float CELESTIAL_TUNGSTEN_CURRENT_BOOST = 0f;
     public float ORIKALKUM_CURRENT_BOOST = 1f;
 
+    public static final int RESIDUE_OUTPUT_AMOUNT = 1;
+
     public int residueCycles = 0;
     public int drainedSinceLastOutput = 0;
 
@@ -128,9 +129,9 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
            }))
         .addElement('A', Casings.SuperconductingCoilBlock.asElement())
         .addElement('B',buildHatchAdder(MTEQuadcellPlasmaCollider.class).atLeast(Dynamo.or(ExoticDynamo), InputHatch, OutputHatch)
-                    .casingIndex(Casings.PlasmaColliderCasing.textureId)
-                    .hint(1)
-                    .buildAndChain(Casings.PlasmaColliderCasing.asElement()))
+            .casingIndex(Casings.PlasmaColliderCasing.textureId)
+            .hint(1)
+            .buildAndChain(Casings.PlasmaColliderCasing.asElement()))
         .addElement('C', Casings.QuadcellDrivingCasing.asElement())
         .addElement('D', Casings.PlasmaColliderGlass.asElement())
         //spotless:on
@@ -176,105 +177,29 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Plasma Collider, Quadcell, QPC")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "quadcell-plasma-collider"),
+                ImmutableMap.<String, Object>builder()
+                    .put("force_max_dr", PlasmaType.FORCE.maxDR)
+                    .put("force_density", PlasmaType.FORCE.density)
+                    .put("force_max_boost", Math.round(PlasmaType.FORCE.maxBoost * 100))
+                    .put("runite_max_dr", PlasmaType.RUNITE.maxDR)
+                    .put("runite_density", PlasmaType.RUNITE.density)
+                    .put("runite_max_boost", Math.round(PlasmaType.RUNITE.maxBoost * 100))
+                    .put("celestial_max_dr", PlasmaType.CELESTIAL.maxDR)
+                    .put("celestial_density", PlasmaType.CELESTIAL.density)
+                    .put("celestial_max_boost", Math.round(PlasmaType.CELESTIAL.maxBoost * 100))
+                    .put("orikalkum_max_dr", PlasmaType.ORIKALKUM.maxDR)
+                    .put("orikalkum_density", PlasmaType.ORIKALKUM.density)
+                    .put("orikalkum_max_multiplier", PlasmaType.ORIKALKUM.maxBoost)
+                    .put("residue_divisor", RESIDUE_CONVERSION_DIVISOR)
+                    .put("residue_output_amount", RESIDUE_OUTPUT_AMOUNT)
+                    .build())
+            .addSupportAny()
             .beginStructureBlock(23, 13, 9, true)
             .addController("Front center, 2nd layer")
-            .addInfo("Burns certain Plasmas to generate power")
-            .addInfo(
-                "Set " + EnumChatFormatting.GREEN
-                    + "Drain Rate ("
-                    + getFluidUnit()
-                    + "/s)"
-                    + EnumChatFormatting.GRAY
-                    + " of Plasmas in the Controller")
-            .addInfo(
-                "Drains the configured " + EnumChatFormatting.GREEN
-                    + "Drain Rate"
-                    + EnumChatFormatting.GRAY
-                    + " of each plasma at the start of each Cycle")
-            .addInfo("Set Scale of Machine in the controller")
-            .addInfo("Scale linearly increases Cycle time and Drain Amount")
-            .addSeparator()
-            .addInfo("Will burn Plasmas up to " + EnumChatFormatting.GREEN + "X " + getFluidUnit() + "/s")
-            .addInfo(
-                "Plasmas have varying " + EnumChatFormatting.AQUA
-                    + "Densities (EU/"
-                    + getFluidUnit()
-                    + ")"
-                    + EnumChatFormatting.GRAY
-                    + " and provide "
-                    + EnumChatFormatting.WHITE
-                    + "Buffs"
-                    + EnumChatFormatting.GRAY
-                    + " to all burned Plasmas")
-            .addInfo(
-                "Drain Rate amounts below the maximum will provide proportional " + EnumChatFormatting.WHITE
-                    + "Buffs"
-                    + EnumChatFormatting.GRAY
-                    + " of [Current / "
-                    + EnumChatFormatting.GREEN
-                    + "Max"
-                    + EnumChatFormatting.GRAY
-                    + "]")
-            .addInfo(
-                getPlasmaTextFormatted(
-                    "Force",
-                    EnumChatFormatting.GOLD,
-                    formatNumber(PlasmaType.FORCE.maxDR),
-                    formatNumber(PlasmaType.FORCE.density),
-                    "+20% EU/" + getFluidUnit()))
-            .addInfo(
-                getPlasmaTextFormatted(
-                    "Runite",
-                    EnumChatFormatting.BLUE,
-                    formatNumber(PlasmaType.RUNITE.maxDR),
-                    formatNumber(PlasmaType.RUNITE.density),
-                    "10% chance to not consume Plasma"))
-            .addInfo(
-                getPlasmaTextFormatted(
-                    "Celestial Tungsten",
-                    EnumChatFormatting.DARK_GREEN,
-                    formatNumber(PlasmaType.CELESTIAL.maxDR),
-                    formatNumber(PlasmaType.CELESTIAL.density),
-                    "+5% EU/" + getFluidUnit() + ", +5% chance to not consume Plasma"))
-            .addInfo(
-                getPlasmaTextFormatted(
-                    "Orikalkum",
-                    EnumChatFormatting.RED,
-                    formatNumber(PlasmaType.ORIKALKUM.maxDR),
-                    formatNumber(PlasmaType.ORIKALKUM.density),
-                    "+50% to other Plasma Buffs"))
-            .addSeparator()
-            .addInfo(
-                "Consumed Plasmas are " + EnumChatFormatting.BOLD
-                    + "NOT"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " returned in molten form")
-            .addInfo(
-                "If " + EnumChatFormatting.GOLD
-                    + "Force"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.BLUE
-                    + "Runite"
-                    + EnumChatFormatting.GRAY
-                    + ", and "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Celestial Tungsten"
-                    + EnumChatFormatting.GRAY
-                    + " Plasmas are supplied:")
-            .addInfo(
-                "Periodically outputs " + EnumChatFormatting.DARK_AQUA
-                    + "Collision Residue"
-                    + EnumChatFormatting.GRAY
-                    + " at a rate of 1"
-                    + getFluidUnit()
-                    + " per "
-                    + RESIDUE_CONVERSION_DIVISOR
-                    + getFluidUnit()
-                    + " of Plasma burned")
-            .addSupportAny()
             .addCasing("280", "Plasma Collider Casing", false)
             .addCasing("126", "Plasma Collider Glass", false)
             .addCasing("56", "Superconducting Coil Block", false)
@@ -283,24 +208,8 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
             .addInputHatch("1", "Any Plasma Collider Casing", 1)
             .addOutputHatch("1", "Any Plasma Collider Casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
-    }
-
-    private String getPlasmaTextFormatted(String plasma, EnumChatFormatting plasmaColor, String dr, String density,
-        String buff) {
-        return String.format(
-            "%s%s%s / %s%s%s / %s%s%s / %s%s ",
-            plasmaColor,
-            plasma,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GREEN,
-            dr,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.AQUA,
-            density,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.WHITE,
-            buff);
     }
 
     private static final int CYCLE_TIME = 20;
