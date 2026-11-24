@@ -145,7 +145,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
-            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/storage"))
             .addSupportAny();
 
         tt.beginStructureBlock(45, 17, 45, true)

@@ -210,7 +210,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_io_node"))
-            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/ionode"));
 
         // spotless:off
         tt.beginStructureBlock(7, 23, 13, true)
