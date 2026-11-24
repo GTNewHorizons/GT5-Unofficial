@@ -1,5 +1,10 @@
 package goodgenerator.blocks.tileEntity;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.common.gui.modularui.hatch.AntimatterOutputHatchGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -111,4 +116,18 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return aFluid.isFluidEqual(ANTIMATTER);
     }
-}
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new AntimatterOutputHatchGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    public static String getLangKeyForModeAntimatter(byte mode) {
+        return switch (mode) {
+            case 0 -> "gg.chat.antimatter_output_hatch.front_face_input.disable";
+            case 1 -> "gg.chat.antimatter_output_hatch.front_face_input.enable";
+            default -> "";
+        };
+    }
+
+    }
