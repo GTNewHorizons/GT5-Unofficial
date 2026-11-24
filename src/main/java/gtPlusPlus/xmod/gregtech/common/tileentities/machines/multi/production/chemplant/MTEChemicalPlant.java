@@ -125,9 +125,15 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Nullable
     private static Integer getPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings2) return null;
-        if (metaID < 12 || metaID > 15) return null;
-        return metaID - 11;
+        if (block == GregTechAPI.sBlockCasings2) {
+            if (metaID < 12 || metaID > 15) return null;
+            return metaID - 11;
+        }
+        if (block == GregTechAPI.sBlockCasings14) {
+            if (metaID < 10 || metaID > 15) return null;
+            return metaID - 5;
+        }
+        return null;
     }
 
     @Nullable
@@ -302,7 +308,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                                 Pair.of(GregTechAPI.sBlockCasings2, 12),
                                 Pair.of(GregTechAPI.sBlockCasings2, 13),
                                 Pair.of(GregTechAPI.sBlockCasings2, 14),
-                                Pair.of(GregTechAPI.sBlockCasings2, 15)),
+                                Pair.of(GregTechAPI.sBlockCasings2, 15),
+                                Pair.of(GregTechAPI.sBlockCasings14, 10),
+                                Pair.of(GregTechAPI.sBlockCasings14, 11),
+                                Pair.of(GregTechAPI.sBlockCasings14, 12),
+                                Pair.of(GregTechAPI.sBlockCasings14, 13),
+                                Pair.of(GregTechAPI.sBlockCasings14, 14),
+                                Pair.of(GregTechAPI.sBlockCasings14, 15)),
                             -1,
                             MTEChemicalPlant::setPipeMeta,
                             MTEChemicalPlant::getPipeMeta)))

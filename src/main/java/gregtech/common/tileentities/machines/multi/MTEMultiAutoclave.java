@@ -108,9 +108,15 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Nullable
     private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings2) return null;
-        if (metaID < 12 || metaID > 15) return null;
-        return metaID - 11;
+        if (block == GregTechAPI.sBlockCasings2) {
+            if (metaID < 12 || metaID > 15) return null;
+            return metaID - 11;
+        }
+        if (block == GregTechAPI.sBlockCasings14) {
+            if (metaID < 10 || metaID > 15) return null;
+            return metaID - 5;
+        }
+        return null;
     }
 
     private void setFluidPipeTier(int tier) {
@@ -172,7 +178,13 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         Pair.of(GregTechAPI.sBlockCasings2, 12),
                         Pair.of(GregTechAPI.sBlockCasings2, 13),
                         Pair.of(GregTechAPI.sBlockCasings2, 14),
-                        Pair.of(GregTechAPI.sBlockCasings2, 15)),
+                        Pair.of(GregTechAPI.sBlockCasings2, 15),
+                        Pair.of(GregTechAPI.sBlockCasings14, 10),
+                        Pair.of(GregTechAPI.sBlockCasings14, 11),
+                        Pair.of(GregTechAPI.sBlockCasings14, 12),
+                        Pair.of(GregTechAPI.sBlockCasings14, 13),
+                        Pair.of(GregTechAPI.sBlockCasings14, 14),
+                        Pair.of(GregTechAPI.sBlockCasings14, 15)),
                     -1,
                     MTEMultiAutoclave::setFluidPipeTier,
                     MTEMultiAutoclave::getFluidPipeTier)))
