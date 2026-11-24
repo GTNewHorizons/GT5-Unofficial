@@ -46,6 +46,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -160,6 +161,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
     private final ArrayList<MTEHatchBlackHoleUtility> utilityHatches = new ArrayList<>();
+    private static final int BLACK_HOLE_EU_MULTIPLIER = 128;
 
     /**
      * 1: Off 2: On, stable 3: On, unstable 4: On, superstable 5: On, supermassive
@@ -367,7 +369,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.black_hole_compressor"))
-            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"))
+            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"),
+                ImmutableMap.<String, Object>builder().put("bhc_eu", BLACK_HOLE_EU_MULTIPLIER).build())
             .addSupportAny()
             .beginStructureBlock(33, 35, 35, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_of_structure_6th_layer"))
@@ -532,8 +535,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         searchAndDecrementCatalysts();
     }
 
-    private static final double BLACK_HOLE_EU_MULTIPLIER = 128D;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -588,7 +589,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 maxParallel = maxParallelSupplier.get();
 
                 // Black hole recipes use extra EU
-                double euMultiplier = isNotBlackHoleRecipe ? 1 : BLACK_HOLE_EU_MULTIPLIER;
+                int euMultiplier = isNotBlackHoleRecipe ? 1 : BLACK_HOLE_EU_MULTIPLIER;
                 setEuModifier(0.7D * euMultiplier);
 
                 return result;

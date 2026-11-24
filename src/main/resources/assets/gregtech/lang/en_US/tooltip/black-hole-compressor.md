@@ -18,6 +18,7 @@ Use circuit {color_mode:20 for Compressor} and {color_mode:21 for Neutronium Com
 {color_speed:500%} Speed
 {color_eu_usage:70%} {EU} usage
 {color_parallel:2x/4x} Parallels when stability is below {color_amount:50/20}
+Recipes that require a black hole multiply {EU} usage by {color_eu_usage:128}
 Below {color_amount:20} stability, Parallels are {color_parallel:uncapped} for recipes that do not require a black hole
 {color_note:Recipe Tier is limited to Hatch Tier + 1. Will not perform overclocks above the Hatch Tier}
 {color_note:Limited to one energy hatch if using a Multi-Amp or Laser hatch}
