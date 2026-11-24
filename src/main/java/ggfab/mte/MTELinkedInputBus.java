@@ -588,9 +588,15 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         }
     }
 
+    /// The world's linked input bus channels, with saved item stacks migrated through Postea under the storage id
+    /// `gregtech:linkedInputBusses`.
+    ///
+    /// `MapStorage` swallows load exceptions and keeps the half-read table. A table whose migration failed is never
+    /// saved, and every read or change of it rethrows the failure.
     public static class WorldSave extends WorldSavedData {
 
         private final Map<String, SharedInventory> data = new HashMap<>();
+        private RuntimeException loadFailure;
 
         public WorldSave(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -598,8 +604,12 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
         @Override
         public void readFromNBT(NBTTagCompound tag) {
-            data.clear();
-            CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
+            try {
+                CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
+            } catch (RuntimeException e) {
+                loadFailure = e;
+                throw e;
+            }
             // every key of this tag is a channel, so the version stamp the transform writes must not become one
             tag.removeTag(VersionStamps.KEY);
             @SuppressWarnings("unchecked")
@@ -620,13 +630,24 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             CustomDataReplacementManager.stamp(tag);
         }
 
+        @Override
+        public boolean isDirty() {
+            return loadFailure == null && super.isDirty();
+        }
+
         public SharedInventory get(Object channel) {
+            throwIfLoadFailed();
             return data.computeIfAbsent(channel.toString(), k -> new SharedInventory());
         }
 
         public void remove(Object channel) {
+            throwIfLoadFailed();
             data.remove(channel.toString());
             markDirty();
+        }
+
+        private void throwIfLoadFailed() {
+            if (loadFailure != null) throw loadFailure;
         }
     }
 
