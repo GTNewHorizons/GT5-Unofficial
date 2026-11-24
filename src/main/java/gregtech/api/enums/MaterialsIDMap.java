@@ -187,6 +187,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(242, Materials.WeedEX9000);
         r(243, Materials.PotassiumHydroxide);
         r(244, Materials.CaesiumHydroxide);
+        r(245, Materials.Biogas);
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);
@@ -513,6 +514,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(702, Materials.Ice);
         r(703, Materials.UUMatter);
         r(704, Materials.Biomass);
+        r(705, Materials.DistilledWater);
         r(706, Materials.Ethanol);
         r(707, Materials.Oil);
         r(708, Materials.Diesel);
@@ -664,6 +666,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(855, Materials.Chalcopyrite);
         r(856, Materials.SiliconSG);
         r(858, Materials.CrudeOil);
+        r(859, Materials.CollisionResidue);
+        r(860, Materials.OrikalkicReagent);
         r(861, Materials.Emery);
         r(862, Materials.Epidote);
         r(865, Materials.Graphite);
@@ -751,7 +755,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(951, Materials.Vyroxeres);
         r(952, Materials.Ceruclase);
         r(956, Materials.Tartarite);
-        r(966, Materials.Orichalcum);
+        r(966, Materials.Orikalkum);
         r(967, Materials.SiliconTetrafluoride);
         r(968, Materials.SiliconTetrachloride);
         r(969, Materials.AluminiumFluoride);

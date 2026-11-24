@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -110,9 +109,9 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addCasing("24", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Tungsten), false)
             .addCasing("20", Casings.FormingCore.getLocalizedName(), false)
             .addCasing("3-7", Casings.ExtruderMachineCasing.getLocalizedName(), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
-            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_or_extruder_casing"), 1, 2)
             .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_extrusion_bus"), StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tension_resistant_casing"), 1)
             .toolTipFinisher();
@@ -225,17 +224,13 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         return true;
     }
 
-    /**
-     * Can implement {@literal IHatchElement<MTEIndustrialExtruder>} & be private after the removal of
-     * {@link gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialExtruderLegacy}.
-     * Ugly until the big pretty cleanup :)
-     */
-    public enum ExtruderHatchElement implements IHatchElement<MTEMultiBlockBase> {
+    private enum ExtruderHatchElement implements IHatchElement<MTEIndustrialExtruder> {
 
-        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchExtrusion.class) {
+        ExtrusionBus("GT5U.MBTT.ExtrusionBus", MTEIndustrialExtruder::addInputBusToMachineList,
+            MTEHatchExtrusion.class) {
 
             @Override
-            public long count(MTEMultiBlockBase t) {
+            public long count(MTEIndustrialExtruder t) {
                 return t.mInputBusses.stream()
                     .filter(it -> it instanceof MTEHatchExtrusion)
                     .count();
@@ -244,10 +239,10 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
         private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEMultiBlockBase> adder;
+        private final IGTHatchAdder<MTEIndustrialExtruder> adder;
 
         @SafeVarargs
-        ExtruderHatchElement(String name, IGTHatchAdder<MTEMultiBlockBase> adder,
+        ExtruderHatchElement(String name, IGTHatchAdder<MTEIndustrialExtruder> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
@@ -260,7 +255,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         }
 
         @Override
-        public IGTHatchAdder<? super MTEMultiBlockBase> adder() {
+        public IGTHatchAdder<? super MTEIndustrialExtruder> adder() {
             return adder;
         }
 

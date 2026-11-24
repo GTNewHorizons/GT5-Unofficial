@@ -1,5 +1,6 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_IV;
@@ -37,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -76,12 +78,7 @@ public class CraftingRecipes implements Runnable {
         ItemStack[] chreac = { ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L),
             ItemList.Machine_EV_ChemicalReactor.get(1L), ItemList.Machine_IV_ChemicalReactor.get(1L) };
 
-        GTModHandler.addCraftingRecipe(
-            new MTELESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
-            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CDC", "SBS", "CFC", 'C', "circuitAdvanced", 'D', ItemList.Cover_Screen.get(1L), 'S',
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 1L), 'B',
-                new ItemStack(ItemRegistry.BW_BLOCKS[1]), 'F', ItemList.Field_Generator_HV.get(1L) });
+        new MTELESU(LESU.ID, "LESU", "L.E.S.U.");
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),
@@ -114,15 +111,18 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1L), 'B',
                 ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
 
+        // GT glass tubes carry no ItemData, so declare the tube part's glass composition
+        // explicitly (3 tubes at 1 ingot of molten glass each).
+        GTOreDictUnificator
+            .addItemData(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), new ItemData(Materials.Glass, M * 3));
+
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), // tube
-            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " fG", " G ", "G  ", 'G', ItemList.Circuit_Parts_Glass_Tube.get(1L) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), // motor
-            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "GLP", "LSd", "PfT", 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 1L), 'L',
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 1L), 'S',
@@ -130,8 +130,7 @@ public class CraftingRecipes implements Runnable {
                 new ItemStack(ItemRegistry.PUMPPARTS, 1, 0) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPBLOCK, 1, 0),
-            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "IPI", "PMP", "ISI", 'I', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 'P', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L), 'M',
                 new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', "craftingBlastFurnace" });

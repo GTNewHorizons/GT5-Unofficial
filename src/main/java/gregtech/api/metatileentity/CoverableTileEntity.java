@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.NW;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.liquidlogged.api.LiquidLoggedAPI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -44,6 +44,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -59,12 +60,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
-    // TODO DEPRECATED: Remove for 2.9. Only kept around for the name remover
-    @Deprecated
-    public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-        .mapToInt(Enum::ordinal)
-        .mapToObj(i -> "mCoverData" + i)
-        .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
 
     // New Cover Information
@@ -252,6 +247,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 oldCover.onCoverRemoval();
             }
             synchronizeCover(cover, side);
+            if (worldObj != null && !worldObj.isRemote && Mods.LiquidLogged.isModLoaded()) {
+                LiquidLoggedAPI.revalidate(worldObj, xCoord, yCoord, zCoord);
+            }
         }
     }
 
@@ -293,6 +291,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 enableTicking();
                 validCoversMask |= side.flag;
             }
+            if (this instanceof BaseMetaPipeEntity pipe && isServerSide()) pipe.reloadLocks();
         }
     }
 
