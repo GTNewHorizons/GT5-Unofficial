@@ -19,10 +19,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import appeng.api.util.DimensionalCoord;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.multiblock.IMultiblockEnergyHatchComponent;
 import gregtech.api.enums.GTValues;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.PowerNode;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.ItemTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -89,7 +92,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
 
             if (tile instanceof BaseMetaPipeEntity cableMeta && cableMeta.getMetaTileEntity() instanceof MTECable
                 || tile instanceof BaseMetaTileEntity multiMeta
-                    && multiMeta.getMetaTileEntity() instanceof MTEMultiBlockBase) {
+                    && multiMeta.getMetaTileEntity() instanceof IMultiblockController) {
                 final DimensionalCoord coord = new DimensionalCoord(tile);
                 setLocation(stack, coord);
 
@@ -155,12 +158,20 @@ public class ItemNetworkAnalyzer extends ItemTool {
                     collectHatchNetworks(multiBlock.getExoticDynamoHatches(), builder);
 
                     GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(builder.getData(getMode(stack))), player);
-                } else {
-                    ItemStackNBT.removeTag(stack, "dim");
-                    NetworkAnalyzerPlayerTracker.reset(player);
-                    GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(new NetworkAnalyzerData()), player);
-                    GTUtility.sendChatTrans(player, "gt.NetworkAnalyzer.target_lost");
-                }
+                } else if (tile instanceof BaseMetaTileEntity multiMeta
+                    && multiMeta.getMetaTileEntity() instanceof IECMultiblock ecMulti) {
+                        final PowerNetworkBuilder builder = new PowerNetworkBuilder();
+                        for (var comp : ecMulti.getComponents(IMultiblockEnergyHatchComponent.KEY)) {
+                            collectHatchNetworks(comp.getEnergyHatches(), builder);
+                        }
+
+                        GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(builder.getData(getMode(stack))), player);
+                    } else {
+                        ItemStackNBT.removeTag(stack, "dim");
+                        NetworkAnalyzerPlayerTracker.reset(player);
+                        GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(new NetworkAnalyzerData()), player);
+                        GTUtility.sendChatTrans(player, "gt.NetworkAnalyzer.target_lost");
+                    }
 
         }
 

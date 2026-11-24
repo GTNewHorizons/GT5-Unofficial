@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 
 /**
@@ -22,5 +22,5 @@ public interface IRecipeProcessingAwareHatch {
      * @return Result of the process of this method. {@code !wasSuccessful()} means the returned result should overwrite
      *         the result calculated on multiblock whatever the reason is.
      */
-    CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller);
+    CheckRecipeResult endRecipeProcessing(IMultiblockController controller);
 }

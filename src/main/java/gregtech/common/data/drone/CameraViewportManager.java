@@ -2,6 +2,8 @@ package gregtech.common.data.drone;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +25,18 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.multiblock.IMultiblockEnergyHatchComponent;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
+import gregtech.api.util.GTUtility;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
@@ -130,9 +134,9 @@ public class CameraViewportManager {
             return dim;
         }
 
-        private static java.lang.reflect.Method getOrCreateChunkWatcherMethod;
-        private static java.lang.reflect.Method addPlayerMethod;
-        private static java.lang.reflect.Method removePlayerMethod;
+        private static Method getOrCreateChunkWatcherMethod;
+        private static Method addPlayerMethod;
+        private static Method removePlayerMethod;
 
         /*
          * Reflectively resolves PlayerManager and PlayerInstance methods to manually assign players to remote chunks.
@@ -197,7 +201,7 @@ public class CameraViewportManager {
 
         private static int getViewRadius(PlayerManager pm) {
             try {
-                java.lang.reflect.Field field;
+                Field field;
                 try {
                     field = PlayerManager.class.getDeclaredField("playerViewRadius");
                 } catch (NoSuchFieldException e) {
@@ -381,40 +385,38 @@ public class CameraViewportManager {
         }
     }
 
+    private static long addHatchesEnergy(long currentTotal, Iterable<? extends MTEHatch> hatches) {
+        for (var hatch : hatches) {
+            IGregTechTileEntity hTe = hatch.getBaseMetaTileEntity();
+            if (hTe == null) continue;
+            long eu = hTe.getStoredEU();
+            if (eu > 0) {
+                if (Long.MAX_VALUE - currentTotal < eu) {
+                    return Long.MAX_VALUE;
+                } else {
+                    currentTotal += eu;
+                }
+            }
+        }
+        return currentTotal;
+    }
+
     public static long calculateStoredEnergy(BaseMetaTileEntity gte) {
         if (gte == null) return 0;
         long storedEnergy = gte.getStoredEU();
-        if (gte.getMetaTileEntity() instanceof MTEMultiBlockBase mte) {
-            for (MTEHatch tHatch : mte.getExoticAndNormalEnergyHatchList()) {
-                IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
-                if (hTe != null) {
-                    long eu = hTe.getStoredEU();
-                    if (eu > 0) {
-                        if (Long.MAX_VALUE - storedEnergy < eu) {
-                            return Long.MAX_VALUE;
-                        } else {
-                            storedEnergy += eu;
-                        }
-                    }
+        switch (gte.getMetaTileEntity()) {
+            case MTEMultiBlockBase mte -> {
+                storedEnergy = addHatchesEnergy(storedEnergy, mte.getExoticAndNormalEnergyHatchList());
+                if (mte.mDynamoHatches != null) {
+                    storedEnergy = addHatchesEnergy(storedEnergy, mte.mDynamoHatches);
                 }
             }
-            if (mte.mDynamoHatches != null) {
-                for (MTEHatchDynamo dHatch : mte.mDynamoHatches) {
-                    if (dHatch != null) {
-                        IGregTechTileEntity dTe = dHatch.getBaseMetaTileEntity();
-                        if (dTe != null) {
-                            long eu = dTe.getStoredEU();
-                            if (eu > 0) {
-                                if (Long.MAX_VALUE - storedEnergy < eu) {
-                                    return Long.MAX_VALUE;
-                                } else {
-                                    storedEnergy += eu;
-                                }
-                            }
-                        }
-                    }
+            case IECMultiblock ecMulti -> {
+                for (var comp : ecMulti.getComponents(IMultiblockEnergyHatchComponent.KEY)) {
+                    storedEnergy = GTUtility.addSafe(storedEnergy, comp.getStoredEnergy());
                 }
             }
+            case null, default -> {}
         }
         return storedEnergy;
     }

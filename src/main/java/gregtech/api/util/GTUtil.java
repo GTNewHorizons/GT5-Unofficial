@@ -5,7 +5,9 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.multiblock.IHatchConfigCopyableComponent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -230,6 +234,62 @@ public class GTUtil {
     public static boolean hasMultiblockInputConfiguration(ItemStack dataOrb) {
         return !GTUtility.isStackInvalid(dataOrb) && ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)
             && "MultiblockConfiguration".equals(ItemStackNBT.getString(dataOrb, "type"));
+    }
+
+    private static Map<String, List<MTEHatch>> collectCopyableHatches(IECMultiblock controller) {
+        Map<String, List<MTEHatch>> result = new LinkedHashMap<>();
+        for (var comp : controller.getComponents(IHatchConfigCopyableComponent.KEY)) {
+            comp.getCopyableHatches()
+                .forEach((key, hatches) -> {
+                    if (!hatches.isEmpty()) {
+                        result.computeIfAbsent(key, k -> new ArrayList<>())
+                            .addAll(hatches);
+                    }
+                });
+        }
+        return result;
+    }
+
+    public static boolean saveMultiblockInputConfiguration(IECMultiblock controller, EntityPlayer player) {
+        ItemStack dataOrb = player.getHeldItem();
+        if (GTUtility.isStackInvalid(dataOrb) || !ItemList.Tool_DataOrb.isStackEqual(dataOrb, false, true)) {
+            return false;
+        }
+        NBTTagCompound newTag = new NBTTagCompound();
+        newTag.setString("type", "MultiblockConfiguration");
+        int count = 0;
+        for (var entry : collectCopyableHatches(controller).entrySet()) {
+            NBTTagList list = saveConfigurationToDataStick(player, entry.getValue());
+            if (list == null) return false;
+            newTag.setTag(entry.getKey(), list);
+            count += list.tagCount();
+        }
+        dataOrb.setTagCompound(newTag);
+        BehaviourDataOrb.setDataTitle(dataOrb, "Multiblock Hatch Configuration");
+        BehaviourDataOrb.setDataName(dataOrb, String.format("%s configuration saved", count));
+        return true;
+    }
+
+    public static boolean loadMultiblockInputConfiguration(IECMultiblock controller, EntityPlayer player) {
+        ItemStack dataOrb = player.getHeldItem();
+        if (!hasMultiblockInputConfiguration(dataOrb)) {
+            return false;
+        }
+        NBTTagCompound tag = dataOrb.getTagCompound();
+
+        for (var entry : collectCopyableHatches(controller).entrySet()) {
+            String key = entry.getKey();
+            var hatches = entry.getValue();
+            if (checkCanLoadConfigurationFromDataStick(
+                tag.getTagList(key, Constants.NBT.TAG_COMPOUND),
+                player,
+                hatches)) {
+                if (!loadConfigurationFromDataStick(tag.getTagList(key, Constants.NBT.TAG_COMPOUND), player, hatches))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean loadMultiblockInputConfiguration(MTEMultiBlockBase controller, EntityPlayer player) {

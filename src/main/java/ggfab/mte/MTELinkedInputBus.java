@@ -31,10 +31,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
@@ -213,7 +213,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
-    public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
+    public CheckRecipeResult endRecipeProcessing(IMultiblockController controller) {
         if (mState == State.Activated) {
             assert mRealInventory != null;
             mRealInventory.used = false;

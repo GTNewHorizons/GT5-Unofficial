@@ -34,12 +34,15 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import gregtech.api.GregTechAPI;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.multiblock.IStructureLogicComponent;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -140,7 +143,7 @@ public class HatchElementBuilder<T> {
 
     /**
      * Set all of adder, hint and hatchItemFilter. Provide a reasonable default for shouldSkip.
-     * Uses a blacklist defined by overwriting{@link gregtech.api.interfaces.IHatchElement#mteBlacklist}
+     * Uses a blacklist defined by overwriting{@link IHatchElement#mteBlacklist}
      * Any class inside of the blacklist is not added to the preview.
      * TODO add doc
      */
@@ -635,8 +638,13 @@ public class HatchElementBuilder<T> {
                     .fromLegacy(GTCreativeHatchSource.instance, player, chat -> {});
                 PlaceResult result = survivalPlaceBlock(t, world, x, y, z, trigger, env);
 
-                if (t instanceof MTEMultiBlockBase multi) {
-                    multi.checkStructure(true, base);
+                switch (t) {
+                    case MTEMultiBlockBase multi -> multi.checkStructure(true, base);
+                    case IECMultiblock ecmulti -> {
+                        var comp = ecmulti.getComponent(IStructureLogicComponent.KEY);
+                        comp.checkStructure(base);
+                    }
+                    default -> {}
                 }
                 return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP || result == PlaceResult.SKIP;
             }
@@ -694,7 +702,7 @@ public class HatchElementBuilder<T> {
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                if (com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
+                if (StructureUtility.survivalPlaceBlock(
                     taken,
                     ItemStackPredicate.NBTMode.IGNORE,
                     null,

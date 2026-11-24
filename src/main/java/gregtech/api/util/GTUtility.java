@@ -41,6 +41,7 @@ import java.util.IdentityHashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -2898,12 +2899,21 @@ public class GTUtility {
         return metaTileEntities;
     }
 
+    public static <T extends Collection<?>> T uncheckFilterValidMTEs(T metaTileEntities) {
+        metaTileEntities.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
+        return metaTileEntities;
+    }
+
     /**
      * @return Supplied collection that removes invalid MTEs from the collection while it is being iterated
      */
     public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
         T metaTileEntities) {
         return new ValidMTEList<>(metaTileEntities);
+    }
+
+    public static <T> UncheckedValidMTEList<T> uncheckedValidMTEList(Iterable<T> metaTileEntities) {
+        return new UncheckedValidMTEList<>(metaTileEntities);
     }
 
     /**
@@ -4183,6 +4193,10 @@ public class GTUtility {
             return createWithCopy(fluidStack.getFluid(), null, fluidStack.tag);
         }
 
+        public static FluidId createNoCopy(FluidStack fluidStack) {
+            return createNoCopy(fluidStack.getFluid(), null, fluidStack.tag);
+        }
+
         public static FluidId createWithAmount(FluidStack fluidStack) {
             return createWithCopy(fluidStack.getFluid(), getFluidAmount(fluidStack), fluidStack.tag);
         }
@@ -4205,13 +4219,13 @@ public class GTUtility {
             return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
         }
 
-        protected abstract Fluid fluid();
+        public abstract Fluid fluid();
 
         @Nullable
-        protected abstract NBTTagCompound nbt();
+        public abstract NBTTagCompound nbt();
 
         @Nullable
-        protected abstract Long amount();
+        public abstract Long amount();
 
         @Nonnull
         public FluidStack getFluidStack() {
@@ -4639,5 +4653,32 @@ public class GTUtility {
                 return super.isFluidEqual(other) && getAmountLong() == GTUtility.getFluidAmount(other);
             }
         };
+    }
+
+    private final static ClassValue<Set<Class<?>>> interfacesCacheMap = new ClassValue<>() {
+
+        @Override
+        protected Set<Class<?>> computeValue(@NotNull Class<?> clazz) {
+            Set<Class<?>> interfaces = new LinkedHashSet<>();
+            collectInterfaces(clazz, interfaces);
+            return Collections.unmodifiableSet(interfaces);
+        }
+    };
+
+    public static @NotNull Set<Class<?>> getAllInterfaces(@NotNull Class<?> c) {
+        return interfacesCacheMap.get(c);
+    }
+
+    private static void collectInterfaces(@NotNull Class<?> c, @NotNull Set<Class<?>> interfaces) {
+        if (c == Object.class) return;
+        for (var inter : c.getInterfaces()) {
+            if (interfaces.add(inter)) {
+                collectInterfaces(inter, interfaces);
+            }
+        }
+        var s = c.getSuperclass();
+        if (s != null && s != Object.class) {
+            collectInterfaces(s, interfaces);
+        }
     }
 }

@@ -16,10 +16,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -85,7 +85,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     }
 
     @Override
-    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+    public void onMaintenancePerformed(IMultiblockController aMaintenanceTarget) {
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_CREATIVE_HATCH, 1.0F, 1.0F);
         this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
         super.onMaintenancePerformed(aMaintenanceTarget);

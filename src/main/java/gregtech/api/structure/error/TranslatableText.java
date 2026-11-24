@@ -8,6 +8,7 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 
+import gregtech.api.enums.ECHatchElement;
 import gregtech.api.enums.HatchElement;
 
 public interface TranslatableText {
@@ -43,6 +44,10 @@ public interface TranslatableText {
     }
 
     static TranslatableText hatchName(HatchElement element) {
+        return new HatchNameText(element.ordinal());
+    }
+
+    static TranslatableText hatchName(ECHatchElement element) {
         return new HatchNameText(element.ordinal());
     }
 

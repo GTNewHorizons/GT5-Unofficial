@@ -67,8 +67,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -77,18 +75,18 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.structure.error.IStructureErrorGui;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.client.StructureErrorHighlightRenderer;
 import gregtech.common.gui.modularui.adapter.CheckRecipeResultAdapter;
 import gregtech.common.gui.modularui.adapter.ShutdownReasonAdapter;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.sync.Predicates;
 
-public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
+public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> implements IStructureErrorGui {
 
     protected final T multiblock;
     protected final IGregTechTileEntity baseMetaTileEntity;
@@ -276,7 +274,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return getTerminalRowHeight();
     }
 
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(@NotNull PanelSyncManager syncManager,
+        ModularPanel parent) {
         IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
 
@@ -388,36 +387,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(errorSyncer);
-    }
-
-    public IWidget createHighlightButton(int errX, int errY, int errZ) {
-        return new ButtonWidget<>().size(12, 12)
-            .marginRight(4)
-            .disableHoverBackground()
-            .background(IDrawable.EMPTY)
-            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK)
-            .onMousePressed(d -> {
-                highlightAndFaceBlock(errX, errY, errZ);
-                return true;
-            })
-            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.highlight_block")))
-            .tooltipShowUpTimer(TOOLTIP_DELAY);
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static void highlightAndFaceBlock(int errX, int errY, int errZ) {
-        StructureErrorHighlightRenderer.highlight(errX, errY, errZ);
-        net.minecraft.client.entity.EntityPlayerSP player = net.minecraft.client.Minecraft.getMinecraft().thePlayer;
-        if (player != null) {
-            player.closeScreen();
-            net.minecraft.util.Vec3 eyePos = player.getPosition(1.0F);
-            double dx = errX + 0.5 - eyePos.xCoord;
-            double dy = errY + 0.5 - eyePos.yCoord;
-            double dz = errZ + 0.5 - eyePos.zCoord;
-            double distXZ = Math.sqrt(dx * dx + dz * dz);
-            player.rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
-            player.rotationPitch = (float) Math.toDegrees(Math.atan2(-dy, distXZ));
-        }
     }
 
     private IWidget createRecipeResultWidget() {

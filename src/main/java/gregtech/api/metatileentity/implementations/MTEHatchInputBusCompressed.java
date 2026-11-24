@@ -51,6 +51,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -189,7 +190,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
     }
 
     @Override
-    public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
+    public CheckRecipeResult endRecipeProcessing(IMultiblockController controller) {
         processing--;
 
         if (processing == 0) {

@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.GTMod;
+import gregtech.api.ec.implementations.MTEMultiBlockECBase;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -199,21 +200,34 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
     private boolean findAirFilter(MetaTileEntity parentTileEntity) {
         if (hasAirFilter()) return true;
         if (mInventory[SLOT_FILTER] != null) return false;
-        if (!(parentTileEntity instanceof MTEMultiBlockBase multiBase)) return false;
-        multiBase.startRecipeProcessing();
-        for (MTEHatchInputBus inputBus : multiBase.mInputBusses) {
-            for (ItemStack stack : inputBus.mInventory) {
-                if (isAirFilter(stack)) {
-                    ItemStack stackCopy = stack.copy();
-                    if (multiBase.depleteInput(stack)) {
-                        mInventory[SLOT_FILTER] = stackCopy;
-                        multiBase.endRecipeProcessing();
-                        return true;
+        switch (parentTileEntity) {
+            case MTEMultiBlockBase multiBase -> {
+                multiBase.startRecipeProcessing();
+                for (MTEHatchInputBus inputBus : multiBase.mInputBusses) {
+                    for (ItemStack stack : inputBus.mInventory) {
+                        if (isAirFilter(stack)) {
+                            ItemStack stackCopy = stack.copy();
+                            if (multiBase.depleteInput(stack)) {
+                                mInventory[SLOT_FILTER] = stackCopy;
+                                multiBase.endRecipeProcessing();
+                                return true;
+                            }
+                        }
                     }
                 }
+                multiBase.endRecipeProcessing();
             }
+            case MTEMultiBlockECBase<?> ecMulti -> {
+                ItemStack filter = ecMulti.depleteItemAtomic(this::isAirFilter, 1, false);
+                if (filter != null) {
+                    mInventory[SLOT_FILTER] = filter;
+                    return true;
+                }
+                return false;
+            }
+            case null, default -> {}
         }
-        multiBase.endRecipeProcessing();
+
         return false;
     }
 

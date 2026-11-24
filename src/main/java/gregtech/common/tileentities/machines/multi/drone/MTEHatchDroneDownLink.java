@@ -40,10 +40,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.entity.EntityDrone;
@@ -57,7 +57,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
     private MTEDroneCentre centre;
     private String key = "";
     private final List<DroneConnection> connections = new ArrayList<>();
-    private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
+    private final List<IMultiblockController> unlinkedMachines = new ArrayList<>();
 
     public static final String COPIED_DATA_IDENTIFIER = "droneDownLink";
 
@@ -72,7 +72,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         super(aName, aTier, aDescription, aTextures, false);
     }
 
-    public void registerMachineController(MTEMultiBlockBase machine) {
+    public void registerMachineController(IMultiblockController machine) {
         if (!addConnection(machine)) unlinkedMachines.add(machine);
     }
 
@@ -198,7 +198,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
     }
 
     @Override
-    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+    public void onMaintenancePerformed(IMultiblockController aMaintenanceTarget) {
         if (mMaintenanceSound == null) {
             setMaintenanceSound(SoundResource.GT_MAINTENANCE_DRONE_DOWNLINK_HATCH, 1.0F, 1.0F);
         }
@@ -302,7 +302,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         }
     }
 
-    private boolean addConnection(MTEMultiBlockBase machine) {
+    private boolean addConnection(IMultiblockController machine) {
         if (centre == null || findConnection(machine).isPresent()
             || machine.getBaseMetaTileEntity() == null
             || centre.getBaseMetaTileEntity() == null) {
@@ -348,7 +348,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
     }
 
-    public Optional<DroneConnection> findConnection(MTEMultiBlockBase machine) {
+    public Optional<DroneConnection> findConnection(IMultiblockController machine) {
         return connections.stream()
             .filter(
                 connection -> connection.getLinkedMachine()

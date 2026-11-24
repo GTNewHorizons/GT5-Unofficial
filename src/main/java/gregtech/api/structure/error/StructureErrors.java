@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ECHatchElement;
 import gregtech.api.enums.HatchElement;
 
 public final class StructureErrors {
@@ -58,6 +59,11 @@ public final class StructureErrors {
     }
 
     public static TranslatableStructureError hatchCount(ErrorType type, HatchElement element, int current, int target) {
+        return hatchCount(type, TranslatableText.hatchName(element), current, target);
+    }
+
+    public static TranslatableStructureError hatchCount(ErrorType type, ECHatchElement element, int current,
+        int target) {
         return hatchCount(type, TranslatableText.hatchName(element), current, target);
     }
 
