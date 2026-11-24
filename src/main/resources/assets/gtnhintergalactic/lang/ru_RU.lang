@@ -241,6 +241,9 @@ gt.blockmachines.multimachine.project.ig.motorT5=Для работы нужен 
 gt.blockmachines.multimachine.project.ig.assembler.t1.name=Космический модуль сборки Mk-I
 gt.blockmachines.multimachine.project.ig.assembler.t2.name=Космический модуль сборки Mk-II
 gt.blockmachines.multimachine.project.ig.assembler.t3.name=Космический модуль сборки Mk-III
+gt.blockmachines.multimachine.project.ig.assembler.t1.lore=Почему мне снова нужно собирать вещи в космосе?
+gt.blockmachines.multimachine.project.ig.assembler.t2.lore=то действительно необходимо?
+gt.blockmachines.multimachine.project.ig.assembler.t3.lore=Я предполагаю, мы никогда не узнаем.
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Макс. параллелей
 
 # Module Miner
