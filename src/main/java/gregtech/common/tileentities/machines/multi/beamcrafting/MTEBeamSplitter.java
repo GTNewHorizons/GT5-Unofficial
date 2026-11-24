@@ -151,7 +151,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(beanOrBeamSplitter)
-            .addMarkdown(new ResourceLocation("gregtech", "beam-splitter"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam/splitter"))
             .beginStructureBlock(9, 3, 9, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("42", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
