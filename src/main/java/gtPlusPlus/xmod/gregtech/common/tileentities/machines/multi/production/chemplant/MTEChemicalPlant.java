@@ -91,10 +91,10 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> implements ISurvivalConstructable {
 
     private static final int PARALLELS_PER_PIPE_TIER = 2;
-    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.2D;
+    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.15D;
     private static final float SPEED_BONUS_PER_COIL_TIER = 0.5f;
     private static final int UNBREAKABLE_COIL_TIER = 10;
-    private static final int UNBREAKABLE_PIPE_TIER = 4;
+    private static final int UNBREAKABLE_PIPE_TIER = 7;
     private static final int MAX_CATALYST_DURABILITY = 50;
 
     private int mSolidCasingTier = 0;
@@ -608,7 +608,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
      * @return if the catalyst item is fully destroyed as a result of the damage applied.
      */
     private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
-        // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
+        // Awakened Draconium Coils with Neutronium Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f

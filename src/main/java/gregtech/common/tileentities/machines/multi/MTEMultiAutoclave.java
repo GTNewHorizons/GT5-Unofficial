@@ -87,6 +87,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     private HeatingCoilLevel heatLevel;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final double EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER = 0.16D / 3;
 
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
@@ -222,7 +223,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.autoclave"))
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
-            .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
+            .addDynamicEuEffInfo((float) EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("128-148", Casings.PressureContainmentCasing.getLocalizedName(), false)
@@ -307,7 +308,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     public double euModifier(int fluidPipeTier) {
-        return (double) (12 - fluidPipeTier) / 12;
+        return 1.0D - EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER * fluidPipeTier;
     }
 
     public double speedBoost(int coilTier) {
