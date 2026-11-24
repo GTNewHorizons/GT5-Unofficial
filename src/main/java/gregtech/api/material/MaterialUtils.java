@@ -509,10 +509,10 @@ public class MaterialUtils {
     }
 
     /// Returns the lang key the material's display name is translated from: its
-    /// [StandardProperties#DISPLAY_NAME_KEY], else `Material.` plus its lowercased [#internalName].
+    /// [StandardProperties#LOCALIZATION_KEY], else `Material.` plus its lowercased [#internalName].
     public static @Nullable String localizedNameKey(@Nullable Material material) {
         if (material == null) return null;
-        String key = material.getProperty(StandardProperties.DISPLAY_NAME_KEY);
+        String key = material.getProperty(StandardProperties.LOCALIZATION_KEY);
         return key != null ? key : "Material." + internalName(material).toLowerCase();
     }
 

@@ -17,7 +17,7 @@ import gregtech.api.enums.Element;
 /// Checks every GregTech material declaration once at boot and throws one aggregated error for what it finds.
 ///
 /// Catches what the compiler cannot: a [MaterialRef] that does not resolve, a composition whose amounts sum to
-/// zero, an unknown [Element] name, a zero density divider, a missing [StandardProperties#DISPLAY_NAME_KEY], and
+/// zero, an unknown [Element] name, a zero density divider, a missing [StandardProperties#LOCALIZATION_KEY], and
 /// composition cycles.
 public final class MaterialDeclarationValidator {
 
@@ -47,7 +47,7 @@ public final class MaterialDeclarationValidator {
             checkRefs(material, errors);
             checkElement(material, errors);
             checkDensity(material, errors);
-            checkDisplayNameKey(material, errors);
+            checkLocalizationKey(material, errors);
         }
 
         Set<Material> settled = new HashSet<>();
@@ -110,9 +110,9 @@ public final class MaterialDeclarationValidator {
         }
     }
 
-    private static void checkDisplayNameKey(Material material, List<String> errors) {
-        if (material.getProperty(StandardProperties.DISPLAY_NAME_KEY) == null) {
-            errors.add(describe(material, StandardProperties.DISPLAY_NAME_KEY) + " is not declared");
+    private static void checkLocalizationKey(Material material, List<String> errors) {
+        if (material.getProperty(StandardProperties.LOCALIZATION_KEY) == null) {
+            errors.add(describe(material, StandardProperties.LOCALIZATION_KEY) + " is not declared");
         }
     }
 

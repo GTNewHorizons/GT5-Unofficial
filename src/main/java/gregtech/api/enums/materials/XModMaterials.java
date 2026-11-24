@@ -33,7 +33,7 @@ public class XModMaterials {
         Fluix = MaterialLibAPI.newMaterial("gregtech", "Fluix", TextureSet.of("gregtech", "NONE"))
             .setTint(0xFFFFFFFF)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Fluix")
-            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.fluix")
+            .setProperty(StandardProperties.LOCALIZATION_KEY, "Material.fluix")
             .setProperty(
                 GTMaterialProperties.FLAGS,
                 EnumSet.of(
