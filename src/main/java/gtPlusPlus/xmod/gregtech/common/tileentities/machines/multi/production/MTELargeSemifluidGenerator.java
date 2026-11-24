@@ -52,7 +52,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
 
     private int fuelConsumption = 0;
     private int fuelValue = 0;
-    private int fuelRemaining = 0;
+    private long fuelRemaining = 0;
     private boolean boostEu = false;
     private FluidStack lubricant;
     private FluidStack oxygen;
@@ -157,9 +157,9 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
                 GTUtility.setFluidAmount(oxygen, Math.max(oxygen.amount, hatchFluid.amount));
             }
         }
-        boostEu = oxygen.amount >= 4L;
+        boostEu = GTUtility.getFluidAmount(oxygen) >= 4L;
         long lubricantCost = boostEu ? 2L : 1L;
-        if (lubricant.amount < lubricantCost) {
+        if (GTUtility.getFluidAmount(lubricant) < lubricantCost) {
             return SimpleCheckRecipeResult.ofFailure("no_lubricant");
         }
 
@@ -190,7 +190,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
                 }
 
                 fuelValue = fuel.mSpecialValue;
-                fuelRemaining = hatchFluid.amount; // Record available fuel
+                fuelRemaining = GTUtility.getFluidAmount(hatchFluid); // Record available fuel
                 this.lEUt = mEfficiency < 2000 ? 0 : newEUt; // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
@@ -257,7 +257,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         aNBT.setBoolean("boostEu", boostEu);
         aNBT.setInteger("fuelConsumption", fuelConsumption);
         aNBT.setInteger("fuelValue", fuelValue);
-        aNBT.setInteger("fuelRemaining", fuelRemaining);
+        aNBT.setLong("fuelRemaining", fuelRemaining);
     }
 
     @Override
@@ -267,7 +267,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         boostEu = aNBT.getBoolean("boostEu");
         fuelConsumption = aNBT.getInteger("fuelConsumption");
         fuelValue = aNBT.getInteger("fuelValue");
-        fuelRemaining = aNBT.getInteger("fuelRemaining");
+        fuelRemaining = aNBT.getLong("fuelRemaining");
     }
 
     @Override
