@@ -35,6 +35,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.HoverableIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -65,7 +66,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -584,11 +584,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (fluidStack == null) {
                 continue;
             }
-            long amount = (long) fluidStack.amount;
+            long amount = GTUtility.getFluidAmount(fluidStack);
             // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
-            fluidStack.amount = 1;
-            fluidDisplayMap.merge(fluidStack, amount, Long::sum);
+            GTUtility.setFluidAmount(fluidStack, 1);
+            fluidDisplayMap.merge(fluidStack, amount, GTUtility::addSafe);
         }
 
         // sort map and return as List of Entries
@@ -1280,7 +1280,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 val -> multiblock.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
                 NetworkUtils::writeFluidStack,
-                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
+                (a, b) -> a.isFluidEqual(b) && GTUtility.getFluidAmount(a) == GTUtility.getFluidAmount(b),
                 null));
 
         syncManager.syncValue(

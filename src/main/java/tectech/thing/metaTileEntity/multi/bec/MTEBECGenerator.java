@@ -100,7 +100,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_generator"))
-            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/generator"))
             .addSupportAny();
 
         tt.beginStructureBlock(19, 19, 34, true)

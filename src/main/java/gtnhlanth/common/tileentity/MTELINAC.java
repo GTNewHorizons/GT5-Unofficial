@@ -179,7 +179,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.linac.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "linac"), tooltipVars)
+            .addMarkdown(new ResourceLocation("gregtech", "beam/linac"), tooltipVars)
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
