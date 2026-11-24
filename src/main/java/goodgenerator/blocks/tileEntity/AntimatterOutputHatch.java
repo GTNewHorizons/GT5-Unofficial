@@ -1,16 +1,16 @@
 package goodgenerator.blocks.tileEntity;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import gregtech.common.gui.modularui.hatch.AntimatterOutputHatchGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -20,6 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.AntimatterOutputHatchGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
@@ -130,4 +131,4 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
         };
     }
 
-    }
+}

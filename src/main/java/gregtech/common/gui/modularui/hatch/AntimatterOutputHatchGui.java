@@ -1,5 +1,9 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -11,15 +15,13 @@ import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.FluidLockSlotWidget;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AntimatterOutputHatchGui extends MTEHatchBaseGui<AntimatterOutputHatch> {
 
@@ -48,9 +50,7 @@ public class AntimatterOutputHatchGui extends MTEHatchBaseGui<AntimatterOutputHa
 
         FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank())
             .filter(getFluidSlotFilter());
-        fluidSlotSH.setChangeListener(() -> {
-            byte mode = modeSyncer.getValue();
-        });
+        fluidSlotSH.setChangeListener(() -> { byte mode = modeSyncer.getValue(); });
 
         return super.createSlot(panel, syncManager).syncHandler(fluidSlotSH);
     }
@@ -123,7 +123,10 @@ public class AntimatterOutputHatchGui extends MTEHatchBaseGui<AntimatterOutputHa
                     byte mode = modeSyncer.getByteValue();
                     FluidStack fluid = fluidSlotSH.getValue();
 
-                    t.addLine(StatCollector.translateToLocalFormatted(AntimatterOutputHatch.getLangKeyForModeAntimatter(mode), args[0]));
+                    t.addLine(
+                        StatCollector.translateToLocalFormatted(
+                            AntimatterOutputHatch.getLangKeyForModeAntimatter(mode),
+                            args[0]));
                     if (args[1] != null) t.addLine(args[1]);
                     t.addLine(
                         EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.hatch.output.cycle"));
