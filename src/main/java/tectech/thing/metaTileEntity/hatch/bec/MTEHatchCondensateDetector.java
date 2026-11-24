@@ -137,7 +137,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "condensate-detector-hatch"),
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/condensate-detector-hatch"),
                     new HashMap<>()));
         }
         return ArrayUtils.addAll(

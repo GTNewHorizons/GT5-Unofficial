@@ -38,7 +38,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         super.saveNBTData(aNBT);
         saveInputMapToNBT(aNBT, this.acceptedInputMap);
         aNBT.setBoolean("init", initialized);
-        aNBT.setString("force", force.name());
+        if (force != null) aNBT.setString("force", force.name());
     }
 
     @Override
