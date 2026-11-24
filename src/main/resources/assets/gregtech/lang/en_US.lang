@@ -5380,6 +5380,7 @@ gt.item.paper.punch_card.encoded.name=Punched Card
 # Pads
 gt.blockpad.0.name=Bounce Pad
 gt.blockpad.1.name=Sticky Pad
+gt.damwater.name=Dam Water
 
 ## Book
 gt.item.book.written.01.name=Book

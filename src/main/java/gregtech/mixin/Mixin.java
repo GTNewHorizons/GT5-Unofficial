@@ -23,6 +23,12 @@ public enum Mixin implements IMixins {
     WorldMixin(new MixinBuilder("Block update detection")
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
+    HydroDamWater(new MixinBuilder("Makes vanilla liquid logic respect dam water levels")
+        .addCommonMixins(
+            "minecraft.WorldMixin_DamWater",
+            "minecraft.BlockLiquidMixin_DamWater")
+        .addClientMixins("minecraft.ActiveRenderInfoMixin_DamWater")
+        .setPhase(Phase.EARLY)),
     LanguageRegistryMixin(new MixinBuilder()
         .addCommonMixins("minecraft.LanguageRegistryMixin")
         .setPhase(Phase.EARLY)),
