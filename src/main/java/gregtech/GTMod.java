@@ -159,7 +159,7 @@ import ic2.api.recipe.RecipeOutput;
     dependencies = "required-after:IC2;" + "required-after:structurelib;"
         + "required-after:gtnhlib@[0.12.4,);"
         + "required-after:endlessids@[1.7.3,);"
-        + "required-after:postea@[1.2.7,);"
+        + "required-after:postea@[1.4.0,);"
         + "required-after:modularui@[1.1.12,);"
         + "required-after:appliedenergistics2;"
         + "required-after:materiallib;"
