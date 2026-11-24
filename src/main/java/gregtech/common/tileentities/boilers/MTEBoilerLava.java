@@ -172,7 +172,6 @@ public class MTEBoilerLava extends MTEBoiler {
         FluidStack drained;
 
         if (freeSpace <= 0) {
-            openGui(aPlayer);
             return;
         }
 
