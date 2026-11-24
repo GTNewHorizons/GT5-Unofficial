@@ -748,7 +748,7 @@ public enum Casings implements ICasing {
     ThermalContainmentCasing
         (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
-        (() -> ModBlocks.blockCasings2Misc, 12, -1),
+        (() -> ModBlocks.blockCasings2Misc, 12, gtpp(0, 10)),
     CuttingFactoryFrame
         (() -> ModBlocks.blockCasings2Misc, 13, gtpp(1, 13)),
     SterileFarmCasing
