@@ -1,9 +1,12 @@
 package ggfab.mte;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mockStatic;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import com.gtnewhorizons.postea.api.CustomDataReplacementManager;
+import com.gtnewhorizons.postea.utility.VersionStamps;
 
 import ggfab.mte.MTELinkedInputBus.WorldSave;
 
@@ -25,6 +29,8 @@ class LinkedInputBusWorldSaveTest {
     @BeforeEach
     void mockPostea() {
         postea = mockStatic(CustomDataReplacementManager.class);
+        postea.when(() -> CustomDataReplacementManager.savedStamps(any()))
+            .thenCallRealMethod();
     }
 
     @AfterEach
@@ -43,6 +49,28 @@ class LinkedInputBusWorldSaveTest {
         assertFalse(save.isDirty());
         assertThrows(IllegalStateException.class, () -> save.get("channel"));
         assertThrows(IllegalStateException.class, () -> save.remove("channel"));
+    }
+
+    @Test
+    void savedStampsAreCarriedIntoTheNextSave() {
+        NBTTagCompound root = channelTable();
+        NBTTagCompound stamps = new NBTTagCompound();
+        stamps.setInteger("absent:transformer", 3);
+        root.setTag(VersionStamps.KEY, stamps);
+
+        save.readFromNBT(root);
+        NBTTagCompound written = new NBTTagCompound();
+        save.writeToNBT(written);
+
+        assertEquals(
+            1,
+            written.getCompoundTag("channel")
+                .getInteger("ref"));
+        assertEquals(
+            1,
+            written.func_150296_c()
+                .size());
+        postea.verify(() -> CustomDataReplacementManager.stamp(same(written), eq(stamps)));
     }
 
     private static NBTTagCompound channelTable() {

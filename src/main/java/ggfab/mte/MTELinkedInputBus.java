@@ -27,7 +27,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.postea.api.CustomDataReplacementManager;
-import com.gtnewhorizons.postea.utility.VersionStamps;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -589,7 +588,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     /// The world's linked input bus channels, with saved item stacks migrated through Postea under the storage id
-    /// `gregtech:linkedInputBusses`.
+    /// `gregtech:linkedInputBusses`. The saved root holds one compound per channel, beside Postea's stamps.
     ///
     /// `MapStorage` swallows load exceptions and keeps the half-read table. A table whose migration failed is never
     /// saved, and every read or change of it rethrows the failure.
@@ -597,6 +596,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
         private final Map<String, SharedInventory> data = new HashMap<>();
         private RuntimeException loadFailure;
+        private NBTTagCompound savedStamps;
 
         public WorldSave(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -610,11 +610,12 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                 loadFailure = e;
                 throw e;
             }
-            // every key of this tag is a channel, so the version stamp the transform writes must not become one
-            tag.removeTag(VersionStamps.KEY);
+            savedStamps = CustomDataReplacementManager.savedStamps(tag);
             @SuppressWarnings("unchecked")
             Set<Map.Entry<String, NBTBase>> set = tag.tagMap.entrySet();
             for (Map.Entry<String, NBTBase> e : set) {
+                if (e.getValue()
+                    .equals(savedStamps)) continue;
                 data.put(e.getKey(), new SharedInventory((NBTTagCompound) e.getValue()));
             }
         }
@@ -627,7 +628,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     e.getValue()
                         .save());
             }
-            CustomDataReplacementManager.stamp(tag);
+            CustomDataReplacementManager.stamp(tag, savedStamps);
         }
 
         @Override
