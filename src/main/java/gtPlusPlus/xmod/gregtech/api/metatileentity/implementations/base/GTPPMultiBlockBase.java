@@ -79,7 +79,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
