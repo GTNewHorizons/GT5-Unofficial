@@ -5,12 +5,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.ECHatchElement.Energy;
+import static gregtech.api.enums.ECHatchElement.InputBus;
+import static gregtech.api.enums.ECHatchElement.InputHatch;
+import static gregtech.api.enums.ECHatchElement.Maintenance;
+import static gregtech.api.enums.ECHatchElement.OutputBus;
+import static gregtech.api.enums.ECHatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -21,52 +21,44 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.ec.component.multiblock.ILayeredFluidOutputLogicComponent;
+import gregtech.api.ec.implementations.MTEMultiBlockECBase;
+import gregtech.api.ec.implementations.MultiblockComponentBuilder;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.ec.multiblock.LayeredFluidOutputLogicComponent;
 import gregtech.common.misc.GTStructureChannels;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTEDistillationTower extends MTEMultiBlockECBase<MTEDistillationTower> implements ICasingTextureProvider {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -102,9 +94,9 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                         .hint(2)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
-                    ofHatchAdder(MTEDistillationTower::addEnergyInputToMachineList, CASING_INDEX, 2),
+                    ofHatchAdder(Energy.adder()::apply, CASING_INDEX, 2),
                     ofHatchAdder(MTEDistillationTower::addLayerOutputHatch, CASING_INDEX, 2),
-                    ofHatchAdder(MTEDistillationTower::addMaintenanceToMachineList, CASING_INDEX, 2),
+                    ofHatchAdder(Maintenance.adder()::apply, CASING_INDEX, 2),
                     onElementPass(MTEDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
             // hint element only used in top layer
             .addElement(
@@ -119,16 +111,19 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                 ofChain(
                     onElementPass(
                         t -> t.onTopLayerFound(false),
-                        ofHatchAdder(MTEDistillationTower::addOutputToMachineList, CASING_INDEX, 3)),
+                        ofHatchAdder(
+                            (t, te, i) -> OutputBus.adder()
+                                .apply(t, te, i) || t.addLayerOutputHatch(te, i),
+                            CASING_INDEX,
+                            3)),
                     onElementPass(
                         t -> t.onTopLayerFound(false),
-                        ofHatchAdder(MTEDistillationTower::addMaintenanceToMachineList, CASING_INDEX, 3)),
+                        ofHatchAdder(Maintenance.adder()::apply, CASING_INDEX, 3)),
                     onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings4, 1)),
                     isAir()))
             .build();
     }
 
-    protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
     protected int mCasing;
     protected boolean mTopLayerFound;
@@ -142,8 +137,25 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    protected @NotNull MTEDistillationTower createNewMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEDistillationTower(this.mName);
+    }
+
+    @Override
+    protected void configureComponents(@NotNull MultiblockComponentBuilder builder) {
+        super.configureComponents(builder);
+        builder.setFluidOutput(new LayeredFluidOutputLogicComponent())
+            .enableStandardQoL()
+            .enableRecipeLocking()
+            .setActivitySound(SoundResource.GT_MACHINES_DISTILLERY_LOOP);
+    }
+
+    private ILayeredFluidOutputLogicComponent fluidOutputLogic;
+
+    @Override
+    public void onComponentsReady() {
+        super.onComponentsReady();
+        fluidOutputLogic = getComponent(ILayeredFluidOutputLogicComponent.KEY);
     }
 
     @Override
@@ -208,11 +220,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         return RecipeMaps.distillationTowerRecipes;
     }
 
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
-
     protected void onCasingFound() {
         mCasing++;
     }
@@ -223,24 +230,15 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     protected int getCurrentLayerOutputHatchCount() {
-        return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-            : mOutputHatchesByLayer.get(mHeight - 1)
-                .size();
+        return fluidOutputLogic != null ? fluidOutputLogic.getLayerHatchCount(mHeight - 1) : 0;
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null || aTileEntity.isDead()
-            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
-        while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
-        tHatch.updateTexture(aBaseCasingIndex);
-        addIfSmartInput(tHatch);
-        return mOutputHatchesByLayer.get(mHeight - 1)
-            .add(tHatch);
-    }
-
-    @Override
-    public List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
-        return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
+        if (aTileEntity == null) return false;
+        IMetaTileEntity metaTile = aTileEntity.getMetaTileEntity();
+        if (metaTile == null) return false;
+        return fluidOutputLogic != null
+            && fluidOutputLogic.tryAttachFluidOutput(metaTile, aBaseCasingIndex, mHeight - 1);
     }
 
     @Override
@@ -263,7 +261,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // reset
-        mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
         mTopLayerFound = false;
         mCasing = 0;
@@ -271,20 +268,26 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         // check base
         if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
-        List<Integer> missingLayers = new ArrayList<>();
-
-        // check each layer
         while (mHeight < 12) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty()) {
-                missingLayers.add(mHeight + 1);
-            }
             if (mTopLayerFound) {
                 break;
             }
             // not top
             mHeight++;
+        }
+    }
+
+    @Override
+    public void verifyMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        int scannedLayers = mTopLayerFound ? mHeight : mHeight - 1;
+        List<Integer> missingLayers = new ArrayList<>();
+
+        // check each layer
+        for (int i = 0; i < scannedLayers; i++) {
+            if (fluidOutputLogic.getLayerHatchCount(i) == 0) {
+                missingLayers.add(i + 2);
+            }
         }
 
         if (!missingLayers.isEmpty()) {
@@ -307,16 +310,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean addFluidOutputs(@NotNull List<FluidStack> outputFluids, @Nullable List<FluidStack> remaining) {
-        return addFluidOutputsByLayer(outputFluids, mOutputHatchesByLayer, remaining);
-    }
-
-    @Override
-    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
-        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
         // min 2 output layer, so at least 1 + 2 height
@@ -329,7 +322,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (isFormed()) return SURVIVAL_BUILD_DONE;
         mHeight = 0;
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
@@ -351,21 +344,5 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             env,
             false,
             true);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
     }
 }

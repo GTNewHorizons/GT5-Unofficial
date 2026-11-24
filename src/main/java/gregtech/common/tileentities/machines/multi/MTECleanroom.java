@@ -2,8 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugCleanroom;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
@@ -32,10 +30,17 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.ec.component.IEnergyInputLogicComponent;
+import gregtech.api.ec.component.multiblock.IRecipeEfficiencyLogicComponent;
+import gregtech.api.ec.implementations.MTEMultiBlockECBase;
+import gregtech.api.ec.implementations.MultiblockComponentBuilder;
+import gregtech.api.enums.ECHatchElement;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -49,12 +54,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -62,12 +65,10 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
-import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.ec.multiblock.CustomRecipeLogicComponent;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTECleanroom extends MTETooltipMultiBlockBase
-    implements IConstructable, ICleanroom, ICasingTextureProvider {
+public class MTECleanroom extends MTEMultiBlockECBase<MTECleanroom> implements ICleanroom, ICasingTextureProvider {
 
     public static final int STARTUP_EU = 40;
     public static final int IDLE_EU = 4;
@@ -97,7 +98,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected static Block CASING_BLOCK;
     protected static final int CASING_META = 2;
     // To color hatches.
-    protected static final int CASING_INDEX = 210;
+    protected static final short CASING_INDEX = 210;
     // Filter casings.
     protected static Block FILTER_BLOCK;
     protected static final int FILTER_META = 11;
@@ -117,29 +118,46 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    protected @NotNull MTECleanroom createNewMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECleanroom(mName);
     }
 
     @Override
+    protected void configureComponents(@NotNull MultiblockComponentBuilder builder) {
+        super.configureComponents(builder);
+        builder.noIO()
+            .configureEfficiency(
+                comp -> comp.setRampUpEfficiencyPerRecipe(100)
+                    .setShowInTerminal(true))
+            .setRecipeLogic(new CustomRecipeLogicComponent(this::checkProcessing));
+    }
+
+    private IRecipeEfficiencyLogicComponent efficiencyLogic;
+    private IEnergyInputLogicComponent energyInputLogic;
+
+    @Override
+    protected void onComponentsReady() {
+        super.onComponentsReady();
+        efficiencyLogic = getComponent(IRecipeEfficiencyLogicComponent.KEY);
+        energyInputLogic = getComponent(IEnergyInputLogicComponent.KEY);
+    }
+
+    @Override
     public int getCleanness() {
-        return mEfficiency;
+        return efficiencyLogic.getEfficiency();
     }
 
     @Override
     public boolean isValidCleanroom() {
-        return isValid() && mMachine;
+        return isValid() && isFormed();
     }
 
     @Override
     public void pollute() {
-        mEfficiency = 0;
-        mWrench = false;
-        mScrewdriver = false;
-        mSoftMallet = false;
-        mHardHammer = false;
-        mSolderingTool = false;
-        mCrowbar = false;
+        efficiencyLogic.setEfficiency(0);
+        if (maintenanceLogic != null) {
+            maintenanceLogic.causeAllIssues();
+        }
     }
 
     @Override
@@ -185,10 +203,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Nonnull
-    @Override
-    public CheckRecipeResult checkProcessing() {
-        mEfficiencyIncrease = 100;
-        final long inputVoltage = getMaxInputVoltage();
+    public CheckRecipeResult checkProcessing(@NotNull CustomRecipeLogicComponent logic) {
+        final long inputVoltage = energyInputLogic.getMaxInputVoltage();
 
         // only allow LV+ energy hatches
         if (inputVoltage < TierEU.LV) {
@@ -202,17 +218,22 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .setEUt(inputVoltage * amperage)
             .setDuration(45 * Math.max(1, mHeight - 1))
             .calculate();
-        mEUt = (int) calculator.getConsumption();
-        mMaxProgresstime = calculator.getDuration();
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
-        mEUt /= -10;
+        logic.setEUt(calculator.getConsumption() / -10);
+        logic.setMaxProgressTime(calculator.getDuration());
         return SimpleCheckRecipeResult.ofSuccess("cleanroom_running");
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
+    public IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
+            && !f.isVerticallyFliped();
+    }
+
+    @Override
+    public IStructureDefinition<MTECleanroom> getStructureDefinition() {
+        return null;
     }
 
     /*
@@ -381,12 +402,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 return true;
 
             case HATCH_ENERGY:
-                addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz), CASING_INDEX);
+                ECHatchElement.Energy
+                    .tryAttach(this, aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz), CASING_INDEX);
                 ++otherCount;
                 return true;
 
             case HATCH_MAINTENANCE:
-                addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz), CASING_INDEX);
+                ECHatchElement.Maintenance
+                    .tryAttach(this, aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz), CASING_INDEX);
                 ++otherCount;
                 return true;
 
@@ -556,8 +579,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         // If we get here, the entire floor is valid. Add hatches to the machine.
         casingCount += addedCasings;
         otherCount += addedOther;
-        for (var te : energy) addEnergyInputToMachineList(te, CASING_INDEX);
-        for (var te : maintenance) addMaintenanceToMachineList(te, CASING_INDEX);
+        for (var te : energy) ECHatchElement.Energy.tryAttach(this, te, CASING_INDEX);
+        for (var te : maintenance) ECHatchElement.Maintenance.tryAttach(this, te, CASING_INDEX);
         return true;
     }
 
@@ -585,7 +608,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mUpdate = 100;
+        setStructureUpdateTime(100);
         cleanroomReceivers.forEach(r -> r.setCleanroom(null));
         cleanroomReceivers.clear();
 
@@ -635,16 +658,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         if (debugCleanroom) GT_FML_LOGGER
             .debug("Cleanroom: Structure complete. Found {} casings, {} other blocks.", casingCount, otherCount);
+    }
 
+    @Override
+    public void verifyMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Validate structure.
-        if (this.mEnergyHatches.size() != 1) {
-            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, this.mEnergyHatches.size(), 1));
-        }
-
-        if (this.mMaintenanceHatches.size() != 1) {
-            errors
-                .add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Maintenance, this.mMaintenanceHatches.size(), 1));
-        }
+        checkOneEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
 
         if (casingCount < MachineStats.cleanroom.minCasingCount) {
             if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Not enough plascrete blocks.");
@@ -656,12 +676,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         if (!errors.isEmpty()) return;
 
+        int currentEfficiency = efficiencyLogic.getEfficiency();
         if (isDoorOpen) {
-            this.mEfficiency = Math.max(0, this.mEfficiency - 200);
+            currentEfficiency = Math.max(0, currentEfficiency - 200);
+            efficiencyLogic.setEfficiency(currentEfficiency);
         }
 
         for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-            final byte t = (byte) Math.max(1, (byte) (15 / (10000f / this.mEfficiency)));
+            final byte t = (byte) Math.max(1, (byte) (15 / (10000f / currentEfficiency)));
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
 
@@ -681,7 +703,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
 
         if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Check successful.");
-
     }
 
     @Override
@@ -727,6 +748,11 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 else world.setBlock(X, Y, Z, FILTER_BLOCK, FILTER_META, 2);
             }
         }
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return SURVIVAL_BUILD_UNSUPPORTED;
     }
 
     @Override
@@ -797,15 +823,5 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
         // Invalid combination?
         return -1;
-    }
-
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTECleanRoomGui(this);
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return false;
     }
 }

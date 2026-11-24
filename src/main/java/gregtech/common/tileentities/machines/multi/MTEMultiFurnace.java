@@ -2,30 +2,32 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.ECHatchElement.Energy;
+import static gregtech.api.enums.ECHatchElement.InputBus;
+import static gregtech.api.enums.ECHatchElement.Maintenance;
+import static gregtech.api.enums.ECHatchElement.Muffler;
+import static gregtech.api.enums.ECHatchElement.OutputBus;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTStructureUtility.ofECActiveCoil;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,25 +40,30 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.ec.component.IPollutionLogicComponent;
+import gregtech.api.ec.component.IRecipeLogicComponent;
+import gregtech.api.ec.component.multiblock.IBatchConfigComponent;
+import gregtech.api.ec.component.multiblock.IMultiblockEnergyInputLogicComponent;
+import gregtech.api.ec.component.multiblock.IRecipeEfficiencyLogicComponent;
+import gregtech.api.ec.implementations.MultiblockComponentBuilder;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.ec.multiblock.CustomRecipeLogicComponent;
 import gregtech.common.misc.GTStructureChannels;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -81,10 +88,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
                 .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement(
-            'C',
-            GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))))
+        .addElement('C', GTStructureChannels.HEATING_COIL.use(ofECActiveCoil()))
         .addElement(
             'b',
             buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
@@ -102,8 +106,21 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    protected @NotNull MTEMultiFurnace createNewMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMultiFurnace(this.mName);
+    }
+
+    @Override
+    protected void configureComponents(@NotNull MultiblockComponentBuilder builder) {
+        super.configureComponents(builder);
+        builder.enableBatchMode()
+            .enableVoidProtection()
+            .noFluidIO()
+            .setRecipeLogic(
+                new CustomRecipeLogicComponent(this::checkProcessing).setRecipeMapProvider(this::getRecipeMap))
+            .configureCoil(comp -> comp.setOnCoilValidated(coilLevel -> mLevel = 4 << (coilLevel.ordinal() - 1)))
+            .enablePollution(GTMod.proxy.mPollutionMultiSmelterPerSecond)
+            .setActivitySound(SoundResource.GT_MACHINES_EBF_LOOP);
     }
 
     @Override
@@ -111,7 +128,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.furnace"))
             .addMarkdown(new ResourceLocation("gregtech", "multi-furnace"))
-            .addPollutionAmount(getPollutionPerSecond(null))
+            .addPollutionAmount(GTMod.proxy.mPollutionMultiSmelterPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("8-12", Casings.HeatProofMachineCasing.getLocalizedName(), false)
@@ -156,22 +173,17 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
         return RecipeMaps.furnaceRecipes;
     }
 
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.proxy.mPollutionMultiSmelterPerSecond;
-    }
-
     // Not GPL
     @Override
     public boolean supportsPowerPanel() {
         return false;
     }
 
-    @Override
     @NotNull
-    public CheckRecipeResult checkProcessing() {
-        List<ItemStack> tInput = getAllStoredInputs();
-        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
+    public CheckRecipeResult checkProcessing(@NotNull CustomRecipeLogicComponent logic) {
+        List<ItemStack> tInput = getAllStoredItems();
+        var energyInputLogic = getComponent(IMultiblockEnergyInputLogicComponent.KEY);
+        long availableEUt = GTUtility.roundUpVoltage(energyInputLogic.getMaxInputVoltage());
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
         }
@@ -189,8 +201,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
         maxParallel = GTUtility.longToInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()));
 
         int maxParallelBeforeBatchMode = maxParallel;
-        if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.longToInt((long) maxParallel * getMaxBatchSize());
+        var batchMode = getComponent(IBatchConfigComponent.KEY);
+        int maxBatchSize = batchMode.getMaxBatchSize();
+        if (batchMode.isBatchModeEnabled()) {
+            maxParallel = GTUtility.longToInt((long) maxParallel * maxBatchSize);
         }
 
         maxParallel = Math.min(maxParallel, GTUtility.longToInt(availableEUt / RECIPE_EUT));
@@ -217,8 +231,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
 
         double batchMultiplierMax = 1;
         // In case batch mode enabled
-        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
-            batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
+        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < maxBatchSize) {
+            batchMultiplierMax = (double) maxBatchSize / calculator.getDuration();
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
 
@@ -255,26 +269,17 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.mOutputItems = smeltedOutputs.values()
-            .toArray(new ItemStack[0]);
-
-        this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
-        this.mEfficiencyIncrease = 10000;
-        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = Math.min(VP[GTUtility.getTier(getAverageInputVoltage())], calculator.getConsumption());
-        if (this.lEUt > 0) {
-            this.lEUt = -this.lEUt;
-        }
-        this.updateSlots();
-        if (this.recipesDone == 0) this.recipesDone++;
-        // Multiblock base already includes 1 parallel
-        this.recipesDone += finalParallel - 1;
+        logic.setOutputItems(
+            smeltedOutputs.values()
+                .toArray(new ItemStack[0]));
+        logic.setMaxProgressTime((int) (calculator.getDuration() * batchMultiplierMax));
+        logic.setEUt(
+            -Math.abs(
+                Math.min(
+                    VP[GTUtility.getTier(energyInputLogic.getAverageInputVoltage())],
+                    calculator.getConsumption())));
+        logic.setCurrentParallels(finalParallel);
         return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 
     @Override
@@ -285,13 +290,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mLevel = 0;
-        setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
-        if (getCoilLevel() == HeatingCoilLevel.None) {
-            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
-        } else {
-            this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
-        }
+    }
+
+    @Override
+    public void verifyMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
@@ -300,39 +303,46 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
 
     @Override
     public String[] getInfoData() {
+        var energyInput = getComponent(IMultiblockEnergyInputLogicComponent.KEY);
+        var recipeLogic = getComponent(IRecipeLogicComponent.KEY);
+        var efficiencyLogic = getComponent(IRecipeEfficiencyLogicComponent.KEY);
+        var pollutionLogic = getComponent(IPollutionLogicComponent.KEY);
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (final MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
+        for (var hatch : energyInput.getValidNormalEnergyHatches()) {
+            storedEnergy += hatch.getBaseMetaTileEntity()
                 .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
+            maxEnergy += hatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-
+        long maxInputVoltage = energyInput.getMaxInputVoltage();
         return new String[] {
             IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.Progress.fmt.s",
-                formatNumber(mProgresstime / 20),
-                formatNumber(mMaxProgresstime / 20)),
+                formatNumber(recipeLogic.getProgressTime() / 20),
+                formatNumber(recipeLogic.getMaxProgressTime() / 20)),
             IGregTechDeviceInformation
                 .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
-            IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(-lEUt)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.usage.fmt", formatNumber(-recipeLogic.getEUt())),
             IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.mei.fmt.2A",
-                formatNumber(getMaxInputVoltage()),
-                VN[GTUtility.getTier(getMaxInputVoltage())]),
+                formatNumber(maxInputVoltage),
+                VN[GTUtility.getTier(maxInputVoltage)]),
             IGregTechDeviceInformation.encode(
                 "GT5U.multiblock.problems.efficiency.fmt",
                 getIdealStatus() - getRepairStatus(),
-                mEfficiency / 100.0F + " %"),
+                efficiencyLogic.getEfficiency() / 100.0F + " %"),
             IGregTechDeviceInformation.encode("GT5U.infodata.ms.multismelting", mLevel),
-            IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
-            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.pollution.fmt", pollutionLogic.getAveragePollutionPercentage()),
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipeLogic.getRecipesDone())) };
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return mLevel;
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setInteger("maxParallelRecipes", mLevel);
     }
 
     @Override
@@ -342,17 +352,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (isFormed()) return SURVIVAL_BUILD_DONE;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return false;
     }
 }
