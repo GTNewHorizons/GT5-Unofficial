@@ -5,23 +5,19 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
 import com.gtnewhorizon.gtnhlib.chat.AbstractChatComponentCustom;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.AbstractChatComponentBuffer;
 
-import appeng.api.util.INameSuffixIcons;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /**
  * Carries the ghost and physical circuit numbers of a machine, so that the interface name suffix is formatted with the
  * viewing client's own {@link Gregtech.Machines#ghostCircuitSuffixFormat} rather than the server's.
  */
-public class ChatComponentGhostCircuitSuffix extends AbstractChatComponentBuffer<ChatComponentGhostCircuitSuffix>
-    implements INameSuffixIcons {
+public class ChatComponentGhostCircuitSuffix extends AbstractChatComponentBuffer<ChatComponentGhostCircuitSuffix> {
 
     public List<Integer> circuitNumbers = new ArrayList<>();
 
@@ -29,13 +25,6 @@ public class ChatComponentGhostCircuitSuffix extends AbstractChatComponentBuffer
 
     public ChatComponentGhostCircuitSuffix(List<Integer> circuitNumbers) {
         this.circuitNumbers = circuitNumbers;
-    }
-
-    @Override
-    public List<ItemStack> getSuffixIcons() {
-        return circuitNumbers.stream()
-            .map(GTUtility::getIntegratedCircuit)
-            .collect(Collectors.toList());
     }
 
     @Override

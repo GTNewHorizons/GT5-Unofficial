@@ -744,18 +744,33 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             suffix = nameProvider.getInterfaceNameSuffix();
         }
 
-        List<ItemStack> manualSlots = new ArrayList<>();
-        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
-            if (mInventory[i] != null) {
-                manualSlots.add(mInventory[i]);
-            }
-        }
+        final List<ItemStack> manualSlots = getManualConfigItems();
         if (!manualSlots.isEmpty()) {
             IChatComponent manualSuffix = new ChatComponentNonConsumedItemsSuffix(manualSlots);
             suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
         }
 
         return suffix;
+    }
+
+    @Override
+    public List<ItemStack> getMachineConfigIcons() {
+        final List<ItemStack> icons = new ArrayList<>();
+        if (getBaseMetaTileEntity() instanceof IInterfaceNameProvider provider) {
+            icons.addAll(provider.getMachineConfigIcons());
+        }
+        icons.addAll(getManualConfigItems());
+        return icons;
+    }
+
+    private List<ItemStack> getManualConfigItems() {
+        List<ItemStack> manualSlots = new ArrayList<>();
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                manualSlots.add(mInventory[i]);
+            }
+        }
+        return manualSlots;
     }
 
     @Override
