@@ -60,7 +60,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -102,7 +102,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement(
             'B',
             buildHatchAdder(MTEHIPCompressor.class)
-                .atLeast(Maintenance, Energy, MTEHeatSensor.HeatSensorHatchElement.HeatSensor)
+                .atLeast(Maintenance, Energy, MTEHatchHeatSensor.HeatSensorHatchElement.HeatSensor)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4))
                 .hint(1)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
@@ -121,7 +121,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
         .build();
 
-    private final ArrayList<MTEHeatSensor> sensorHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchHeatSensor> sensorHatches = new ArrayList<>();
 
     private HeatingCoilLevel heatLevel;
     private int coilTier = 0;
@@ -359,8 +359,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         }
 
         // Update all the sensors
-        for (MTEHeatSensor hatch : sensorHatches) {
-            hatch.setHeatValue(heat);
+        for (MTEHatchHeatSensor hatch : sensorHatches) {
+            hatch.updateRedstoneOutput(heat);
         }
 
     }
@@ -401,13 +401,13 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    public List<MTEHeatSensor> getHeatSensorHatches() {
+    public List<MTEHatchHeatSensor> getHeatSensorHatches() {
         return Collections.unmodifiableList(sensorHatches);
     }
 
     @Override
     public boolean addHeatSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof MTEHeatSensor sensor) {
+        if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof MTEHatchHeatSensor sensor) {
             sensor.updateTexture(aBaseCasingIndex);
             return sensorHatches.add(sensor);
         }
