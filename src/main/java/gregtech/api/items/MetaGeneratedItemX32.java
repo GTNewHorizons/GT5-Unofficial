@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.M;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -170,16 +171,25 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
+        addSubItems(
+            aItem,
+            aCreativeTab,
+            aList,
+            (prefix, material) -> doesShowInCreative(prefix, material, GregTechAPI.sDoShowAllItemsInCreative));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final void addSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList,
+        BiPredicate<OrePrefixes, Materials> shouldList) {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = getOrePrefix(i);
             Materials aMaterial = getMaterial(i);
-            if (aPrefix != null && aMaterial != null) {
-                if (doesMaterialAllowGeneration(aPrefix, aMaterial)
-                    && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
-                    ItemStack tStack = new ItemStack(this, 1, i);
-                    isItemStackUsable(tStack);
-                    aList.add(tStack);
-                }
+            if (aPrefix != null && aMaterial != null
+                && doesMaterialAllowGeneration(aPrefix, aMaterial)
+                && shouldList.test(aPrefix, aMaterial)) {
+                ItemStack tStack = new ItemStack(this, 1, i);
+                isItemStackUsable(tStack);
+                aList.add(tStack);
             }
         }
         super.getSubItems(aItem, aCreativeTab, aList);

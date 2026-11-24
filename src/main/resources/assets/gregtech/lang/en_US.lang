@@ -2899,6 +2899,14 @@ gt.nei.tgs.info-1=Output is further boosted
 gt.nei.tgs.info-2=by machine energy tier
 gt.nei.tgs.info-3=and tool type
 gt.nei.ap.tier=Algae Pond Tier: %s
+gt.nei.category.ingotHot=Hot Ingots
+gt.nei.category.dustTiny=Tiny Dusts
+gt.nei.category.dustSmall=Small Dusts
+gt.nei.category.dustImpure=Impure Dusts
+gt.nei.category.dustPure=Purified Dusts
+gt.nei.category.crushed=Crushed Ores
+gt.nei.category.crushedPurified=Purified Crushed Ores
+gt.nei.category.crushedCentrifuged=Centrifuged Crushed Ores
 
 GT5U.recipes.recipe_by.original=Original Recipe by: %s
 GT5U.recipes.recipe_by.modified=Modified by: %s
