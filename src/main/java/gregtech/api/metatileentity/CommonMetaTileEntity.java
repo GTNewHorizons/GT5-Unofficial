@@ -268,12 +268,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
-        int logLevel, ArrayList<String> list) {
-        return list;
-    }
-
-    @Override
     public ArrayList<ItemStack> getDroppedItem() {
         return null;
     }
