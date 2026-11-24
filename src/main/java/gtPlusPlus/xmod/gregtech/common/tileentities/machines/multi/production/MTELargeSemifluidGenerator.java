@@ -152,9 +152,13 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         GTUtility.setFluidAmount(oxygen, 0);
         for (FluidStack hatchFluid : fluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
-                GTUtility.setFluidAmount(lubricant, Math.max(lubricant.amount, hatchFluid.amount));
+                GTUtility.setFluidAmount(
+                    lubricant,
+                    Math.max(GTUtility.getFluidAmount(lubricant), GTUtility.getFluidAmount(hatchFluid)));
             } else if (hatchFluid.isFluidEqual(oxygen)) {
-                GTUtility.setFluidAmount(oxygen, Math.max(oxygen.amount, hatchFluid.amount));
+                GTUtility.setFluidAmount(
+                    oxygen,
+                    Math.max(GTUtility.getFluidAmount(oxygen), GTUtility.getFluidAmount(hatchFluid)));
             }
         }
         boostEu = GTUtility.getFluidAmount(oxygen) >= 4L;
