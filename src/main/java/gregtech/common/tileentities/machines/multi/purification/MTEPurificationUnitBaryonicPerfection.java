@@ -262,7 +262,7 @@ public class MTEPurificationUnitBaryonicPerfection
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_baryonic_perfection"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"),
+                new ResourceLocation("gregtech", "purification/unit-baryonic-perfection"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("interval", CONSUME_INTERVAL)
