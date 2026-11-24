@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -76,7 +77,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         setFluids();
     }
 
-    public void setFluids() {
+    private void setFluids() {
         if (lubricant == null) {
             lubricant = Materials.Lubricant.getFluid(0L);
         }
@@ -147,13 +148,13 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         // Check for lubricant and oxygen first, so we can compute costs ahead of time.
         // This will allow us to check costs without needing to actually try to deplete fluids
         // (wasting earlier fluids in the check if later fluids turn out to be insufficient).
-        lubricant.amount = 0;
-        oxygen.amount = 0;
+        GTUtility.setFluidAmount(lubricant, 0);
+        GTUtility.setFluidAmount(oxygen, 0);
         for (FluidStack hatchFluid : fluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
-                lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
+                GTUtility.setFluidAmount(lubricant, Math.max(lubricant.amount, hatchFluid.amount));
             } else if (hatchFluid.isFluidEqual(oxygen)) {
-                oxygen.amount = Math.max(oxygen.amount, hatchFluid.amount);
+                GTUtility.setFluidAmount(oxygen, Math.max(oxygen.amount, hatchFluid.amount));
             }
         }
         boostEu = oxygen.amount >= 4L;
