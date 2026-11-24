@@ -53,8 +53,8 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
     private int fuelValue = 0;
     private int fuelRemaining = 0;
     private boolean boostEu = false;
-    private static FluidStack lubricant;
-    private static FluidStack oxygen;
+    private FluidStack lubricant;
+    private FluidStack oxygen;
 
     // spotless:off
     private static final String[][] structure = {
@@ -76,7 +76,7 @@ public class MTELargeSemifluidGenerator extends MTEExtendedPowerMultiBlockBase<M
         setFluids();
     }
 
-    public static void setFluids() {
+    public void setFluids() {
         if (lubricant == null) {
             lubricant = Materials.Lubricant.getFluid(0L);
         }
