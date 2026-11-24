@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -800,26 +798,21 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         }
     }
 
-    private void processInfoData(String langBaseKey, Function<T, String> nameGetter, List<T> list, List<String> ss) {
-        if (list.isEmpty()) {
-            ss.add(langBaseKey + ".empty");
-        } else {
-            ss.add(IGregTechDeviceInformation.encode(langBaseKey + ".contains", list.size()));
-            list.stream()
-                .limit(100)
-                .forEach(s -> {
-                    ss.add(
-                        nameGetter.apply(s) + ": "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber(s.getStackSize())
-                            + " "
-                            + getFluidUnit()
-                            + EnumChatFormatting.RESET);
-                });
-        }
+    private void processInfoData(Function<T, String> nameGetter, Function<Long, String> numberFormatter, List<T> list,
+        List<String> ss) {
+        list.stream()
+            .limit(100)
+            .forEach(s -> {
+                ss.add(
+                    nameGetter.apply(s) + ": "
+                        + EnumChatFormatting.GOLD
+                        + numberFormatter.apply(s.getStackSize())
+                        + EnumChatFormatting.RESET);
+            });
     }
 
-    public String[] getInfoData(String AEDiagnostics, String langBaseKey, Function<T, String> nameGetter) {
+    public String[] getInfoData(String AEDiagnostics, String langBaseKey, Function<T, String> nameGetter,
+        Function<Long, String> numberFormatter) {
         List<String> ss = new ArrayList<>();
         ss.add(
             (getProxy() != null && getProxy().isActive()) ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
@@ -827,12 +820,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                     .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
         ss.add(
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
-                    + " "
-                    + getFluidUnit()
-                    + EnumChatFormatting.RESET));
-        processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
+                langBaseKey + ".cache_capacity",
+                EnumChatFormatting.GOLD + numberFormatter.apply(getCacheCapacity()) + EnumChatFormatting.RESET));
+        processInfoData(nameGetter, numberFormatter, getCacheList(), ss);
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();
             final Iterable<T> iter = cell.getAvailableItems(
@@ -841,7 +831,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                 IterationCounter.fetchNewId());
             iter.forEach(cacheList::add);
             ss.add("GT5U.waila.hatch.outputme.storage_cache");
-            processInfoData(langBaseKey, nameGetter, cacheList, ss);
+            if (cacheList.isEmpty()) {
+                ss.add(langBaseKey + ".empty");
+            } else {
+                ss.add(
+                    IGregTechDeviceInformation
+                        .encode(langBaseKey + ".contains", cacheList.size(), cacheList.size() > 1 ? "s" : ""));
+                processInfoData(nameGetter, numberFormatter, cacheList, ss);
+            }
         }
         return ss.toArray(new String[0]);
     }
