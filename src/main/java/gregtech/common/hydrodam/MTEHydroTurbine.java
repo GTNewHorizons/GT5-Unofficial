@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IIconContainer;
@@ -25,7 +26,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 /// Drains water from the dam behind it into an output hatch, producing {@link MTEHydroPump#EU_PER_LITRE} EU per litre
@@ -66,7 +69,10 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
     @Override
     protected void checkDamHatches(@NotNull List<StructureError> errors) {
         checkOneDynamoHatch(errors);
-        checkOneOutputHatch(errors);
+        if (mOutputHatches.size() > 1) {
+            errors.add(
+                StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.OutputHatch, mOutputHatches.size(), 1));
+        }
         checkOneMaintenanceHatch(errors);
     }
 
@@ -92,10 +98,10 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
 
         long litres = Math.min((long) volume.getLitres(), budget);
 
-        MTEHatchOutput output = mOutputHatches.get(0);
+        // The output hatch is optional. Without one, or without void protection, water that doesn't fit is voided.
+        MTEHatchOutput output = mOutputHatches.isEmpty() ? null : mOutputHatches.get(0);
 
-        // Without void protection, water that doesn't fit in the output hatch is voided.
-        if (protectsExcessFluid()) {
+        if (output != null && protectsExcessFluid()) {
             litres = Math.min(litres, output.fill(water(litres), false));
 
             if (litres <= 0) return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
@@ -103,7 +109,7 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
 
         long removed = (long) volumes.removeLitres(volume, litres);
 
-        output.fill(water(removed), true);
+        if (output != null) output.fill(water(removed), true);
         startGeneratingCycle(removed, removed * MTEHydroPump.EU_PER_LITRE * efficiency);
 
         return CheckRecipeResultRegistry.GENERATING;
@@ -168,7 +174,7 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
             .addInfo("Loses " + Math.round(LOSS_PER_MAINTENANCE_PROBLEM * 1000) / 10.0 + "% efficiency per maintenance problem");
         addStructureInfo(tt)
             .addDynamoHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
-            .addOutputHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
+            .addOutputHatch("Optional, at most one, any " + Casings.SolidSteelMachineCasing.getLocalizedName() + ". Without one, drained water is voided", 1)
             .toolTipFinisher();
         // spotless:on
 

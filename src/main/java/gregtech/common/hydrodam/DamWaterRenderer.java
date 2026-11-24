@@ -57,12 +57,15 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
         float green = (colour >> 8 & 255) / 255f;
         float blue = (colour & 255) / 255f;
 
+        // A surface (no visible water above) is drawn lower than the water it holds, like vanilla water.
+        boolean covered = !block.shouldSideBeRendered(world, x, y + 1, z, 1)
+            && !isInvisibleDamWater(world, x, y + 1, z, block);
+        float height = covered ? fill : DamWaterHeights.getSurfaceHeight(fill);
+
         boolean rendered = false;
 
-        if (renderer.renderAllFaces || fill < 1
-            || block.shouldSideBeRendered(world, x, y + 1, z, 1)
-            || isInvisibleDamWater(world, x, y + 1, z, block)) {
-            renderTop(world, x, y, z, block, fill, red, green, blue);
+        if (renderer.renderAllFaces || fill < 1 || !covered) {
+            renderTop(world, x, y, z, block, height, red, green, blue);
             rendered = true;
         }
 
@@ -76,7 +79,7 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
             int nz = z + dir.offsetZ;
 
             if (renderer.renderAllFaces || block.shouldSideBeRendered(world, nx, y, nz, dir.ordinal())) {
-                renderSide(world, x, y, z, block, dir, fill, red, green, blue);
+                renderSide(world, x, y, z, block, dir, height, red, green, blue);
                 rendered = true;
             }
         }
@@ -97,12 +100,12 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
         return ClientDamLevels.getFill(dimension, volumeId, y);
     }
 
-    private static void renderTop(IBlockAccess world, int x, int y, int z, Block block, float fill, float red,
+    private static void renderTop(IBlockAccess world, int x, int y, int z, Block block, float height, float red,
         float green, float blue) {
         Tessellator tessellator = Tessellator.instance;
         IIcon icon = block.getIcon(1, 0);
 
-        double top = y + fill - INSET;
+        double top = y + height - INSET;
         double minU = icon.getMinU();
         double maxU = icon.getMaxU();
         double minV = icon.getMinV();
@@ -143,8 +146,8 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
 
     /// Draws a side face from the bottom of the cell up to the water level, using the top half of the flowing texture
     /// like vanilla water.
-    private static void renderSide(IBlockAccess world, int x, int y, int z, Block block, ForgeDirection dir, float fill,
-        float red, float green, float blue) {
+    private static void renderSide(IBlockAccess world, int x, int y, int z, Block block, ForgeDirection dir,
+        float height, float red, float green, float blue) {
         Tessellator tessellator = Tessellator.instance;
         IIcon icon = block.getIcon(dir.ordinal(), 0);
 
@@ -173,10 +176,10 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
             }
         }
 
-        double top = y + fill;
+        double top = y + height;
         double minU = icon.getInterpolatedU(0);
         double maxU = icon.getInterpolatedU(8);
-        double topV = icon.getInterpolatedV((1 - fill) * 8);
+        double topV = icon.getInterpolatedV((1 - height) * 8);
         double bottomV = icon.getInterpolatedV(8);
 
         float shade = dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH ? Z_SIDE_SHADE : X_SIDE_SHADE;

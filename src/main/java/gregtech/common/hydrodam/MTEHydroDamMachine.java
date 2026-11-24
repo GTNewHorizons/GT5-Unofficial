@@ -1,6 +1,6 @@
 package gregtech.common.hydrodam;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -237,6 +238,16 @@ public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extend
         if (getBaseMetaTileEntity().isActive()) tag.setLong("energyUsage", -lEUt);
 
         tag.setLong("damLitresPerTick", getLitresPerTick());
+
+        DamVolumes volumes = DamVolumes.get(world);
+        WaterVolume volume = getVolumeBehind(volumes);
+
+        tag.setBoolean("hasDam", volume != null);
+
+        if (volume != null) {
+            tag.setDouble("damLitres", volume.getLitres());
+            tag.setDouble("damNetLitresPerTick", volumes.getNetLitresPerTick(volume));
+        }
     }
 
     @Override
@@ -249,8 +260,29 @@ public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extend
         if (tag.getBoolean("isActive")) {
             currentTip.add(
                 StatCollector
-                    .translateToLocalFormatted(getThroughputLangKey(), formatNumber(tag.getLong("damLitresPerTick"))));
+                    .translateToLocalFormatted(getThroughputLangKey(), formatFluid(tag.getLong("damLitresPerTick"))));
         }
+
+        if (tag.getBoolean("hasDam")) {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hydrodam.reserve",
+                    formatFluid((long) tag.getDouble("damLitres"))));
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hydrodam.net_change",
+                    formatNetChange(tag.getDouble("damNetLitresPerTick"))));
+        }
+    }
+
+    /// Formats a net change with one decimal and a sign, green when filling and red when draining.
+    private static String formatNetChange(double litresPerTick) {
+        double rounded = Math.round(litresPerTick * 10) / 10.0;
+
+        if (rounded > 0) return EnumChatFormatting.GREEN + "+" + formatFluid(rounded) + EnumChatFormatting.RESET;
+        if (rounded < 0) return EnumChatFormatting.RED + formatFluid(rounded) + EnumChatFormatting.RESET;
+
+        return formatFluid(0);
     }
 
     @Override

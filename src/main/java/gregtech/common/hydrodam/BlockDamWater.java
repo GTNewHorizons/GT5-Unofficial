@@ -70,11 +70,14 @@ public class BlockDamWater extends Block implements IFluidBlock {
         return false;
     }
 
+    /// Clients use this for the underwater overlay, so it follows the drawn surface there. Servers use the real fill.
     @Override
     public float getFilledPercentage(World world, int x, int y, int z) {
         float fill = DamWaterHeights.getFill(world, x, y, z);
 
-        return Float.isNaN(fill) ? 1 : fill;
+        if (Float.isNaN(fill)) return 1;
+
+        return world.isRemote ? DamWaterHeights.getViewUnderwaterHeight(fill) : fill;
     }
 
     /// Partly filled blocks let more light through. {@link DamLighting} relights them when their opacity changes.

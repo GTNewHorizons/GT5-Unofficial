@@ -13,7 +13,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 
 import gregtech.common.hydrodam.DamWaterHeights;
 
-/// Makes the camera only count as underwater (fog, overlay) below a dam water block's water level. Vanilla reads the
+/// Makes the camera only count as underwater (fog, overlay) below a dam water block's drawn surface. Vanilla reads the
 /// liquid height from the block's metadata, which for dam water is a volume id.
 @Mixin(ActiveRenderInfo.class)
 public class ActiveRenderInfoMixin_DamWater {
@@ -40,6 +40,10 @@ public class ActiveRenderInfoMixin_DamWater {
         @Share("damWaterFill") LocalFloatRef damWaterFill) {
         float fill = damWaterFill.get();
 
-        return Float.isNaN(fill) ? original.call(meta) : 1 - fill + VANILLA_SURFACE_OFFSET;
+        if (Float.isNaN(fill)) return original.call(meta);
+
+        // Vanilla's surface is at 1 - (this - VANILLA_SURFACE_OFFSET). Above that height in a covered block, vanilla
+        // checks the water above instead.
+        return 1 - DamWaterHeights.getViewUnderwaterHeight(fill) + VANILLA_SURFACE_OFFSET;
     }
 }

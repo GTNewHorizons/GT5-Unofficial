@@ -74,6 +74,7 @@ public final class DamVolumes extends WorldSavedData {
 
     private final DamRain rain = new DamRain();
     private final DamLevelSync levelSync = new DamLevelSync();
+    private final DamFlowTracker flowTracker = new DamFlowTracker();
 
     private World world;
 
@@ -261,6 +262,12 @@ public final class DamVolumes extends WorldSavedData {
         pendingChunks.add(packChunk(chunkX, chunkZ));
     }
 
+    /// The volume's net change in litres per tick from every source, averaged over the last second. Positive when it
+    /// is filling.
+    public double getNetLitresPerTick(@NotNull WaterVolume volume) {
+        return flowTracker.getNetLitresPerTick(volume.getId());
+    }
+
     /// Sends every volume's level to a player who just entered this dimension.
     public void sendLevelsTo(@NotNull EntityPlayerMP player) {
         levelSync.sendAll(world, this, player);
@@ -287,6 +294,7 @@ public final class DamVolumes extends WorldSavedData {
 
         rain.tick(world, this);
         levelSync.tick(world, this);
+        flowTracker.tick(world, this);
 
         mergedInto.clear();
     }
