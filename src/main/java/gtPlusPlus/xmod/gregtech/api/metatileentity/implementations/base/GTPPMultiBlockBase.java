@@ -96,11 +96,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public GTRecipe mLastRecipe;
 
-    /**
-     * Don't use this for recipe input check, otherwise you'll get duplicated fluids
-     */
-    public ArrayList<MTEHatchAirIntake> mAirIntakes = new ArrayList<>();
-
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
     public ArrayList<MTEHatch> mAllEnergyHatches = new ArrayList<>();
@@ -224,7 +219,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.clearHatches();
         this.mChargeHatches.clear();
         this.mDischargeHatches.clear();
-        this.mAirIntakes.clear();
         this.mTecTechEnergyHatches.clear();
         this.mTecTechDynamoHatches.clear();
         this.mAllEnergyHatches.clear();
@@ -299,11 +293,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             case MTEHatchOutputBattery outputBattery -> {
                 return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
-            }
-            case MTEHatchAirIntake airIntake -> {
-                boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
-                boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
-                return addedAir && addedInput;
             }
             case MTEHatchEnergyMulti multiEnergyHatch -> {
                 boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
@@ -401,14 +390,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
         if (aMetaTileEntity instanceof MTEHatchOutput || aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
-        }
-        return false;
-    }
-
-    public boolean addAirIntakeToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;

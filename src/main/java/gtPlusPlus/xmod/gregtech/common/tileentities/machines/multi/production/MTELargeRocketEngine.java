@@ -201,6 +201,7 @@ public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELarg
     @Override
     public void clearHatches() {
         super.clearHatches();
+        clearCraftingIcons(airIntakeHatches);
         airIntakeHatches.clear();
     }
 

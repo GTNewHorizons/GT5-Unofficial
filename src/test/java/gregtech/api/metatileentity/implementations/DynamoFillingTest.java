@@ -74,6 +74,14 @@ class DynamoFillingTest {
     }
 
     @Test
+    void supportsIntegerMaxAmps() {
+        MTEHatchDynamoMulti hatch = hatch(Integer.MAX_VALUE);
+        BaseMetaTileEntity base = attach(hatch, hatch.maxEUStore(), new ArrayList<>());
+        assertTrue(machine(hatch).addEnergyOutputMultipleDynamos(32L * Integer.MAX_VALUE, true));
+        verify(base, never()).increaseStoredEnergyUnits(anyLong(), anyBoolean());
+    }
+
+    @Test
     void genericExoticHatchesKeepOfferedAccounting() {
         MTEHatchDynamoMulti full = hatch(4);
         MTEHatchDynamoMulti empty = hatch(4);
@@ -213,6 +221,7 @@ class DynamoFillingTest {
         assertTrue(machine.addEnergyOutputMultipleDynamos(160, true));
         assertEquals(full.maxEUStore(), full.getEUVar());
         assertEquals(32, empty.getEUVar());
+        assertEquals(List.of(full, empty), machine.mDynamoHatches);
         MTEHatchDynamo otherVoltage = new MTEHatchDynamo("other", 2, new String[0], null);
         attach(otherVoltage, 0, new ArrayList<>());
         machine = machine(full, otherVoltage);
