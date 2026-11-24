@@ -157,7 +157,6 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -255,7 +254,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected List<MTEHatch> mCryotheumHatches = new ArrayList<>();
     protected List<MTEHatch> mPyrotheumHatches = new ArrayList<>();
-    protected List<MTEHatchElementalDataOrbHolder> mElementalDataOrbHatches = new ArrayList<>();
     // DO NOT ADD NEW HATCH LISTS HERE, UNLESS THEY ARE SUPPOSED TO BE USABLE BY ALL MULTIBLOCKS
 
     protected final ProcessingLogic processingLogic;
@@ -563,7 +561,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
         mPyrotheumHatches.clear();
-        mElementalDataOrbHatches.clear();
         doPeriodicChecks = false;
 
         mCoils.clear();
@@ -2402,18 +2399,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    public boolean addElementalDataOrbHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder mteHatchElementalDataOrb) {
-            mteHatchElementalDataOrb.updateTexture(aBaseCasingIndex);
-            mteHatchElementalDataOrb.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mElementalDataOrbHatches.add(mteHatchElementalDataOrb);
-        }
-        return false;
-    }
-
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -3028,10 +3013,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public List<MTEHatch> getPyrotheumHatches() {
         return mPyrotheumHatches;
-    }
-
-    public List<MTEHatchElementalDataOrbHolder> getElementalDataOrbHatches() {
-        return mElementalDataOrbHatches;
     }
 
     /**
