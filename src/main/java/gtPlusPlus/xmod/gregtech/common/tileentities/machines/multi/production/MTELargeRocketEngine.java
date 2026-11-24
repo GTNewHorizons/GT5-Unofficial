@@ -1,28 +1,26 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Air_Intake;
-import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.AirIntake;
-import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,11 +34,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.TAE;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -49,26 +49,19 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngine> implements ISurvivalConstructable {
-
-    protected int freeFuelTicks = 0;
-    protected int euProduction = 0;
-    protected boolean boostEu;
+public class MTELargeRocketEngine extends MTEExtendedPowerMultiBlockBase<MTELargeRocketEngine>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public static final String mLubricantName = "Carbon Dioxide";
     public static final String mCoolantName = "Liquid Hydrogen";
-
-    public static final String mCasingName = "Turbodyne Casing";
-    public static final String mGearboxName = "Inconel Reinforced Casing";
 
     private static final int LUBRICANT_CONSUMPTION_PER_HOUR = 1000;
     private static final int MIN_FUEL_INPUT_PER_SECOND = 6;
@@ -82,13 +75,21 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     private static final int POLLUTION_EUT_UNIT = 16384;
     private static final double COOLANT_BOOST_PERCENT = 0.3;
 
-    private static Fluid sAirFluid = null;
-    private static FluidStack sAirFluidStack = null;
+    private int freeFuelTicks = 0;
+    private int euProduction = 0;
+    private boolean boostEu;
+    private static FluidStack airFluidStack;
 
-    private int mCasing;
+    private int casingAmount;
+    private final List<MTEHatchAirIntake> airIntakeHatches = new ArrayList<>();
+    // spotless:off
+    private static final String[][] structure = new String[][] {
+        { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
+        { "C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC" },
+        { "CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC" }, };
+    // spotless:on
     private static IStructureDefinition<MTELargeRocketEngine> STRUCTURE_DEFINITION = null;
-
-    private static final int CASING_ID = TAE.getIndexFromPage(3, 11);
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     public MTELargeRocketEngine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,6 +101,12 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         super(aName);
         this.boostEu = false;
         setAir();
+    }
+
+    public static void setAir() {
+        if (airFluidStack == null) {
+            airFluidStack = Materials.Air.getGas(1);
+        }
     }
 
     @Override
@@ -116,7 +123,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(getMachineType())
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.rocket_engine"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-rocket-engine"),
                 ImmutableMap.<String, Object>builder()
@@ -155,31 +162,26 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public IStructureDefinition<MTELargeRocketEngine> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTELargeRocketEngine>builder()
-                .addShape(
-                    this.mName,
-                    transpose(
-                        new String[][] { { "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC" },
-                            { "C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC" },
-                            { "CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC" }, }))
-                .addElement('C', ofBlock(getCasingBlock(), getCasingMeta()))
-                .addElement('I', ofBlock(getGearboxBlock(), getGearboxMeta()))
-                // side
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(structure))
+                .addElement('C', Casings.TurbodyneCasing.asElement())
+                .addElement('I', Casings.InconelReinforcedCasing.asElement())
                 .addElement(
                     'S',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, InputHatch, 1, Maintenance, 1))
-                        .casingIndex(getCasingTextureIndex())
+                        .atLeast(ImmutableMap.of(IntakeHatchElement.AIR_INTAKE_HATCH, 8, InputHatch, 1, Maintenance, 1))
+                        .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                // top
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
                 .addElement(
                     'T',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 1, Dynamo.or(TTDynamo), 1, Maintenance, 1))
-                        .casingIndex(getCasingTextureIndex())
+                        .atLeast(
+                            ImmutableMap
+                                .of(IntakeHatchElement.AIR_INTAKE_HATCH, 1, Dynamo.or(ExoticDynamo), 1, Maintenance, 1))
+                        .casingIndex(Casings.TurbodyneCasing.textureId)
                         .hint(2)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3))
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TurbodyneCasing.asElement())))
+                .addElement('M', Muffler.newAny(Casings.TurbodyneCasing.textureId, 3))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -187,24 +189,28 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(this.mName, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        clearCraftingIcons(airIntakeHatches);
+        airIntakeHatches.clear();
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        this.mCasing = 0;
-        this.mTecTechDynamoHatches.clear();
-        this.mAllDynamoHatches.clear();
-        this.mAirIntakes.clear();
-        if (!checkPiece(this.mName, 1, 1, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 16);
-        if (mAirIntakes.isEmpty()) {
+        this.casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 16);
+        if (airIntakeHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
         }
         checkHasAnyDynamo(errors);
@@ -213,60 +219,32 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCALargeRocketEngineActive;
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            TexturesGtBlock.oMCALargeRocketEngine,
+            TexturesGtBlock.oMCALargeRocketEngineGlow,
+            TexturesGtBlock.oMCALargeRocketEngineActive,
+            TexturesGtBlock.oMCALargeRocketEngineActiveGlow);
     }
 
     @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.oMCALargeRocketEngineActiveGlow;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCALargeRocketEngine;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.oMCALargeRocketEngineGlow;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return CASING_ID;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return this.getMaxEfficiency(aStack) > 0;
-    }
-
-    public static void setAir() {
-        if (sAirFluidStack == null) {
-            sAirFluidStack = Materials.Air.getGas(1);
-        }
-        if (sAirFluid == null && sAirFluidStack != null) {
-            sAirFluid = sAirFluidStack.getFluid();
-        }
+    public ITexture getCasingTexture() {
+        return Casings.TurbodyneCasing.getCasingTexture();
     }
 
     public int getAir() {
-        setAir();
-        if (this.mAirIntakes.isEmpty() || this.mAirIntakes.size() <= 0) {
-            return 0;
-        } else {
-            int totalAir = 0;
-            for (MTEHatchAirIntake u : this.mAirIntakes) {
-                if (u != null && u.mFluid != null) {
-                    FluidStack f = u.mFluid;
-                    if (f.isFluidEqual(sAirFluidStack)) {
-                        totalAir += f.amount;
-                    }
-                }
+        int totalAir = 0;
+        for (MTEHatchAirIntake mte : airIntakeHatches) {
+            if (mte.mFluid != null && mte.mFluid.isFluidEqual(airFluidStack)) {
+                totalAir += mte.mFluid.amount;
             }
-            return totalAir;
         }
+        return totalAir;
     }
 
     @Override
@@ -276,39 +254,31 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        final ArrayList<FluidStack> tFluids = this.getStoredFluids();
-        this.clearRecipeMapForAllInputHatches();
-        int aircount = getAir();
-        int aAirToConsume = this.euProduction / 100;
-        if (aircount < aAirToConsume) {
-            stopMachine(ShutDownReasonRegistry.outOfFluid(new FluidStack(sAirFluid, aAirToConsume)));
+        int airCount = getAir();
+        int airToConsume = this.euProduction / 100;
+        if (airCount < airToConsume) {
+            stopMachine(ShutDownReasonRegistry.outOfFluid(Materials.Air.getGas(airToConsume)));
             return SimpleCheckRecipeResult.ofFailure("no_air");
-        } else {
-            int aTotalAir = 0;
-            for (MTEHatchAirIntake aAirHatch : this.mAirIntakes) {
-                if (aAirHatch.mFluid != null) {
-                    aTotalAir += aAirHatch.getFluidAmount();
-                }
-            }
-            if (aTotalAir >= aAirToConsume) {
-                int aSplitAmount = (aAirToConsume / this.mAirIntakes.size());
-                if (aSplitAmount > 0) {
-                    for (MTEHatchAirIntake aAirHatch : mAirIntakes) {
-                        boolean hasIntakeAir = aAirHatch.drain(aSplitAmount, true) != null;
-                        if (!hasIntakeAir) {
-                            this.freeFuelTicks = 0;
-                            return SimpleCheckRecipeResult.ofFailure("no_air");
-                        }
-                    }
+        }
+
+        int splitAmount = (airToConsume / airIntakeHatches.size());
+        if (splitAmount > 0) {
+            for (MTEHatchAirIntake airHatch : airIntakeHatches) {
+                boolean hasIntakeAir = airHatch.drain(splitAmount, true) != null;
+                if (!hasIntakeAir) {
+                    this.freeFuelTicks = 0;
+                    return SimpleCheckRecipeResult.ofFailure("no_air");
                 }
             }
         }
         // reset fuel ticks in case it does not reset when it stops
         if (this.freeFuelTicks != 0 && this.mProgresstime == 0 && this.mEfficiency == 0) this.freeFuelTicks = 0;
 
-        if (!tFluids.isEmpty() && getRecipeMap() != null) {
+        final ArrayList<FluidStack> storedFluids = this.getStoredFluids();
+        RecipeMap<?> recipeMap = getRecipeMap();
+        if (!storedFluids.isEmpty() && recipeMap != null) {
             if (this.mRuntime % 72 == 0) {
-                if (!consumeCO2()) {
+                if (!this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? BOOST_MULTIPLIER : 1))) {
                     this.freeFuelTicks = 0;
                     return SimpleCheckRecipeResult.ofFailure("no_co2");
                 }
@@ -316,31 +286,29 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             if (this.freeFuelTicks == 0) {
                 this.boostEu = consumeLOH();
             }
-            for (final FluidStack hatchFluid1 : tFluids) {
-                if (hatchFluid1.isFluidEqual(sAirFluidStack)) {
+
+            Collection<GTRecipe> recipes = recipeMap.getAllRecipes();
+            for (final FluidStack hatchFluid : storedFluids) {
+                if (hatchFluid.isFluidEqual(airFluidStack)) {
                     continue;
                 }
-                if (this.freeFuelTicks == 0) {
-                    for (final GTRecipe aFuel : getRecipeMap().getAllRecipes()) {
-                        final FluidStack tLiquid;
-                        tLiquid = aFuel.mFluidInputs[0];
-                        if (hatchFluid1.isFluidEqual(tLiquid)) {
-                            if (!consumeFuel(aFuel, hatchFluid1.amount)) {
-                                continue;
-                            }
-                            this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
-                            this.mProgresstime = 1;
-                            this.mMaxProgresstime = 1;
-                            this.mEfficiencyIncrease = this.euProduction / 2000;
-                            return CheckRecipeResultRegistry.GENERATING;
-                        }
-                    }
-                } else {
+                if (this.freeFuelTicks != 0) {
                     this.mEfficiencyIncrease = this.euProduction / 2000;
                     this.freeFuelTicks--;
                     this.lEUt = ((this.mEfficiency < 1000) ? 0 : GTValues.V[5] << 1);
                     this.mProgresstime = 1;
                     this.mMaxProgresstime = 1;
+                    return CheckRecipeResultRegistry.GENERATING;
+                }
+                for (final GTRecipe recipe : recipes) {
+                    final FluidStack fuel = recipe.mFluidInputs[0];
+                    if (!hatchFluid.isFluidEqual(fuel) || !consumeFuel(recipe, hatchFluid.amount)) {
+                        continue;
+                    }
+                    this.lEUt = ((this.mEfficiency < 2000) ? 0 : GTValues.V[5] << 1);
+                    this.mProgresstime = 1;
+                    this.mMaxProgresstime = 1;
+                    this.mEfficiencyIncrease = this.euProduction / 2000;
                     return CheckRecipeResultRegistry.GENERATING;
                 }
             }
@@ -351,147 +319,46 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
-    /**
-     * Consumes Fuel if required. Free Fuel Ticks are handled here.
-     *
-     * @param aFuel
-     * @return
-     */
     public boolean consumeFuel(GTRecipe aFuel, int amount) {
-        amount *= this.boostEu ? 0.3 : 0.9;
+        amount *= this.boostEu ? COOLANT_BOOST_PERCENT : 0.9;
         this.freeFuelTicks = 0;
         int value = aFuel.mSpecialValue * 3;
         int energy = value * amount;
         if (amount < 5) return false;
-        FluidStack tLiquid = new FluidStack(aFuel.mFluidInputs[0], (this.boostEu ? amount * 3 : amount));
+        FluidStack tLiquid = new FluidStack(aFuel.mFluidInputs[0], (this.boostEu ? amount * BOOST_MULTIPLIER : amount));
         if (!this.depleteInput(tLiquid)) {
             return false;
-        } else {
-            this.freeFuelTicks = 20;
-            setEUProduction(energy);
-            return true;
         }
+        this.freeFuelTicks = 20;
+        setEUProduction(energy);
+        return true;
     }
 
     public void setEUProduction(int energy) {
         energy /= 20;
-        double energyEfficiency;
-        double tDivideEnergy = Math.cbrt(energy);
+        double energyEfficiency = energy;
         if (energy > 30000) {
+            double tDivideEnergy = Math.cbrt(energy);
             // cbrt(30 000) /
             energyEfficiency = (31.072325 / tDivideEnergy);
             if (energy >= 80000)
                 // cbrt(80 000) /
                 energyEfficiency *= (43.0886938 / tDivideEnergy);
             energyEfficiency *= energy;
-        } else {
-            energyEfficiency = energy;
         }
         this.euProduction = (int) (energyEfficiency);
-        if (this.boostEu) this.euProduction *= 3;
-    }
-
-    public boolean consumeCO2() {
-        return this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? 3 : 1));
+        if (this.boostEu) this.euProduction *= BOOST_MULTIPLIER;
     }
 
     public boolean consumeLOH() {
         // (40 * ((long) euProduction / 10000))
-        int LOHamount = (3 * this.euProduction) / 1000;
+        int LOHamount = (BOOST_MULTIPLIER * this.euProduction) / 1000;
         return this.depleteInput(new FluidStack(GTPPFluids.LiquidHydrogen, LOHamount));
-    }
-
-    @Override
-    public boolean addEnergyOutput(long aEU) {
-        if (aEU <= 0) {
-            return true;
-        }
-        if (!this.mAllDynamoHatches.isEmpty()) {
-            return addEnergyOutputMultipleDynamos(aEU, true);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
-        long injected = 0;
-        long totalOutput = 0;
-        long aFirstVoltageFound = -1;
-        boolean aFoundMixedDynamos = false;
-        for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
-            long aVoltage = aDynamo.maxEUOutput();
-            long aTotal = aDynamo.maxAmperesOut() * aVoltage;
-            // Check against voltage to check when hatch mixing
-            if (aFirstVoltageFound == -1) {
-                aFirstVoltageFound = aVoltage;
-            } else {
-                if (aFirstVoltageFound != aVoltage) {
-                    aFoundMixedDynamos = true;
-                }
-            }
-            totalOutput += aTotal;
-        }
-
-        if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
-            explodeMultiblock();
-            return false;
-        }
-
-        long leftToInject;
-        long aVoltage;
-        long aAmpsToInject;
-        long aRemainder;
-
-        for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
-            leftToInject = aEU - injected;
-            aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = leftToInject / aVoltage;
-            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
-            // Keep the legacy loop for callbacks and the remainder packet.
-            if (aVoltage > 0 && aAmpsToInject > 1 && isFullNativeDynamo(aDynamo)) {
-                long amps = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-                injected += aVoltage * amps;
-                if (amps < aDynamo.maxAmperesOut()) injected += aRemainder;
-                continue;
-            }
-            long powerGain;
-            for (long i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
-                if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
-                    powerGain = aRemainder;
-                } else {
-                    powerGain = aVoltage;
-                }
-                aDynamo.getBaseMetaTileEntity()
-                    .increaseStoredEnergyUnits(powerGain, false);
-                injected += powerGain;
-            }
-        }
-        return injected > 0;
     }
 
     @Override
     protected boolean requiresMuffler() {
         return true;
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasings4Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 11;
-    }
-
-    public Block getGearboxBlock() {
-        return ModBlocks.blockCasings3Misc;
-    }
-
-    public byte getGearboxMeta() {
-        return 1;
-    }
-
-    public byte getCasingTextureIndex() {
-        return (byte) CASING_ID;
     }
 
     @Override
@@ -514,28 +381,13 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 1;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return this.euProduction;
     }
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return 1500 * (this.euProduction / 10000);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public String getMachineType() {
-        return StatCollector.translateToLocal("gt.mbtt.machine_type.rocket_engine");
+        return POLLUTION_PER_EUT * (this.euProduction / 10000);
     }
 
     @Override
@@ -546,5 +398,49 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    private enum IntakeHatchElement implements IHatchElement<MTELargeRocketEngine> {
+
+        AIR_INTAKE_HATCH("GT5U.MBTT.AirIntakeHatch");
+
+        private final String name;
+
+        IntakeHatchElement(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchAirIntake.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTELargeRocketEngine> adder() {
+            return (self, igte, texture) -> {
+                if (igte.getMetaTileEntity() instanceof MTEHatchAirIntake imte) {
+                    imte.updateTexture(texture);
+                    imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    self.airIntakeHatches.add(imte);
+                    return true;
+                }
+                return false;
+            };
+        }
+
+        @Override
+        public long count(MTELargeRocketEngine mte) {
+            return mte.airIntakeHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }

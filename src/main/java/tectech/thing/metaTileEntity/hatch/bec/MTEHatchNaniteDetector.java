@@ -103,7 +103,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "nanite-detector-hatch"),
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/nanite-detector-hatch"),
                     new HashMap<>()));
         }
         return ArrayUtils.addAll(
