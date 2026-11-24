@@ -24,6 +24,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -34,6 +35,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -77,6 +79,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
@@ -282,9 +286,18 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final String hardenedClay = Blocks.hardened_clay.getLocalizedName();
+        final MarkdownTooltipLoader markdown = MarkdownTooltipLoader.STANDARD;
+        final List<String> windmillInfo = markdown
+            .loadStandardPath(new ResourceLocation("gregtech", "windmill"), Map.of());
+        final String separator = GTUtility
+            .processFormatStacks(EnumChatFormatting.GRAY + markdown.eval("{gray:{hr}}", Map.of()));
+        final int separatorIndex = windmillInfo.indexOf(separator);
+        windmillInfo.add(
+            separatorIndex >= 0 ? separatorIndex : windmillInfo.size(),
+            TooltipHelper.recipeSlotLimit(getItemOutputLimit()));
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.windmill"))
-            .addMarkdown(new ResourceLocation("gregtech", "windmill"))
+            .addInfoAll(windmillInfo.toArray(new String[0]))
             .beginStructureBlock(7, 12, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("44", Blocks.brick_block.getLocalizedName(), false)

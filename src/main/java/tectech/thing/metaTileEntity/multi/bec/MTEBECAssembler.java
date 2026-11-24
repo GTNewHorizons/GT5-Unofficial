@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
@@ -47,6 +46,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
@@ -59,6 +59,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public static final int MAX_NANITES = 2048 * 15;
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
+    private List<MTEBECIONode> ioNodes;
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
@@ -75,19 +76,38 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public NaniteTier getCurrentNaniteTier() {
+        updateNaniteInfoIfDirty();
         return currentNaniteTier;
     }
 
-    public void setCurrentNaniteTier(NaniteTier currentNaniteTier) {
-        this.currentNaniteTier = currentNaniteTier;
-    }
-
     public int getAvailableNanites() {
+        updateNaniteInfoIfDirty();
         return availableNanites;
     }
 
-    public void setAvailableNanites(int availableNanites) {
-        this.availableNanites = availableNanites;
+    private void updateNaniteInfoIfDirty() {
+        if (this.nanitesDirty) {
+            this.nanitesDirty = false;
+            this.currentNaniteTier = null;
+            this.availableNanites = 0;
+
+            for (MTEHatchNanite hatch : this.naniteHatches) {
+                NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
+
+                if (tier == null) continue;
+
+                if (hatch.getItemCount() == 0) continue;
+
+                if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
+                    this.currentNaniteTier = tier;
+                }
+
+                this.availableNanites += hatch.getItemCount();
+            }
+
+            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
+
+        }
     }
 
     @Override
@@ -124,11 +144,15 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public void clearHatches() {
         super.clearHatches();
 
+        // LoS and nanite hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(this.losHatches);
         for (MTEHatchLoS hatch : this.losHatches) {
             hatch.setOwner(null);
         }
         this.losHatches.clear();
+        clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
+        this.ioNodes = null;
     }
 
     @Override
@@ -145,7 +169,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
-                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
             .addSupportAny();
 
@@ -163,7 +187,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
             .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
             .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         return tt;
         // spotless:on
     }
@@ -219,12 +243,24 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public List<MTEBECIONode> getIONodes() {
-        return losHatches.stream()
+        return getIONodes(false);
+    }
+
+    public List<MTEBECIONode> getIONodes(boolean skipCache) {
+        boolean isValid = !skipCache && ioNodes != null
+            && ioNodes.stream()
+                .allMatch(ioNode -> ioNode.isValid() && ioNode.mMachine);
+
+        if (isValid) return ioNodes;
+
+        ioNodes = losHatches.stream()
             .map(MTEHatchLoS::getConnectedHatch)
             .filter(Objects::nonNull)
             .map(los -> los.getOwner() instanceof MTEBECIONode node ? node : null)
             .filter(Objects::nonNull)
             .toList();
+
+        return ioNodes;
     }
 
     @Override
@@ -232,36 +268,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         super.onPostTick(igte, aTick);
 
         if (GTUtility.isServer()) {
-            for (MTEHatchNanite hatch : naniteHatches) {
-                if (hatch.hasChanged()) {
-                    this.nanitesDirty = true;
-                    hatch.unmarkChanged();
-                }
-            }
 
             List<MTEBECIONode> nodes = getIONodes();
-
-            if (this.nanitesDirty) {
-                this.nanitesDirty = false;
-                this.currentNaniteTier = null;
-                this.availableNanites = 0;
-
-                for (MTEHatchNanite hatch : this.naniteHatches) {
-                    NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
-
-                    if (tier == null) continue;
-
-                    if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
-                        this.currentNaniteTier = tier;
-                    }
-
-                    this.availableNanites += hatch.getItemCount();
-                }
-
-                igte.setActive(!nodes.isEmpty());
-            }
-
-            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
+            igte.setActive(!nodes.isEmpty());
 
             lEUt = 0;
 
@@ -279,6 +288,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                 }
             }
         }
+    }
+
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        nanitesDirty = true;
     }
 
     @Override
@@ -328,8 +343,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         private static boolean adder(MTEBECAssembler assembler, IGregTechTileEntity igte, Short texture) {
             if (igte.getMetaTileEntity() instanceof MTEHatchNanite naniteHatch) {
                 assembler.naniteHatches.add(naniteHatch);
+                assembler.addIfSmartInput(naniteHatch);
                 naniteHatch.updateTexture(texture);
-                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon());
+                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon(), assembler.getBaseMetaTileEntity());
 
                 return true;
             }
@@ -390,7 +406,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
                 if (imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
                     self.losHatches.add(hatch);

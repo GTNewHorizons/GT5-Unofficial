@@ -482,7 +482,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private void processComponentInputs() {
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true, true);
 
         // Convert finished circuit CCs to real circuit items and add them as output.
         for (ArrayList<MTEHatchVacuumConveyor> hatchList : this.vacuumConveyors.allHatches()) {
@@ -994,6 +994,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_NANOCHIP;
+    }
+
+    @Override
+    protected float getSoundRadiusMultiplier() {
+        return 6f;
     }
 
     @SideOnly(Side.CLIENT)

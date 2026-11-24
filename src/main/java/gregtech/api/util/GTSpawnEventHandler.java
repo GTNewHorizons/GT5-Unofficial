@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 
@@ -42,7 +43,8 @@ public class GTSpawnEventHandler {
             return;
         }
 
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
+        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)
+            || event.entityLiving instanceof EntityBat) {
             if (repellents.isInRange(
                 event.entity.worldObj.provider.dimensionId,
                 event.entity.posX,
@@ -52,6 +54,7 @@ public class GTSpawnEventHandler {
                     slime.setCustomNameTag("DoNotSpawnSlimes");
                 }
                 event.setResult(Event.Result.DENY);
+
             }
         }
     }

@@ -37,6 +37,7 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -273,10 +274,10 @@ public class MaterialGenerator {
             new BaseItemRawOre(matInfo);
 
             new RecipeGenOre(matInfo);
+            new RecipeGenDustGeneration(matInfo, true);
 
             // Fluorite Dehydrator
-            if (matInfo.getLocalizedName()
-                .equals("Fluorite (F)")) {
+            if (matInfo == MaterialsFluorides.FLUORITE) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(matInfo.getDust(37))
                     .itemOutputs(
@@ -330,7 +331,7 @@ public class MaterialGenerator {
             new RecipeGenPlates(matInfo);
             new RecipeGenShapedCrafting(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
-            new RecipeGenDustGeneration(matInfo);
+            new RecipeGenDustGeneration(matInfo, true);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {

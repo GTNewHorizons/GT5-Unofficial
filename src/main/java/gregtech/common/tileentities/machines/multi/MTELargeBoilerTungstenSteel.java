@@ -5,6 +5,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     public static final int EUT_GENERATED = 19200;

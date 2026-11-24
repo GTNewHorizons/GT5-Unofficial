@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -184,6 +183,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.Dim_Prismarine;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -318,7 +318,6 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1811,6 +1810,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Prismarine_Precipitate.ID,
                 "gt.item.prismarine_precipitate.name",
                 "gt.item.prismarine_precipitate.tooltip"));
+        ItemList.Dim_Prismarine.set(
+            addItemWithLocalizationKeys(
+                Dim_Prismarine.ID,
+                "gt.item.dim_prismarine.name",
+                "gt.item.dim_prismarine.tooltip"));
         ItemList.Prismatic_Crystal.set(
             addItemWithLocalizationKeys(
                 Prismatic_Crystal.ID,
@@ -2025,7 +2029,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerMetaMaterials();
 
         registerAllTieredTooltips();
-        registerAllAnimatedTooltips();
         initOrePrefixes();
         initOreDictUnificatorEntries();
         registerCovers();
@@ -2170,12 +2173,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
-    }
-
-    private void registerAllAnimatedTooltips() {
-        addItemTooltip(
-            ItemList.Transdimensional_Alignment_Matrix.get(1),
-            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
     }
 
     private void initOreDictUnificatorEntries() {

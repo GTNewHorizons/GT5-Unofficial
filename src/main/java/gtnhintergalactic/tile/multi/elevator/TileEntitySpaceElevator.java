@@ -45,7 +45,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -676,19 +675,27 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
                 // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
-                    if (!mProjectModuleHatches.isEmpty()) {
-                        long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
-                        for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
-                            if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect(this);
-                                long tAvailableEnergy = getEUVar();
-                                if (tAvailableEnergy > 0) {
-                                    setEUVar(
-                                        Math.max(
-                                            0,
-                                            tAvailableEnergy
-                                                - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
-                                }
+                    List<TileEntityModuleBase> chargeableModules = new ArrayList<>();
+                    for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
+                        if (projectModule.getNeededMotorTier() > motorTier) {
+                            continue;
+                        }
+                        // Unformed modules still need to be connected so they can run their own structure check
+                        projectModule.connect(this);
+                        if (projectModule.mMachine) {
+                            chargeableModules.add(projectModule);
+                        }
+                    }
+                    if (!chargeableModules.isEmpty()) {
+                        long tEnergy = getEUVar() / chargeableModules.size() * MODULE_CHARGE_INTERVAL;
+                        for (TileEntityModuleBase projectModule : chargeableModules) {
+                            long tAvailableEnergy = getEUVar();
+                            if (tAvailableEnergy > 0) {
+                                setEUVar(
+                                    Math.max(
+                                        0,
+                                        tAvailableEnergy
+                                            - projectModule.increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
                             }
                         }
                     }
@@ -747,7 +754,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name"));
         if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
         // spotless:off
-        tt.addMarkdown(new ResourceLocation("gregtech", "space-elevator"))
+        tt.addMarkdown(new ResourceLocation("gregtech", "space/elevator"))
             .addSupportAny()
             .beginVariableStructureBlock(35, 47, 48, 48, 35, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_of_central_column_4th_layer"))
@@ -773,7 +780,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SwitchToExtended"))
             .addSubChannel(GTStructureChannels.SE_MOTOR)
-            .toolTipFinisher(GTAuthors.Authorminecraft7771);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

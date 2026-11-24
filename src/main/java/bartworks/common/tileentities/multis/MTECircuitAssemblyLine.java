@@ -43,6 +43,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -62,7 +63,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.API.enums.CircuitImprint;
-import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -91,6 +91,8 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTECircuitAssemblyLineGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -110,12 +112,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
-    /**
-     * This field correspond to the old way of storing imprints in CALs. This is left for backward compatible purposes.
-     * This has been deprecated during the 2.9 dev cycle.
-     */
-    @Deprecated
-    public static final String IMPRINT_KEY = "Type";
     public static final String IMPRINT_ID_KEY = "id_imprint";
     protected static final String LENGTH_KEY = "Length";
 
@@ -138,6 +134,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 2, 7)
         .addElement(
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
@@ -261,18 +258,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey(IMPRINT_KEY)) {// old NBT migration code
-            String name = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(IMPRINT_KEY))
-                .getUnlocalizedName();
-            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
-            }
-        } else {
-            // IDs here will make sure we never shift again
-            if (aNBT.hasKey(IMPRINT_ID_KEY)) {
-                int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
-            }
+        if (aNBT.hasKey(IMPRINT_ID_KEY)) {
+            int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
+            this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
         }
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("RunningMode")) {
@@ -315,19 +303,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
-        GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + machineMode);
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("chat.cal.mode." + machineMode);
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(BWUITextures.OVERLAY_BUTTON_LINE_MODE);
-        machineModeIcons.add(BWUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
+    public String getMachineModeKey() {
+        return "GT5U.CIRCUIT_ASSEMBLY_LINE.mode." + machineMode;
     }
 
     @Override
@@ -555,7 +537,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
@@ -568,7 +550,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int built;
         built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivalBuildPiece(STRUCTURE_PIECE_NEXT_HINT, stackSize, -i, 0, 0, elementBudget, env, false, true);
@@ -599,11 +581,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                             .getDisplayName()));
             }
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
     }
 
     @Override
@@ -668,11 +645,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
-                + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
-        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
+        if (tag.hasKey("ImprintedWith") && tag.getInteger("modeId") == 0) {
             list.add(
                 StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", tag.getString("ImprintedWith")));
         }
@@ -683,7 +656,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int z) {
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
-        tag.setInteger("mode", machineMode);
+        tag.setString("mode", getMachineModeName());
+        tag.setInteger("modeId", machineMode);
     }
 
     @Override
@@ -693,5 +667,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             case MACHINEMODE_ASSEMBLER -> true;
             default -> throw new IllegalStateException("Unexpected value: " + machineMode);
         };
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTECircuitAssemblyLineGui(this);
     }
 }

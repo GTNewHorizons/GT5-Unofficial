@@ -91,6 +91,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -117,6 +118,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -133,6 +135,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -574,6 +577,45 @@ public class GTUtility {
         player.addChatComponentMessage(component);
     }
 
+    /**
+     * Applies a style to a chat component.
+     * <br>
+     * If you want to apply a single style to a component, such as color, bold, or italic, this function can save you
+     * some boilerplate code. However, if you need to apply multiple styles, please use
+     * {@link IChatComponent#setChatStyle} directly.
+     * <br>
+     * We didn't add overloads that accept String arguments because that could easily be misused.
+     *
+     * @param comp  the chat component to be styled
+     * @param style the style to be applied
+     * @return the styled chat component
+     */
+    public static IChatComponent styledComp(IChatComponent comp, EnumChatFormatting style) {
+        // Even when bold or italic is passed as an argument, setColor still works correctly. The trade-off is that only
+        // one style can be applied at a time.
+        return comp.setChatStyle(new ChatStyle().setColor(style));
+    }
+
+    /**
+     * Same as {@link #styledComp(IChatComponent, EnumChatFormatting)}, but accepts a Number instead of a
+     * {@link IChatComponent}.
+     * <br>
+     * We often want to highlight numeric values used as variables in chat messages with colors. This helper can save
+     * you a lot of boilerplate code. However, if you need to apply multiple styles, please use setChatStyle directly.
+     *
+     * @param number the number to be converted to a chat component and styled
+     * @param style  the style to be applied
+     * @return the styled chat component
+     */
+    public static IChatComponent styledComp(Number number, EnumChatFormatting style) {
+        // The reason we set the component's style directly instead of adding formatting codes like §b before the
+        // placeholder in the lang file is that:
+        // In ChatComponentTranslation, if an argument used to replace a placeholder does not have an explicitly set
+        // style, it inherits the style of its parent component. Therefore, setting a color in the lang file before a
+        // placeholder will have no effect.
+        return styledComp(new ChatComponentNumber(number), style);
+    }
+
     public static void sendMessageInRadius(World world, double x, double y, double z, double range,
         IChatComponent component) {
         double distSq = range * range;
@@ -691,8 +733,39 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
@@ -1043,6 +1116,11 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
+     * <p>
+     * Only one fluid type is moved per call. If the fluid the source offers first cannot be moved (dest refuses it or
+     * the filter rejects it), the other fluids reported by the source's tank info are tried in order. Multi-tank
+     * handlers are free to keep offering the same tank from an unspecified drain, so without this fallback a full or
+     * unwilling dest would stall the transfer even though the source holds fluids dest would accept.
      *
      * @param source    tank to drain from. method become noop if this is null
      * @param dest      tank to fill to. method become noop if this is null
@@ -1060,7 +1138,36 @@ public class GTUtility {
         liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
             dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+            return;
         }
+
+        FluidTankInfo[] tanks = source.getTankInfo(drainSide);
+        if (tanks == null || tanks.length < 2) return;
+        for (int i = 0; i < tanks.length; i++) {
+            if (!isFluidCandidate(tanks[i]) || tanks[i].fluid.isFluidEqual(liquid) || isFluidInEarlierTank(tanks, i))
+                continue;
+            FluidStack request = tanks[i].fluid.copy();
+            request.amount = maxAmount;
+            FluidStack candidate = source.drain(drainSide, request, false);
+            if (candidate == null || candidate.amount <= 0) continue;
+            candidate = candidate.copy();
+            candidate.amount = dest.fill(fillSide, candidate, false);
+            if (candidate.amount > 0 && (allowMove == null || allowMove.test(candidate))) {
+                dest.fill(fillSide, source.drain(drainSide, candidate, true), true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isFluidCandidate(FluidTankInfo tank) {
+        return tank != null && tank.fluid != null && tank.fluid.amount > 0;
+    }
+
+    private static boolean isFluidInEarlierTank(FluidTankInfo[] tanks, int index) {
+        for (int j = 0; j < index; j++) {
+            if (isFluidCandidate(tanks[j]) && tanks[j].fluid.isFluidEqual(tanks[index].fluid)) return true;
+        }
+        return false;
     }
 
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
@@ -1246,7 +1353,7 @@ public class GTUtility {
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? aFluid.amount : 0);
+        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? getFluidAmount(aFluid) : 0);
         tNBT.setLong(
             "mFluidDisplayHeat",
             aFluid.getFluid()
@@ -1270,7 +1377,7 @@ public class GTUtility {
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
 
-        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
+        return createFluidStack(tFluid, tNBT != null ? tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
@@ -1367,14 +1474,14 @@ public class GTUtility {
 
         for (FluidStack stack : stacks) {
             if (stack == null || stack.getFluid() == null) continue;
-            histogram.addTo(FluidId.create(stack), stack.amount);
+            histogram.addTo(FluidId.create(stack), getFluidAmount(stack));
         }
 
         return histogram;
     }
 
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
+        return (List<NBTTagCompound>) (List<?>) tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -1990,6 +2097,7 @@ public class GTUtility {
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null
             && !aEntity.isImmuneToFire()
+            && !aEntity.isPotionActive(Potion.fireResistance)
             && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
@@ -2129,10 +2237,14 @@ public class GTUtility {
     }
 
     public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
+        return copyAmount((long) aAmount, aStack);
+    }
+
+    public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
-        FluidStack rStack = aStack.copy();
-        rStack.amount = aAmount;
-        return rStack;
+
+        return GTUtility.createFluidStack(aStack, aAmount)
+            .copy();
     }
 
     /**
@@ -2258,14 +2370,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2276,8 +2388,8 @@ public class GTUtility {
     public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+        for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) list.tagList) {
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 
@@ -2292,6 +2404,9 @@ public class GTUtility {
      */
     public static FluidStack loadFluid(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
+        if (aNBT.hasKey("amountLong")) {
+            return LongFluidStack.loadFluidStackFromNBT(aNBT);
+        }
         return FluidStack.loadFluidStackFromNBT(aNBT);
     }
 
@@ -2761,8 +2876,8 @@ public class GTUtility {
     public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
         Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
         for (FluidStack fluidStack : fluidStacks) {
-            if (fluidStack != null && fluidStack.amount > 0) {
-                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+            if (fluidStack != null && getFluidAmount(fluidStack) > 0) {
+                result.merge(fluidStack.getFluid(), getFluidAmount(fluidStack), GTUtility::addSafe);
             }
         }
         return result;
@@ -4044,15 +4159,16 @@ public class GTUtility {
             return new AutoValue_GTUtility_FluidId(
                 FluidRegistry.getFluid(tag.getString("FluidName")),
                 tag.hasKey("Tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
-                tag.hasKey("Amount", NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+                tag.hasKey("Amount", NBT.TAG_LONG) ? tag.getLong("Amount")
+                    : tag.hasKey("Amount", NBT.TAG_INT) ? (long) tag.getInteger("Amount") : null);
         }
 
         public NBTTagCompound writeToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("FluidName", fluid().getName());
             if (nbt() != null) tag.setTag("Tag", nbt());
-            Integer amount = amount();
-            if (amount != null) tag.setInteger("Amount", amount);
+            Long amount = amount();
+            if (amount != null) tag.setLong("Amount", amount);
             return tag;
         }
 
@@ -4061,14 +4177,14 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), getFluidAmount(fluidStack), fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
             return createNoCopy(fluid, null, null);
         }
 
-        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createWithCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
@@ -4078,7 +4194,7 @@ public class GTUtility {
         /**
          * This method does not copy the NBT tag.
          */
-        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createNoCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
         }
 
@@ -4088,18 +4204,23 @@ public class GTUtility {
         protected abstract NBTTagCompound nbt();
 
         @Nullable
-        protected abstract Integer amount();
+        protected abstract Long amount();
 
         @Nonnull
         public FluidStack getFluidStack() {
             NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return GTUtility.createFluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(long amount) {
+            NBTTagCompound nbt = nbt();
+            return GTUtility.createFluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
 
         @Nonnull
         public FluidStack getFluidStack(int amount) {
-            NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return getFluidStack((long) amount);
         }
 
         public boolean matches(FluidStack stack) {
@@ -4156,6 +4277,25 @@ public class GTUtility {
             return String.format("%d%c", (long) shortened, suffix);
         } else {
             return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    /**
+     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
+     *
+     * @param ticks The number of ticks
+     * @return A localized string
+     */
+    public static String formatTime(int ticks) {
+        if (ticks < 20) {
+            return translateToLocalFormatted(
+                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(ticks));
+        } else {
+            double seconds = ticks / 20.0;
+            return translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
         }
     }
 
@@ -4364,6 +4504,18 @@ public class GTUtility {
         return isWater(block) && !isFlowingWater(block, world, x, y, z);
     }
 
+    public static ItemStack[] splitItemStack(ItemStack item, long quantity) {
+        int size = (int) ((quantity + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        ItemStack[] result = new ItemStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(quantity, Integer.MAX_VALUE);
+            ItemStack tmp = copyAmountUnsafe(a, item);
+            result[i] = tmp;
+            quantity -= a;
+        }
+        return result;
+    }
+
     public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
         int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
         FluidStack[] result = new FluidStack[size];
@@ -4422,5 +4574,63 @@ public class GTUtility {
         result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
 
         return result;
+    }
+
+    /* LongFluidStack Utility Functions */
+
+    public static long getFluidAmount(FluidStack fluidStack) {
+        if (fluidStack instanceof LongFluidStack stack) {
+            return stack.getAmountLong();
+        } else {
+            return fluidStack.amount;
+        }
+    }
+
+    public static void setFluidAmount(FluidStack fluidStack, long amount) {
+        if (fluidStack instanceof LongFluidStack stack) {
+            stack.setAmountLong(amount);
+        } else {
+            fluidStack.amount = longToInt(amount);
+        }
+    }
+
+    public static void decFluidAmount(FluidStack fluidStack, long decAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, amount - decAmount);
+    }
+
+    public static void incFluidAmount(FluidStack fluidStack, long incAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, addSafe(amount, incAmount));
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack) {
+        return createFluidStack(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack, long amount) {
+        return createFluidStack(stack.getFluid(), amount, stack.tag);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount) {
+        return createFluidStack(fluid, amount, null);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(FluidStack stack) {
+        return createFluidStackWithAmountComparison(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt) {
+
+            @Override
+            public boolean isFluidEqual(FluidStack other) {
+                return super.isFluidEqual(other) && getAmountLong() == GTUtility.getFluidAmount(other);
+            }
+        };
     }
 }

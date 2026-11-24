@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -209,14 +208,14 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
 
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_diode"))
-            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-diode"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/diode"))
             .addSupportAny();
 
         tt.beginStructureBlock(17, 11, 11, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
             .addCasing("148", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
-            .addCasing("83-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("75-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -225,7 +224,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addMiscHatch("2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"), 2, 3)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         return tt;
         // spotless:on
     }
@@ -321,7 +320,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         filterParameters = new FluidParameter[CondensateType.VALUES.length];
 
         for (int i = 0; i < filterParameters.length; i++) {
-            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1);
+            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1) {
+
+                @Override
+                public void setValue(Fluid value) {
+                    Fluid previous = getValue();
+
+                    super.setValue(value);
+
+                    if (previous != value && network != null) network.invalidateReachableCondensate();
+                }
+            };
         }
     }
 

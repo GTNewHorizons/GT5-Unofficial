@@ -14,7 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
@@ -25,6 +27,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentBlockName;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -452,6 +455,8 @@ public class MTEPump extends MTEBasicMachine {
                                 }
                             }
                             if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
+                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
+                                this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
                                 while ((!this.mPumpList.isEmpty())) {
                                     ChunkPosition pos = this.mPumpList.pollLast();
                                     if (consumeFluid(pos.chunkPosX, pos.chunkPosY, pos.chunkPosZ)) {
@@ -459,9 +464,6 @@ public class MTEPump extends MTEBasicMachine {
                                         break;
                                     }
                                 }
-                                this.mPumpTimer = GTUtility.safeInt(160 / (long) GTUtility.powInt(2, this.mTier));
-                                this.mPumpTimer = mPumpTimer == 0 ? 1 : mPumpTimer;
-
                                 mMaxProgresstime = mPumpTimer;
                                 mProgresstime = 0;
                             }
@@ -767,7 +769,7 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean consumeFluid(int aX, int aY, int aZ) {
         // Try to consume a fluid at a location
-        // Returns true if something was consumed, otherwise false
+        // Returns true if a block was consumed, otherwise false
         if (!GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), aX, aY, aZ, true)) return false;
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
@@ -779,12 +781,15 @@ public class MTEPump extends MTEBasicMachine {
             boolean isWaterOrLava = ((this.mPrimaryPumpedBlock == Blocks.water
                 || this.mPrimaryPumpedBlock == Blocks.lava));
 
-            if (isWaterOrLava && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0) {
-                // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
-                // below
+            boolean isFlowingFluid = isWaterOrLava ? getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0
+                : !((IFluidBlock) aBlock).canDrain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ);
+
+            if (isFlowingFluid) {
+                // Flowing blocks take 1/4 of the time and energy of source blocks.
                 if (debugBlockPump) {
-                    GT_FML_LOGGER.debug("PUMP: Water/Lava - Not a source block");
+                    GT_FML_LOGGER.debug("PUMP: Not a source block");
                 }
+                this.mPumpTimer = Math.max(1, (160 >> this.mTier) / 4);
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
@@ -815,7 +820,8 @@ public class MTEPump extends MTEBasicMachine {
                         return false;
                     }
 
-            getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.getEuUsagePerAction(), true);
+            getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(this.getEuUsagePerAction() / (isFlowingFluid ? 4 : 1), true);
             getBaseMetaTileEntity().getWorld()
                 .setBlock(aX, aY, aZ, Blocks.air, 0, 2);
             return true;
@@ -836,28 +842,25 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-        int aLogLevel, ArrayList<String> aList) {
-        aList.addAll(
+    public void addSpecialDebugInfoComp(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, int logLevel,
+        ArrayList<IChatComponent> components) {
+        components.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                    + EnumChatFormatting.GREEN
-                    + (radiusConfig * 2 + 1)
-                    + EnumChatFormatting.RESET
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
-                "Primary pumping fluid:   "
-                    + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
-                "Secondary pumping fluid: "
-                    + (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None"),
-                "Pumps below: " + mPumpCountBelow,
-                "Queue size: " + mPumpList.size(),
-                "Pump head at Y: " + getYOfPumpHead(),
-                "Pump timer: " + mPumpTimer,
-                "Meta Entity Timer: " + getBaseMetaTileEntity().getTimer()));
-        return aList;
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.primary",
+                    (this.mPrimaryPumpedBlock != null ? new ChatComponentBlockName(this.mPrimaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.scanner.none"))),
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.secondary",
+                    (this.mSecondaryPumpedBlock != null ? new ChatComponentBlockName(this.mSecondaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.scanner.none"))),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.pumps", mPumpCountBelow),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.queue_size", mPumpList.size()),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.head", getYOfPumpHead()),
+                new ChatComponentTranslation("GT5U.scanner.debug.pump.timer", mPumpTimer),
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.pump.entity_timer",
+                    getBaseMetaTileEntity().getTimer())));
     }
 
     private FakePlayer mFakePlayer = null;

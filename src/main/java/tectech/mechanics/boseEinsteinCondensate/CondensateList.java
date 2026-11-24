@@ -42,7 +42,7 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
         clear();
 
         // noinspection unchecked
-        for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) tag.tagMap.entrySet()) {
+        for (Map.Entry<String, NBTTagLong> e : (Set<Map.Entry<String, NBTTagLong>>) (Set<?>) tag.tagMap.entrySet()) {
             Fluid fluid = FluidRegistry.getFluid(e.getKey());
 
             if (fluid == null) continue;
@@ -82,13 +82,7 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public List<FluidStack> toFluidStacks() {
         ArrayList<FluidStack> out = new ArrayList<>();
 
-        Object2LongMaps.fastForEach(this, e -> {
-            for (long l = 0; l < e.getLongValue(); l += Integer.MAX_VALUE) {
-                int amount = GTUtility.longToInt(e.getLongValue() - l);
-
-                out.add(new FluidStack(e.getKey(), amount));
-            }
-        });
+        Object2LongMaps.fastForEach(this, e -> { out.add(GTUtility.createFluidStack(e.getKey(), e.getLongValue())); });
 
         return out;
     }

@@ -65,6 +65,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -120,6 +121,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -141,7 +143,6 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
-import gregtech.common.data.WirelessEnergyHatchManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.entity.EntityDrone;
@@ -151,6 +152,8 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
+import gregtech.common.misc.WirelessNetworkManager;
+import gregtech.common.misc.WirelessTeamData;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.oredict.OreDictRegistrationHandler;
@@ -158,7 +161,6 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
-import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
@@ -364,7 +366,7 @@ public class GTProxy implements IFuelHandler {
     public GTPowerfailTracker powerfailTracker;
     public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
-    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
+    public WirelessNetworkManager wirelessNetworkManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -536,17 +538,10 @@ public class GTProxy implements IFuelHandler {
         ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
-        ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
-        ItemList.IC2_PlantballCompressed.set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
         ItemList.IC2_Energium_Dust.set(GTModHandler.getIC2Item("energiumDust", 1L));
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
-        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
-        ItemList.IC2_Uranium_235.set(GTModHandler.getIC2Item("Uran235", 1L));
-        ItemList.IC2_Uranium_235_Small.set(GTModHandler.getIC2Item("smallUran235", 1L));
-        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
-        ItemList.IC2_Plutonium_Small.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
         ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
         ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
@@ -701,6 +696,7 @@ public class GTProxy implements IFuelHandler {
 
         ArmorEventHandlers armorEvents = new ArmorEventHandlers();
 
+        TeamDataRegistry.register(WirelessTeamData.DATA_KEY, WirelessTeamData::new);
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
@@ -838,7 +834,6 @@ public class GTProxy implements IFuelHandler {
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
         EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
-        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
@@ -856,7 +851,7 @@ public class GTProxy implements IFuelHandler {
         powerfailTracker = new GTPowerfailTracker();
         if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
-        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
+        wirelessNetworkManager = new WirelessNetworkManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
@@ -866,7 +861,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(tetherManager);
         FMLCommonHandler.instance().bus().register(cameraViewportManager);
         MinecraftForge.EVENT_BUS.register(cameraViewportManager);
-        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
+        FMLCommonHandler.instance().bus().register(wirelessNetworkManager);
         // spotless:off
     }
 
@@ -922,6 +917,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
+        BaseMetaPipeEntity.clearManagedCables();
         // spotless:off
         if (wirelessChargerManager != null) {
             FMLCommonHandler.instance().bus().unregister(wirelessChargerManager);
@@ -942,14 +938,14 @@ public class GTProxy implements IFuelHandler {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
         }
-        if (wirelessEnergyHatchManager != null) {
-            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
+        if (wirelessNetworkManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessNetworkManager);
         }
         wirelessChargerManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
-        wirelessEnergyHatchManager = null;
+        wirelessNetworkManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
@@ -962,6 +958,7 @@ public class GTProxy implements IFuelHandler {
 
         VacuumFactoryGrid.onServerClosed();
         BECFactoryGrid.onServerClosed();
+        WirelessDataStore.onServerClosed();
     }
 
     /**
@@ -1196,6 +1193,7 @@ public class GTProxy implements IFuelHandler {
             } else {
                 TICK_LOCK.unlock();
                 RunnableMachineUpdate.endTick();
+                BaseMetaPipeEntity.tickManagedCables();
                 RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
@@ -1279,6 +1277,14 @@ public class GTProxy implements IFuelHandler {
             if (tileEntity instanceof IGregTechTileEntity) {
                 tileEntity.onChunkUnload();
             }
+        }
+        BaseMetaPipeEntity.unloadManagedCables(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkLoad(ChunkEvent.Load event) {
+        for (Object tileEntity : event.getChunk().chunkTileEntityMap.values()) {
+            if (tileEntity instanceof BaseMetaPipeEntity pipe) pipe.onChunkLoad();
         }
     }
 

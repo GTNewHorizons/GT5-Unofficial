@@ -12,10 +12,10 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.ItemShapeExtruder;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTSplit;
@@ -29,25 +29,9 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public int shapeSlot = getSlots(mTier);
     public int circuitSlot = getSlots(mTier) + 1;
 
-    public static final ItemStack[] extruderShapes = {
-        // Tools
-        ItemList.Shape_Extruder_Axe.get(1), ItemList.Shape_Extruder_File.get(1), ItemList.Shape_Extruder_Hammer.get(1),
-        ItemList.Shape_Extruder_Hoe.get(1), ItemList.Shape_Extruder_Pickaxe.get(1), ItemList.Shape_Extruder_Saw.get(1),
-        ItemList.Shape_Extruder_Shovel.get(1), ItemList.Shape_Extruder_Sword.get(1),
-        ItemList.Shape_Extruder_ToolHeadDrill.get(1),
-        // Machine Components
-        ItemList.Shape_Extruder_Gear.get(1), ItemList.Shape_Extruder_Small_Gear.get(1),
-        ItemList.Shape_Extruder_Rotor.get(1), ItemList.Shape_Extruder_Turbine_Blade.get(1),
-        // Pipes
-        ItemList.Shape_Extruder_Pipe_Tiny.get(1), ItemList.Shape_Extruder_Pipe_Small.get(1),
-        ItemList.Shape_Extruder_Pipe_Medium.get(1), ItemList.Shape_Extruder_Pipe_Large.get(1),
-        ItemList.Shape_Extruder_Pipe_Huge.get(1),
-        // Materials
-        ItemList.Shape_Extruder_Block.get(1), ItemList.Shape_Extruder_Bolt.get(1), ItemList.Shape_Extruder_Ingot.get(1),
-        ItemList.Shape_Extruder_Plate.get(1), ItemList.Shape_Extruder_Ring.get(1), ItemList.Shape_Extruder_Rod.get(1),
-        // Containers, Misc
-        ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
-        ItemList.Shape_Extruder_Cell.get(1) };
+    public static final ItemStack[] extruderShapes = ItemShapeExtruder.shapes.stream()
+        .map(shape -> new ItemStack(shape, 1))
+        .toArray(ItemStack[]::new);
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -85,8 +69,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
             "gt.blockmachines.hatch.extrusion.desc",
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.blockmachines.hatch.extrusion.machine")
                 + EnumChatFormatting.RESET,
-            formatNumber(getSlots(mTier)),
-            EnumChatFormatting.BLUE + "VorTex");
+            formatNumber(getSlots(mTier)));
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {

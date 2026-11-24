@@ -56,7 +56,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -986,7 +985,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)
             .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GRAY, 41, GTAuthors.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GRAY, 41);
         // spotless:on
         return tt;
     }
@@ -1029,7 +1028,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         List<FluidStack> fluidStacks = getStoredFluids();
         for (FluidStack fluidStack : fluidStacks) {
             if (validFluidMap.containsKey(fluidStack.getFluid())) {
-                validFluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                validFluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, GTUtility::addSafe);
                 fluidStack.amount = 0;
             }
         }

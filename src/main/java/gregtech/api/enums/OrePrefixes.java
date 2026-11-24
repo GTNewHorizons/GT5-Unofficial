@@ -69,7 +69,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite")
         .withDefaultLocalName("Black Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Black Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -80,7 +80,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite")
         .withDefaultLocalName("Red Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Red Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -1324,6 +1324,14 @@ public class OrePrefixes {
         .materialGenerationBits(TOOL)
         .materialAmount(M * 6)
         .textureIndex(OrePrefixTextureID.TURBINE_BLADE)
+        .build();
+
+    /** consumed by the industrial arc furnace to run */
+    public static final OrePrefixes electrode = new OrePrefixBuilder("electrode").withDefaultLocalName("Electrodes")
+        .withSuffix(" Electrode")
+        .materialBased()
+        .materialGenerationBits(TOOL)
+        .textureIndex(OrePrefixTextureID.ELECTRODE)
         .build();
 
     /** vanilly Sword */
@@ -2842,6 +2850,7 @@ public class OrePrefixes {
             if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
             if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
             if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanite")) return ore;
             if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;
@@ -3154,14 +3163,7 @@ public class OrePrefixes {
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material";
-                switch (name) {
-                    case "crushedCentrifuged", "crushedPurified" -> {
-                        return materialPrefix + "%material";
-                    }
-                    case "crushed" -> {
-                        return "Ground " + "%material";
-                    }
-                }
+                if (this == crushed) return "Ground " + "%material" + materialPostfix;
             }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
@@ -3187,7 +3189,6 @@ public class OrePrefixes {
         if (this == ore) {
             return switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
         }
@@ -3242,6 +3243,12 @@ public class OrePrefixes {
      * available; otherwise attempts inflection formatting.
      */
     public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(prefixKey, material, material.getLocalizedNameKey());
+    }
+
+    /** Formats a material prefix with additional localization keys, such as the host stone of an ore. */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material,
+        String... formatterKeys) {
         final String key = prefixKey + "."
             + material.getInternalName()
                 .toLowerCase();
@@ -3249,12 +3256,11 @@ public class OrePrefixes {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
-            .trim()
-            .indexOf(' ') != -1) {
-            return GTInflectionManager.formatInflection(phraseKey, material.getLocalizedNameKey());
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(material.getLocalizedName(), material.getLocalizedNameKey())) {
+            return GTInflectionManager.formatInflection(phraseKey, formatterKeys);
         }
-        return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
+        return GTInflectionManager.formatInflection(prefixKey, formatterKeys);
     }
 
     /**
@@ -3267,11 +3273,16 @@ public class OrePrefixes {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialKey)
-            .trim()
-            .indexOf(' ') != -1) {
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(StatCollector.translateToLocal(materialKey), materialKey)) {
             return GTInflectionManager.formatInflection(phraseKey, materialKey);
         }
         return GTInflectionManager.formatInflection(prefixKey, materialKey);
+    }
+
+    // Adjective-first templates cannot be filled by a multi-word name or by a material without an adjective form
+    private static boolean usesPhraseTemplate(String localizedName, String materialKey) {
+        return localizedName.trim()
+            .indexOf(' ') != -1 || !StatCollector.canTranslate(materialKey + ".adj_m_nom");
     }
 }

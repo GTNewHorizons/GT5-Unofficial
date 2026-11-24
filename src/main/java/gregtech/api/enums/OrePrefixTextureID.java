@@ -67,6 +67,7 @@ public class OrePrefixTextureID {
     public static final int BLOCK_SHEETMETAL = 86;
     public static final int TURBINE_BLADE = 100;
     public static final int COMB = 101;
+    public static final int ELECTRODE = 102;
     public static final int PLATE_SUPERDENSE = 125;
     public static final int HANDLE_MALLET = 126;
     public static final int TOOL_HEAD_MALLET = 127;

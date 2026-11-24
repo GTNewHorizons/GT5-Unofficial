@@ -356,17 +356,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         return lockedItem == null ? OutputBusType.StandardUnfiltered : OutputBusType.StandardFiltered;
     }
 
-    /**
-     * Gets the max stack size limit for a slot and a stack.
-     *
-     * @param slot  The slot, or -1 for a general 'lowest slot' query.
-     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
-     */
-    @Override
-    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
-    }
-
     class StandardOutputBusTransaction implements IOutputBusTransaction {
 
         private final ItemStack[] inventory;

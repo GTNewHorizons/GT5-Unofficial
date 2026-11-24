@@ -38,6 +38,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
+import gregtech.nei.NEIScrollArea;
 import gregtech.nei.RecipeDisplayInfo;
 
 /**
@@ -297,7 +298,8 @@ public class RecipeMapFrontend {
         ItemStack stack) {
         FixedPositionedStack firstMatch = null;
         for (PositionedStack pStack : stacks) {
-            if (!(pStack instanceof FixedPositionedStack fixed) || !fixed.containsWithNBT(stack)) continue;
+            if (!(pStack instanceof FixedPositionedStack fixed) || !NEIScrollArea.isShown(fixed)
+                || !fixed.containsWithNBT(stack)) continue;
             if (gui != null && gui.isMouseOver(fixed, 0)) return fixed;
             if (firstMatch == null) firstMatch = fixed;
         }
