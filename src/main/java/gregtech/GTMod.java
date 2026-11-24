@@ -164,6 +164,7 @@ import ic2.api.recipe.RecipeOutput;
         + "required-after:appliedenergistics2;"
         + "required-after:materiallib;"
         + "after:dreamcraft;"
+        + "after:etfuturum;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
         + "after:Thaumcraft;"

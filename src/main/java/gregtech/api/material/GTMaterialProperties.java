@@ -77,6 +77,8 @@ public class GTMaterialProperties {
         .of("gregtech", "lanthanideDecomposition", false);
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
+    /// The mass used to scale reverse macerator recipe durations. Atomic mass is used when unset.
+    public static final Property<Long> MACERATION_MASS = Property.of("gregtech", "macerationMass");
     /// A declared atomic mass that replaces the [MaterialAtomics] composition formula for this material.
     /// Composition sums over components still use their computed values.
     public static final Property<Long> MASS = Property.of("gregtech", "mass");
