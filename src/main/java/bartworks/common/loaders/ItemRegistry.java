@@ -185,12 +185,8 @@ public class ItemRegistry {
         MainMod.BIO_TAB);
 
     public static final Block[] bw_glasses = { bw_realglas, bw_realglas2 };
-    public static final Block[] BW_BLOCKS = {
-        new BWBlocks(
-            "BW_ItemBlocks",
-            new String[] { MainMod.MOD_ID + ":EtchedLapisCell", MainMod.MOD_ID + ":PlatedLapisCell" },
-            MainMod.GT2),
-        null,
+
+    public static final Block[] BW_BLOCKS = { null, null,
         new BWBlocks(
             "BW_Machinery_Casings",
             new String[] { MainMod.MOD_ID + ":NickelFerriteBlocks", MainMod.MOD_ID + ":TransformerCoil" },
@@ -229,7 +225,6 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
 
         // GT2 stuff
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BWItemBlocks.class, "BW_ItemBlocks");
         GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
 
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
