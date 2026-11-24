@@ -270,7 +270,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_flocculation"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-flocculation"),
+                new ResourceLocation("gregtech", "purification/unit-flocculation"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("input", INPUT_CHEMICAL.getLocalizedName())

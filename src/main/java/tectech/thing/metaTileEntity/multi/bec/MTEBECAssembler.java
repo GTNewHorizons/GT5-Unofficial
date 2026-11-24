@@ -169,7 +169,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
-                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
             .addSupportAny();
 
