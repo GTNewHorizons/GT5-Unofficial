@@ -670,7 +670,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.bone, 1))
             .itemOutputs(new ItemStack(Items.dye, 4, 15))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(2)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
