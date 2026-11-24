@@ -73,7 +73,7 @@ public class PipeShapeBlock extends ShapeBlock {
         float thickness, String iconName, String... oreDicts) {
         super(new MaterialMachines(), "gregtech", name, oreDicts);
         this.prefixKey = prefixKey;
-        setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, prefixKey);
+        setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, prefixKey);
         this.iconName = iconName;
         this.mteId = mteId;
         this.family = family;

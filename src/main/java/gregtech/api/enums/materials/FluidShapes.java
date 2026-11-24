@@ -142,7 +142,7 @@ public class FluidShapes {
     private static Shape fluidShape(String name, String displayFormatKey, Function<Material, FluidRef> ref,
         ToIntFunction<Material> temperature, String defaultTexture, ObjIntConsumer<Fluid> attrs) {
         return MaterialLibAPI.newFluidShape("gregtech", name)
-            .displayNameKey(displayFormatKey)
+            .localizationFormatKey(displayFormatKey)
             .property(StandardProperties.NAME_FORMATTER, OrePrefixes::shapeDisplayName)
             .fluidName((shape, material) -> {
                 FluidRef fluidRef = ref.apply(material);

@@ -21,17 +21,17 @@ public class BlockShapes {
     public static void init() {
         block = reg(
             MaterialLibAPI.registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "block"))
-                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.block_of_material"));
+                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.block_of_material"));
         blockCasing = reg(
             MaterialLibAPI.registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasing", "blockCasing"))
-                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.bolted_material_casing"));
+                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.bolted_material_casing"));
         blockCasingAdvanced = reg(
             MaterialLibAPI
                 .registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasingAdvanced", "blockCasingAdvanced"))
-                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.rebolted_material_casing"));
+                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.rebolted_material_casing"));
         sheetmetal = reg(
             MaterialLibAPI.registerBlockShape(new SheetmetalShapeBlock("sheetmetal", "sheetmetal"))
-                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_sheetmetal"));
+                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_sheetmetal"));
     }
 
     private BlockShapes() {}

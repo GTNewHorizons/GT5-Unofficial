@@ -51,7 +51,7 @@ public class CellShapes {
 
         cell = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
-                .displayNameKey("gt.oreprefix.material_cell")
+                .localizationFormatKey("gt.oreprefix.material_cell")
                 .fluid(FluidShapes.fluidLiquid)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -59,7 +59,7 @@ public class CellShapes {
                 .build());
         cellGas = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellGas")
-                .displayNameKey("gt.oreprefix.material_cell")
+                .localizationFormatKey("gt.oreprefix.material_cell")
                 .fluid(FluidShapes.fluidGas)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -68,11 +68,11 @@ public class CellShapes {
                 .build());
         cellSolid = reg(
             MaterialLibAPI.registerItemShape(new GTSolidCellShapeItem("gregtech", "cellSolid", CELL_BASE, "cell"))
-                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_cell"));
+                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_cell"));
 
         cellPlasma = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
-                .displayNameKey("gt.oreprefix.material_plasma_cell")
+                .localizationFormatKey("gt.oreprefix.material_plasma_cell")
                 .fluid(FluidShapes.fluidPlasma)
                 .emptyContainer(emptyCell)
                 .volume(INGOTS)
@@ -80,7 +80,7 @@ public class CellShapes {
                 .build());
         cellPlasmaLight = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
-                .displayNameKey("gt.oreprefix.material_plasma_cell")
+                .localizationFormatKey("gt.oreprefix.material_plasma_cell")
                 .fluid(FluidShapes.fluidPlasma)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -90,7 +90,7 @@ public class CellShapes {
 
         cellMolten = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
-                .displayNameKey("gt.oreprefix.molten_material_cell")
+                .localizationFormatKey("gt.oreprefix.molten_material_cell")
                 .fluid(FluidShapes.fluidMolten)
                 .emptyContainer(emptyCell)
                 .volume(INGOTS)
@@ -126,7 +126,7 @@ public class CellShapes {
     private static Shape crackedCellShape(String name, String displayFormatKey, Shape fluidShape) {
         return reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", name)
-                .displayNameKey(displayFormatKey)
+                .localizationFormatKey(displayFormatKey)
                 .fluid(fluidShape)
                 .emptyContainer(emptyCell)
                 .volume(1000)

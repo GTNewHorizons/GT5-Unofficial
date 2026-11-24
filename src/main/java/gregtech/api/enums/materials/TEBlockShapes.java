@@ -83,7 +83,7 @@ public class TEBlockShapes {
         itemPipeRestrictiveMedium = register(new PipeShapeBlock("itemPipeRestrictiveMedium", "gt.oreprefix.restrictive_material_item_pipe", 5826, PipeFamily.ITEM_RESTRICTIVE, 2, 1, 0.5F, "pipeMedium", "pipeRestrictiveMedium"));
         itemPipeRestrictiveLarge = register(new PipeShapeBlock("itemPipeRestrictiveLarge", "gt.oreprefix.large_restrictive_material_item_pipe", 5827, PipeFamily.ITEM_RESTRICTIVE, 3, 1, 0.75F, "pipeLarge", "pipeRestrictiveLarge"));
         itemPipeRestrictiveHuge = register(new PipeShapeBlock("itemPipeRestrictiveHuge", "gt.oreprefix.huge_restrictive_material_item_pipe", 5828, PipeFamily.ITEM_RESTRICTIVE, 4, 1, 0.875F, "pipeHuge", "pipeRestrictiveHuge"));
-        frameGt = register(new FrameShapeBlock("frameGt", 5829, "frameGt")).setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_frame_box");
+        frameGt = register(new FrameShapeBlock("frameGt", 5829, "frameGt")).setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_frame_box");
         // spotless:on
     }
 
