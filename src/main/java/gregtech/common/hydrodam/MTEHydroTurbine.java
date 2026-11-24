@@ -1,0 +1,177 @@
+package gregtech.common.hydrodam;
+
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+
+import java.util.List;
+import java.util.Set;
+
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.MultiblockTooltipBuilder;
+
+/// Drains water from the dam behind it into an output hatch, producing {@link MTEHydroPump#EU_PER_LITRE} EU per litre
+/// at
+/// up to {@link #MAX_EFFICIENCY} efficiency. Never creates dam water.
+public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
+
+    /// Players use dams to store energy, so the round trip through a pump and turbine should lose very little.
+    public static final double MAX_EFFICIENCY = 0.99;
+
+    private static final CheckRecipeResult DYNAMO_FULL = SimpleCheckRecipeResult.ofFailure("hydrodam_dynamo_full");
+
+    /// Built on first use, after the casing blocks exist.
+    private static IStructureDefinition<MTEHydroTurbine> structureDefinition;
+
+    public MTEHydroTurbine(int id, String name, String regionalName) {
+        super(id, name, regionalName);
+    }
+
+    public MTEHydroTurbine(String name) {
+        super(name);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity tileEntity) {
+        return new MTEHydroTurbine(mName);
+    }
+
+    @Override
+    public IStructureDefinition<MTEHydroTurbine> getStructureDefinition() {
+        if (structureDefinition == null) {
+            structureDefinition = createStructureDefinition(MTEHydroTurbine.class, Dynamo, OutputHatch, Maintenance);
+        }
+
+        return structureDefinition;
+    }
+
+    @Override
+    protected void checkDamHatches(@NotNull List<StructureError> errors) {
+        checkOneDynamoHatch(errors);
+        checkOneOutputHatch(errors);
+        checkOneMaintenanceHatch(errors);
+    }
+
+    @Override
+    protected double getMaxDamEfficiency() {
+        return MAX_EFFICIENCY;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        DamVolumes volumes = DamVolumes.get(getBaseMetaTileEntity().getWorld());
+        WaterVolume volume = getVolumeBehind(volumes);
+
+        if (volume == null || volume.getLitres() < 1) return NO_DAM_WATER;
+
+        double efficiency = getDamEfficiency();
+
+        if (efficiency <= 0) return NO_ENERGY;
+
+        long budget = getLitreBudget(efficiency);
+
+        if (budget <= 0) return DYNAMO_FULL;
+
+        long litres = Math.min((long) volume.getLitres(), budget);
+
+        MTEHatchOutput output = mOutputHatches.get(0);
+
+        // Without void protection, water that doesn't fit in the output hatch is voided.
+        if (protectsExcessFluid()) {
+            litres = Math.min(litres, output.fill(water(litres), false));
+
+            if (litres <= 0) return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        long removed = (long) volumes.removeLitres(volume, litres);
+
+        output.fill(water(removed), true);
+        startGeneratingCycle(removed, removed * MTEHydroPump.EU_PER_LITRE * efficiency);
+
+        return CheckRecipeResultRegistry.GENERATING;
+    }
+
+    /// The litres the dynamo can take the energy of this tick: limited by its voltage times its amperage, and by its
+    /// free buffer so that no energy is voided.
+    private long getLitreBudget(double efficiency) {
+        MTEHatchDynamo dynamo = mDynamoHatches.get(0);
+
+        long throughput = dynamo.maxEUOutput() * dynamo.maxAmperesOut();
+        long freeSpace = dynamo.getBaseMetaTileEntity()
+            .getEUCapacity()
+            - dynamo.getBaseMetaTileEntity()
+                .getStoredEU();
+
+        long eu = Math.max(0, Math.min(throughput, freeSpace));
+
+        return (long) Math.floor(eu / efficiency / MTEHydroPump.EU_PER_LITRE);
+    }
+
+    private static FluidStack water(long litres) {
+        return new FluidStack(FluidRegistry.WATER, (int) Math.min(litres, Integer.MAX_VALUE));
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.FLUID_ONLY_MODES;
+    }
+
+    @Override
+    public String getThroughputLangKey() {
+        return "GT5U.waila.hydrodam.draining";
+    }
+
+    @Override
+    protected IIconContainer getFrontOverlay(boolean active) {
+        return active ? Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE : Textures.BlockIcons.STEAM_TURBINE_SIDE;
+    }
+
+    @Override
+    protected IIconContainer getFrontGlowOverlay(boolean active) {
+        return active ? Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE_GLOW
+            : Textures.BlockIcons.STEAM_TURBINE_SIDE_GLOW;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+
+        // spotless:off
+        tt.addMachineType("Hydro Turbine")
+            .addInfo("Drains water from the dam behind it into an output hatch")
+            .addInfo("The back of the pipe casing must touch the dam's water")
+            .addInfo("Produces " + MTEHydroPump.EU_PER_LITRE + " EU per litre of water at " + Math.round(MAX_EFFICIENCY * 100) + "% efficiency")
+            .addInfo("Drains up to the dynamo hatch's voltage times its amperage per tick")
+            .addInfo("Loses " + Math.round(LOSS_PER_MAINTENANCE_PROBLEM * 1000) / 10.0 + "% efficiency per maintenance problem");
+        addStructureInfo(tt)
+            .addDynamoHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
+            .addOutputHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
+            .toolTipFinisher();
+        // spotless:on
+
+        return tt;
+    }
+}

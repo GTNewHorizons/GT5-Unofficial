@@ -1812,6 +1812,8 @@ public enum ItemList implements IItemContainer {
     OilDrill4,
     ConcreteBackfiller1,
     ConcreteBackfiller2,
+    HydroPump,
+    HydroTurbine,
     OreDrill1,
     OreDrill2,
     OreDrill3,

@@ -78,6 +78,8 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.common.hydrodam.MTEHydroPump;
+import gregtech.common.hydrodam.MTEHydroTurbine;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -457,6 +459,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CONCRETE_BACKFILLER_II_CONTROLLER.ID,
                 "multimachine.concretebackfiller3",
                 "Advanced Concrete Backfiller").getStackForm(1));
+        ItemList.HydroPump
+            .set(new MTEHydroPump(HYDRO_PUMP_CONTROLLER.ID, "multimachine.hydropump", "Hydro Pump").getStackForm(1));
+        ItemList.HydroTurbine.set(
+            new MTEHydroTurbine(HYDRO_TURBINE_CONTROLLER.ID, "multimachine.hydroturbine", "Hydro Turbine")
+                .getStackForm(1));
         ItemList.OreDrill1.set(
             new MTEOreDrillingPlant1(ORE_DRILL_MKI_CONTROLLER.ID, "multimachine.oredrill1", "Ore Drilling Plant")
                 .getStackForm(1));
