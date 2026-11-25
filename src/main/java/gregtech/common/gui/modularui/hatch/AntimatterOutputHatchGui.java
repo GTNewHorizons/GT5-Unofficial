@@ -14,7 +14,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -42,17 +41,6 @@ public class AntimatterOutputHatchGui extends MTEHatchBaseGui<AntimatterOutputHa
         mainRow.childIf(supportsFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    @Override
-    protected FluidSlot createSlot(ModularPanel panel, PanelSyncManager syncManager) {
-        ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
-
-        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank())
-            .filter(getFluidSlotFilter());
-        fluidSlotSH.setChangeListener(() -> { byte mode = modeSyncer.getValue(); });
-
-        return super.createSlot(panel, syncManager).syncHandler(fluidSlotSH);
     }
 
     @Override
@@ -112,22 +100,15 @@ public class AntimatterOutputHatchGui extends MTEHatchBaseGui<AntimatterOutputHa
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
-        FluidSlotSyncHandler fluidSlotSH = syncManager.findSyncHandler("lockedFluidSlotSH", FluidSlotSyncHandler.class);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(
             new CycleButtonWidget().stateCount(2)
                 .value(modeSyncer)
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
                 .tooltipDynamic(t -> {
-                    String[] args = new String[2];
                     byte mode = modeSyncer.getByteValue();
-                    FluidStack fluid = fluidSlotSH.getValue();
 
-                    t.addLine(
-                        StatCollector.translateToLocalFormatted(
-                            AntimatterOutputHatch.getLangKeyForModeAntimatter(mode),
-                            args[0]));
-                    if (args[1] != null) t.addLine(args[1]);
+                    t.addLine(StatCollector.translateToLocal(AntimatterOutputHatch.getLangKeyForModeAntimatter(mode)));
                     t.addLine(
                         EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.hatch.output.cycle"));
                 })
