@@ -411,4 +411,14 @@ public class MTENuclearReactor extends MTEExtendedPowerMultiBlockBase<MTENuclear
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
