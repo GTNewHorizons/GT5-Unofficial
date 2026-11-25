@@ -855,9 +855,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        // Unused so commented out, for future use maybe?
-                        // boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
-                        // boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
+                        // unused but are required side effects for outputting items and fluids on recipe completion.
+                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
+                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
                         mOutputItems = null;
                         mOutputFluids = null;
                         outputAfterRecipe();
