@@ -770,12 +770,14 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             FluidStack fluidStack = StackInfo.getFluid(item);
             if (fluidStack == null || fluidStack.amount <= 0) return;
 
+            long amount = StackInfo.getAmountLong(item);
+
             // L is used intentionally, because it takes less space than mB
             String amountString;
-            if (fluidStack.amount < 10_000) {
-                amountString = fluidStack.amount + "L";
+            if (amount < 10_000) {
+                amountString = amount + "L";
             } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + "L";
+                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(amount) + "L";
             }
 
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
