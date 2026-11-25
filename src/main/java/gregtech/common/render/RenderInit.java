@@ -49,7 +49,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
         onResourceReload(DroneRender::reload);
         onResourceReload(WormholeRenderer::reload);
         onResourceReload(BlackholeRenderer::reload);
-        onResourceReload(MTEExoFoundry::FoundryRenderUtils);
+        onResourceReload(FoundryRenderUtils::reloadRender);
         onResourceReload(MTELargeFusionComputer::reloadRender);
         onResourceReload(FoundryRenderUtils::reloadRender);
         onResourceReload(GTRendererBlock::clearInventoryDisplayListCache);
