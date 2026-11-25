@@ -4,9 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
@@ -53,13 +54,13 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTEMicrowaveInducedPlasmaReactorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 
 public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlockBase<MTEMicrowaveInducedPlasmaReactor>
     implements ISurvivalConstructable, IHeatProducer {
 
     private Byte solenoidLevel = null;
-    private final List<MTEHeatSensor> temperatureSensors = new ArrayList<>(2);
+    private final List<MTEHatchHeatSensor> temperatureSensors = new ArrayList<>(2);
     private int temperature;
     private boolean outputLossApplied;
 
@@ -123,14 +124,18 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
         .addElement(
             'H',
             buildHatchAdder(MTEMicrowaveInducedPlasmaReactor.class)
-                .atLeast(Maintenance, Energy.or(ExoticEnergy), MTEHeatSensor.HeatSensorHatchElement.HeatSensor)
+                .atLeast(
+                    Maintenance,
+                    OutputHatch,
+                    Energy.or(ExoticEnergy),
+                    MTEHatchHeatSensor.HeatSensorHatchElement.HeatSensor)
                 .casingIndex(Casings.MagicalMachineCasing.textureId)
                 .hint(1)
                 .buildAndChain(Casings.MagicalMachineCasing.asElement()))
         .addElement('I', ofFrame(Materials.Chrome))
         .addElement('J', ofFrame(Materials.TungstenCarbide))
         .addElement('K', ofFrame(Materials.Polytetrafluoroethylene))
-        .addElement('L', InputBus.newAny(Casings.ChemicallyInertMachineCasing.textureId, 2))
+        .addElement('L', InputHatch.newAny(Casings.ChemicallyInertMachineCasing.textureId, 2))
         .addElement('M', OutputBus.newAny(Casings.AdvancedRhodiumPlatedPalladiumMachineCasing.textureId, 3))
         .build();
 
@@ -222,7 +227,8 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
         }
         checkHasAnyEnergy(errors);
         checkOneMaintenanceHatch(errors);
-        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
         checkHasOutputBus(errors);
     }
 
@@ -267,7 +273,7 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
     }
 
     private void updateTemperatureSensor() {
-        for (MTEHeatSensor sensor : temperatureSensors) sensor.setHeatValue(temperature);
+        for (MTEHatchHeatSensor sensor : temperatureSensors) sensor.updateRedstoneOutput(temperature);
     }
 
     private void applyOutputLoss() {
@@ -306,7 +312,8 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addEnergyHatch("1+", "Any Magical Machine Casing", 1)
             .addMaintenanceHatch("1", "Any Magical Machine Casing", 1)
-            .addInputBus("1", "Left Middle", 2)
+            .addOutputHatch("1", "Any Magical Machine Casing", 1)
+            .addInputHatch("1", "Left Middle", 2)
             .addOutputBus("1", "Right Middle", 3)
             .addMiscHatch("2", "Heat Sensor Hatches", "Magical Machine Casing", 1)
             .addSubChannel(GTStructureChannels.SOLENOID)
@@ -341,13 +348,13 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
     }
 
     @Override
-    public List<MTEHeatSensor> getHeatSensorHatches() {
+    public List<MTEHatchHeatSensor> getHeatSensorHatches() {
         return Collections.unmodifiableList(temperatureSensors);
     }
 
     @Override
     public boolean addHeatSensorHatchToMachineList(IGregTechTileEntity tile, int casingTexture) {
-        if (tile == null || !(tile.getMetaTileEntity() instanceof MTEHeatSensor sensor)) return false;
+        if (tile == null || !(tile.getMetaTileEntity() instanceof MTEHatchHeatSensor sensor)) return false;
         sensor.updateTexture(casingTexture);
         return temperatureSensors.add(sensor);
     }
