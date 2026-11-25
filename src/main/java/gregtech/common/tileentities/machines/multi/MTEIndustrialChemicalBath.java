@@ -79,7 +79,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     private static final int TIER_NOT_SET = -1;
     private static final int TIER_BASE = 0;
     private static final int TIER_UPGRADED = 1;
-    private static final int MAGMATTER_META = 10; // gt.blockmetal9
+    private static final int HEXANITE_META = 14; // gt.blockmetal9
 
     private static final String[][] structure = new String[][] { { "AABAA", "AEEEA", "AE~EA", "AEEEA" },
         { "  B  ", "EFDFE", "EFDFE", "EEEEE" }, { "     ", "EFFFE", "EFFFE", "EEEEE" },
@@ -108,7 +108,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(
-                TooltipHelper.NAME_COLOR + "Magmatter Blocks"
+                TooltipHelper.NAME_COLOR + "Hexanite Blocks"
                     + EnumChatFormatting.GRAY
                     + " allow a single "
                     + TooltipHelper.HATCH_COLOR
@@ -124,14 +124,14 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 StatCollector.translateToLocalFormatted(
                     "gt.mbtt.structure.either_block",
                     OrePrefixes.block.getLocalizedNameForItem(Materials.Zinc),
-                    OrePrefixes.block.getLocalizedNameForItem(Materials.MagMatter)),
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Hexanite)),
                 false)
             .addCasing(
                 "2",
                 StatCollector.translateToLocalFormatted(
                     "gt.mbtt.structure.either_block",
                     OrePrefixes.block.getLocalizedNameForItem(Materials.Copper),
-                    OrePrefixes.block.getLocalizedNameForItem(Materials.MagMatter)),
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Hexanite)),
                 false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
@@ -152,8 +152,8 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 .addShape(STRUCTURE_PIECE_MAIN, structure)
                 .addElement('A', ofFrame(MaterialsAlloy.AQUATIC_STEEL))
                 .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
-                .addElement('C', metalOrMagmatter(GregTechAPI.sBlockMetal2, 7))
-                .addElement('D', metalOrMagmatter(GregTechAPI.sBlockMetal8, 6))
+                .addElement('C', metalOrHexanite(GregTechAPI.sBlockMetal2, 7))
+                .addElement('D', metalOrHexanite(GregTechAPI.sBlockMetal8, 6))
                 .addElement(
                     'E',
                     buildHatchAdder(MTEIndustrialChemicalBath.class)
@@ -174,15 +174,15 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         return STRUCTURE_DEFINITION;
     }
 
-    private static IStructureElement<MTEIndustrialChemicalBath> metalOrMagmatter(Block baseBlock, int baseMeta) {
+    private static IStructureElement<MTEIndustrialChemicalBath> metalOrHexanite(Block baseBlock, int baseMeta) {
         ITierConverter<Integer> tierConverter = (block, meta) -> {
             if (block == baseBlock && meta == baseMeta) return TIER_BASE;
-            if (block == GregTechAPI.sBlockMetal9 && meta == MAGMATTER_META) return TIER_UPGRADED;
+            if (block == GregTechAPI.sBlockMetal9 && meta == HEXANITE_META) return TIER_UPGRADED;
             return null;
         };
         return ofBlocksTiered(
             tierConverter,
-            ImmutableList.of(Pair.of(baseBlock, baseMeta), Pair.of(GregTechAPI.sBlockMetal9, MAGMATTER_META)),
+            ImmutableList.of(Pair.of(baseBlock, baseMeta), Pair.of(GregTechAPI.sBlockMetal9, HEXANITE_META)),
             TIER_NOT_SET,
             (x, tier) -> x.upgradeTier = tier,
             x -> x.upgradeTier);
@@ -233,7 +233,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (upgradeTier != TIER_UPGRADED) {
                 errors.add(
-                    new TranslatableStructureError(TranslatableText.literal("Need Magmatter Blocks for Multi-Amp")));
+                    new TranslatableStructureError(TranslatableText.literal("Need Hexanite Blocks for Multi-Amp")));
             }
         } else {
             checkHasEnergyHatch(errors);
