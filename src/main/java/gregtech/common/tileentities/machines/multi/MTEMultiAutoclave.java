@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.chainFluidPipeCasings;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -107,19 +108,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return itemPipeTier;
     }
 
-    @Nullable
-    private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
-        if (block == GregTechAPI.sBlockCasings2) {
-            if (metaID < 12 || metaID > 15) return null;
-            return metaID - 11;
-        }
-        if (block == GregTechAPI.sBlockCasings14) {
-            if (metaID < 10 || metaID > 15) return null;
-            return metaID - 5;
-        }
-        return null;
-    }
-
     private void setFluidPipeTier(int tier) {
         fluidPipeTier = tier;
     }
@@ -172,23 +160,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            GTStructureChannels.PIPE_CASING.use(
-                ofBlocksTiered(
-                    MTEMultiAutoclave::getFluidTierFromMeta,
-                    ImmutableList.of(
-                        Pair.of(GregTechAPI.sBlockCasings2, 12),
-                        Pair.of(GregTechAPI.sBlockCasings2, 13),
-                        Pair.of(GregTechAPI.sBlockCasings2, 14),
-                        Pair.of(GregTechAPI.sBlockCasings2, 15),
-                        Pair.of(GregTechAPI.sBlockCasings14, 10),
-                        Pair.of(GregTechAPI.sBlockCasings14, 11),
-                        Pair.of(GregTechAPI.sBlockCasings14, 12),
-                        Pair.of(GregTechAPI.sBlockCasings14, 13),
-                        Pair.of(GregTechAPI.sBlockCasings14, 14),
-                        Pair.of(GregTechAPI.sBlockCasings14, 15)),
-                    -1,
-                    MTEMultiAutoclave::setFluidPipeTier,
-                    MTEMultiAutoclave::getFluidPipeTier)))
+            chainFluidPipeCasings(-1, MTEMultiAutoclave::setFluidPipeTier, MTEMultiAutoclave::getFluidPipeTier))
         .addElement(
             'E',
             GTStructureChannels.ITEM_PIPE_CASING.use(
