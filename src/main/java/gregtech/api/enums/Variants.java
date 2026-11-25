@@ -22,6 +22,9 @@ public enum Variants {
     };
 
     public static boolean checkIfActive(Variants... variants) {
+        if (!Mods.VariableHorizons.isModLoaded()) {
+            return false;
+        }
         for (final Variants variant : variants) {
             if (VariantNames.activeContains(variant.ID)) {
                 return true;
