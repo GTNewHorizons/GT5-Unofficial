@@ -4624,6 +4624,7 @@ GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
 GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
 GT5U.armor.part.name.Terrasteel=Augment: Terrestrial Enhancement
 GT5U.armor.part.name.Soulbound=Augment: Soul Tether
+GT5U.armor.part.name.Magnet=Augment: Item Attractor
 GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
 GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
 GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
@@ -4651,6 +4652,7 @@ GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
 GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 40%% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
 GT5U.armor.part.tooltip.Soulbound=Prevents this armor piece from being dropped on death
+GT5U.armor.part.tooltip.Magnet=Instantly picks up nearby items and XP while active
 GT5U.armor.part.tooltip.ApprenticeStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.ArchmageStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.EldritchStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
@@ -4681,6 +4683,7 @@ GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 GT5U.armor.behavior.Soulbound=Soulbound
 GT5U.armor.behavior.Levitation=Levitation Mode
+GT5U.armor.behavior.Magnet=Magnet
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -8265,6 +8268,7 @@ key.gt.jump_increase=Increase Jump Boost
 key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 key.gt.toggle_levitation_mode=Toggle Levitation Mode
+key.gt.toggle_magnet=Toggle Magnet
 key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools
@@ -10733,9 +10737,3 @@ Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
 Material.polyvinylchloride.itempipe.newname=PVC
 Material.redstone.fluidpipe.newname=High Pressure
 Material.wood.fluidpipe.newname=Wooden
-
-# Mech armor magnet augment
-GT5U.armor.part.name.Magnet=Augment: Item Attractor
-GT5U.armor.part.tooltip.Magnet=Instantly picks up nearby items and XP while active
-GT5U.armor.behavior.Magnet=Magnet
-key.gt.toggle_magnet=Toggle Magnet
