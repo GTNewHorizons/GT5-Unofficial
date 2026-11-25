@@ -57,7 +57,7 @@ public enum IDMetaItem02 {
     Bottle_Cave_Johnsons_Grenade_Juice(135),
     Bottle_Milk(136),
     Bottle_Holy_Water(137),
-    //100-199 reserved for bottled drinks
+    // 100-199 reserved for bottled drinks
     Food_Potato_On_Stick(200),
     Food_Potato_On_Stick_Roasted(201),
     Food_Raw_Fries(202),
