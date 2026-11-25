@@ -21,6 +21,7 @@ public class EIGDropTable {
 
     private static final String NBT_DROP_TABLE_ITEM_KEY = "item";
     private static final String NBT_DROP_TABLE_COUNT_KEY = "count";
+    private static final ItemStack[] NO_DROPS = new ItemStack[0];
 
     private final @NotNull ItemStackMap<Double> dropTable;
 
@@ -197,26 +198,27 @@ public class EIGDropTable {
         return ret;
     }
 
-    private static final ItemStack[] NO_DROPS = new ItemStack[0];
-
     /**
      * Consumes drops with drop counts above 1 and returns a list of the consumed item stacks
      *
      * @return the list of consumed items
      */
     public ItemStack @NotNull [] getDrops() {
-        List<ItemStack> drops = null;
+        List<ItemStack> drops = new ArrayList<>();
+
         for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
-            final double value = entry.getValue();
+            double value = entry.getValue();
             if (value < 1.0d) continue;
-            if (drops == null) drops = new ArrayList<>();
-            final ItemStack copied = entry.getKey()
+
+            ItemStack copied = entry.getKey()
                 .copy();
-            copied.stackSize = (int) Math.floor(value);
+            copied.stackSize = (int) value;
+
             entry.setValue(value % 1);
             drops.add(copied);
         }
-        return drops == null ? NO_DROPS : drops.toArray(NO_DROPS);
+
+        return drops.isEmpty() ? NO_DROPS : drops.toArray(NO_DROPS);
     }
 
 }

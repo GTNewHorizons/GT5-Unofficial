@@ -38,25 +38,39 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class CropRenderer extends EntityFX {
 
-    int[] meta = new int[7 * 3];
-    ExtendedFacing facing;
-    private final double[] offsets = new double[7 * 3 * 2];
+    private static final int CROP_WIDTH = 3;
+    private static final int CROP_LENGTH = 7;
+    private static final int CROP_COUNT = CROP_WIDTH * CROP_LENGTH;
+
+    private final int[] meta = new int[CROP_COUNT];
+    private final double[] offsets = new double[CROP_COUNT * 2];
+    private ExtendedFacing facing;
 
     public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age) {
-        super(world, x, ((double) y - 0.0625d), z);
+        super(world, x, y - 0.0625d, z);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.particleMaxAge = age;
-        this.facing = extendedFacing;
-        for (int i = 0; i < 7 * 3; i++) this.meta[i] = this.rand.nextInt(8);
 
-        // cache rotated offsets once
-        final double[] abc = new double[] { 0.0d, 0.0d, 0.0d };
-        final double[] xyz = new double[3];
+        for (int i = 0; i < CROP_COUNT; i++) {
+            this.meta[i] = this.rand.nextInt(8);
+        }
+
+        updateFacing(extendedFacing);
+    }
+
+    public void updateFacing(ExtendedFacing extendedFacing) {
+        if (this.facing == extendedFacing) return;
+
+        this.facing = extendedFacing;
+
+        // recompute cached offsets whenever the greenhouse rotates
+        double[] abc = new double[3];
+        double[] xyz = new double[3];
         int k = 0;
-        for (int ox = -1; ox <= 1; ox++) {
-            for (int oz = 0; oz <= 6; oz++) {
+        for (int ox = -CROP_WIDTH / 2; ox <= CROP_WIDTH / 2; ox++) {
+            for (int oz = 0; oz < CROP_LENGTH; oz++) {
                 abc[0] = ox;
                 abc[2] = oz;
                 extendedFacing.getWorldOffset(abc, xyz);
@@ -87,13 +101,12 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int i = 0;
-        for (int idx = 0; idx < 7 * 3; idx++) {
-            double f11 = (this.posX + offsets[idx * 2]) - interpPosX;
-            double f13 = (this.posZ + offsets[idx * 2 + 1]) - interpPosZ;
+        RenderBlocks renderer = RenderBlocks.getInstance();
 
-            RenderBlocks.getInstance()
-                .renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
+        for (int idx = 0; idx < CROP_COUNT; idx++) {
+            double f11 = this.posX + offsets[idx * 2] - interpPosX;
+            double f13 = this.posZ + offsets[idx * 2 + 1] - interpPosZ;
+            renderer.renderBlockCropsImpl(Blocks.wheat, meta[idx], f11, f12, f13);
         }
         tessellator.draw();
     }
