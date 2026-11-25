@@ -7,6 +7,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,6 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.AntimatterOutputHatchGui;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
@@ -42,14 +48,15 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         final NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("type", DATA_STICK_DATA_TYPE);
-        nbt.setByte(MODE_NBT_KEY, mMode);
+        nbt.setByte(MODE_NBT_KEY, (byte) Math.min(1, mMode));
         return nbt;
     }
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
         if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
-        mMode = nbt.getByte(MODE_NBT_KEY);
+
+        mMode = (byte) Math.min(1, nbt.getByte(MODE_NBT_KEY));
         markDirty();
         return true;
     }
@@ -111,4 +118,67 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return aFluid.isFluidEqual(ANTIMATTER);
     }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new AntimatterOutputHatchGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    public static String getLangKeyForModeAntimatter(byte mode) {
+        return switch (mode) {
+            case 0 -> "gg.chat.antimatter_output_hatch.front_face_input.disable";
+            case 1 -> "gg.chat.antimatter_output_hatch.front_face_input.enable";
+            default -> "";
+        };
+    }
+
+    @Override
+    public void setMode(byte mode) {
+        this.mMode = (byte) Math.min(1, mode);
+    }
+
+    @Override
+    public void lockFluid(boolean lock) {
+        setLockedFluid(ANTIMATTER.getFluid());
+    }
+
+    @Override
+    public boolean outputsSteam() {
+        return false;
+    }
+
+    @Override
+    public boolean outputsLiquids() {
+        return true;
+    }
+
+    @Override
+    public boolean outputsItems() {
+        return false;
+    }
+
+    @Override
+    protected void setDataStickName(ItemStack dataStick) {
+        dataStick.setStackDisplayName("Antimatter Output Hatch Configuration");
+    }
+
+    @Override
+    public boolean setFilter(FluidStack aStack) {
+        setLockedFluid(ANTIMATTER.getFluid());
+        lockFluid(true);
+        return true;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mMode = (byte) Math.min(1, mMode);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        mMode = (byte) Math.min(1, mMode);
+        super.saveNBTData(aNBT);
+    }
+
 }

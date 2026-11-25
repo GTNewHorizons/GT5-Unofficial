@@ -2097,6 +2097,7 @@ public class GTUtility {
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null
             && !aEntity.isImmuneToFire()
+            && !aEntity.isPotionActive(Potion.fireResistance)
             && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);

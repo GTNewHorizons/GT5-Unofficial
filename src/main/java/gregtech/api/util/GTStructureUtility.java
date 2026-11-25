@@ -1051,6 +1051,44 @@ public class GTStructureUtility {
                     getter)));
     }
 
+    private static Integer getFluidPipeCasingTier(Block block, int meta) {
+        if (block == GregTechAPI.sBlockCasings2) {
+            if (meta < 12 || meta > 15) return null;
+            return meta - 11;
+        }
+        if (block == GregTechAPI.sBlockCasings14) {
+            if (meta < 10 || meta > 15) return null;
+            return meta - 5;
+        }
+        return null;
+    }
+
+    public static <T> IStructureElement<T> chainFluidPipeCasings() {
+        return chainFluidPipeCasings(-1, (t, tier) -> {}, t -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainFluidPipeCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.PIPE_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    GTStructureUtility::getFluidPipeCasingTier,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings2, 12),
+                        Pair.of(GregTechAPI.sBlockCasings2, 13),
+                        Pair.of(GregTechAPI.sBlockCasings2, 14),
+                        Pair.of(GregTechAPI.sBlockCasings2, 15),
+                        Pair.of(GregTechAPI.sBlockCasings14, 10),
+                        Pair.of(GregTechAPI.sBlockCasings14, 11),
+                        Pair.of(GregTechAPI.sBlockCasings14, 12),
+                        Pair.of(GregTechAPI.sBlockCasings14, 13),
+                        Pair.of(GregTechAPI.sBlockCasings14, 14),
+                        Pair.of(GregTechAPI.sBlockCasings14, 15)),
+                    notSet,
+                    setter,
+                    getter)));
+    }
+
     public static <T> IStructureElement<T> chainAllCasings() {
         return chainAllCasings(-1, (te, t) -> {}, te -> -1);
     }
