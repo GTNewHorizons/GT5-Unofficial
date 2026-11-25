@@ -56,10 +56,6 @@ public class Configuration {
     @Config.Comment("Multiblocks section.")
     public static class Multiblocks {
 
-        @Config.Comment("This will set Up the Energy per LESU Cell")
-        @Config.DefaultInt(20_000_000)
-        public int energyPerCell;
-
         @Config.Ignore()
         public static int megaMachinesMax = 256;
 

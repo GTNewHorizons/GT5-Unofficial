@@ -129,7 +129,7 @@ public abstract class ColoredBlockContainer {
                 if (Mods.ProjectRedTransmission.isModLoaded() && tileEntity instanceof final TileMultipart multipart) {
                     final MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
                     if (hit instanceof ExtendedMOP && hit.blockX == x && hit.blockY == y && hit.blockZ == z) {
-                        final int index = (Integer) BlockMultipart.reduceMOP(hit)._1();
+                        final int index = BlockMultipart.hitPartIndex(hit);
                         final List<TMultiPart> parts = multipart.jPartList();
                         if (index >= 0 && index < parts.size()) {
                             final TMultiPart part = parts.get(index);

@@ -239,6 +239,7 @@ public enum MetaTileEntityIDs {
     COKE_OVEN_CONTROLLER(236),
     COKE_OVEN_HATCH(237),
     DEBUG_FLUID_TANK(238),
+    DEBUG_CHEST(239),
     COMPRESSOR_LV(241),
     COMPRESSOR_MV(242),
     COMPRESSOR_HV(243),
@@ -1350,7 +1351,7 @@ public enum MetaTileEntityIDs {
     CropsPPCropSynthesiserUHV_retired(12527),
     @Deprecated
     CropsPPCropWeedPicker_retired(12528),
-    LESU(12600),
+    // unused(12600)
     EnergyDistributor_ULV(12601),
     EnergyDistributor_LV(12602),
     EnergyDistributor_MV(12603),
@@ -1828,6 +1829,7 @@ public enum MetaTileEntityIDs {
     InfiniteFluidDrillingRig(15567),
     DroneCentre(15568),
     MegaOilCracker(15569),
+    QuadcellPlasmaCollider(15570),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
@@ -1955,7 +1957,6 @@ public enum MetaTileEntityIDs {
     Hatch_SuperBus_Output_UV(30039),
     Hatch_SuperBus_Output_UHV(30040),
     PipeIncoloy903(30995),
-    Infinite_Item_Chest(31010),
     SimpleDustWasher_MV(31017),
     SimpleDustWasher_EV(31018),
     SimpleDustWasher_LuV(31019),

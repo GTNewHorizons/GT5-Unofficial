@@ -82,6 +82,7 @@ public enum ItemList implements IItemContainer {
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
+    IC2_BioChaff,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
@@ -147,7 +148,6 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,
@@ -167,7 +167,10 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rotor,
     Shape_Extruder_Turbine_Blade,
     Shape_Extruder_Small_Gear,
-    Shape_Extruder_ToolHeadDrill,
+    Shape_Extruder_Drill,
+    Shape_Extruder_Boat,
+    Shape_Extruder_Pellet,
+    Shape_Extruder_Shaft,
 
     // IC2 Replacements
     PadBouncy,
@@ -1665,6 +1668,7 @@ public enum ItemList implements IItemContainer {
     Super_Chest_IV,
 
     Debug_Fluid_Tank,
+    Debug_Chest,
 
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
@@ -1838,6 +1842,7 @@ public enum ItemList implements IItemContainer {
 
     Block_Powderbarrel,
     GelledToluene,
+    Dynamite,
 
     FluidFilter,
     ItemFilter_Export,
@@ -2250,6 +2255,9 @@ public enum ItemList implements IItemContainer {
     CasingHearth,
     CasingFridge,
     CasingNaquadahReinforcedDistillation,
+    CasingPlasmaCollider,
+    CasingQuadcellDriving,
+    GlassPlasmaCollider,
     AlgaeCasing,
     NaquadahReactorCasing,
     EntropicProcessor,
@@ -2717,6 +2725,7 @@ public enum ItemList implements IItemContainer {
     Alumina_Support_Ring,
     Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
+    Dim_Prismarine,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,
@@ -2847,6 +2856,7 @@ public enum ItemList implements IItemContainer {
     Armor_Frame_Infinity,
 
     Augment_NightVision,
+    Augment_Magnet,
     Augment_CreativeFlight,
     Augment_Jetpack,
     Augment_VectoredJetpack,
@@ -3325,7 +3335,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Warped,
     Ice_Cream_WitchyWildberry,
     // Reserved for Ice creams, don't you dare (to 700)
-    Ice_Cream_Trophy
+    Ice_Cream_Trophy,
+    QuadcellPlasmaCollider,
     // semicolon after the comment to reduce merge conflicts
     ;
 

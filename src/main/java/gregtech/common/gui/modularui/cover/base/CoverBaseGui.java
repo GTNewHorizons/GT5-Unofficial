@@ -91,9 +91,11 @@ public class CoverBaseGui<T extends Cover> {
             public void onOpen(ModularScreen screen) {
                 super.onOpen(screen);
                 if (!(cover.getTile() instanceof CoverableTileEntity coverableTileEntity)) return;
+                if (!data.isPopUp()) return;
                 coverableTileEntity.isCoverOpen[cover.getSide()
                     .ordinal()] = true;
             }
+
         };
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {

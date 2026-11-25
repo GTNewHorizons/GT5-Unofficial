@@ -20,7 +20,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -28,9 +27,8 @@ import gregtech.api.enums.OrePrefixes;
 
 public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
 
-    public BWMetaGeneratedWerkstoffBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity,
-        String blockName) {
-        super(p_i45386_1_, tileEntity, blockName, OrePrefixes.block);
+    public BWMetaGeneratedWerkstoffBlocks(Material material, String blockName) {
+        super(material, blockName, OrePrefixes.block);
     }
 
     @Override
