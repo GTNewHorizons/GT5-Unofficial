@@ -1,5 +1,6 @@
 package gregtech.api.ec.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.implementations.MTEMultiBlockBase.INTERRUPT_SOUND_INDEX;
@@ -736,8 +737,7 @@ public abstract class MTEMultiBlockECBase<T extends MTEMultiBlockECBase<T>> exte
                                     + EnumChatFormatting.RESET
                                     + " x "
                                     + EnumChatFormatting.GOLD
-                                    + formatNumber(tag.getLong("outputFluidCount" + i))
-                                    + "L");
+                                    + formatFluid(tag.getLong("outputFluidCount" + i)));
                         }
                         if (totalOutputs > 3) {
                             currentTip.add(

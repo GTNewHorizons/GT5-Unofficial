@@ -217,7 +217,7 @@ public class MTEMultiBlockECBaseGui<T extends MTEMultiBlockECBase<T>> implements
                 .addIf(
                     showPendingOutputsInGui(),
                     IGuiProviderComponent.TerminalSection.PENDING_OUTPUTS,
-                    (panel, syncManager) -> createPendingInfoWidget(syncManager));;
+                    (panel, syncManager) -> createPendingInfoWidget(syncManager));
         }
 
         builder.leftGap()
