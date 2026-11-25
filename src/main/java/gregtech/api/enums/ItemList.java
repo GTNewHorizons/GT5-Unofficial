@@ -2862,6 +2862,7 @@ public enum ItemList implements IItemContainer {
     Armor_Frame_Infinity,
 
     Augment_NightVision,
+    Augment_Magnet,
     Augment_CreativeFlight,
     Augment_Jetpack,
     Augment_VectoredJetpack,
