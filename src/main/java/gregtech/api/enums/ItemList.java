@@ -828,6 +828,12 @@ public enum ItemList implements IItemContainer {
     Casing_Pipe_TungstenSteel,
     Casing_Pipe_Polytetrafluoroethylene,
     Casing_Pipe_Polybenzimidazole,
+    Casing_Pipe_NiobiumTitanium,
+    Casing_Pipe_MysteriousCrystal,
+    Casing_Pipe_Neutronium,
+    Casing_Pipe_Infinity,
+    Casing_Pipe_TranscendentMetal,
+    Casing_Pipe_SpaceTime,
 
     Casing_Stripes_A,
     Casing_Stripes_B,
@@ -2856,6 +2862,7 @@ public enum ItemList implements IItemContainer {
     Armor_Frame_Infinity,
 
     Augment_NightVision,
+    Augment_Magnet,
     Augment_CreativeFlight,
     Augment_Jetpack,
     Augment_VectoredJetpack,
