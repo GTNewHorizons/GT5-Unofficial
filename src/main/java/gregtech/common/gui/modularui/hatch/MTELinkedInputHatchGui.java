@@ -42,7 +42,7 @@ public class MTELinkedInputHatchGui extends MTEHatchBaseGui<MTELinkedInputHatch>
             .childPadding(3);
 
         inputRow.child(
-            IKey.lang("ggfab.gui.linked_input_bus.channel")
+            IKey.lang("ggfab.gui.linked_inputs.channel")
                 .asWidget());
 
         inputRow.child(
@@ -51,7 +51,7 @@ public class MTELinkedInputHatchGui extends MTEHatchBaseGui<MTELinkedInputHatch>
                 .addTooltipLine(StatCollector.translateToLocal("ggfab.tooltip.linked_input_hatch.change_freq_warn")));
 
         inputRow.child(
-            IKey.lang("ggfab.gui.linked_input_bus.private")
+            IKey.lang("ggfab.gui.linked_inputs.private")
                 .asWidget());
 
         inputRow.child(

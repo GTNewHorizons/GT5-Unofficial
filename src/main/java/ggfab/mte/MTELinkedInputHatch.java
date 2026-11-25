@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,8 +23,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,15 +37,14 @@ import gregtech.common.gui.modularui.hatch.MTELinkedInputHatchGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipeProcessingAwareHatch, IDataCopyable {
+public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipeProcessingAwareHatch {
 
     public static final int SIZE_TANKS = 4;
     private static final int TANK_CAPACITY = 128_000;
-    public static final String COPIED_DATA_IDENTIFIER = "linkedinputhatch";
-    private SharedFluidInventory mRealInventory;
-    private String mChannel;
-    private boolean mPrivate;
-    private State mState;
+    private SharedFluidInventory realInventory;
+    private String channel;
+    private boolean privateChannel;
+    private State state;
     private WorldSave save;
 
     public MTELinkedInputHatch(int id, String name, String nameRegional, int tier) {
@@ -69,47 +65,6 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
         return new MTELinkedInputHatchGui(this).build(data, syncManager, uiSettings);
     }
 
-    public int getCircuitSlot() {
-        return 0;
-    }
-
-    public int getCircuitSlotX() {
-        return 152;
-    }
-
-    public int getCircuitSlotY() {
-        return 62;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        if (aIndex == getCircuitSlot()) return super.getStackInSlot(aIndex);
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (aIndex == getCircuitSlot()) {
-            mInventory[0] = GTUtility.copyAmount(0, aStack);
-            markDirty();
-        }
-    }
-
-    @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        return aIndex == getCircuitSlot() && super.canInsertItem(aIndex, aStack, ordinalSide);
-    }
-
-    @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 1;
-    }
-
     @Override
     public int getCapacity() {
         return TANK_CAPACITY;
@@ -117,28 +72,28 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public void startRecipeProcessing() {
-        if (mRealInventory == null) return;
-        if (mRealInventory.used) {
-            mState = State.Blocked;
+        if (realInventory == null) return;
+        if (realInventory.used) {
+            state = State.Blocked;
         } else {
-            mRealInventory.used = true;
-            mState = State.Activated;
+            realInventory.used = true;
+            state = State.Activated;
         }
     }
 
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
-        if (mState == State.Activated) {
-            assert mRealInventory != null;
-            mRealInventory.used = false;
+        if (state == State.Activated) {
+            assert realInventory != null;
+            realInventory.used = false;
         }
-        mState = State.Default;
+        state = State.Default;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
     public void updateSlots() {
-        if (mChannel == null || mRealInventory == null) return;
+        if (channel == null || realInventory == null) return;
         compactFluids();
         markDirty();
         getWorldSave().markDirty();
@@ -147,32 +102,31 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
     @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
-        if (mRealInventory != null) {
-            if (--mRealInventory.ref <= 0) getWorldSave().remove(getRealChannel());
+        if (realInventory != null) {
+            if (--realInventory.ref <= 0) getWorldSave().remove(getRealChannel());
         }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (mChannel != null) aNBT.setString("channel", mChannel);
-        aNBT.setBoolean("private", mPrivate);
+        if (channel != null) aNBT.setString("channel", channel);
+        aNBT.setBoolean("private", privateChannel);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        String channel = aNBT.getString("channel");
-        if (channel.isEmpty()) channel = null;
-        this.mChannel = channel;
-        mPrivate = aNBT.getBoolean("private");
+        String savedChannel = aNBT.hasKey("channel", Constants.NBT.TAG_STRING) ? aNBT.getString("channel") : null;
+        channel = savedChannel == null || savedChannel.isEmpty() ? null : savedChannel;
+        privateChannel = aNBT.getBoolean("private");
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (mChannel != null) {
-            mRealInventory = getWorldSave().get(getRealChannel());
+        if (channel != null) {
+            realInventory = getWorldSave().get(getRealChannel());
         }
     }
 
@@ -186,7 +140,7 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && mRealInventory != null) {
+        if (aBaseMetaTileEntity.isServerSide() && realInventory != null) {
             compactFluids();
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -198,14 +152,14 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
-            if (this.mRealInventory == null) {
+            if (this.realInventory == null) {
                 aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_channel"));
                 return;
             }
-            mRealInventory.disableSort = !mRealInventory.disableSort;
+            realInventory.disableSort = !realInventory.disableSort;
             GTUtility.sendChatComp(
                 aPlayer,
-                new ChatComponentTranslation("GT5U.hatch.disableSort." + mRealInventory.disableSort));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + realInventory.disableSort));
         } else {
             this.disableFilter = !this.disableFilter;
             GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + this.disableFilter);
@@ -222,168 +176,59 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
         return 176;
     }
 
-    @Override
-    public NBTTagCompound getCopiedData(EntityPlayer player) {
-        if (getChannel().isEmpty()) {
-            return null;
-        }
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", COPIED_DATA_IDENTIFIER);
-        tag.setString("channel", getChannel());
-        tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
-        if (isPrivate()) {
-            tag.setLong(
-                "owner1",
-                getBaseMetaTileEntity().getOwnerUuid()
-                    .getMostSignificantBits());
-            tag.setLong(
-                "owner2",
-                getBaseMetaTileEntity().getOwnerUuid()
-                    .getLeastSignificantBits());
-        }
-        return tag;
-    }
-
-    @Override
-    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || (!COPIED_DATA_IDENTIFIER.equals(nbt.getString("ggfab.type"))
-            && !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type")))) {
-            return false;
-        }
-        ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
-        String channel = nbt.getString("channel");
-        if (GTUtility.isStackInvalid(circuit)) circuit = null;
-        if (channel.isEmpty()) {
-            return false;
-        } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
-            .stream()
-            .noneMatch(circuit::isItemEqual)) {
-                return false;
-            }
-        UUID owner = nbt.hasKey("owner1") ? new UUID(nbt.getLong("owner1"), nbt.getLong("owner2")) : null;
-        if (owner != null && !owner.equals(getBaseMetaTileEntity().getOwnerUuid())) {
-            return false;
-        }
-        setPrivate(owner != null);
-        setChannel(channel);
-        setInventorySlotContents(getCircuitSlot(), circuit);
-        return true;
-    }
-
-    @Override
-    public String getCopiedDataIdentifier(EntityPlayer player) {
-        return COPIED_DATA_IDENTIFIER;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        ItemStack stick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        if (!stick.hasTagCompound() || (!COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("ggfab.type"))
-            && !COPIED_DATA_IDENTIFIER.equals(stick.stackTagCompound.getString("type")))) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_data"));
-            return true;
-        }
-        ItemStack circuit = GTUtility.loadItem(stick.stackTagCompound, "circuit");
-        String channel = stick.stackTagCompound.getString("channel");
-        if (GTUtility.isStackInvalid(circuit)) circuit = null;
-        if (channel.isEmpty()) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_data"));
-            return true;
-        } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
-            .stream()
-            .noneMatch(circuit::isItemEqual)) {
-                aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.invalid_circuit"));
-                return true;
-            }
-        UUID owner = stick.stackTagCompound.hasKey("owner1")
-            ? new UUID(stick.stackTagCompound.getLong("owner1"), stick.stackTagCompound.getLong("owner2"))
-            : null;
-        if (owner != null && !owner.equals(getBaseMetaTileEntity().getOwnerUuid())) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.not_owned"));
-            return true;
-        }
-        setPrivate(owner != null);
-        setChannel(channel);
-        setInventorySlotContents(getCircuitSlot(), circuit);
-        aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.data_pasted", channel));
-        return true;
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return;
-        ItemStack stick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(stick, false, true)) return;
-        if (getChannel().isEmpty()) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.no_channel"));
-            return;
-        }
-        aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_hatch.data_copied", getChannel()));
-        stick.stackTagCompound = getCopiedData(aPlayer);
-        stick.setStackDisplayName("Linked Input Hatch configuration");
-        GTUtility.ItemNBT.setBookTitle(stick, "Channel: " + getChannel());
-        if (getBaseMetaTileEntity().getOwnerName() != null)
-            GTUtility.ItemNBT.setBookAuthor(stick, getBaseMetaTileEntity().getOwnerName());
-    }
-
     public boolean isPrivate() {
-        return mPrivate;
+        return privateChannel;
     }
 
     public void setPrivate(boolean aPrivate) {
-        if (aPrivate == mPrivate) return;
+        if (aPrivate == privateChannel) return;
         if (getBaseMetaTileEntity().isClientSide()) {
-            mPrivate = aPrivate;
+            privateChannel = aPrivate;
             return;
         }
-        if (this.mChannel == null) {
-            mPrivate = aPrivate;
+        if (this.channel == null) {
+            privateChannel = aPrivate;
             return;
         }
         getWorldSave().markDirty();
-        if (--this.mRealInventory.ref <= 0) {
+        if (--this.realInventory.ref <= 0) {
             getWorldSave().remove(getRealChannel());
         }
-        mPrivate = aPrivate;
-        mRealInventory = getWorldSave().get(getRealChannel());
-        mRealInventory.ref++;
+        privateChannel = aPrivate;
+        realInventory = getWorldSave().get(getRealChannel());
+        realInventory.ref++;
         getWorldSave().markDirty();
     }
 
     private String getRealChannel() {
-        if (mChannel == null) return null;
-        if (mPrivate) return getBaseMetaTileEntity().getOwnerUuid() + mChannel;
-        return new UUID(0, 0) + mChannel;
+        if (channel == null) return null;
+        if (privateChannel) return getBaseMetaTileEntity().getOwnerUuid() + channel;
+        return new UUID(0, 0) + channel;
     }
 
     public String getChannel() {
-        return mChannel == null ? "" : mChannel;
+        return channel == null ? "" : channel;
     }
 
     public void setChannel(String aChannel) {
         if (aChannel.isEmpty()) aChannel = null;
         if (getBaseMetaTileEntity().isClientSide()) {
-            mChannel = aChannel;
+            channel = aChannel;
             return;
         }
-        if (Objects.equals(this.mChannel, aChannel)) return;
-        if (this.mChannel != null) {
-            if (--this.mRealInventory.ref <= 0) {
+        if (Objects.equals(this.channel, aChannel)) return;
+        if (this.channel != null) {
+            if (--this.realInventory.ref <= 0) {
                 getWorldSave().remove(getRealChannel());
             }
         }
         if (aChannel == null) {
-            this.mChannel = null;
-            this.mRealInventory = null;
+            this.channel = null;
+            this.realInventory = null;
         } else {
-            this.mChannel = aChannel;
-            this.mRealInventory = getWorldSave().get(getRealChannel());
-            mRealInventory.ref++;
+            this.channel = aChannel;
+            this.realInventory = getWorldSave().get(getRealChannel());
+            realInventory.ref++;
         }
         getWorldSave().markDirty();
     }
@@ -404,12 +249,11 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (mState == State.Blocked || mRealInventory == null || aFluid == null || !isFluidInputAllowed(aFluid))
-            return 0;
+        if (state == State.Blocked || realInventory == null || aFluid == null || !isFluidInputAllowed(aFluid)) return 0;
         int filled = 0;
         int tAmount = aFluid.amount;
         for (int i = 0; i < SIZE_TANKS; i++) {
-            FluidStack tankFluid = mRealInventory.fluids[i];
+            FluidStack tankFluid = realInventory.fluids[i];
             if (tankFluid != null && tankFluid.isFluidEqual(aFluid)) {
                 int canFill = getCapacity() - tankFluid.amount;
                 int toFill = Math.min(canFill, tAmount);
@@ -425,10 +269,10 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
             }
         }
         for (int i = 0; i < SIZE_TANKS; i++) {
-            if (mRealInventory.fluids[i] == null) {
+            if (realInventory.fluids[i] == null) {
                 int toFill = Math.min(getCapacity(), tAmount);
                 if (doFill) {
-                    mRealInventory.fluids[i] = new FluidStack(aFluid, toFill);
+                    realInventory.fluids[i] = new FluidStack(aFluid, toFill);
                     getWorldSave().markDirty();
                 }
                 filled += toFill;
@@ -441,15 +285,15 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (mState == State.Blocked || mRealInventory == null) return null;
-        for (FluidStack storedFluid : mRealInventory.fluids) {
+        if (state == State.Blocked || realInventory == null) return null;
+        for (FluidStack storedFluid : realInventory.fluids) {
             if (storedFluid == null) continue;
             FluidStack drained = storedFluid.copy();
             drained.amount = Math.min(maxDrain, drained.amount);
             if (doDrain) {
                 storedFluid.amount -= drained.amount;
                 if (storedFluid.amount <= 0) {
-                    mRealInventory.fluids[getFluidSlot(storedFluid)] = null;
+                    realInventory.fluids[getFluidSlot(storedFluid)] = null;
                 }
                 getWorldSave().markDirty();
             }
@@ -465,15 +309,15 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, int amount, boolean doDrain) {
-        if (mState == State.Blocked || mRealInventory == null || aFluid == null) return null;
-        for (FluidStack storedFluid : mRealInventory.fluids) {
+        if (state == State.Blocked || realInventory == null || aFluid == null) return null;
+        for (FluidStack storedFluid : realInventory.fluids) {
             if (storedFluid == null || !aFluid.isFluidEqual(storedFluid)) continue;
             FluidStack drained = storedFluid.copy();
             drained.amount = Math.min(amount, drained.amount);
             if (doDrain) {
                 storedFluid.amount -= drained.amount;
                 if (storedFluid.amount <= 0) {
-                    mRealInventory.fluids[getFluidSlot(storedFluid)] = null;
+                    realInventory.fluids[getFluidSlot(storedFluid)] = null;
                 }
                 getWorldSave().markDirty();
             }
@@ -484,18 +328,18 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        if (mRealInventory == null) return new FluidTankInfo[0];
+        if (realInventory == null) return new FluidTankInfo[0];
         FluidTankInfo[] infos = new FluidTankInfo[SIZE_TANKS];
         for (int i = 0; i < SIZE_TANKS; i++) {
-            infos[i] = new FluidTankInfo(mRealInventory.fluids[i], getCapacity());
+            infos[i] = new FluidTankInfo(realInventory.fluids[i], getCapacity());
         }
         return infos;
     }
 
     @Override
     public FluidStack[] getStoredFluid() {
-        if (mRealInventory == null || mState == State.Blocked) return new FluidStack[0];
-        return mRealInventory.fluids;
+        if (realInventory == null || state == State.Blocked) return new FluidStack[0];
+        return realInventory.fluids;
     }
 
     @Override
@@ -503,9 +347,9 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
         FluidStackTank[] tanks = new FluidStackTank[SIZE_TANKS];
         for (int i = 0; i < SIZE_TANKS; i++) {
             final int index = i;
-            tanks[i] = new FluidStackTank(() -> mRealInventory == null ? null : mRealInventory.fluids[index], f -> {
-                if (mRealInventory != null) {
-                    mRealInventory.fluids[index] = f;
+            tanks[i] = new FluidStackTank(() -> realInventory == null ? null : realInventory.fluids[index], f -> {
+                if (realInventory != null) {
+                    realInventory.fluids[index] = f;
                     getWorldSave().markDirty();
                 }
             }, getCapacity()) {
@@ -536,8 +380,8 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public FluidStack getFluid() {
-        if (mRealInventory == null || mState == State.Blocked) return null;
-        for (FluidStack storedFluid : mRealInventory.fluids) {
+        if (realInventory == null || state == State.Blocked) return null;
+        for (FluidStack storedFluid : realInventory.fluids) {
             if (storedFluid != null && storedFluid.amount > 0) return storedFluid;
         }
         return null;
@@ -551,25 +395,25 @@ public class MTELinkedInputHatch extends MTEHatchMultiInput implements IRecipePr
 
     @Override
     public int getFluidSlot(FluidStack fluid) {
-        if (mRealInventory == null || fluid == null) return -1;
+        if (realInventory == null || fluid == null) return -1;
         for (int i = 0; i < SIZE_TANKS; i++) {
-            if (mRealInventory.fluids[i] == fluid) return i;
+            if (realInventory.fluids[i] == fluid) return i;
         }
         return -1;
     }
 
     private void compactFluids() {
-        if (mRealInventory == null) return;
+        if (realInventory == null) return;
         int nextSlot = 0;
         for (int i = 0; i < SIZE_TANKS; i++) {
-            FluidStack fluid = mRealInventory.fluids[i];
+            FluidStack fluid = realInventory.fluids[i];
             if (fluid == null || fluid.amount <= 0) {
-                mRealInventory.fluids[i] = null;
+                realInventory.fluids[i] = null;
                 continue;
             }
-            if (!mRealInventory.disableSort && i != nextSlot) {
-                mRealInventory.fluids[nextSlot] = fluid;
-                mRealInventory.fluids[i] = null;
+            if (!realInventory.disableSort && i != nextSlot) {
+                realInventory.fluids[nextSlot] = fluid;
+                realInventory.fluids[i] = null;
             }
             nextSlot++;
         }
