@@ -3,6 +3,7 @@ package gregtech.common.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -48,7 +49,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
         onResourceReload(DroneRender::reload);
         onResourceReload(WormholeRenderer::reload);
         onResourceReload(BlackholeRenderer::reload);
-        onResourceReload(MTEExoFoundry::reloadRender);
+        onResourceReload(MTEExoFoundry::FoundryRenderUtils);
         onResourceReload(MTELargeFusionComputer::reloadRender);
         onResourceReload(FoundryRenderUtils::reloadRender);
         onResourceReload(GTRendererBlock::clearInventoryDisplayListCache);
