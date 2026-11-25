@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.datastructs.space.HashSet2D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.HashSet3D;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker2D;
 
 import gregtech.api.GregTechAPI;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -61,9 +62,8 @@ public final class DamVolumes extends WorldSavedData {
     /// Dam water blocks whose neighbours changed. Checked at the end of the tick. Not saved.
     private final HashSet3D pendingNeighbourChecks = new HashSet3D();
 
-    /// Chunks that were loaded since the last tick, packed with {@link
-    /// com.gtnewhorizon.gtnhlib.util.CoordinatePacker2D}.
-    /// Their dam water blocks are compared against the volumes at the end of the tick. Not saved.
+    /// Chunks that were loaded since the last tick, packed with {@link CoordinatePacker2D#packChunk}. Their dam water
+    /// blocks are compared against the volumes at the end of the tick. Not saved.
     private final LongOpenHashSet pendingChunks = new LongOpenHashSet();
 
     /// Volumes whose connectivity must be checked at the end of the tick. Not saved.
@@ -121,6 +121,26 @@ public final class DamVolumes extends WorldSavedData {
         return volume != null && volume.contains(x, y, z) ? volume : null;
     }
 
+    /// The volume that water poured at the given position would fall into: the first dam water straight below it,
+    /// through at most {@link VolumeFill#MAX_DEPTH} blocks that can hold water.
+    ///
+    /// Assumption: the position can hold water.
+    @Nullable
+    public WaterVolume getVolumeBelow(int x, int y, int z) {
+        for (int depth = 1; depth <= VolumeFill.MAX_DEPTH; depth++) {
+            int below = y - depth;
+
+            if (below < 0 || !world.blockExists(x, below, z)) return null;
+
+            WaterVolume volume = getVolumeAt(x, below, z);
+
+            if (volume != null) return volume;
+            if (!VolumeFill.canHoldWater(world, x, below, z)) return null;
+        }
+
+        return null;
+    }
+
     /// Creates a volume holding the given water, starting from a single cell at the given position. The starting cell
     /// ignores the spreading limits. From there, water flows into its surroundings like it would through an opening:
     /// enclosed space at or below the starting cell is filled, open edges become leaks, and water that doesn't fit
@@ -160,6 +180,9 @@ public final class DamVolumes extends WorldSavedData {
         int id = volume.getId();
 
         if (volumes.get(id) == volume) return volume;
+
+        // Without a merge this tick, the volume was deleted; its id may since belong to another volume.
+        if (!mergedInto.containsKey(id)) return null;
 
         while (mergedInto.containsKey(id)) {
             id = mergedInto.get(id);
@@ -265,7 +288,12 @@ public final class DamVolumes extends WorldSavedData {
     /// The volume's net change in litres per tick from every source, averaged over the last second. Positive when it
     /// is filling.
     public double getNetLitresPerTick(@NotNull WaterVolume volume) {
-        return flowTracker.getNetLitresPerTick(volume.getId());
+        return flowTracker.getNetLitresPerTick(volume);
+    }
+
+    /// The ticks until the volume may try to grow again after a failed attempt, or 0 if it may grow now.
+    public long getTicksUntilExpansionRetry(@NotNull WaterVolume volume) {
+        return Math.max(0, expansionRetryTimes.get(volume.getId()) - world.getTotalWorldTime());
     }
 
     /// Sends every volume's level to a player who just entered this dimension.
@@ -632,7 +660,7 @@ public final class DamVolumes extends WorldSavedData {
         if (!world.blockExists(x, y, z)) return;
         if (world.getBlock(x, y, z) != GregTechAPI.sBlockDamWater) return;
 
-        world.setBlockMetadataWithNotify(x, y, z, DamWaterMeta.of(id, false), 2);
+        world.setBlockMetadataWithNotify(x, y, z, DamWaterMeta.of(id), 2);
     }
 
     /// Drains water through the volume's active leaks, and shows each active leak as a vanilla water source.
@@ -777,7 +805,7 @@ public final class DamVolumes extends WorldSavedData {
         mutating = true;
 
         try {
-            world.setBlock(x, y, z, GregTechAPI.sBlockDamWater, DamWaterMeta.of(volume.getId(), false), 2);
+            world.setBlock(x, y, z, GregTechAPI.sBlockDamWater, DamWaterMeta.of(volume.getId()), 2);
         } finally {
             mutating = false;
         }

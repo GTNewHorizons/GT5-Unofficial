@@ -2,11 +2,10 @@ package gregtech.common.hydrodam;
 
 import org.jetbrains.annotations.Contract;
 
-/// Layout of the dam water block's metadata. EndlessIDs gives blocks 16 bits of metadata.
+/// Layout of the dam water block's metadata.
 ///
 /// - Bits 0-11: the volume id. 0 means the block has not been assigned to a volume yet.
-/// - Bit 12: the hull flag, set on blocks that touch a non-volume block.
-/// - Bits 13-15: unused.
+/// - Bits 12-23: unused. Bit 12 is reserved for marking blocks on the volume's hull, should that become useful.
 public final class DamWaterMeta {
 
     public static final int ID_BITS = 12;
@@ -14,7 +13,6 @@ public final class DamWaterMeta {
     public static final int UNASSIGNED_ID = 0;
 
     private static final int ID_MASK = MAX_ID;
-    private static final int HULL_FLAG = 1 << ID_BITS;
 
     private DamWaterMeta() {}
 
@@ -24,12 +22,7 @@ public final class DamWaterMeta {
     }
 
     @Contract(pure = true)
-    public static boolean isHull(int meta) {
-        return (meta & HULL_FLAG) != 0;
-    }
-
-    @Contract(pure = true)
-    public static int of(int volumeId, boolean hull) {
-        return (volumeId & ID_MASK) | (hull ? HULL_FLAG : 0);
+    public static int of(int volumeId) {
+        return volumeId & ID_MASK;
     }
 }

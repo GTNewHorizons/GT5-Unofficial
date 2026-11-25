@@ -7,14 +7,17 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import java.util.List;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -89,13 +92,17 @@ public class MTEHydroPump extends MTEHydroDamMachine<MTEHydroPump> {
 
         if (litres <= 0) return NO_ENERGY;
 
-        long stored = pumpIntoDam(litres);
+        double stored = pumpIntoDam(litres);
 
         if (stored < 0) return BLOCKED;
-        if (stored == 0) return DAM_FULL;
 
-        depleteInput(new FluidStack(FluidRegistry.WATER, (int) stored));
-        startConsumingCycle(stored, stored * EU_PER_LITRE / efficiency);
+        // The dam may store a fraction of a litre when it's nearly full. Round up so that water is never created.
+        long consumed = (long) Math.ceil(stored);
+
+        if (consumed == 0) return DAM_FULL;
+
+        depleteInput(new FluidStack(FluidRegistry.WATER, (int) consumed));
+        startConsumingCycle(consumed, consumed * EU_PER_LITRE / efficiency);
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -120,16 +127,27 @@ public class MTEHydroPump extends MTEHydroDamMachine<MTEHydroPump> {
         return Math.min(water, Integer.MAX_VALUE);
     }
 
-    /// Adds water to the dam behind this machine, creating it if there is no water there yet.
+    /// Adds water to the dam behind this machine. If there is no water there, it falls into a dam just below the
+    /// outlet,
+    /// or starts a new one at the outlet.
     ///
     /// @return the litres that were stored, or -1 if there's no dam and the block behind can't hold water
-    private long pumpIntoDam(long litres) {
+    private double pumpIntoDam(long litres) {
         DamVolumes volumes = DamVolumes.get(getBaseMetaTileEntity().getWorld());
         WaterVolume volume = getVolumeBehind(volumes);
 
-        if (volume != null) return (long) volumes.addLitres(volume, litres);
+        if (volume != null) return volumes.addLitres(volume, litres);
 
         ChunkCoordinates back = getWaterPosition();
+        World world = getBaseMetaTileEntity().getWorld();
+
+        if (!world.blockExists(back.posX, back.posY, back.posZ)) return -1;
+        if (!VolumeFill.canHoldWater(world, back.posX, back.posY, back.posZ)) return -1;
+
+        // Water poured from the outlet falls into any dam just below it.
+        WaterVolume below = volumes.getVolumeBelow(back.posX, back.posY, back.posZ);
+
+        if (below != null) return volumes.addLitres(below, litres);
 
         // A new volume stores everything that fits; the rest is voided, so only create it with what one cell holds.
         long initial = Math.min(litres, (long) WaterVolume.LITRES_PER_CELL);
@@ -161,19 +179,16 @@ public class MTEHydroPump extends MTEHydroDamMachine<MTEHydroPump> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
 
-        // spotless:off
-        tt.addMachineType("Hydro Pump")
-            .addInfo("Pumps water from an input hatch into the dam behind it")
-            .addInfo("The back of the pipe casing must touch the dam's water")
-            .addInfo("Uses " + EU_PER_LITRE + " EU per litre of water pumped")
-            .addInfo("Pumps up to the energy hatch's voltage times its amperage per tick")
-            .addInfo("Loses " + Math.round(LOSS_PER_MAINTENANCE_PROBLEM * 1000) / 10.0 + "% efficiency per maintenance problem");
-        addStructureInfo(tt)
-            .addEnergyHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
-            .addInputHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.hydro_pump"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "hydro-pump"),
+                ImmutableMap.of("eu_per_litre", EU_PER_LITRE, "loss_per_problem", LOSS_PER_MAINTENANCE_PROBLEM * 100));
+
+        addStructureInfo(tt).addEnergyHatch("1", anyCasing, 1)
+            .addInputHatch("1", anyCasing, 1)
             .toolTipFinisher();
-        // spotless:on
 
         return tt;
     }

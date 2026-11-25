@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,8 +41,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /// it, and a pipe casing at the back whose back face must touch the dam's water. Hatches replace the solid steel
 /// casings around them.
 ///
-/// Machines run in one-tick cycles. Each cycle moves water between the dam and a hatch, and the energy involved is
-/// expressed through {@link #lEUt} and {@link #mEfficiency}, so the base class drains or produces it.
+/// Machines run in one-tick cycles. Each cycle moves water between the dam and a hatch, and drains or produces exactly
+/// {@link #lEUt} EU. The efficiency is applied when the cycle starts; {@link #mEfficiency} only reports it.
 public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements ISurvivalConstructable {
 
@@ -67,9 +66,8 @@ public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extend
     /// How far behind the controller the dam's water must be: right behind the pipe casing.
     private static final int WATER_DEPTH = 3;
 
-    /// How often an idle machine checks whether it can run again, in ticks. The dam filling or draining doesn't trigger
-    /// a
-    /// recipe check by itself.
+    /// How often an idle machine checks whether it can run again, in ticks. The dam filling or draining doesn't
+    /// trigger a recipe check by itself.
     private static final int IDLE_RECHECK_INTERVAL = 20;
 
     protected static final CheckRecipeResult NO_DAM_WATER = SimpleCheckRecipeResult.ofFailure("hydrodam_no_dam_water");
@@ -157,14 +155,12 @@ public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extend
 
     /// Adds the structure and hatch lines shared by every dam machine to a tooltip.
     protected static MultiblockTooltipBuilder addStructureInfo(MultiblockTooltipBuilder tt) {
-        String casing = Casings.SolidSteelMachineCasing.getLocalizedName();
-
         return tt.beginStructureBlock(3, 3, 3, false)
-            .addController("Front center")
-            .addCasing("9+", casing, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasing("9+", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("1", Casings.SteelGearBoxCasing.getLocalizedName(), false)
             .addCasing("1", Casings.SteelPipeCasing.getLocalizedName(), false)
-            .addMaintenanceHatch("Exactly one, any " + casing, 1);
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1);
     }
 
     /// The efficiency after maintenance losses, in [0, {@link #getMaxDamEfficiency()}].
@@ -264,25 +260,9 @@ public abstract class MTEHydroDamMachine<T extends MTEHydroDamMachine<T>> extend
         }
 
         if (tag.getBoolean("hasDam")) {
-            currentTip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hydrodam.reserve",
-                    formatFluid((long) tag.getDouble("damLitres"))));
-            currentTip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.hydrodam.net_change",
-                    formatNetChange(tag.getDouble("damNetLitresPerTick"))));
+            currentTip.add(DamWailaLines.reserve(tag.getDouble("damLitres")));
+            currentTip.add(DamWailaLines.netChange(tag.getDouble("damNetLitresPerTick")));
         }
-    }
-
-    /// Formats a net change with one decimal and a sign, green when filling and red when draining.
-    private static String formatNetChange(double litresPerTick) {
-        double rounded = Math.round(litresPerTick * 10) / 10.0;
-
-        if (rounded > 0) return EnumChatFormatting.GREEN + "+" + formatFluid(rounded) + EnumChatFormatting.RESET;
-        if (rounded < 0) return EnumChatFormatting.RED + formatFluid(rounded) + EnumChatFormatting.RESET;
-
-        return formatFluid(0);
     }
 
     @Override

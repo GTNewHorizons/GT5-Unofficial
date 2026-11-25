@@ -70,7 +70,8 @@ public class BlockDamWater extends Block implements IFluidBlock {
         return false;
     }
 
-    /// Clients use this for the underwater overlay, so it follows the drawn surface there. Servers use the real fill.
+    /// Clients use this for the underwater overlay, so it follows the drawn surface there, including vanilla's view
+    /// offset. That can exceed 1, unlike Forge documents, which is deliberate. Servers use the real fill.
     @Override
     public float getFilledPercentage(World world, int x, int y, int z) {
         float fill = DamWaterHeights.getFill(world, x, y, z);
@@ -95,9 +96,11 @@ public class BlockDamWater extends Block implements IFluidBlock {
         return null;
     }
 
+    /// Like vanilla liquids: only ray traces that look for liquids (e.g. WAILA, buckets) hit it, so players can't
+    /// target or break it. Buckets still can't pick it up, since vanilla only takes liquids with metadata 0.
     @Override
     public boolean canCollideCheck(int meta, boolean hitIfLiquid) {
-        return false;
+        return hitIfLiquid;
     }
 
     @Override

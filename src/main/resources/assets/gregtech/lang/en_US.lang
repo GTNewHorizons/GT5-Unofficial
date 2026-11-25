@@ -2334,6 +2334,8 @@ gt.mbtt.machine_type.macerator=Macerator
 gt.mbtt.machine_type.mixer=Mixer
 gt.mbtt.machine_type.ore_washer_simple_washer=Ore Washer, Simple Washer
 gt.mbtt.machine_type.water_pump=Water Pump
+gt.mbtt.machine_type.hydro_pump=Hydro Pump
+gt.mbtt.machine_type.hydro_turbine=Hydro Turbine
 gt.mbtt.machine_type.blast_furnace_ebf=Blast Furnace, EBF
 gt.mbtt.machine_type.blast_furnace_exh=Blast Furnace, ExH, MEBF, MBF
 gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
@@ -3393,6 +3395,8 @@ GT5U.waila.hydrodam.pumping=Pumping: §e%s/t
 GT5U.waila.hydrodam.draining=Draining: §a%s§r/t
 GT5U.waila.hydrodam.reserve=Dam reserve: §b%s§r
 GT5U.waila.hydrodam.net_change=Net change: %s/t
+GT5U.waila.hydrodam.volume=Dam volume: §b#%s§r
+GT5U.waila.hydrodam.level=Water level: §by=%s§r
 GT5U.gui.text.recipe_result.item_output_full=§7Not enough item output space
 GT5U.gui.text.recipe_result.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.recipe_result.none=
@@ -8197,6 +8201,7 @@ fluidHotWater=Heated Water
 
 fluid.oil=Oil
 fluid.tile.fluidBlockSludge=fluidBlockSludge
+tile.gt.damwater.name=Dam Water
 fluid.sludge=Sludge
 fluid.oilgc=oilgc
 fluid.fuelgc=fuelgc

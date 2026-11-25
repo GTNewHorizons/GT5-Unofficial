@@ -18,7 +18,7 @@ import gregtech.common.hydrodam.DamWaterHeights;
 @Mixin(ActiveRenderInfo.class)
 public class ActiveRenderInfoMixin_DamWater {
 
-    /// Vanilla subtracts this from the empty fraction, because vanilla water is drawn 1/9 below the top of its block.
+    /// Vanilla subtracts this from the empty fraction; see {@link DamWaterHeights#VIEW_CHECK_OFFSET} for why.
     private static final float VANILLA_SURFACE_OFFSET = 0.11111111F;
 
     @WrapOperation(

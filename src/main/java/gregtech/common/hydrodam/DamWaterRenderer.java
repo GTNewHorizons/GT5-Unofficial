@@ -13,7 +13,7 @@ import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-/// Renders dam water like vanilla still water, except that the surface is flat and sits at the volume's water level.
+/// Renders dam water like vanilla still water, except that the surface is flat and follows the volume's water level.
 /// Faces are drawn on both sides so the surface is visible from underwater.
 @ThreadSafeISBRH(perThread = false)
 public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
@@ -57,7 +57,7 @@ public class DamWaterRenderer implements ISimpleBlockRenderingHandler {
         float green = (colour >> 8 & 255) / 255f;
         float blue = (colour & 255) / 255f;
 
-        // A surface (no visible water above) is drawn lower than the water it holds, like vanilla water.
+        // A surface (no visible water above) is drawn at most SURFACE_HEIGHT high, like vanilla water.
         boolean covered = !block.shouldSideBeRendered(world, x, y + 1, z, 1)
             && !isInvisibleDamWater(world, x, y + 1, z, block);
         float height = covered ? fill : DamWaterHeights.getSurfaceHeight(fill);

@@ -9,6 +9,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,8 @@ import it.unimi.dsi.fastutil.longs.LongIterator;
 /// Debug command for creating, inspecting and changing dam water volumes without pumps or turbines.
 public class HydroDamCommand extends GTBaseCommand {
 
-    private static final String[] SUBCOMMANDS = { "create", "add", "remove", "set", "info", "at", "list", "delete" };
+    private static final String[] SUBCOMMANDS = { "create", "add", "remove", "set", "info", "at", "list", "delete",
+        "why" };
 
     public HydroDamCommand() {
         super("hydrodam");
@@ -55,6 +57,7 @@ public class HydroDamCommand extends GTBaseCommand {
         messages.add(new ChatComponentText(" at <x> <y> <z> - Prints the details of the volume at a position"));
         messages.add(new ChatComponentText(" list - Lists the volumes in this dimension"));
         messages.add(new ChatComponentText(" delete <id> - Deletes a volume and its water blocks"));
+        messages.add(new ChatComponentText(" why <id> - Explains what stops a volume from growing another layer"));
         messages.add(new ChatComponentText("Coordinates accept ~ for relative positions."));
         return messages;
         // spotless:on
@@ -114,6 +117,7 @@ public class HydroDamCommand extends GTBaseCommand {
                 volumes.deleteVolume(volume);
                 sendChatToPlayer(sender, "Deleted volume " + volume.getId() + ".");
             }
+            case "why" -> why(sender, volumes, args);
             default -> sendHelpMessage(sender);
         }
     }
@@ -166,6 +170,91 @@ public class HydroDamCommand extends GTBaseCommand {
         if (current != null && current != volume) {
             sendChatToPlayer(sender, "Volume " + volume.getId() + " was merged into volume " + current.getId() + ".");
         }
+    }
+
+    /// Runs the fill for the volume's next layer without placing anything, and reports what would stop it.
+    private void why(ICommandSender sender, DamVolumes volumes, String[] args) {
+        requireArgs(args, 2);
+
+        WaterVolume volume = parseVolume(sender, volumes, args[1]);
+        World world = sender.getEntityWorld();
+        int nextLayer = volume.getTopY() + 1;
+
+        sendChatToPlayer(sender, String.format("Volume %d, growing into layer y=%d:", volume.getId(), nextLayer));
+
+        if (volume.getTopLayerFill() < 1) {
+            sendChatToPlayer(
+                sender,
+                String.format(
+                    " The top layer is only %.1f%% full, so the volume isn't trying to grow yet.",
+                    volume.getTopLayerFill() * 100));
+        }
+
+        long retry = volumes.getTicksUntilExpansionRetry(volume);
+
+        if (retry > 0) {
+            sendChatToPlayer(sender, String.format(" The last attempt failed; it tries again in %d ticks.", retry));
+        }
+
+        if (nextLayer >= world.getHeight()) {
+            sendChatToPlayer(sender, " The top layer is at the build limit.");
+            return;
+        }
+
+        VolumeFill fill = VolumeFill.growth(world, volume);
+
+        if (!fill.escapes.isEmpty()) {
+            sendEscapes(sender, fill.escapes);
+            return;
+        }
+
+        if (fill.isEmpty()) {
+            sendChatToPlayer(sender, " There's no open space directly above the top layer.");
+        } else {
+            sendChatToPlayer(
+                sender,
+                String.format(
+                    " Nothing blocks it: it would add %d cells (%d in the new layer, %d in pockets below it).",
+                    fill.surface.size() + fill.pockets.size(),
+                    fill.surface.size(),
+                    fill.pockets.size()));
+        }
+    }
+
+    private static void sendEscapes(ICommandSender sender, List<VolumeFill.Escape> escapes) {
+        final int shown = 10;
+
+        sendChatToPlayer(sender, String.format(" Blocked: water escapes in %d place(s).", escapes.size()));
+
+        for (VolumeFill.Escape escape : escapes.subList(0, Math.min(shown, escapes.size()))) {
+            sendChatToPlayer(
+                sender,
+                String.format(
+                    "  %s: %s, spreading from %s",
+                    formatCell(escape.cell),
+                    describe(escape.reason),
+                    formatCell(escape.seed)));
+        }
+
+        if (escapes.size() > shown) {
+            sendChatToPlayer(sender, String.format("  ...and %d more.", escapes.size() - shown));
+        }
+    }
+
+    private static String describe(VolumeFill.EscapeReason reason) {
+        return switch (reason) {
+            case TOO_FAR -> "open space more than " + VolumeFill.MAX_SPREAD + " blocks sideways";
+            case TOO_DEEP -> "a drop of more than " + VolumeFill.MAX_DEPTH + " blocks";
+            case UNLOADED -> "an unloaded chunk";
+        };
+    }
+
+    private static String formatCell(long cell) {
+        return String.format(
+            "(%d, %d, %d)",
+            CoordinatePacker.unpackX(cell),
+            CoordinatePacker.unpackY(cell),
+            CoordinatePacker.unpackZ(cell));
     }
 
     private void list(ICommandSender sender, DamVolumes volumes) {

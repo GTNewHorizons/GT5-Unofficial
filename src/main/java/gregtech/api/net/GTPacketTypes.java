@@ -9,6 +9,8 @@ import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.net.cape.GTPacketListCapes;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.common.hydrodam.GTPacketDamLevels;
+import gregtech.common.hydrodam.GTPacketDamStats;
+import gregtech.common.hydrodam.GTPacketDamStatsRequest;
 import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzer;
 import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzerMode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -59,6 +61,8 @@ public enum GTPacketTypes {
     OBSERVE_MACHINE(47, new PacketObserveMachine()),
     OPEN_REMOTE_MTE_GUI(48, new PacketOpenRemoteMteGui()),
     DAM_LEVELS(49, new GTPacketDamLevels()),
+    DAM_STATS_REQUEST(50, new GTPacketDamStatsRequest()),
+    DAM_STATS(51, new GTPacketDamStats()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;

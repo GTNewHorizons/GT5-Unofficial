@@ -174,6 +174,18 @@ public final class WaterVolume {
         return (getCellCount() - getLayerArea(getTopY())) * LITRES_PER_CELL;
     }
 
+    /// The litres held by the layers below the given y, which are full whenever the level is at or above it.
+    public double getCapacityBelow(int y) {
+        int cells = 0;
+
+        for (HashSet2D layer : layers.headMap(y)
+            .values()) {
+            cells += layer.size();
+        }
+
+        return cells * LITRES_PER_CELL;
+    }
+
     /// The litres this volume can hold without growing. Assumption: the volume is not empty.
     public double getCapacity() {
         return getCellCount() * LITRES_PER_CELL;

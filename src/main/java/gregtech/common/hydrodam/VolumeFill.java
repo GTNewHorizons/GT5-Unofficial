@@ -7,12 +7,16 @@ import static com.gtnewhorizon.gtnhlib.util.CoordinatePacker.unpackZ;
 import static com.gtnewhorizon.gtnhlib.util.CoordinatePacker2D.unpackChunkX;
 import static com.gtnewhorizon.gtnhlib.util.CoordinatePacker2D.unpackChunkZ;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.datastructs.space.HashSet2D;
 import com.gtnewhorizon.gtnhlib.datastructs.space.HashSet3D;
@@ -49,6 +53,32 @@ public final class VolumeFill {
         FOREIGN,
     }
 
+    /// Why water escaped from a fill.
+    public enum EscapeReason {
+        /// An open cell more than {@link #MAX_SPREAD} blocks sideways from its seed.
+        TOO_FAR,
+        /// An open cell more than {@link #MAX_DEPTH} blocks below its seed.
+        TOO_DEEP,
+        /// An unloaded chunk.
+        UNLOADED,
+    }
+
+    /// Where and why water escaped from a discarded region.
+    public static final class Escape {
+
+        /// The cell the water escaped into.
+        public final long cell;
+        /// The seed the water spread from.
+        public final long seed;
+        public final EscapeReason reason;
+
+        Escape(long cell, long seed, EscapeReason reason) {
+            this.cell = cell;
+            this.seed = seed;
+            this.reason = reason;
+        }
+    }
+
     private static final ForgeDirection[] DIRECTIONS = ForgeDirection.VALID_DIRECTIONS;
 
     private final World world;
@@ -57,8 +87,8 @@ public final class VolumeFill {
 
     /// Spread cell -> the seed it was reached from.
     private final Long2LongOpenHashMap origins = new Long2LongOpenHashMap();
-    /// Spread cells that touch a leak.
-    private final HashSet3D leaking = new HashSet3D();
+    /// Spread cell -> the first escape found next to it.
+    private final Long2ObjectOpenHashMap<Escape> leaking = new Long2ObjectOpenHashMap<>();
     /// Spread cell -> the foreign dam water cells next to it.
     private final Long2ObjectOpenHashMap<LongArrayList> contacts = new Long2ObjectOpenHashMap<>();
     /// Foreign dam water cells directly above the volume's top layer, which touch the volume itself.
@@ -68,6 +98,9 @@ public final class VolumeFill {
     public final HashSet3D pockets = new HashSet3D();
     /// Sealed cells at the ceiling.
     public final HashSet3D surface = new HashSet3D();
+
+    /// One escape for each discarded region.
+    public final List<Escape> escapes = new ArrayList<>();
 
     private boolean leaked;
 
@@ -107,7 +140,10 @@ public final class VolumeFill {
                 fill.origins.put(seed, seed);
                 fill.run();
             }
-            case UNLOADED -> fill.leaked = true;
+            case UNLOADED -> {
+                fill.leaked = true;
+                fill.escapes.add(new Escape(seed, seed, EscapeReason.UNLOADED));
+            }
             default -> {}
         }
 
@@ -195,9 +231,11 @@ public final class VolumeFill {
                 }
 
                 long origin = origins.get(cell);
+                EscapeReason escape = state == CellState.UNLOADED ? EscapeReason.UNLOADED
+                    : getOutOfBoundsReason(origin, neighbour);
 
-                if (state == CellState.UNLOADED || isOutOfBounds(origin, neighbour)) {
-                    leaking.add(cell);
+                if (escape != null) {
+                    leaking.putIfAbsent(cell, new Escape(neighbour, origin, escape));
                     continue;
                 }
 
@@ -224,14 +262,14 @@ public final class VolumeFill {
             region.clear();
             queue.enqueue(start);
 
-            boolean sealed = true;
+            Escape escape = null;
 
             while (!queue.isEmpty()) {
                 long cell = queue.dequeueLong();
 
                 region.add(cell);
 
-                if (leaking.contains(cell)) sealed = false;
+                if (escape == null) escape = leaking.get(cell);
 
                 for (ForgeDirection dir : DIRECTIONS) {
                     long neighbour = offset(cell, dir);
@@ -242,10 +280,11 @@ public final class VolumeFill {
                 }
             }
 
-            if (sealed) {
+            if (escape == null) {
                 addRegion(region);
             } else {
                 leaked = true;
+                escapes.add(escape);
             }
         }
     }
@@ -264,12 +303,17 @@ public final class VolumeFill {
         }
     }
 
-    private boolean isOutOfBounds(long origin, long cell) {
+    /// @return why water escapes by reaching the given open cell, or null if it's within bounds
+    @Nullable
+    private static EscapeReason getOutOfBoundsReason(long origin, long cell) {
         int dx = Math.abs(unpackX(cell) - unpackX(origin));
         int dz = Math.abs(unpackZ(cell) - unpackZ(origin));
         int depth = unpackY(origin) - unpackY(cell);
 
-        return dx > MAX_SPREAD || dz > MAX_SPREAD || depth > MAX_DEPTH;
+        if (depth > MAX_DEPTH) return EscapeReason.TOO_DEEP;
+        if (dx > MAX_SPREAD || dz > MAX_SPREAD) return EscapeReason.TOO_FAR;
+
+        return null;
     }
 
     private CellState getCellState(long cell) {

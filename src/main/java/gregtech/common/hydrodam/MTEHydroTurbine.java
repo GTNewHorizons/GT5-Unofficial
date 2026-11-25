@@ -7,14 +7,16 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -31,9 +33,9 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-/// Drains water from the dam behind it into an output hatch, producing {@link MTEHydroPump#EU_PER_LITRE} EU per litre
-/// at
-/// up to {@link #MAX_EFFICIENCY} efficiency. Never creates dam water.
+/// Drains water from the dam behind it, producing {@link MTEHydroPump#EU_PER_LITRE} EU per litre at up to
+/// {@link #MAX_EFFICIENCY} efficiency. The water goes to an optional output hatch, or is voided. Never creates dam
+/// water.
 public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
 
     /// Players use dams to store energy, so the round trip through a pump and turbine should lose very little.
@@ -86,7 +88,12 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
         DamVolumes volumes = DamVolumes.get(getBaseMetaTileEntity().getWorld());
         WaterVolume volume = getVolumeBehind(volumes);
 
-        if (volume == null || volume.getLitres() < 1) return NO_DAM_WATER;
+        // The level never drops below the inlet, so that a fast turbine visibly stops at it instead of emptying the
+        // dam.
+        long available = volume == null ? 0
+            : (long) (volume.getLitres() - volume.getCapacityBelow(getWaterPosition().posY));
+
+        if (available < 1) return NO_DAM_WATER;
 
         double efficiency = getDamEfficiency();
 
@@ -96,7 +103,7 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
 
         if (budget <= 0) return DYNAMO_FULL;
 
-        long litres = Math.min((long) volume.getLitres(), budget);
+        long litres = Math.min(available, budget);
 
         // The output hatch is optional. Without one, or without void protection, water that doesn't fit is voided.
         MTEHatchOutput output = mOutputHatches.isEmpty() ? null : mOutputHatches.get(0);
@@ -164,19 +171,22 @@ public class MTEHydroTurbine extends MTEHydroDamMachine<MTEHydroTurbine> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
 
-        // spotless:off
-        tt.addMachineType("Hydro Turbine")
-            .addInfo("Drains water from the dam behind it into an output hatch")
-            .addInfo("The back of the pipe casing must touch the dam's water")
-            .addInfo("Produces " + MTEHydroPump.EU_PER_LITRE + " EU per litre of water at " + Math.round(MAX_EFFICIENCY * 100) + "% efficiency")
-            .addInfo("Drains up to the dynamo hatch's voltage times its amperage per tick")
-            .addInfo("Loses " + Math.round(LOSS_PER_MAINTENANCE_PROBLEM * 1000) / 10.0 + "% efficiency per maintenance problem");
-        addStructureInfo(tt)
-            .addDynamoHatch("Exactly one, any " + Casings.SolidSteelMachineCasing.getLocalizedName(), 1)
-            .addOutputHatch("Optional, at most one, any " + Casings.SolidSteelMachineCasing.getLocalizedName() + ". Without one, drained water is voided", 1)
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.hydro_turbine"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "hydro-turbine"),
+                ImmutableMap.of(
+                    "eu_per_litre",
+                    MTEHydroPump.EU_PER_LITRE,
+                    "max_efficiency",
+                    Math.round(MAX_EFFICIENCY * 100),
+                    "loss_per_problem",
+                    LOSS_PER_MAINTENANCE_PROBLEM * 100));
+
+        addStructureInfo(tt).addDynamoHatch("1", anyCasing, 1)
+            .addOutputHatch("0-1", anyCasing, 1)
             .toolTipFinisher();
-        // spotless:on
 
         return tt;
     }

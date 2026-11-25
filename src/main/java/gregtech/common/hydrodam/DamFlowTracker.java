@@ -4,20 +4,22 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
 
 /// Measures how fast each volume in one dimension is gaining or losing water, from every source (machines, leaks,
 /// rain). Rates are averaged over {@link #SAMPLE_INTERVAL} ticks because the per-tick change is noisy.
+///
+/// Volumes are tracked by identity rather than id, since ids are reused after a volume is deleted.
 final class DamFlowTracker {
 
     public static final int SAMPLE_INTERVAL = 20;
 
-    /// Volume id -> its litres at the last sample.
-    private Int2DoubleOpenHashMap sampledLitres = new Int2DoubleOpenHashMap();
+    /// Volume -> its litres at the last sample.
+    private Reference2DoubleOpenHashMap<WaterVolume> sampledLitres = new Reference2DoubleOpenHashMap<>();
     private long lastSampleTime;
 
-    /// Volume id -> its net change between the last two samples, in litres per tick.
-    private final Int2DoubleOpenHashMap netLitresPerTick = new Int2DoubleOpenHashMap();
+    /// Volume -> its net change between the last two samples, in litres per tick.
+    private final Reference2DoubleOpenHashMap<WaterVolume> netLitresPerTick = new Reference2DoubleOpenHashMap<>();
 
     void tick(@NotNull World world, @NotNull DamVolumes volumes) {
         long now = world.getTotalWorldTime();
@@ -25,18 +27,16 @@ final class DamFlowTracker {
 
         if (elapsed < SAMPLE_INTERVAL) return;
 
-        Int2DoubleOpenHashMap samples = new Int2DoubleOpenHashMap();
+        Reference2DoubleOpenHashMap<WaterVolume> samples = new Reference2DoubleOpenHashMap<>();
 
         netLitresPerTick.clear();
 
         for (WaterVolume volume : volumes.getVolumes()) {
-            int id = volume.getId();
+            samples.put(volume, volume.getLitres());
 
-            samples.put(id, volume.getLitres());
-
-            // A volume that was just created, merged into or split off has no meaningful previous sample.
-            if (sampledLitres.containsKey(id)) {
-                netLitresPerTick.put(id, (volume.getLitres() - sampledLitres.get(id)) / elapsed);
+            // A volume that was just created or split off has no previous sample.
+            if (sampledLitres.containsKey(volume)) {
+                netLitresPerTick.put(volume, (volume.getLitres() - sampledLitres.getDouble(volume)) / elapsed);
             }
         }
 
@@ -44,9 +44,9 @@ final class DamFlowTracker {
         lastSampleTime = now;
     }
 
-    /// The volume's net change in litres per tick, averaged over the last {@link #SAMPLE_INTERVAL} ticks. Positive when
-    /// it is filling.
-    double getNetLitresPerTick(int volumeId) {
-        return netLitresPerTick.get(volumeId);
+    /// The volume's net change in litres per tick, averaged over the last {@link #SAMPLE_INTERVAL} ticks. Positive
+    /// when it is filling.
+    double getNetLitresPerTick(@NotNull WaterVolume volume) {
+        return netLitresPerTick.getDouble(volume);
     }
 }
