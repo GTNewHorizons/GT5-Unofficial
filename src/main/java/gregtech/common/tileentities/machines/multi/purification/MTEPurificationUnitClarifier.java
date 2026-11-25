@@ -175,7 +175,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_clarifier"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-clarifier"),
+                new ResourceLocation("gregtech", "purification/unit-clarifier"),
                 ImmutableMap.of(
                     "tier",
                     getWaterTier(),

@@ -14,7 +14,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -22,26 +21,6 @@ public class Assembler implements Runnable {
 
     @Override
     public void run() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
-                Materials.Lapis.getPlates(9),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L))
-            .circuit(17)
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
-            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1), Materials.Lapis.getBlocks(8))
-            .circuit(17)
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[1]))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),

@@ -235,6 +235,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Chrysocolla;
     public static Materials Citrine;
     public static Materials CobaltHexahydrate;
+    public static Materials CollisionResidue;
     public static Materials ConstructionFoam;
     public static Materials Coral;
     public static Materials CrudeOil;
@@ -296,7 +297,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials ObsidianFlux;
     public static Materials Oilsands;
     public static Materials Onyx;
-    public static Materials Orichalcum;
+    public static Materials OrikalkicReagent;
+    public static Materials Orikalkum;
     public static Materials Osmonium;
     public static Materials Painite;
     public static Materials Peanutwood;
@@ -2048,27 +2050,27 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public FluidStack getSolid(long aAmount) {
         if (mSolid == null) return null;
-        return new FluidStack(mSolid, (int) aAmount);
+        return GTUtility.createFluidStack(mSolid, aAmount);
     }
 
     public FluidStack getFluid(long aAmount) {
         if (mFluid == null) return null;
-        return new FluidStack(mFluid, (int) aAmount);
+        return GTUtility.createFluidStack(mFluid, aAmount);
     }
 
     public FluidStack getGas(long aAmount) {
         if (mGas == null) return null;
-        return new FluidStack(mGas, (int) aAmount);
+        return GTUtility.createFluidStack(mGas, aAmount);
     }
 
     public FluidStack getPlasma(long aAmount) {
         if (mPlasma == null) return null;
-        return new FluidStack(mPlasma, (int) aAmount);
+        return GTUtility.createFluidStack(mPlasma, aAmount);
     }
 
     public FluidStack getMolten(long aAmount) {
         if (mStandardMoltenFluid == null) return null;
-        return new FluidStack(mStandardMoltenFluid, (int) aAmount);
+        return GTUtility.createFluidStack(mStandardMoltenFluid, aAmount);
     }
 
     @Override
@@ -2239,21 +2241,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(hydroCrackedFluids[0], amount);
+        return GTUtility.createFluidStack(hydroCrackedFluids[0], amount);
     }
 
     public FluidStack getModeratelyHydroCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(hydroCrackedFluids[1], amount);
+        return GTUtility.createFluidStack(hydroCrackedFluids[1], amount);
     }
 
     public FluidStack getSeverelyHydroCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(hydroCrackedFluids[2], amount);
+        return GTUtility.createFluidStack(hydroCrackedFluids[2], amount);
     }
 
     public Materials setSteamCrackedFluids(Fluid[] steamCrackedFluids) {
@@ -2265,21 +2267,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(steamCrackedFluids[0], amount);
+        return GTUtility.createFluidStack(steamCrackedFluids[0], amount);
     }
 
     public FluidStack getModeratelySteamCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(steamCrackedFluids[1], amount);
+        return GTUtility.createFluidStack(steamCrackedFluids[1], amount);
     }
 
     public FluidStack getSeverelySteamCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStack(steamCrackedFluids[2], amount);
+        return GTUtility.createFluidStack(steamCrackedFluids[2], amount);
     }
 
     /**

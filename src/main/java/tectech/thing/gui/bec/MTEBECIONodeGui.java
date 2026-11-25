@@ -153,17 +153,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                     case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/min-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/ionode-min-parallels"),
                                 Collections.emptyMap())));
                     case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/max-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/ionode-max-parallels"),
                                 Collections.emptyMap())));
                     case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/speed-divisor"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/ionode-speed-divisor"),
                                 Collections.emptyMap())));
                     default -> {}
                 }

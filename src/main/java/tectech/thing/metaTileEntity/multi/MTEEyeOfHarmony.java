@@ -1028,7 +1028,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         List<FluidStack> fluidStacks = getStoredFluids();
         for (FluidStack fluidStack : fluidStacks) {
             if (validFluidMap.containsKey(fluidStack.getFluid())) {
-                validFluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                validFluidMap.merge(fluidStack.getFluid(), (long) fluidStack.amount, GTUtility::addSafe);
                 fluidStack.amount = 0;
             }
         }

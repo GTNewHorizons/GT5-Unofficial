@@ -8,12 +8,15 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -25,6 +28,8 @@ import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.fluid.FluidInteractions;
+import com.cleanroommc.modularui.utils.fluid.FluidUtils;
+import com.cleanroommc.modularui.utils.fluid.IFluidTankLong;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -256,7 +261,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                         tooltip.addLine(
                             IKey.lang(
                                 "modularui2.fluid.phantom.amount",
-                                this.formatFluidTooltipAmount(fluid.amount),
+                                this.formatFluidTooltipAmount(FluidUtils.fluidAmount(fluid)),
                                 this.getBaseUnit()));
                         addAdditionalFluidInfo(tooltip, fluid);
 
@@ -376,7 +381,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
     }
 
-    protected class ExtractedFluidTank implements IFluidTank {
+    protected class ExtractedFluidTank implements IFluidTankLong {
 
         private final int slotIndex;
 
@@ -385,7 +390,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public FluidStack getFluid() {
+        public FluidStack getFluidStack() {
             Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
 
             if (slot == null) return null;
@@ -394,7 +399,13 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int getFluidAmount() {
+        public Fluid getStoredFluid() {
+            FluidStack stack = getFluidStack();
+            return stack == null ? null : stack.getFluid();
+        }
+
+        @Override
+        public long getFluidAmountLong() {
             Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
 
             if (slot == null) return 0;
@@ -403,8 +414,13 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int getCapacity() {
-            return Integer.MAX_VALUE;
+        public long getRealCapacityLong() {
+            return Long.MAX_VALUE;
+        }
+
+        @Override
+        public long getCapacityLong() {
+            return getRealCapacityLong();
         }
 
         @Override
@@ -413,13 +429,30 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int fill(FluidStack resource, boolean doFill) {
+        public long fill(Fluid resource, long amount, boolean doFill) {
             return 0;
         }
 
         @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
+        public FluidStack drain(long maxDrain, boolean doDrain) {
             return null;
         }
+
+        @Override
+        public ExtractedFluidTank copy() {
+            return new ExtractedFluidTank(slotIndex);
+        }
+
+        @Override
+        public void setFluid(Fluid fluid, long l) {}
+
+        @Override
+        public boolean isFluidEqual(@Nullable IFluidTankLong cached) {
+            return cached != null && this.getFluid() == cached.getFluid();
+        }
+
+        public void loadFromNBT(NBTTagCompound nbt) {}
+
+        public void saveToNBT(NBTTagCompound nbt) {}
     }
 }

@@ -62,7 +62,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.MTEWaferDopingFacilityGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -1000,7 +1000,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         .addElement('W', Casings.ShieldedAcceleratorGlass.asElement())
         .addElement(
             'X',
-            buildHatchAdder(MTEWaferDopingFacility.class).atLeast(MTEHeatSensor.HeatSensorHatchElement.HeatSensor)
+            buildHatchAdder(MTEWaferDopingFacility.class).atLeast(MTEHatchHeatSensor.HeatSensorHatchElement.HeatSensor)
                 .casingIndex(Casings.HeatProofMachineCasing.textureId)
                 .hint(2)
                 .buildAndChain(Casings.HeatProofMachineCasing.asElement()))
@@ -1041,7 +1041,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     private int pendingParticleMultiplier;
     private boolean pendingConsumeAnomaly;
     private HeatingCoilLevel coilLevel;
-    private MTEHeatSensor heatSensor;
+    private MTEHatchHeatSensor heatSensor;
     private MTEHatchDopingControl dopingControlHatch;
     private MTEHatchInputBus particleInputBus;
     private int currentTemperatureTenths = 2_930;
@@ -1191,13 +1191,13 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     @Override
-    public List<MTEHeatSensor> getHeatSensorHatches() {
+    public List<MTEHatchHeatSensor> getHeatSensorHatches() {
         return heatSensor == null ? Collections.emptyList() : Collections.singletonList(heatSensor);
     }
 
     @Override
     public boolean addHeatSensorHatchToMachineList(IGregTechTileEntity tile, int casingTexture) {
-        if (tile == null || heatSensor != null || !(tile.getMetaTileEntity() instanceof MTEHeatSensor sensor))
+        if (tile == null || heatSensor != null || !(tile.getMetaTileEntity() instanceof MTEHatchHeatSensor sensor))
             return false;
         sensor.updateTexture(casingTexture);
         heatSensor = sensor;
@@ -1503,7 +1503,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     @Override
     public void onPostTick(IGregTechTileEntity base, long tick) {
         super.onPostTick(base, tick);
-        if (base.isServerSide() && heatSensor != null) heatSensor.setHeatValue(getCurrentTemperature());
+        if (base.isServerSide() && heatSensor != null) heatSensor.updateRedstoneOutput(getCurrentTemperature());
         if (base.isServerSide() && dopingControlHatch != null) {
             long now = base.getWorld()
                 .getTotalWorldTime();

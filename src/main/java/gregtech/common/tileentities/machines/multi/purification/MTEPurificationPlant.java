@@ -155,7 +155,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_plant"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-plant"),
+                new ResourceLocation("gregtech", "purification/purification-plant"),
                 ImmutableMap.of(
                     "distance",
                     MAX_UNIT_DISTANCE,
