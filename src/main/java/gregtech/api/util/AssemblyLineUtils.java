@@ -20,6 +20,8 @@ import gregtech.api.util.GTUtility.ItemId;
 
 public class AssemblyLineUtils {
 
+    public static final String DEFAULT_DATA_STICK_AUTHOR = "Assembling Line Recipe Generator";
+
     private static boolean loadedALRecipes = false;
 
     private static final Multimap<ItemId, RecipeAssemblyLine> AL_RECIPE_LOOKUP = MultimapBuilder.hashKeys()
@@ -131,7 +133,7 @@ public class AssemblyLineUtils {
         if (ItemStackNBT.hasKey(aDataStick, "author", NBT.TAG_STRING)) {
             author = ItemStackNBT.getString(aDataStick, "author");
         } else {
-            author = "Assembling Line Recipe Generator";
+            author = DEFAULT_DATA_STICK_AUTHOR;
         }
 
         // remove possible old NBTTagCompound

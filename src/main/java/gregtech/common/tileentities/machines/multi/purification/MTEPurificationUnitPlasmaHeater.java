@@ -259,7 +259,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_plasma_heater"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-plasma-heater"),
+                new ResourceLocation("gregtech", "purification/unit-plasma-heater"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("heating_point", HEATING_POINT)

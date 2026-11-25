@@ -349,7 +349,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.particle_collider"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "large-hadron-collider"),
+                new ResourceLocation("gregtech", "beam/large-hadron-collider"),
                 ImmutableMap.<String, Object>builder()
                     .put("max_energy", MAXIMUM_PARTICLE_ENERGY_keV / 1_000_000_000)
                     .put("ev_per_eu", keV_EU_RATIO * 1000)

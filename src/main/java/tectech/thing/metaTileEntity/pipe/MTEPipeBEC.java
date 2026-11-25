@@ -57,7 +57,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-pipe"), new HashMap<>()));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/pipe"), new HashMap<>()));
         }
         return ArrayUtils.addAll(
             super.getDescription(),
