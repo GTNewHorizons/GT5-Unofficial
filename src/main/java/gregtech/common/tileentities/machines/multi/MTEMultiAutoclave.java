@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.chainFluidPipeCasings;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -87,6 +88,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     private HeatingCoilLevel heatLevel;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final double EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER = 0.16D / 3;
 
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
@@ -104,13 +106,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     private int getItemPipeTier() {
         return itemPipeTier;
-    }
-
-    @Nullable
-    private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings2) return null;
-        if (metaID < 12 || metaID > 15) return null;
-        return metaID - 11;
     }
 
     private void setFluidPipeTier(int tier) {
@@ -165,17 +160,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            GTStructureChannels.PIPE_CASING.use(
-                ofBlocksTiered(
-                    MTEMultiAutoclave::getFluidTierFromMeta,
-                    ImmutableList.of(
-                        Pair.of(GregTechAPI.sBlockCasings2, 12),
-                        Pair.of(GregTechAPI.sBlockCasings2, 13),
-                        Pair.of(GregTechAPI.sBlockCasings2, 14),
-                        Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                    -1,
-                    MTEMultiAutoclave::setFluidPipeTier,
-                    MTEMultiAutoclave::getFluidPipeTier)))
+            chainFluidPipeCasings(-1, MTEMultiAutoclave::setFluidPipeTier, MTEMultiAutoclave::getFluidPipeTier))
         .addElement(
             'E',
             GTStructureChannels.ITEM_PIPE_CASING.use(
@@ -210,7 +195,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.autoclave"))
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
-            .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
+            .addDynamicEuEffInfo((float) EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("128-148", Casings.PressureContainmentCasing.getLocalizedName(), false)
@@ -295,7 +280,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     public double euModifier(int fluidPipeTier) {
-        return (double) (12 - fluidPipeTier) / 12;
+        return 1.0D - EU_USAGE_REDUCTION_PER_PIPE_CASING_TIER * fluidPipeTier;
     }
 
     public double speedBoost(int coilTier) {

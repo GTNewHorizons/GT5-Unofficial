@@ -71,6 +71,7 @@ import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
 import gregtech.api.items.armor.behaviors.LevitationBehavior;
+import gregtech.api.items.armor.behaviors.MagnetBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
@@ -547,6 +548,14 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Helmet)
             .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        Magnet(ItemList.Augment_Magnet, new AugmentBuilder()
+            .setId("Magnet")
+            .setItemId("augmentmagnet")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(MagnetBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
