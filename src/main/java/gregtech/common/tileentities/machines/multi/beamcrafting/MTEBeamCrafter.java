@@ -278,7 +278,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         String anyAcceleratorCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_accelerator_casing");
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_crafter"))
-            .addMarkdown(new ResourceLocation("gregtech", "beam-crafter"), ImmutableMap.of("max_buffer", formatNumber(MAX_BUFFER), "parallel", formatNumber(MAX_PARALLEL)))
+            .addMarkdown(new ResourceLocation("gregtech", "beam/crafter"), ImmutableMap.of("max_buffer", formatNumber(MAX_BUFFER), "parallel", formatNumber(MAX_PARALLEL)))
             .addSeparator()
             .addSupportAny()
             .beginStructureBlock(17, 5, 11, true)

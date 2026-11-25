@@ -486,6 +486,7 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
 
         @SubscribeEvent
         public void onWorldUnload(WorldEvent.Unload e) {
+            if (e.world.isRemote) return;
             for (GTChunkAssociatedData<?> d : instances.values()) {
                 // there is no need to explicitly do a save here
                 // forge will send a WorldEvent.Save on server thread before this event is distributed

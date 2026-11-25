@@ -4,6 +4,7 @@ import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompress
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.VillageNames;
 import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -172,23 +173,26 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_IV)
                 .addTo(autoclaveRecipes);
 
-            GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
-                .itemInputs(
-                    GregtechItemList.RedAlgaeBiomass.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
-                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
-                .itemOutputs(ItemList.Dim_Prismarine.get(32))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(autoclaveRecipes);
+            // Prismarine Crystal is from VN
+            if (VillageNames.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
+                    .itemInputs(
+                        GregtechItemList.RedAlgaeBiomass.get(32),
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                    .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
+                    .itemOutputs(ItemList.Dim_Prismarine.get(32))
+                    .duration(15 * SECONDS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(autoclaveRecipes);
 
-            GTValues.RA.stdBuilder() // Compression
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
-                .fluidInputs(Materials.PrismaticAcid.getFluid(4000))
-                .itemOutputs(ItemList.Dim_Prismarine.get(64))
-                .duration(1 * TICKS)
-                .eut(TierEU.RECIPE_UIV)
-                .addTo(electricImplosionCompressorRecipes);
+                GTValues.RA.stdBuilder() // Compression
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Prismarine, 64))
+                    .fluidInputs(Materials.PrismaticAcid.getFluid(4000))
+                    .itemOutputs(ItemList.Dim_Prismarine.get(64))
+                    .duration(1 * TICKS)
+                    .eut(TierEU.RECIPE_UIV)
+                    .addTo(electricImplosionCompressorRecipes);
+            }
 
             GTValues.RA.stdBuilder() // Engraving
                 .itemInputs(
