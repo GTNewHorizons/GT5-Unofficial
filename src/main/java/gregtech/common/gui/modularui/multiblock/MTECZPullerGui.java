@@ -43,8 +43,10 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
 
     @Override
     protected Flow createButtonColumn(ModularPanel parent, PanelSyncManager syncManager) {
-        IPanelHandler storagePanel = syncManager
-            .panel("storage", (panelSyncManager, syncHandler) -> createCZPanel(syncManager, parent), true);
+        IPanelHandler storagePanel = syncManager.syncedPanel(
+            "czpullerStoragePanel",
+            true,
+            (panelSyncManager, syncHandler) -> createCZPanel(parent, syncManager));
 
         return super.createButtonColumn(parent, syncManager).child(
             new ToggleButton().syncHandler("Preheated")
@@ -54,7 +56,11 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
                 .tooltip(false, tooltip -> tooltip.addLine(IKey.lang("GT5U.cz_puller.gui.on_demand_tooltip")))
                 .size(18, 18))
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                storagePanel.togglePanel();
+                if (storagePanel.isPanelOpen()) {
+                    storagePanel.closePanel();
+                } else {
+                    storagePanel.openPanel();
+                }
                 return true;
             })
                 .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
@@ -65,7 +71,7 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
                 .size(18, 18));
     }
 
-    public ModularPanel createCZPanel(PanelSyncManager syncManager, ModularPanel parent) {
+    public ModularPanel createCZPanel(ModularPanel parent, PanelSyncManager syncManager) {
         ModularPanel ui = GTGuis.createPopUpPanel("czpuller_storage")
             .relative(parent)
             .leftRel(1)

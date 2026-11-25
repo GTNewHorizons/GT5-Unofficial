@@ -145,7 +145,7 @@ public class MTEZoneMelter extends MTEExtendedPowerMultiBlockBase<MTEZoneMelter>
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setSpeedBonusSupplier(this::getSolenoidSpeedBonus)
+        }.setSpeedBonusSupplier(() -> 1.0D / getSolenoidSpeedBonus())
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
@@ -166,7 +166,7 @@ public class MTEZoneMelter extends MTEExtendedPowerMultiBlockBase<MTEZoneMelter>
     }
 
     private double getSolenoidSpeedBonus() {
-        return 1.0D / Math.max(1, solenoidLevel == null ? 1 : solenoidLevel + 1);
+        return solenoidLevel == null ? 1.0D : solenoidLevel + 1.0D;
     }
 
     private int calculateParallelFromAmperage(int amperage) {

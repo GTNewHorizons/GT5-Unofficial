@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 
 public final class MIPRRecipes implements Runnable {
 
@@ -16,7 +17,7 @@ public final class MIPRRecipes implements Runnable {
             .itemOutputs(ItemList.Microwaved_Silicon_Dust.get(1))
             .fluidOutputs(Materials.Hydrogen.getPlasma(400))
             .duration(5 * SECONDS)
-            .eut(0)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(miprRecipes);
     }
 }

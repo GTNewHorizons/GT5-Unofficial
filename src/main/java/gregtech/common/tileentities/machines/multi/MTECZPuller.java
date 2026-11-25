@@ -226,7 +226,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
             .addInputBus("1", "Dedicated seed-crystal bus position", 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("40+", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("40+", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("24", "Steel Frame Box", false)
             .addCasing("24", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("5", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
@@ -265,6 +265,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
             ? CZPullerRecipes.ALL.get(materialOrdinal)
             : null;
         bufferAmount = Math.max(0, aNBT.getInteger(TAG_BUFFER_AMOUNT));
+        if (bufferMaterial == null) bufferAmount = 0;
         if (bufferAmount == 0) bufferMaterial = null;
         currentTemperature = Math.max(0, aNBT.getInteger(TAG_CURRENT_TEMPERATURE));
         temperatureHalfUnits = Math.max(currentTemperature * 2, aNBT.getInteger(TAG_TEMPERATURE_HALF_UNITS));

@@ -1045,6 +1045,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     private static final int HEATING_RATE_TENTHS_PER_SECOND = 1000;
     private int activeMinimumTemperature;
     private int activeMaximumTemperature;
+    private int lastMinimumTemperature;
+    private int lastMaximumTemperature;
     private boolean temperatureCycleFailed;
     private int[] signalSequence = new int[0];
     private int signalIndex;
@@ -1057,6 +1059,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     private static final String TAG_TEMP_TENTHS = "waferDopingFacilityTemperatureTenths";
     private static final String TAG_MIN_TEMP = "waferDopingFacilityMinTemperature";
     private static final String TAG_MAX_TEMP = "waferDopingFacilityMaxTemperature";
+    private static final String TAG_LAST_MIN_TEMP = "waferDopingFacilityLastMinTemperature";
+    private static final String TAG_LAST_MAX_TEMP = "waferDopingFacilityLastMaxTemperature";
     private static final String TAG_TEMP_FAILED = "waferDopingFacilityTemperatureFailed";
     private static final String TAG_SIGNAL_SEQUENCE = "waferDopingFacilitySignalSequence";
     private static final String TAG_SIGNAL_INDEX = "waferDopingFacilitySignalIndex";
@@ -1219,6 +1223,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
                     activeMinimumTemperature = 0;
                     activeMaximumTemperature = 0;
                 }
+                lastMinimumTemperature = activeMinimumTemperature;
+                lastMaximumTemperature = activeMaximumTemperature;
                 if (recipeTier >= 3 && (!hasThreeDistinctSignalFluids())) return CheckRecipeResultRegistry.NO_RECIPE;
                 pendingParticleMode = recipe
                     .getMetadataOrDefault(WAFER_DOPING_PARTICLE_MODE, WAFER_DOPING_PARTICLE_MODE_NONE);
@@ -1299,11 +1305,11 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     public int getMinimumTemperature() {
-        return activeMinimumTemperature;
+        return activeMinimumTemperature != 0 ? activeMinimumTemperature : lastMinimumTemperature;
     }
 
     public int getMaximumTemperature() {
-        return activeMaximumTemperature;
+        return activeMaximumTemperature != 0 ? activeMaximumTemperature : lastMaximumTemperature;
     }
 
     public int getActiveSignalPower() {
@@ -1525,6 +1531,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         tag.setInteger(TAG_TEMP_TENTHS, currentTemperatureTenths);
         tag.setInteger(TAG_MIN_TEMP, activeMinimumTemperature);
         tag.setInteger(TAG_MAX_TEMP, activeMaximumTemperature);
+        tag.setInteger(TAG_LAST_MIN_TEMP, lastMinimumTemperature);
+        tag.setInteger(TAG_LAST_MAX_TEMP, lastMaximumTemperature);
         tag.setBoolean(TAG_TEMP_FAILED, temperatureCycleFailed);
         tag.setIntArray(TAG_SIGNAL_SEQUENCE, signalSequence);
         tag.setInteger(TAG_SIGNAL_INDEX, signalIndex);
@@ -1542,6 +1550,8 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         currentTemperatureTenths = Math.max(2_930, tag.getInteger(TAG_TEMP_TENTHS));
         activeMinimumTemperature = Math.max(0, tag.getInteger(TAG_MIN_TEMP));
         activeMaximumTemperature = Math.max(0, tag.getInteger(TAG_MAX_TEMP));
+        lastMinimumTemperature = Math.max(0, tag.getInteger(TAG_LAST_MIN_TEMP));
+        lastMaximumTemperature = Math.max(0, tag.getInteger(TAG_LAST_MAX_TEMP));
         temperatureCycleFailed = tag.getBoolean(TAG_TEMP_FAILED);
         signalSequence = tag.getIntArray(TAG_SIGNAL_SEQUENCE);
         if (signalSequence.length != 3) signalSequence = new int[0];
