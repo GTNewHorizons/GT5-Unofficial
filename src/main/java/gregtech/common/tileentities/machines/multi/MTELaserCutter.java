@@ -189,16 +189,10 @@ public class MTELaserCutter extends MTEExtendedPowerMultiBlockBase<MTELaserCutte
     }
 
     private Fluid getCoolingFluid(int tier) {
-        if (tier <= VoltageIndex.LuV) {
-            return GTModHandler.getIC2Coolant(1)
-                .getFluid();
-        }
-        if (tier <= VoltageIndex.UV) {
-            return Materials.SuperCoolant.getFluid(1)
-                .getFluid();
-        }
-        return bartworks.system.material.WerkstoffLoader.LiquidHelium.getFluidOrGas(1)
-            .getFluid();
+        FluidStack coolant = tier <= VoltageIndex.LuV ? GTModHandler.getIC2Coolant(1)
+            : tier <= VoltageIndex.UV ? Materials.SuperCoolant.getFluid(1)
+                : bartworks.system.material.WerkstoffLoader.LiquidHelium.getFluidOrGas(1);
+        return coolant == null ? null : coolant.getFluid();
     }
 
     @Override
@@ -294,7 +288,8 @@ public class MTELaserCutter extends MTEExtendedPowerMultiBlockBase<MTELaserCutte
     }
 
     public String getCoolingFluidName() {
-        return coolingFluid == null ? "Unavailable" : coolingFluid.getLocalizedName(new FluidStack(coolingFluid, 1));
+        return coolingFluid == null ? StatCollector.translateToLocal("GT5U.gui.text.no_coolant")
+            : coolingFluid.getLocalizedName(new FluidStack(coolingFluid, 1));
     }
 
     @Override

@@ -89,11 +89,14 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
             .size(164, 26)
             .childPadding(1)
             .child(IKey.dynamic(() -> {
-                String materialName = typeSyncer.getValue();
-                String material = "GT5U.cz_puller.material.silicon".equals(materialName) ? "Si"
-                    : "GT5U.cz_puller.material.microwaved_silicon".equals(materialName) ? "MW-Si"
-                        : StatCollector.translateToLocal(materialName);
-                return StatCollector.translateToLocalFormatted("GT5U.cz_puller.gui.material", material);
+                String materialKey = switch (typeSyncer.getValue()) {
+                    case "GT5U.cz_puller.material.silicon" -> "GT5U.cz_puller.material.silicon.short";
+                    case "GT5U.cz_puller.material.microwaved_silicon" -> "GT5U.cz_puller.material.microwaved_silicon.short";
+                    default -> typeSyncer.getValue();
+                };
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.cz_puller.gui.material",
+                    StatCollector.translateToLocal(materialKey));
             })
                 .asWidget())
             .child(
@@ -123,7 +126,7 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui<MTECZPuller> {
         ui.child(storageFill);
         ui.child(
             new ButtonWidget<>().background(GTGuiTextures.BUTTON_STANDARD)
-                .overlay(IKey.str("Dump"))
+                .overlay(IKey.lang("GT5U.gui.button.dump"))
                 .onMousePressed(mouse -> {
                     dumpBufferSyncer.setIntValue(dumpBufferSyncer.getIntValue() + 1);
                     return true;

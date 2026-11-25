@@ -51,6 +51,7 @@ import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEMicrowaveInducedPlasmaReactorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -226,6 +227,12 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
                     2));
         }
         checkHasAnyEnergy(errors);
+        for (var energyHatch : getExoticAndNormalEnergyHatchList()) {
+            if (energyHatch.getTierForStructure() < getSolenoidTier()) {
+                errors.add(StructureErrors.energyHatchTierTooLow(getSolenoidTier()));
+                break;
+            }
+        }
         checkOneMaintenanceHatch(errors);
         checkHasOutputHatch(errors);
         checkHasInputHatch(errors);
@@ -241,7 +248,10 @@ public class MTEMicrowaveInducedPlasmaReactor extends MTEExtendedPowerMultiBlock
 
     @Override
     public boolean onRunningTick(ItemStack stack) {
-        if (!drainEnergyInput(GTValues.V[getSolenoidTier()])) return false;
+        if (!drainEnergyInput(GTValues.V[getSolenoidTier()])) {
+            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+            return false;
+        }
 
         if (getBaseMetaTileEntity().getWorld()
             .getTotalWorldTime() % 20 == 0) {

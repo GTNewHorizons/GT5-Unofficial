@@ -13,6 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -235,16 +237,14 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
     private void collectSolutionFluid() {
         FluidStack solution = Materials.ElectrochemicalElectrolyteSolution.getFluid(1);
         if (solution == null || solution.getFluid() == null) return;
-        for (FluidStack input : getStoredFluids()) {
-            if (input == null || input.amount <= 0 || input.getFluid() != solution.getFluid()) continue;
-            if (solutionTank != null && !solutionTank.isFluidEqual(input)) continue;
-            int current = solutionTank == null ? 0 : solutionTank.amount;
-            int moved = Math.min(input.amount, SOLUTION_CAPACITY_MB - current);
-            if (moved <= 0) continue;
+        for (MTEHatchInput hatch : validMTEList(mInputHatches)) {
+            int free = SOLUTION_CAPACITY_MB - getSolutionAmount();
+            if (free <= 0) break;
+            FluidStack drained = hatch.drain(ForgeDirection.UNKNOWN, new FluidStack(solution.getFluid(), free), true);
+            if (drained == null || drained.amount <= 0) continue;
             if (solutionTank == null) {
-                solutionTank = new FluidStack(solution.getFluid(), moved);
-            } else solutionTank.amount += moved;
-            input.amount -= moved;
+                solutionTank = new FluidStack(solution.getFluid(), drained.amount);
+            } else solutionTank.amount += drained.amount;
         }
         updateSlots();
     }
@@ -286,6 +286,14 @@ public class MTEElectrochemicalCutter extends MTEExtendedPowerMultiBlockBase<MTE
 
     public int getSolutionAmount() {
         return solutionTank == null ? 0 : solutionTank.amount;
+    }
+
+    public int getSolutionAmountKiloLitres() {
+        return getSolutionAmount() / 1000;
+    }
+
+    public int getSolutionCapacityKiloLitres() {
+        return SOLUTION_CAPACITY_MB / 1000;
     }
 
     public void dumpSolution() {

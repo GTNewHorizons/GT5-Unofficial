@@ -312,8 +312,6 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
             || !depleteInput(selection.material.growthFluid(selection.material.gasAmountMb * parallel), true)) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        if (!drainEnergyInput((int) totalEu)) return CheckRecipeResultRegistry.NO_RECIPE;
-
         if (!consumeSeeds(selection.seed, parallel)
             || !depleteInput(selection.material.growthFluid(selection.material.gasAmountMb * parallel))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -323,8 +321,9 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         targetTemperature = selection.material.targetTemperature;
         mOutputItems = new ItemStack[] { bouleOutput };
         mOutputFluids = null;
+        lEUt = -totalEu;
         mEUt = -(int) totalEu;
-        mMaxProgresstime = Math.max(1, calculateGrowthDuration(selection.material) - 1);
+        mMaxProgresstime = calculateGrowthDuration(selection.material);
         mProgresstime = 0;
         mEfficiency = 10_000;
         mEfficiencyIncrease = 10_000;
@@ -732,6 +731,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         return true;
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(

@@ -1042,6 +1042,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     private MTEHatchDopingControl dopingControlHatch;
     private MTEHatchInputBus particleInputBus;
     private int currentTemperatureTenths = 2_930;
+    private static final int HEATING_RATE_TENTHS_PER_SECOND = 1000;
     private int activeMinimumTemperature;
     private int activeMaximumTemperature;
     private boolean temperatureCycleFailed;
@@ -1089,11 +1090,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
     @Override
     public void checkMachine(IGregTechTileEntity base, ItemStack stack, List<StructureError> errors) {
-        structureTier = 0;
-        heatSensor = null;
-        if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
-        dopingControlHatch = null;
-        particleInputBus = null;
+        resetStructureState();
 
         List<StructureError> tierFourErrors = new ArrayList<>();
         if (checkPiece(TIER_4, OFFSET_X_4, OFFSET_Y_4, OFFSET_Z_4, tierFourErrors)) {
@@ -1102,11 +1099,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         }
 
         clearHatches();
-        structureTier = 0;
-        heatSensor = null;
-        if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
-        dopingControlHatch = null;
-        particleInputBus = null;
+        resetStructureState();
 
         List<StructureError> tierThreeErrors = new ArrayList<>();
         if (checkPiece(TIER_3, OFFSET_X_3, OFFSET_Y_3, OFFSET_Z_3, tierThreeErrors)) {
@@ -1115,11 +1108,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         }
 
         clearHatches();
-        structureTier = 0;
-        heatSensor = null;
-        if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
-        dopingControlHatch = null;
-        particleInputBus = null;
+        resetStructureState();
         List<StructureError> tierTwoErrors = new ArrayList<>();
         if (checkPiece(TIER_2, OFFSET_X_2, OFFSET_Y_2, OFFSET_Z_2, tierTwoErrors)) {
             validateTierTwo(errors);
@@ -1127,11 +1116,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         }
 
         clearHatches();
-        structureTier = 0;
-        heatSensor = null;
-        if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
-        dopingControlHatch = null;
-        particleInputBus = null;
+        resetStructureState();
         if (!checkPiece(TIER_1, OFFSET_X_1, OFFSET_Y_1, OFFSET_Z_1, errors)) return;
 
         long multiAmpCount = mExoticEnergyHatches.stream()
@@ -1140,6 +1125,14 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         if (multiAmpCount != 0) errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
         validateCommonHatches(errors);
         if (errors.isEmpty()) structureTier = 1;
+    }
+
+    private void resetStructureState() {
+        structureTier = 0;
+        heatSensor = null;
+        if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
+        dopingControlHatch = null;
+        particleInputBus = null;
     }
 
     private void validateTierThree(List<StructureError> errors) {
@@ -1505,15 +1498,11 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             && activeMinimumTemperature > 0) {
             if (drainEnergyInput(1)) {
                 currentTemperatureTenths = Math
-                    .min(activeMinimumTemperature * 10, currentTemperatureTenths + coilHeatingRateTenths());
+                    .min(activeMinimumTemperature * 10, currentTemperatureTenths + HEATING_RATE_TENTHS_PER_SECOND);
             }
         } else {
             currentTemperatureTenths = Math.max(2_930, currentTemperatureTenths - 2_500);
         }
-    }
-
-    private int coilHeatingRateTenths() {
-        return (int) Math.round((75.0 + Math.pow(1.8, 2)) * 10.0);
     }
 
     @Override
@@ -1591,7 +1580,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(StatCollector.translateToLocal("GT5U.wafer_doping.name"))
-            .beginStructureBlock(50, 15, 45, false)
+            .beginStructureBlock(51, 15, 46, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
@@ -1599,7 +1588,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             .addMaintenanceHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMiscHatch("1", "Heat Sensor Hatch", "Specified Position", 2)
             .addInputHatch("1", "Input Hatch for Signal Fluid", 3)
-            .addMiscHatch("1", "Doping Control Hatch", "Specified Position", 4)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.DopingControlHatch"), "Specified Position", 4)
             .addInputBus("1", "Input Bus for Particle input", 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
@@ -1622,8 +1611,27 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             .addCasing("2", Casings.SteelGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
+            .addCasing("217+", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("125", Casings.FusionMachineCasing.getLocalizedName(), false)
+            .addCasing("117", Casings.FrostProofMachineCasing.getLocalizedName(), false)
+            .addCasing("112", Casings.ChemicalGradeGlass.getLocalizedName(), false)
+            .addCasing("96", Casings.PBIPipeCasing.getLocalizedName(), false)
+            .addCasing("80", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing("69", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("45", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("35", Casings.FluxedElectrumItemPipeCasing.getLocalizedName(), false)
+            .addCasing("24", "Steel Pipe Casing", false)
+            .addCasing("20", Casings.PlascreteBlock.getLocalizedName(), false)
+            .addCasing("13", "Steel Frame Box", false)
+            .addCasing("4", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.SteelGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
+            .addCasing("810", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("197", "Duranium Frame Box", false)
+            .addCasing("69", Casings.ElectrodeCasing.getLocalizedName(), false)
+            .addCasing("69", Casings.ShieldedAcceleratorGlass.getLocalizedName(), false)
             .toolTipFinisher();
     }
 

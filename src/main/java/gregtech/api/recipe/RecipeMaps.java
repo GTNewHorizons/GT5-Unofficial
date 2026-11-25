@@ -2325,5 +2325,4 @@ public final class RecipeMaps {
             || inputPrefix == OrePrefixes.gem && outputPrefix == OrePrefixes.gemFlawless
             || inputPrefix == OrePrefixes.gemFlawless && outputPrefix == OrePrefixes.gemExquisite;
     }
-
 }

@@ -28,7 +28,8 @@ public class MTEElectrochemicalCutterGui extends MTEMultiBlockBaseGui<MTEElectro
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         syncManager.syncValue("successChance", new IntSyncValue(multiblock::getSuccessChancePercent));
-        syncManager.syncValue("solutionAmount", new IntSyncValue(multiblock::getSolutionAmount));
+        syncManager.syncValue("solutionAmount", new IntSyncValue(multiblock::getSolutionAmountKiloLitres));
+        syncManager.syncValue("solutionCapacity", new IntSyncValue(multiblock::getSolutionCapacityKiloLitres));
         syncManager.syncValue(
             "dumpSolutionButton",
             new BooleanSyncValue(
@@ -50,13 +51,15 @@ public class MTEElectrochemicalCutterGui extends MTEMultiBlockBaseGui<MTEElectro
         BooleanSyncValue machineFormed = syncManager.findSyncHandler("machine", BooleanSyncValue.class);
         IntSyncValue chance = syncManager.findSyncHandler("successChance", IntSyncValue.class);
         IntSyncValue solutionAmount = syncManager.findSyncHandler("solutionAmount", IntSyncValue.class);
+        IntSyncValue solutionCapacity = syncManager.findSyncHandler("solutionCapacity", IntSyncValue.class);
         return super.createTerminalTextWidget(syncManager, parent)
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
                         () -> machineFormed.getBoolValue() ? StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.solution_tank_amount",
-                            solutionAmount.getIntValue()) : "")).color(Color.WHITE.main))
+                            solutionAmount.getIntValue(),
+                            solutionCapacity.getIntValue()) : "")).color(Color.WHITE.main))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
