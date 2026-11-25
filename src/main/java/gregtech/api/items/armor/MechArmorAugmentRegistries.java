@@ -55,12 +55,14 @@ import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.behaviors.ApiaristBehavior;
+import gregtech.api.items.armor.behaviors.AutoFeederBehavior;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
 import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
 import gregtech.api.items.armor.behaviors.ForceFieldBehavior;
 import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
+import gregtech.api.items.armor.behaviors.HasteBehavior;
 import gregtech.api.items.armor.behaviors.HazmatBehavior;
 import gregtech.api.items.armor.behaviors.HoloInventoryBehavior;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
@@ -547,6 +549,22 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Helmet)
             .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        Haste(ItemList.Augment_Haste, new AugmentBuilder()
+            .setId("Haste")
+            .setItemId("augmenthaste")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(HasteBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        AutoFeeder(ItemList.Augment_AutoFeeder, new AugmentBuilder()
+            .setId("AutoFeeder")
+            .setItemId("augmentautofeeder")
+            .fitsInto(ArmorType.Helmet)
+            .providesBehaviors(AutoFeederBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
