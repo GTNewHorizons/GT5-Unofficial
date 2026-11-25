@@ -1,20 +1,20 @@
 Spawns and kills monsters for you!
 Produces {green:{var:xp_per_op} Liquid XP} per operation
-{gold:Powered Spawner} goes in the Controller Slot
-{gray:{hr}}
-Has a minimum recipe time of {green:{var:min_time}} ticks, further overclocks multiply outputs by {green:{var:oc_mult}x}
+{color_key:Powered Spawner} goes in the Controller Slot
+{hr}
+Has a minimum recipe time of {color_amount:{var:min_time}} ticks, further overclocks multiply outputs by {color_amount:{var:oc_mult}x}
 Recipe time is based on mob health
 You can additionally put a weapon inside the GUI
 It will speed up the process and apply the looting level from the weapon (maximum {green:{var:max_looting}} levels)
-{dark_red:Enchanting the spikes inside the structure does nothing!}
-{gray:{hr}}
-If a mob spawns as {dark_red:Infernal}, it will drain {green:{var:infernal_mult}x} more power!
-{gray:{hr}}
-{light_purple:Ritual Mode} links to a {white:Well of Suffering} ritual built above
-The master ritual stone must be centered directly above, within {green:10} blocks vertically and {green:5} blocks horizontally of the {white:Blood Altar}
+{color_danger:Enchanting the spikes inside the structure does nothing!}
+{hr}
+If a mob spawns as {color_danger:Infernal}, it will drain {color_amount:{var:infernal_mult}x} more power!
+{hr}
+{color_mode:Ritual Mode} links to a {color_name:Well of Suffering} ritual built above
+The master ritual stone must be centered directly above, within {color_range:10} blocks vertically and {color_range:5} blocks horizontally of the {color_name:Blood Altar}
 When linked, ritual duration is locked and blood is added to the linked altar
-{gray:{hr}}
-Right-click the controller with a {white:Screwdriver} to toggle {light_purple:Ritual Mode}
-Shift-right-click the controller with a {white:Screwdriver} to toggle {light_purple:Infernal Spawns}
-Right-click the controller with a {white:Soldering Iron} to toggle {light_purple:Mob Animations}
-{light_purple:Performs 4/4 Perfect Overclocks}
+{hr}
+Right-click the controller with a {color_name:Screwdriver} to toggle {color_mode:Ritual Mode}
+Shift-right-click the controller with a {color_name:Screwdriver} to toggle {color_mode:Infernal Spawns}
+Right-click the controller with a {color_name:Soldering Iron} to toggle {color_mode:Mob Animations}
+{color_mechanic:Performs 4/4 Perfect Overclocks}

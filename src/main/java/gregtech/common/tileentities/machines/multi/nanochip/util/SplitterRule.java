@@ -97,8 +97,9 @@ public class SplitterRule {
             if (filterStack == null) continue;
             foundStack = true;
             String filterDisplayName = GTUtility.getStackCustomName(filterStack);
-            if (Objects.equals(testDisplayName, filterDisplayName)
-                && (filterStack.isItemEqual(item) || (realStack != null && filterStack.isItemEqual(realStack)))) {
+
+            if (!Objects.equals(testDisplayName, filterDisplayName)) continue;
+            if (filterStack.isItemEqual(item) || (realStack != null && filterStack.isItemEqual(realStack))) {
                 passed = true;
                 break;
             }

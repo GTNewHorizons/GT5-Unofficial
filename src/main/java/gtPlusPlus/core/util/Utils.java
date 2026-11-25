@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -102,22 +101,4 @@ public class Utils {
         return GTUtility.copy(stack);
     }
 
-    public static String[] splitLocalizedWithAlkalus(String key) {
-        return GTSplit.splitLocalizedWithSuffix(key, GTPPCore.GT_Tooltip.get());
-    }
-
-    public static String[] splitLocalizedFormattedWithAuthor(String key, String authorName, Object... objects) {
-        return GTSplit.splitLocalizedFormattedWithSuffix(
-            key,
-            StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip", authorName),
-            objects);
-    }
-
-    public static String[] splitLocalizedFormattedWithAlkalus(String key, Object... objects) {
-        return GTSplit.splitLocalizedFormattedWithSuffix(key, GTPPCore.GT_Tooltip.get(), objects);
-    }
-
-    public static String[] splitLocalizedFormattedWithPrefixAndAlkalus(String prefix, String key, Object... objects) {
-        return GTSplit.splitLocalizedFormattedWithWarped(key, prefix, GTPPCore.GT_Tooltip.get(), objects);
-    }
 }

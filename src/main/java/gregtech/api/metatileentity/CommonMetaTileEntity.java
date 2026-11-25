@@ -268,12 +268,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
-        int logLevel, ArrayList<String> list) {
-        return list;
-    }
-
-    @Override
     public ArrayList<ItemStack> getDroppedItem() {
         return null;
     }
@@ -292,6 +286,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public int fill(FluidStack resource, boolean doFill) {
         return 0;
+    }
+
+    public long fillLong(FluidStack resource, boolean doFill) {
+        return fill(resource, doFill);
     }
 
     /**
@@ -438,9 +436,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        final TIntList tList = new TIntArrayList();
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
         if (tTileEntity == null || tTileEntity.isDead()) return GTValues.emptyIntArray;
+        final TIntList tList = new TIntArrayList(getSizeInventory());
         final Cover tileCover = tTileEntity.getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
         final boolean tSkip = tileCover.letsItemsIn(-2) || tileCover.letsItemsOut(-2);
         for (int i = 0; i < getSizeInventory(); i++) {
@@ -486,7 +484,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
-        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+        return drain(side, fluidStack, fluidStack == null ? 0 : GTUtility.getFluidAmount(fluidStack), doDrain);
     }
 
     /**
@@ -498,6 +496,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
             return drain(amount, doDrain);
         }
         return null;
+    }
+
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, long amount, boolean doDrain) {
+        return drain(side, fluidStack, GTUtility.longToInt(amount), doDrain);
     }
 
     @Override

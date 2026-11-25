@@ -121,6 +121,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
                     { "ccccccc", "cvvvvvc", "kvvvvvk", "kvv-vvk", "kvvvvvk", "cvvvvvc", "ccccccc" },
                     { "ccccccc", "ccccccc", "ccccccc", "ccc-ccc", "ccccccc", "ccccccc", "ccccccc" },
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
+            .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 19, 83)
             .addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
             .addElement('g', Casings.GrateMachineCasing.asElement())
             .addElement('b', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -178,7 +179,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.linac.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "linac"), tooltipVars)
+            .addMarkdown(new ResourceLocation("gregtech", "beam/linac"), tooltipVars)
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)

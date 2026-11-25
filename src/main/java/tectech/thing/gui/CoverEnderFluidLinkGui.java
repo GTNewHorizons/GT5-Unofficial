@@ -3,7 +3,6 @@ package tectech.thing.gui;
 import java.util.UUID;
 
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -19,8 +18,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
-import tectech.mechanics.enderStorage.EnderLinkTag;
-import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.thing.cover.CoverEnderFluidLink;
 
 public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
@@ -53,31 +50,20 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private String getFrequency() {
-        if (cover.getTile()
-            .isClientSide()) return "";
-        if (!(cover.getTile() instanceof IFluidHandler teTank)) {
-            return "";
-        }
-
-        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
-        return tag == null ? "" : tag.getFrequency();
+        return cover.getFrequency();
     }
 
     private void setFrequency(String val, PanelSyncManager syncManager) {
         if (cover.getTile()
             .isClientSide()) return;
-        if (!(cover.getTile() instanceof IFluidHandler tank)) {
-            return;
-        }
-        UUID uuid = null;
 
         if (cover.isPrivateChannel()) {
-            uuid = syncManager.getPlayer()
+            UUID uuid = syncManager.getPlayer()
                 .getUniqueID();
-            if (!uuid.equals(CoverEnderFluidLink.getOwner(tank))) return;
+            if (!uuid.equals(CoverEnderFluidLink.getOwner(cover.getTile()))) return;
         }
 
-        EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
+        cover.setFrequency(val);
     }
 
     private Flow createChannelModeRow(PanelSyncManager syncManager) {

@@ -27,7 +27,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import io.netty.buffer.ByteBuf;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 26.02.2017.
@@ -104,9 +103,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced
-                                                                                                                     // data
-                                                                                                                     // transmission
+        return new String[] { translateToLocal("gt.blockmachines.pipe.datastream.desc.0"), // Advanced
+                                                                                           // data
+                                                                                           // transmission
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                 + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"), // Don't stare at the beam!
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"), // Must be

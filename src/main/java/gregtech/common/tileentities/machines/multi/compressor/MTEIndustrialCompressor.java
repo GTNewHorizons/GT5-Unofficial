@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
@@ -14,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,6 +43,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -121,21 +123,23 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor, LEC")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electric_compressor"))
             .addBulkMachineInfo(2, 2f, 0.9f)
             .beginStructureBlock(7, 8, 7, true)
-            .addController("Front bottom center")
-            .addCasing("95-103", "Electric Compressor Casing", false)
-            .addCasing("45-61", "Compression Pipe Casing", false)
-            .addCasing("6", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any electric compressor casing", 1)
-            .addMaintenanceHatch("1", "Any electric compressor casing", 1)
-            .addInputBus("1+", "Any side pipe casing", 2)
-            .addInputHatch("0+", "Any side pipe casing", 2)
-            .addOutputBus("1+", "Any side pipe casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("95-103", Casings.ElectricCompressorCasing.getLocalizedName(), false)
+            .addCasing("45-61", Casings.CompressionPipeCasing.getLocalizedName(), false)
+            .addCasing("6", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electric_compressor_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_electric_compressor_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(Ollie);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

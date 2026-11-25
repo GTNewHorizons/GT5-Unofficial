@@ -1,12 +1,16 @@
 package gregtech.common.items.behaviors;
 
 import java.util.List;
+import java.util.Locale;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourDataStick extends BehaviourNone {
@@ -14,12 +18,22 @@ public class BehaviourDataStick extends BehaviourNone {
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         String tString = GTUtility.ItemNBT.getBookTitle(aStack);
-        if (GTUtility.isStringValid(tString)) {
+        ItemStack recipeOutput = AssemblyLineUtils.getDataStickOutput(aStack);
+        if (recipeOutput != null) {
+            aList.add(
+                StatCollector.translateToLocalFormatted(
+                    "gt.item.tool.data_stick.construction_data",
+                    recipeOutput.getDisplayName()));
+        } else if (GTUtility.isStringValid(tString)) {
             aList.add(tString);
         }
         tString = GTUtility.ItemNBT.getBookAuthor(aStack);
         if (GTUtility.isStringValid(tString)) {
-            aList.add("by " + tString);
+            if (AssemblyLineUtils.doesDataStickHaveOutput(aStack)
+                && AssemblyLineUtils.DEFAULT_DATA_STICK_AUTHOR.equals(tString)) {
+                tString = StatCollector.translateToLocal("gt.item.tool.data_stick.recipe_generator");
+            }
+            aList.add(StatCollector.translateToLocalFormatted("gt.item.tool.data_stick.author", tString));
         }
         short tMapID = GTUtility.ItemNBT.getMapID(aStack);
         if (tMapID >= 0) {
@@ -46,7 +60,15 @@ public class BehaviourDataStick extends BehaviourNone {
         }
         final long lastUpdate = ItemStackNBT.getLong(aStack, "lastUpdate");
         if (lastUpdate != 0) {
-            aList.add(String.format("Last update at: %tc", lastUpdate));
+            String languageCode = Minecraft.getMinecraft()
+                .getLanguageManager()
+                .getCurrentLanguage()
+                .getLanguageCode();
+            Locale locale = Locale.forLanguageTag(languageCode.replace('_', '-'));
+            aList.add(
+                StatCollector.translateToLocalFormatted(
+                    "gt.item.tool.data_stick.last_update",
+                    String.format(locale, "%tc", lastUpdate)));
         }
         return aList;
     }

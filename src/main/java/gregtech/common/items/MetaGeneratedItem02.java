@@ -18,6 +18,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.common.items.IDMetaItem02.BioChaff;
 import static gregtech.common.items.IDMetaItem02.Bottle_Alcopops;
 import static gregtech.common.items.IDMetaItem02.Bottle_Apple_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Beer;
@@ -48,7 +49,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Potato_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Purple_Drink;
 import static gregtech.common.items.IDMetaItem02.Bottle_Reed_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Rum;
-import static gregtech.common.items.IDMetaItem02.Bottle_Salty_Water;
+import static gregtech.common.items.IDMetaItem02.Bottle_Salt_Water;
 import static gregtech.common.items.IDMetaItem02.Bottle_Scotch;
 import static gregtech.common.items.IDMetaItem02.Bottle_Snitches_Glitch_Sauce;
 import static gregtech.common.items.IDMetaItem02.Bottle_Vinegar;
@@ -82,6 +83,7 @@ import static gregtech.common.items.IDMetaItem02.Dye_Color_13;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_14;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_15;
 import static gregtech.common.items.IDMetaItem02.Dye_Indigo;
+import static gregtech.common.items.IDMetaItem02.Dynamite;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Baguette;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Bun;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Cake;
@@ -276,6 +278,7 @@ import static gregtech.common.items.IDMetaItem02.Plank_Teak;
 import static gregtech.common.items.IDMetaItem02.Plank_Walnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Wenge;
 import static gregtech.common.items.IDMetaItem02.Plank_Willow;
+import static gregtech.common.items.IDMetaItem02.PlantBall;
 import static gregtech.common.items.IDMetaItem02.SFMixture;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Chocolate_Milk;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Coffee;
@@ -601,6 +604,16 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GelledToluene.ID,
                 "gt.item.gelled_toluene.name",
                 "gt.item.gelled_toluene.tooltip"));
+        ItemList.Dynamite
+            .set(addItemWithLocalizationKeys(Dynamite.ID, "gt.item.dynamite.name", "gt.item.dynamite.tooltip"));
+
+        ItemList.IC2_Plantball
+            .set(addItemWithLocalizationKeys(PlantBall.ID, "gt.item.plant_ball.name", "gt.item.plant_ball.tooltip"));
+        ItemList.IC2_PlantballCompressed
+            .set(GTModHandler.getIC2Item("compressedPlantBall", 1L, ItemList.IC2_Plantball.get(1L)));
+
+        ItemList.IC2_BioChaff
+            .set(addItemWithLocalizationKeys(BioChaff.ID, "gt.item.chaff.name", "gt.item.chaff.tooltip"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItemWithLocalizationKeys(
@@ -798,12 +811,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SANO, 1L)));
-        ItemList.Bottle_Salty_Water.set(
+        ItemList.Bottle_Salt_Water.set(
             addItemWithLocalizationKeys(
-                Bottle_Salty_Water.ID,
-                "gt.item.bottle.salty_water.name",
-                "gt.item.bottle.salty_water.tooltip",
-                SubTag.INVISIBLE,
+                Bottle_Salt_Water.ID,
+                "gt.item.bottle.salt_water.name",
+                "gt.item.bottle.salt_water.tooltip",
+                OrePrefixes.bottle.get(Materials.SaltWater),
                 new GTFoodStat(
                     1,
                     0.0F,

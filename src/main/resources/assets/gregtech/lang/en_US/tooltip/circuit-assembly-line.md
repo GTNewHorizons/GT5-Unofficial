@@ -1,12 +1,12 @@
-{gold:Circuit Assembly Line}:
-- Imprint by placing a {white:Circuit Imprint} in the controller
+{color_mode:Circuit Assembly Line}:
+- Imprint by placing a {color_name:Circuit Imprint} in the controller
 - Each machine can only be imprinted once
-- {yellow:Imprints are permanent and circuit specific}
-{gray:{hr}}
-{gold:Circuit Assembler}:
-- Minimum Length: {green:{var:min_length}}
-- Recipe tier in {white:Circuit Assembler} mode is at most {aqua:Energy Hatch tier - 1}
-- Supports {white:Crafting Input Buffer/Bus} and allows input separation
-{gray:{hr}}
-Right-click the controller with a {white:Screwdriver} to change mode
-{light_purple:Performs 4/4 Perfect Overclock}
+- {color_note:Imprints are permanent and circuit specific}
+{hr}
+{color_mode:Circuit Assembler}:
+- Minimum Length: {color_amount:{var:min_length}}
+- Recipe Tier in {color_name:Circuit Assembler} mode is at most {aqua:(Energy Hatch Tier - 1)}
+- Supports {color_name:Crafting Input Buffer/Bus} and allows input separation
+{hr}
+Right-click the controller with a {color_name:Screwdriver} to change mode
+{color_mechanic:Performs 4/4 Perfect Overclock}

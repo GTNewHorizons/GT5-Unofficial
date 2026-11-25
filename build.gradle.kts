@@ -5,11 +5,6 @@ plugins {
     id("com.gtnewhorizons.gtnhconvention")
 }
 
-// workaround an OOM on GH actions during the checkStyleMain task
-tasks.withType<Checkstyle>().configureEach {
-    maxHeapSize = "1g"
-}
-
 tasks.test.configure {
     useJUnitPlatform()
     testLogging {

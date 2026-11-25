@@ -2,10 +2,11 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,15 +15,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.IHatchWatcher;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -46,7 +49,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
      * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
      */
-    protected final List<IHatchWatcher> watchers = new ArrayList<>();
+    protected final Set<IHatchWatcher> watchers = new LinkedHashSet<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
@@ -69,8 +72,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     /**
      * Registers a controller to be notified when this hatch's contents/config change. Hatches that want to push an
      * immediate recipe check implement {@link ISmartInputHatch}, and the controller registers itself here when the
-     * hatch is added to the structure. A hatch belongs to a multiblock exactly once, so this does not guard against
-     * duplicate watchers - a duplicate registration would indicate a structure bug.
+     * hatch is added to the structure. A hatch belongs to a multiblock exactly once. The underlying data structure
+     * protects against duplicate watchers.
+     * You should always add watchers via {@link MTEMultiBlockBase#addIfSmartInput(IMetaTileEntity)},
+     * so that the watchers get properly removed from the hatch when needed.
+     * If you don't, manual removal is required!
      */
     public void addWatcher(IHatchWatcher watcher) {
         watchers.add(watcher);
@@ -82,9 +88,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     /** Asks every registered controller to run a recipe check on its next tick. */
     protected void notifyWatchers() {
-        for (int i = 0; i < watchers.size(); i++) {
-            watchers.get(i)
-                .scheduleRecipeCheckImmediate();
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
         }
     }
 
@@ -216,10 +221,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
-     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
-     * machine list.
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
      */
+    @Deprecated
     public final void updateCraftingIcon(ItemStack icon) {
+        // The icon gets no owner, so clearHatches never drops it.
         updateCraftingIcon(icon, null);
     }
 
@@ -297,16 +304,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
-    }
-
-    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
-        int amp, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);
@@ -319,9 +321,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips
             .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        if (author != null) {
-            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
-        }
         final String[] suffixs = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
             return GTSplit.splitLocalizedWithSuffix(key, suffixs);

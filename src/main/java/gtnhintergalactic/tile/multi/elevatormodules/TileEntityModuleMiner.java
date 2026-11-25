@@ -6,13 +6,11 @@ import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -25,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
@@ -66,10 +65,6 @@ import gtnhintergalactic.recipe.SpaceMiningRecipes;
 import gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
@@ -129,12 +124,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
     // region Parameters
-
-    Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
-        stepSetting;
-
-    Parameters.Group.ParameterOut distanceDisplay;
-
     private IntegerParameter distanceParameter;
     private IntegerParameter parallelParameter;
     private BooleanParameter cycleParameter;
@@ -148,45 +137,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public static final String CYCLE_DISTANCE_PARAMETER = "cycleDistance";
     public static final String RANGE_PARAMETER = "range";
     public static final String STEP_PARAMETER = "step";
-
-    // TODO: REMOVE AFTER 2.9
-    /** Name of the distance setting */
-    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
-    /** Status of the distance setting */
-    private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
-    /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
-    /** Status of the parallel setting */
-    private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
-    /** Name of the overdrive setting */
-    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
-    /** Status of the overdrive setting */
-    private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
-    /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
-    /** Status of the mode setting */
-    private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
-    /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
-    /** Status of the mode setting */
-    private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
-    /** Name of the step setting */
-    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> StatCollector
-        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
-    /** Status of the step setting */
-    private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
-
     // endregion
 
     /** Power object used for displaying in NEI */
@@ -273,17 +223,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {
-        NBTTagCompound legacyInput = nbt.getCompoundTag("eParamsInD");
-        NBTTagCompound legacyOutput = nbt.getCompoundTag("eParamsOutD");
-
-        distanceParameter.setValue((int) legacyInput.getDouble(String.valueOf(0)));
-        parallelParameter.setValue((int) legacyInput.getDouble(String.valueOf(10)));
-        cycleParameter.setValue(legacyInput.getDouble(String.valueOf(2)) != 0);
-        rangeParameter.setValue((int) legacyInput.getDouble(String.valueOf(12)));
-        stepParameter.setValue((int) legacyInput.getDouble(String.valueOf(3)));
-        cycleDistanceParameter.setValue((int) legacyOutput.getDouble(String.valueOf(10)));
-    }
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
 
     @Override
     public List<Parameter<?, ?>> getParameters() {
@@ -297,6 +237,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         parameters.add(stepParameter);
 
         return parameters;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "space/mining-module"),
+                ImmutableMap.<String, Object>builder()
+                    .put("voltageTier", this.getTier())
+                    .put("moduleTier", this.tModuleTier)
+                    .put("motorTier", this.getNeededMotorTier())
+                    .put("parallels", this.getMaxParallels())
+                    .build())
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                anyCasingText(),
+                1)
+            .addInputBus("1+", anyCasingText(), 1)
+            .addInputHatch("0+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
     }
 
     @Override
@@ -355,9 +325,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
-        if (!overdriveSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_overdrive");
-        if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
-            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
+        long parallelPowerDraw = V[tTier] * parallelParameter.getValue()
+            .longValue();
+        if (parallelPowerDraw > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(parallelPowerDraw);
         }
         if (parent == null) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
@@ -702,10 +673,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         // T3: 0.125
         // T4: 0.296
         // T5: 0.578
-        // The whole chance is multiplied by 2 - overdrive setting
-        return Math.min(
-            (int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
-            BONUS_STACK_MAX_CHANCE);
+        return Math.min((int) ((GTUtility.powInt((double) plasmaTier / 6, 3) * 10000)), BONUS_STACK_MAX_CHANCE);
     }
 
     /**
@@ -786,10 +754,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * @return Boosted recipe time
      */
     protected int getRecipeTime(int unboostedTime, int plasmaTier) {
-        // Reduce recipe time by 10% for every plasma tier above T1 and divide recipe time by the overdrive value
+        // Reduce recipe time by 10% for every plasma tier above T1
         return plasmaTier > 0
-            ? (int) ((double) unboostedTime
-                * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
+            ? (int) ((double) unboostedTime * Math.max((1D - 0.1D * (plasmaTier - 1)), MIN_RECIPE_TIME_MODIFIER))
             : unboostedTime;
     }
 
@@ -815,76 +782,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
     }
 
-    /**
-     * POD class, Data for the asteroid summary in the mui in the space miner
-     *
-     * @author hacatu
-     */
-    protected static class AsteroidSummary {
-
-        public String name;
-        public float chance;
-        public float timeDensity;
-        public int maxParallels;
-
-        public AsteroidSummary(String name, float chance, float timeDensity, int maxParallels) {
-            this.name = name;
-            this.chance = chance;
-            this.timeDensity = timeDensity;
-            this.maxParallels = maxParallels;
-        }
-    }
-
-    /**
-     * Get a list of summaries for some set of recipes. For each recipe, find: - chance: the probability of choosing it
-     * at each operation - timeDensity: the fraction of time that the recipe takes up in the long run - maxParallels:
-     * the number of parallels the mining module will do at its current settings, level, and computation. (assuming that
-     * power, computation, plasma, and drills/rods don't run out)
-     *
-     * @author hacatu
-     */
-    protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
-        long power = GTValues.V[tTier];
-        if (prevRecipes == null) {
-            return Collections.<AsteroidSummary>emptyList();
-        }
-        float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
-        float totalTimedensity = prevRecipes.totalTimedensity;
-        return prevRecipes.recipes.stream()
-            .map(r -> {
-                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-                if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
-                return new AsteroidSummary(
-                    data.asteroidName,
-                    data.recipeWeight / totalWeight,
-                    data.recipeWeight * r.mDuration / totalTimedensity,
-                    Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
-            })
-            .collect(Collectors.toList());
-    }
-
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new TileEntityModuleMinerGui(this);
-    }
-
-    /**
-     * Instantiate parameters of the controller
-     */
-    @Override
-    protected void parametersInstantiation_EM() {
-        super.parametersInstantiation_EM();
-        Parameters.Group hatch_0 = parametrization.getGroup(0, false);
-        Parameters.Group hatch_1 = parametrization.getGroup(1, false);
-        Parameters.Group hatch_2 = parametrization.getGroup(2, false);
-        Parameters.Group hatch_3 = parametrization.getGroup(3, false);
-        distanceSetting = hatch_0.makeInParameter(0, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
-        parallelSetting = hatch_0.makeInParameter(1, getMaxParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
-        overdriveSetting = hatch_1.makeInParameter(0, 1, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
-        modeSetting = hatch_2.makeInParameter(0, 0, MODE_SETTING_NAME, MODE_STATUS);
-        rangeSetting = hatch_2.makeInParameter(1, 0, RANGE_SETTING_NAME, RANGE_STATUS);
-        stepSetting = hatch_3.makeInParameter(0, 0, STEP_SETTING_NAME, STEP_STATUS);
-        distanceDisplay = hatch_0.makeOutParameter(1, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
     }
 
     /** Texture that will be displayed on the side of the module */
@@ -1007,31 +907,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk1"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), anyCasingText(), 1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -1091,35 +966,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk2"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    anyCasingText(),
-                    1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     /**
@@ -1178,35 +1024,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected int getMaxParallels() {
             return MAXIMUM_PARALLELS;
-        }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk3"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    anyCasingText(),
-                    1)
-                .addInputBus("1+", anyCasingText(), 1)
-                .addInputHatch("0+", anyCasingText(), 1)
-                .addOutputBus("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
         }
     }
 

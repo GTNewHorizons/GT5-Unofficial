@@ -1,33 +1,22 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-
-import com.google.common.collect.ImmutableMap;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
-
-    private static final int MAX_ENERGY_HATCHES = 32;
 
     private static final ITexture textureOverlay = TextureFactory.of(
         TextureFactory.builder()
@@ -46,37 +35,6 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer2(String name) {
         super(name);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "large-fusion-computer-mk2"),
-                ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(getSingleHatchPower()))
-                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
-                    .put("base_para", formatNumber(getMaxPara()))
-                    .put("per_tier_para", formatNumber(getMaxPara()))
-                    .build())
-            .addSupportAny()
-            .beginStructureBlock(47, 7, 47, false)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
-            .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
-            .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
-            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
-            .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
-            .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[energyHatchTier()]), 2)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
-            .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.supports_crafting_input_buffers"))
-            .toolTipFinisher();
-        // spotless:on
-        return tt;
     }
 
     @Override
@@ -120,18 +78,8 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 7;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.Duranium;
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override

@@ -40,6 +40,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -239,11 +240,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected float getEUDiscountModifier(GTRecipe recipe) {
-        return euMultiplier;
+    protected float getModuleDurationModifier() {
+        return durationMultiplier;
     }
 
-    float euMultiplier = 1;
+    float durationMultiplier = 1;
 
     protected FluidStack storedFluidStack;
     protected int fluidAmount;
@@ -269,7 +270,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @NotNull
     @Override
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        euMultiplier = 1;
+        durationMultiplier = 1;
 
         if (storedFluidStack == null) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
@@ -308,9 +309,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
 
         if (getImpurityPercentage() <= 0.15) {
-            euMultiplier = (float) (1 - 0.3 + getImpurityPercentage() * 2);
+            durationMultiplier = (float) (0.7 + getImpurityPercentage() * 2);
         } else if (getImpurityPercentage() >= 0.65) {
-            euMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
+            durationMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
         }
 
         return super.validateRecipe(recipe);
@@ -359,14 +360,18 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         ArrayList<FluidStack> inputFluid = getStoredFluids();
         for (FluidStack fluid : inputFluid) {
             if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
+                // Safe cast long amount to int
+                // Because the amount requested is 1M L at max
+                // based on getCapacity()
                 if (storedFluidStack == null) {
-                    int depleted = depleteInputQuantity(new FluidStack(fluid, getCapacity()), false);
+                    int depleted = GTUtility
+                        .longToInt(depleteInputQuantity(new FluidStack(fluid, getCapacity()), false));
                     storedFluidStack = new FluidStack(fluid, Math.min(getCapacity(), depleted));
                 } else if (storedFluidStack.isFluidEqual(fluid)) {
                     int max = getCapacity() - storedFluidStack.amount;
                     // If we're already full don't cause a 0L drain.
                     if (max == 0) return;
-                    int depleted = depleteInputQuantity(new FluidStack(fluid, max), false);
+                    int depleted = GTUtility.longToInt(depleteInputQuantity(new FluidStack(fluid, max), false));
                     storedFluidStack.amount += Math.min(max, depleted);
                 }
 
@@ -444,10 +449,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     public double getImpurityPercentage() {
         return (double) impurityFluidAmount / fluidAmount;
-    }
-
-    public float getEuMultiplier() {
-        return euMultiplier;
     }
 
     public int getAutoFlushPercentage() {

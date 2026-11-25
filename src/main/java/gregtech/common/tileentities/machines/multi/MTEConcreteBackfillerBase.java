@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -16,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,9 @@ import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
@@ -35,6 +37,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEConcreteBackfillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     private int mLastXOff = 0, mLastZOff = 0;
@@ -99,27 +102,24 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         // spotless:off
-        tt.addMachineType("Concrete Backfiller")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.concrete_backfiller"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "concrete-backfiller"),
                 ImmutableMap.<String, Object>builder()
                     .put("radius", getRadius())
-                    .put("min_tier", GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-                    .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
-                    .put(
-                        "cycle_time",
-                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                            : formatNumber(baseCycleTime / 20.0) + " seconds")
+                    .put("min_tier", getMinTier())
+                    .put("concrete_per_block", CONCRETE_PER_BLOCK)
+                    .put("cycle_time", GTUtility.formatTime(baseCycleTime))
                     .build())
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
             .addCasing("3-8", casings, false)
-            .addEnergyHatch("1+", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

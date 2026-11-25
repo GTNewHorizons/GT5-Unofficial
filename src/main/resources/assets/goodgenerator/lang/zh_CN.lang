@@ -245,13 +245,13 @@ gui.NeutronSensor.0=输入中子动能值.
 gui.NeutronSensor.1=例如 >5000KeV, <=30MeV . . .
 gui.NeutronSensor.2=有效
 gui.NeutronSensor.3=无效
-gui.NeutronActivator.0=当前中子动能：
+gui.NeutronActivator.0=当前中子动能： %s MeV
 gui.NeutronActivator.1=输入：
 gui.YOTTank.0=容量：
 gui.YOTTank.1=流体：
 gui.YOTTank.2=已存储：
-gui.LargeFusion.0=能量容量：
-gui.LargeFusion.1=储存能量：
+gui.LargeFusion.0=能量容量： %s EU
+gui.LargeFusion.1=储存能量： %s EU
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=大型硅岩反应堆

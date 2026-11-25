@@ -1,8 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
@@ -15,15 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -34,10 +28,10 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchNonConsumableBaseGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
@@ -49,7 +43,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     private int itemCount = 0;
     private boolean isOutputSlotLocked = true;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
-    private boolean changed = false;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
@@ -71,10 +64,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemStack(ItemStack stack) {
-        if (itemStack != stack) {
-            changed = true;
-        }
-
         itemStack = stack;
     }
 
@@ -85,25 +74,26 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemCount(int amount) {
-        if (itemCount != amount) {
-            changed = true;
-        }
-
         itemCount = amount;
     }
 
-    public boolean hasChanged() {
-        return changed;
+    public boolean isOutputSlotLocked() {
+        return isOutputSlotLocked;
     }
 
-    public void unmarkChanged() {
-        changed = false;
+    public void setOutputSlotLocked(boolean outputSlotLocked) {
+        isOutputSlotLocked = outputSlotLocked;
     }
 
     public abstract int getItemCapacity();
 
     @Override
     public abstract boolean isValidItem(ItemStack item);
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isValidItem(itemStack);
+    }
 
     @Override
     public ItemStack getExtraItemStack() {
@@ -113,53 +103,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void setExtraItemStack(ItemStack stack) {
         mInventory[1] = stack;
-    }
-
-    protected int clientItemCount;
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(
-                new SlotWidget(inventoryHandler, 0)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
-                    .setPos(79, 16))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_OUT)
-                    .setPos(79, 52))
-            .widget(
-                SlotWidget.phantom(inventoryHandler, 2)
-                    .disableInteraction()
-                    .setBackground(GTUITextures.TRANSPARENT)
-                    .setPos(59, 42))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> { isOutputSlotLocked = !isOutputSlotLocked; })
-                    .setBackground(
-                        () -> new UITexture[] {
-                            isOutputSlotLocked ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,
-                            isOutputSlotLocked ? GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED
-                                : GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED })
-                    .addTooltip(translateToLocal("GT5U.gui.button.toggle_output_slot_lock"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(() -> isOutputSlotLocked, val -> isOutputSlotLocked = val),
-                        builder)
-                    .setPos(100, 52)
-                    .setSize(18, 18))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> itemCount, value -> clientItemCount = value));
-
     }
 
     @Override
@@ -229,11 +172,17 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.injectItems(input, mode, src);
     }
 
     @Override
     public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final BaseActionSource src) {
+        if (mode == Actionable.MODULATE) {
+            notifyWatchers();
+        }
         return meInventoryHandler.extractItems(request, mode, src);
     }
 
@@ -289,8 +238,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) {
                 getBaseMetaTileEntity().markDirty();
-                notifyWatchers();
             }
+            detectInventoryChange();
         }
     }
 
@@ -328,15 +277,14 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("itemCount", getItemCount());
-        if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        if (getItemStack() != null) aNBT.setTag("itemStack", GTUtility.saveItem(getItemStack()));
         aNBT.setBoolean("outputLocked", isOutputSlotLocked);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
-        if (aNBT.hasKey("itemStack"))
-            setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("itemStack")));
+        if (aNBT.getTag("itemStack") instanceof NBTTagCompound compound) setItemStack(GTUtility.loadItem(compound));
         if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 
@@ -360,5 +308,24 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public ItemStack[] getStoredItemData() {
         return mInventory;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchNonConsumableBaseGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    public int getSlotIndex() {
+        return 2;
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return slot == getSlotIndex() ? 1 : super.getSlotLimit(slot);
     }
 }

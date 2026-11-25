@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Взрывается, но не так сильно...
 
 gt.spacetime_compression_field_generator.name=Генератор поля пространственно-временного сжатия
 gt.time_acceleration_field_generator.name=Генератор поля замедления времени
+gt.stabilisation_field_generator.name=Генератор поля стабилизации
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -424,33 +425,18 @@ gt.blockmachines.multimachine.em.transformer.hint=1 - Энерговывод/в�
 
 gt.blockmachines.multimachine.tm.microwave.name=Совершенная микроволновая печь
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Настройки энергии
-gt.blockmachines.multimachine.tm.microwave.power=Энергия
-gt.blockmachines.multimachine.tm.microwave.timer=Время
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Настройки таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Значение таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Оставшееся время
+gt.blockmachines.multimachine.tm.microwave.timer=таймера: %s / %s
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Башня теслы
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Настройки нижнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Настройки верхнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Настройки радиуса передачи Башни Теслы
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3=Настройки радиуса работы Приемопередатчика Теслы
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4=Настройки радиуса работы Тесла-МЕГАпокрытия
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5=Настройка выходного вольтажа
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6=Настройка текущего выхода
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7=Настройки времени сканирования, минут
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8=Настройки перегрузки
-gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9=Пока не используется
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0=Отображение радиуса передачи Башни Теслы
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1=Отображение радиуса работы Приемопередатчика Теслы
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2=Отображение радиуса работы Тесла-МЕГАпокрытия
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3=Отображение выходного вольтажа
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4=Отображение текущего выхода
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=Отображение энергоемкости
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Отображение накопленной энергии
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Отображение доли заполнения
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Отображение времени сканирования
-gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Отображение макс. выхода
 gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow=Нижний порог гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh=Верхний порог гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.transferRadius=Радиус передачи
@@ -465,8 +451,8 @@ gt.blockmachines.multimachine.em.computer.machinetype=Квантовый ком�
 gt.blockmachines.multimachine.em.computer.desc=Гораздо лучше простого калькулятора
 gt.blockmachines.multimachine.em.computer.cfgi.0=Коэффициент разгона
 gt.blockmachines.multimachine.em.computer.cfgi.1=Коэффициент избытка вольтажа
-gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев
-gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений
+gt.blockmachines.multimachine.em.computer.cfgo.0=Текущий макс. нагрев: §e%s
+gt.blockmachines.multimachine.em.computer.cfgo.1=Произведено вычислений: §a%s/s
 
 gt.blockmachines.multimachine.em.databank.name=Банк данных
 
@@ -1077,7 +1063,6 @@ GT5U.gui.text.recipe_result.scanning=§aScanning
 GT5U.gui.text.recipe_result.charging=§aЗарядка
 GT5U.gui.text.recipe_result.microwaving=§aMicrowaving
 GT5U.gui.text.recipe_result.no_routing=§7Can't route
-GT5U.gui.text.recipe_result.invalid_timer=§7Неверный таймер
 GT5U.gui.text.recipe_result.no_research_item=§7Нет предмета для исследования
 GT5U.gui.text.recipe_result.no_chargeable_item=§7Нет заряжаемого предмета
 GT5U.gui.text.recipe_result.no_computing=§7Не могу вычислить
@@ -1172,7 +1157,7 @@ tt.keyphrase.Hint_Details=Hint Details
 
 #debug boom
 tt.keyword.BOOM=БУУУУУМ!
-tt.keyword.Destination=ID Выходного разъёма
+tt.keyword.Id=ID
 tt.keyword.Weight=Вес
 tt.keyword.Source=Источник
 tt.keyword.Progress=Прогресс
@@ -1622,12 +1607,6 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Анти
 tt.keyword.Weird=*
-
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Проект Godforge
 
 tt.chat.debug.generator=Режим лазера: %s
 

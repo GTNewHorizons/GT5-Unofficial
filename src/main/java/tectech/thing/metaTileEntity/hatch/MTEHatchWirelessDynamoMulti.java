@@ -1,16 +1,15 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -101,15 +100,13 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
             // On first tick find the player name and attempt to add them to the map.
             if (aTick == 1) {
-
                 // UUID and username of the owner.
                 owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
-
                 strongCheckOrAddUser(owner_uuid);
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.
-            if (aTick % ticks_between_energy_addition == 0L) {
+            if (aTick % TICKS_BETWEEN_ENERGY_ADDITION == 0L && getEUVar() > 0L) {
                 addEUToGlobalEnergyMap(owner_uuid, getEUVar());
                 setEUVar(0L);
             }
@@ -118,12 +115,6 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     @Override
     public String[] getDescription() {
-        return MTEHatch.formatEnergyInfoDesc(
-            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorChrom },
-            null,
-            true,
-            mTier,
-            maxAmperes,
-            "gt.blockmachines.dynamo_hatch.wireless");
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.dynamo_hatch.wireless");
     }
 }

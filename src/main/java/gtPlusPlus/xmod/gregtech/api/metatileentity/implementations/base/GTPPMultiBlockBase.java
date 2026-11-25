@@ -79,7 +79,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -95,11 +94,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     extends MTEExtendedPowerMultiBlockBase<T> implements ICasingTextureProvider {
 
     public GTRecipe mLastRecipe;
-
-    /**
-     * Don't use this for recipe input check, otherwise you'll get duplicated fluids
-     */
-    public ArrayList<MTEHatchAirIntake> mAirIntakes = new ArrayList<>();
 
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
@@ -224,7 +218,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.clearHatches();
         this.mChargeHatches.clear();
         this.mDischargeHatches.clear();
-        this.mAirIntakes.clear();
         this.mTecTechEnergyHatches.clear();
         this.mTecTechDynamoHatches.clear();
         this.mAllEnergyHatches.clear();
@@ -289,7 +282,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
 
@@ -299,11 +292,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
             case MTEHatchOutputBattery outputBattery -> {
                 return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
-            }
-            case MTEHatchAirIntake airIntake -> {
-                boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
-                boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
-                return addedAir && addedInput;
             }
             case MTEHatchEnergyMulti multiEnergyHatch -> {
                 boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
@@ -332,7 +320,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
             // Process Remaining hatches using base GT Logic
             case IDualInputHatch hatch -> {
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
             }
             case MTEHatchInputBus inputBus -> {
@@ -401,14 +389,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
         if (aMetaTileEntity instanceof MTEHatchOutput || aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
-        }
-        return false;
-    }
-
-    public boolean addAirIntakeToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchAirIntake) {
             return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
         }
         return false;
@@ -1219,13 +1199,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public enum GTPPHatchElement implements IHatchElement<GTPPMultiBlockBase<?>> {
 
-        AirIntake("GT5U.MBTT.AirIntakeHatch", GTPPMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
-
-            @Override
-            public long count(GTPPMultiBlockBase<?> t) {
-                return t.mAirIntakes.size();
-            }
-        },
         /**
          * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
          */
