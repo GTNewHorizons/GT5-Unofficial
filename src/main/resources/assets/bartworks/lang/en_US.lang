@@ -7,11 +7,6 @@ item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV
 item.GT_Rockcutter_Item_HV.name=Rockcutter HV
 item.GT_Teslastaff_Item.name=Teslastaff
-BW_ItemBlocks.name=Etched Lapis Cell
-BW_ItemBlocks.0.name=Etched Lapis Cell
-BW_ItemBlocks.1.name=Plated Lapis Cell
-GT_LESU_CASING.name=LESU Casing
-GT_LESU_CASING.0.name=LESU Casing
 
 bw.blockores.01.name=Ore
 bw.blockores.02.name=Small Ore
@@ -119,8 +114,6 @@ BW_ExtraGlass.3.name=Transcendentally Reinforced Borosilicate Glass Block (Trans
 BW_ExtraGlass.4.name=Hexanite Reinforced Borosilicate Glass Block (Transparent)
 BW_ExtraGlass.5.name=Universium Reinforced Borosilicate Glass Block (Transparent)
 tooltip.glass_tier.0.name=Glass-Tier:
-tooltip.LESU.0.name=Maximum Capacity!
-tooltip.LESU.1.name=Multiple Controllers!
 
 tooltip.windmeter.0.name=A simple Windmeter to choose a place for the Windmill.
 tooltip.windmeter.1.name=Uses left:
@@ -168,11 +161,6 @@ tooltip.tile.waterpump.fmt=Produces %s L/s Water when fueled. Causes %s Pollutio
 
 tooltip.tile.mbf.1.name=Pollution per second
 tooltip.tile.windmill.0.name=A primitive Grinder powered by Kinetic energy.;Size(WxHxD): 7x12x7;Layer 1: 7x7 Bricks, corners are air, controller at front centered.;Layer 2-5: 5x5 Hardened Clay, corners are air, can contain one door,;hollow, Wall must contain at least one Dispenser;Layer 6: 5x5 Wood Planks. Corners are filled, hollow.;Layer 7: 7x7 Wood Planks. Corners are air, hollow.;Layer 8: 7x7 Wood Planks. Corners are air, hollow,;front centered must be a Primitive Kinetic Shaftbox;Layer 9: 7x7 Wood Planks. Corners are air, hollow.;Layer 10: 5x5 Wood Planks. Corners are filled, hollow.;Layer 11: 3x3 Wood Planks. Corners are filled, hollow.;Layer 12: 1x1 Wood Plank.;Needs a Wind Mill Rotor in the Shaftbox to operate;Input items in Controller;Output items will appear in the dispensers;It is faster in regions with more wind (like IC2 Windmills)
-tooltip.tile.lesu.0.name=Controller Block for the GT2-Styled L.E.S.U.;Size: ANY
-tooltip.tile.lesu.1.name=Storage per LESU Casing:
-tooltip.tile.lesu.2.name=Output EU: LESU Casings amount;Input EU: Next Voltage Tier to Output EU;Input/Output Amps can be configured via 4 Circuits in GUI;Output Side has a dot on it.
-tooltip.tile.lesu.3.name=Only one Controller allowed, no Wallsharing!
-tooltip.tile.lesu.deprecated=Deprecated - Will be removed in the next major version
 tooltip.tile.tiereddsc.0.name=Voltage:
 tooltip.tile.tiereddsc.1.name=Amperage IN:
 tooltip.tile.tiereddsc.2.name=Amperage OUT:
@@ -302,12 +290,6 @@ chat.proxy.reverse.true=§dReversed§r Recipe Order
 BW.gui.text.radio_hatch.tooltip.radiation_shutter=Radiation Shutter
 BW.gui.text.radio_hatch.tooltip.radiation_shutter_control=Radiation Shutter Control
 
-BW.gui.text.lesu.eu=EU: %s
-BW.gui.text.lesu.max=MAX: %s
-BW.gui.text.lesu.max_in=MAX EU/t IN: %s
-BW.gui.text.lesu.eu_out=EU/t OUT: %s
-BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
-
 # chat
 BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is running.
 BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
@@ -348,7 +330,6 @@ gt.blockmachines.bw.manualtrafo.name=Manual Transformer
 gt.blockmachines.bw.windmill.name=Windmill
 gt.blockmachines.circuitassemblyline.name=Circuit Assembly Line
 gt.blockmachines.dehp.name=Deep Earth Heating Pump
-gt.blockmachines.lesu.name=L.E.S.U.
 gt.blockmachines.megablastfurnace.name=Mega Electric Blast Furnace
 gt.blockmachines.megachemicalreactor.name=Mega Chemical Reactor
 gt.blockmachines.megadistillationtower.name=Mega Distillation Tower
