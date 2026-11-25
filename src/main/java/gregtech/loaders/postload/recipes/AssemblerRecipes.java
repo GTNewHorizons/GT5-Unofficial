@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IC2NuclearControl;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.IronChests;
 import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -557,6 +558,18 @@ public class AssemblerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
             }
+
+            // Plasma Collider Casing
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Duranium, 1),
+                    MaterialsElements.STANDALONE.RUNITE.getPlateDouble(4),
+                    getModItem(IndustrialCraft2.ID, "reactorReflector", 1, 1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(576))
+                .itemOutputs(ItemList.CasingPlasmaCollider.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(assemblerRecipes);
 
         }
 
@@ -4587,6 +4600,72 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polybenzimidazole, 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Polybenzimidazole.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Niobium-Titanium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NiobiumTitanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NiobiumTitanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NiobiumTitanium, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_NiobiumTitanium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Mysterious Crystal
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.MysteriousCrystal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MysteriousCrystal, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_MysteriousCrystal.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Neutronium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_Neutronium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Infinity
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_Infinity.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Transcendent Metal
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TranscendentMetal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_TranscendentMetal.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // SpaceTime
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_SpaceTime.get(1))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);

@@ -1,12 +1,42 @@
 package gregtech.api.items.armor;
 
+import static gregtech.loaders.ExtraIcons.apiaristBootsAugment;
+import static gregtech.loaders.ExtraIcons.apiaristChestplateAugment;
+import static gregtech.loaders.ExtraIcons.apiaristHelmetAugment;
+import static gregtech.loaders.ExtraIcons.apiaristLeggingsAugment;
+import static gregtech.loaders.ExtraIcons.apprenticeStridersBootsAugment;
+import static gregtech.loaders.ExtraIcons.archmageStridersBootsAugment;
 import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
+import static gregtech.loaders.ExtraIcons.eldritchStridersBootsAugment;
+import static gregtech.loaders.ExtraIcons.fallProtectionBootsAugment;
+import static gregtech.loaders.ExtraIcons.fireImmunityLeggingsAugment;
 import static gregtech.loaders.ExtraIcons.forceFieldAugment;
+import static gregtech.loaders.ExtraIcons.hazmatBootsAugment;
+import static gregtech.loaders.ExtraIcons.hazmatChestplateAugment;
+import static gregtech.loaders.ExtraIcons.hazmatHelmetAugment;
+import static gregtech.loaders.ExtraIcons.hazmatLeggingsAugment;
 import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
+import static gregtech.loaders.ExtraIcons.inertiaCancelingChestplateAugment;
 import static gregtech.loaders.ExtraIcons.jetpackAugment;
+import static gregtech.loaders.ExtraIcons.jumpBoostBootsAugment;
+import static gregtech.loaders.ExtraIcons.knockbackResistanceLeggingsAugment;
+import static gregtech.loaders.ExtraIcons.milkInfusionHelmetAugment;
 import static gregtech.loaders.ExtraIcons.nightVisionAugment;
+import static gregtech.loaders.ExtraIcons.omniMovementBootsAugment;
 import static gregtech.loaders.ExtraIcons.rebreatherAugment;
 import static gregtech.loaders.ExtraIcons.revealingAugment;
+import static gregtech.loaders.ExtraIcons.soulboundBootsAugment;
+import static gregtech.loaders.ExtraIcons.soulboundChestplateAugment;
+import static gregtech.loaders.ExtraIcons.soulboundHelmetAugment;
+import static gregtech.loaders.ExtraIcons.soulboundLeggingsAugment;
+import static gregtech.loaders.ExtraIcons.spaceSuitBootsAugment;
+import static gregtech.loaders.ExtraIcons.spaceSuitChestplateAugment;
+import static gregtech.loaders.ExtraIcons.spaceSuitHelmetAugment;
+import static gregtech.loaders.ExtraIcons.spaceSuitLeggingsAugment;
+import static gregtech.loaders.ExtraIcons.speedBoostBootsAugment;
+import static gregtech.loaders.ExtraIcons.stepAssistBootsAugment;
+import static gregtech.loaders.ExtraIcons.swimSpeedLeggingsAugment;
+import static gregtech.loaders.ExtraIcons.terrasteelChestplateAugment;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,6 +72,7 @@ import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
 import gregtech.api.items.armor.behaviors.LevitationBehavior;
+import gregtech.api.items.armor.behaviors.MagnetBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
@@ -418,6 +449,10 @@ public class MechArmorAugmentRegistries {
         Hazmat(ItemList.Augment_Hazmat, new AugmentBuilder()
             .setId("Hazmat")
             .setItemId("augmenthazmat")
+            .setTexture(ArmorType.Helmet, () -> hazmatHelmetAugment)
+            .setTexture(ArmorType.Chestplate, () -> hazmatChestplateAugment)
+            .setTexture(ArmorType.Leggings, () -> hazmatLeggingsAugment)
+            .setTexture(ArmorType.Boots, () -> hazmatBootsAugment)
             .providesBehaviors(HazmatBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
@@ -426,6 +461,7 @@ public class MechArmorAugmentRegistries {
             .setId("FallProtection")
             .setItemId("augmentfallprotection")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> fallProtectionBootsAugment)
             .providesBehaviors(FallProtectionBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
@@ -433,6 +469,10 @@ public class MechArmorAugmentRegistries {
         SpaceSuit(ItemList.Augment_SpaceSuit, new AugmentBuilder()
             .setId("SpaceSuit")
             .setItemId("augmentspacesuit")
+            .setTexture(ArmorType.Helmet, () -> spaceSuitHelmetAugment)
+            .setTexture(ArmorType.Chestplate, () -> spaceSuitChestplateAugment)
+            .setTexture(ArmorType.Leggings, () -> spaceSuitLeggingsAugment)
+            .setTexture(ArmorType.Boots, () -> spaceSuitBootsAugment)
             .providesBehaviors(SpaceSuitBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
@@ -463,6 +503,7 @@ public class MechArmorAugmentRegistries {
             .setId("SwimSpeed")
             .setItemId("augmentswimspeed")
             .fitsInto(ArmorType.Leggings)
+            .setTexture(ArmorType.Leggings, () -> swimSpeedLeggingsAugment)
             .providesBehaviors(SwimSpeedBehavior.INSTANCE)
             .setCategory(AugmentCategory.Movement)
             .setMinimumCoreTier(1)
@@ -472,6 +513,7 @@ public class MechArmorAugmentRegistries {
             .setId("ApprenticeStriders")
             .setItemId("augmentapprenticestriders")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> apprenticeStridersBootsAugment)
             .providesBehaviors(
                 new SpeedBoostBehavior(3.0F),
                 new JumpBoostBehavior(3.0F),
@@ -493,6 +535,10 @@ public class MechArmorAugmentRegistries {
         Soulbound(ItemList.Augment_Soulbound, new AugmentBuilder()
             .setId("Soulbound")
             .setItemId("augmentsoulbound")
+            .setTexture(ArmorType.Helmet, () -> soulboundHelmetAugment)
+            .setTexture(ArmorType.Chestplate, () -> soulboundChestplateAugment)
+            .setTexture(ArmorType.Leggings, () -> soulboundLeggingsAugment)
+            .setTexture(ArmorType.Boots, () -> soulboundBootsAugment)
             .providesBehaviors(SoulboundBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
@@ -511,6 +557,11 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentcloak")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(CloakBehavior.INSTANCE)
+        Magnet(ItemList.Augment_Magnet, new AugmentBuilder()
+            .setId("Magnet")
+            .setItemId("augmentmagnet")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(MagnetBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
@@ -526,6 +577,10 @@ public class MechArmorAugmentRegistries {
         Apiarist(ItemList.Augment_Apiarist, new AugmentBuilder()
             .setId("Apiarist")
             .setItemId("augmentapiarist")
+            .setTexture(ArmorType.Helmet, () -> apiaristHelmetAugment)
+            .setTexture(ArmorType.Chestplate, () -> apiaristChestplateAugment)
+            .setTexture(ArmorType.Leggings, () -> apiaristLeggingsAugment)
+            .setTexture(ArmorType.Boots, () -> apiaristBootsAugment)
             .providesBehaviors(ApiaristBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
@@ -541,6 +596,7 @@ public class MechArmorAugmentRegistries {
         TerrasteelAugment(ItemList.Augment_Terrasteel, new AugmentBuilder()
             .setId("Terrasteel")
             .setItemId("augmentterrasteel")
+            .setTexture(ArmorType.Chestplate, () -> terrasteelChestplateAugment)
             .providesBehaviors(TerrasteelBehavior.INSTANCE)
             .fitsInto(ArmorType.Chestplate)
             .setMinimumCoreTier(2)
@@ -552,6 +608,7 @@ public class MechArmorAugmentRegistries {
             .setId("FireImmunity")
             .setItemId("augmentfireimmunity")
             .fitsInto(ArmorType.Leggings)
+            .setTexture(ArmorType.Leggings, () -> fireImmunityLeggingsAugment)
             .providesBehaviors(FireImmunityBehavior.INSTANCE)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Protection)
@@ -560,6 +617,7 @@ public class MechArmorAugmentRegistries {
             .setId("KnockbackResistance")
             .setItemId("augmentknockbackresistance")
             .fitsInto(ArmorType.Leggings)
+            .setTexture(ArmorType.Leggings, () -> knockbackResistanceLeggingsAugment)
             .providesBehaviors(KnockbackResistBehavior.INSTANCE)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Protection)
@@ -581,6 +639,7 @@ public class MechArmorAugmentRegistries {
             .setId("StepAssist")
             .setItemId("augmentstepassist")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> stepAssistBootsAugment)
             .providesBehaviors(StepAssistBehavior.INSTANCE)
             .incompatibleAugments(
                 ItemList.Augment_ArchmageStriders,
@@ -594,6 +653,7 @@ public class MechArmorAugmentRegistries {
             .setId("SpeedBoost")
             .setItemId("augmentspeedboost")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> speedBoostBootsAugment)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
             .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
@@ -604,6 +664,7 @@ public class MechArmorAugmentRegistries {
             .setId("JumpBoost")
             .setItemId("augmentjumpboost")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> jumpBoostBootsAugment)
             .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
             .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
@@ -614,6 +675,7 @@ public class MechArmorAugmentRegistries {
             .setId("OmniMovement")
             .setItemId("augmentomnimovement")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> omniMovementBootsAugment)
             .providesBehaviors(OmniMovementBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.SpeedBoost)
             .setMinimumCoreTier(2)
@@ -628,6 +690,7 @@ public class MechArmorAugmentRegistries {
             .setId("ArchmageStriders")
             .setItemId("augmentarchmagestriders")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> archmageStridersBootsAugment)
             .providesBehaviors(
                 new SpeedBoostBehavior(5.0F),
                 new JumpBoostBehavior(4.0F),
@@ -650,6 +713,7 @@ public class MechArmorAugmentRegistries {
             .setId("MilkInfusion")
             .setItemId("augmentmilkinfusion")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> milkInfusionHelmetAugment)
             .providesBehaviors(MilkInfusionBehavior.INSTANCE)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Utility)
@@ -684,6 +748,7 @@ public class MechArmorAugmentRegistries {
             .setId("InertiaCanceling")
             .setItemId("augmentinertiacanceling")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate, () -> inertiaCancelingChestplateAugment)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
             .requiresOr(BehaviorName.Jetpack, BehaviorName.CreativeFlight)
             .setMinimumCoreTier(2)
@@ -693,6 +758,7 @@ public class MechArmorAugmentRegistries {
             .setId("EldritchStriders")
             .setItemId("augmenteldritchstriders")
             .fitsInto(ArmorType.Boots)
+            .setTexture(ArmorType.Boots, () -> eldritchStridersBootsAugment)
             .providesBehaviors(
                 new SpeedBoostBehavior(10.0F),
                 new JumpBoostBehavior(5.0F),
