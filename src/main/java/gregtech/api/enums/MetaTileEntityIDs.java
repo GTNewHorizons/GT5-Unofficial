@@ -1876,7 +1876,6 @@ public enum MetaTileEntityIDs {
     UIV256ADynamoHatch(16033),
     UMV256ADynamoHatch(16034),
     UXV256ADynamoHatch(16035),
-    // TODO: placeholder ids, confirm they are free before release.
     HYDRO_PUMP_CONTROLLER(16990),
     HYDRO_TURBINE_CONTROLLER(16991),
     // UNUSED(16999),
