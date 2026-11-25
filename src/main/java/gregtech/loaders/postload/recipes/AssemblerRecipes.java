@@ -4663,6 +4663,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // Niobium-Titanium
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NiobiumTitanium, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.NiobiumTitanium, 4),
@@ -4674,6 +4675,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // Mysterious Crystal
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.MysteriousCrystal, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 4),
@@ -4685,6 +4687,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // Neutronium
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
@@ -4696,6 +4699,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // Infinity
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4),
@@ -4707,6 +4711,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // Transcendent Metal
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TranscendentMetal, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4),
@@ -4718,6 +4723,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             // SpaceTime
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 4),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4),
