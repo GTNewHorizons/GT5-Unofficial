@@ -37,6 +37,14 @@ public class ArmorActionManager {
 
         register(
             new ArmorAction(
+                "magnet",
+                "Magnet",
+                true,
+                SyncedKeybind.createConfigurable("key.gt.toggle_magnet", "Gregtech Armor", Keyboard.KEY_NONE),
+                BehaviorName.Magnet));
+
+        register(
+            new ArmorAction(
                 "jetpack_hover",
                 "Jetpack Hover",
                 true,
