@@ -342,7 +342,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
     }
 
     private boolean isCoilBelowMinimum(CZPullerRecipes.GrowthRecipe material) {
-        return coilLevel == null || coilLevel.ordinal() < material.minimumCoil.ordinal();
+        return coilLevel == null || coilLevel.getTier() < material.minimumCoil.getTier();
     }
 
     private int getAvailableGasParallel(CZPullerRecipes.GrowthRecipe material, int parallelLimit) {
@@ -617,7 +617,7 @@ public class MTECZPuller extends MTEExtendedPowerMultiBlockBase<MTECZPuller>
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
         HeatingCoilLevel minimumCoil = tier == 2 ? HeatingCoilLevel.UIV : HeatingCoilLevel.MV;
-        if (coilLevel == null || coilLevel.ordinal() < minimumCoil.ordinal()) {
+        if (coilLevel == null || coilLevel.getTier() < minimumCoil.getTier()) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         if (errors.isEmpty()) {

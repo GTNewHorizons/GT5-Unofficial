@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -61,7 +60,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.MTEWaferDopingFacilityGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -1040,7 +1038,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     private int pendingParticleMode;
     private int pendingParticleMultiplier;
     private boolean pendingConsumeAnomaly;
-    private HeatingCoilLevel coilLevel;
     private MTEHatchHeatSensor heatSensor;
     private MTEHatchDopingControl dopingControlHatch;
     private MTEHatchInputBus particleInputBus;
@@ -1093,7 +1090,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     @Override
     public void checkMachine(IGregTechTileEntity base, ItemStack stack, List<StructureError> errors) {
         structureTier = 0;
-        coilLevel = null;
         heatSensor = null;
         if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
         dopingControlHatch = null;
@@ -1107,7 +1103,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
         clearHatches();
         structureTier = 0;
-        coilLevel = null;
         heatSensor = null;
         if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
         dopingControlHatch = null;
@@ -1121,7 +1116,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
         clearHatches();
         structureTier = 0;
-        coilLevel = null;
         heatSensor = null;
         if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
         dopingControlHatch = null;
@@ -1134,14 +1128,12 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
 
         clearHatches();
         structureTier = 0;
-        coilLevel = null;
         heatSensor = null;
         if (dopingControlHatch != null) dopingControlHatch.updateOutputSignal((byte) 0);
         dopingControlHatch = null;
         particleInputBus = null;
         if (!checkPiece(TIER_1, OFFSET_X_1, OFFSET_Y_1, OFFSET_Z_1, errors)) return;
 
-        coilLevel = HeatingCoilLevel.LV;
         long multiAmpCount = mExoticEnergyHatches.stream()
             .filter(MTEHatchEnergyMulti.class::isInstance)
             .count();
@@ -1151,7 +1143,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     private void validateTierThree(List<StructureError> errors) {
-        coilLevel = HeatingCoilLevel.LV;
         validateCommonHatches(errors);
         checkHasInputHatch(errors);
         if (heatSensor == null) errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
@@ -1160,7 +1151,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     private void validateTierFour(List<StructureError> errors) {
-        coilLevel = HeatingCoilLevel.LV;
         validateCommonHatches(errors);
         checkHasInputHatch(errors);
         if (particleInputBus == null || heatSensor == null || dopingControlHatch == null) {
@@ -1175,9 +1165,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             .count();
         if (multiAmpCount != 1 || mExoticEnergyHatches.size() != 1 || !mEnergyHatches.isEmpty() || heatSensor == null) {
             errors.add(StructureErrorRegistry.UNKNOWN_STRUCTURE_ERROR);
-        }
-        if (coilLevel == null || coilLevel == HeatingCoilLevel.None) {
-            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         validateCommonHatches(errors);
         if (errors.isEmpty()) structureTier = 2;
@@ -1526,16 +1513,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
     }
 
     private int coilHeatingRateTenths() {
-        int coilTier = coilLevel == null ? 0 : coilLevel.getTier() + 1;
-        return (int) Math.round((75.0 + Math.pow(1.8, coilTier)) * 10.0);
-    }
-
-    private HeatingCoilLevel getCoil() {
-        return coilLevel;
-    }
-
-    private void setCoil(HeatingCoilLevel level) {
-        coilLevel = level;
+        return (int) Math.round((75.0 + Math.pow(1.8, 2)) * 10.0);
     }
 
     @Override
@@ -1578,7 +1556,7 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
         temperatureCycleFailed = tag.getBoolean(TAG_TEMP_FAILED);
         signalSequence = tag.getIntArray(TAG_SIGNAL_SEQUENCE);
         if (signalSequence.length != 3) signalSequence = new int[0];
-        signalIndex = Math.clamp(signalSequence.length, 0, tag.getInteger(TAG_SIGNAL_INDEX));
+        signalIndex = Math.clamp(tag.getInteger(TAG_SIGNAL_INDEX), 0, signalSequence.length);
         signalDeadline = tag.getLong(TAG_SIGNAL_DEADLINE);
         signalPulseUntil = tag.getLong(TAG_SIGNAL_PULSE_UNTIL);
         signalWaiting = tag.getBoolean(TAG_SIGNAL_WAITING);
@@ -1646,7 +1624,6 @@ public class MTEWaferDopingFacility extends MTEExtendedPowerMultiBlockBase<MTEWa
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
-            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
     }
 

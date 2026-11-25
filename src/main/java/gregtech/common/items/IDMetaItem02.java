@@ -299,9 +299,7 @@ public enum IDMetaItem02 {
     Precise_AlGaAs_Boule(721),
     Microwaved_Silicon_Dust(722),
     AlGaAs_Dust(723),
-    Naquadah_Dioxide_Dust(724),
-    Europium_Monoxide_Dust(725),
-    Tritanium_Oxide_Dust(726),
+    Tritanium_Oxide_Dust(724),
     Display_ITS_FREE(765);
 
     public final int ID;
