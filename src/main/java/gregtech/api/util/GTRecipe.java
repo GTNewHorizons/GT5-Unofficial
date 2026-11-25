@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
+import static gregtech.api.util.GTUtility.addSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -567,11 +568,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     long totalAvailable = 0;
                     for (FluidStack provided : fluidInputs) {
                         if (provided != null && provided.isFluidEqual(alt)) {
-                            totalAvailable += provided.amount;
+                            totalAvailable = addSafe(totalAvailable, GTUtility.getFluidAmount(provided));
                         }
                     }
-                    if (totalAvailable > 0 && alt.amount > 0) {
-                        double parallelForThisAlt = (double) totalAvailable / alt.amount;
+                    if (totalAvailable > 0 && GTUtility.getFluidAmount(alt) > 0) {
+                        double parallelForThisAlt = (double) totalAvailable / GTUtility.getFluidAmount(alt);
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;
                             selectedAlt = alt;
@@ -593,18 +594,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     if (actualMultiplier <= 0) continue;
                 }
 
-                long remainingCost = (long) selectedAlt.amount * actualMultiplier;
+                long remainingCost = (long) GTUtility.getFluidAmount(selectedAlt) * actualMultiplier;
 
                 for (FluidStack providedFluid : fluidInputs) {
                     if (providedFluid == null || providedFluid.amount <= 0 || remainingCost <= 0) continue;
 
                     if (providedFluid.isFluidEqual(selectedAlt)) {
-                        if (providedFluid.amount >= remainingCost) {
-                            providedFluid.amount -= (int) remainingCost;
+                        if (GTUtility.getFluidAmount(providedFluid) >= remainingCost) {
+                            GTUtility.decFluidAmount(providedFluid, remainingCost);
                             remainingCost = 0;
                         } else {
-                            remainingCost -= providedFluid.amount;
-                            providedFluid.amount = 0;
+                            remainingCost -= GTUtility.getFluidAmount(providedFluid);
+                            GTUtility.setFluidAmount(providedFluid, 0);
                         }
                     }
                 }
@@ -678,7 +679,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(2);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
+                fluidMap.mergeLong(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack), GTUtility::addSafe);
             }
 
             for (int i = 0; i < mFluidInputs.length; i++) {
@@ -696,7 +697,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     if (alt == null) continue;
                     long available = fluidMap.getOrDefault(alt.getFluid(), 0L);
                     if (alt.amount > 0 && available > 0) {
-                        double parallelForThisAlt = (double) available / alt.amount;
+                        double parallelForThisAlt = (double) available / GTUtility.getFluidAmount(alt);
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;
                             selectedAlt = alt;
@@ -708,8 +709,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 // Consume from the chosen alternatives fluid pool
                 if (selectedAlt != null) {
-                    long consumed = (long) (selectedAlt.amount * Math.min(currentParallel, bestParallelForSlot));
-                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
+                    long consumed = (long) (GTUtility.getFluidAmount(selectedAlt)
+                        * Math.min(currentParallel, bestParallelForSlot));
+                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, GTUtility::addSafe);
                 }
 
                 currentParallel = Math.min(currentParallel, bestParallelForSlot);
@@ -1339,7 +1341,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     FluidStack fluid = meHatch.getFirstValidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                    fluidConsumptionsFromME.merge(fluid.getFluid(), (long) fluidConsumptions[i].amount, Long::sum);
+                    fluidConsumptionsFromME.merge(
+                        fluid.getFluid(),
+                        (long) GTUtility.getFluidAmount(fluidConsumptions[i]),
+                        GTUtility::addSafe);
                 }
             }
             // Calculate parallel from ME input hatches
@@ -1347,7 +1352,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 Fluid fluid = entry.getKey();
                 if (!fluidsFromME.containsKey(fluid)) return 0;
                 long consume = entry.getValue();
-                currentParallel = Math.min(currentParallel, (double) fluidsFromME.get(fluid).amount / consume);
+                currentParallel = Math
+                    .min(currentParallel, (double) GTUtility.getFluidAmount(fluidsFromME.get(fluid)) / consume);
                 if (currentParallel <= 0) return 0;
             }
 
@@ -1365,7 +1371,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
                 if (fluid == null) return 0;
                 if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                currentParallel = Math.min(currentParallel, (double) fluid.amount / fluidConsumptions[i].amount);
+                currentParallel = Math.min(
+                    currentParallel,
+                    (double) GTUtility.getFluidAmount(fluid) / GTUtility.getFluidAmount(fluidConsumptions[i]));
                 if (currentParallel <= 0) return 0;
             }
             return currentParallel;
@@ -1415,7 +1423,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }
-                fluid.amount -= fluidConsumptions[i].amount * amountMultiplier;
+                GTUtility.decFluidAmount(fluid, GTUtility.getFluidAmount(fluidConsumptions[i]) * amountMultiplier);
             }
         }
     }

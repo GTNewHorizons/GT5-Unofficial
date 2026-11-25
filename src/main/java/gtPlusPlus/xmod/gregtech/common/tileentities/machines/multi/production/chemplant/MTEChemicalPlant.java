@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -10,6 +11,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainFluidPipeCasings;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -33,9 +35,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -88,10 +92,10 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> implements ISurvivalConstructable {
 
     private static final int PARALLELS_PER_PIPE_TIER = 2;
-    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.2D;
+    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.15D;
     private static final float SPEED_BONUS_PER_COIL_TIER = 0.5f;
     private static final int UNBREAKABLE_COIL_TIER = 10;
-    private static final int UNBREAKABLE_PIPE_TIER = 4;
+    private static final int UNBREAKABLE_PIPE_TIER = 7;
     private static final int MAX_CATALYST_DURABILITY = 50;
 
     private int mSolidCasingTier = 0;
@@ -118,6 +122,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     public MTEChemicalPlant(final String aName) {
         super(aName);
+    }
+
+    @Nullable
+    private static Integer getMachineCasingTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCasings1) return null;
+        if (metaID < 0 || metaID > 9) return null;
+        return metaID;
     }
 
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
@@ -256,24 +267,29 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 .addElement(
                     'M',
                     GTStructureChannels.TIER_MACHINE_CASING.use(
-                        addTieredBlock(
-                            GregTechAPI.sBlockCasings1,
+                        ofBlocksTiered(
+                            MTEChemicalPlant::getMachineCasingTierFromMeta,
+                            ImmutableList.of(
+                                Pair.of(GregTechAPI.sBlockCasings1, 0),
+                                Pair.of(GregTechAPI.sBlockCasings1, 1),
+                                Pair.of(GregTechAPI.sBlockCasings1, 2),
+                                Pair.of(GregTechAPI.sBlockCasings1, 3),
+                                Pair.of(GregTechAPI.sBlockCasings1, 4),
+                                Pair.of(GregTechAPI.sBlockCasings1, 5),
+                                Pair.of(GregTechAPI.sBlockCasings1, 6),
+                                Pair.of(GregTechAPI.sBlockCasings1, 7),
+                                Pair.of(GregTechAPI.sBlockCasings1, 8),
+                                Pair.of(GregTechAPI.sBlockCasings1, 9)),
+                            -1,
                             MTEChemicalPlant::setMachineMeta,
-                            MTEChemicalPlant::getMachineMeta,
-                            10)))
+                            MTEChemicalPlant::getMachineMeta)))
                 .addElement(
                     'H',
                     GTStructureChannels.HEATING_COIL
                         .use(activeCoils(ofCoil(MTEChemicalPlant::setCoilMeta, MTEChemicalPlant::getCoilMeta))))
                 .addElement(
                     'P',
-                    GTStructureChannels.PIPE_CASING.use(
-                        addTieredBlock(
-                            GregTechAPI.sBlockCasings2,
-                            MTEChemicalPlant::setPipeMeta,
-                            MTEChemicalPlant::getPipeMeta,
-                            12,
-                            16)))
+                    chainFluidPipeCasings(-1, MTEChemicalPlant::setPipeMeta, MTEChemicalPlant::getPipeMeta))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -387,8 +403,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         for (int i = 0; i < 8; i++) {
             checkCasing[i] = 0;
         }
-        checkPipe = 0;
-        checkMachine = 0;
+        checkPipe = -1;
+        checkMachine = -1;
         mSolidCasingTier = 0;
         mMachineCasingTier = 0;
         mPipeCasingTier = 0;
@@ -407,8 +423,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             }
         }
         checkCasingMin(errors, mCasing, 70);
-        mMachineCasingTier = checkMachine - 1;
-        mPipeCasingTier = checkPipe - 12;
+        mMachineCasingTier = checkMachine;
+        mPipeCasingTier = checkPipe;
         mCoilTier = checkCoil.getTier();
         if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
@@ -564,7 +580,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
      * @return if the catalyst item is fully destroyed as a result of the damage applied.
      */
     private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
-        // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
+        // Awakened Draconium Coils with Neutronium Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f

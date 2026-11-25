@@ -29,7 +29,6 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PO210;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PU238;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_SR90;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Shape_Extruder_WindmillShaft;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_EV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_HV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_IV;
@@ -74,13 +73,6 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     }
 
     public void generateMetaItems() {
-
-        // Extruder Shape
-        GregtechItemList.Shape_Extruder_WindmillShaft.set(
-            this.addItem(
-                Shape_Extruder_WindmillShaft.ID,
-                "Extruder Shape (Shaft)",
-                "Extruder Shape for making Windmill Shafts"));
 
         // Batteries
         GregtechItemList.Battery_RE_EV_Sodium.set(

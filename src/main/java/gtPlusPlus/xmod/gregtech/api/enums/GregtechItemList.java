@@ -41,10 +41,6 @@ public enum GregtechItemList implements IItemContainer {
     Battery_RE_EV_Cadmium,
     Battery_RE_EV_Lithium,
 
-    // Shapes for Extruder
-    Shape_Extruder_WindmillShaft,
-    Shape_Extruder_SmallGear,
-
     // Larger Volumetric Flasks
     VOLUMETRIC_FLASK_8k,
     VOLUMETRIC_FLASK_32k,
@@ -85,9 +81,6 @@ public enum GregtechItemList implements IItemContainer {
     // End Game Laser Engraver Lens
     Laser_Lens_WoodsGlass,
     Laser_Lens_Special,
-
-    // Pellet Mold
-    Pellet_Mold,
 
     // Upgrade chip for Maceration Stack
     Maceration_Upgrade_Chip,
@@ -487,9 +480,6 @@ public enum GregtechItemList implements IItemContainer {
 
     // Auto TC Research Creator
     Thaumcraft_Researcher,
-
-    // infinite Items
-    Infinite_Item_Chest,
 
     // GT4 automation
     GT4_Electric_Auto_Workbench_LV,

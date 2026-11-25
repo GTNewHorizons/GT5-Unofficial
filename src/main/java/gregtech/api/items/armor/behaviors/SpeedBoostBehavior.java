@@ -97,6 +97,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         if (player.isInWater()) {
             speed *= 0.25F;
         }
+        if (player.onGround && player.isSneaking()) {
+            speed *= 0.5F;
+        }
 
         boolean isJumping = ArmorActionManager.getKeybind("VANILLA_JUMP")
             .isKeyDown(player);

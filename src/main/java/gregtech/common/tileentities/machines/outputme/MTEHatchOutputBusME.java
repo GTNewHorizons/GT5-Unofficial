@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -553,13 +554,13 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.item_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
-        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("item", ss, accessor);
+        provider.getWailaCacheBody(ss, accessor);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        return MTEHatchOutputMEBase.WailaHelper.hasWailaAdvancedBody(accessor);
+        return MTEHatchOutputMEBase.hasWailaAdvancedBody(accessor);
     }
 
     @Override
@@ -567,7 +568,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("item", ss, accessor);
+        provider.getWailaAdvancedBody(ss, accessor);
     }
 
     @Override
@@ -577,6 +578,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             "GT5U.infodata.hatch.output_bus_me",
             (IAEItemStack s) -> s.getItem()
                 .getItemStackDisplayName(s.getItemStack()));
+    }
+
+    @Override
+    public @NotNull String getTypePrefix() {
+        return "item";
+    }
+
+    @Override
+    public @NotNull String getUnitSuffix() {
+        return "";
+    }
+
+    @Override
+    public @Nullable String getLocalizedName(NBTTagCompound nbt) {
+        ItemStack stack = ItemStack.loadItemStackFromNBT(nbt);
+        return stack == null ? null : stack.getDisplayName();
     }
 
     @Override

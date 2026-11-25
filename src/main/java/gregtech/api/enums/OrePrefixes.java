@@ -3256,9 +3256,8 @@ public class OrePrefixes {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
-            .trim()
-            .indexOf(' ') != -1) {
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(material.getLocalizedName(), material.getLocalizedNameKey())) {
             return GTInflectionManager.formatInflection(phraseKey, formatterKeys);
         }
         return GTInflectionManager.formatInflection(prefixKey, formatterKeys);
@@ -3274,11 +3273,16 @@ public class OrePrefixes {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialKey)
-            .trim()
-            .indexOf(' ') != -1) {
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(StatCollector.translateToLocal(materialKey), materialKey)) {
             return GTInflectionManager.formatInflection(phraseKey, materialKey);
         }
         return GTInflectionManager.formatInflection(prefixKey, materialKey);
+    }
+
+    // Adjective-first templates cannot be filled by a multi-word name or by a material without an adjective form
+    private static boolean usesPhraseTemplate(String localizedName, String materialKey) {
+        return localizedName.trim()
+            .indexOf(' ') != -1 || !StatCollector.canTranslate(materialKey + ".adj_m_nom");
     }
 }

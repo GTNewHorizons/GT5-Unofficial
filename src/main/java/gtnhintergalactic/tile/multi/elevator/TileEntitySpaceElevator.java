@@ -753,7 +753,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name"));
         if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
         // spotless:off
-        tt.addMarkdown(new ResourceLocation("gregtech", "space-elevator"))
+        tt.addMarkdown(new ResourceLocation("gregtech", "space/elevator"))
             .addSupportAny()
             .beginVariableStructureBlock(35, 47, 48, 48, 35, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_of_central_column_4th_layer"))

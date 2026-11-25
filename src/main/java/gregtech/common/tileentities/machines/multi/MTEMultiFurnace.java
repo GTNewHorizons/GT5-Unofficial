@@ -224,7 +224,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), protectsExcessItem(), true);
 
         // Consume items and generate outputs
         HashMap<GTUtility.ItemId, ItemStack> smeltedOutputs = new HashMap<>();

@@ -188,7 +188,7 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
         String anyGlass = StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass");
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_mirror"))
-            .addMarkdown(new ResourceLocation("gregtech", "beam-mirror"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam/mirror"))
             .beginStructureBlock(3, 6, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.above_controller"), 1)

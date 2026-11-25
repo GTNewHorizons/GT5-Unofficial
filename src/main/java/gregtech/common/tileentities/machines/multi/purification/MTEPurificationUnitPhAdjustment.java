@@ -316,7 +316,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ph_adjustment"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-ph-adjustment"),
+                new ResourceLocation("gregtech", "purification/unit-ph-adjustment"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("ph_min", PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)

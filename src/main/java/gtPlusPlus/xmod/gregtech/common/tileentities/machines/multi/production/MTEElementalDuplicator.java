@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.HatchElement.ElementalDataOrbHatch;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -41,15 +42,19 @@ import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEElementalDuplicator>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
+    private final List<MTEHatchElementalDataOrbHolder> dataOrbHatches = new ArrayList<>();
     // spotless:off
     private static final String[][] structure = {
         { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", "CCCC~CCCC", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
@@ -78,33 +83,30 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
-        tt.addMachineType("Replicator")
-            .addInfo("Produces raw elements from UU-Matter")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.replicator"))
+            .addMarkdown(new ResourceLocation("gregtech", "elemental-duplicator"))
             .addBulkMachineInfo(8, 2f, 1f)
-            .addInfo("Maximum 1x Data Orb Repository")
-            .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top center, 6th layer")
-            .addCasing("120-139", "Elemental Confinement Shell", false)
-            .addCasing("24", "Particle Containment Casing", false)
-            .addCasing("24", "Matter Fabricator Casing", false)
-            .addCasing("24", "Matter Generation Coil", false)
-            .addCasing("24", "Resonance Chamber III", false)
-            .addCasing("20", "High Voltage Current Capacitor", false)
-            .addCasing("16", "Modulator III", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_6th_layer"))
+            .addCasing("120-139", Casings.ElementalConfinementShell.getLocalizedName(), false)
+            .addCasing("24", Casings.ParticleContainmentCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.MatterFabricatorCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.MatterGenerationCoil.getLocalizedName(), false)
+            .addCasing("24", Casings.ResonanceChamber3.getLocalizedName(), false)
+            .addCasing("20", Casings.HighVoltageCurrentCapacitor.getLocalizedName(), false)
+            .addCasing("16", Casings.Modulator3.getLocalizedName(), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Any confinement shell",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"),
                 1)
-            .addEnergyHatch("1+", "Any confinement shell", 1)
-            .addMaintenanceHatch("1", "Any confinement shell", 1)
-            .addMufflerHatch("1", "Any confinement shell", 1)
-            .addInputHatch("1+", "Any confinement shell", 1)
-            .addOutputAny("1+", "Any confinement shell", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_confinement_shell"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -132,7 +134,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
                                     Maintenance,
                                     Muffler,
                                     Energy,
-                                    ElementalDataOrbHatch)
+                                    ReplicatorHatchElement.DATA_ORB_REPOSITORY)
                                 .casingIndex(Casings.ElementalConfinementShell.textureId)
                                 .hint(1)
                                 .build(),
@@ -154,12 +156,23 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        dataOrbHatches.clear();
+    }
+
+    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
-        int hatchCount = mElementalDataOrbHatches.size();
+        int hatchCount = dataOrbHatches.size();
         if (hatchCount != 1) {
-            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, ElementalDataOrbHatch, hatchCount, 1));
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
         checkCasingMin(errors, casingAmount, 120);
         checkHasEnergyHatch(errors);
@@ -203,7 +216,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(getElementalDataOrbHatches())) {
+        for (MTEHatchElementalDataOrbHolder hatch : validMTEList(dataOrbHatches)) {
             ItemStack orb = hatch.getOrbByCircuit();
             logic.setSpecialSlotItem(orb);
             break;
@@ -223,7 +236,7 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
-        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(getElementalDataOrbHatches())) {
+        for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(dataOrbHatches)) {
             byte busColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
@@ -241,5 +254,50 @@ public class MTEElementalDuplicator extends MTEExtendedPowerMultiBlockBase<MTEEl
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    private enum ReplicatorHatchElement implements IHatchElement<MTEElementalDuplicator> {
+
+        DATA_ORB_REPOSITORY("GT5U.MBTT.ElementalDataOrbHatch");
+
+        private final String name;
+
+        ReplicatorHatchElement(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchElementalDataOrbHolder.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEElementalDuplicator> adder() {
+            return (self, igte, texture) -> {
+                if (igte.getMetaTileEntity() instanceof MTEHatchElementalDataOrbHolder imte) {
+                    imte.updateTexture(texture);
+                    imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
+                    self.addIfSmartInput(imte);
+                    self.dataOrbHatches.add(imte);
+                    return true;
+                }
+                return false;
+            };
+        }
+
+        @Override
+        public long count(MTEElementalDuplicator mte) {
+            return mte.dataOrbHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 }

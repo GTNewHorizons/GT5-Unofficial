@@ -470,30 +470,6 @@ public class RecipeGenOre extends RecipeGenBase {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
-        final ItemStack smallDust = material.getSmallDust(1);
-        final ItemStack tinyDust = material.getTinyDust(1);
-
-        if (tinyDust != null) {
-            GTModHandler.addCraftingRecipe(
-                matDust,
-                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
-            GTModHandler.addCraftingRecipe(
-                material.getTinyDust(9),
-                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { "D  ", "   ", "   ", 'D', matDust });
-        }
-
-        if (smallDust != null) {
-            GTModHandler.addCraftingRecipe(
-                matDust,
-                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
-            GTModHandler.addCraftingRecipe(
-                material.getSmallDust(4),
-                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { " D ", "   ", "   ", 'D', matDust });
-        }
     }
 
     private static boolean usesLanthanidesElectrolyzerOutputs(Material material) {

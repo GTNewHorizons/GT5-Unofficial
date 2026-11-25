@@ -106,7 +106,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return defaultFacing;
     }
 
-    private void clearNullMarkersFromTileEntityBuffer() {
+    protected void clearNullMarkersFromTileEntityBuffer() {
         for (int i = 0; i < mBufferedTileEntities.length; i++)
             if (mBufferedTileEntities[i] == this) mBufferedTileEntities[i] = null;
     }

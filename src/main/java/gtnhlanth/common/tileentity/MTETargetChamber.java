@@ -242,7 +242,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "target-chamber"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam/target-chamber"))
             .beginStructureBlock(5, 5, 6, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)

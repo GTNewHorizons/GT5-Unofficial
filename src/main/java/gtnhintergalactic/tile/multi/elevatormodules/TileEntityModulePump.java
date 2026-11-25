@@ -327,6 +327,33 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         return fluid.getLocalizedName();
     }
 
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        ImmutableMap.Builder<String, Object> mapBuilder = ImmutableMap.<String, Object>builder()
+            .put("voltageTier", this.getTier())
+            .put("moduleTier", this.tModuleTier)
+            .put("motorTier", this.getNeededMotorTier())
+            .put("parallels", this.getParallels());
+        if (this.getParallelRecipes() > 1) {
+            mapBuilder.put("parallel_recipes", this.getParallelRecipes());
+        }
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "space/pumping-module"),
+                mapBuilder
+                    .build())
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addOutputHatch("1+", anyCasingText(), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
     @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
 
@@ -390,29 +417,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         @Override
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT1(mName);
-        }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk1"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
         }
     }
 
@@ -480,29 +484,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT2(mName);
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk2"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
-        }
     }
 
     @IMetaTileEntity.SkipGenerateDescription
@@ -568,29 +549,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         @Override
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT3(mName);
-        }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            // spotless:off
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk3"),
-                    ImmutableMap.of("voltageTier", MODULE_VOLTAGE_TIER))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-                .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", anyCasingText(), 1)
-                .addStructureInfo("")
-                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
-                .toolTipFinisher();
-            // spotless:on
-            return tt;
         }
     }
 }

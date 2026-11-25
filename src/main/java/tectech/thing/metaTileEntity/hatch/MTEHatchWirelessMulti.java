@@ -2,9 +2,9 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -39,13 +39,13 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     public final long precisionMultiplier = LongMath.pow(10, 15);
     public final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
-        .multiply(BigInteger.valueOf(ticks_between_energy_addition));
+        .multiply(BigInteger.valueOf(TICKS_BETWEEN_ENERGY_ADDITION));
 
     public final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
 
     public final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
-        ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
-        : ticks_between_energy_addition;
+        ? (long) (TICKS_BETWEEN_ENERGY_ADDITION / (overflowDivisor * 2))
+        : TICKS_BETWEEN_ENERGY_ADDITION;
 
     public final long eu_transferred_per_operation_long = overflowDivisor > 1
         ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
