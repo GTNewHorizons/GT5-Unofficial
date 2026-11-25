@@ -532,6 +532,12 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings14,7, gt(16,7,7)),
     PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 8, gt(16, 7, 8)),
     QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 9, gt(16, 7, 9)),
+    NiobiumTitaniumPipeCasing(() -> GregTechAPI.sBlockCasings14, 10, gt(16, 7, 10)),
+    MysteriousCrystalPipeCasing(() -> GregTechAPI.sBlockCasings14, 11, gt(16, 7, 11)),
+    NeutroniumPipeCasing(() -> GregTechAPI.sBlockCasings14, 12, gt(16, 7, 12)),
+    InfinityPipeCasing(() -> GregTechAPI.sBlockCasings14, 13, gt(16, 7, 13)),
+    TranscendentMetalPipeCasing(() -> GregTechAPI.sBlockCasings14, 14, gt(16, 7, 14)),
+    SpaceTimePipeCasing(() -> GregTechAPI.sBlockCasings14, 15, gt(16, 7, 15)),
 
     // Block Reinforced
     TungstenSteelReinforcedBlock
@@ -748,7 +754,7 @@ public enum Casings implements ICasing {
     ThermalContainmentCasing
         (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
-        (() -> ModBlocks.blockCasings2Misc, 12, -1),
+        (() -> ModBlocks.blockCasings2Misc, 12, gtpp(0, 10)),
     CuttingFactoryFrame
         (() -> ModBlocks.blockCasings2Misc, 13, gtpp(1, 13)),
     SterileFarmCasing
