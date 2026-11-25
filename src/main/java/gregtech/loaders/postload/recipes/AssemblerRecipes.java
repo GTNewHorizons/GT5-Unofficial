@@ -4698,7 +4698,7 @@ public class AssemblerRecipes implements Runnable {
         }
     }
 
-    /// Hydro dam pump and turbine controllers.
+    /// Hydro dam pump and turbine controllers, and the dam water level sensor.
     private void loadHydroDamRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -4721,6 +4721,18 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 4))
             .itemOutputs(ItemList.HydroTurbine.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_LV.get(1),
+                ItemList.Cover_ActivityDetector.get(1),
+                ItemList.Cover_Screen.get(1),
+                ItemList.Sensor_LV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1))
+            .itemOutputs(ItemList.HydroDamWaterLevelSensor.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

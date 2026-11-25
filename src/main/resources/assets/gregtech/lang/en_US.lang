@@ -2336,6 +2336,7 @@ gt.mbtt.machine_type.ore_washer_simple_washer=Ore Washer, Simple Washer
 gt.mbtt.machine_type.water_pump=Water Pump
 gt.mbtt.machine_type.hydro_pump=Hydro Pump
 gt.mbtt.machine_type.hydro_turbine=Hydro Turbine
+gt.blockmachines.hatch.dam-water-level-sensor.name=Dam Water Level Sensor
 gt.mbtt.machine_type.blast_furnace_ebf=Blast Furnace, EBF
 gt.mbtt.machine_type.blast_furnace_exh=Blast Furnace, ExH, MEBF, MBF
 gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
