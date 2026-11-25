@@ -7,7 +7,6 @@ import java.util.ListIterator;
 import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,7 +17,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -120,22 +118,21 @@ public class ArmorEventHandlers {
         }
     }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+        boolean cloaked = isCloaked(event.entityPlayer);
+        if (CloakFadeRenderer.renderFade(event.entityPlayer, cloaked, event.partialRenderTick)) {
+            event.setCanceled(true);
+        }
+    }
+
     private static boolean isCloaked(EntityPlayer player) {
         if (!player.isInvisible()) return false;
         ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
         if (chest == null || !(chest.getItem() instanceof MechArmorBase)) return false;
         return MechArmorBase.load(player, chest)
             .hasBehavior(BehaviorName.Cloak);
-    }
-
-    @SubscribeEvent
-    public void onMobTarget(LivingSetAttackTargetEvent event) {
-        if (!(event.target instanceof EntityPlayer player)) return;
-        if (!(event.entityLiving instanceof EntityLiving mob)) return;
-        if (mob.getAITarget() == player) return;
-        if (isCloaked(player)) {
-            mob.setAttackTarget(null);
-        }
     }
 
     private static final float MAGIC_STEP_HEIGHT = 1.0023f;

@@ -1,14 +1,10 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.List;
 import java.util.Set;
 
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +18,7 @@ public class CloakBehavior implements IArmorBehavior {
     public static final CloakBehavior INSTANCE = new CloakBehavior();
 
     private static final double EU_PER_TICK = 8;
-    private static final int AGGRO_CHECK_INTERVAL = 10;
-    private static final double AGGRO_RANGE = 32.0;
+    private static final int INVISIBILITY_DURATION_TICKS = 40;
 
     protected CloakBehavior() {}
 
@@ -48,42 +43,33 @@ public class CloakBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         if (context.isRemote()) return;
 
-        if (context.isBehaviorActive(BehaviorName.Cloak) && context.drainEnergy(EU_PER_TICK)) {
-            EntityPlayer player = context.getPlayer();
-            player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 40, 0, true));
-            if (context.getWorld()
-                .getTotalWorldTime() % AGGRO_CHECK_INTERVAL == 0) {
-                dropAggro(player);
-            }
+        EntityPlayer player = context.getPlayer();
+        boolean cloaked = context.isBehaviorActive(BehaviorName.Cloak) && context.drainEnergy(EU_PER_TICK);
+
+        if (cloaked) {
+            applyInvisibility(player);
         } else {
-            removeCloak(context);
+            removeCloakInvisibility(player);
         }
     }
 
     @Override
     public void onArmorUnequip(@NotNull ArmorContext context) {
-        removeCloak(context);
+        removeCloakInvisibility(context.getPlayer());
     }
 
-    private static void removeCloak(ArmorContext context) {
-        EntityPlayer player = context.getPlayer();
+    private static void applyInvisibility(EntityPlayer player) {
+        player.addPotionEffect(new PotionEffect(Potion.invisibility.id, INVISIBILITY_DURATION_TICKS, 0, true));
+    }
+
+    private static void removeCloakInvisibility(EntityPlayer player) {
         PotionEffect effect = player.getActivePotionEffect(Potion.invisibility);
-        if (effect != null && effect.getIsAmbient()) {
+        if (isCloakInvisibility(effect)) {
             player.removePotionEffect(Potion.invisibility.id);
         }
     }
 
-    private static void dropAggro(EntityPlayer player) {
-        AxisAlignedBB box = player.boundingBox.expand(AGGRO_RANGE, AGGRO_RANGE, AGGRO_RANGE);
-        List<EntityLiving> mobs = player.worldObj.getEntitiesWithinAABB(EntityLiving.class, box);
-        for (EntityLiving mob : mobs) {
-            if (mob.getAITarget() == player) continue;
-            if (mob.getAttackTarget() == player) {
-                mob.setAttackTarget(null);
-            }
-            if (mob instanceof EntityCreature creature && creature.getEntityToAttack() == player) {
-                creature.setTarget(null);
-            }
-        }
+    private static boolean isCloakInvisibility(PotionEffect effect) {
+        return effect != null && effect.getIsAmbient() && effect.getDuration() <= INVISIBILITY_DURATION_TICKS;
     }
 }

@@ -35,7 +35,6 @@ public enum BehaviorName {
     Soulbound(EnumRarity.common),
     Levitation(EnumRarity.epic),
     Cloak(EnumRarity.uncommon)
-
     //
     ;
 
