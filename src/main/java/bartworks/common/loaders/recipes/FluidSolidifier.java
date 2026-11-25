@@ -4,7 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -17,15 +16,6 @@ public class FluidSolidifier implements Runnable {
 
     @Override
     public void run() {
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.lapis_block))
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0))
-            .fluidInputs(Materials.Iron.getMolten(9 * INGOTS))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(fluidSolidifierRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1))

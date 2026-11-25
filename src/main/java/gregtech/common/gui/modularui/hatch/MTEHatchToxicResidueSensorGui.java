@@ -3,34 +3,24 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.common.CommonWidgets;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchRedstoneBaseGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchToxicResidueSensor;
 
-public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSensor> {
+public class MTEHatchToxicResidueSensorGui extends MTEHatchRedstoneBaseGui<MTEHatchToxicResidueSensor> {
 
-    public MTEToxicResidueSensorGui(MTEToxicResidueSensor mteToxicResidueSensor) {
-        super(mteToxicResidueSensor);
+    public MTEHatchToxicResidueSensorGui(MTEHatchToxicResidueSensor mteHatchToxicResidueSensor) {
+        super(mteHatchToxicResidueSensor);
     }
 
     @Override
-    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow col = Flow.column()
-            .child(createThresholdTypeButtonRow())
-            .child(
-                CommonWidgets
-                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
+    protected Flow createContentColumn() {
+        return super.createContentColumn().child(createThresholdTypeButtonRow())
             .child(
                 IKey.lang("GT5U.gui.text.toxic_residue_sensor")
                     .asWidget())
@@ -41,16 +31,12 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
                         machine.getThresholdType()
                             .getMaxCapacity())
                     .size(77, 12)
-                    .setFocusOnGuiOpen(true))
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START)
-            .childPadding(2);
-        return super.createContentSection(panel, syncManager).child(col);
+                    .setFocusOnGuiOpen(true));
     }
 
     public Flow createThresholdTypeButtonRow() {
-        EnumSyncValue<MTEToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
-            MTEToxicResidueSensor.ThresholdType.class,
+        EnumSyncValue<MTEHatchToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
+            MTEHatchToxicResidueSensor.ThresholdType.class,
             machine::getThresholdType,
             machine::setThresholdType).allowC2S();
 
@@ -68,7 +54,8 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     }
 
     private CycleButtonWidget addToxicResidueTypeTooltips(CycleButtonWidget button) {
-        for (MTEToxicResidueSensor.ThresholdType toxicResidueType : MTEToxicResidueSensor.ThresholdType.values()) {
+        for (MTEHatchToxicResidueSensor.ThresholdType toxicResidueType : MTEHatchToxicResidueSensor.ThresholdType
+            .values()) {
             button.addTooltip(toxicResidueType.ordinal(), toxicResidueType.getTooltip());
         }
         return button;
