@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.gtnewhorizon.gtnhlib.api.OutlineShape;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import cpw.mods.fml.relauncher.Side;
@@ -557,6 +558,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         List<AxisAlignedBB> outputAABB, Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
+
+    default AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        return getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    default OutlineShape getOutlineShape() {
+        return OutlineShape.EMPTY;
+    }
 
     void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider);
 

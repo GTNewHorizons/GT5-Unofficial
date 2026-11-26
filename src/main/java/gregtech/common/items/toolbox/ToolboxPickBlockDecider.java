@@ -20,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import appeng.api.util.IOrientable;
 import appeng.tile.AEBaseTile;
+import gregtech.GTMod;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
@@ -161,7 +162,15 @@ public class ToolboxPickBlockDecider {
 
     /** @see #getSuggestedTool(EntityPlayer, MovingObjectPosition) */
     public static PickResults getSuggestedTool(final EntityPlayer player) {
-        return getSuggestedTool(player, GTUtility.getPlayerLookingTarget(player));
+        // a pipe's selection box is the full block while the held item is a tool this method returns. Trace that box
+        GTMod.clientProxy()
+            .setPickingToolboxTool(true);
+        try {
+            return getSuggestedTool(player, GTUtility.getPlayerLookingTarget(player));
+        } finally {
+            GTMod.clientProxy()
+                .setPickingToolboxTool(false);
+        }
     }
 
     /** @see #getSuggestedTool(EntityPlayer, MovingObjectPosition) */

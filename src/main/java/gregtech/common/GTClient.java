@@ -113,6 +113,7 @@ import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.config.Client;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.entity.EntityDrone;
@@ -643,10 +644,15 @@ public class GTClient extends GTProxy {
 
     private boolean isRenderingWorld;
     private boolean isComputingPickBlock;
+    private boolean isPickingToolboxTool;
     private boolean heldItemForcesFullBlockBB;
 
     public void setComputingPickBlock(boolean b) {
         isComputingPickBlock = b;
+    }
+
+    public void setPickingToolboxTool(boolean b) {
+        isPickingToolboxTool = b;
     }
 
     @SubscribeEvent
@@ -661,7 +667,7 @@ public class GTClient extends GTProxy {
     }
 
     public boolean forceFullBlockBB() {
-        return heldItemForcesFullBlockBB && (isRenderingWorld || isComputingPickBlock);
+        return isPickingToolboxTool || (heldItemForcesFullBlockBB && (isRenderingWorld || isComputingPickBlock));
     }
 
     private static boolean shouldHeldItemForceFullBlockBB() {
@@ -670,13 +676,16 @@ public class GTClient extends GTProxy {
         final ItemStack stack = player.getCurrentEquippedItem();
         if (stack == null) return false;
         return GTUtility.isStackInList(stack, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(stack, GregTechAPI.sScrewdriverList)
             || GTUtility.isStackInList(stack, GregTechAPI.sHardHammerList)
             || GTUtility.isStackInList(stack, GregTechAPI.sSoftMalletList)
             || GTUtility.isStackInList(stack, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || (ItemMachines.getMetaTileEntity(stack) instanceof MetaPipeEntity && player.isSneaking());
+            || GTUtility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), stack, true)
+            || ((stack.getItem() instanceof PipeShapeItemBlock
+                || ItemMachines.getMetaTileEntity(stack) instanceof MetaPipeEntity) && player.isSneaking());
     }
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

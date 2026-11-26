@@ -10,6 +10,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,8 +33,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.api.OutlineShape;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
@@ -69,6 +70,9 @@ import gregtech.common.covers.Cover;
  * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
+
+    // a shape depends only on thickness, covers and connections. Client and server threads both write to the cache
+    private static final Map<Long, PipeShape> PIPE_SHAPES = new ConcurrentHashMap<>();
 
     private volatile ITexture[][] inventoryTextureCache;
     private volatile Map<Material, ITexture[][]> shapeInventoryTextureCache;
@@ -287,14 +291,12 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
             getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
     }
 
-    @SuppressWarnings("OverlyComplexMethod") // Naturally complex logic
     @Override
     @SideOnly(Side.CLIENT)
     public boolean renderInWorld(ISBRWorldContext ctx) {
         BaseMetaPipeEntity rte = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (rte == null) return false;
 
-        final byte aConnections = rte.getConnections();
         final float thickness = getThickness();
         if (thickness >= 1) {
             ctx.renderNegativeYFacing(rte.getTextureCovered(DOWN));
@@ -305,306 +307,38 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
             ctx.renderPositiveXFacing(rte.getTextureCovered(EAST));
             return true;
         }
-        // Range of block occupied by pipe
-        final float pipeMin = (BLOCK_MAX - thickness) / 2.0F;
-        final float pipeMax = BLOCK_MAX - pipeMin;
 
-        final ITexture[] textureUp = rte.getTextureUncovered(UP);
-        final ITexture[] textureDown = rte.getTextureUncovered(DOWN);
-        final ITexture[] textureNorth = rte.getTextureUncovered(NORTH);
-        final ITexture[] textureSouth = rte.getTextureUncovered(SOUTH);
-        final ITexture[] textureWest = rte.getTextureUncovered(WEST);
-        final ITexture[] textureEast = rte.getTextureUncovered(EAST);
-
-        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        switch (aConnections) {
-            case NO_CONNECTION -> {
-                renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                ctx.renderNegativeYFacing(textureDown);
-                ctx.renderPositiveYFacing(textureUp);
-                ctx.renderNegativeZFacing(textureNorth);
-                ctx.renderPositiveZFacing(textureSouth);
-                ctx.renderNegativeXFacing(textureWest);
-                ctx.renderPositiveXFacing(textureEast);
-            }
-            case CONNECTED_EAST | CONNECTED_WEST -> {
-                // EAST - WEST Pipe Sides
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
-
-                ctx.renderNegativeYFacing(textureDown);
-                ctx.renderPositiveYFacing(textureUp);
-                ctx.renderNegativeZFacing(textureNorth);
-                ctx.renderPositiveZFacing(textureSouth);
-
-                // EAST - WEST Pipe Ends
-                ctx.renderNegativeXFacing(textureWest);
-                ctx.renderPositiveXFacing(textureEast);
-            }
-            case CONNECTED_DOWN | CONNECTED_UP -> {
-                // UP - DOWN Pipe Sides
-                renderBlocks.setRenderBounds(pipeMin, BLOCK_MIN, pipeMin, pipeMax, BLOCK_MAX, pipeMax);
-
-                ctx.renderNegativeZFacing(textureNorth);
-                ctx.renderPositiveZFacing(textureSouth);
-                ctx.renderNegativeXFacing(textureWest);
-                ctx.renderPositiveXFacing(textureEast);
-
-                // UP - DOWN Pipe Ends
-                ctx.renderNegativeYFacing(textureDown);
-                ctx.renderPositiveYFacing(textureUp);
-            }
-            case CONNECTED_NORTH | CONNECTED_SOUTH -> {
-                // NORTH - SOUTH Pipe Sides
-                renderBlocks.setRenderBounds(pipeMin, pipeMin, BLOCK_MIN, pipeMax, pipeMax, BLOCK_MAX);
-
-                ctx.renderNegativeYFacing(textureDown);
-                ctx.renderPositiveYFacing(textureUp);
-                ctx.renderNegativeXFacing(textureWest);
-                ctx.renderPositiveXFacing(textureEast);
-
-                // NORTH - SOUTH Pipe Ends
-                ctx.renderNegativeZFacing(textureNorth);
-                ctx.renderPositiveZFacing(textureSouth);
-            }
-            default -> {
-                if ((aConnections & CONNECTED_WEST) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, pipeMin, pipeMax, pipeMax);
-
-                    ctx.renderNegativeYFacing(textureDown);
-                    ctx.renderPositiveYFacing(textureUp);
-                    ctx.renderNegativeZFacing(textureNorth);
-                    ctx.renderPositiveZFacing(textureSouth);
-                }
-                ctx.renderNegativeXFacing(textureWest);
-                if ((aConnections & CONNECTED_EAST) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(pipeMax, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
-
-                    ctx.renderNegativeYFacing(textureDown);
-                    ctx.renderPositiveYFacing(textureUp);
-                    ctx.renderNegativeZFacing(textureNorth);
-                    ctx.renderPositiveZFacing(textureSouth);
-                }
-                ctx.renderPositiveXFacing(textureEast);
-                if ((aConnections & CONNECTED_DOWN) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(pipeMin, BLOCK_MIN, pipeMin, pipeMax, pipeMin, pipeMax);
-
-                    ctx.renderNegativeZFacing(textureNorth);
-                    ctx.renderPositiveZFacing(textureSouth);
-                    ctx.renderNegativeXFacing(textureWest);
-                    ctx.renderPositiveXFacing(textureEast);
-                }
-                ctx.renderNegativeYFacing(textureDown);
-                if ((aConnections & CONNECTED_UP) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMax, pipeMin, pipeMax, BLOCK_MAX, pipeMax);
-
-                    ctx.renderNegativeZFacing(textureNorth);
-                    ctx.renderPositiveZFacing(textureSouth);
-                    ctx.renderNegativeXFacing(textureWest);
-                    ctx.renderPositiveXFacing(textureEast);
-                }
-                ctx.renderPositiveYFacing(textureUp);
-                if ((aConnections & CONNECTED_NORTH) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, BLOCK_MIN, pipeMax, pipeMax, pipeMin);
-
-                    ctx.renderNegativeYFacing(textureDown);
-                    ctx.renderPositiveYFacing(textureUp);
-                    ctx.renderNegativeXFacing(textureWest);
-                    ctx.renderPositiveXFacing(textureEast);
-                }
-                ctx.renderNegativeZFacing(textureNorth);
-                if ((aConnections & CONNECTED_SOUTH) == 0) {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
-
-                } else {
-                    renderBlocks.setRenderBounds(pipeMin, pipeMin, pipeMax, pipeMax, pipeMax, BLOCK_MAX);
-
-                    ctx.renderNegativeYFacing(textureDown);
-                    ctx.renderPositiveYFacing(textureUp);
-                    ctx.renderNegativeXFacing(textureWest);
-                    ctx.renderPositiveXFacing(textureEast);
-                }
-                ctx.renderPositiveZFacing(textureSouth);
+        final PipeShape shape = getShape(thickness);
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final ITexture[] texture = rte.getTextureUncovered(side);
+            for (PipeShape.Face face : shape.pipeFaces()) {
+                if (face.side() == side) renderFace(ctx, face, texture);
             }
         }
-        final boolean hasCoverDown = rte.hasCoverAtSide(DOWN);
-        final boolean hasCoverUp = rte.hasCoverAtSide(UP);
-        final boolean hasCoverNorth = rte.hasCoverAtSide(NORTH);
-        final boolean hasCoverSouth = rte.hasCoverAtSide(SOUTH);
-        final boolean hasCoverWest = rte.hasCoverAtSide(WEST);
-        final boolean hasCoverEast = rte.hasCoverAtSide(EAST);
-
-        final var coverThickness = Float.min(BLOCK_MAX / 8.0F, (BLOCK_MAX - thickness) / 2.0F);
-        final float coverInnerMin = BLOCK_MIN + coverThickness;
-        final float coverInnerMax = BLOCK_MAX - coverThickness;
-
-        if (hasCoverDown) {
-            final ITexture[] coverTexture = rte.getTexture(DOWN);
-            renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, coverInnerMin, BLOCK_MAX);
-            if (!hasCoverNorth) ctx.renderNegativeZFacing(coverTexture);
-            if (!hasCoverSouth) ctx.renderPositiveZFacing(coverTexture);
-            if (!hasCoverWest) ctx.renderNegativeXFacing(coverTexture);
-            if (!hasCoverEast) ctx.renderPositiveXFacing(coverTexture);
-            ctx.renderPositiveYFacing(coverTexture);
-            if ((aConnections & CONNECTED_DOWN) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MIN, pipeMin);
-                ctx.renderNegativeYFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, pipeMax, BLOCK_MAX, BLOCK_MIN, BLOCK_MAX);
-                ctx.renderNegativeYFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, pipeMin, pipeMin, BLOCK_MIN, pipeMax);
-                ctx.renderNegativeYFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(pipeMax, BLOCK_MIN, pipeMin, BLOCK_MAX, BLOCK_MIN, pipeMax);
-            }
-            ctx.renderNegativeYFacing(coverTexture);
+        for (ForgeDirection plate : ForgeDirection.VALID_DIRECTIONS) {
+            final List<PipeShape.Face> faces = shape.coverFaces()
+                .get(plate);
+            if (faces == null) continue;
+            final ITexture[] texture = rte.getTexture(plate);
+            for (PipeShape.Face face : faces) renderFace(ctx, face, texture);
         }
-
-        if (hasCoverUp) {
-            final ITexture[] coverTexture = rte.getTexture(UP);
-            renderBlocks.setRenderBounds(BLOCK_MIN, coverInnerMax, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-            if (!hasCoverNorth) ctx.renderNegativeZFacing(coverTexture);
-            if (!hasCoverSouth) ctx.renderPositiveZFacing(coverTexture);
-            if (!hasCoverWest) ctx.renderNegativeXFacing(coverTexture);
-            if (!hasCoverEast) ctx.renderPositiveXFacing(coverTexture);
-            ctx.renderNegativeYFacing(coverTexture);
-            if ((aConnections & CONNECTED_UP) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MAX, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, pipeMin);
-                ctx.renderPositiveYFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MAX, pipeMax, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-                ctx.renderPositiveYFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MAX, pipeMin, pipeMin, BLOCK_MAX, pipeMax);
-                ctx.renderPositiveYFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(pipeMax, BLOCK_MAX, pipeMin, BLOCK_MAX, BLOCK_MAX, pipeMax);
-            }
-            ctx.renderPositiveYFacing(coverTexture);
-        }
-
-        if (hasCoverNorth) {
-            final ITexture[] coverTexture = rte.getTexture(NORTH);
-            renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, coverInnerMin);
-            if (!hasCoverDown) ctx.renderNegativeYFacing(coverTexture);
-            if (!hasCoverUp) ctx.renderPositiveYFacing(coverTexture);
-            if (!hasCoverWest) ctx.renderNegativeXFacing(coverTexture);
-            if (!hasCoverEast) ctx.renderPositiveXFacing(coverTexture);
-            ctx.renderPositiveZFacing(coverTexture);
-            if ((aConnections & CONNECTED_NORTH) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, pipeMin, BLOCK_MIN);
-                ctx.renderNegativeZFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMax, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MIN);
-                ctx.renderNegativeZFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, BLOCK_MIN, pipeMin, pipeMax, BLOCK_MIN);
-                ctx.renderNegativeZFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(pipeMax, pipeMin, BLOCK_MIN, BLOCK_MAX, pipeMax, BLOCK_MIN);
-            }
-            ctx.renderNegativeZFacing(coverTexture);
-        }
-
-        if (hasCoverSouth) {
-            final ITexture[] coverTexture = rte.getTexture(SOUTH);
-            renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, coverInnerMax, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-            if (!hasCoverDown) ctx.renderNegativeYFacing(coverTexture);
-            if (!hasCoverUp) ctx.renderPositiveYFacing(coverTexture);
-            if (!hasCoverWest) ctx.renderNegativeXFacing(coverTexture);
-            if (!hasCoverEast) ctx.renderPositiveXFacing(coverTexture);
-            ctx.renderNegativeZFacing(coverTexture);
-            if ((aConnections & CONNECTED_SOUTH) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, pipeMin, BLOCK_MAX);
-                ctx.renderPositiveZFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMax, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-                ctx.renderPositiveZFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, BLOCK_MAX, pipeMin, pipeMax, BLOCK_MAX);
-                ctx.renderPositiveZFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(pipeMax, pipeMin, BLOCK_MAX, BLOCK_MAX, pipeMax, BLOCK_MAX);
-            }
-            ctx.renderPositiveZFacing(coverTexture);
-        }
-
-        if (hasCoverWest) {
-            final ITexture[] coverTexture = rte.getTexture(WEST);
-            renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, coverInnerMin, BLOCK_MAX, BLOCK_MAX);
-            if (!hasCoverDown) ctx.renderNegativeYFacing(coverTexture);
-            if (!hasCoverUp) ctx.renderPositiveYFacing(coverTexture);
-            if (!hasCoverNorth) ctx.renderNegativeZFacing(coverTexture);
-            if (!hasCoverSouth) ctx.renderPositiveZFacing(coverTexture);
-            ctx.renderPositiveXFacing(coverTexture);
-            if ((aConnections & CONNECTED_WEST) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, pipeMin, BLOCK_MAX);
-                ctx.renderNegativeXFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMax, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX);
-                ctx.renderNegativeXFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, BLOCK_MIN, BLOCK_MIN, pipeMax, pipeMin);
-                ctx.renderNegativeXFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMax, BLOCK_MIN, pipeMax, BLOCK_MAX);
-            }
-            ctx.renderNegativeXFacing(coverTexture);
-        }
-
-        if (hasCoverEast) {
-            final ITexture[] coverTexture = rte.getTexture(EAST);
-            renderBlocks.setRenderBounds(coverInnerMax, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-            if (!hasCoverDown) ctx.renderNegativeYFacing(coverTexture);
-            if (!hasCoverUp) ctx.renderPositiveYFacing(coverTexture);
-            if (!hasCoverNorth) ctx.renderNegativeZFacing(coverTexture);
-            if (!hasCoverSouth) ctx.renderPositiveZFacing(coverTexture);
-            ctx.renderNegativeXFacing(coverTexture);
-
-            if ((aConnections & CONNECTED_EAST) != 0) {
-                // Split outer face to leave hole for pipe
-                // Lower panel
-                renderBlocks.setRenderBounds(BLOCK_MAX, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, pipeMin, BLOCK_MAX);
-                ctx.renderPositiveXFacing(coverTexture);
-                // Upper panel
-                renderBlocks.setRenderBounds(BLOCK_MAX, pipeMax, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-                ctx.renderPositiveXFacing(coverTexture);
-                // Middle left panel
-                renderBlocks.setRenderBounds(BLOCK_MAX, pipeMin, BLOCK_MIN, BLOCK_MAX, pipeMax, pipeMin);
-                ctx.renderPositiveXFacing(coverTexture);
-                // Middle right panel
-                renderBlocks.setRenderBounds(BLOCK_MAX, pipeMin, pipeMax, BLOCK_MAX, pipeMax, BLOCK_MAX);
-            }
-            ctx.renderPositiveXFacing(coverTexture);
-        }
-
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void renderFace(ISBRWorldContext ctx, PipeShape.Face face, ITexture[] texture) {
+        final AxisAlignedBB box = face.box();
+        ctx.getRenderBlocks()
+            .setRenderBounds(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
+        switch (face.side()) {
+            case DOWN -> ctx.renderNegativeYFacing(texture);
+            case UP -> ctx.renderPositiveYFacing(texture);
+            case NORTH -> ctx.renderNegativeZFacing(texture);
+            case SOUTH -> ctx.renderPositiveZFacing(texture);
+            case WEST -> ctx.renderNegativeXFacing(texture);
+            case EAST -> ctx.renderPositiveXFacing(texture);
+            case UNKNOWN -> {}
+        }
     }
 
     /**
@@ -1015,92 +749,199 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
-        if (boundingBoxShouldBeFullBlock()) {
-            AxisAlignedBB fullSizeBoundingBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
-            if (inputAABB.intersectsWith(fullSizeBoundingBox)) outputAABB.add(fullSizeBoundingBox);
+        for (AxisAlignedBB box : getShape(getCollisionThickness()).boxes()) {
+            AxisAlignedBB worldBox = box.getOffsetBoundingBox(x, y, z);
+            if (inputAABB.intersectsWith(worldBox)) outputAABB.add(worldBox);
         }
-        // Even if we're holding a tool, we still want to check for collisions with the regular size
-        // of the pipe in case the player is currently in contact with it.
-        AxisAlignedBB physicalBoundingBox = getPhysicalCollisionBoundingBox(x, y, z);
-        if (inputAABB.intersectsWith(physicalBoundingBox)) outputAABB.add(physicalBoundingBox);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        // This is all we need to return when drawing the interaction box around the pipe.
-        if (boundingBoxShouldBeFullBlock()) {
-            return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+        return getShape(getCollisionThickness()).bounds()
+            .getOffsetBoundingBox(x, y, z);
+    }
+
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        if (selectionShouldBeFullBlock()) return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+        return getCollisionBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
+    public OutlineShape getOutlineShape() {
+        return selectionShouldBeFullBlock() ? OutlineShape.EMPTY : getShape(getCollisionThickness()).outline();
+    }
+
+    private boolean selectionShouldBeFullBlock() {
+        // While holding tool, make it full block. `GTMod.GT.isClientSide()` is true on the integrated server too
+        return getBaseMetaTileEntity().isClientSide() && GTMod.clientProxy()
+            .forceFullBlockBB();
+    }
+
+    public boolean hasCoverPlates() {
+        return getCollisionThickness() < 1;
+    }
+
+    /// Return the covered side whose plate contains the hit on face `side`, or [ForgeDirection#UNKNOWN].
+    public ForgeDirection getCoverSideAt(ForgeDirection side, float x, float y, float z) {
+        final float depth = PipeShape.coverDepth(getCollisionThickness());
+        for (ForgeDirection plate : ForgeDirection.VALID_DIRECTIONS) {
+            if (!getBaseMetaTileEntity().hasCoverAtSide(plate)) continue;
+            final float along = plate.offsetX != 0 ? x : plate.offsetY != 0 ? y : z;
+            // C08PacketPlayerBlockPlacement rounds hits down to 1/16. A hit at the depth is on a low plate only on the
+            // inner face
+            final boolean onPlate = plate.offsetX + plate.offsetY + plate.offsetZ > 0 ? along >= 1 - depth
+                : along < depth || (along == depth && side == plate.getOpposite());
+            if (onPlate) return plate;
         }
-        // Otherwise, account for attached covers and connections
-        return getPhysicalCollisionBoundingBox(x, y, z);
+        return ForgeDirection.UNKNOWN;
     }
 
-    private boolean boundingBoxShouldBeFullBlock() {
-        // While holding tool, make it full block.
-        return (GTMod.GT.isClientSide() && GTMod.clientProxy()
-            .forceFullBlockBB()) || getCollisionThickness() == 1;
-    }
-
-    /**
-     * Gets the bounding box that corresponds to the rendered pipe.
-     */
-    private @NotNull AxisAlignedBB getPhysicalCollisionBoundingBox(int x, int y, int z) {
-        final float space = (1f - getCollisionThickness()) / 2;
-        float yStart = space;
-        float yEnd = 1f - space;
-        float zStart = space;
-        float zEnd = 1f - space;
-        float xStart = space;
-        float xEnd = 1f - space;
+    private PipeShape getShape(float thickness) {
         final BaseMetaPipeEntity baseTE = (BaseMetaPipeEntity) getBaseMetaTileEntity();
-
-        if (baseTE.hasCoverAtSide(ForgeDirection.DOWN)) {
-            yStart = zStart = xStart = 0;
-            zEnd = xEnd = 1;
+        int covers = 0;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (baseTE.hasCoverAtSide(side)) covers |= side.flag;
         }
-        if (baseTE.hasCoverAtSide(ForgeDirection.UP)) {
-            zStart = xStart = 0;
-            yEnd = zEnd = xEnd = 1;
-        }
-        if (baseTE.hasCoverAtSide(ForgeDirection.NORTH)) {
-            yStart = zStart = xStart = 0;
-            yEnd = xEnd = 1;
-        }
-        if (baseTE.hasCoverAtSide(ForgeDirection.SOUTH)) {
-            yStart = xStart = 0;
-            yEnd = zEnd = xEnd = 1;
-        }
-        if (baseTE.hasCoverAtSide(ForgeDirection.WEST)) {
-            yStart = zStart = xStart = 0;
-            yEnd = zEnd = 1;
-        }
-        if (baseTE.hasCoverAtSide(ForgeDirection.EAST)) {
-            yStart = zStart = 0;
-            yEnd = zEnd = xEnd = 1;
-        }
-
         // this.mConnections isn't synced, but BaseMetaPipeEntity.mConnections is for some reason
-        final byte connections = baseTE.mConnections;
-        if ((connections & ForgeDirection.DOWN.flag) != 0) {
-            yStart = 0f;
-        }
-        if ((connections & ForgeDirection.UP.flag) != 0) {
-            yEnd = 1f;
-        }
-        if ((connections & ForgeDirection.NORTH.flag) != 0) {
-            zStart = 0f;
-        }
-        if ((connections & ForgeDirection.SOUTH.flag) != 0) {
-            zEnd = 1f;
-        }
-        if ((connections & ForgeDirection.WEST.flag) != 0) {
-            xStart = 0f;
-        }
-        if ((connections & ForgeDirection.EAST.flag) != 0) {
-            xEnd = 1f;
+        final int connections = baseTE.mConnections & CONNECTED_ALL;
+        final long key = (long) Float.floatToIntBits(thickness) << 12 | covers << 6 | connections;
+        final int coverFlags = covers;
+        return PIPE_SHAPES.computeIfAbsent(key, k -> PipeShape.build(thickness, connections, coverFlags));
+    }
+
+    /// `boxes` are in block coordinates: the core, then for a thin pipe an arm per connection and a plate per cover.
+    private record PipeShape(List<AxisAlignedBB> boxes, AxisAlignedBB bounds, OutlineShape outline,
+        List<Face> pipeFaces, Map<ForgeDirection, List<Face>> coverFaces) {
+
+        private PipeShape {
+            boxes = List.copyOf(boxes);
+            pipeFaces = List.copyOf(pipeFaces);
+            coverFaces = Map.copyOf(coverFaces);
         }
 
-        return AxisAlignedBB.getBoundingBox(x + xStart, y + yStart, z + zStart, x + xEnd, y + yEnd, z + zEnd);
+        private static PipeShape build(float thickness, int connections, int covers) {
+            final float space = (1f - thickness) / 2;
+            final AxisAlignedBB core = AxisAlignedBB
+                .getBoundingBox(space, space, space, 1f - space, 1f - space, 1f - space);
+            final List<AxisAlignedBB> boxes = new ArrayList<>(List.of(core));
+            final List<Face> pipeFaces = new ArrayList<>();
+            final Map<ForgeDirection, List<Face>> coverFaces = new EnumMap<>(ForgeDirection.class);
+            if (space > 0) {
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if ((connections & side.flag) == 0) {
+                        pipeFaces.add(new Face(core, side));
+                        continue;
+                    }
+                    final AxisAlignedBB arm = faceBox(side, space, space);
+                    boxes.add(arm);
+                    // the arm's inner end is against the core and hidden
+                    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+                        if (face != side.getOpposite()) pipeFaces.add(new Face(arm, face));
+                    }
+                }
+
+                final float depth = coverDepth(thickness);
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if ((covers & side.flag) == 0) continue;
+                    final AxisAlignedBB plate = plateBox(side, depth, covers);
+                    boxes.add(plate);
+                    final List<Face> faces = new ArrayList<>();
+                    // apart from the inner face, faces inside the block touch an earlier plate and don't show
+                    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+                        if (face == side && (connections & side.flag) != 0) {
+                            for (AxisAlignedBB panel : holePanels(plate, side, space)) faces.add(new Face(panel, face));
+                        } else if (face == side.getOpposite() || isOnBlockFace(plate, face)) {
+                            faces.add(new Face(plate, face));
+                        }
+                    }
+                    coverFaces.put(side, List.copyOf(faces));
+                }
+            }
+
+            final AxisAlignedBB bounds = core.copy();
+            for (AxisAlignedBB box : boxes) {
+                bounds.minX = Math.min(bounds.minX, box.minX);
+                bounds.minY = Math.min(bounds.minY, box.minY);
+                bounds.minZ = Math.min(bounds.minZ, box.minZ);
+                bounds.maxX = Math.max(bounds.maxX, box.maxX);
+                bounds.maxY = Math.max(bounds.maxY, box.maxY);
+                bounds.maxZ = Math.max(bounds.maxZ, box.maxZ);
+            }
+            return new PipeShape(boxes, bounds, OutlineShape.of(boxes), pipeFaces, coverFaces);
+        }
+
+        /// Return a box `depth` deep on the `side` face and `inset` from the block's other four faces.
+        private static AxisAlignedBB faceBox(ForgeDirection side, float depth, float inset) {
+            return AxisAlignedBB.getBoundingBox(
+                side.offsetX == 0 ? inset : side.offsetX < 0 ? 0 : 1f - depth,
+                side.offsetY == 0 ? inset : side.offsetY < 0 ? 0 : 1f - depth,
+                side.offsetZ == 0 ? inset : side.offsetZ < 0 ? 0 : 1f - depth,
+                side.offsetX == 0 ? 1f - inset : side.offsetX < 0 ? depth : 1,
+                side.offsetY == 0 ? 1f - inset : side.offsetY < 0 ? depth : 1,
+                side.offsetZ == 0 ? 1f - inset : side.offsetZ < 0 ? depth : 1);
+        }
+
+        private static float coverDepth(float thickness) {
+            return Float.min(1f / 8, (1f - thickness) / 2);
+        }
+
+        /// Return the part of the `side` cover plate that plates on earlier [ForgeDirection] sides don't overlap.
+        private static AxisAlignedBB plateBox(ForgeDirection side, float depth, int covers) {
+            AxisAlignedBB plate = faceBox(side, depth, 0);
+            for (ForgeDirection earlier : ForgeDirection.VALID_DIRECTIONS) {
+                if (earlier == side) break;
+                if ((covers & earlier.flag) == 0) continue;
+                final float innerFace = earlier.offsetX + earlier.offsetY + earlier.offsetZ > 0 ? 1 - depth : depth;
+                plate = clip(plate, earlier.getOpposite(), innerFace);
+            }
+            return plate;
+        }
+
+        /// Return the part of `box` that lies toward `side` from `coordinate` on `side`'s axis.
+        private static AxisAlignedBB clip(AxisAlignedBB box, ForgeDirection side, double coordinate) {
+            final AxisAlignedBB part = box.copy();
+            switch (side) {
+                case DOWN -> part.maxY = Math.min(part.maxY, coordinate);
+                case UP -> part.minY = Math.max(part.minY, coordinate);
+                case NORTH -> part.maxZ = Math.min(part.maxZ, coordinate);
+                case SOUTH -> part.minZ = Math.max(part.minZ, coordinate);
+                case WEST -> part.maxX = Math.min(part.maxX, coordinate);
+                case EAST -> part.minX = Math.max(part.minX, coordinate);
+                case UNKNOWN -> {}
+            }
+            return part;
+        }
+
+        /// Return the `side` face of `plate` as four panels around the hole of an arm `inset` from the block's edges.
+        private static List<AxisAlignedBB> holePanels(AxisAlignedBB plate, ForgeDirection side, float inset) {
+            final List<ForgeDirection> across = new ArrayList<>();
+            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                if (direction != side && direction != side.getOpposite()) across.add(direction);
+            }
+            // `across` has two pairs of opposite sides, negative side first. The panels beyond the hole toward the
+            // first pair span the face, and the panels toward the second pair span the hole.
+            final AxisAlignedBB band = clip(clip(plate, across.get(1), inset), across.get(0), 1 - inset);
+            return List.of(
+                clip(plate, across.get(0), inset),
+                clip(plate, across.get(1), 1 - inset),
+                clip(band, across.get(2), inset),
+                clip(band, across.get(3), 1 - inset));
+        }
+
+        private static boolean isOnBlockFace(AxisAlignedBB box, ForgeDirection face) {
+            return switch (face) {
+                case DOWN -> box.minY == 0;
+                case UP -> box.maxY == 1;
+                case NORTH -> box.minZ == 0;
+                case SOUTH -> box.maxZ == 1;
+                case WEST -> box.minX == 0;
+                case EAST -> box.maxX == 1;
+                case UNKNOWN -> false;
+            };
+        }
+
+        private record Face(AxisAlignedBB box, ForgeDirection side) {}
     }
 
     public boolean letsIn(Cover cover) {
