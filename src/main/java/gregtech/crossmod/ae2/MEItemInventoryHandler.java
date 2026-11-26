@@ -234,8 +234,9 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     public boolean hasActiveMEConnection() {
         boolean active = false;
-        for (var iterator = listeners.entrySet()
-            .iterator(); iterator.hasNext();) {
+        var iterator = listeners.entrySet()
+            .iterator();
+        while (iterator.hasNext()) {
             var entry = iterator.next();
             if (!entry.getKey()
                 .isValid(entry.getValue())) {

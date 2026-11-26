@@ -30,6 +30,7 @@ import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
 public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTEDigitalChestBase> {
 
+    private static final String LANG_PREFIX = "GT5U.machines.digitalchest.";
     private static final int STORED_SCREEN_WIDTH = SCREEN_WIDTH + SLOT_SIZE;
 
     private final LongSyncValue storedCount;
@@ -97,7 +98,9 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
     protected void addScreenText(Flow textColumn, ModularPanel panel, PanelSyncManager syncManager) {
         super.addScreenText(textColumn, panel, syncManager);
         textColumn.child(
-            IKey.lang("GT5U.machines.digitalchest.bulkcapacity").asWidget().widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
+            IKey.lang(LANG_PREFIX + "bulkcapacity")
+                .asWidget()
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
         textColumn.child(
             IKey.str(formatNumber(machine.getMaxItemCount()))
                 .asWidget()
@@ -131,7 +134,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
 
     @Override
     protected TextWidget<?> createFilterScreenAmountLabel(ModularPanel panel, PanelSyncManager syncManager) {
-        return IKey.lang("GT5U.machines.digitalchest.lockitem.label")
+        return IKey.lang(LANG_PREFIX + "lockitem.label")
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
     }
@@ -142,8 +145,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
             ItemStack lockedItem = lockInventory.getStackInSlot(0);
             if (lockedItem != null) return lockedItem.getDisplayName();
             return translateToLocal(
-                itemLock.getBoolValue() ? "GT5U.machines.digitalchest.lockitem.waiting"
-                    : "GT5U.machines.digitalchest.lockitem.empty");
+                itemLock.getBoolValue() ? LANG_PREFIX + "lockitem.waiting" : LANG_PREFIX + "lockitem.empty");
         })
             .asWidget()
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
@@ -190,55 +192,42 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
                 new ToggleButton()
                     .value(new BooleanSyncValue(machine::isAutoOutputEnabled, machine::setAutoOutputEnabled).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
-                    .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitalchest.autooutput"))))
+                    .tooltip(t -> t.addLine(translateToLocal(LANG_PREFIX + "autooutput"))))
             .child(
                 new ToggleButton().value(itemLock)
                     .setEnabledIf(button -> !voidFull.getBoolValue())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED)
                     .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.lockitem.tooltip"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.lockitem.tooltip.1"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "lockitem.tooltip.0"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "lockitem.tooltip.1"));
                     }))
             .child(
                 new ToggleButton()
                     .value(
                         new BooleanSyncValue(machine::isPassThroughEnabled, machine::setPassThroughEnabled).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT)
-                    .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.1"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.2"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.3"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.4"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.5"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.6"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.passthrough.7"));
-                    }))
+                    .tooltip(
+                        t -> {
+                            for (int i = 0; i < 8; i++) t.addLine(translateToLocal(LANG_PREFIX + "passthrough." + i));
+                        }))
             .child(
                 new ToggleButton().value(
                     new BooleanSyncValue(machine::isInputFilterDisabled, machine::setInputFilterDisabled).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                    .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.disableinputfilter"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.disableinputfilter.1"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.disableinputfilter.2"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.disableinputfilter.3"));
-                    }))
+                    .tooltip(
+                        t -> {
+                            for (int i = 0; i < 4; i++)
+                                t.addLine(translateToLocal(LANG_PREFIX + "disableinputfilter." + i));
+                        }))
             .child(
                 new ToggleButton().value(
                     new BooleanSyncValue(machine::isBlockExternalAccess, machine::setBlockExternalAccess).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
-                    .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.1"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.2"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.3"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.4"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.5"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.6"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.7"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.block_external_access.8"));
-                    }));
+                    .tooltip(
+                        t -> {
+                            for (int i = 0; i < 9; i++)
+                                t.addLine(translateToLocal(LANG_PREFIX + "block_external_access." + i));
+                        }));
     }
 
     @Override
@@ -252,29 +241,29 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
                         new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide)
                             .allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
-                    .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitalchest.inputfromoutput.tooltip"))))
+                    .tooltip(t -> t.addLine(translateToLocal(LANG_PREFIX + "inputfromoutput.tooltip"))))
             .child(
                 new ToggleButton()
                     .value(new BooleanSyncValue(machine::isOutputToSlot, machine::setOutputToSlot).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
                     .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.outputslot.tooltip"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.outputslot.tooltip.1"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "outputslot.tooltip"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "outputslot.tooltip.1"));
                     }))
             .child(
                 new ToggleButton()
                     .value(new BooleanSyncValue(machine::isVoidOverflow, machine::setVoidOverflow).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                     .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.voidoverflow.tooltip"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.voidoverflow.tooltip.1"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "voidoverflow.tooltip.0"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "voidoverflow.tooltip.1"));
                     }))
             .child(
                 new ToggleButton().value(voidFull)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                     .tooltip(t -> {
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.voidfull.tooltip"));
-                        t.addLine(translateToLocal("GT5U.machines.digitalchest.voidfull.tooltip.1"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "voidfull.tooltip.0"));
+                        t.addLine(translateToLocal(LANG_PREFIX + "voidfull.tooltip.1"));
                     }));
 
         return super.createBottomRightCornerFlow(panel, syncManager).child(buttonRow);

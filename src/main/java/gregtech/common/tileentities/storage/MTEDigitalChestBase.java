@@ -34,6 +34,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.google.common.primitives.Ints;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
@@ -592,7 +593,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     private void notifyItemDelta(long amount, @Nullable ItemStack item) {
         while (amount != 0 && item != null) {
-            int delta = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, amount));
+            int delta = Ints.saturatedCast(amount);
             meInventoryHandler.notifyListeners(delta, item);
             amount -= delta;
         }
@@ -687,7 +688,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 Arrays.fill(mInventory, null);
                 markDirty();
             }
-            notifyInventoryChanges();
+            // A slot may already have been emptied since the last ME update
+            if (lastTrueCount != 0 || lastExtraItem != null || lastInputItem != null) notifyInventoryChanges();
             return;
         }
         if (getItemCount() <= 0) {
@@ -698,7 +700,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         deferInventoryChanges = true;
         insertInputItems();
         ItemStack stored = getItemStack();
-        if (mOutputToSlot && !isOutputReserved() && getItemCount() > 0
+        if (mOutputToSlot && !isOutputReserved()
+            && getItemCount() > 0
             && stored != null
             && (mInventory[1] == null || sameItemType(stored, mInventory[1]))) {
             int outputCount = mInventory[1] == null ? 0 : mInventory[1].stackSize;
@@ -1132,7 +1135,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         inputFilterDisabled = aNBT.getBoolean("mDisableFilter");
         passThroughOtherItems = aNBT.getBoolean("passThroughOtherItems");
         mOutputToSlot = !aNBT.hasKey("mOutputToSlot") || aNBT.getBoolean("mOutputToSlot");
-        mAllowInputFromOutputSide = !aNBT.hasKey("mAllowInputFromOutputSide") || aNBT.getBoolean("mAllowInputFromOutputSide");
+        mAllowInputFromOutputSide = !aNBT.hasKey("mAllowInputFromOutputSide")
+            || aNBT.getBoolean("mAllowInputFromOutputSide");
         autoOutputItems = aNBT.getBoolean("autoOutputItems");
         blockExternalAccess = aNBT.getBoolean("blockExternalAccess");
         lockedItem = aNBT.hasKey("lockedItem", Constants.NBT.TAG_COMPOUND)
@@ -1254,7 +1258,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         }
 
         @Override
-        public @Nullable InventoryIterator simulatedSinkIterator() {
+        public @NotNull InventoryIterator simulatedSinkIterator() {
             return new MTEDigitalChestBaseInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots, true);
         }
 
