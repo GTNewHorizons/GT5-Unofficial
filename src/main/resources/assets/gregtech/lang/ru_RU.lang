@@ -1961,8 +1961,6 @@ GT5U.MBTT.CondensateDetectorHatch=Шлюз-детектор конденсата
 GT5U.MBTT.AnyModule=Любой модуль
 GT5U.MBTT.IgnoredHatch=Любой шлюз (используется подключённым модулем)
 
-gt.unit.liter=Л
-gt.unit.liter_per_second=Л/сек
 
 GT5U.MBTT.Parallel.Base=%s параллелей
 GT5U.MBTT.Parallel.Additional=%s параллелей за %s тир

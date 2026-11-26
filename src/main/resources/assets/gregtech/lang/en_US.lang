@@ -311,7 +311,7 @@ gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be conf
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
 gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
-gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s L/sec§7
+gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s/sec§7
 gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
@@ -2010,8 +2010,7 @@ GT5U.MBTT.NaniteTierDetectorHatch=Nanite Tier Detector Hatch
 GT5U.MBTT.AnyModule=Any Module
 GT5U.MBTT.IgnoredHatch=Any Hatch (used by attached module)
 
-gt.unit.liter=L
-gt.unit.liter_per_second=L/s
+gt.unit.fluid_per_second=%s/s
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
