@@ -41,10 +41,12 @@ public class CropRenderer extends EntityFX {
     private static final int CROP_WIDTH = 3;
     private static final int CROP_LENGTH = 7;
     private static final int CROP_COUNT = CROP_WIDTH * CROP_LENGTH;
+    private static final int MAX_MISSED_UPDATES = 3;
 
     private final int[] meta = new int[CROP_COUNT];
     private final double[] offsets = new double[CROP_COUNT * 2];
     private ExtendedFacing facing;
+    private int missedUpdates;
 
     public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age) {
         super(world, x, y - 0.0625d, z);
@@ -53,16 +55,35 @@ public class CropRenderer extends EntityFX {
         this.prevPosZ = this.posZ;
         this.particleMaxAge = age;
 
+        refreshGrowthStages();
+        updateFacing(extendedFacing);
+    }
+
+    public boolean isFacing(ExtendedFacing extendedFacing) {
+        return this.facing == extendedFacing;
+    }
+
+    public void updateOrigin(int x, int y, int z) {
+        setPosition(x, y - 0.0625d, z);
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+    }
+
+    public void refreshGrowthStages() {
         for (int i = 0; i < CROP_COUNT; i++) {
             this.meta[i] = this.rand.nextInt(8);
         }
+    }
 
-        updateFacing(extendedFacing);
+    public boolean keepAlive() {
+        if (this.isDead || ++this.missedUpdates >= MAX_MISSED_UPDATES) return false;
+        this.particleAge = 0;
+        return true;
     }
 
     public void updateFacing(ExtendedFacing extendedFacing) {
         if (this.facing == extendedFacing) return;
-
         this.facing = extendedFacing;
 
         // recompute cached offsets whenever the greenhouse rotates
@@ -82,12 +103,15 @@ public class CropRenderer extends EntityFX {
 
     @Override
     public void onUpdate() {
+        this.missedUpdates = 0;
         if (this.particleAge++ >= this.particleMaxAge) this.setDead();
     }
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
         float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        if (this.isDead) return;
+
         Tessellator tessellator = Tessellator.instance;
         Minecraft.getMinecraft()
             .getTextureManager()

@@ -521,6 +521,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     // region crop visuals rendering
 
+    private static final int CROP_VISUAL_REFRESH_INTERVAL = 40;
+
+    @SideOnly(Side.CLIENT)
+    private CropRenderer cropRenderer;
+
     @Override
     public byte getUpdateData() {
         return 0;
@@ -530,9 +535,43 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void receiveClientEvent(byte eventID, byte value) {}
 
     @SideOnly(Side.CLIENT)
-    public void spawnVisualCrops(World world, int x, int y, int z, ExtendedFacing facing, int age) {
-        CropRenderer crop = new CropRenderer(world, x, y, z, facing, age);
-        Minecraft.getMinecraft().effectRenderer.addEffect(crop);
+    private void updateVisualCrops(IGregTechTileEntity baseTile, long tick) {
+        if (!baseTile.isActive()) {
+            if (cropRenderer != null) {
+                cropRenderer.setDead();
+                cropRenderer = null;
+            }
+            return;
+        }
+
+        World world = baseTile.getWorld();
+        ExtendedFacing facing = getExtendedFacing();
+        if (cropRenderer != null && (cropRenderer.worldObj != world || !cropRenderer.keepAlive())) {
+            cropRenderer.setDead();
+            cropRenderer = null;
+        }
+
+        if (cropRenderer == null || !cropRenderer.isFacing(facing)) {
+            int[] abc = { 0, -2, 1 };
+            int[] xyz = new int[3];
+            facing.getWorldOffset(abc, xyz);
+            int x = baseTile.getXCoord() + xyz[0];
+            int y = baseTile.getYCoord() + xyz[1];
+            int z = baseTile.getZCoord() + xyz[2];
+
+            if (cropRenderer == null) {
+                cropRenderer = new CropRenderer(world, x, y, z, facing, CROP_VISUAL_REFRESH_INTERVAL);
+                Minecraft.getMinecraft().effectRenderer.addEffect(cropRenderer);
+                return;
+            }
+
+            cropRenderer.updateOrigin(x, y, z);
+            cropRenderer.updateFacing(facing);
+        }
+
+        if (tick % CROP_VISUAL_REFRESH_INTERVAL == 0) {
+            cropRenderer.refreshGrowthStages();
+        }
     }
 
     @Override
@@ -544,16 +583,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
-                int[] abc = new int[] { 0, -2, 1 };
-                int[] xyz = new int[] { 0, 0, 0 };
-                this.getExtendedFacing()
-                    .getWorldOffset(abc, xyz);
-                xyz[0] += aBaseMetaTileEntity.getXCoord();
-                xyz[1] += aBaseMetaTileEntity.getYCoord();
-                xyz[2] += aBaseMetaTileEntity.getZCoord();
-                spawnVisualCrops(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], this.getExtendedFacing(), 40);
-            }
+            updateVisualCrops(aBaseMetaTileEntity, aTick);
         } else {
             if (isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
