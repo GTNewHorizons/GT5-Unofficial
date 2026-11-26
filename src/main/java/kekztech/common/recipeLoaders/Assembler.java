@@ -262,7 +262,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 8),
+                craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 4),
                 GTOreDictUnificator
                     .get(OrePrefixes.frameGt, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 GTOreDictUnificator
