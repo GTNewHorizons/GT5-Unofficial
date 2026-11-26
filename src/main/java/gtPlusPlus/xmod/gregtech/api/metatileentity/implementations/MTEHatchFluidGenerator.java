@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +46,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         return GTSplit.splitLocalizedFormattedWithSuffix(
             "gt.blockmachines.input_hatch_generator.desc",
             getCustomTooltip(),
-            formatNumber(getCapacity()),
+            formatFluid(getCapacity()),
             GTUtility.getColoredTierNameFromTier(mTier));
     }
 

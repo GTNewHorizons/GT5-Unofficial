@@ -1,5 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -111,7 +113,8 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_antimatter.desc");
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.output_hatch_antimatter.desc", formatFluid(getCapacity()));
     }
 
     @Override

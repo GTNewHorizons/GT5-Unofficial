@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
@@ -222,7 +222,7 @@ public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatNumber(getCapacity()));
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatFluid(getCapacity()));
     }
 
     @Override

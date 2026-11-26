@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2_COLORS;
@@ -325,8 +326,8 @@ public class MTEHatchMultiInput extends MTEHatchInput {
         final int slots = mInventory.length;
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.input_hatch_multislot.desc",
-            formatNumber(getCapacityPerTank(mTier, slots)),
-            slots);
+            formatFluid(getCapacityPerTank(mTier, slots)),
+            formatNumber(slots));
     }
 
     @Override
