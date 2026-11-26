@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluidCompact;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
@@ -3683,7 +3684,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey()
                     .getDisplayName();
-                String shortenedCount = formatShortenedLong(itemCount);
+                String shortenedCount = formatFluidCompact(itemCount);
                 String rateShort = appendRate(false, itemCount, true);
                 int amountLen = (translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount)
                     + rateShort).length();

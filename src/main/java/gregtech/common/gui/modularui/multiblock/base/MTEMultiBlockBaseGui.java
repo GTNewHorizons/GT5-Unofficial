@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluidCompact;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
@@ -679,7 +680,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getFluidAmountTextLine(long amount, IntSyncValue maxProgressTimeSyncer) {
-        String shortenedCount = GTUtility.formatShortenedLong(amount);
+        String shortenedCount = formatFluidCompact(amount);
         String rateShort = showOutputRates()
             ? GTUtility.appendRate(true, amount, true, maxProgressTimeSyncer.getValue())
             : "";
