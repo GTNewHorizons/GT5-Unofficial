@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.formattingCodes;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
@@ -630,16 +632,20 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
-                        coolingStrOrder("100", "50"),
+                        coolingStrOrder(formatNumber(100), formatFluid(50)),
                         coolingStrOrder(
                             StatCollector.translateToLocal(
                                 "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant"),
                             StatCollector.translateToLocal(
                                 "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime")),
-                        coolingStrOrder("1", "2")));
+                        coolingStrOrder(formatNumber(1), formatNumber(2))));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
-                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip5",
+                        formatFluid(25),
+                        formatNumber(3)));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
 
             }

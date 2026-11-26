@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR;
@@ -133,7 +134,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.1"))
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
+            .addInfo(
+                translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2", formatFluid(getCapacity())))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.5"))
