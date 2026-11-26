@@ -42,6 +42,9 @@ class OresList extends GuiScrollingList {
         keys.clear();
         if (query == null || query.trim()
             .isEmpty()) {
+            if (allKeys.size() > 1) {
+                keys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+            }
             keys.addAll(allKeys);
             return;
         }
