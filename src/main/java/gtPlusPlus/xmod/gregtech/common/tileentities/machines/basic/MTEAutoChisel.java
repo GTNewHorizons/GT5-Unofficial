@@ -2,7 +2,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -152,16 +155,39 @@ public class MTEAutoChisel extends MTEBasicMachine {
         return Carving.chisel.getItemsForChiseling(aStack);
     }
 
-    private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
-        ItemStack tOutput = null;
-        if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
-            tOutput = aTarget;
-        } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
-            tOutput = null;
-        } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
+    private static ItemStack getChiselOutput(@Nonnull ItemStack aInput, ItemStack aTarget) {
+        if (aTarget == null) {
+            // No item in special slot, use the first item of chisel group
+            ItemStack result = null;
+            List<ItemStack> chiselItemGroup = getItemsForChiseling(aInput);
+            if (!chiselItemGroup.isEmpty()) {
+                result = chiselItemGroup.getFirst();
+                if (result != null) {
+                    result = applyOriginalNBT(result.copy(), aInput);
+                }
+            }
+
+            return result;
         }
-        return tOutput;
+
+        if (!canBeMadeFrom(aInput, aTarget)) {
+            return null;
+        }
+
+        // Copy the item in the special slot (while keeping the original's NBT)
+        return applyOriginalNBT(aTarget.copy(), aInput);
+    }
+
+    private static @Nonnull ItemStack applyOriginalNBT(@Nonnull ItemStack output, @Nonnull ItemStack original) {
+        // Copy NBT from input to target to both avoid dupes and prevent loss of stored information
+        // (such as when chiseling drawers with items inside)
+        NBTTagCompound inputNBT = original.getTagCompound();
+        if (inputNBT != null) {
+            inputNBT = (NBTTagCompound) inputNBT.copy();
+        }
+
+        output.setTagCompound(inputNBT);
+        return output;
     }
 
     @Override
