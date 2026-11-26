@@ -1,6 +1,9 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluidCompact;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -1957,7 +1960,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.lv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(32), formatNumber(32 * 20) },
+                new Object[] { formatFluid(32), formatFluid(32 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -1968,7 +1971,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.mv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(128), formatNumber(128 * 20) },
+                new Object[] { formatFluid(128), formatFluid(128 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -1979,7 +1982,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.hv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(512), formatNumber(512 * 20) },
+                new Object[] { formatFluid(512), formatFluid(512 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -1990,7 +1993,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.ev.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                new Object[] { formatFluid(2048), formatFluid(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -2001,7 +2004,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.iv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                new Object[] { formatFluid(8192), formatFluid(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
@@ -2012,7 +2015,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.luv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(32768), formatNumber(32768 * 20) },
+                new Object[] { formatFluid(32768), formatFluid(32768 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L),
@@ -2023,7 +2026,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.zpm.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(131072), formatNumber(131072 * 20) },
+                new Object[] { formatFluid(131072), formatFluid(131072 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L),
@@ -2034,7 +2037,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.uv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(524288), formatNumber(524288 * 20) },
+                new Object[] { formatFluid(524288), formatFluid(524288 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
@@ -2046,7 +2049,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.electric_pump.uhv.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(2097152), formatNumber(2097152 * 20) },
+                    new Object[] { formatFluid(2097152), formatFluid(2097152 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
@@ -2059,7 +2062,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.electric_pump.uev.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(8388608), formatNumber(8388608 * 20) },
+                    new Object[] { formatFluid(8388608), formatFluid(8388608 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2072,7 +2075,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.electric_pump.uiv.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(33554432), formatNumber(33554432 * 20) },
+                    new Object[] { formatFluid(33554432), formatFluid(33554432 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2084,7 +2087,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.umv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(134217728), formatNumber(134217728 * 20L) },
+                new Object[] { formatFluid(134217728), formatFluid(134217728 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2095,7 +2098,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.uxv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(536870912), formatNumber(536870912 * 20L) },
+                new Object[] { formatFluid(536870912), formatFluid(536870912 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2106,7 +2109,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.max.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(Integer.MAX_VALUE), formatNumber(Integer.MAX_VALUE * 20L) },
+                new Object[] { formatFluid(Integer.MAX_VALUE), formatFluid(Integer.MAX_VALUE * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2118,7 +2121,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_valve.lv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
+                new Object[] { formatFluid(1024), formatFluid(1024 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -2129,7 +2132,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_valve.mv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                new Object[] { formatFluid(2048), formatFluid(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -2140,7 +2143,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_valve.hv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
+                new Object[] { formatFluid(4096), formatFluid(4096 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -2151,7 +2154,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_valve.ev.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                new Object[] { formatFluid(8192), formatFluid(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -2162,7 +2165,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_valve.iv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
+                new Object[] { formatFluid(16384), formatFluid(16384 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
@@ -2174,56 +2177,56 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.fluid_regulator.lv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(32 * 20) }));
+                fluidRegulatorTooltipArgs(32 * 20)));
         ItemList.FluidRegulator_MV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_MV.ID,
                 "gt.item.fluid_regulator.mv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(128 * 20) }));
+                fluidRegulatorTooltipArgs(128 * 20)));
         ItemList.FluidRegulator_HV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_HV.ID,
                 "gt.item.fluid_regulator.hv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(512 * 20) }));
+                fluidRegulatorTooltipArgs(512 * 20)));
         ItemList.FluidRegulator_EV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_EV.ID,
                 "gt.item.fluid_regulator.ev.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(2048 * 20) }));
+                fluidRegulatorTooltipArgs(2048 * 20)));
         ItemList.FluidRegulator_IV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_IV.ID,
                 "gt.item.fluid_regulator.iv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(8192 * 20) }));
+                fluidRegulatorTooltipArgs(8192 * 20)));
         ItemList.FluidRegulator_LuV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_LuV.ID,
                 "gt.item.fluid_regulator.luv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(32768 * 20) }));
+                fluidRegulatorTooltipArgs(32768 * 20)));
         ItemList.FluidRegulator_ZPM.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_ZPM.ID,
                 "gt.item.fluid_regulator.zpm.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(131072 * 20) }));
+                fluidRegulatorTooltipArgs(131072 * 20)));
         ItemList.FluidRegulator_UV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UV.ID,
                 "gt.item.fluid_regulator.uv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(524288 * 20) }));
+                fluidRegulatorTooltipArgs(524288 * 20)));
         ItemList.FluidRegulator_UHV
             .set(
                 addItemWithLocalizationKeysAndArgs(
@@ -2231,7 +2234,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.fluid_regulator.uhv.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(2097152 * 20) }))
+                    fluidRegulatorTooltipArgs(2097152 * 20)))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.FluidRegulator_UEV
             .set(
@@ -2240,7 +2243,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.fluid_regulator.uev.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(8388608 * 20) }))
+                    fluidRegulatorTooltipArgs(8388608 * 20)))
             .setRender(new InfinityMetaItemRenderer());
         ItemList.FluidRegulator_UIV
             .set(
@@ -2249,7 +2252,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.fluid_regulator.uiv.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(33554432 * 20) }))
+                    fluidRegulatorTooltipArgs(33554432 * 20)))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
             addItemWithLocalizationKeysAndArgs(
@@ -2257,21 +2260,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.fluid_regulator.umv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(134217728 * 20L) }));
+                fluidRegulatorTooltipArgs(134217728 * 20L)));
         ItemList.FluidRegulator_UXV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UXV.ID,
                 "gt.item.fluid_regulator.uxv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(536870912 * 20L) }));
+                fluidRegulatorTooltipArgs(536870912 * 20L)));
         ItemList.FluidRegulator_MAX.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_MAX.ID,
                 "gt.item.fluid_regulator.max.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(Integer.MAX_VALUE * 20L) }));
+                fluidRegulatorTooltipArgs(Integer.MAX_VALUE * 20L)));
 
         ItemList.FluidFilter.set(
             addItemWithLocalizationKeys(FluidFilter.ID, "gt.item.fluid_filter.name", "gt.item.fluid_filter.tooltip"));
@@ -3466,7 +3469,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_regulator.lv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(1024), formatNumber(1024 * 20) },
+                new Object[] { formatFluid(1024), formatFluid(1024 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -3477,7 +3480,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_regulator.mv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(2048), formatNumber(2048 * 20) },
+                new Object[] { formatFluid(2048), formatFluid(2048 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L),
@@ -3488,7 +3491,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_regulator.hv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(4096), formatNumber(4096 * 20) },
+                new Object[] { formatFluid(4096), formatFluid(4096 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L),
@@ -3499,7 +3502,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_regulator.ev.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(8192), formatNumber(8192 * 20) },
+                new Object[] { formatFluid(8192), formatFluid(8192 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L),
@@ -3510,7 +3513,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.steam_regulator.iv.name",
                 null,
                 "gt.item.steam_valve.tooltip",
-                new Object[] { formatNumber(16384), formatNumber(16384 * 20) },
+                new Object[] { formatFluid(16384), formatFluid(16384 * 20) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
@@ -3568,10 +3571,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
         ItemList.Supermassive_Black_Hole_Opener.set(
-            addItemWithLocalizationKeys(
+            addItemWithLocalizationKeysAndArgs(
                 Supermassive_Black_Hole_Opener.ID,
                 "gt.item.black_hole.supermassive_seed.name",
+                null,
                 "gt.item.black_hole.supermassive_seed.tooltip",
+                new Object[] { formatNumber(4), formatFluid(64), formatFluid(1) },
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
 
@@ -5169,5 +5174,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 return false;
             });
         }
+    }
+
+    private static Object[] fluidRegulatorTooltipArgs(long maxPerSecond) {
+        return new Object[] { formatFluid(maxPerSecond), formatNumber(1), formatNumber(16), formatNumber(256),
+            getFluidUnit(), formatFluidCompact(Integer.MAX_VALUE) };
     }
 }

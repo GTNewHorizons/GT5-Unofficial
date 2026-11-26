@@ -1202,7 +1202,7 @@ gt.behaviour.scanning=Can scan Blocks in World
 gt.behaviour.scanning.result=Block scan data result:
 gt.behaviour.prospecting=Usable for Prospecting
 gt.behaviour.plunger.item=Clears Items from Pipes
-gt.behaviour.plunger.fluid=Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.
+gt.behaviour.plunger.fluid=Clears %s of Fluid from Tanks. Fully clears when sneaking.
 gt.behaviour.plunger.essentia=Clears Essentia from Containers and Tubes
 gt.behaviour.lighter.tooltip=Can light things on Fire
 gt.behaviour.lighter.uses=Remaining Uses: %s
@@ -5528,7 +5528,7 @@ gt.item.electric_pump.uiv.name=Electric Pump (UIV)
 gt.item.electric_pump.umv.name=Electric Pump (UMV)
 gt.item.electric_pump.uxv.name=Electric Pump (UXV)
 gt.item.electric_pump.max.name=Electric Pump (MAX)
-gt.item.electric_pump.tooltip=%s L/t (%s L/s)
+gt.item.electric_pump.tooltip=%s/t (%s/s)
 
 ## Other items
 gt.item.electronics_lump.name=Lump of Electronics
@@ -5558,7 +5558,7 @@ gt.item.steam_valve.mv.name=Steam Valve (MV)
 gt.item.steam_valve.hv.name=Steam Valve (HV)
 gt.item.steam_valve.ev.name=Steam Valve (EV)
 gt.item.steam_valve.iv.name=Steam Valve (IV)
-gt.item.steam_valve.tooltip=%s L/t (%s L/s) as Cover
+gt.item.steam_valve.tooltip=%s/t (%s/s) as Cover
 
 ## Fluid Regulators
 gt.item.fluid_regulator.lv.name=Fluid Regulator (LV)
@@ -5575,7 +5575,7 @@ gt.item.fluid_regulator.uiv.name=Fluid Regulator (UIV)
 gt.item.fluid_regulator.umv.name=Fluid Regulator (UMV)
 gt.item.fluid_regulator.uxv.name=Fluid Regulator (UXV)
 gt.item.fluid_regulator.max.name=Fluid Regulator (MAX)
-gt.item.fluid_regulator.tooltip=Configurable up to %s L/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by 1/16/256 L/sec per click\nCannot transfer more than 2.1B L per Operation
+gt.item.fluid_regulator.tooltip=Configurable up to %s/sec (as Cover)\nRightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick\nto adjust the pump speed by %s/%s/%s %s/sec per click\nCannot transfer more than %s per Operation
 
 ## Fluid Filter
 gt.item.fluid_filter.name=Fluid Filter Cover
@@ -5862,7 +5862,7 @@ gt.item.electromagnet.tengam.name=§aTengam Electromagnet
 gt.item.black_hole.seed.name=Black Hole Seed
 gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
 gt.item.black_hole.supermassive_seed.name=Supermassive Black Hole Seed
-gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains 4x parallels\nDecay halt cost starts at 64 L/s instead of 1 
+gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains %sx parallels\nDecay halt cost starts at %s/s instead of %s/s
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
