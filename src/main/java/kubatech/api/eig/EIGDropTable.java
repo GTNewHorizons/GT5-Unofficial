@@ -208,7 +208,6 @@ public class EIGDropTable {
 
         for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
             double value = entry.getValue();
-            if (value < 1.0d) continue;
 
             ItemStack copied = entry.getKey()
                 .copy();

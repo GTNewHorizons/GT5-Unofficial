@@ -463,7 +463,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         for (EIGBucket b : this.buckets) {
             bucketListNBT.appendTag(b.save());
         }
-        aNBT.setTag("progress", this.dropTracker.save());
+        aNBT.setTag(
+            "progress",
+            this.dropTracker.intersect(this.guiDropTracker)
+                .save());
         aNBT.setTag("buckets", bucketListNBT);
     }
 

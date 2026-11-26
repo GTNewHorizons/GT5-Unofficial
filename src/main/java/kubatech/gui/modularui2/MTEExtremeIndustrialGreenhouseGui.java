@@ -63,6 +63,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private int maxSeedCount = 0;
     private int usedSeedTypes = 0;
     private int usedSeedCount = 0;
+    private int lastNotifiedActiveCount = -1;
     private boolean machineActive = false;
     private IntSyncValue seedClickSyncer;
     private DynamicSyncHandler seedInventoryHandler;
@@ -110,6 +111,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
 
     private void registerEIGSyncValues(PanelSyncManager syncManager) {
         this.mainSyncManager = syncManager;
+        this.lastNotifiedActiveCount = -1;
 
         syncManager
             .syncValue("eigActive", new BooleanSyncValue(baseMetaTileEntity::isActive, val -> machineActive = val));
@@ -182,6 +184,10 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         // Read directly from the multiblock, not from local sync fields (which are only set on the client)
         boolean hasEmpty = multiblock.getTotalSeedCount() < multiblock.getMaxSeedCount();
         int activeCount = listSize + (hasEmpty ? 1 : 0);
+
+        if (activeCount == lastNotifiedActiveCount) return;
+
+        lastNotifiedActiveCount = activeCount;
         seedInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
     }
 
