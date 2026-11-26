@@ -1722,6 +1722,13 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
         .frontend(PurificationUnitParticleExtractorFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> metalineRecipes = RecipeMapBuilder
+        .of("gt.recipe.metaline")
+        .maxIO(6, 1, 4, 0)
+        .minInputs(2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
+        .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
