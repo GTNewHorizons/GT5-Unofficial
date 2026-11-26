@@ -34,7 +34,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -125,7 +124,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -2773,21 +2771,6 @@ public class GTUtility {
         return false;
     }
 
-    public static ArrayList<String> sortByValueToList(Map<String, Integer> map) {
-        List<Map.Entry<String, Integer>> list = new LinkedList<>(map.entrySet());
-        list.sort((o1, o2) -> o2.getValue() - o1.getValue());
-
-        ArrayList<String> result = new ArrayList<>();
-        for (Map.Entry<String, Integer> e : list) result.add(e.getKey());
-        return result;
-    }
-
-    public static String joinListToString(List<String> list) {
-        StringBuilder result = new StringBuilder(32);
-        for (String s : list) result.append(result.isEmpty() ? s : '|' + s);
-        return result.toString();
-    }
-
     public static ItemStack getIntegratedCircuit(int config) {
         return ItemList.Circuit_Integrated.getWithDamage(0, config);
     }
@@ -3012,220 +2995,6 @@ public class GTUtility {
 
         public static String getBookAuthor(ItemStack aStack) {
             return ItemStackNBT.getString(aStack, "author");
-        }
-
-        @Deprecated
-        public static void setProspectionData(ItemStack aStack, int aX, int aY, int aZ, int aDim, FluidStack aFluid,
-            String... aOres) {
-            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
-            StringBuilder tData = new StringBuilder(aX + "," + aY + "," + aZ + "," + aDim + ",");
-            if (aFluid != null) tData.append(aFluid.amount)
-                .append(",")
-                .append(aFluid.getLocalizedName())
-                .append(",");
-            for (String tString : aOres) {
-                tData.append(tString)
-                    .append(",");
-            }
-            tNBT.setString("prospection", tData.toString());
-        }
-
-        public static void setAdvancedProspectionData(byte aTier, ItemStack aStack, int aX, short aY, int aZ, int aDim,
-            ArrayList<String> aOils, ArrayList<String> aOres, int aRadius) {
-
-            setBookTitle(aStack, getRawProspectionDataName());
-
-            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
-
-            tNBT.setByte("prospection_tier", aTier);
-            tNBT.setString("prospection_pos", getProspectionBookTitle(aDim, aX, aY, aZ));
-
-            // ores
-            Collections.sort(aOres);
-            tNBT.setString("prospection_ores", joinListToString(aOres));
-
-            // oilsGT
-            ArrayList<String> tOilsTransformed = new ArrayList<>(aOils.size());
-            for (String aStr : aOils) {
-                String[] aStats = aStr.split(",");
-                tOilsTransformed.add(aStats[0] + ": " + aStats[1] + "L " + aStats[2]);
-            }
-
-            tNBT.setString("prospection_oils", joinListToString(tOilsTransformed));
-
-            String tOilsPosStr = getProspectionOilPosStr(aX, aZ);
-
-            tNBT.setString("prospection_oils_pos", tOilsPosStr);
-
-            tNBT.setString("prospection_radius", String.valueOf(aRadius));
-        }
-
-        public static @NotNull String getProspectionOilPosStr(int aX, int aZ) {
-            String tOilsPosStr = "X: " + Math.floorDiv(aX, 16 * 8) * 16 * 8
-                + " Z: "
-                + Math.floorDiv(aZ, 16 * 8) * 16 * 8
-                + "\n";
-            int xOff = aX - Math.floorDiv(aX, 16 * 8) * 16 * 8;
-            xOff = xOff / 16;
-            int xOffRemain = 7 - xOff;
-
-            int zOff = aZ - Math.floorDiv(aZ, 16 * 8) * 16 * 8;
-            zOff = zOff / 16;
-            int zOffRemain = 7 - zOff;
-
-            for (; zOff > 0; zOff--) {
-                tOilsPosStr = tOilsPosStr.concat("--------\n");
-            }
-            for (; xOff > 0; xOff--) {
-                tOilsPosStr = tOilsPosStr.concat("-");
-            }
-
-            tOilsPosStr = tOilsPosStr.concat("P");
-
-            for (; xOffRemain > 0; xOffRemain--) {
-                tOilsPosStr = tOilsPosStr.concat("-");
-            }
-            tOilsPosStr = tOilsPosStr.concat("\n");
-            for (; zOffRemain > 0; zOffRemain--) {
-                tOilsPosStr = tOilsPosStr.concat("--------\n");
-            }
-            tOilsPosStr = tOilsPosStr.concat(
-                "            X: " + (Math.floorDiv(aX, 16 * 8) + 1) * 16 * 8
-                    + " Z: "
-                    + (Math.floorDiv(aZ, 16 * 8) + 1) * 16 * 8); // +1 oilfied to find bottomright of [5]
-            return tOilsPosStr;
-        }
-
-        public static void convertProspectionData(ItemStack aStack) {
-            NBTTagCompound tNBT = ItemStackNBT.get(aStack);
-            byte tTier = tNBT.getByte("prospection_tier");
-
-            if (tTier == 0) { // basic prospection data
-                String tData = tNBT.getString("prospection");
-                String[] tDataArray = tData.split(",");
-                if (tDataArray.length > 6) {
-                    tNBT.setString(
-                        "author",
-                        getProspectionBookTitle(tDataArray[3], tDataArray[0], tDataArray[1], tDataArray[2]));
-                    NBTTagList tNBTList = new NBTTagList();
-                    StringBuilder tOres = new StringBuilder(" Prospected Ores: ");
-                    for (int i = 6; tDataArray.length > i; i++) {
-                        tOres.append(tDataArray[i])
-                            .append(" ");
-                    }
-                    tNBTList.appendTag(
-                        new NBTTagString(
-                            "Tier " + tTier
-                                + " Prospecting Data From: X"
-                                + tDataArray[0]
-                                + " Z:"
-                                + tDataArray[2]
-                                + " Dim:"
-                                + tDataArray[3]
-                                + " Produces "
-                                + tDataArray[4]
-                                + "L "
-                                + tDataArray[5]
-                                + " "
-                                + tOres));
-                    tNBT.setTag("pages", tNBTList);
-                }
-            } else { // advanced prospection data
-                String tPos = tNBT.getString("prospection_pos");
-                String tRadius = tNBT.getString("prospection_radius");
-
-                String tOresStr = tNBT.getString("prospection_ores");
-                String tOilsStr = tNBT.getString("prospection_oils");
-                String tOilsPosStr = tNBT.getString("prospection_oils_pos");
-
-                String[] tOres = tOresStr.isEmpty() ? null : tOresStr.split("\\|");
-                String[] tOils = tOilsStr.isEmpty() ? null : tOilsStr.split("\\|");
-
-                NBTTagList tNBTList = new NBTTagList();
-
-                String tPageText = getProspectionFrontPage(
-                    tPos,
-                    tOils == null ? "0" : formatNumber(tOils.length),
-                    tRadius);
-                tNBTList.appendTag(new NBTTagString(tPageText));
-
-                if (tOres != null) fillBookWithList(tNBTList, "Ores Found %s\n\n", "\n", 7, tOres);
-
-                if (tOils != null) fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
-
-                tNBTList.appendTag(new NBTTagString(getProspectionGridPage()));
-                tNBTList.appendTag(new NBTTagString(getProspectionOilLocationPage(tOilsPosStr)));
-
-                tNBT.setString("author", tPos);
-                tNBT.setTag("pages", tNBTList);
-            }
-        }
-
-        public static String getProspectionFrontPage(String aPos, String aFieldCount, String aRadius) {
-            return String.format("""
-                Prospector report
-                %s
-
-                Oils: %s
-
-                Ores within %s blocks
-
-                Location is center of orevein
-                Check NEI to confirm orevein type""", aPos, aFieldCount, aRadius);
-        }
-
-        public static String getProspectionOilLocationPage(String aOilsPos) {
-            return "Corners of [5] are \n" + aOilsPos + "\n" + "P - Prospector in 8x8 field";
-        }
-
-        public static String getProspectionGridPage() {
-            return """
-                Oil notes
-
-                Prospects from NW to SE 576 chunks(9 8x8 oilfields)
-                 around and gives min-max amount
-
-                [1][2][3]
-                [4][5][6]
-                [7][8][9]
-
-                [5] - Prospector in this 8x8 area""";
-        }
-
-        public static String getRawProspectionDataName() {
-            // should probably stat collector this, but stuff already relies on this being unlocalized sooo
-            // don't break what ain't broke
-            return "Raw Prospection Data";
-        }
-
-        public static String getProspectionBookTitle(int aDim, int aX, int aY, int aZ) {
-            return getProspectionBookTitle(formatNumber(aDim), formatNumber(aX), formatNumber(aY), formatNumber(aZ));
-        }
-
-        public static String getProspectionBookTitle(String aDim, String aX, String aY, String aZ) {
-            return "Dim: " + aDim + "\nX: " + aX + " Y: " + aY + " Z: " + aZ;
-        }
-
-        public static void fillBookWithList(NBTTagList aBook, String aPageHeader, String aListDelimiter,
-            int aItemsPerPage, String[] list) {
-            String aPageFormatter = " %d/%d";
-            int tTotalPages = list.length / aItemsPerPage + (list.length % aItemsPerPage > 0 ? 1 : 0);
-            int tPage = 0;
-            StringBuilder tPageText;
-            do {
-                tPageText = new StringBuilder();
-                for (int i = tPage * aItemsPerPage; i < (tPage + 1) * aItemsPerPage && i < list.length; i += 1)
-                    tPageText.append((tPageText.isEmpty()) ? "" : aListDelimiter)
-                        .append(list[i]);
-
-                if (!tPageText.isEmpty()) {
-                    String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
-                    NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
-                    aBook.appendTag(tPageTag);
-                }
-
-                ++tPage;
-            } while (!tPageText.isEmpty());
         }
 
         /**
