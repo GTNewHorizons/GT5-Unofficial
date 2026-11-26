@@ -4604,6 +4604,72 @@ public class AssemblerRecipes implements Runnable {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
+            // Niobium-Titanium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NiobiumTitanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NiobiumTitanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NiobiumTitanium, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_NiobiumTitanium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Mysterious Crystal
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.MysteriousCrystal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MysteriousCrystal, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_MysteriousCrystal.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Neutronium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_Neutronium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Infinity
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_Infinity.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Transcendent Metal
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TranscendentMetal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_TranscendentMetal.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // SpaceTime
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1))
+                .circuit(12)
+                .itemOutputs(ItemList.Casing_Pipe_SpaceTime.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
         }
         // Item Pipe
         {
