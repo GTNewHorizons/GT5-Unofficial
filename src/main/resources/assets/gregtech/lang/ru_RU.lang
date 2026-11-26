@@ -4609,7 +4609,6 @@ GT5U.nei.nuclear.breeder.reactor_hull_heat=За каждые %d тепла ко�
 GT5U.nei.nuclear.breeder.required_pulse=Требуемые импульсы: %d
 GT5U.nei.purified_water.base_chance=Базовый шанс успеха: %s%%
 GT5U.nei.purified_water.grade_3.0=Расходуется во время работы
-GT5U.nei.purified_water.grade_3.1=+%s%%/%dЛ
 GT5U.nei.purified_water.grade_3.2=Возвращается в количестве, эквивалентном потребленному флокулянту.
 GT5U.nei.purified_water.grade_4.0=+%s pH/стак
 GT5U.nei.purified_water.grade_4.1=%s pH/1000Л
