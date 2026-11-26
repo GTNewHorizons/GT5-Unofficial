@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.storage;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -60,7 +60,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatFluid(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -112,7 +112,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
                     StatCollector
-                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
+                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatFluid(tContents.amount)));
             } else if (ItemStackNBT.hasKey(stack, "lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);

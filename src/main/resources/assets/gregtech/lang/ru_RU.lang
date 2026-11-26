@@ -487,7 +487,6 @@ gt.blockmachines.pollutiondetector.01.tier.single.name=Устройство об
 gt.blockmachines.pollutiondetector.01.tier.single.tooltip=Сообщает вам, живете ли вы уже в Гвалиоре.\nПКМ для проверки уровня загрязнения.\nНастройте с помощью отвёртки количество выходного редстоун сигнала.\nНе потребляет энергию.\nДобавлено: §2Alkalus §7- §c[GT++]
 
 gt.blockmachines.quantum.tank.debug.name=Отладочный жидкостный резервуар
-gt.blockmachines.quantum.tank.debug.tooltip=Хранит 2,147,483,640 Л жидкости\nСохраняет своё содержимое при сборе
 
 gt.blockmachines.redstone.lamp.name=Лампа управляемая красным камнем
 gt.blockmachines.redstone.lamp.tooltip=Лампа управляемая красным камнем\nДобавлено: §2Alkalus §7- §c[GT++]

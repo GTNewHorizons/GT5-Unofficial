@@ -1783,7 +1783,6 @@ gt.blockmachines.pollutiondetector.01.tier.single.name=污染探测仪
 gt.blockmachines.pollutiondetector.01.tier.single.tooltip=是的，你正居住在瓜廖尔\n右键查看污染水平\n用螺丝刀配置红石信号输出\n不消耗能源\n添加者：§2Alkalus §7- §c[GT++]
 
 gt.blockmachines.quantum.tank.debug.name=Debug 流体储罐
-gt.blockmachines.quantum.tank.debug.tooltip=可以存储2,147,483,640 L流体\n拆卸后保留其中流体
 
 gt.blockmachines.redstone.lamp.name=红石控制灯具
 gt.blockmachines.redstone.lamp.tooltip=红石控制灯具\n添加者：§2Alkalus §7- §c[GT++]
