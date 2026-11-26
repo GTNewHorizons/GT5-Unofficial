@@ -3,7 +3,6 @@ package gregtech.common.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
