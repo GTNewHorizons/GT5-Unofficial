@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -32,7 +32,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
 
     private static final int STORED_SCREEN_WIDTH = SCREEN_WIDTH + SLOT_SIZE;
 
-    private final IntSyncValue storedCount;
+    private final LongSyncValue storedCount;
     private final BooleanSyncValue itemLock;
     private final BooleanSyncValue voidFull;
     private final ItemStackHandler lockInventory = new ItemStackHandler(1) {
@@ -45,7 +45,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
 
     public MTEDigitalChestBaseGui(MTEDigitalChestBase machine) {
         super(machine);
-        storedCount = new IntSyncValue(machine::getItemCount);
+        storedCount = new LongSyncValue(machine::getTrueItemCount);
         itemLock = new BooleanSyncValue(
             machine::isLocked,
             enabled -> { if (baseMetaTileEntity.isServerSide()) machine.setItemLockEnabled(enabled); }).allowC2S();
@@ -65,7 +65,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
 
     @Override
     protected int getBasePanelWidth() {
-        return super.getBasePanelWidth() + SLOT_SIZE;
+        return super.getBasePanelWidth() + 2 * SLOT_SIZE;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
 
     @Override
     protected TextWidget<?> createScreenAmount(ModularPanel panel, PanelSyncManager syncManager) {
-        return IKey.dynamic(() -> formatNumber(storedCount.getIntValue()))
+        return IKey.dynamic(() -> formatNumber(storedCount.getLongValue()))
             .asWidget()
             .width(STORED_SCREEN_WIDTH - 6)
             .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
@@ -97,7 +97,9 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
     protected void addScreenText(Flow textColumn, ModularPanel panel, PanelSyncManager syncManager) {
         super.addScreenText(textColumn, panel, syncManager);
         textColumn.child(
-            IKey.str("/ " + formatNumber(machine.getMaxItemCount()))
+            IKey.lang("GT5U.machines.digitalchest.bulkcapacity").asWidget().widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
+        textColumn.child(
+            IKey.str(formatNumber(machine.getMaxItemCount()))
                 .asWidget()
                 .width(STORED_SCREEN_WIDTH - 6)
                 .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
@@ -106,7 +108,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
     @Override
     protected ItemDisplayWidget createSlot(ModularPanel panel, PanelSyncManager syncManager) {
         GenericSyncValue<ItemStack, ?> storedItem = GenericSyncValue.builder(ItemStack.class)
-            .getter(machine::getItemStack)
+            .getter(machine::getStoredItemType)
             .adapter(ByteBufAdapters.ITEM_STACK)
             .copy(ItemStack::copy)
             .build();

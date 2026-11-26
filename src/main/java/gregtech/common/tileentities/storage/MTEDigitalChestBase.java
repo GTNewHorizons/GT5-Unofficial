@@ -349,9 +349,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public long getTrueItemCount() {
         long count = getItemCount();
-        ItemStack storedItem = getItemStack();
-        if (GTUtility.isStackValid(mInventory[1])
-            && (GTUtility.isStackInvalid(storedItem) || GTUtility.areStacksEqual(mInventory[1], storedItem))) {
+        if (sameItemType(getStoredItemType(), mInventory[1])) {
             count += mInventory[1].stackSize;
         }
         return count;
@@ -721,18 +719,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     private void pushOutputItems(IGregTechTileEntity baseMetaTileEntity, long timer) {
-        if (!autoOutputItems || timer % 20 != 0 || mInventory[1] == null || isExternalAccessBlocked()) return;
+        if (!autoOutputItems || timer % 20 != 0 || isExternalAccessBlocked()) return;
+        boolean hasOutput = mInventory[1] != null;
+        if (!hasOutput && (getItemCount() <= 0 || isOutputReserved())) return;
 
-        int limit = autoOutputLimit(mTier);
+        int remaining = autoOutputLimit(mTier);
         GTItemTransfer transfer = new GTItemTransfer();
         transfer.outOfMachine(this, baseMetaTileEntity.getFrontFacing());
-        transfer.setSourceSlots(1);
         transfer.setStacksToTransfer(1);
-        transfer.setMaxItemsPerTransfer(limit);
-        transfer.setMaxTotalTransferred(limit);
-        int remaining = limit - transfer.transfer();
-        if (remaining <= 0 || mInventory[1] != null || getItemCount() <= 0 || isOutputReserved()) return;
-
+        if (hasOutput) {
+            transfer.setSourceSlots(1);
+            transfer.setMaxItemsPerTransfer(remaining);
+            transfer.setMaxTotalTransferred(remaining);
+            remaining -= transfer.transfer();
+            if (remaining <= 0 || mInventory[1] != null || getItemCount() <= 0 || isOutputReserved()) return;
+        }
         transfer.setSourceSlots(0);
         transfer.setMaxItemsPerTransfer(remaining);
         transfer.setMaxTotalTransferred(remaining);
@@ -920,6 +921,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public void setAllowInputFromOutputSide(boolean allowInputFromOutputSide) {
         mAllowInputFromOutputSide = allowInputFromOutputSide;
+        markDirty();
     }
 
     public boolean isOutputToSlot() {
@@ -928,6 +930,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public void setOutputToSlot(boolean outputToSlot) {
         mOutputToSlot = outputToSlot;
+        markDirty();
     }
 
     private boolean isItemInputSide(ForgeDirection side) {
@@ -983,7 +986,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         markDirty();
     }
 
-    private @Nullable ItemStack getStoredItemType() {
+    public @Nullable ItemStack getStoredItemType() {
         if (getItemCount() > 0) return getItemStack();
         ItemStack output = mInventory[1];
         if (output != null && !isMatterCluster(output) && (lockedItem == null || sameItemType(lockedItem, output)))
@@ -1174,17 +1177,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     protected ItemSink getItemSink(ForgeDirection side) {
-        return new ItemIOImpl();
+        return new ItemIOImpl(side);
     }
 
     @Override
     protected ItemSource getItemSource(ForgeDirection side) {
-        return new ItemIOImpl();
+        return new ItemIOImpl(side);
     }
 
     @Override
     protected ItemIO getItemIO(ForgeDirection side) {
-        return new ItemIOImpl();
+        return new ItemIOImpl(side);
     }
 
     @Override
@@ -1225,12 +1228,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        ItemStack is = getItemStack();
+        ItemStack is = getStoredItemType();
         if (GTUtility.isStackInvalid(is)) return;
-        long realItemCount = getItemCount();
-        if (GTUtility.isStackValid(mInventory[1]) && sameItemType(mInventory[1], is))
-            realItemCount += mInventory[1].stackSize;
-        tag.setLong("itemCount", realItemCount);
+        tag.setLong("itemCount", getTrueItemCount());
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
@@ -1242,6 +1242,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     class ItemIOImpl extends SimpleItemIO {
 
         private static final int[] SLOTS = { 0, 1 };
+        private final ForgeDirection side;
+
+        ItemIOImpl(ForgeDirection side) {
+            this.side = side;
+        }
 
         @Override
         protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
@@ -1348,7 +1353,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public int insert(ImmutableItemStack stack, boolean forced) {
-                if (!forced && isExternalAccessBlocked()) return stack.getStackSize();
+                if (!forced && (!isItemInputSide(side) || isExternalAccessBlocked())) return stack.getStackSize();
                 if (stack.getStackSize() <= 0) return stack.getStackSize();
                 ItemStack item = stack.toStackFast();
                 if (ItemUtil.getStackMeta(item) != stack.getItemMeta()) {
