@@ -31,6 +31,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import detrav.DetravScannerMod;
 import detrav.enums.DetravToolDictNames;
+import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
@@ -245,6 +246,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         }
 
         // from here, it's for the electric prospector scanners
+        range = BehaviourDetravToolElectricProspector
+            .getScanDiameter(BehaviourDetravToolElectricProspector.getScanRadius(this, aStack));
         aList.add(
             tOffset,
             EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(

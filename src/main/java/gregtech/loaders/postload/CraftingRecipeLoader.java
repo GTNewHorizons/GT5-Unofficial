@@ -1410,19 +1410,10 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "BBB", "PPP", 'C', "cableGt01Tin", 'P', "plankWood", 'B', "batteryBasic" });
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("mfeUnit", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CEC", "EME", "CEC", 'C', "cableGt01Gold", 'E', "batteryElite", 'M',
-                GTModHandler.getIC2Item("machine", 1L) });
-        GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("lvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "POP", "PCP", 'C', "cableGt01Tin", 'O', GTModHandler.getIC2Item("coil", 1L), 'P',
                 "plankWood" });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("mvTransformer", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CMC", 'C', "cableGt01Copper", 'M', GTModHandler.getIC2Item("machine", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("hvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1437,17 +1428,6 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("cesuUnit", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "BBB", "PPP", 'C', "cableGt01Copper", 'P', "plateBronze", 'B', "batteryAdvanced" });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("teleporter", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GFG", "CMC", "GDG", 'C', "cableGt01Platinum", 'G', "circuitAdvanced", 'D', "gemDiamond",
-                'M', GTModHandler.getIC2Item("machine", 1L), 'F',
-                GTModHandler.getIC2Item("frequencyTransmitter", 1L) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("energyOMat", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "RBR", "CMC", 'C', "cableGt01Copper", 'R', "dustRedstone", 'B', "batteryBasic", 'M',
-                GTModHandler.getIC2Item("machine", 1L) });
 
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("boatElectric", 1L),
@@ -1532,6 +1512,11 @@ public class CraftingRecipeLoader implements Runnable {
                 new ItemStack(Blocks.hopper), 'E', "circuitBasic" });
 
         if (NotEnoughItems.isModLoaded()) {
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("Uran238", 1L));
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("Uran235", 1L));
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("smallUran235", 1L));
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("Plutonium", 1L));
+            codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("smallPlutonium", 1L));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumSimple", 1L, 1));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumDual", 1L, 1));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorUraniumQuad", 1L, 1));

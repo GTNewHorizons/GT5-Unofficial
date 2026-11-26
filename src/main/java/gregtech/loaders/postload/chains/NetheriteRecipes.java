@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.VillageNames;
 import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -46,6 +47,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -70,28 +72,6 @@ public class NetheriteRecipes {
 
         // Prismatic Acid
         {
-            GTValues.RA.stdBuilder() // Prismarine
-                .itemInputs(
-                    GregtechItemList.RedAlgaeBiomass.get(32),
-                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 32))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
-                .itemOutputs(getModItem(Botania.ID, "manaResource", 8, 10, missing))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_LuV)
-                .addTo(autoclaveRecipes);
-
-            if (Forestry.isModLoaded()) {
-                GTValues.RA.stdBuilder() // Prismarine + Comb
-                    .itemInputs(
-                        GregtechItemList.RedAlgaeBiomass.get(32),
-                        GTBees.combs.getStackForType(CombType.PRISMATIC, 8))
-                    .fluidInputs(
-                        MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
-                    .itemOutputs(getModItem(Botania.ID, "manaResource", 16, 10, missing))
-                    .duration(15 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(autoclaveRecipes);
-            }
 
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(getModItem(Botania.ID, "manaResource", 24, 10, missing))
@@ -204,6 +184,61 @@ public class NetheriteRecipes {
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(vacuumFreezerRecipes);
+        }
+
+        // Prismarine Tech Line
+        {
+            GTValues.RA.stdBuilder() // Dim Prismarine
+                .itemInputs(
+                    GregtechItemList.RedAlgaeBiomass.get(32),
+                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 32))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
+                .itemOutputs(ItemList.Dim_Prismarine.get(16))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(autoclaveRecipes);
+
+            ItemStack prismarineCrystals = GameRegistry.findItemStack(VillageNames.ID, "prismarine_crystals", 64);
+            if (prismarineCrystals != null) {
+                GTValues.RA.stdBuilder() // Dim Prismarine + Prismarine Crystal
+                    .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), prismarineCrystals)
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 8000))
+                    .itemOutputs(ItemList.Dim_Prismarine.get(32))
+                    .duration(15 * SECONDS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(autoclaveRecipes);
+
+                GTValues.RA.stdBuilder() // Compression
+                    .itemInputs(prismarineCrystals)
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PrismaticAcid, FluidShapes.fluidLiquid, 4000))
+                    .itemOutputs(ItemList.Dim_Prismarine.get(64))
+                    .duration(1 * TICKS)
+                    .eut(TierEU.RECIPE_UIV)
+                    .addTo(electricImplosionCompressorRecipes);
+            }
+
+            GTValues.RA.stdBuilder() // Engraving
+                .itemInputs(
+                    ItemList.Dim_Prismarine.get(16),
+                    MaterialLibAPI.getStack(Materials.InfusedWater, Shapes.lens, 0))
+                .circuit(1)
+                .itemOutputs(getModItem(Botania.ID, "manaResource", 16, 10, missing))
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(laserEngraverRecipes);
+
+            if (Forestry.isModLoaded()) {
+                GTValues.RA.stdBuilder() // Engraving with Comb
+                    .itemInputs(
+                        ItemList.Dim_Prismarine.get(16),
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 16),
+                        MaterialLibAPI.getStack(Materials.InfusedWater, Shapes.lens, 0))
+                    .itemOutputs(getModItem(Botania.ID, "manaResource", 32, 10, missing))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(laserEngraverRecipes);
+            }
         }
 
         // Naquarite

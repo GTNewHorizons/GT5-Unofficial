@@ -34,11 +34,15 @@ import net.minecraft.util.StatCollector;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -50,7 +54,6 @@ public class MTEVoidMiners {
     public static class VMLUV extends MTEVoidMinerBase<VMLUV> {
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
-        private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMLUV> STRUCTURE_DEFINITION = StructureDefinition.<VMLUV>builder()
             // spotless:off
@@ -87,21 +90,23 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(7, 9, 7, false)
-                .addController("Front center, 2nd layer")
-                .addCasing("42", "Osmiridium Frame Box", false)
-                .addCasing("12-17", "Mining Osmiridium Casing", false)
-                .addCasing("6", "Bolted Osmiridium Casing", false)
-                .addCasing("6", "Rebolted Osmiridium Casing", false)
-                .addEnergyHatch("1+", "Any leg casing (" + VN[this.getMinTier()] + "+)", 1)
-                .addMaintenanceHatch("1", "Any leg casing", 1)
-                .addInputBus("0+", "Any leg casing", 1)
-                .addInputHatch("0+", "Any leg casing", 1)
-                .addOutputBus("1+", "Any leg casing", 1)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+                .addCasing("42", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Osmiridium)), false)
+                .addCasing("12-17", Casings.MiningOsmiridiumCasing.getLocalizedName(), false)
+                .addCasing("6", MaterialLibAPI.getStack(Materials.Osmiridium, BlockShapes.blockCasing, 1).getDisplayName(), false)
+                .addCasing("6", MaterialLibAPI.getStack(Materials.Osmiridium, BlockShapes.blockCasingAdvanced, 1).getDisplayName(), false)
+                .addEnergyHatch("1+",StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
+                .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 
@@ -157,7 +162,6 @@ public class MTEVoidMiners {
     public static class VMZPM extends MTEVoidMinerBase<VMZPM> {
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
-        private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMZPM> STRUCTURE_DEFINITION = StructureDefinition.<VMZPM>builder()
             // spotless:off
@@ -199,22 +203,24 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 13, 8, false)
-                .addController("Front center, 3rd layer")
-                .addCasing("72", "Naquadah Alloy Frame Box", false)
-                .addCasing("13-26", "Mining Black Plutonium Casing", false)
-                .addCasing("20", "Black Plutonium Item Pipe Casing", false)
-                .addCasing("10", "Bolted Naquadah Alloy Casing", false)
-                .addCasing("9", "Rebolted Naquadah Alloy Casing", false)
-                .addEnergyHatch("1+", "Any leg casing (" + VN[this.getMinTier()] + "+)", 1)
-                .addMaintenanceHatch("1", "Any leg casing", 1)
-                .addInputBus("0+", "Any leg casing", 1)
-                .addInputHatch("0+", "Any leg casing", 1)
-                .addOutputBus("1+", "Any leg casing", 1)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+                .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.NaquadahAlloy)), false)
+                .addCasing("13-26", Casings.MiningBlackPlutoniumCasing.getLocalizedName(), false)
+                .addCasing("20", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
+                .addCasing("10", MaterialLibAPI.getStack(Materials.NaquadahAlloy, BlockShapes.blockCasing, 1).getDisplayName(), false)
+                .addCasing("9", MaterialLibAPI.getStack(Materials.NaquadahAlloy, BlockShapes.blockCasingAdvanced, 1).getDisplayName(), false)
+                .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
+                .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 
@@ -307,22 +313,24 @@ public class MTEVoidMiners {
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
+            // spotless:off
             final MultiblockTooltipBuilder tt = super.createTooltip();
             tt.beginStructureBlock(9, 16, 9, false)
-                .addController("Front center, 3rd layer")
-                .addCasing("72", "Adamantium Frame Box", false)
-                .addCasing("31-44", "Mining Neutronium Casing", false)
-                .addCasing("36", "Rebolted Iridium Casing", false)
-                .addCasing("20", "Bolted Iridium Casing", false)
-                .addCasing("8", "Black Plutonium Item Pipe Casing", false)
-                .addEnergyHatch("1+", "Any leg casing (" + VN[this.getMinTier()] + "+)", 1)
-                .addMaintenanceHatch("1", "Any leg casing", 1)
-                .addInputBus("0+", "Any leg casing", 1)
-                .addInputHatch("0+", "Any leg casing", 1)
-                .addOutputBus("1+", "Any leg casing", 1)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+                .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Adamantium)), false)
+                .addCasing("31-44", Casings.MiningNeutroniumCasing.getLocalizedName(), false)
+                .addCasing("36", MaterialLibAPI.getStack(Materials.Iridium, BlockShapes.blockCasingAdvanced, 1).getDisplayName(), false)
+                .addCasing("20", MaterialLibAPI.getStack(Materials.Iridium, BlockShapes.blockCasing, 1).getDisplayName(), false)
+                .addCasing("8", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
+                .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_leg_casing_min_tier", VN[this.getMinTier()]), 1)
+                .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_leg_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
 

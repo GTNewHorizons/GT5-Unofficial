@@ -37,7 +37,7 @@ public class RecipeLoaderGTNH {
                 MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Curium, FluidShapes.fluidMolten, 1 * INGOTS))
-            .duration(4 * SECONDS + 16 * TICKS)
+            .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes);

@@ -75,15 +75,11 @@ public enum ItemList implements IItemContainer {
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
+    IC2_BioChaff,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
     IC2_Fuel_Rod_Empty,
-    IC2_Uranium_238,
-    IC2_Uranium_235,
-    IC2_Uranium_235_Small,
-    IC2_Plutonium,
-    IC2_Plutonium_Small,
     IC2_Uranium_Fuel,
     IC2_MOX_Fuel,
     IC2_Food_Can_Empty,
@@ -145,7 +141,6 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,
@@ -165,7 +160,10 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rotor,
     Shape_Extruder_Turbine_Blade,
     Shape_Extruder_Small_Gear,
-    Shape_Extruder_ToolHeadDrill,
+    Shape_Extruder_Drill,
+    Shape_Extruder_Boat,
+    Shape_Extruder_Pellet,
+    Shape_Extruder_Shaft,
 
     // IC2 Replacements
     PadBouncy,
@@ -634,12 +632,14 @@ public enum ItemList implements IItemContainer {
     Tool_Hoe_Steel,
 
     Spray_Empty,
+    // region unused
     Spray_Bug,
     Spray_Ice,
     Spray_Hardener,
     Spray_CFoam,
     Spray_Pepper,
     Spray_Hydration,
+    // endregion unused
 
     Color_00,
     Color_01,
@@ -696,6 +696,7 @@ public enum ItemList implements IItemContainer {
 
     Spray_Color_Remover_Empty,
 
+    // region unused
     Armor_Cheat,
     Armor_Cloaking,
     Armor_Lamp,
@@ -709,6 +710,7 @@ public enum ItemList implements IItemContainer {
     Component_Turbine_Magnalium,
     Component_Turbine_TungstenSteel,
     Component_Turbine_Carbon,
+    // endregion unused
     Component_LavaFilter,
     Component_Sawblade_Diamond,
     T1Sawblade,
@@ -787,7 +789,12 @@ public enum ItemList implements IItemContainer {
     Casing_LuV,
     Casing_ZPM,
     Casing_UV,
-    Casing_MAX,
+    Casing_UHV,
+    Casing_UEV,
+    Casing_UIV,
+    Casing_UMV,
+    Casing_UXV,
+    Casing_MAXV,
     Casing_BronzePlatedBricks,
     Casing_HeatProof,
     Casing_Dim_Trans,
@@ -859,7 +866,12 @@ public enum ItemList implements IItemContainer {
     Hull_LuV,
     Hull_ZPM,
     Hull_UV,
-    Hull_MAX,
+    Hull_UHV,
+    Hull_UEV,
+    Hull_UIV,
+    Hull_UMV,
+    Hull_UXV,
+    Hull_MAXV,
 
     CompressedFireclay,
     Firebrick,
@@ -1146,10 +1158,6 @@ public enum ItemList implements IItemContainer {
     Locker_UV,
     Locker_MAX,
 
-    Machine_Multi_LargeBoiler_Bronze,
-    Machine_Multi_LargeBoiler_Steel,
-    Machine_Multi_LargeBoiler_Titanium,
-    Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
     Machine_Multi_PlasmaForge,
     Machine_Multi_ImplosionCompressor,
@@ -1471,7 +1479,6 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
 
-    Machine_Fluid_Shaper, // DEPRECATED. Remove after 2.9
     Machine_Mass_Solidifier,
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
@@ -1511,6 +1518,7 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Opener,
     Black_Hole_Closer,
     Black_Hole_Stabilizer,
+    Supermassive_Black_Hole_Opener,
 
     Machine_Multi_IndustrialBrewery,
 
@@ -1621,7 +1629,6 @@ public enum ItemList implements IItemContainer {
 
     Distillation_Tower,
     Energy_LapotronicOrb2,
-    Ore_Processor,
     ZPM6,
     ZPM5,
     ZPM4,
@@ -1653,6 +1660,7 @@ public enum ItemList implements IItemContainer {
     Super_Chest_IV,
 
     Debug_Fluid_Tank,
+    Debug_Chest,
 
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
@@ -1679,11 +1687,6 @@ public enum ItemList implements IItemContainer {
     Cover_RedstoneReceiver,
     Cover_WirelessController,
     Cover_AdvancedWirelessController,
-
-    LargeSteamTurbine,
-    LargeGasTurbine,
-    LargeHPSteamTurbine,
-    LargePlasmaTurbine,
 
     Ingot_Heavy1,
     Ingot_Heavy2,
@@ -1799,14 +1802,12 @@ public enum ItemList implements IItemContainer {
     OilDrill3,
 
     OilDrill4,
-    OilDrillInfinite,
     ConcreteBackfiller1,
     ConcreteBackfiller2,
     OreDrill1,
     OreDrill2,
     OreDrill3,
     OreDrill4,
-    PyrolyseOven,
     OilCracker,
     SolarFactory,
     NanoForge,
@@ -1833,14 +1834,13 @@ public enum ItemList implements IItemContainer {
 
     Block_Powderbarrel,
     GelledToluene,
+    Dynamite,
 
     FluidFilter,
     ItemFilter_Export,
     ItemFilter_Import,
     CuringOven,
     Machine_Multi_Assemblyline,
-    Machine_Multi_DieselEngine,
-    Machine_Multi_ExtremeDieselEngine,
     QuantumEye,
     QuantumStar,
     Gravistar,
@@ -2182,7 +2182,6 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_TranscendentPlasmaMixer,
     Cover_Metrics_Transmitter,
     NC_AdvancedSensorCard,
-    Machine_Multi_DroneCentre,
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,
@@ -2248,6 +2247,9 @@ public enum ItemList implements IItemContainer {
     CasingHearth,
     CasingFridge,
     CasingNaquadahReinforcedDistillation,
+    CasingPlasmaCollider,
+    CasingQuadcellDriving,
+    GlassPlasmaCollider,
     AlgaeCasing,
     NaquadahReactorCasing,
     EntropicProcessor,
@@ -2315,16 +2317,6 @@ public enum ItemList implements IItemContainer {
     Battery_Buffer_4by4_UMV,
     Battery_Buffer_4by4_UXV,
     Battery_Buffer_4by4_MAXV,
-    Hull_UEV,
-    Hull_UIV,
-    Hull_UMV,
-    Hull_UXV,
-    Hull_MAXV,
-    Casing_UEV,
-    Casing_UIV,
-    Casing_UMV,
-    Casing_UXV,
-    Casing_MAXV,
     //
     Transformer_UEV_UHV,
     Transformer_UIV_UEV,
@@ -2725,6 +2717,7 @@ public enum ItemList implements IItemContainer {
     Alumina_Support_Ring,
     Alumina_Support_Ring_Raw,
     Prismarine_Precipitate,
+    Dim_Prismarine,
     Prismatic_Crystal,
     Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
     Naquarite_Universal_Insulator_Foil,
@@ -2797,7 +2790,6 @@ public enum ItemList implements IItemContainer {
     NaniteFramework,
     NaniteShieldingGlass,
 
-    PlanetaryGasSiphonController,
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
@@ -3341,7 +3333,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Warped,
     Ice_Cream_WitchyWildberry,
     // Reserved for Ice creams, don't you dare (to 700)
-    Ice_Cream_Trophy
+    Ice_Cream_Trophy,
+    QuadcellPlasmaCollider,
     // semicolon after the comment to reduce merge conflicts
     ;
 
@@ -3360,10 +3353,10 @@ public enum ItemList implements IItemContainer {
             WetTransformer_IV_EV, WetTransformer_LuV_IV, WetTransformer_ZPM_LuV, WetTransformer_UV_ZPM,
             WetTransformer_UHV_UV, WetTransformer_UEV_UHV, WetTransformer_UIV_UEV, WetTransformer_UMV_UIV,
             WetTransformer_UXV_UMV, WetTransformer_MAX_UXV },
-        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
+        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_UHV,
             Hull_UEV, Hull_UIV, Hull_UMV, Hull_UXV, Hull_MAXV },
         MACHINE_CASINGS = { Casing_ULV, Casing_LV, Casing_MV, Casing_HV, Casing_EV, Casing_IV, Casing_LuV, Casing_ZPM,
-            Casing_UV, Casing_MAX, Casing_UEV, Casing_UIV, Casing_UMV, Casing_UXV, Casing_MAXV },
+            Casing_UV, Casing_UHV, Casing_UEV, Casing_UIV, Casing_UMV, Casing_UXV, Casing_MAXV },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
             Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV, Hatch_Dynamo_UEV,
             Hatch_Dynamo_UIV, Hatch_Dynamo_UMV, Hatch_Dynamo_UXV },

@@ -19,6 +19,7 @@ import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -930,6 +931,26 @@ public class CentrifugeRecipes implements Runnable {
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(centrifugeNonCellRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, 1) },
+                new int[] { 10000, 8000 })
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.CollisionResidue, FluidShapes.fluidLiquid, 20),
+                MaterialLibAPI.getFluidStack(Materials.Orikalkum, FluidShapes.fluidMolten, 4 * INGOTS))
+            .fluidOutputs(
+                new FluidStack[] {
+                    MaterialLibAPI.getFluidStack(Materials.OrikalkicReagent, FluidShapes.fluidLiquid, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidMolten, 50),
+                    MaterialLibAPI.getFluidStack(Materials.Runite, FluidShapes.fluidMolten, 50),
+                    MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 50) },
+                new int[] { 10000, 5000, 5000, 5000 })
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(centrifugeNonCellRecipes);
 
         // From ProcessingSand

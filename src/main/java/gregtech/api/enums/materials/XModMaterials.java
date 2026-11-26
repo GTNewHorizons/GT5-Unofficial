@@ -49,7 +49,7 @@ public class XModMaterials {
     }
 
     private static void applyForeignShapes(Material material, ForeignShape... rows) {
-        MaterialEdit edit = MaterialLibAPI.editMaterial(material.getModId(), material.getName());
+        MaterialEdit edit = MaterialLibAPI.editMaterial(Mods.GregTech.ID, material.getName());
         for (ForeignShape row : rows) {
             if (!row.mod()
                 .isModLoaded()) continue;

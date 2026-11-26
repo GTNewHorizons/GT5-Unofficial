@@ -1275,7 +1275,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 1),
                         ItemList.Emitter_UHV.get(1),
                         ItemList.Electric_Pump_UHV.get(1),
@@ -1376,7 +1376,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 2),
                         ItemList.Emitter_UHV.get(2),
                         ItemList.Electric_Pump_UHV.get(2),
@@ -1465,7 +1465,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 4),
                         ItemList.Emitter_UHV.get(4),
                         ItemList.Electric_Pump_UHV.get(4),
@@ -1542,7 +1542,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 8),
                         ItemList.Emitter_UHV.get(8),
                         ItemList.Electric_Pump_UHV.get(8),
@@ -1607,7 +1607,7 @@ public class Assembler implements Runnable {
             {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 16),
                         ItemList.Emitter_UHV.get(16),
                         ItemList.Electric_Pump_UHV.get(16),
@@ -1817,7 +1817,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 1),
                         ItemList.Sensor_UHV.get(1),
                         ItemList.Electric_Pump_UHV.get(1),
@@ -1918,7 +1918,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 2),
                         ItemList.Sensor_UHV.get(2),
                         ItemList.Electric_Pump_UHV.get(2),
@@ -2007,7 +2007,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 4),
                         ItemList.Sensor_UHV.get(4),
                         ItemList.Electric_Pump_UHV.get(4),
@@ -2084,7 +2084,7 @@ public class Assembler implements Runnable {
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 8),
                         ItemList.Sensor_UHV.get(8),
                         ItemList.Electric_Pump_UHV.get(8),
@@ -2149,7 +2149,7 @@ public class Assembler implements Runnable {
             {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hull_MAX.get(1),
+                        ItemList.Hull_UHV.get(1),
                         MaterialLibAPI.getStack(Materials.Diamond, Shapes.lens, 16),
                         ItemList.Sensor_UHV.get(16),
                         ItemList.Electric_Pump_UHV.get(16),

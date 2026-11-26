@@ -19,6 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.api.IBlockClimbableFromSide;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
@@ -43,6 +44,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.common.config.Gregtech;
 import gregtech.common.render.GTRendererBlock;
 
 /// The frame-box MaterialLib shape block. Metadata is the material index.
@@ -50,7 +52,7 @@ import gregtech.common.render.GTRendererBlock;
 /// A plain frame has no tile entity. Applying a cover attaches one through [#spawnFrameEntity].
 /// [#hasTileEntity] is always true so that tile entity survives chunk save/load, while [#createTileEntity]
 /// returns null so placement never creates one.
-public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
+public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures, IBlockClimbableFromSide {
 
     private static final ThreadLocal<IGregTechTileEntity> temporaryTileEntity = new ThreadLocal<>();
 
@@ -190,6 +192,13 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
             return;
         }
         super.onEntityCollidedWithBlock(world, x, y, z, collider);
+    }
+
+    @Override
+    public boolean isClimbableSide(IBlockAccess world, int x, int y, int z, ForgeDirection side,
+        EntityPlayer entityPlayer) {
+        return Gregtech.general.climbableFrameBox
+            && !(world.getTileEntity(x, y, z) instanceof ICoverable coverable && coverable.hasCoverAtSide(side));
     }
 
     @Override

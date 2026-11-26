@@ -43,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -369,14 +370,18 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         ArrayList<FluidStack> inputFluid = getStoredFluids();
         for (FluidStack fluid : inputFluid) {
             if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
+                // Safe cast long amount to int
+                // Because the amount requested is 1M L at max
+                // based on getCapacity()
                 if (storedFluidStack == null) {
-                    int depleted = depleteInputQuantity(new FluidStack(fluid, getCapacity()), false);
+                    int depleted = GTUtility
+                        .longToInt(depleteInputQuantity(new FluidStack(fluid, getCapacity()), false));
                     storedFluidStack = new FluidStack(fluid, Math.min(getCapacity(), depleted));
                 } else if (storedFluidStack.isFluidEqual(fluid)) {
                     int max = getCapacity() - storedFluidStack.amount;
                     // If we're already full don't cause a 0L drain.
                     if (max == 0) return;
-                    int depleted = depleteInputQuantity(new FluidStack(fluid, max), false);
+                    int depleted = GTUtility.longToInt(depleteInputQuantity(new FluidStack(fluid, max), false));
                     storedFluidStack.amount += Math.min(max, depleted);
                 }
 

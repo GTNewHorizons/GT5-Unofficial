@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -62,7 +63,10 @@ public class BehaviourProspecting extends BehaviourNone {
 
         com.ruling_0.materiallib.api.Material mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MaterialUtils.localizedName(mat));
+            GTUtility.sendChatTrans(
+                aPlayer,
+                "GT5U.chat.behaviour.prospecting.ore",
+                new ChatComponentTranslation(MaterialUtils.localizedNameKey(mat)));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -70,8 +74,10 @@ public class BehaviourProspecting extends BehaviourNone {
         com.ruling_0.materiallib.api.Material oreMat = getOreMaterial(aBlock, aMeta);
 
         if (oreMat != null) {
-            GTUtility
-                .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MaterialUtils.localizedName(oreMat));
+            GTUtility.sendChatTrans(
+                aPlayer,
+                "GT5U.chat.behaviour.prospecting.ore",
+                new ChatComponentTranslation(MaterialUtils.localizedNameKey(oreMat)));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -122,7 +128,7 @@ public class BehaviourProspecting extends BehaviourNone {
                     GTUtility.sendChatTrans(
                         aPlayer,
                         "GT5U.chat.behaviour.prospecting.traces_of",
-                        MaterialUtils.localizedName(mat));
+                        new ChatComponentTranslation(MaterialUtils.localizedNameKey(mat)));
                     return true;
                 }
 
@@ -132,7 +138,7 @@ public class BehaviourProspecting extends BehaviourNone {
                     GTUtility.sendChatTrans(
                         aPlayer,
                         "GT5U.chat.behaviour.prospecting.traces_of",
-                        MaterialUtils.localizedName(oreMat));
+                        new ChatComponentTranslation(MaterialUtils.localizedNameKey(oreMat)));
                     return true;
                 }
             }

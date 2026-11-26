@@ -22,7 +22,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -66,6 +68,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvivalConstructable {
 
     private int mCasing;
@@ -102,21 +105,25 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(EnumChatFormatting.GREEN + "G.O.G, Grinds Ores Good")
+            .addMarkdown(new ResourceLocation("gregtech", "isamill"))
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("40-43", "IsaMill Exterior Casing", false)
-            .addCasing("8", "IsaMill Piping", false)
-            .addCasing("5", "IsaMill Gearbox", false)
-            .addMiscHatch("1", "Ball Housing", "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("40-43", Casings.IsaMillExteriorCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.IsaMillPiping.getLocalizedName(), false)
+            .addCasing("5", Casings.IsaMillGearboxCasing.getLocalizedName(), false)
+            .addMiscHatch(
+                "1",
+                GregtechItemList.Bus_Milling_Balls.get(1)
+                    .getDisplayName(),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -442,7 +449,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public String getMachineType() {
-        return "Grinding Machine, IGM";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.grinding_machine");
     }
 
     public int getMaxBallDurability(ItemStack aStack) {

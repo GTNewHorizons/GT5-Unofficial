@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,6 +47,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 
 public enum StoneType implements IStoneType {
@@ -241,6 +244,31 @@ public enum StoneType implements IStoneType {
         return builder.oreBlockPrefix;
     }
 
+    /// The display name of `material`'s ore in this stone, built on the format key an ore shape names the material
+    /// with (such as `gt.oreprefix.material_ore`). Material and stone are separate localization keys so languages can
+    /// reorder and inflect them without translations for every material/stone combination. Plain stone keeps the
+    /// stoneless name.
+    public @Nullable String getLocalizedOreName(String formatKey, Material material) {
+        if (this == Stone) return OrePrefixes.shapeDisplayName(formatKey, material);
+
+        final String prefixKey = formatKey + ".with_stone";
+        // The shared lookup in OrePrefixes has no stone in its key, so per-stone overrides are checked here.
+        final String overrideKey = prefixKey + "."
+            + name().toLowerCase(Locale.ROOT)
+            + "."
+            + MaterialUtils.internalName(material)
+                .toLowerCase(Locale.ROOT);
+        if (StatCollector.canTranslate(overrideKey)) {
+            return StatCollector.translateToLocal(overrideKey);
+        }
+
+        return OrePrefixes.getLocalizedNameForItemWithInflection(
+            prefixKey,
+            material,
+            MaterialUtils.localizedNameKey(material),
+            "gt.ore.stone." + name().toLowerCase(Locale.ROOT));
+    }
+
     @Override
     public IStoneCategory getCategory() {
         return builder.category;
@@ -290,7 +318,6 @@ public enum StoneType implements IStoneType {
 
             texturesTemp[side.ordinal()] = TextureFactory.builder()
                 .addIcon(container)
-                .stdOrient()
                 .build();
         }
 

@@ -240,7 +240,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             setHatchRecipeMap(hatch);
             heliumInputHatch = hatch;
             mCustomHatches.add(hatch);
@@ -257,7 +257,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             setHatchRecipeMap(hatch);
             coolantInputHatch = hatch;
             mCustomHatches.add(hatch);
@@ -274,7 +274,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             coolantOutputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;
@@ -290,7 +290,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             waterInputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;
@@ -306,7 +306,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             steamOutputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;

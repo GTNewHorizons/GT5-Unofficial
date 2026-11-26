@@ -80,12 +80,7 @@ public class CraftingRecipes implements Runnable {
         ItemStack[] chreac = { ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L),
             ItemList.Machine_EV_ChemicalReactor.get(1L), ItemList.Machine_IV_ChemicalReactor.get(1L) };
 
-        GTModHandler.addCraftingRecipe(
-            new MTELESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
-            RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CDC", "SBS", "CFC", 'C', "circuitAdvanced", 'D', ItemList.Cover_Screen.get(1L), 'S',
-                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt12, 1), 'B',
-                new ItemStack(ItemRegistry.BW_BLOCKS[1]), 'F', ItemList.Field_Generator_HV.get(1L) });
+        new MTELESU(LESU.ID, "LESU", "L.E.S.U.");
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),

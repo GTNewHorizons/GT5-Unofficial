@@ -272,6 +272,8 @@ public class VoidMinerUtility {
                 }
             }
         }
+
+        VoidMinerRecipes.register();
     }
 
     public static void addBlockToDimensionList(String dimName, Block block, int meta, float weight) {

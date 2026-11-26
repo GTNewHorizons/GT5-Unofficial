@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
 import static gtnhlanth.common.beamline.Particle.ELECTRONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.ETA;
+import static gtnhlanth.common.beamline.Particle.GLUEBALL;
 import static gtnhlanth.common.beamline.Particle.GRAVITON;
 import static gtnhlanth.common.beamline.Particle.HIGGS;
 import static gtnhlanth.common.beamline.Particle.JPSI;
@@ -15,6 +16,7 @@ import static gtnhlanth.common.beamline.Particle.MUON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
 import static gtnhlanth.common.beamline.Particle.OMEGA;
+import static gtnhlanth.common.beamline.Particle.PION;
 import static gtnhlanth.common.beamline.Particle.PROTON;
 import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
@@ -67,8 +69,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
                     .particleID_B(MUON.getId())
-                    .amount_A(5)
-                    .amount_B(3)
+                    .amount_A(500)
+                    .amount_B(300)
                     .build())
             .outputChances(9900)
             .duration(1 * SECONDS)
@@ -147,7 +149,7 @@ public class BeamCrafterRecipes implements Runnable {
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
-                    .particleID_A(UPSILON.getId())
+                    .particleID_A(GLUEBALL.getId())
                     .particleID_B(OMEGA.getId())
                     .amount_A(750)
                     .amount_B(750)
@@ -200,7 +202,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
-                    .particleID_B(LAMBDA.getId())
+                    .particleID_B(PION.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -216,7 +218,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(NEUTRON.getId())
-                    .particleID_B(LAMBDA.getId())
+                    .particleID_B(PION.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -233,8 +235,8 @@ public class BeamCrafterRecipes implements Runnable {
                 BeamCrafterMetadata.builder()
                     .particleID_A(JPSI.getId())
                     .particleID_B(JPSI.getId())
-                    .amount_A(1000)
-                    .amount_B(1000)
+                    .amount_A(500)
+                    .amount_B(500)
                     .build())
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
@@ -248,9 +250,9 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(ETA.getId())
-                    .particleID_B(ETA.getId())
+                    .particleID_B(LAMBDA.getId())
                     .amount_A(1000)
-                    .amount_B(1000)
+                    .amount_B(200)
                     .build())
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)

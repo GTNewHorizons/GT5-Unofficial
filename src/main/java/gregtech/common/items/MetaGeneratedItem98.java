@@ -302,14 +302,25 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
             .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
         String prefixKey = cellType.prefix.getOreprefixKey();
-        mNameLocalizationFunctions.put(
-            (short) id,
-            stack -> StatCollector.translateToLocalFormatted(prefixKey, fluid.getLocalizedName(fluidStack)));
+        mNameLocalizationFunctions.put((short) id, stack -> getCellName(prefixKey, fluid, fluidStack));
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);
 
         registeredFluidDataMap.put(id, new RegisteredFluidData(rgba, iconContainerMap.get(cellType)));
+    }
+
+    /** Builds a cell name from its oreprefix template the same way material items do, inflection included. */
+    private static String getCellName(String prefixKey, Fluid fluid, FluidStack fluidStack) {
+        String localizedName = fluid.getLocalizedName(fluidStack);
+        String nameKey = fluid.getUnlocalizedName(fluidStack);
+        // Some fluids override getLocalizedName or have no translatable key. For those, pass the localized name:
+        // translateToLocal returns an unknown key unchanged, so the template receives the shown name.
+        if (!StatCollector.canTranslate(nameKey) || !StatCollector.translateToLocal(nameKey)
+            .equals(localizedName)) {
+            nameKey = localizedName;
+        }
+        return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, nameKey);
     }
 
     private void registerOreDict() {

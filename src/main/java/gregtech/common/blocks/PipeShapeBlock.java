@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -159,7 +160,8 @@ public class PipeShapeBlock extends ShapeBlock {
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
-        return new BaseMetaPipeEntity();
+        return isWireOrCable() ? new BaseMetaPipeEntity(HarvestTool.CutterLevel0.toTileEntityBaseType())
+            : new BaseMetaPipeEntity();
     }
 
     @Override

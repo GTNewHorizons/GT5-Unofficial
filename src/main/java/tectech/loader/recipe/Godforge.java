@@ -14,12 +14,14 @@ import static gregtech.api.util.GTRecipeConstants.FOG_UPGRADE_NAME_SHORT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
-import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.getRandomIntInRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -49,8 +51,10 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+import tectech.recipe.ExoticPlasmaWeights;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 public class Godforge implements Runnable {
@@ -60,11 +64,6 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
-    public static final List<FluidStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
-    public static final List<FluidStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
-    public static final List<FluidStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
     /// The molten fluid of each dust's material, index-aligned with `items`. The entry is null for a dust with no
     /// association or a material with no molten fluid.
@@ -81,6 +80,91 @@ public class Godforge implements Runnable {
         }
 
         return molten;
+    }
+
+    private static class Plasma {
+
+        final FluidStack fluid;
+        final int weight;
+        final boolean fromItem;
+
+        Plasma(FluidStack fluid, int weight, boolean fromItem) {
+            this.fluid = fluid;
+            this.weight = weight;
+            this.fromItem = fromItem;
+        }
+    }
+
+    // Fake recipes listing every plasma the exotic module can ask for. Weights and chances are in
+    // ExoticPlasmaWeights.
+    private static void addExoticModuleRecipes() {
+        List<Plasma> quarkGluon = new ArrayList<>();
+        exoticModulePlasmaItemMap
+            .forEach((item, weight) -> addPlasma(quarkGluon, plasmaOfDust(item, 9 * INGOTS), weight, true));
+        exoticModulePlasmaFluidMap
+            .forEach((fluid, weight) -> addPlasma(quarkGluon, plasmaOfFluid(fluid, 1000), weight, false));
+        addExoticModuleRecipe(
+            MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 1_000),
+            quarkGluon,
+            true);
+
+        List<Plasma> magmatter = new ArrayList<>();
+        exoticModuleMagmatterItemMap
+            .forEach((item, weight) -> addPlasma(magmatter, plasmaOfDust(item, INGOTS), weight, true));
+        addExoticModuleRecipe(
+            MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 4 * INGOTS),
+            magmatter,
+            false,
+            MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, MTEExoticModule.MAGMATTER_MIN_TIME),
+            MaterialLibAPI
+                .getFluidStack(Materials.Space, FluidShapes.fluidLiquid, MTEExoticModule.MAGMATTER_MIN_SPACE));
+    }
+
+    private static void addPlasma(List<Plasma> plasmas, @Nullable FluidStack fluid, int weight, boolean fromItem) {
+        if (fluid != null) plasmas.add(new Plasma(fluid, weight, fromItem));
+    }
+
+    private static void addExoticModuleRecipe(FluidStack output, List<Plasma> plasmas, boolean quarkGluon,
+        FluidStack... extraInputs) {
+        ExoticPlasmaWeights weights = new ExoticPlasmaWeights(quarkGluon);
+        for (Plasma plasma : plasmas) weights.add(plasma.fluid, plasma.weight, plasma.fromItem);
+        weights.finish();
+
+        // Most likely first, then by name so that the order does not depend on the hash maps
+        plasmas.sort(
+            Comparator.<Plasma>comparingDouble(plasma -> -weights.getChance(plasma.fluid))
+                .thenComparing(
+                    plasma -> plasma.fluid.getFluid()
+                        .getName()));
+
+        List<FluidStack> inputs = new ArrayList<>();
+        for (Plasma plasma : plasmas) inputs.add(plasma.fluid);
+        inputs.addAll(Arrays.asList(extraInputs));
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(inputs.toArray(new FluidStack[0]))
+            .fluidOutputs(output)
+            .special(weights)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .metadata(FOG_EXOTIC_TIER, 1)
+            .ignoreCollision()
+            .fake()
+            .addTo(godforgeExoticMatterRecipes);
+    }
+
+    // Same lookups as MTEExoticModule#convertItemToPlasma and #convertFluidToPlasma
+    @Nullable
+    private static FluidStack plasmaOfDust(ItemStack dust, int amount) {
+        ItemData association = MaterialData.getAssociation(dust);
+        return association == null ? null : MaterialUtils.plasma(association.material.material, amount);
+    }
+
+    @Nullable
+    private static FluidStack plasmaOfFluid(FluidStack fluid, int amount) {
+        String[] fluidName = fluid.getUnlocalizedName()
+            .split("\\.");
+        return FluidRegistry.getFluidStack("plasma." + fluidName[fluidName.length - 1], amount);
     }
 
     @Override
@@ -322,7 +406,8 @@ public class Godforge implements Runnable {
                 MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.dust, 1) };
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Orikalkum, Shapes.dust, 1) };
 
             FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
 
@@ -332,7 +417,8 @@ public class Godforge implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidPlasma, 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidPlasma, 1 * INGOTS) };
+                MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidPlasma, 1 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Orikalkum, FluidShapes.fluidPlasma, 1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -561,33 +647,6 @@ public class Godforge implements Runnable {
             }
         }
 
-        // Exotic module fake recipes
-        {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 1_000))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_UXV)
-                .metadata(FOG_EXOTIC_TIER, 1)
-                .ignoreCollision()
-                .fake()
-                .addTo(godforgeExoticMatterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 1),
-                    MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidMolten, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 4 * INGOTS))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_UXV)
-                .metadata(FOG_EXOTIC_TIER, 1)
-                .ignoreCollision()
-                .fake()
-                .addTo(godforgeExoticMatterRecipes);
-        }
-
         // Exotic module plasma material maps
         // GT materials
         plasmaGTMaterialList.addAll(
@@ -782,23 +841,7 @@ public class Godforge implements Runnable {
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Dragonblood, Shapes.dust, 1), 100000);
 
-        // For NEI
-        for (FluidStack fluid : exoticModulePlasmaFluidMap.keySet()) {
-            FluidStack displayFluid = fluid.copy();
-            displayFluid.amount = getRandomIntInRange(1, 64);
-            quarkGluonFluidItemsForNEI.add(displayFluid);
-        }
-        for (ItemStack item : exoticModulePlasmaItemMap.keySet()) {
-            item.stackSize = getRandomIntInRange(1, 7);
-            quarkGluonItemsForNEI.add(item);
-        }
-        for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI
-                .add(MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, getRandomIntInRange(1, 50)));
-            magmatterSpaceFluidItemsForNEI.add(
-                MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, getRandomIntInRange(51, 100)));
-        }
-        magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
+        addExoticModuleRecipes();
 
         // Godforge upgrade materials
         if (EternalSingularity.isModLoaded()) {

@@ -498,12 +498,6 @@ public class GTUtility {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
     }
 
-    public static String getColoredTierNameForTooltip(int voltageIndex) {
-        return GTUtility.FORMAT_PUSH_STACK + GTValues.TIER_COLORS[voltageIndex]
-            + GTValues.VN[voltageIndex]
-            + GTUtility.FORMAT_POP_STACK;
-    }
-
     /**
      * Applies secondary formatting to tooltip text
      *
@@ -692,8 +686,39 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
@@ -1271,7 +1296,7 @@ public class GTUtility {
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? aFluid.amount : 0);
+        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? getFluidAmount(aFluid) : 0);
         tNBT.setLong(
             "mFluidDisplayHeat",
             aFluid.getFluid()
@@ -1415,14 +1440,14 @@ public class GTUtility {
 
         for (FluidStack stack : stacks) {
             if (stack == null || stack.getFluid() == null) continue;
-            histogram.addTo(FluidId.create(stack), stack.amount);
+            histogram.addTo(FluidId.create(stack), getFluidAmount(stack));
         }
 
         return histogram;
     }
 
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
+        return (List<NBTTagCompound>) (List<?>) tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -2154,10 +2179,14 @@ public class GTUtility {
     }
 
     public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
+        return copyAmount((long) aAmount, aStack);
+    }
+
+    public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
-        FluidStack rStack = aStack.copy();
-        rStack.amount = aAmount;
-        return rStack;
+
+        return GTUtility.createFluidStack(aStack, aAmount)
+            .copy();
     }
 
     /**
@@ -2275,14 +2304,14 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2293,8 +2322,8 @@ public class GTUtility {
     public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+        for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) list.tagList) {
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 
@@ -2309,6 +2338,9 @@ public class GTUtility {
      */
     public static FluidStack loadFluid(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
+        if (aNBT.hasKey("amountLong")) {
+            return LongFluidStack.loadFluidStackFromNBT(aNBT);
+        }
         return FluidStack.loadFluidStackFromNBT(aNBT);
     }
 
@@ -2770,8 +2802,8 @@ public class GTUtility {
     public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
         Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
         for (FluidStack fluidStack : fluidStacks) {
-            if (fluidStack != null && fluidStack.amount > 0) {
-                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+            if (fluidStack != null && getFluidAmount(fluidStack) > 0) {
+                result.merge(fluidStack.getFluid(), getFluidAmount(fluidStack), GTUtility::addSafe);
             }
         }
         return result;
@@ -3894,15 +3926,16 @@ public class GTUtility {
             return new AutoValue_GTUtility_FluidId(
                 FluidRegistry.getFluid(tag.getString("FluidName")),
                 tag.hasKey("Tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
-                tag.hasKey("Amount", NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+                tag.hasKey("Amount", NBT.TAG_LONG) ? tag.getLong("Amount")
+                    : tag.hasKey("Amount", NBT.TAG_INT) ? (long) tag.getInteger("Amount") : null);
         }
 
         public NBTTagCompound writeToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("FluidName", fluid().getName());
             if (nbt() != null) tag.setTag("Tag", nbt());
-            Integer amount = amount();
-            if (amount != null) tag.setInteger("Amount", amount);
+            Long amount = amount();
+            if (amount != null) tag.setLong("Amount", amount);
             return tag;
         }
 
@@ -3911,14 +3944,14 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), getFluidAmount(fluidStack), fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
             return createNoCopy(fluid, null, null);
         }
 
-        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createWithCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
@@ -3928,7 +3961,7 @@ public class GTUtility {
         /**
          * This method does not copy the NBT tag.
          */
-        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createNoCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
         }
 
@@ -3938,18 +3971,23 @@ public class GTUtility {
         protected abstract NBTTagCompound nbt();
 
         @Nullable
-        protected abstract Integer amount();
+        protected abstract Long amount();
 
         @Nonnull
         public FluidStack getFluidStack() {
             NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return GTUtility.createFluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(long amount) {
+            NBTTagCompound nbt = nbt();
+            return GTUtility.createFluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
 
         @Nonnull
         public FluidStack getFluidStack(int amount) {
-            NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return getFluidStack((long) amount);
         }
 
         public boolean matches(FluidStack stack) {
@@ -4002,6 +4040,25 @@ public class GTUtility {
             return String.format("%d%c", (long) shortened, suffix);
         } else {
             return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    /**
+     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
+     *
+     * @param ticks The number of ticks
+     * @return A localized string
+     */
+    public static String formatTime(int ticks) {
+        if (ticks < 20) {
+            return translateToLocalFormatted(
+                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(ticks));
+        } else {
+            double seconds = ticks / 20.0;
+            return translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
         }
     }
 
@@ -4210,6 +4267,18 @@ public class GTUtility {
         return isWater(block) && !isFlowingWater(block, world, x, y, z);
     }
 
+    public static ItemStack[] splitItemStack(ItemStack item, long quantity) {
+        int size = (int) ((quantity + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        ItemStack[] result = new ItemStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(quantity, Integer.MAX_VALUE);
+            ItemStack tmp = copyAmountUnsafe(a, item);
+            result[i] = tmp;
+            quantity -= a;
+        }
+        return result;
+    }
+
     public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
         int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
         FluidStack[] result = new FluidStack[size];
@@ -4268,5 +4337,63 @@ public class GTUtility {
         result.sort((a, b) -> Integer.compare(b.stackSize, a.stackSize));
 
         return result;
+    }
+
+    /* LongFluidStack Utility Functions */
+
+    public static long getFluidAmount(FluidStack fluidStack) {
+        if (fluidStack instanceof LongFluidStack stack) {
+            return stack.getAmountLong();
+        } else {
+            return fluidStack.amount;
+        }
+    }
+
+    public static void setFluidAmount(FluidStack fluidStack, long amount) {
+        if (fluidStack instanceof LongFluidStack stack) {
+            stack.setAmountLong(amount);
+        } else {
+            fluidStack.amount = longToInt(amount);
+        }
+    }
+
+    public static void decFluidAmount(FluidStack fluidStack, long decAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, amount - decAmount);
+    }
+
+    public static void incFluidAmount(FluidStack fluidStack, long incAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, addSafe(amount, incAmount));
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack) {
+        return createFluidStack(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack, long amount) {
+        return createFluidStack(stack.getFluid(), amount, stack.tag);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount) {
+        return createFluidStack(fluid, amount, null);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(FluidStack stack) {
+        return createFluidStackWithAmountComparison(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt) {
+
+            @Override
+            public boolean isFluidEqual(FluidStack other) {
+                return super.isFluidEqual(other) && getAmountLong() == GTUtility.getFluidAmount(other);
+            }
+        };
     }
 }

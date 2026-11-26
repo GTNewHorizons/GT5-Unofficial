@@ -1,8 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -13,34 +11,21 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-/// Reinforced glass recipes for the advanced and carbon alloy plates and windmill recipes for the carbon plates,
-/// for GregTech's own plates and IC2's.
+/// Reinforced glass recipes for the advanced and carbon alloy plates, for GregTech's own plates and IC2's.
 final class AlloyPlateRecipes {
 
     private AlloyPlateRecipes() {}
 
     static void register() {
         reinforcedGlass(ItemList.AdvancedAlloyPlate.get(1));
-        carbon(ItemList.CarbonAlloyPlate.get(1));
+        reinforcedGlass(ItemList.CarbonAlloyPlate.get(1));
         reinforcedGlass(GTModHandler.getIC2Item("itemPartAlloy", 1, 0));
-        carbon(GTModHandler.getIC2Item("itemPartCarbonPlate", 1, 0));
-    }
-
-    private static void carbon(ItemStack plate) {
-        if (!GTUtility.isStackValid(plate)) return;
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, plate))
-            .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(TierEU.RECIPE_ULV)
-            .addTo(assemblerRecipes);
-        reinforcedGlass(plate);
+        reinforcedGlass(GTModHandler.getIC2Item("itemPartCarbonPlate", 1, 0));
     }
 
     private static void reinforcedGlass(ItemStack plate) {

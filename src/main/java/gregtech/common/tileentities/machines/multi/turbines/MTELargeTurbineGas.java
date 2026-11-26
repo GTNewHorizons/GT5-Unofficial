@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,10 +17,12 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -28,6 +31,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeTurbineGas extends MTELargeTurbineBase {
 
     public MTELargeTurbineGas(int aID, String aName, String aNameRegional) {
@@ -82,23 +86,23 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine, LGT")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Generates power from Gas based on the turbine and fitting")
-            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
-            .addInfo("Loose fit increases flow in exchange for efficiency")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.mbtt.machine_type.gas_turbine", "LGT"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-gas-turbine"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 6, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("14", "Stainless Steel Frame Box", false)
-            .addCasing("8-13", "Stainless Steel Turbine Casing", false)
-            .addCasing("12", "Tin Item Pipe Casing", false)
-            .addDynamoHatch("1", "Back center turbine casing", 2)
-            .addMaintenanceHatch("1", "Any back turbine casing", 1)
-            .addMufflerHatch("1", "Any back turbine casing", 1)
-            .addInputHatch("1+", "Any back turbine casing", 1)
-            .addOutputHatch("0+", "Any back turbine casing", 1)
-            .addAir("3x3 area in front of controller")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing(
+                "14",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
+            .addCasing("8-13", getTurbineCasing().getLocalizedName(), false)
+            .addCasing("12", getPipeCasing().getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_turbine_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_3x3_in_front_of_controller"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();

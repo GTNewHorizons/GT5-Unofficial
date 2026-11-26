@@ -1,8 +1,8 @@
 Использует электричество вместо взрывчатки
-Число {gold:параллелей} определяется блоком удержания взрыва
-{white:Нейтроний}: {gold:1}
-{red:Бесконечность}: {gold:4}
-{dark_gray:Трансцендентный металл}: {gold:16}
-{light_purple:Пространство-время}: {gold:64}
-{aqua:Юниверсий}: {gold:256}
-{gray:{hr}}
+Число {color_parallel:параллелей} определяется блоком удержания взрыва
+{white:Нейтроний}: {gold:{var:tier_1_para}}
+{red:Бесконечность}: {gold:{var:tier_2_para}}
+{dark_gray:Трансцендентный металл}: {gold:{var:tier_3_para}}
+{dark_purple:Пространство-время}: {gold:{var:tier_4_para}}
+{dark_aqua:Юниверсий}: {gold:{var:tier_5_para}}
+{hr}

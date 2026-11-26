@@ -550,7 +550,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 MaterialLibAPI.getStack(material, Shapes.ingot, 4),
-                                ItemList.Shape_Extruder_ToolHeadDrill.get(0))
+                                ItemList.Shape_Extruder_Drill.get(0))
                             .itemOutputs(MaterialLibAPI.getStack(material, Shapes.toolHeadDrill, 1))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
@@ -885,10 +885,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_LV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Steel),
                         'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
@@ -900,10 +897,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_LV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Steel),
                         'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
@@ -915,10 +909,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_LV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Steel),
                         'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
@@ -931,10 +922,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_MV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Aluminium),
                         'B', ItemList.Battery_RE_MV_Lithium.get(1L) });
@@ -946,10 +934,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_MV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Aluminium),
                         'B', ItemList.Battery_RE_MV_Cadmium.get(1L) });
@@ -961,10 +946,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_MV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G', OrePrefixes.gearGt.ingredient(Materials.Aluminium),
                         'B', ItemList.Battery_RE_MV_Sodium.get(1L) });
@@ -977,10 +959,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_HV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G',
                         OrePrefixes.gearGt.ingredient(Materials.StainlessSteel), 'B',
@@ -993,10 +972,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_HV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G',
                         OrePrefixes.gearGt.ingredient(Materials.StainlessSteel), 'B',
@@ -1009,10 +985,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         material,
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXS", "GMG", "PBP", 'X',
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
-                        'M', ItemList.Electric_Motor_HV.get(1L), 'S',
+                    new Object[] { "SxS", "GMG", "PBP", 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
                         OrePrefixes.wireFine.ingredient(Materials.Electrum), 'P',
                         OrePrefixes.plate.ingredient(material), 'G',
                         OrePrefixes.gearGt.ingredient(Materials.StainlessSteel), 'B',

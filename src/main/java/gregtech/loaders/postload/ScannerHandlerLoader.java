@@ -166,11 +166,9 @@ public class ScannerHandlerLoader {
     /// The materials that carry an element yet can be neither scanned nor replicated.
     private static Material[] unscannableElements() {
         if (unscannableElements == null) {
-            unscannableElements = new Material[] { Materials.Bromine, Materials.Californium, Materials.Curium,
-                Materials.Fermium, Materials.Germanium, Materials.Hafnium, Materials.Magic, Materials.Neptunium,
-                Materials.Polonium, Materials.Protactinium, Materials.Radium, Materials.Rhenium, Materials.Rhodium,
-                Materials.Ruthenium, Materials.Selenium, Materials.Technetium, Materials.Thallium, Materials.Tiberium,
-                Materials.Zirconium };
+            unscannableElements = new Material[] { Materials.Bromine, Materials.Curium, Materials.Fermium,
+                Materials.Germanium, Materials.Magic, Materials.Neptunium, Materials.Polonium, Materials.Protactinium,
+                Materials.Radium, Materials.Rhenium, Materials.Selenium, Materials.Technetium, Materials.Thallium };
         }
         return unscannableElements;
     }

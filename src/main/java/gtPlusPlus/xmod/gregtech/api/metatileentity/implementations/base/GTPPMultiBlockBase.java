@@ -290,7 +290,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
 
@@ -333,7 +333,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
             // Process Remaining hatches using base GT Logic
             case IDualInputHatch hatch -> {
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
             }
             case MTEHatchInputBus inputBus -> {

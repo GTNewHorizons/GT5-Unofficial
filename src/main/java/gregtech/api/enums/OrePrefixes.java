@@ -71,7 +71,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite")
         .withDefaultLocalName("Black Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Black Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -80,7 +80,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite")
         .withDefaultLocalName("Red Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Red Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -2156,14 +2156,7 @@ public class OrePrefixes {
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material";
-                switch (name) {
-                    case "crushedCentrifuged", "crushedPurified" -> {
-                        return materialPrefix + "%material";
-                    }
-                    case "crushed" -> {
-                        return "Ground " + "%material";
-                    }
-                }
+                if (this == crushed) return "Ground " + "%material" + materialPostfix;
             }
             case "Hydrogen", "Nitrogen", "Oxygen", "CarbonDioxide", "SulfurDioxide", "Ammonia", "Methane" -> {
                 if (this == rawOre || this == ore) return materialPrefix + "%material" + " Ice";
@@ -2186,7 +2179,6 @@ public class OrePrefixes {
         if (this == ore) {
             return switch (materialName) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
         }
@@ -2243,7 +2235,19 @@ public class OrePrefixes {
      * available; otherwise attempts inflection formatting.
      */
     public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialName) {
-        return inflectedName(prefixKey, materialName.toLowerCase(), "Material." + materialName.toLowerCase());
+        final String materialKey = "Material." + materialName.toLowerCase();
+        return inflectedName(prefixKey, materialName.toLowerCase(), materialKey, materialKey);
+    }
+
+    /// Formats a material prefix with additional localization keys, such as the host stone of an ore.
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, Material material,
+        String... formatterKeys) {
+        return inflectedName(
+            prefixKey,
+            MaterialUtils.internalName(material)
+                .toLowerCase(),
+            MaterialUtils.localizedNameKey(material),
+            formatterKeys);
     }
 
     /**
@@ -2253,7 +2257,7 @@ public class OrePrefixes {
      * being resolved through {@code Material.<name>}.
      */
     public static String getLocalizedNameForItemWithInflectionForKey(String prefixKey, String materialKey) {
-        return inflectedName(prefixKey, materialKey.toLowerCase(), materialKey);
+        return inflectedName(prefixKey, materialKey.toLowerCase(), materialKey, materialKey);
     }
 
     /// The [com.ruling_0.materiallib.api.ShapeNameFormatter] of GregTech's shapes: names a MaterialLib part as
@@ -2266,22 +2270,29 @@ public class OrePrefixes {
             formatKey,
             MaterialUtils.internalName(material)
                 .toLowerCase(),
+            materialKey,
             materialKey);
     }
 
     /// The translation of `prefixKey.specialSuffix` when present; else `prefixKey`'s format, or its `.phrase`
-    /// variant for a material name of several words, with `materialKey`'s translation inflected into it.
-    private static String inflectedName(String prefixKey, String specialSuffix, String materialKey) {
+    /// variant for a material name of several words, with the translations of `formatterKeys` inflected into it.
+    private static String inflectedName(String prefixKey, String specialSuffix, String materialKey,
+        String... formatterKeys) {
         final String key = prefixKey + "." + specialSuffix;
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
         }
         final String phraseKey = prefixKey + ".phrase";
-        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialKey)
-            .trim()
-            .indexOf(' ') != -1) {
-            return GTInflectionManager.formatInflection(phraseKey, materialKey);
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(StatCollector.translateToLocal(materialKey), materialKey)) {
+            return GTInflectionManager.formatInflection(phraseKey, formatterKeys);
         }
-        return GTInflectionManager.formatInflection(prefixKey, materialKey);
+        return GTInflectionManager.formatInflection(prefixKey, formatterKeys);
+    }
+
+    // Adjective-first templates cannot be filled by a multi-word name or by a material without an adjective form
+    private static boolean usesPhraseTemplate(String localizedName, String materialKey) {
+        return localizedName.trim()
+            .indexOf(' ') != -1 || !StatCollector.canTranslate(materialKey + ".adj_m_nom");
     }
 }

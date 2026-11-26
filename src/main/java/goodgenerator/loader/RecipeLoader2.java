@@ -1208,7 +1208,7 @@ public class RecipeLoader2 {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Casing_MAX.get(3),
+                    ItemList.Casing_UHV.get(3),
                     ItemList.Field_Generator_ZPM.get(2),
                     MaterialLibAPI.getStack(Materials.Bedrockium, TEBlockShapes.cableGt04, 4),
                     ItemRefer.HiC_T3.get(1),

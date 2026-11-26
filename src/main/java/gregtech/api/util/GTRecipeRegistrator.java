@@ -185,6 +185,7 @@ public class GTRecipeRegistrator {
             || GTUtility.areStacksEqual(MaterialLibAPI.getStack(Materials.Ichorium, BlockShapes.block, 1), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.brick_block), stack)
             || data == null
             || !data.hasValidMaterialData()
             || !MaterialUtils.autoGenerateRecycleRecipes(data.material.material)

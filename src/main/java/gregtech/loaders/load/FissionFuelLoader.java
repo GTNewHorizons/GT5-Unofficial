@@ -31,11 +31,11 @@ public class FissionFuelLoader implements Runnable {
     @Override
     public void run() {
         // Remove IC2 recipes
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_238.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235_Small.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium.get(1));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium_Small.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Uran238", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Uran235", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("smallUran235", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("Plutonium", 1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("smallPlutonium", 1L));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
         GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_MOX_Fuel.get(1));
 
@@ -184,7 +184,9 @@ public class FissionFuelLoader implements Runnable {
 
             // Uranium
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Uranium_235_Small.get(3))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 6),
+                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.nugget, 3))
                 .itemOutputs(ItemList.IC2_Uranium_Fuel.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(1_000))
                 .duration(20 * SECONDS)
@@ -223,8 +225,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
-                    ItemList.IC2_Uranium_238.get(4),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 1),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 4),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -232,8 +234,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
-                    ItemList.IC2_Uranium_238.get(8),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 2),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 8),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -241,8 +243,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodUranium4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
-                    ItemList.IC2_Uranium_238.get(16),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 4),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 16),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -293,7 +295,9 @@ public class FissionFuelLoader implements Runnable {
 
             // MOX
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium.get(3))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 6),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 3))
                 .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(1_000))
                 .duration(20 * SECONDS)
@@ -332,8 +336,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(1),
-                    ItemList.IC2_Plutonium.get(3),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 3),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -341,8 +345,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX2.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(2),
-                    ItemList.IC2_Plutonium.get(6),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 2),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 6),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -350,8 +354,8 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodMOX4.get(1))
                 .itemOutputs(
-                    ItemList.IC2_Plutonium_Small.get(4),
-                    ItemList.IC2_Plutonium.get(12),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 4),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 12),
                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

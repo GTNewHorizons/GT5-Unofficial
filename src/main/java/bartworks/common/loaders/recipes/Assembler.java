@@ -15,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -36,16 +35,6 @@ public class Assembler implements Runnable {
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
             .fluidInputs(GTModHandler.getIC2Coolant(1_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1),
-                MaterialLibAPI.getStack(Materials.Lapis, BlockShapes.block, 8))
-            .circuit(17)
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[1]))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

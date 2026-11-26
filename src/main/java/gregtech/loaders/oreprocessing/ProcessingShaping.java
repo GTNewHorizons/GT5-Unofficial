@@ -313,19 +313,7 @@ public class ProcessingShaping implements PartRecipeGenerator {
                         }
                     }
                 }
-                if (tAmount * 2 <= 64) {
-                    if (target.hasShape(TEBlockShapes.wireGt01)) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Wire.get(0L))
-                            .itemOutputs(
-                                GTUtility.copyAmount(
-                                    tAmount * 2,
-                                    MaterialLibAPI.getStack(target, TEBlockShapes.wireGt01, 1)))
-                            .duration(((int) Math.max(materialMass * 2L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(material, 6 * tVoltageMultiplier))
-                            .addTo(extruderRecipes);
-                    }
-                }
+
                 if (tAmount * 8 <= 64) {
                     if (target.hasShape(Shapes.bolt)) {
                         GTValues.RA.stdBuilder()

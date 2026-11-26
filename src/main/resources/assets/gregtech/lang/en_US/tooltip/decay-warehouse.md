@@ -4,8 +4,8 @@ Isotopes decay whether or not the warehouse is enabled or powered
 {hr}
 Capacity is 1/{var:capacity_divisor}th of the {color_name:Super Chest}
 Only one isotope type can be stored at a time
-Insert isotopes through the input bus at a max rate of {color_eu_usage:{EU}/{var:eu_per_io}} per second
+Insert isotopes through the input bus at a max rate of {color_eu_usage:{var:eu_per_io} {EU}} per second
 Power is only consumed when inputting or outputting isotopes
 {hr}
-Right-click the controller with a {color_name:Screwdriver} to dump stored isotopes to the output bus
-Right-click the controller with a {color_name:Plunger} (or break it) to void the contents of the warehouse
+Use a {color_name:Screwdriver} to dump stored isotopes to the output bus
+Use a {color_name:Plunger} (or break it) to void the contents of the warehouse

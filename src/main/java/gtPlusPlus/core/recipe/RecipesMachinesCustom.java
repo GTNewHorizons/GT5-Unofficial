@@ -532,6 +532,7 @@ public class RecipesMachinesCustom {
         // LFTR Control Circuit
         GTValues.RA.stdBuilder()
             .itemInputs(Circuits.LuV.get(1), ItemList.Field_Generator_HV.get(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.LFTRControlCircuit.get(1))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_HV)

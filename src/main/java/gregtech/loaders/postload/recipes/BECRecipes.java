@@ -289,6 +289,9 @@ public class BECRecipes implements Runnable {
     }
 
     public void runLateRecipes() {
+        if (!EternalSingularity.isModLoaded()) {
+            return;
+        }
         ItemStack SuperdenseBedrockium = MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.plateSuperdense, 1);
         // Shielding Casing
         addBecUnsafe(

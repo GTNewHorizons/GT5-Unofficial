@@ -15,9 +15,11 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +35,6 @@ import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -85,11 +86,15 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_WIDTH = 3.0D;
     private static final double BLADE_HEIGHT = 3.0D;
     private static final double BLADE_PADDING = 0.25D;
+    private static final float BLADE_THICKNESS = 1.0F / 16.0F;
+    private static final int BLADE_TEXTURE_FRAME_SIZE = 48;
     private static final float BLADE_ROTATION_SPEED = 64.72132F;
     private static final int BLADE_SPINUP_TICKS = 30;
     private static final double BLADE_CLIP_BOTTOM = 1.0D;
     @SideOnly(Side.CLIENT)
     private static DoubleBuffer CLIP_PLANE_BUFFER;
+    @SideOnly(Side.CLIENT)
+    private static FloatBuffer BLADE_TRANSFORM_BUFFER;
     private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
@@ -167,9 +172,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-cutting-machine"),
-                ImmutableMap.<String, Object>builder().build())
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-cutting-machine"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
@@ -479,6 +482,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         if (CLIP_PLANE_BUFFER == null) {
             CLIP_PLANE_BUFFER = BufferUtils.createDoubleBuffer(4);
+            BLADE_TRANSFORM_BUFFER = BufferUtils.createFloatBuffer(16);
         }
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -504,6 +508,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
         int blurAmount;
@@ -559,29 +565,43 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void renderBlade(BladeRenderContext context, int blurAmount) {
-        double halfWidth = BLADE_WIDTH / 2.0D;
-        double halfHeight = BLADE_HEIGHT / 2.0D;
+        float halfWidth = (float) (BLADE_WIDTH / 2.0D);
+        float halfHeight = (float) (BLADE_HEIGHT / 2.0D);
+        float halfThickness = BLADE_THICKNESS / 2.0F;
 
-        double vMin = blurAmount / 4.0;
-        double vMax = (blurAmount + 1) / 4.0;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-        addBladeVertex(tessellator, context, -halfWidth, -halfHeight, 0.0D, vMax);
-        addBladeVertex(tessellator, context, -halfWidth, halfHeight, 0.0D, vMin);
-        addBladeVertex(tessellator, context, halfWidth, halfHeight, 1.0D, vMin);
-        addBladeVertex(tessellator, context, halfWidth, -halfHeight, 1.0D, vMax);
-        tessellator.draw();
-    }
+        BLADE_TRANSFORM_BUFFER.clear();
+        BLADE_TRANSFORM_BUFFER.put((float) (context.horizontalX * BLADE_WIDTH))
+            .put((float) (context.horizontalY * BLADE_WIDTH))
+            .put((float) (context.horizontalZ * BLADE_WIDTH))
+            .put(0.0F);
+        BLADE_TRANSFORM_BUFFER.put((float) (context.verticalX * BLADE_HEIGHT))
+            .put((float) (context.verticalY * BLADE_HEIGHT))
+            .put((float) (context.verticalZ * BLADE_HEIGHT))
+            .put(0.0F);
+        BLADE_TRANSFORM_BUFFER.put(context.depthX)
+            .put(context.depthY)
+            .put(context.depthZ)
+            .put(0.0F);
+        BLADE_TRANSFORM_BUFFER
+            .put(-halfWidth * context.horizontalX - halfHeight * context.verticalX + halfThickness * context.depthX)
+            .put(-halfWidth * context.horizontalY - halfHeight * context.verticalY + halfThickness * context.depthY)
+            .put(-halfWidth * context.horizontalZ - halfHeight * context.verticalZ + halfThickness * context.depthZ)
+            .put(1.0F);
+        BLADE_TRANSFORM_BUFFER.flip();
+        GL11.glMultMatrix(BLADE_TRANSFORM_BUFFER);
 
-    private void addBladeVertex(Tessellator tessellator, BladeRenderContext context, double localX, double localY,
-        double u, double v) {
-        tessellator.addVertexWithUV(
-            localX * context.horizontalX + localY * context.verticalX,
-            localX * context.horizontalY + localY * context.verticalY,
-            localX * context.horizontalZ + localY * context.verticalZ,
-            u,
-            v);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        float vMin = blurAmount / 4.0F;
+        float vMax = (blurAmount + 1) / 4.0F;
+        ItemRenderer.renderItemIn2D(
+            Tessellator.instance,
+            0.0F,
+            vMin,
+            1.0F,
+            vMax,
+            BLADE_TEXTURE_FRAME_SIZE,
+            BLADE_TEXTURE_FRAME_SIZE,
+            BLADE_THICKNESS);
     }
 
     private BladeRenderContext getBladeRenderContext() {

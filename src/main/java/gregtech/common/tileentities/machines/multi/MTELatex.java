@@ -18,7 +18,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,7 +46,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -55,6 +57,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -298,10 +301,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Cable Coater, LATEX")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cable_coater"))
             .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
+                EnumChatFormatting.DARK_GRAY + ""
+                    + EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
                 new ResourceLocation("gregtech", "latex"),
@@ -311,21 +315,23 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                     .put("singularity_discount", SINGULARITY_RUBBER_DISCOUNT)
                     .build())
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front bottom center")
-            .addCasing("14-36", "Chemically Inert Casing", false)
-            .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
-            .addCasing("6", "Item Pipe Casing", true)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("14-36", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing(
+                "16",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.PolyvinylChloride)),
+                false)
+            .addCasing("6", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

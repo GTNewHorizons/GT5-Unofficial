@@ -215,7 +215,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
             .addCasing("148", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
-            .addCasing("83-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("75-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -320,7 +320,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         filterParameters = new FluidParameter[CondensateType.VALUES.length];
 
         for (int i = 0; i < filterParameters.length; i++) {
-            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1);
+            filterParameters[i] = new FluidParameter(null, "GT5U.gui.text.bec-filter-n", "filter" + i, i + 1) {
+
+                @Override
+                public void setValue(Fluid value) {
+                    Fluid previous = getValue();
+
+                    super.setValue(value);
+
+                    if (previous != value && network != null) network.invalidateReachableCondensate();
+                }
+            };
         }
     }
 
