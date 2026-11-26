@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
@@ -38,8 +40,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -49,9 +53,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -61,7 +67,9 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     private final int OXYGEN_PER_SEC = 2000;
     private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
     private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
+    private final int STEAM_PER_TICK = STEAM_PER_SEC / 20;
     private final int GAS_FUEL_THRESHOLD = 1000;
+    private int glassTier = -1;
 
     public MTESOFuelCellMK2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -90,8 +98,8 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] { { "ccc", "ccc", "ccc", "ccc", "ccc" }, { "c~c", "geg", "geg", "geg", "cdc" },
-                    { "ccc", "ccc", "ccc", "ccc", "ccc" } }))
+                new String[][] { { "ccc", "sss", "sss", "sss", "ccc" }, { "c~c", "geg", "geg", "geg", "cdc" },
+                    { "ccc", "sss", "sss", "sss", "ccc" } }))
         .addElement(
             'c',
             ofChain(
@@ -101,8 +109,9 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                     .build(),
                 onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
-        .addElement('g', Casings.ReinforcedGlass.asElement())
         .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('s', ofSheetMetal(Materials.TungstenSteel))
         .build();
 
     @Override
@@ -116,7 +125,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         final Map<String, Object> vars = new HashMap<>();
         vars.put("euPerTickX20", formatNumber(EU_PER_TICK * 20));
         vars.put("euPerTick", formatNumber(EU_PER_TICK));
-        vars.put("steamPerSec", formatNumber(STEAM_PER_SEC));
+        vars.put("steamPerTick", formatNumber(STEAM_PER_TICK));
         vars.put("oxygenPerSec", formatNumber(OXYGEN_PER_SEC));
         vars.put("gasFuelThreshold", formatNumber(GAS_FUEL_THRESHOLD));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
@@ -124,13 +133,18 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
+            .addCasing(
+                "6",
+                StatCollector
+                    .translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]),
+                false)
             .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK2.electrolyte_unit"), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
             .addMaintenanceHatch("1", anyCasingText(), 1)
             .addInputHatch("1+", anyCasingText(), 1)
             .addOutputHatch("1+", anyCasingText(), 1)
             .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
@@ -179,10 +193,13 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                         }
 
                         super.mEUt = EU_PER_TICK;
-                        super.mMaxProgresstime = 20;
-                        super.mEfficiencyIncrease = 200;
-                        if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
+                        super.mMaxProgresstime = 1;
+                        super.mEfficiencyIncrease = 10;
+                        if (super.mEfficiency > 0) {
+                            float steam_efficiency = (float) super.mEfficiency / getMaxEfficiency(null);
+                            super.addOutputPartial(
+                                FluidRegistry
+                                    .getFluidStack("ic2superheatedsteam", (int) (STEAM_PER_TICK * steam_efficiency)));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }
@@ -198,11 +215,16 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     public void checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem, List<StructureError> errors) {
         this.mCasing = 0;
+        this.glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, this.mCasing, 12);
         checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
+
+        if (this.glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override
