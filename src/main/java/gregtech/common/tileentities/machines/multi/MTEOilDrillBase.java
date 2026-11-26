@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
@@ -368,8 +369,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
             if (base.isActive()) {
                 builder.add(
-                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_rate", formatNumber(getFlowRatePerTick())),
-                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_recovery", formatNumber(mOilFlow)));
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_rate", formatFluid(getFlowRatePerTick())),
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_recovery", formatFluid(mOilFlow)));
             } else {
                 builder.add(failureReason);
             }

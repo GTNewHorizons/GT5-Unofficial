@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -127,7 +128,7 @@ public class MTELargeNeutralizationEngineGui extends MTEMultiBlockBaseGui<MTELar
                     .sizeRel(1)
                     .padding(3)
                     .child(
-                        IKey.lang("GT5U.gui.button.max_fluid")
+                        IKey.lang("GT5U.gui.button.max_fluid", getFluidUnit())
                             .asWidget()
                             .paddingTop(4)
                             .marginBottom(3))

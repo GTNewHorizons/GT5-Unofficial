@@ -1,5 +1,6 @@
 package detrav.gui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.ArrayList;
@@ -399,9 +400,8 @@ public class DetravScannerGUI extends GuiScreen {
                     info.add(
                         StatCollector.translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_name", object.name));
                     info.add(
-                        StatCollector.translateToLocalFormatted(
-                            "gui.detrav.scanner.tooltip.fluid_amount",
-                            formatNumber(amount)));
+                        StatCollector
+                            .translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_amount", formatFluid(amount)));
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }

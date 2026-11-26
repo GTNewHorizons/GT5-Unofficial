@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -63,7 +64,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
             .child(
                 IKey.dynamic(
                     () -> StatCollector
-                        .translateToLocalFormatted("GT5U.gui.text.pump_rate", formatNumber(flowPerTickSync.getValue())))
+                        .translateToLocalFormatted("GT5U.gui.text.pump_rate", formatFluid(flowPerTickSync.getValue())))
                     .asWidget()
                     // Widget color instead of a GRAY prefix, so the lang's §r falls back to gray.
                     .color(0xFFAAAAAA)
@@ -75,7 +76,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                 IKey.dynamic(
                     () -> StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.pump_recovery",
-                        formatNumber(flowPerOpSync.getValue())))
+                        formatFluid(flowPerOpSync.getValue())))
                     .asWidget()
                     .color(0xFFAAAAAA)
                     .fullWidth()

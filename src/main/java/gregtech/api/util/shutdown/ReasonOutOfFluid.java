@@ -1,6 +1,6 @@
 package gregtech.api.util.shutdown;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.out_of_fluid",
                 requiredFluid.getLocalizedName(),
-                formatNumber(requiredFluid.amount)));
+                formatFluid(requiredFluid.amount)));
     }
 
     @Override
