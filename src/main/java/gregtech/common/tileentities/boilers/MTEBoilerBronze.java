@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE_GLOW;
@@ -54,8 +56,10 @@ public class MTEBoilerBronze extends MTEBoiler {
             aID,
             aName,
             aNameRegional,
-            new String[] { "An early way to get Steam Power", "Produces 120L of Steam per second",
-                "Causes " + GTMod.proxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second" });
+            new String[] { "An early way to get Steam Power",
+                "Produces %%%" + formatFluid(120) + "%%% of Steam per second",
+                "Causes %%%" + formatNumber(GTMod.proxy.mPollutionSmallCoalBoilerPerSecond)
+                    + "%%% Pollution per second" });
     }
 
     public MTEBoilerBronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -273,7 +277,8 @@ public class MTEBoilerBronze extends MTEBoiler {
         boolean isProducingSteam = tag.getBoolean("isProducingSteam");
         int power = tag.getInteger("power");
         if (isProducingSteam) {
-            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+            currenttip
+                .add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", formatFluid(power)));
         }
     }
 

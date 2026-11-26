@@ -6552,7 +6552,6 @@ GT5U.waila.transformer.step_down=Понижающий режим
 GT5U.waila.transformer.step_up=Повышающий режим
 GT5U.waila.transformer.input=Ввод:§r %s(%dA)
 GT5U.waila.transformer.output=Вывод:§r %s(%dA)
-GT5U.waila.boiler_solar.output=Выход солнечного бойлера:§r %d/%d Л/с
 GT5U.waila.large_boiler.steam_output=Выход пара: §e%s§r %s/t
 GT5U.waila.large_boiler.superheated_steam_output=Выход перегретого пара: §e%s§r %s/t
 GT5U.waila.large_boiler.energy_output=Выход энергии: §a%s§r %s/t

@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE_GLOW;
@@ -69,12 +71,14 @@ public class MTEBoilerLava extends MTEBoiler {
             aID,
             aName,
             aNameRegional,
-            new String[] { "A Boiler running off Lava", "Produces " + PRODUCTION_PER_SECOND + "L of Steam per second",
-                "Causes " + GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond + " Pollution per second",
-                "Consumes " + ((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA)
-                    + "L of Lava every "
-                    + COOLDOWN_INTERVAL
-                    + " ticks when fully heat up" });
+            new String[] { "A Boiler running off Lava",
+                "Produces %%%" + formatFluid(PRODUCTION_PER_SECOND) + "%%% of Steam per second",
+                "Causes %%%" + formatNumber(GTMod.proxy.mPollutionHighPressureLavaBoilerPerSecond)
+                    + "%%% Pollution per second",
+                "Consumes %%%" + formatFluid((double) CONSUMPTION_PER_HEATUP / ENERGY_PER_LAVA)
+                    + "%%% of Lava every %%%"
+                    + formatNumber(COOLDOWN_INTERVAL)
+                    + "%%% ticks when fully heat up" });
     }
 
     public MTEBoilerLava(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -475,7 +479,8 @@ public class MTEBoilerLava extends MTEBoiler {
         boolean isProducingSteam = tag.getBoolean("isProducingSteam");
         int power = tag.getInteger("power");
         if (isProducingSteam) {
-            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+            currenttip
+                .add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", formatFluid(power)));
         }
     }
 

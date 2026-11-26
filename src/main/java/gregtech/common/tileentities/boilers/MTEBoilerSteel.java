@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE_GLOW;
@@ -23,8 +25,10 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
             aID,
             aName,
             aNameRegional,
-            new String[] { "Faster than the Bronze Boiler", "Produces 300L of Steam per second",
-                "Causes " + GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
+            new String[] { "Faster than the Bronze Boiler",
+                "Produces %%%" + formatFluid(300) + "%%% of Steam per second",
+                "Causes %%%" + formatNumber(GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond)
+                    + "%%% Pollution per second" });
     }
 
     public MTEBoilerSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

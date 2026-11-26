@@ -310,7 +310,7 @@ gt.blockmachines.output_bus_steam.desc=Item Output for Steam Multiblocks\nDoes n
 gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be configured to work
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
-gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
+gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %s of Steam per second\nCalcifies over time, reducing Steam output to %s/s\nBreak and replace to descale
 gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s/sec§7
 gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
@@ -365,12 +365,12 @@ gt.blockmachines.basicgenerator.rtg.tier.01.name=Radioisotope Thermoelectric Gen
 gt.blockmachines.basicgenerator.rtg.tier.01.tooltip=Requires RTG Pellets\nFuel is measured in minecraft days (Check with Scanner)\nRTG changes output voltage depending on fuel\nGenerates power at %s%% Efficiency per tick\nOutput Voltage: %s EU/t
 
 gt.blockmachines.boiler.bronze.name=Small Coal Boiler
-gt.blockmachines.boiler.bronze.tooltip=An early way to get Steam Power\nProduces 120L of Steam per second\nCauses 20 Pollution per second
+gt.blockmachines.boiler.bronze.tooltip=An early way to get Steam Power\nProduces %s of Steam per second\nCauses %s Pollution per second
 gt.blockmachines.boiler.lava.name=Reinforced Lava Boiler
-gt.blockmachines.boiler.lava.tooltip=A Boiler running off Lava\nProduces 600L of Steam per second\nCauses 20 Pollution per second\nConsumes 3.0L of Lava every 20 ticks when fully heated up
+gt.blockmachines.boiler.lava.tooltip=A Boiler running off Lava\nProduces %s of Steam per second\nCauses %s Pollution per second\nConsumes %s of Lava every %s ticks when fully heated up
 gt.blockmachines.boiler.solar.name=Simple Solar Boiler
 gt.blockmachines.boiler.steel.name=Large Coal Boiler
-gt.blockmachines.boiler.steel.tooltip=Faster than the Bronze Boiler\nProduces 300L of Steam per second\nCauses 30 Pollution per second
+gt.blockmachines.boiler.steel.tooltip=Faster than the Bronze Boiler\nProduces %s of Steam per second\nCauses %s Pollution per second
 gt.blockmachines.boiler.steel.solar.name=Advanced Solar Boiler
 
 gt.blockmachines.bronzemachine.alloysmelter.name=Steam Alloy Smelter
@@ -395,9 +395,9 @@ gt.blockmachines.debug.tt.certain.name=Uncertainty Resolution
 gt.blockmachines.debugstructurewriter.name=Debug Structure Writer
 
 gt.blockmachines.electricboiler.name=%1$s Advanced Boiler
-gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces 750L of Steam per second\nProduces 35 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
-gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces 1500L of Steam per second\nProduces 50 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
-gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces 2250L of Steam per second\nProduces 65 pollution/sec\nConsumes fuel only when temperature is less than 100C\nFuel with burn time greater than 500 is more efficient.\nDoesn't explode if there's no water
+gt.blockmachines.electricboiler.1.tier.single.tooltip=Produces %s of Steam per second\nProduces %s pollution/sec\nConsumes fuel only when temperature is less than %sC\nFuel with burn time greater than %s is more efficient.\nDoesn't explode if there's no water
+gt.blockmachines.electricboiler.2.tier.single.tooltip=Produces %s of Steam per second\nProduces %s pollution/sec\nConsumes fuel only when temperature is less than %sC\nFuel with burn time greater than %s is more efficient.\nDoesn't explode if there's no water
+gt.blockmachines.electricboiler.3.tier.single.tooltip=Produces %s of Steam per second\nProduces %s pollution/sec\nConsumes fuel only when temperature is less than %sC\nFuel with burn time greater than %s is more efficient.\nDoesn't explode if there's no water
 
 gt.blockmachines.electrodedetectorhatch.name=Electrode Detector Hatch
 gt.blockmachines.electrodedetectorhatch.tooltip=Can be installed in Electric Arc Furnace.\nOutputs Redstone Signal according to the damage of electrode used in the machine.\nRight click to open the GUI and setting.
@@ -7072,7 +7072,7 @@ GT5U.waila.transformer.step_down=Step Down
 GT5U.waila.transformer.step_up=Step Up
 GT5U.waila.transformer.input=Input:§r %s(%dA)
 GT5U.waila.transformer.output=Output:§r %s(%dA)
-GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
+GT5U.waila.boiler_solar.output.v2=Solar Boiler Output:§r %s/%s/s
 GT5U.waila.large_boiler.steam_output=Steam Output: §a%s§r %s/t
 GT5U.waila.large_boiler.superheated_steam_output=Superheated Steam Output: §a%s§r %s/t
 GT5U.waila.large_boiler.energy_output=Energy Output: §a%s§r %s/t
@@ -7126,7 +7126,7 @@ GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
 GT5U.waila.boiler.temperature=§aTemperature: §6%s
 GT5U.waila.boiler.fuel_empty=§cFuel empty
-GT5U.waila.boiler.steam_producing=§aSteam Production: §6%s§rL/s
+GT5U.waila.boiler.steam_producing=§aSteam Production: §6%s§r/s
 GT5U.waila.monster_repellent.working_range=Range: §a%s§r blocks
 GT5U.waila.monster_repellent.unpowered=Unpowered
 
@@ -10399,7 +10399,7 @@ gt.blockmachines.basicgenerator.gasturbine.tooltip=Requires flammable Gases\nCau
 gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Basic Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Advanced Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Turbo Steam Turbine
-gt.blockmachines.basicgenerator.steamturbine.tooltip=Converts Steam into EU\nBase rate: 2L of Steam -> 1 EU\nFuel Efficiency: %s%%\nConsumes up to %sL of Steam per second
+gt.blockmachines.basicgenerator.steamturbine.tooltip=Converts Steam into EU\nBase rate: %3$s of Steam -> %4$s EU\nFuel Efficiency: %1$s%%\nConsumes up to %2$s of Steam per second
 
 # Basic Generators - Naquadah Reactor
 gt.blockmachines.basicgenerator.naquadah.tier.04.name=Naquadah Reactor Mk-I
