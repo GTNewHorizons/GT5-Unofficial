@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
@@ -1295,7 +1296,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.machine.use_steam",
-                                formatNumber(Math.abs(euT) * 40L)));
+                                formatFluid(Math.abs(euT) * 40L)));
                     }
                 }
             }

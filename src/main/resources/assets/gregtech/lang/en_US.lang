@@ -7052,7 +7052,7 @@ GT5U.waila.machine.input=§6Input:
 GT5U.waila.machine.output=§bOutput: §e%s
 GT5U.waila.machine.render_item=§a%s§7x %s
 GT5U.waila.machine.more_items=And %s more...
-GT5U.waila.machine.use_steam=Using §e%s L/s Steam
+GT5U.waila.machine.use_steam=Using §e%s/s Steam
 GT5U.waila.machine.eu_bar=Stored EU: %s (%s%%)
 
 GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
@@ -8385,7 +8385,7 @@ GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), flui
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
 GTPP.multiblock.ap.tier=Tier: %s
 
-GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
+GTPP.waila.steam.use=Currently uses: §e%s§r/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount

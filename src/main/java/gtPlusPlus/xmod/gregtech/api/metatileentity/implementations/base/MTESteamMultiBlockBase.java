@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -541,7 +542,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
             if (actualEnergyUsage > 0) {
                 currentTip.add(
                     StatCollector
-                        .translateToLocalFormatted("GTPP.waila.steam.use", formatNumber(actualEnergyUsage * 20)));
+                        .translateToLocalFormatted("GTPP.waila.steam.use", formatFluid(actualEnergyUsage * 20)));
             }
         }
         currentTip.add(
