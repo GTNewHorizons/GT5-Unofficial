@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -18,6 +17,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -25,26 +25,38 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
+public class MTERefinery extends MTEExtendedPowerMultiBlockBase<MTERefinery>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private int mCasing;
+    private int casingAmount;
+    // spotless:off
+    private static final String[][] structure = {
+        { "   ", " N ", "   " },
+        { " N ", "NIN", " N " },
+        { " N ", "NIN", " N " },
+        { " N ", "NIN", " N " },
+        { " Z ", "ZIZ", " Z " },
+        { " N ", "NIN", " N " },
+        { "XXX", "XXX", "XXX" },
+        { "X~X", "XXX", "XXX" }, };
+    // spotless:on
     private static IStructureDefinition<MTERefinery> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     public MTERefinery(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -55,15 +67,10 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public String getMachineType() {
-        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery");
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(getMachineType())
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery"))
             .addMarkdown(new ResourceLocation("gregtech", "refinery"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
@@ -83,28 +90,22 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    protected IIconContainer getActiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER,
+            Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW,
+            Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE,
+            Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW);
     }
 
     @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(18);
+    public ITexture getCasingTexture() {
+        return Casings.HastelloyXStructuralBlock.getCasingTexture();
     }
 
     @Override
@@ -119,13 +120,10 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMuffler && ((MTEHatchMuffler) aMetaTileEntity).mTier >= 5) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            }
+        if (aTileEntity == null) return false;
+        IMetaTileEntity imte = aTileEntity.getMetaTileEntity();
+        if (imte instanceof MTEHatchMuffler muffler && muffler.mTier >= 5) {
+            return addToMachineList(aTileEntity, aBaseCasingIndex);
         }
         return false;
     }
@@ -134,30 +132,25 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     public IStructureDefinition<MTERefinery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTERefinery>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "   ", " N ", "   " }, { " N ", "NIN", " N " }, { " N ", "NIN", " N " },
-                            { " N ", "NIN", " N " }, { " Z ", "ZIZ", " Z " }, { " N ", "NIN", " N " },
-                            { "XXX", "XXX", "XXX" }, { "X~X", "XXX", "XXX" }, }))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(structure))
                 .addElement(
                     'X',
                     ofChain(
                         buildHatchAdder(MTERefinery.class)
                             .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
-                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .casingIndex(Casings.HastelloyXStructuralBlock.textureId)
                             .hint(1)
                             .build(),
                         buildHatchAdder(MTERefinery.class).atLeast(Muffler)
                             .adder(MTERefinery::addMufflerToMachineList)
                             .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
-                            .casingIndex(TAE.GTPP_INDEX(18))
+                            .casingIndex(Casings.HastelloyXStructuralBlock.textureId)
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
-                .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
-                .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
-                .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13))
+                        onElementPass(x -> ++x.casingAmount, Casings.HastelloyXStructuralBlock.asElement())))
+                .addElement('I', Casings.IncoloyDSFluidContainmentBlock.asElement())
+                .addElement('N', Casings.HastelloyNSealantBlock.asElement())
+                .addElement('Z', Casings.ReactorShieldCasing.asElement())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -165,20 +158,20 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 7, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 7, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 7, 0, elementBudget, env, false, true);
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mCasing = 0;
-        if (!checkPiece(mName, 1, 7, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 7);
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 7, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 7);
         checkOneEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);
@@ -186,10 +179,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         checkHatchMax(errors, InputHatch, 4);
         checkHasOutputHatch(errors);
         checkHatchMax(errors, OutputHatch, 2);
-
-        if (errors.isEmpty()) {
-            this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
-        }
     }
 
     @Override
@@ -200,5 +189,15 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTERefinery(this.mName);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }
