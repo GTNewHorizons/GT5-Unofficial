@@ -246,6 +246,21 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
             .marginRight(SLOT_SIZE)
             .child(
                 new ToggleButton()
+                    .value(
+                        new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide)
+                            .allowC2S())
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+                    .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitalchest.inputfromoutput.tooltip"))))
+            .child(
+                new ToggleButton()
+                    .value(new BooleanSyncValue(machine::isOutputToSlot, machine::setOutputToSlot).allowC2S())
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
+                    .tooltip(t -> {
+                        t.addLine(translateToLocal("GT5U.machines.digitalchest.outputslot.tooltip"));
+                        t.addLine(translateToLocal("GT5U.machines.digitalchest.outputslot.tooltip.1"));
+                    }))
+            .child(
+                new ToggleButton()
                     .value(new BooleanSyncValue(machine::isVoidOverflow, machine::setVoidOverflow).allowC2S())
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                     .tooltip(t -> {

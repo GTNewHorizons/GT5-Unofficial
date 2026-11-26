@@ -80,6 +80,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     private boolean passThroughOtherItems;
     private boolean inputFilterDisabled;
     private boolean autoOutputItems;
+    private boolean mAllowInputFromOutputSide = true;
+    private boolean mOutputToSlot = true;
     private ItemStack lockedItem;
     private boolean lockNextItem;
     private boolean blockExternalAccess;
@@ -343,6 +345,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public int getItemCapacity() {
         return getMaxItemCount();
+    }
+
+    public long getTrueItemCount() {
+        long count = getItemCount();
+        ItemStack storedItem = getItemStack();
+        if (GTUtility.isStackValid(mInventory[1])
+            && (GTUtility.isStackInvalid(storedItem) || GTUtility.areStacksEqual(mInventory[1], storedItem))) {
+            count += mInventory[1].stackSize;
+        }
+        return count;
     }
 
     @Override
@@ -688,7 +700,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         deferInventoryChanges = true;
         insertInputItems();
         ItemStack stored = getItemStack();
-        if (!isOutputReserved() && getItemCount() > 0
+        if (mOutputToSlot && !isOutputReserved() && getItemCount() > 0
             && stored != null
             && (mInventory[1] == null || sameItemType(stored, mInventory[1]))) {
             int outputCount = mInventory[1] == null ? 0 : mInventory[1].stackSize;
@@ -902,6 +914,26 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         markDirty();
     }
 
+    public boolean isAllowInputFromOutputSide() {
+        return mAllowInputFromOutputSide;
+    }
+
+    public void setAllowInputFromOutputSide(boolean allowInputFromOutputSide) {
+        mAllowInputFromOutputSide = allowInputFromOutputSide;
+    }
+
+    public boolean isOutputToSlot() {
+        return mOutputToSlot;
+    }
+
+    public void setOutputToSlot(boolean outputToSlot) {
+        mOutputToSlot = outputToSlot;
+    }
+
+    private boolean isItemInputSide(ForgeDirection side) {
+        return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
     public boolean isAutoOutputEnabled() {
         return autoOutputItems;
     }
@@ -1065,6 +1097,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         aNBT.setBoolean("mVoidFull", mVoidFull);
         aNBT.setBoolean("mDisableFilter", inputFilterDisabled);
         aNBT.setBoolean("passThroughOtherItems", passThroughOtherItems);
+        aNBT.setBoolean("mOutputToSlot", mOutputToSlot);
+        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
         aNBT.setBoolean("autoOutputItems", autoOutputItems);
         aNBT.setBoolean("blockExternalAccess", blockExternalAccess);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
@@ -1077,6 +1111,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (mVoidFull) aNBT.setBoolean("mVoidFull", true);
         if (inputFilterDisabled) aNBT.setBoolean("mDisableFilter", true);
         if (passThroughOtherItems) aNBT.setBoolean("passThroughOtherItems", true);
+        if (!mOutputToSlot) aNBT.setBoolean("mOutputToSlot", false);
+        if (!mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", false);
         if (autoOutputItems) aNBT.setBoolean("autoOutputItems", true);
         if (blockExternalAccess) aNBT.setBoolean("blockExternalAccess", true);
         if (lockedItem != null) aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
@@ -1092,6 +1128,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         mVoidFull = aNBT.getBoolean("mVoidFull");
         inputFilterDisabled = aNBT.getBoolean("mDisableFilter");
         passThroughOtherItems = aNBT.getBoolean("passThroughOtherItems");
+        mOutputToSlot = !aNBT.hasKey("mOutputToSlot") || aNBT.getBoolean("mOutputToSlot");
+        mAllowInputFromOutputSide = !aNBT.hasKey("mAllowInputFromOutputSide") || aNBT.getBoolean("mAllowInputFromOutputSide");
         autoOutputItems = aNBT.getBoolean("autoOutputItems");
         blockExternalAccess = aNBT.getBoolean("blockExternalAccess");
         lockedItem = aNBT.hasKey("lockedItem", Constants.NBT.TAG_COMPOUND)
@@ -1126,7 +1164,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (isExternalAccessBlocked()) return false;
-        if (aIndex != 0) return false;
+        if (aIndex != 0 || !isItemInputSide(side)) return false;
         if (isMatterCluster(aStack)) return mInventory[0] == null && (inputFilterDisabled || passThroughOtherItems
             || getMatterClusterEntry(aStack, getMatterClusterTargetItem()) != null);
         if ((mInventory[0] != null && !sameItemType(mInventory[0], aStack))) return false;
