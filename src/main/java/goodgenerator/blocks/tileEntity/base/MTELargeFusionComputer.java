@@ -809,6 +809,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     }
 
     @Override
+    public double getMaxRenderDistanceSquared() {
+        return 16384.0D;
+    }
+
+    @Override
     public void writeToStream(ByteBuf buffer) {
         super.writeToStream(buffer);
         buffer.writeBoolean(shouldRender);
