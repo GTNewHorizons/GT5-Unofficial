@@ -10,6 +10,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.github.bsideup.jabel.Desugar;
+
 import appeng.api.crafting.IPatternTargetKey;
 import appeng.api.crafting.PatternMatch;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -28,6 +30,7 @@ import gregtech.api.util.GTUtility.ItemId;
  * What a GregTech machine needs to run a pattern: the recipe maps it can use, its voltage and the sets of items it may
  * add to a recipe check, such as the circuit; one fitting set is enough.
  */
+@Desugar
 public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets,
     @Nullable ItemId specialItem) implements IPatternTargetKey {
 
