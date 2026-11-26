@@ -43,7 +43,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
@@ -764,30 +763,6 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             if (!NEIScrollArea.isShown(this)) return;
 
             super.draw(mousex, mousey);
-
-            if (!isFluid()) return;
-
-            FluidStack fluidStack = StackInfo.getFluid(item);
-            if (fluidStack == null || fluidStack.amount <= 0) return;
-
-            // L is used intentionally, because it takes less space than mB
-            String amountString;
-            if (fluidStack.amount < 10_000) {
-                amountString = fluidStack.amount + "L";
-            } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + "L";
-            }
-
-            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            float scale = fontRenderer.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
-
-            GL11.glPushMatrix();
-            GL11.glTranslatef(relx, rely, 0);
-            GL11.glScalef(scale, scale, 1F);
-
-            fontRenderer.drawString(amountString, 0, (int) (16 / scale) - fontRenderer.FONT_HEIGHT + 1, 0xFFFFFF, true);
-
-            GL11.glPopMatrix();
         }
     }
 
