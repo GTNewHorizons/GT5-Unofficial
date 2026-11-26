@@ -1,6 +1,8 @@
 package gregtech.common.blocks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -70,7 +72,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             }
         }
 
-        this.stoneTypes = List.of(stoneTypes);
+        // requires an explicit unmodifiable view
+        this.stoneTypes = Collections.unmodifiableList(Arrays.asList(stoneTypes));
 
         for (StoneType stoneType : stoneTypes) {
             if (stoneType != null) {
