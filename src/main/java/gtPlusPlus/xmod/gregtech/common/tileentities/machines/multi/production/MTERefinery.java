@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -32,10 +33,11 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -119,16 +121,6 @@ public class MTERefinery extends MTEExtendedPowerMultiBlockBase<MTERefinery>
     }
 
     @Override
-    public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity imte = aTileEntity.getMetaTileEntity();
-        if (imte instanceof MTEHatchMuffler muffler && muffler.mTier >= 5) {
-            return addToMachineList(aTileEntity, aBaseCasingIndex);
-        }
-        return false;
-    }
-
-    @Override
     public IStructureDefinition<MTERefinery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTERefinery>builder()
@@ -142,7 +134,6 @@ public class MTERefinery extends MTEExtendedPowerMultiBlockBase<MTERefinery>
                             .hint(1)
                             .build(),
                         buildHatchAdder(MTERefinery.class).atLeast(Muffler)
-                            .adder(MTERefinery::addMufflerToMachineList)
                             .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
                             .casingIndex(Casings.HastelloyXStructuralBlock.textureId)
                             .hint(1)
@@ -175,10 +166,18 @@ public class MTERefinery extends MTEExtendedPowerMultiBlockBase<MTERefinery>
         checkOneEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkOneMufflerHatch(errors);
-        checkHatchMin(errors, InputHatch, 2);
+        checkHasInputHatch(errors);
         checkHatchMax(errors, InputHatch, 4);
         checkHasOutputHatch(errors);
         checkHatchMax(errors, OutputHatch, 2);
+        if (mMufflerHatches.getFirst()
+            .getTierForStructure() < 5) {
+            errors.add(
+                StructureErrors.of(
+                    "GT5U.gui.text.structure_error.hatch_tier_too_low",
+                    TranslatableText.hatchName(Muffler),
+                    TranslatableText.literal(VN[5])));
+        }
     }
 
     @Override
