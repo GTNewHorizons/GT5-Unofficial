@@ -45,10 +45,15 @@ public class RecipeTransferContainer extends ModularContainer implements INEIRec
         this.machine = machine;
         this.syncHandler = syncHandler;
         RecipeMap<?> recipeMap = machine.getRecipeMap();
+        // Also the category the machine's NEI transfer rect opens: the cutting machines show their recipes through a
+        // map that joins the variants for each cutting fluid into one recipe
+        String transferRectId = recipeMap.getFrontend()
+            .getUIProperties().neiTransferRectId;
         this.idents = RecipeCategory.ALL_RECIPE_CATEGORIES.values()
             .stream()
-            .filter(category -> category.recipeMap == recipeMap)
+            .filter(category -> category.recipeMap == recipeMap || category.unlocalizedName.equals(transferRectId))
             .map(category -> category.unlocalizedName)
+            .distinct()
             .toArray(String[]::new);
     }
 
@@ -78,7 +83,7 @@ public class RecipeTransferContainer extends ModularContainer implements INEIRec
                 case CIRCUIT -> circuitConfig = stack.item.getItemDamage();
                 case FLUID -> {
                     // Basic machines have one fluid input
-                    if (fluid == null) fluid = fluidPerCraft(stack);
+                    if (fluid == null) fluid = fluidPerCraft(gui, stack);
                 }
                 default -> {}
             }
@@ -96,7 +101,7 @@ public class RecipeTransferContainer extends ModularContainer implements INEIRec
             boolean present = switch (kindOf(stack)) {
                 case ITEM -> claim(available, stack, Math.max(1, amount((FixedPositionedStack) stack)));
                 case SPECIAL -> claim(available, stack, 1);
-                case FLUID -> hasFluid(gui, fluidPerCraft(stack));
+                case FLUID -> hasFluid(gui, fluidPerCraft(gui, stack));
                 default -> true;
             };
             states.add(new ItemOverlayState(stack, present));
@@ -134,10 +139,24 @@ public class RecipeTransferContainer extends ModularContainer implements INEIRec
         return available >= fluid.amount;
     }
 
-    /** Fluid used per craft, null if none. */
-    private static FluidStack fluidPerCraft(PositionedStack stack) {
-        FluidStack fluid = StackInfo.getFluid(stack.item);
-        return fluid != null && fluid.amount > 0 ? fluid : null;
+    /**
+     * Fluid used per craft, null if none. A recipe can take any of several fluids (the cutting machines take water,
+     * distilled water or lubricant): the one in the tank goes first, then one the player has enough of for a craft.
+     */
+    private FluidStack fluidPerCraft(GuiContainer gui, PositionedStack stack) {
+        List<FluidStack> alternatives = new ArrayList<>();
+        for (ItemStack item : stack.items) {
+            FluidStack fluid = StackInfo.getFluid(item);
+            if (fluid != null && fluid.amount > 0) alternatives.add(fluid);
+        }
+        if (alternatives.isEmpty()) return null;
+
+        FluidStack inTank = machine.getFillableStack();
+        return alternatives.get(
+            RecipeFluidChoice.choose(
+                alternatives,
+                fluid -> inTank != null && inTank.amount > 0 && inTank.isFluidEqual(fluid),
+                fluid -> hasFluid(gui, fluid)));
     }
 
     /** Machine input slots in GUI order. */
