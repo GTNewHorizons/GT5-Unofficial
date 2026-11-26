@@ -6,7 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import com.ruling_0.materiallib.api.EmptyContainerHandle;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
-import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.items.GTSolidCellShapeItem;
 
@@ -68,7 +67,7 @@ public class CellShapes {
                 .build());
         cellSolid = reg(
             MaterialLibAPI.registerItemShape(new GTSolidCellShapeItem("gregtech", "cellSolid", CELL_BASE, "cell"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_cell"));
+                .setLocalizationFormatKey("gt.oreprefix.material_cell"));
 
         cellPlasma = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")

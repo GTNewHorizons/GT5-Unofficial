@@ -4,7 +4,6 @@ import static gregtech.api.enums.materials.GTShapeStore.reg;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
-import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.items.GTNaniteShapeItem;
 import kubatech.loaders.item.arcfurnace.ElectrodeItem;
@@ -104,7 +103,7 @@ public class Shapes {
                 .build());
         electrode = reg(
             MaterialLibAPI.registerItemShape(new ElectrodeItem("gregtech", "electrode", "electrode"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_electrode"));
+                .setLocalizationFormatKey("gt.oreprefix.material_electrode"));
         foil = reg(
             MaterialLibAPI.newItemShape("gregtech", "foil")
                 .localizationFormatKey("gt.oreprefix.material_foil")
@@ -159,7 +158,7 @@ public class Shapes {
                 .build());
         nanite = reg(
             MaterialLibAPI.registerItemShape(new GTNaniteShapeItem("gregtech", "nanite", "nanite"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_nanites"));
+                .setLocalizationFormatKey("gt.oreprefix.material_nanites"));
         nugget = reg(
             MaterialLibAPI.newItemShape("gregtech", "nugget")
                 .localizationFormatKey("gt.oreprefix.material_nugget")

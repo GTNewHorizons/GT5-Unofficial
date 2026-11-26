@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
-import com.ruling_0.materiallib.api.StandardProperties;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -73,7 +72,7 @@ public class PipeShapeBlock extends ShapeBlock {
         float thickness, String iconName, String... oreDicts) {
         super(new MaterialMachines(), "gregtech", name, oreDicts);
         this.prefixKey = prefixKey;
-        setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, prefixKey);
+        setLocalizationFormatKey(prefixKey);
         this.iconName = iconName;
         this.mteId = mteId;
         this.family = family;

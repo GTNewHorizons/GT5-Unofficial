@@ -4,7 +4,6 @@ import static gregtech.api.enums.materials.GTShapeStore.reg;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
-import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.blocks.GTCasingShapeBlock;
 import gregtech.common.blocks.GTStorageShapeBlock;
@@ -21,17 +20,17 @@ public class BlockShapes {
     public static void init() {
         block = reg(
             MaterialLibAPI.registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "block"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.block_of_material"));
+                .setLocalizationFormatKey("gt.oreprefix.block_of_material"));
         blockCasing = reg(
             MaterialLibAPI.registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasing", "blockCasing"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.bolted_material_casing"));
+                .setLocalizationFormatKey("gt.oreprefix.bolted_material_casing"));
         blockCasingAdvanced = reg(
             MaterialLibAPI
                 .registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasingAdvanced", "blockCasingAdvanced"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.rebolted_material_casing"));
+                .setLocalizationFormatKey("gt.oreprefix.rebolted_material_casing"));
         sheetmetal = reg(
             MaterialLibAPI.registerBlockShape(new SheetmetalShapeBlock("sheetmetal", "sheetmetal"))
-                .setProperty(StandardProperties.LOCALIZATION_FORMAT_KEY, "gt.oreprefix.material_sheetmetal"));
+                .setLocalizationFormatKey("gt.oreprefix.material_sheetmetal"));
     }
 
     private BlockShapes() {}
