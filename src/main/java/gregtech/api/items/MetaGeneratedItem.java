@@ -3,8 +3,6 @@ package gregtech.api.items;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.Mods.AppleCore;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,8 +26,6 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
@@ -157,20 +153,6 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 boolean tUseOreDict = true;
                 if (tRandomData instanceof IFoodStat) {
                     setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
-                    if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
-                        int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
-                        if (tFoodValue > 0) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue))
-                                .itemOutputs(
-                                    ((IFoodStat) tRandomData).isRotten(this, rStack, null)
-                                        ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
-                                        : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
-                                .duration(tFoodValue * 5 * SECONDS)
-                                .eut(1)
-                                .addTo(cannerRecipes);
-                        }
-                    }
                     tUseOreDict = false;
                 }
                 if (tRandomData instanceof IItemBehaviour) {

@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -26,6 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -128,11 +130,15 @@ public class GTItemIterator implements Runnable {
         GT_FML_LOGGER.debug(
             "GTMod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
-            .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
+            .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.TinCan_Empty.get(12L))
+            .itemOutputs(ItemList.TinCan_Filled.get(12L))
             .duration(30 * SECONDS)
             .eut(1)
             .addTo(cannerRecipes);
+        addMetaItemCanningRecipes();
+        addIC2CanConversion(ItemList.IC2_Food_Can_Empty, ItemList.TinCan_Empty);
+        addIC2CanConversion(ItemList.IC2_Food_Can_Filled, ItemList.TinCan_Filled);
+        addIC2CanConversion(ItemList.IC2_Food_Can_Spoiled, ItemList.TinCan_Spoiled);
 
         GT_FML_LOGGER.debug("GTMod: Scanning ItemList.");
 
@@ -191,12 +197,12 @@ public class GTItemIterator implements Runnable {
                     if (tFoodValue > 0) {
                         GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                         recipeBuilder
-                            .itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(tFoodValue));
+                            .itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.TinCan_Empty.get(tFoodValue));
                         if (GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
-                            recipeBuilder.itemOutputs(ItemList.IC2_Food_Can_Filled.get(tFoodValue));
+                            recipeBuilder.itemOutputs(ItemList.TinCan_Filled.get(tFoodValue));
                         } else {
                             recipeBuilder.itemOutputs(
-                                ItemList.IC2_Food_Can_Filled.get(tFoodValue),
+                                ItemList.TinCan_Filled.get(tFoodValue),
                                 GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true));
                         }
                         recipeBuilder.duration(tFoodValue * 5 * SECONDS)
@@ -282,5 +288,33 @@ public class GTItemIterator implements Runnable {
         } catch (Exception e) {
             /**/
         }
+    }
+
+    private static void addMetaItemCanningRecipes() {
+        for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
+            item.mFoodStats.forEach((meta, stat) -> {
+                ItemStack food = new ItemStack(item, 1, meta);
+                if (stat.getFoodAction(item, food) != EnumAction.eat) return;
+
+                int cans = stat.getFoodLevel(item, food, null);
+                if (cans <= 0) return;
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(food, ItemList.TinCan_Empty.get(cans))
+                    .itemOutputs(
+                        stat.isRotten(item, food, null) ? ItemList.TinCan_Spoiled.get(cans)
+                            : ItemList.TinCan_Filled.get(cans))
+                    .duration(cans * 5 * SECONDS)
+                    .eut(1)
+                    .addTo(cannerRecipes);
+            });
+        }
+    }
+
+    private static void addIC2CanConversion(ItemList ic2Can, ItemList tinCan) {
+        ItemStack oldCan = ic2Can.hasBeenSet() ? ic2Can.get(1) : null;
+        if (oldCan == null) return;
+        GTModHandler
+            .addShapelessCraftingRecipe(tinCan.get(1), GTModHandler.RecipeBits.NOT_REMOVABLE, new Object[] { oldCan });
     }
 }

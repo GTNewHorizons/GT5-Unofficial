@@ -121,6 +121,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.items.armor.ArmorMELink;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
@@ -695,6 +696,7 @@ public class GTProxy implements IFuelHandler {
         if (!this.enableUndergroundDirtGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
         ArmorEventHandlers armorEvents = new ArmorEventHandlers();
+        ArmorMELink.register();
 
         TeamDataRegistry.register(WirelessTeamData.DATA_KEY, WirelessTeamData::new);
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());

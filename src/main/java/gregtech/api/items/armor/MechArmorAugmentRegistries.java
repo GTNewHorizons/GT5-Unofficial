@@ -55,6 +55,7 @@ import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.behaviors.ApiaristBehavior;
+import gregtech.api.items.armor.behaviors.AutoFeederBehavior;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
@@ -539,6 +540,14 @@ public class MechArmorAugmentRegistries {
             .setTexture(ArmorType.Leggings, () -> soulboundLeggingsAugment)
             .setTexture(ArmorType.Boots, () -> soulboundBootsAugment)
             .providesBehaviors(SoulboundBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        AutoFeeder(ItemList.Augment_AutoFeeder, new AugmentBuilder()
+            .setId("AutoFeeder")
+            .setItemId("augmentautofeeder")
+            .fitsInto(ArmorType.Helmet)
+            .providesBehaviors(AutoFeederBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
