@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -175,13 +177,16 @@ public class CoverFluidRegulator extends Cover {
             return new ChatComponentTranslation("GT5U.chat.cover.fluid_regulator.max");
         }
         if (tickRate == 1) {
-            return new ChatComponentTranslation("GT5U.chat.cover.fluid_regulator.rate_1", speed, speed * 20);
+            return new ChatComponentTranslation(
+                "GT5U.chat.cover.fluid_regulator.rate_1",
+                new ChatComponentFluid(speed),
+                new ChatComponentFluid(speed * 20));
         }
         return new ChatComponentTranslation(
             "GT5U.chat.cover.fluid_regulator.speed",
-            speed,
-            tickRate,
-            String.format("%.2f", (speed * 20d / tickRate)));
+            new ChatComponentFluid(speed),
+            new ChatComponentNumber(tickRate),
+            new ChatComponentFluid(speed * 20d / tickRate));
     }
 
     @Override

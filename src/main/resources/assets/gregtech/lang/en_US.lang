@@ -4482,8 +4482,8 @@ GT5U.chat.cover.decorative.items=Items
 GT5U.chat.cover.fluid_filter=Filter Fluid: %s
 GT5U.chat.cover.fluid_limiter=Threshold: %s
 GT5U.chat.cover.fluid_regulator.max=Pump speed limit reached!
-GT5U.chat.cover.fluid_regulator.rate_1=Pump speed: %sL/tick %sL/sec
-GT5U.chat.cover.fluid_regulator.speed=Pump speed: %sL every %s ticks, %s L/sec on average
+GT5U.chat.cover.fluid_regulator.rate_1=Pump speed: %s/tick %s/sec
+GT5U.chat.cover.fluid_regulator.speed=Pump speed: %s every %s ticks, %s/sec on average
 GT5U.chat.cover.fluid_storage_monitor.side=Side: %s
 GT5U.chat.cover.slot=Slot: %s
 GT5U.chat.cover.slot.all=Slot: All
@@ -8361,7 +8361,7 @@ GT5U.gui.text.recipe_result.no_output_for_sapling=§7This sapling yields no outp
 GT5U.gui.text.recipe_result.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
-GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %s
 GTPP.gui.text.cover_overflow_valve_overflow_point=§8Overflow Point
 GTPP.gui.text.cover_overflow_valve_voiding_rate=§8Voiding Rate
 GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input
