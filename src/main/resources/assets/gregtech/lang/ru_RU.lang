@@ -4756,10 +4756,8 @@ gt.interact.desc.fluid_regulator.InvertedMachProcState=Использовать 
 
 gt.interact.desc.fluid_regulator.ExpImp=§8Экспорт/Импорт
 gt.interact.desc.fluid_regulator.Conditional=§8Условный
-gt.interact.desc.fluid_regulator.L=§8 Л
 gt.interact.desc.fluid_regulator.Ticks=§8 тиков
 gt.interact.desc.fluid_regulator.Average=Средне:
-gt.interact.desc.fluid_regulator.L_Sec=Л/сек
 
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Режим белого списка
@@ -7778,8 +7776,6 @@ GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Разрешить вв�
 GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Блокировать ввод жидкости
 GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Разрешить вывод жидкости
 GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Блокировать вывод жидкости
-GTPP.gui.text.cover_overflow_valve_liter=§8Л
-GTPP.gui.text.cover_overflow_valve_l_per_update=§8Л/обновление
 
 GTPP.EBF.heat=Теплоёмкость
 

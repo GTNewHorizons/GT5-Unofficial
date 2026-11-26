@@ -5019,10 +5019,9 @@ gt.interact.desc.fluid_regulator.InvertedMachProcState=Use Inverted Machine Proc
 
 gt.interact.desc.fluid_regulator.ExpImp=§8Export/Import
 gt.interact.desc.fluid_regulator.Conditional=§8Conditional
-gt.interact.desc.fluid_regulator.L=§8 L
 gt.interact.desc.fluid_regulator.Ticks=§8 ticks
 gt.interact.desc.fluid_regulator.Average=Average:
-gt.interact.desc.fluid_regulator.L_Sec=L/sec
+gt.interact.desc.fluid_regulator.fluid_per_sec=%s/sec
 
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Whitelist Mode
@@ -8367,8 +8366,7 @@ GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Allow Fluid Input
 GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Block Fluid Input
 GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Allow Fluid Output
 GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_liter=§8L
-GTPP.gui.text.cover_overflow_valve_l_per_update=§8L/update
+GTPP.gui.text.cover_overflow_valve_fluid_per_update=§8%s/update
 
 GTPP.EBF.heat=Heat capacity
 
