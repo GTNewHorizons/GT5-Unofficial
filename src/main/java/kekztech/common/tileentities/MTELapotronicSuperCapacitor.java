@@ -277,8 +277,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     Boolean hasRebalanced = false;
     Boolean canRebalance = false;
 
-    public Boolean getShowWarning() {
-        var clientPref = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+    public Boolean getShowWarning(EntityPlayer player) {
+        if (player == null) {
+            return showWarning;
+        }
+        var clientPref = GTMod.proxy.getClientPreference(player.getPersistentID());
         return clientPref == null ? showWarning : !clientPref.isSkipLSCWirelessWarningDialogEnabled() && showWarning;
     }
 
