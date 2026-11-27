@@ -10,73 +10,51 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTESOFuelCellMK2 extends MTESOFuelCellBase<MTESOFuelCellMK2> {
 
-    private final int OXYGEN_PER_SEC = 2000;
-    private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
-    private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
-    private final int STEAM_PER_TICK = STEAM_PER_SEC / 20;
-    private final int GAS_FUEL_THRESHOLD = 1000;
-    private int glassTier = -1;
+    private static final int OXYGEN_PER_SEC = 2000;
+    private static final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
+    private static final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
+    private static final int STEAM_PER_TICK = STEAM_PER_SEC / 20;
+    private static final int GAS_FUEL_THRESHOLD = 1000;
 
     public MTESOFuelCellMK2(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, STEAM_PER_TICK, OXYGEN_PER_SEC, EU_PER_TICK);
     }
 
     public MTESOFuelCellMK2(String aName) {
-        super(aName);
+        super(aName, STEAM_PER_TICK, OXYGEN_PER_SEC, EU_PER_TICK);
     }
 
     @Override
@@ -84,15 +62,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         return new MTESOFuelCellMK2(super.mName);
     }
 
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
-
-    private int mCasing = 0;
-
     private static final int CASING_TEXTURE_ID = 48;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTESOFuelCellMK2> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTESOFuelCellMK2>builder()
         .addShape(
@@ -110,7 +80,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                 onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
         .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
         .addElement('s', ofSheetMetal(Materials.TungstenSteel))
         .build();
 
@@ -132,7 +102,8 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk2"), vars)
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("12-31", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("12-13", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("18", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.TungstenSteel), false)
             .addCasing(
                 "6",
                 StatCollector
@@ -151,99 +122,17 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        return Textures.BlockIcons.createTextureWithCasing(
-            this,
-            side,
-            aFacing,
-            aActive,
-            OVERLAY_FRONT_HEAT_EXCHANGER,
-            OVERLAY_FRONT_HEAT_EXCHANGER_GLOW,
-            OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE,
-            OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW);
+    public float getFuelEffiencyMultiplier(GTRecipe aFuel) {
+        return Math.max(1, (float) aFuel.mSpecialValue / GAS_FUEL_THRESHOLD);
+    }
+
+    @Override
+    public FluidStack getSteamOutput(long aStackSize) {
+        return FluidRegistry.getFluidStack("ic2superheatedsteam", (int) aStackSize);
     }
 
     @Override
     public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID);
-    }
-
-    @Nonnull
-    @Override
-    public CheckRecipeResult checkProcessing() {
-        final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
-        Collection<GTRecipe> recipeList = RecipeMaps.gasTurbineFuels.getAllRecipes();
-
-        for (FluidStack hatchFluid : storedFluids) {
-            for (GTRecipe aFuel : recipeList) {
-                FluidStack liquid;
-                if ((liquid = GTUtility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-                    && hatchFluid.isFluidEqual(liquid)) {
-
-                    liquid.amount = (int) ((EU_PER_TICK * 20)
-                        / (aFuel.mSpecialValue * Math.max(1, (float) aFuel.mSpecialValue / GAS_FUEL_THRESHOLD)));
-
-                    if (super.depleteInput(liquid)) {
-
-                        if (!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
-                            super.mEUt = 0;
-                            super.mEfficiency = 0;
-                            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-                        }
-
-                        super.mEUt = EU_PER_TICK;
-                        super.mMaxProgresstime = 1;
-                        super.mEfficiencyIncrease = 10;
-                        if (super.mEfficiency > 0) {
-                            float steam_efficiency = (float) super.mEfficiency / getMaxEfficiency(null);
-                            super.addOutputPartial(
-                                FluidRegistry
-                                    .getFluidStack("ic2superheatedsteam", (int) (STEAM_PER_TICK * steam_efficiency)));
-                        }
-                        return CheckRecipeResultRegistry.GENERATING;
-                    }
-                }
-            }
-        }
-
-        super.mEUt = 0;
-        super.mEfficiency = 0;
-        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-    }
-
-    @Override
-    public void checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem, List<StructureError> errors) {
-        this.mCasing = 0;
-        this.glassTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
-        checkCasingMin(errors, this.mCasing, 12);
-        checkHasMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
-
-        if (this.glassTier < VoltageIndex.EV) {
-            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
-        }
-    }
-
-    @Override
-    public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return false;
-    }
-
-    @Override
-    public boolean showRecipeTextInGUI() {
-        return false;
     }
 }
