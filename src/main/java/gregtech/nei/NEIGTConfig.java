@@ -1,11 +1,16 @@
 package gregtech.nei;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -32,12 +37,15 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
@@ -53,6 +61,9 @@ import gregtech.nei.dumper.TurbineFuelDumper;
 import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
+import gtPlusPlus.core.item.base.ore.BaseOreComponent;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -95,6 +106,7 @@ public class NEIGTConfig implements IConfigureNEI {
         registerHandlers();
         registerCatalysts();
         registerItemEntries();
+        registerItemCategories();
         registerDumpers();
         registerFilters();
         hideItems();
@@ -157,8 +169,55 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addRecipeCatalyst(ItemList.IndustrialCuttingMachine.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
     }
 
+    private static final OrePrefixes[] NEI_CATEGORY_PREFIXES = { OrePrefixes.ingotHot, OrePrefixes.dustTiny,
+        OrePrefixes.dustSmall, OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
+        OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged };
+    private final Set<OrePrefixes> categorized = new HashSet<>(Arrays.asList(NEI_CATEGORY_PREFIXES));
+
     private void registerItemEntries() {
         API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
+
+        final MetaGeneratedItem01 item = MetaGeneratedItem01.INSTANCE;
+        final List<ItemStack> entries = new ArrayList<>();
+        item.addSubItems(
+            item,
+            null,
+            entries,
+            (prefix, material) -> categorized.contains(prefix)
+                || item.doesShowInCreative(prefix, material, GregTechAPI.sDoShowAllItemsInCreative));
+        API.setItemListEntries(item, entries);
+    }
+
+    private static boolean hasPrefix(ItemStack stack, OrePrefixes prefix) {
+        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        if (data != null) {
+            return data.mPrefix == prefix;
+        }
+
+        Item item = stack.getItem();
+        if (item instanceof BaseItemComponent) { // GT++ hot ingots, tiny/small dusts
+            return ((BaseItemComponent) item).componentType.getGtOrePrefix() == prefix;
+        }
+        if (item instanceof BaseOreComponent) { // GT++ impure/pure dust and crushed ore
+            return prefix.getName()
+                .equals(((BaseOreComponent) item).componentType.getOrePrefix());
+        }
+        if (item instanceof BaseItemDustUnique) { // GT++ unique Dusts
+            String name = item.getUnlocalizedName();
+            if (prefix == OrePrefixes.dustTiny) return name.contains("DustTiny");
+            if (prefix == OrePrefixes.dustSmall) return name.contains("DustSmall");
+        }
+        return false;
+    }
+
+    private void registerItemCategories() {
+        for (OrePrefixes prefix : NEI_CATEGORY_PREFIXES) {
+            API.addItemCategory(
+                "gregtech." + prefix.getName(),
+                "gt.nei.category." + prefix.getName(),
+                stack -> hasPrefix(stack, prefix),
+                true);
+        }
     }
 
     private void registerDumpers() {
