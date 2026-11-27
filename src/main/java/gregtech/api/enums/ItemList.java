@@ -176,6 +176,9 @@ public enum ItemList implements IItemContainer {
     PadBouncy,
     PadSticky,
     FenceIron,
+    FoodCanFilled,
+    FoodCanEmpty,
+    FoodCanSpoiled,
 
     Credit_Copper,
     Credit_Iron,
