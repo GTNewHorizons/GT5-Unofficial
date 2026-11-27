@@ -994,7 +994,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
 
-        // Gas handling info
+        // Basic pipe stats
         currenttip.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
@@ -1003,7 +1003,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
 
-        // Basic pipe stats
+        // Gas handling info
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
                 + (mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
@@ -1011,6 +1011,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                     .translateToLocal(mGasProof ? "GT5U.item.pipe.gas_proof.yes" : "GT5U.item.pipe.gas_proof.no")
                 + EnumChatFormatting.RESET);
 
+        // Multi-pipe info
         if (mPipeAmount > 1) {
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
