@@ -5,13 +5,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cricketcraft.chisel.api.carving.CarvingUtils;
 
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -135,17 +135,6 @@ public class MTEAutoChisel extends MTEBasicMachine {
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
-    private static boolean canBeMadeFrom(ItemStack from, ItemStack to) {
-        List<ItemStack> results = getItemsForChiseling(from);
-        for (ItemStack s : results) {
-            if (s.getItem() == to.getItem() && s.getItemDamage() == to.getItemDamage()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
         return !results.isEmpty();
@@ -156,50 +145,30 @@ public class MTEAutoChisel extends MTEBasicMachine {
     }
 
     private static ItemStack getChiselOutput(@Nonnull ItemStack aInput, ItemStack aTarget) {
-        if (aTarget == null) {
+        ItemStack chiselTarget = aTarget;
+        if (chiselTarget == null) {
             // No item in special slot, use the first item of chisel group
-            ItemStack result = null;
             List<ItemStack> chiselItemGroup = getItemsForChiseling(aInput);
             if (!chiselItemGroup.isEmpty()) {
-                result = chiselItemGroup.getFirst();
-                if (result != null) {
-                    result = applyOriginalNBT(result.copy(), aInput);
-                }
+                chiselTarget = chiselItemGroup.getFirst();
             }
-
-            return result;
         }
 
-        if (!canBeMadeFrom(aInput, aTarget)) {
+        if (chiselTarget == null) {
             return null;
         }
 
-        // Copy the item in the special slot (while keeping the original's NBT)
-        return applyOriginalNBT(aTarget.copy(), aInput);
-    }
-
-    private static @Nonnull ItemStack applyOriginalNBT(@Nonnull ItemStack output, @Nonnull ItemStack original) {
-        // Copy NBT from input to target to both avoid dupes and prevent loss of stored information
-        // (such as when chiseling drawers with items inside)
-        NBTTagCompound inputNBT = original.getTagCompound();
-        if (inputNBT != null) {
-            inputNBT = (NBTTagCompound) inputNBT.copy();
-        }
-
-        output.setTagCompound(inputNBT);
-        return output;
+        return CarvingUtils.tryChiselingInto(aInput, chiselTarget);
     }
 
     @Override
     public int checkRecipe() {
-        ItemStack tOutput = null;
         ItemStack aInput = getInputAt(0);
         ItemStack aTarget = getSpecialSlot();
         boolean tIsCached = hasValidCache(aInput, aTarget, true);
         if (aInput != null && hasChiselResults(aInput) && aInput.stackSize > 0) {
-            tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
+            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
             if (tOutput != null) {
-                tOutput = tOutput.copy();
                 tOutput.stackSize = 1;
                 // We can chisel this
                 if (canOutput(tOutput)) {
