@@ -937,26 +937,21 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     @Override
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
-
         descriptions.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
-
         descriptions.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
-
         if (!mGasProof) {
             descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
-
         if (mPipeAmount > 1) {
             descriptions.add(
                 StatCollector.translateToLocalFormatted(
                     "gt.blockmachines.fluidpipe.pipe_amount.desc",
                     formatNumber(mPipeAmount)));
         }
-
         return descriptions.toArray(new String[0]);
     }
 
@@ -998,11 +993,9 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         currenttip.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
-
         currenttip.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
-
         // Gas handling info
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
