@@ -32,7 +32,10 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
         final Dyes dye = BehaviourSprayColorInfinite.getSpraycanDye(item);
-        final short[] modulation = dye.getRGBA();
+        final int customColor = BehaviourSprayColorInfinite.getCustomColor(item);
+        final short[] modulation = customColor == -1 ? dye.getRGBA()
+            : new short[] { (short) ((customColor >> 16) & 0xFF), (short) ((customColor >> 8) & 0xFF),
+                (short) (customColor & 0xFF), 0 };
 
         if (!(item.getItem() instanceof final MetaGeneratedItem mgItem)) {
             return;

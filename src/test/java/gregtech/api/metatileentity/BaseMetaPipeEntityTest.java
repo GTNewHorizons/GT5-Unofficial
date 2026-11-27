@@ -97,6 +97,7 @@ class BaseMetaPipeEntityTest {
                 .writeByte(ForgeDirection.UP.flag)
                 .writeInt(123);
             packet.writeInt(0); // Connections, custom data, redstone and color.
+            packet.writeInt(BaseMetaPipeEntity.NO_CUSTOM_TINT);
             base.readDescriptionBuffer(packet);
             assertFalse(base.canUpdate());
             assertTrue(base.getTimer() > 1, "Deserialized client cable must allow interaction without ticking");

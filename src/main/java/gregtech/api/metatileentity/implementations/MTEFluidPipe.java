@@ -183,7 +183,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         boolean connected, boolean redstoneLevel) {
         List<ITexture> textures = new ArrayList<>();
 
-        textures.add(getBaseTexture(connected, colorIndex));
+        final short[] customTint = BaseMetaPipeEntity.getCustomTintRGBa(base);
+        textures.add(
+            customTint != null ? getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, customTint, connected, -1)
+                : getBaseTexture(connected, colorIndex));
 
         if (mDisableInput != 0) {
             int borderMask = 0;
