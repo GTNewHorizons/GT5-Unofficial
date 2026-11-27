@@ -18,6 +18,7 @@ import static gregtech.api.enums.TierEU.RECIPE_ULV;
 import static gregtech.api.enums.TierEU.RECIPE_UMV;
 import static gregtech.api.enums.TierEU.RECIPE_UV;
 import static gregtech.api.enums.TierEU.RECIPE_ZPM;
+import static gregtech.api.enums.Variants.AlteredPricing;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -43,6 +44,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Variants;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -114,6 +116,9 @@ public class ComponentAssemblyLineLoader {
     public static void run() {
         ComponentAssemblyLineMiscRecipes.run();
 
+        if (Variants.checkIfActive(AlteredPricing)) {
+            return;
+        }
         lvRecipes();
         mvRecipes();
         hvRecipes();
