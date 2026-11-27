@@ -7,6 +7,11 @@ import java.util.UUID;
 import gregtech.common.WirelessComputationPacket;
 import gregtech.common.WirelessDataStore;
 
+/**
+ * @see WirelessTeamData
+ * @see WirelessNetworkManager
+ */
+@Deprecated
 public abstract class GlobalVariableStorage {
     // --------------------- NEVER access these maps! Use the methods provided! ---------------------
 

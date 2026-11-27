@@ -306,10 +306,11 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (block instanceof IDebugableBlock debugableBlock) {
-                final List<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
+                final ArrayList<IChatComponent> temp = new ArrayList<>();
+                debugableBlock.addDebugInfoComp(player, x, y, z, 3, temp);
                 if (temp != null && !temp.isEmpty()) {
                     list.add(addTitleComp("title_debug_info"));
-                    for (String s : temp) list.add(new ChatComponentText(s));
+                    list.addAll(temp);
                     euAmount += 500;
                 }
             }

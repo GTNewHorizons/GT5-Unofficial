@@ -11,11 +11,12 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import gregtech.GTLoggers;
 import gregtech.api.enums.Textures;
 import gregtech.common.render.shader.ShaderProfile;
 import gregtech.common.render.shader.SharedShaders;
-import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryRenderUtils;
 
 public final class RenderInit implements IResourceManagerReloadListener {
 
@@ -47,7 +48,8 @@ public final class RenderInit implements IResourceManagerReloadListener {
         onResourceReload(DroneRender::reload);
         onResourceReload(WormholeRenderer::reload);
         onResourceReload(BlackholeRenderer::reload);
-        onResourceReload(MTEExoFoundry::reloadRender);
+        onResourceReload(FoundryRenderUtils::reloadRender);
+        onResourceReload(MTELargeFusionComputer::reloadRender);
         onResourceReload(GTRendererBlock::clearInventoryDisplayListCache);
 
         ((IReloadableResourceManager) Minecraft.getMinecraft()
