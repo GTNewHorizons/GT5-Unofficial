@@ -1768,14 +1768,14 @@ public class CraftingRecipeLoader implements Runnable {
             }
         }
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("electronicCircuit", 1L),
+            ItemList.Circuit_BasicElectronic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
                 MaterialLibAPI.getStack(Materials.RedAlloy, TEBlockShapes.cableGt01, 1), 'V',
                 ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            GTModHandler.getIC2Item("electronicCircuit", 1L),
+            ItemList.Circuit_BasicElectronic.get(1L),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
 

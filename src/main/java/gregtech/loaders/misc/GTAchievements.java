@@ -168,9 +168,15 @@ public class GTAchievements {
         registerAchievement("extract", 0, -4, ItemList.Machine_Bronze_Extractor.get(1), "alloysmelter", false);
 
         registerAchievement("smallparts", 0, -5, ItemList.Circuit_Primitive.get(1), "alloysmelter", false);
-        registerAchievement("gtbasiccircuit", 0, -8, Ic2Items.electronicCircuit.copy(), "smallparts", false);
+        registerAchievement("gtbasiccircuit", 0, -8, ItemList.Circuit_BasicElectronic.get(1), "smallparts", false);
         registerAchievement("bettercircuits", 0, -9, ItemList.Circuit_Good.get(1), "gtbasiccircuit", false);
-        registerAchievement("stepforward", -2, -9, Ic2Items.advancedCircuit.copy(), "bettercircuits", false);
+        registerAchievement(
+            "stepforward",
+            -2,
+            -9,
+            ItemList.Circuit_Integrated_Advanced.get(1),
+            "bettercircuits",
+            false);
         registerAchievement("gtmonosilicon", -5, -10, ItemList.Circuit_Silicon_Ingot.get(1), "stepforward", false);
         registerAchievement("gtlogicwafer", -7, -10, ItemList.Circuit_Wafer_ILC.get(1), "gtmonosilicon", false);
         registerAchievement("gtlogiccircuit", -9, -10, ItemList.Circuit_Basic.get(1), "gtlogicwafer", false);
@@ -332,7 +338,6 @@ public class GTAchievements {
         registerAchievement("zpmage", 8, 10, ItemList.Energy_Module.get(1), "denseaspossible", false);
         registerAchievement("uvage", 10, 10, ItemList.Energy_Cluster.get(1), "zpmage", false);
         registerAchievement("whatnow", 12, 10, ItemList.ZPM2.get(1), "uvage", false);
-
         if (GTMod.proxy.mAchievements) {
             AchievementPage.registerAchievementPage(
                 new AchievementPage(
@@ -513,8 +518,8 @@ public class GTAchievements {
             case "gt.metaitem.01.32630" -> issueAchievement(player, "transport");
             case "gt.metaitem.01.32650" -> issueAchievement(player, "complexmachines");
             case "gt.metaitem.01.32670" -> issueAchievement(player, "hightech");
-            case "ic2.itemPartCircuit" -> issueAchievement(player, "gtbasiccircuit");
-            case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
+            case "gt.metaitem.03.32305" -> issueAchievement(player, "gtbasiccircuit");
+            case "gt.metaitem.03.32306" -> issueAchievement(player, "stepforward");
             case "gt.blockmachines.boiler.solar" -> issueAchievement(player, "simplyeco");
             case "gt.blockmachines.boiler.bronze" -> issueAchievement(player, "firststeam");
             case "gt.blockmachines.boiler.steel" -> issueAchievement(player, "highpressure");
@@ -733,7 +738,7 @@ public class GTAchievements {
             case "gt.metaitem.01.11325" -> issueAchievement(player, "alienmetallurgy");
             case "gt.metaitem.01.11327" -> issueAchievement(player, "finalpreparations");
             case "gt.Thoriumcell" -> issueAchievement(player, "newfuel");
-            case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
+            case "gt.metaitem.03.32306" -> issueAchievement(player, "stepforward");
             case "gt.blockcasings5.1" -> issueAchievement(player, "upgrade");
             case "gt.blockcasings5.2" -> issueAchievement(player, "upgrade2");
             case "gt.blockcasings5.3" -> issueAchievement(player, "upgrade3");

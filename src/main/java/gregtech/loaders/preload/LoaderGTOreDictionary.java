@@ -210,14 +210,10 @@ public class LoaderGTOreDictionary implements Runnable {
         OreDictUtils.registerOre(OreDictNames.craftingBook, new ItemStack(Items.written_book, 1, 32767));
         OreDictUtils.registerOre(OreDictNames.craftingBook, new ItemStack(Items.enchanted_book, 1, 32767));
 
+        // IC2 still puts its circuits in oredict itself. Don't unify them.
+        // TODO: Remove with IC2 dependency
         OreDictUtils.addToBlacklist(GTModHandler.getIC2Item("electronicCircuit", 1L));
         OreDictUtils.addToBlacklist(GTModHandler.getIC2Item("advancedCircuit", 1L));
-        OreDictUtils.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.LV.materialName()),
-            GTModHandler.getIC2Item("electronicCircuit", 1L));
-        OreDictUtils.registerOre(
-            OrePrefixes.circuit.oreDictName(Circuits.HV.materialName()),
-            GTModHandler.getIC2Item("advancedCircuit", 1L));
 
         for (Circuits circuit : Circuits.values()) {
             OreDictUtils.registerOre(OrePrefixes.circuit.oreDictName(circuit.materialName()), circuit.get(1));
