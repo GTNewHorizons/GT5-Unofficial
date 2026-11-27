@@ -200,6 +200,7 @@ public class PosteaTransformers implements Runnable {
         registerIC2FilledCellCutoverTransformers();
         registerGtppIC2CellCutoverTransformers();
         registerRailcraftCreosoteCellCutoverTransformer();
+        registerMaterialFluidCellCutoverTransformers();
         registerIC2ItemCasingCutoverTransformers();
         registerGtppThermalDustCutoverTransformers();
         registerArcFurnaceElectrodeCutoverTransformer();
@@ -292,6 +293,28 @@ public class PosteaTransformers implements Runnable {
                 "No MaterialLib cell stack for the IC2 cell cutover of " + material.getName());
         }
         addItemReplacement("IC2:itemCellEmpty", meta, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates the removed [MetaGeneratedItem98.FluidCell] cells of GregTech materials onto their MaterialLib cells.
+    private static void registerMaterialFluidCellCutoverTransformers() {
+        remapFluidCell(9, Materials.RadoxSuperLight);
+        remapFluidCell(18, Materials.SodiumPotassium);
+        remapFluidCell(19, Materials.EnrichedBacterialSludge);
+        remapFluidCell(20, Materials.FermentedBacterialSludge);
+        remapFluidCell(21, Materials.Pollution);
+        remapFluidCell(27, Materials.Xenoxene);
+        remapFluidCell(28, Materials.RadoxSuperHeavy);
+        remapFluidCell(29, Materials.RadoxHeavy);
+        remapFluidCell(30, Materials.RadoxCracked);
+        remapFluidCell(31, Materials.RadoxLight);
+        remapFluidCell(34, Materials.RadoxGas);
+        remapFluidCell(35, Materials.XenoxeneDiluted);
+        remapFluidCell(36, Materials.RadoxRaw);
+    }
+
+    private static void remapFluidCell(int meta, Material material) {
+        ItemStack cutover = MaterialParts.requireCell(material, 1);
+        addItemReplacement("gregtech:gt.metaitem.98", meta, cutover.getItem(), cutover.getItemDamage());
     }
 
     /// Migrates the filled cells gtPlusPlus registered on IC2's cell item (metas 15-20) onto the MaterialLib cells of
