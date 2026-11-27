@@ -570,19 +570,31 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String[] getDescription() {
+        final int stackCount = getMaxPipeCapacity();
+        final String stackUnit = StatCollector.translateToLocal(
+            stackCount == 1 ? "gt.blockmachines.itempipe.stack.singular" : "gt.blockmachines.itempipe.stack.plural");
+
         final String capacity;
+
         if (mTickTime == 20) {
-            capacity = StatCollector
-                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity());
+            capacity = StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.itempipe.capacity.persecond",
+                formatNumber(stackCount),
+                stackUnit);
         } else if (mTickTime % 20 == 0) {
             capacity = StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.itempipe.capacity.second",
-                getMaxPipeCapacity(),
-                mTickTime / 20);
+                formatNumber(stackCount),
+                stackUnit,
+                formatNumber(mTickTime / 20));
         } else {
-            capacity = StatCollector
-                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime);
+            capacity = StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.itempipe.capacity.tick",
+                formatNumber(stackCount),
+                stackUnit,
+                formatNumber(mTickTime));
         }
+
         return new String[] { capacity, StatCollector
             .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(mStepSize)) };
     }
