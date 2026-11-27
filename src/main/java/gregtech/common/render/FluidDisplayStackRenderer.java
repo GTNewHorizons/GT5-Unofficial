@@ -1,5 +1,7 @@
 package gregtech.common.render;
 
+import java.math.RoundingMode;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,7 +15,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
-import appeng.util.ReadableNumberConverter;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
@@ -23,6 +27,10 @@ import gregtech.common.items.ItemFluidDisplay;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
+
+    private static final CompactOptions AMOUNT_FORMAT = new CompactOptions().setCompactThreshold(10_000)
+        .setDecimalPlaces(1)
+        .setRoundingMode(RoundingMode.DOWN);
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -103,13 +111,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         // Render Fluid amount text
         long fluidAmount = tagCompound.getLong("mFluidDisplayAmount");
         if (fluidAmount > 0L && !tagCompound.getBoolean("mHideStackSize")) {
-            // L is used intentionally, because it takes less space than mB
-            String amountString;
-            if (fluidAmount < 10_000) {
-                amountString = fluidAmount + "L";
-            } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
-            }
+            String amountString = NumberFormatUtil.formatNumberCompact(fluidAmount, AMOUNT_FORMAT);
 
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
             float smallTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
