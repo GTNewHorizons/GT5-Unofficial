@@ -557,6 +557,9 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentcloak")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(CloakBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
         Magnet(ItemList.Augment_Magnet, new AugmentBuilder()
             .setId("Magnet")
             .setItemId("augmentmagnet")
